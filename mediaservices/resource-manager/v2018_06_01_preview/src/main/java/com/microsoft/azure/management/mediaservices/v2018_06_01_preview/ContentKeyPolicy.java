@@ -87,6 +87,9 @@ public interface ContentKeyPolicy extends HasInner<ContentKeyPolicyInner>, Index
         interface WithMediaservice {
            /**
             * Specifies resourceGroupName, accountName.
+            * @param resourceGroupName The name of the resource group within the Azure subscription
+            * @param accountName The Media Services account name
+            * @return the next definition stage
             */
             WithOptions withExistingMediaservice(String resourceGroupName, String accountName);
         }
@@ -97,6 +100,8 @@ public interface ContentKeyPolicy extends HasInner<ContentKeyPolicyInner>, Index
         interface WithOptions {
            /**
             * Specifies options.
+            * @param options The Key Policy options
+            * @return the next definition stage
             */
             WithCreate withOptions(List<ContentKeyPolicyOption> options);
         }
@@ -107,6 +112,8 @@ public interface ContentKeyPolicy extends HasInner<ContentKeyPolicyInner>, Index
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description A description for the Policy
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -135,6 +142,8 @@ public interface ContentKeyPolicy extends HasInner<ContentKeyPolicyInner>, Index
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description A description for the Policy
+             * @return the next update stage
              */
             Update withDescription(String description);
         }

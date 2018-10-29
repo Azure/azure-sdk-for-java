@@ -111,6 +111,10 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithLiveEvent {
            /**
             * Specifies resourceGroupName, accountName, liveEventName.
+            * @param resourceGroupName The name of the resource group within the Azure subscription
+            * @param accountName The Media Services account name
+            * @param liveEventName The name of the Live Event
+            * @return the next definition stage
             */
             WithArchiveWindowLength withExistingLiveEvent(String resourceGroupName, String accountName, String liveEventName);
         }
@@ -121,6 +125,8 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithArchiveWindowLength {
            /**
             * Specifies archiveWindowLength.
+            * @param archiveWindowLength ISO 8601 timespan duration of the archive window length. This is duration that customer want to retain the recorded content
+            * @return the next definition stage
             */
             WithAssetName withArchiveWindowLength(Period archiveWindowLength);
         }
@@ -131,6 +137,8 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithAssetName {
            /**
             * Specifies assetName.
+            * @param assetName The asset name
+            * @return the next definition stage
             */
             WithCreate withAssetName(String assetName);
         }
@@ -141,6 +149,8 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The description of the Live Output
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -151,6 +161,8 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithHls {
             /**
              * Specifies hls.
+             * @param hls The HLS configuration
+             * @return the next definition stage
              */
             WithCreate withHls(Hls hls);
         }
@@ -161,6 +173,8 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithManifestName {
             /**
              * Specifies manifestName.
+             * @param manifestName The manifest file name
+             * @return the next definition stage
              */
             WithCreate withManifestName(String manifestName);
         }
@@ -171,6 +185,8 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithOutputSnapTime {
             /**
              * Specifies outputSnapTime.
+             * @param outputSnapTime The output snapshot time
+             * @return the next definition stage
              */
             WithCreate withOutputSnapTime(Long outputSnapTime);
         }
@@ -199,6 +215,8 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The description of the Live Output
+             * @return the next update stage
              */
             Update withDescription(String description);
         }
@@ -209,6 +227,8 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithHls {
             /**
              * Specifies hls.
+             * @param hls The HLS configuration
+             * @return the next update stage
              */
             Update withHls(Hls hls);
         }
@@ -219,6 +239,8 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithManifestName {
             /**
              * Specifies manifestName.
+             * @param manifestName The manifest file name
+             * @return the next update stage
              */
             Update withManifestName(String manifestName);
         }
@@ -229,6 +251,8 @@ public interface LiveOutput extends HasInner<LiveOutputInner>, Indexable, Refres
         interface WithOutputSnapTime {
             /**
              * Specifies outputSnapTime.
+             * @param outputSnapTime The output snapshot time
+             * @return the next update stage
              */
             Update withOutputSnapTime(Long outputSnapTime);
         }

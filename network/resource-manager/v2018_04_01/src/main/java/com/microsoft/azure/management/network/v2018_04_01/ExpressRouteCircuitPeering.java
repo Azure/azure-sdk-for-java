@@ -153,6 +153,9 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithExpressRouteCircuit {
            /**
             * Specifies resourceGroupName, circuitName.
+            * @param resourceGroupName The name of the resource group
+            * @param circuitName The name of the express route circuit
+            * @return the next definition stage
             */
             WithCreate withExistingExpressRouteCircuit(String resourceGroupName, String circuitName);
         }
@@ -163,6 +166,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithAzureASN {
             /**
              * Specifies azureASN.
+             * @param azureASN The Azure ASN
+             * @return the next definition stage
              */
             WithCreate withAzureASN(Integer azureASN);
         }
@@ -173,6 +178,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithConnections {
             /**
              * Specifies connections.
+             * @param connections The list of circuit connections associated with Azure Private Peering for this circuit
+             * @return the next definition stage
              */
             WithCreate withConnections(List<ExpressRouteCircuitConnectionInner> connections);
         }
@@ -183,6 +190,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithGatewayManagerEtag {
             /**
              * Specifies gatewayManagerEtag.
+             * @param gatewayManagerEtag The GatewayManager Etag
+             * @return the next definition stage
              */
             WithCreate withGatewayManagerEtag(String gatewayManagerEtag);
         }
@@ -193,6 +202,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithId {
             /**
              * Specifies id.
+             * @param id Resource ID
+             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -203,6 +214,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithIpv6PeeringConfig {
             /**
              * Specifies ipv6PeeringConfig.
+             * @param ipv6PeeringConfig The IPv6 peering configuration
+             * @return the next definition stage
              */
             WithCreate withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig);
         }
@@ -213,6 +226,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithLastModifiedBy {
             /**
              * Specifies lastModifiedBy.
+             * @param lastModifiedBy Gets whether the provider or the customer last modified the peering
+             * @return the next definition stage
              */
             WithCreate withLastModifiedBy(String lastModifiedBy);
         }
@@ -223,6 +238,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithMicrosoftPeeringConfig {
             /**
              * Specifies microsoftPeeringConfig.
+             * @param microsoftPeeringConfig The Microsoft peering configuration
+             * @return the next definition stage
              */
             WithCreate withMicrosoftPeeringConfig(ExpressRouteCircuitPeeringConfig microsoftPeeringConfig);
         }
@@ -233,6 +250,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithName {
             /**
              * Specifies name.
+             * @param name Gets name of the resource that is unique within a resource group. This name can be used to access the resource
+             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -243,6 +262,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithPeerASN {
             /**
              * Specifies peerASN.
+             * @param peerASN The peer ASN
+             * @return the next definition stage
              */
             WithCreate withPeerASN(Long peerASN);
         }
@@ -253,6 +274,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithPeeringType {
             /**
              * Specifies peeringType.
+             * @param peeringType The peering type. Possible values include: 'AzurePublicPeering', 'AzurePrivatePeering', 'MicrosoftPeering'
+             * @return the next definition stage
              */
             WithCreate withPeeringType(ExpressRoutePeeringType peeringType);
         }
@@ -263,6 +286,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithPrimaryAzurePort {
             /**
              * Specifies primaryAzurePort.
+             * @param primaryAzurePort The primary port
+             * @return the next definition stage
              */
             WithCreate withPrimaryAzurePort(String primaryAzurePort);
         }
@@ -273,6 +298,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithPrimaryPeerAddressPrefix {
             /**
              * Specifies primaryPeerAddressPrefix.
+             * @param primaryPeerAddressPrefix The primary address prefix
+             * @return the next definition stage
              */
             WithCreate withPrimaryPeerAddressPrefix(String primaryPeerAddressPrefix);
         }
@@ -283,6 +310,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
+             * @param provisioningState Gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
+             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
@@ -293,6 +322,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithRouteFilter {
             /**
              * Specifies routeFilter.
+             * @param routeFilter The reference of the RouteFilter resource
+             * @return the next definition stage
              */
             WithCreate withRouteFilter(RouteFilterInner routeFilter);
         }
@@ -303,6 +334,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithSecondaryAzurePort {
             /**
              * Specifies secondaryAzurePort.
+             * @param secondaryAzurePort The secondary port
+             * @return the next definition stage
              */
             WithCreate withSecondaryAzurePort(String secondaryAzurePort);
         }
@@ -313,6 +346,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithSecondaryPeerAddressPrefix {
             /**
              * Specifies secondaryPeerAddressPrefix.
+             * @param secondaryPeerAddressPrefix The secondary address prefix
+             * @return the next definition stage
              */
             WithCreate withSecondaryPeerAddressPrefix(String secondaryPeerAddressPrefix);
         }
@@ -323,6 +358,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithSharedKey {
             /**
              * Specifies sharedKey.
+             * @param sharedKey The shared key
+             * @return the next definition stage
              */
             WithCreate withSharedKey(String sharedKey);
         }
@@ -333,6 +370,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithState {
             /**
              * Specifies state.
+             * @param state The peering state. Possible values include: 'Disabled', 'Enabled'
+             * @return the next definition stage
              */
             WithCreate withState(ExpressRoutePeeringState state);
         }
@@ -343,6 +382,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithStats {
             /**
              * Specifies stats.
+             * @param stats Gets peering stats
+             * @return the next definition stage
              */
             WithCreate withStats(ExpressRouteCircuitStatsInner stats);
         }
@@ -353,6 +394,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithVlanId {
             /**
              * Specifies vlanId.
+             * @param vlanId The VLAN ID
+             * @return the next definition stage
              */
             WithCreate withVlanId(Integer vlanId);
         }
@@ -381,6 +424,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithAzureASN {
             /**
              * Specifies azureASN.
+             * @param azureASN The Azure ASN
+             * @return the next update stage
              */
             Update withAzureASN(Integer azureASN);
         }
@@ -391,6 +436,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithConnections {
             /**
              * Specifies connections.
+             * @param connections The list of circuit connections associated with Azure Private Peering for this circuit
+             * @return the next update stage
              */
             Update withConnections(List<ExpressRouteCircuitConnectionInner> connections);
         }
@@ -401,6 +448,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithGatewayManagerEtag {
             /**
              * Specifies gatewayManagerEtag.
+             * @param gatewayManagerEtag The GatewayManager Etag
+             * @return the next update stage
              */
             Update withGatewayManagerEtag(String gatewayManagerEtag);
         }
@@ -411,6 +460,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithId {
             /**
              * Specifies id.
+             * @param id Resource ID
+             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -421,6 +472,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithIpv6PeeringConfig {
             /**
              * Specifies ipv6PeeringConfig.
+             * @param ipv6PeeringConfig The IPv6 peering configuration
+             * @return the next update stage
              */
             Update withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig);
         }
@@ -431,6 +484,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithLastModifiedBy {
             /**
              * Specifies lastModifiedBy.
+             * @param lastModifiedBy Gets whether the provider or the customer last modified the peering
+             * @return the next update stage
              */
             Update withLastModifiedBy(String lastModifiedBy);
         }
@@ -441,6 +496,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithMicrosoftPeeringConfig {
             /**
              * Specifies microsoftPeeringConfig.
+             * @param microsoftPeeringConfig The Microsoft peering configuration
+             * @return the next update stage
              */
             Update withMicrosoftPeeringConfig(ExpressRouteCircuitPeeringConfig microsoftPeeringConfig);
         }
@@ -451,6 +508,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithName {
             /**
              * Specifies name.
+             * @param name Gets name of the resource that is unique within a resource group. This name can be used to access the resource
+             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -461,6 +520,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithPeerASN {
             /**
              * Specifies peerASN.
+             * @param peerASN The peer ASN
+             * @return the next update stage
              */
             Update withPeerASN(Long peerASN);
         }
@@ -471,6 +532,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithPeeringType {
             /**
              * Specifies peeringType.
+             * @param peeringType The peering type. Possible values include: 'AzurePublicPeering', 'AzurePrivatePeering', 'MicrosoftPeering'
+             * @return the next update stage
              */
             Update withPeeringType(ExpressRoutePeeringType peeringType);
         }
@@ -481,6 +544,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithPrimaryAzurePort {
             /**
              * Specifies primaryAzurePort.
+             * @param primaryAzurePort The primary port
+             * @return the next update stage
              */
             Update withPrimaryAzurePort(String primaryAzurePort);
         }
@@ -491,6 +556,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithPrimaryPeerAddressPrefix {
             /**
              * Specifies primaryPeerAddressPrefix.
+             * @param primaryPeerAddressPrefix The primary address prefix
+             * @return the next update stage
              */
             Update withPrimaryPeerAddressPrefix(String primaryPeerAddressPrefix);
         }
@@ -501,6 +568,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
+             * @param provisioningState Gets the provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
+             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
@@ -511,6 +580,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithRouteFilter {
             /**
              * Specifies routeFilter.
+             * @param routeFilter The reference of the RouteFilter resource
+             * @return the next update stage
              */
             Update withRouteFilter(RouteFilterInner routeFilter);
         }
@@ -521,6 +592,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithSecondaryAzurePort {
             /**
              * Specifies secondaryAzurePort.
+             * @param secondaryAzurePort The secondary port
+             * @return the next update stage
              */
             Update withSecondaryAzurePort(String secondaryAzurePort);
         }
@@ -531,6 +604,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithSecondaryPeerAddressPrefix {
             /**
              * Specifies secondaryPeerAddressPrefix.
+             * @param secondaryPeerAddressPrefix The secondary address prefix
+             * @return the next update stage
              */
             Update withSecondaryPeerAddressPrefix(String secondaryPeerAddressPrefix);
         }
@@ -541,6 +616,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithSharedKey {
             /**
              * Specifies sharedKey.
+             * @param sharedKey The shared key
+             * @return the next update stage
              */
             Update withSharedKey(String sharedKey);
         }
@@ -551,6 +628,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithState {
             /**
              * Specifies state.
+             * @param state The peering state. Possible values include: 'Disabled', 'Enabled'
+             * @return the next update stage
              */
             Update withState(ExpressRoutePeeringState state);
         }
@@ -561,6 +640,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithStats {
             /**
              * Specifies stats.
+             * @param stats Gets peering stats
+             * @return the next update stage
              */
             Update withStats(ExpressRouteCircuitStatsInner stats);
         }
@@ -571,6 +652,8 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
         interface WithVlanId {
             /**
              * Specifies vlanId.
+             * @param vlanId The VLAN ID
+             * @return the next update stage
              */
             Update withVlanId(Integer vlanId);
         }

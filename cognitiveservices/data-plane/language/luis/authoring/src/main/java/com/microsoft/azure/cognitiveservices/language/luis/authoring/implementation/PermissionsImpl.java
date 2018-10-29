@@ -48,7 +48,7 @@ public class PermissionsImpl implements Permissions {
     /** The Retrofit service to perform REST calls. */
     private PermissionsService service;
     /** The service client containing this operation class. */
-    private LUISAuthoringAPIImpl client;
+    private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of PermissionsImpl.
@@ -56,7 +56,7 @@ public class PermissionsImpl implements Permissions {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PermissionsImpl(Retrofit retrofit, LUISAuthoringAPIImpl client) {
+    public PermissionsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
         this.service = retrofit.create(PermissionsService.class);
         this.client = client;
     }
@@ -133,13 +133,13 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the UserAccessList object
      */
     public Observable<ServiceResponse<UserAccessList>> listWithServiceResponseAsync(UUID appId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.list(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UserAccessList>>>() {
                 @Override
@@ -215,8 +215,8 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> addWithServiceResponseAsync(UUID appId, AddPermissionsOptionalParameter addOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -235,15 +235,15 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> addWithServiceResponseAsync(UUID appId, String email) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         UserCollaborator userToAdd = new UserCollaborator();
         userToAdd.withEmail(email);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.add(appId, this.client.acceptLanguage(), userToAdd, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -368,8 +368,8 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, DeletePermissionsOptionalParameter deleteOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -388,15 +388,15 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId, String email) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         UserCollaborator userToDelete = new UserCollaborator();
         userToDelete.withEmail(email);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.delete(appId, this.client.acceptLanguage(), userToDelete, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -521,8 +521,8 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, UpdatePermissionsOptionalParameter updateOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -541,8 +541,8 @@ public class PermissionsImpl implements Permissions {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, List<String> emails) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -550,7 +550,7 @@ public class PermissionsImpl implements Permissions {
         Validator.validate(emails);
         CollaboratorsArray collaborators = new CollaboratorsArray();
         collaborators.withEmails(emails);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.update(appId, this.client.acceptLanguage(), collaborators, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override

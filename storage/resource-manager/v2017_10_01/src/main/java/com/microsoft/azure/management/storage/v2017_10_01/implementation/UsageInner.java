@@ -43,7 +43,7 @@ public class UsageInner {
     private UsageName name;
 
     /**
-     * Get the unit value.
+     * Get gets the unit of measurement. Possible values include: 'Count', 'Bytes', 'Seconds', 'Percent', 'CountsPerSecond', 'BytesPerSecond'.
      *
      * @return the unit value
      */
@@ -52,7 +52,7 @@ public class UsageInner {
     }
 
     /**
-     * Get the currentValue value.
+     * Get gets the current count of the allocated resources in the subscription.
      *
      * @return the currentValue value
      */
@@ -61,7 +61,7 @@ public class UsageInner {
     }
 
     /**
-     * Get the limit value.
+     * Get gets the maximum count of the resources that can be allocated in the subscription.
      *
      * @return the limit value
      */
@@ -70,7 +70,7 @@ public class UsageInner {
     }
 
     /**
-     * Get the name value.
+     * Get gets the name of the type of usage.
      *
      * @return the name value
      */

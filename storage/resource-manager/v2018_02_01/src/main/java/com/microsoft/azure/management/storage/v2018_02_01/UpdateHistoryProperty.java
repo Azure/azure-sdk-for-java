@@ -57,7 +57,7 @@ public class UpdateHistoryProperty {
     private String upn;
 
     /**
-     * Get the update value.
+     * Get the ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend. Possible values include: 'put', 'lock', 'extend'.
      *
      * @return the update value
      */
@@ -66,7 +66,7 @@ public class UpdateHistoryProperty {
     }
 
     /**
-     * Get the immutabilityPeriodSinceCreationInDays value.
+     * Get the immutability period for the blobs in the container since the policy creation, in days.
      *
      * @return the immutabilityPeriodSinceCreationInDays value
      */
@@ -75,7 +75,7 @@ public class UpdateHistoryProperty {
     }
 
     /**
-     * Get the timestamp value.
+     * Get returns the date and time the ImmutabilityPolicy was updated.
      *
      * @return the timestamp value
      */
@@ -84,7 +84,7 @@ public class UpdateHistoryProperty {
     }
 
     /**
-     * Get the objectIdentifier value.
+     * Get returns the Object ID of the user who updated the ImmutabilityPolicy.
      *
      * @return the objectIdentifier value
      */
@@ -93,7 +93,7 @@ public class UpdateHistoryProperty {
     }
 
     /**
-     * Get the tenantId value.
+     * Get returns the Tenant ID that issued the token for the user who updated the ImmutabilityPolicy.
      *
      * @return the tenantId value
      */
@@ -102,7 +102,7 @@ public class UpdateHistoryProperty {
     }
 
     /**
-     * Get the upn value.
+     * Get returns the User Principal Name of the user who updated the ImmutabilityPolicy.
      *
      * @return the upn value
      */

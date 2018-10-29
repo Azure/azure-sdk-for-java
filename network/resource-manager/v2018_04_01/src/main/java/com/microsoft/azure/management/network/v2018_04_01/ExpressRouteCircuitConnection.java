@@ -90,6 +90,10 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithPeering {
            /**
             * Specifies resourceGroupName, circuitName, peeringName.
+            * @param resourceGroupName The name of the resource group
+            * @param circuitName The name of the express route circuit
+            * @param peeringName The name of the peering
+            * @return the next definition stage
             */
             WithCreate withExistingPeering(String resourceGroupName, String circuitName, String peeringName);
         }
@@ -100,6 +104,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithAddressPrefix {
             /**
              * Specifies addressPrefix.
+             * @param addressPrefix /29 IP address space to carve out Customer addresses for tunnels
+             * @return the next definition stage
              */
             WithCreate withAddressPrefix(String addressPrefix);
         }
@@ -110,6 +116,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithAuthorizationKey {
             /**
              * Specifies authorizationKey.
+             * @param authorizationKey The authorization key
+             * @return the next definition stage
              */
             WithCreate withAuthorizationKey(String authorizationKey);
         }
@@ -120,6 +128,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithExpressRouteCircuitPeering {
             /**
              * Specifies expressRouteCircuitPeering.
+             * @param expressRouteCircuitPeering Reference to Express Route Circuit Private Peering Resource of the circuit initiating connection
+             * @return the next definition stage
              */
             WithCreate withExpressRouteCircuitPeering(SubResource expressRouteCircuitPeering);
         }
@@ -130,6 +140,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithId {
             /**
              * Specifies id.
+             * @param id Resource ID
+             * @return the next definition stage
              */
             WithCreate withId(String id);
         }
@@ -140,6 +152,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithName {
             /**
              * Specifies name.
+             * @param name Gets name of the resource that is unique within a resource group. This name can be used to access the resource
+             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -150,6 +164,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithPeerExpressRouteCircuitPeering {
             /**
              * Specifies peerExpressRouteCircuitPeering.
+             * @param peerExpressRouteCircuitPeering Reference to Express Route Circuit Private Peering Resource of the peered circuit
+             * @return the next definition stage
              */
             WithCreate withPeerExpressRouteCircuitPeering(SubResource peerExpressRouteCircuitPeering);
         }
@@ -178,6 +194,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithAddressPrefix {
             /**
              * Specifies addressPrefix.
+             * @param addressPrefix /29 IP address space to carve out Customer addresses for tunnels
+             * @return the next update stage
              */
             Update withAddressPrefix(String addressPrefix);
         }
@@ -188,6 +206,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithAuthorizationKey {
             /**
              * Specifies authorizationKey.
+             * @param authorizationKey The authorization key
+             * @return the next update stage
              */
             Update withAuthorizationKey(String authorizationKey);
         }
@@ -198,6 +218,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithExpressRouteCircuitPeering {
             /**
              * Specifies expressRouteCircuitPeering.
+             * @param expressRouteCircuitPeering Reference to Express Route Circuit Private Peering Resource of the circuit initiating connection
+             * @return the next update stage
              */
             Update withExpressRouteCircuitPeering(SubResource expressRouteCircuitPeering);
         }
@@ -208,6 +230,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithId {
             /**
              * Specifies id.
+             * @param id Resource ID
+             * @return the next update stage
              */
             Update withId(String id);
         }
@@ -218,6 +242,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithName {
             /**
              * Specifies name.
+             * @param name Gets name of the resource that is unique within a resource group. This name can be used to access the resource
+             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -228,6 +254,8 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
         interface WithPeerExpressRouteCircuitPeering {
             /**
              * Specifies peerExpressRouteCircuitPeering.
+             * @param peerExpressRouteCircuitPeering Reference to Express Route Circuit Private Peering Resource of the peered circuit
+             * @return the next update stage
              */
             Update withPeerExpressRouteCircuitPeering(SubResource peerExpressRouteCircuitPeering);
         }

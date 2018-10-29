@@ -41,7 +41,7 @@ class BuildStepImpl extends CreatableUpdatableImpl<BuildStep, BuildStepInner, Bu
         this.manager = manager;
         // Set resource name
         this.stepName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.registryName = IdParsingUtils.getValueFromIdByName(inner.id(), "registries");
         this.buildTaskName = IdParsingUtils.getValueFromIdByName(inner.id(), "buildTasks");

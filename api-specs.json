@@ -3,6 +3,10 @@
     "source": "specification/applicationinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "applicationinsights/data-plane": {
+      "source": "specification/applicationinsights/data-plane/readme.md",
+      "args": "--payload-flattening-threshold=1"
+    },
   "appservice/resource-manager": {
     "source": "specification/web/resource-manager/readme.md",
     "args": "--multiapi --fluent",
@@ -36,6 +40,14 @@
   },
   "containerregistry/resource-manager": {
     "source": "specification/containerregistry/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
+  "datalakeanalytics/resource-manager": {
+    "source": "specification/datalake-analytics/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "datalakestore/resource-manager": {
+    "source": "specification/datalake-store/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "dns/resource-manager": {
@@ -49,6 +61,10 @@
   "eventgrid/data-plane": {
     "source": "specification/eventgrid/data-plane/readme.md",
     "args": "--multiapi"
+  },
+  "hdinsight/resource-manager": {
+    "source": "specification/hdinsight/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "iotcentral/resource-manager": {
     "source": "specification/iotcentral/resource-manager/readme.md",
@@ -68,8 +84,16 @@
     "source": "specification/keyvault/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "loganalytics/data-plane": {
+    "source": "specification/operationalinsights/data-plane/readme.md",
+    "args": "--payload-flattening-threshold=1 --override-client-name=LogAnalyticsDataClient"
+  },
   "logic/resource-manager": {
     "source": "specification/logic/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "notificationhubs/resource-manager": {
+    "source": "specification/notificationhubs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "mediaservices/resource-manager": {

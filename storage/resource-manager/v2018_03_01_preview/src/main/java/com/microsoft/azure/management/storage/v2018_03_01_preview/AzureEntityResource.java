@@ -23,7 +23,7 @@ public class AzureEntityResource extends ProxyResource {
     private String etag;
 
     /**
-     * Get the etag value.
+     * Get resource Etag.
      *
      * @return the etag value
      */

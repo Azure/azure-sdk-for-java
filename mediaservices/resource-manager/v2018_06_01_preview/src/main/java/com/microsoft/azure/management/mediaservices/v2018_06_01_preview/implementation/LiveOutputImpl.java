@@ -36,7 +36,7 @@ class LiveOutputImpl extends CreatableUpdatableImpl<LiveOutput, LiveOutputInner,
         this.manager = manager;
         // Set resource name
         this.liveOutputName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "mediaservices");
         this.liveEventName = IdParsingUtils.getValueFromIdByName(inner.id(), "liveEvents");

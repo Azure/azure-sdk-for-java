@@ -64,7 +64,7 @@ public class AppsImpl implements Apps {
     /** The Retrofit service to perform REST calls. */
     private AppsService service;
     /** The service client containing this operation class. */
-    private LUISAuthoringAPIImpl client;
+    private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of AppsImpl.
@@ -72,7 +72,7 @@ public class AppsImpl implements Apps {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public AppsImpl(Retrofit retrofit, LUISAuthoringAPIImpl client) {
+    public AppsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
         this.service = retrofit.create(AppsService.class);
         this.client = client;
     }
@@ -214,14 +214,14 @@ public class AppsImpl implements Apps {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addWithServiceResponseAsync(ApplicationCreateObject applicationCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (applicationCreateObject == null) {
             throw new IllegalArgumentException("Parameter applicationCreateObject is required and cannot be null.");
         }
         Validator.validate(applicationCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.add(applicationCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -293,8 +293,8 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;ApplicationInfoResponse&gt; object
      */
     public Observable<ServiceResponse<List<ApplicationInfoResponse>>> listWithServiceResponseAsync(ListAppsOptionalParameter listOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         final Integer skip = listOptionalParameter != null ? listOptionalParameter.skip() : null;
         final Integer take = listOptionalParameter != null ? listOptionalParameter.take() : null;
@@ -311,10 +311,10 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;ApplicationInfoResponse&gt; object
      */
     public Observable<ServiceResponse<List<ApplicationInfoResponse>>> listWithServiceResponseAsync(Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.list(skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ApplicationInfoResponse>>>>() {
                 @Override
@@ -439,8 +439,8 @@ public class AppsImpl implements Apps {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> importMethodWithServiceResponseAsync(LuisApp luisApp, ImportMethodAppsOptionalParameter importMethodOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (luisApp == null) {
             throw new IllegalArgumentException("Parameter luisApp is required and cannot be null.");
@@ -460,14 +460,14 @@ public class AppsImpl implements Apps {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> importMethodWithServiceResponseAsync(LuisApp luisApp, String appName) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (luisApp == null) {
             throw new IllegalArgumentException("Parameter luisApp is required and cannot be null.");
         }
         Validator.validate(luisApp);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.importMethod(appName, luisApp, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -583,10 +583,10 @@ public class AppsImpl implements Apps {
      * @return the observable to the PersonalAssistantsResponse object
      */
     public Observable<ServiceResponse<PersonalAssistantsResponse>> listCortanaEndpointsWithServiceResponseAsync() {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listCortanaEndpoints(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersonalAssistantsResponse>>>() {
                 @Override
@@ -653,10 +653,10 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<ServiceResponse<List<String>>> listDomainsWithServiceResponseAsync() {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listDomains(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<String>>>>() {
                 @Override
@@ -723,10 +723,10 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<ServiceResponse<List<String>>> listUsageScenariosWithServiceResponseAsync() {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listUsageScenarios(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<String>>>>() {
                 @Override
@@ -793,10 +793,10 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;AvailableCulture&gt; object
      */
     public Observable<ServiceResponse<List<AvailableCulture>>> listSupportedCulturesWithServiceResponseAsync() {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listSupportedCultures(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AvailableCulture>>>>() {
                 @Override
@@ -867,13 +867,13 @@ public class AppsImpl implements Apps {
      * @return the observable to the InputStream object
      */
     public Observable<ServiceResponse<InputStream>> downloadQueryLogsWithServiceResponseAsync(UUID appId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.downloadQueryLogs(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
@@ -944,13 +944,13 @@ public class AppsImpl implements Apps {
      * @return the observable to the ApplicationInfoResponse object
      */
     public Observable<ServiceResponse<ApplicationInfoResponse>> getWithServiceResponseAsync(UUID appId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.get(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationInfoResponse>>>() {
                 @Override
@@ -1025,8 +1025,8 @@ public class AppsImpl implements Apps {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, ApplicationUpdateObject applicationUpdateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1035,7 +1035,7 @@ public class AppsImpl implements Apps {
             throw new IllegalArgumentException("Parameter applicationUpdateObject is required and cannot be null.");
         }
         Validator.validate(applicationUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.update(appId, applicationUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -1106,13 +1106,13 @@ public class AppsImpl implements Apps {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.delete(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -1187,8 +1187,8 @@ public class AppsImpl implements Apps {
      * @return the observable to the ProductionOrStagingEndpointInfo object
      */
     public Observable<ServiceResponse<ProductionOrStagingEndpointInfo>> publishWithServiceResponseAsync(UUID appId, ApplicationPublishObject applicationPublishObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1197,7 +1197,7 @@ public class AppsImpl implements Apps {
             throw new IllegalArgumentException("Parameter applicationPublishObject is required and cannot be null.");
         }
         Validator.validate(applicationPublishObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.publish(appId, applicationPublishObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProductionOrStagingEndpointInfo>>>() {
                 @Override
@@ -1268,13 +1268,13 @@ public class AppsImpl implements Apps {
      * @return the observable to the ApplicationSettings object
      */
     public Observable<ServiceResponse<ApplicationSettings>> getSettingsWithServiceResponseAsync(UUID appId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getSettings(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationSettings>>>() {
                 @Override
@@ -1350,8 +1350,8 @@ public class AppsImpl implements Apps {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateSettingsWithServiceResponseAsync(UUID appId, UpdateSettingsOptionalParameter updateSettingsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1370,15 +1370,15 @@ public class AppsImpl implements Apps {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateSettingsWithServiceResponseAsync(UUID appId, boolean publicParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         ApplicationSettingUpdateObject applicationSettingUpdateObject = new ApplicationSettingUpdateObject();
         applicationSettingUpdateObject.withPublicProperty(publicParameter);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateSettings(appId, this.client.acceptLanguage(), applicationSettingUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -1498,13 +1498,13 @@ public class AppsImpl implements Apps {
      * @return the observable to the PublishSettings object
      */
     public Observable<ServiceResponse<PublishSettings>> getPublishSettingsWithServiceResponseAsync(UUID appId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getPublishSettings(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublishSettings>>>() {
                 @Override
@@ -1579,8 +1579,8 @@ public class AppsImpl implements Apps {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePublishSettingsWithServiceResponseAsync(UUID appId, PublishSettingUpdateObject publishSettingUpdateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1589,7 +1589,7 @@ public class AppsImpl implements Apps {
             throw new IllegalArgumentException("Parameter publishSettingUpdateObject is required and cannot be null.");
         }
         Validator.validate(publishSettingUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updatePublishSettings(appId, publishSettingUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -1660,13 +1660,13 @@ public class AppsImpl implements Apps {
      * @return the observable to the Map&lt;String, String&gt; object
      */
     public Observable<ServiceResponse<Map<String, String>>> listEndpointsWithServiceResponseAsync(UUID appId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listEndpoints(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Map<String, String>>>>() {
                 @Override
@@ -1733,10 +1733,10 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;PrebuiltDomain&gt; object
      */
     public Observable<ServiceResponse<List<PrebuiltDomain>>> listAvailableCustomPrebuiltDomainsWithServiceResponseAsync() {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listAvailableCustomPrebuiltDomains(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PrebuiltDomain>>>>() {
                 @Override
@@ -1807,14 +1807,14 @@ public class AppsImpl implements Apps {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCustomPrebuiltDomainWithServiceResponseAsync(PrebuiltDomainCreateObject prebuiltDomainCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (prebuiltDomainCreateObject == null) {
             throw new IllegalArgumentException("Parameter prebuiltDomainCreateObject is required and cannot be null.");
         }
         Validator.validate(prebuiltDomainCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addCustomPrebuiltDomain(prebuiltDomainCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -1885,13 +1885,13 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;PrebuiltDomain&gt; object
      */
     public Observable<ServiceResponse<List<PrebuiltDomain>>> listAvailableCustomPrebuiltDomainsForCultureWithServiceResponseAsync(String culture) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (culture == null) {
             throw new IllegalArgumentException("Parameter culture is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listAvailableCustomPrebuiltDomainsForCulture(culture, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PrebuiltDomain>>>>() {
                 @Override

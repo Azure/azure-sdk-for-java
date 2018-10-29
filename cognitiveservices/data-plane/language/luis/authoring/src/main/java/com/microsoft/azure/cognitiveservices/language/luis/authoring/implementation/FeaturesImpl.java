@@ -50,7 +50,7 @@ public class FeaturesImpl implements Features {
     /** The Retrofit service to perform REST calls. */
     private FeaturesService service;
     /** The service client containing this operation class. */
-    private LUISAuthoringAPIImpl client;
+    private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of FeaturesImpl.
@@ -58,7 +58,7 @@ public class FeaturesImpl implements Features {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public FeaturesImpl(Retrofit retrofit, LUISAuthoringAPIImpl client) {
+    public FeaturesImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
         this.service = retrofit.create(FeaturesService.class);
         this.client = client;
     }
@@ -151,8 +151,8 @@ public class FeaturesImpl implements Features {
      * @return the observable to the Integer object
      */
     public Observable<ServiceResponse<Integer>> addPhraseListWithServiceResponseAsync(UUID appId, String versionId, PhraselistCreateObject phraselistCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -164,7 +164,7 @@ public class FeaturesImpl implements Features {
             throw new IllegalArgumentException("Parameter phraselistCreateObject is required and cannot be null.");
         }
         Validator.validate(phraselistCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addPhraseList(appId, versionId, phraselistCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
                 @Override
@@ -244,8 +244,8 @@ public class FeaturesImpl implements Features {
      * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
      */
     public Observable<ServiceResponse<List<PhraseListFeatureInfo>>> listPhraseListsWithServiceResponseAsync(UUID appId, String versionId, ListPhraseListsOptionalParameter listPhraseListsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -270,8 +270,8 @@ public class FeaturesImpl implements Features {
      * @return the observable to the List&lt;PhraseListFeatureInfo&gt; object
      */
     public Observable<ServiceResponse<List<PhraseListFeatureInfo>>> listPhraseListsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -279,7 +279,7 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listPhraseLists(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PhraseListFeatureInfo>>>>() {
                 @Override
@@ -422,8 +422,8 @@ public class FeaturesImpl implements Features {
      * @return the observable to the FeaturesResponseObject object
      */
     public Observable<ServiceResponse<FeaturesResponseObject>> listWithServiceResponseAsync(UUID appId, String versionId, ListFeaturesOptionalParameter listOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -448,8 +448,8 @@ public class FeaturesImpl implements Features {
      * @return the observable to the FeaturesResponseObject object
      */
     public Observable<ServiceResponse<FeaturesResponseObject>> listWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -457,7 +457,7 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.list(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FeaturesResponseObject>>>() {
                 @Override
@@ -599,8 +599,8 @@ public class FeaturesImpl implements Features {
      * @return the observable to the PhraseListFeatureInfo object
      */
     public Observable<ServiceResponse<PhraseListFeatureInfo>> getPhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -608,7 +608,7 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getPhraseList(appId, versionId, phraselistId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PhraseListFeatureInfo>>>() {
                 @Override
@@ -692,8 +692,8 @@ public class FeaturesImpl implements Features {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId, UpdatePhraseListOptionalParameter updatePhraseListOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -717,8 +717,8 @@ public class FeaturesImpl implements Features {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId, PhraselistUpdateObject phraselistUpdateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -727,7 +727,7 @@ public class FeaturesImpl implements Features {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
         Validator.validate(phraselistUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updatePhraseList(appId, versionId, phraselistId, phraselistUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -869,8 +869,8 @@ public class FeaturesImpl implements Features {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePhraseListWithServiceResponseAsync(UUID appId, String versionId, int phraselistId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -878,7 +878,7 @@ public class FeaturesImpl implements Features {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deletePhraseList(appId, versionId, phraselistId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override

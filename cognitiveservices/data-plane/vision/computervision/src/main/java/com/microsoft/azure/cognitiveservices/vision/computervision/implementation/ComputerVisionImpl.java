@@ -8,14 +8,12 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.implementation;
 
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
@@ -40,6 +38,7 @@ import com.microsoft.azure.cognitiveservices.vision.computervision.models.Recogn
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextInStreamHeaders;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextOperationResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextRecognitionMode;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.VisualFeatureTypes;
 import com.microsoft.rest.CollectionFormat;
 import com.microsoft.rest.ServiceCallback;
@@ -73,7 +72,7 @@ public class ComputerVisionImpl implements ComputerVision {
     /** The Retrofit service to perform REST calls. */
     private ComputerVisionService service;
     /** The service client containing this operation class. */
-    private ComputerVisionAPIImpl client;
+    private ComputerVisionClientImpl client;
 
     /**
      * Initializes an instance of ComputerVisionImpl.
@@ -81,7 +80,7 @@ public class ComputerVisionImpl implements ComputerVision {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ComputerVisionImpl(Retrofit retrofit, ComputerVisionAPIImpl client) {
+    public ComputerVisionImpl(Retrofit retrofit, ComputerVisionClientImpl client) {
         this.service = retrofit.create(ComputerVisionService.class);
         this.client = client;
     }
@@ -93,7 +92,7 @@ public class ComputerVisionImpl implements ComputerVision {
     interface ComputerVisionService {
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision recognizeTextInStream" })
         @POST("recognizeText")
-        Observable<Response<ResponseBody>> recognizeTextInStream(@Query("detectHandwriting") Boolean detectHandwriting, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> recognizeTextInStream(@Body RequestBody image, @Query("mode") TextRecognitionMode mode, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision analyzeImageByDomainInStream" })
         @POST("models/{model}/analyze")
@@ -126,7 +125,7 @@ public class ComputerVisionImpl implements ComputerVision {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision recognizeText" })
         @POST("recognizeText")
-        Observable<Response<ResponseBody>> recognizeText(@Query("detectHandwriting") Boolean detectHandwriting, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> recognizeText(@Query("mode") TextRecognitionMode mode, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision analyzeImageByDomain" })
         @POST("models/{model}/analyze")
@@ -159,43 +158,42 @@ public class ComputerVisionImpl implements ComputerVision {
 
     }
 
-
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
      * @param image An image stream.
-     * @param recognizeTextInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void recognizeTextInStream(byte[] image, RecognizeTextInStreamOptionalParameter recognizeTextInStreamOptionalParameter) {
-        recognizeTextInStreamWithServiceResponseAsync(image, recognizeTextInStreamOptionalParameter).toBlocking().single().body();
+    public void recognizeTextInStream(byte[] image, TextRecognitionMode mode) {
+        recognizeTextInStreamWithServiceResponseAsync(image, mode).toBlocking().single().body();
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
      * @param image An image stream.
-     * @param recognizeTextInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> recognizeTextInStreamAsync(byte[] image, RecognizeTextInStreamOptionalParameter recognizeTextInStreamOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(recognizeTextInStreamWithServiceResponseAsync(image, recognizeTextInStreamOptionalParameter), serviceCallback);
+    public ServiceFuture<Void> recognizeTextInStreamAsync(byte[] image, TextRecognitionMode mode, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(recognizeTextInStreamWithServiceResponseAsync(image, mode), serviceCallback);
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
      * @param image An image stream.
-     * @param recognizeTextInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> recognizeTextInStreamAsync(byte[] image, RecognizeTextInStreamOptionalParameter recognizeTextInStreamOptionalParameter) {
-        return recognizeTextInStreamWithServiceResponseAsync(image, recognizeTextInStreamOptionalParameter).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>, Void>() {
+    public Observable<Void> recognizeTextInStreamAsync(byte[] image, TextRecognitionMode mode) {
+        return recognizeTextInStreamWithServiceResponseAsync(image, mode).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>, Void>() {
             @Override
             public Void call(ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> response) {
                 return response.body();
@@ -204,43 +202,26 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
      * @param image An image stream.
-     * @param recognizeTextInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> recognizeTextInStreamWithServiceResponseAsync(byte[] image, RecognizeTextInStreamOptionalParameter recognizeTextInStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> recognizeTextInStreamWithServiceResponseAsync(byte[] image, TextRecognitionMode mode) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        final Boolean detectHandwriting = recognizeTextInStreamOptionalParameter != null ? recognizeTextInStreamOptionalParameter.detectHandwriting() : null;
-
-        return recognizeTextInStreamWithServiceResponseAsync(image, detectHandwriting);
-    }
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
-     *
-     * @param image An image stream.
-     * @param detectHandwriting If 'true' is specified, handwriting recognition is performed. If this parameter is set to 'false' or is not specified, printed text recognition is performed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> recognizeTextInStreamWithServiceResponseAsync(byte[] image, Boolean detectHandwriting) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (mode == null) {
+            throw new IllegalArgumentException("Parameter mode is required and cannot be null.");
         }
-        if (image == null) {
-            throw new IllegalArgumentException("Parameter image is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.recognizeTextInStream(detectHandwriting, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.recognizeTextInStream(imageConverted, mode, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> call(Response<ResponseBody> response) {
@@ -259,55 +240,6 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .buildWithHeaders(response, RecognizeTextInStreamHeaders.class);
-    }
-
-    @Override
-    public ComputerVisionRecognizeTextInStreamParameters recognizeTextInStream() {
-        return new ComputerVisionRecognizeTextInStreamParameters(this);
-    }
-
-    /**
-     * Internal class implementing ComputerVisionRecognizeTextInStreamDefinition.
-     */
-    class ComputerVisionRecognizeTextInStreamParameters implements ComputerVisionRecognizeTextInStreamDefinition {
-        private ComputerVisionImpl parent;
-        private byte[] image;
-        private Boolean detectHandwriting;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ComputerVisionRecognizeTextInStreamParameters(ComputerVisionImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ComputerVisionRecognizeTextInStreamParameters withImage(byte[] image) {
-            this.image = image;
-            return this;
-        }
-
-        @Override
-        public ComputerVisionRecognizeTextInStreamParameters withDetectHandwriting(Boolean detectHandwriting) {
-            this.detectHandwriting = detectHandwriting;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        recognizeTextInStreamWithServiceResponseAsync(image, detectHandwriting).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return recognizeTextInStreamWithServiceResponseAsync(image, detectHandwriting).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>, Void>() {
-                @Override
-                public Void call(ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> response) {
-                    return response.body();
-                }
-            });
-        }
     }
 
 
@@ -368,8 +300,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the DomainModelResults object
      */
     public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainInStreamWithServiceResponseAsync(String model, byte[] image, AnalyzeImageByDomainInStreamOptionalParameter analyzeImageByDomainInStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (model == null) {
             throw new IllegalArgumentException("Parameter model is required and cannot be null.");
@@ -387,13 +319,13 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
     public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainInStreamWithServiceResponseAsync(String model, byte[] image, String language) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (model == null) {
             throw new IllegalArgumentException("Parameter model is required and cannot be null.");
@@ -401,7 +333,7 @@ public class ComputerVisionImpl implements ComputerVision {
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.analyzeImageByDomainInStream(model, language, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainModelResults>>>() {
@@ -534,8 +466,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the TagResult object
      */
     public Observable<ServiceResponse<TagResult>> tagImageInStreamWithServiceResponseAsync(byte[] image, TagImageInStreamOptionalParameter tagImageInStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
@@ -549,18 +481,18 @@ public class ComputerVisionImpl implements ComputerVision {
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
      *
      * @param image An image stream.
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
     public Observable<ServiceResponse<TagResult>> tagImageInStreamWithServiceResponseAsync(byte[] image, String language) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.tagImageInStream(language, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TagResult>>>() {
@@ -686,8 +618,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the ImageDescription object
      */
     public Observable<ServiceResponse<ImageDescription>> describeImageInStreamWithServiceResponseAsync(byte[] image, DescribeImageInStreamOptionalParameter describeImageInStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
@@ -703,18 +635,18 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param image An image stream.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
     public Observable<ServiceResponse<ImageDescription>> describeImageInStreamWithServiceResponseAsync(byte[] image, String maxCandidates, String language) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.describeImageInStream(maxCandidates, language, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescription>>>() {
@@ -851,8 +783,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the OcrResult object
      */
     public Observable<ServiceResponse<OcrResult>> recognizePrintedTextInStreamWithServiceResponseAsync(boolean detectOrientation, byte[] image, RecognizePrintedTextInStreamOptionalParameter recognizePrintedTextInStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
@@ -872,13 +804,13 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the OcrResult object
      */
     public Observable<ServiceResponse<OcrResult>> recognizePrintedTextInStreamWithServiceResponseAsync(boolean detectOrientation, byte[] image, OcrLanguages language) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.recognizePrintedTextInStream(language, detectOrientation, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OcrResult>>>() {
@@ -1019,8 +951,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the InputStream object
      */
     public Observable<ServiceResponse<InputStream>> generateThumbnailInStreamWithServiceResponseAsync(int width, int height, byte[] image, GenerateThumbnailInStreamOptionalParameter generateThumbnailInStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
@@ -1041,13 +973,13 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the InputStream object
      */
     public Observable<ServiceResponse<InputStream>> generateThumbnailInStreamWithServiceResponseAsync(int width, int height, byte[] image, Boolean smartCropping) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.generateThumbnailInStream(width, height, imageConverted, smartCropping, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
@@ -1187,8 +1119,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the ImageAnalysis object
      */
     public Observable<ServiceResponse<ImageAnalysis>> analyzeImageInStreamWithServiceResponseAsync(byte[] image, AnalyzeImageInStreamOptionalParameter analyzeImageInStreamOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
@@ -1206,19 +1138,19 @@ public class ComputerVisionImpl implements ComputerVision {
      * @param image An image stream.
      * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
      * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image. Possible values include: 'Celebrities', 'Landmarks'
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
     public Observable<ServiceResponse<ImageAnalysis>> analyzeImageInStreamWithServiceResponseAsync(byte[] image, List<VisualFeatureTypes> visualFeatures, String details, String language) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (image == null) {
             throw new IllegalArgumentException("Parameter image is required and cannot be null.");
         }
         Validator.validate(visualFeatures);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String visualFeaturesConverted = this.client.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.analyzeImageInStream(visualFeaturesConverted, details, language, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
@@ -1308,7 +1240,7 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
      *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Handwritten Text'
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1321,7 +1253,7 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
      *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Handwritten Text'
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1333,7 +1265,7 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
      *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Handwritten Text'
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TextOperationResult object
      */
@@ -1349,18 +1281,18 @@ public class ComputerVisionImpl implements ComputerVision {
     /**
      * This interface is used for getting text operation result. The URL to this interface should be retrieved from 'Operation-Location' field returned from Recognize Text interface.
      *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Handwritten Text'
+     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TextOperationResult object
      */
     public Observable<ServiceResponse<TextOperationResult>> getTextOperationResultWithServiceResponseAsync(String operationId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (operationId == null) {
             throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getTextOperationResult(operationId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TextOperationResult>>>() {
                 @Override
@@ -1382,43 +1314,42 @@ public class ComputerVisionImpl implements ComputerVision {
                 .build(response);
     }
 
-
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image
-     * @param recognizeTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void recognizeText(String url, RecognizeTextOptionalParameter recognizeTextOptionalParameter) {
-        recognizeTextWithServiceResponseAsync(url, recognizeTextOptionalParameter).toBlocking().single().body();
+    public void recognizeText(String url, TextRecognitionMode mode) {
+        recognizeTextWithServiceResponseAsync(url, mode).toBlocking().single().body();
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image
-     * @param recognizeTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> recognizeTextAsync(String url, RecognizeTextOptionalParameter recognizeTextOptionalParameter, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(recognizeTextWithServiceResponseAsync(url, recognizeTextOptionalParameter), serviceCallback);
+    public ServiceFuture<Void> recognizeTextAsync(String url, TextRecognitionMode mode, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(recognizeTextWithServiceResponseAsync(url, mode), serviceCallback);
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image
-     * @param recognizeTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> recognizeTextAsync(String url, RecognizeTextOptionalParameter recognizeTextOptionalParameter) {
-        return recognizeTextWithServiceResponseAsync(url, recognizeTextOptionalParameter).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>, Void>() {
+    public Observable<Void> recognizeTextAsync(String url, TextRecognitionMode mode) {
+        return recognizeTextWithServiceResponseAsync(url, mode).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>, Void>() {
             @Override
             public Void call(ServiceResponseWithHeaders<Void, RecognizeTextHeaders> response) {
                 return response.body();
@@ -1427,44 +1358,27 @@ public class ComputerVisionImpl implements ComputerVision {
     }
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
+     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image
-     * @param recognizeTextOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>> recognizeTextWithServiceResponseAsync(String url, RecognizeTextOptionalParameter recognizeTextOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>> recognizeTextWithServiceResponseAsync(String url, TextRecognitionMode mode) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        if (url == null) {
-            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
-        }
-        final Boolean detectHandwriting = recognizeTextOptionalParameter != null ? recognizeTextOptionalParameter.detectHandwriting() : null;
-
-        return recognizeTextWithServiceResponseAsync(url, detectHandwriting);
-    }
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Handwritten Text Operation Result operation.
-     *
-     * @param url Publicly reachable URL of an image
-     * @param detectHandwriting If 'true' is specified, handwriting recognition is performed. If this parameter is set to 'false' or is not specified, printed text recognition is performed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>> recognizeTextWithServiceResponseAsync(String url, Boolean detectHandwriting) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (mode == null) {
+            throw new IllegalArgumentException("Parameter mode is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.recognizeText(detectHandwriting, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.recognizeText(mode, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>> call(Response<ResponseBody> response) {
@@ -1483,55 +1397,6 @@ public class ComputerVisionImpl implements ComputerVision {
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .buildWithHeaders(response, RecognizeTextHeaders.class);
-    }
-
-    @Override
-    public ComputerVisionRecognizeTextParameters recognizeText() {
-        return new ComputerVisionRecognizeTextParameters(this);
-    }
-
-    /**
-     * Internal class implementing ComputerVisionRecognizeTextDefinition.
-     */
-    class ComputerVisionRecognizeTextParameters implements ComputerVisionRecognizeTextDefinition {
-        private ComputerVisionImpl parent;
-        private String url;
-        private Boolean detectHandwriting;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ComputerVisionRecognizeTextParameters(ComputerVisionImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ComputerVisionRecognizeTextParameters withUrl(String url) {
-            this.url = url;
-            return this;
-        }
-
-        @Override
-        public ComputerVisionRecognizeTextParameters withDetectHandwriting(Boolean detectHandwriting) {
-            this.detectHandwriting = detectHandwriting;
-            return this;
-        }
-
-        @Override
-        public void execute() {
-        recognizeTextWithServiceResponseAsync(url, detectHandwriting).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<Void> executeAsync() {
-            return recognizeTextWithServiceResponseAsync(url, detectHandwriting).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>, Void>() {
-                @Override
-                public Void call(ServiceResponseWithHeaders<Void, RecognizeTextHeaders> response) {
-                    return response.body();
-                }
-            });
-        }
     }
 
 
@@ -1592,8 +1457,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the DomainModelResults object
      */
     public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainWithServiceResponseAsync(String model, String url, AnalyzeImageByDomainOptionalParameter analyzeImageByDomainOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (model == null) {
             throw new IllegalArgumentException("Parameter model is required and cannot be null.");
@@ -1611,13 +1476,13 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param model The domain-specific content to recognize.
      * @param url Publicly reachable URL of an image
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
     public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainWithServiceResponseAsync(String model, String url, String language) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (model == null) {
             throw new IllegalArgumentException("Parameter model is required and cannot be null.");
@@ -1627,7 +1492,7 @@ public class ComputerVisionImpl implements ComputerVision {
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.analyzeImageByDomain(model, language, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainModelResults>>>() {
                 @Override
@@ -1759,8 +1624,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the TagResult object
      */
     public Observable<ServiceResponse<TagResult>> tagImageWithServiceResponseAsync(String url, TagImageOptionalParameter tagImageOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
@@ -1774,20 +1639,20 @@ public class ComputerVisionImpl implements ComputerVision {
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
      *
      * @param url Publicly reachable URL of an image
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TagResult object
      */
     public Observable<ServiceResponse<TagResult>> tagImageWithServiceResponseAsync(String url, String language) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.tagImage(language, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TagResult>>>() {
                 @Override
@@ -1912,8 +1777,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the ImageDescription object
      */
     public Observable<ServiceResponse<ImageDescription>> describeImageWithServiceResponseAsync(String url, DescribeImageOptionalParameter describeImageOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
@@ -1929,20 +1794,20 @@ public class ComputerVisionImpl implements ComputerVision {
      *
      * @param url Publicly reachable URL of an image
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
     public Observable<ServiceResponse<ImageDescription>> describeImageWithServiceResponseAsync(String url, String maxCandidates, String language) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.describeImage(maxCandidates, language, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescription>>>() {
                 @Override
@@ -2078,8 +1943,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the OcrResult object
      */
     public Observable<ServiceResponse<OcrResult>> recognizePrintedTextWithServiceResponseAsync(boolean detectOrientation, String url, RecognizePrintedTextOptionalParameter recognizePrintedTextOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
@@ -2099,15 +1964,15 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the OcrResult object
      */
     public Observable<ServiceResponse<OcrResult>> recognizePrintedTextWithServiceResponseAsync(boolean detectOrientation, String url, OcrLanguages language) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.recognizePrintedText(detectOrientation, language, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OcrResult>>>() {
                 @Override
@@ -2247,8 +2112,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the InputStream object
      */
     public Observable<ServiceResponse<InputStream>> generateThumbnailWithServiceResponseAsync(int width, int height, String url, GenerateThumbnailOptionalParameter generateThumbnailOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
@@ -2269,15 +2134,15 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the InputStream object
      */
     public Observable<ServiceResponse<InputStream>> generateThumbnailWithServiceResponseAsync(int width, int height, String url, Boolean smartCropping) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.generateThumbnail(width, height, smartCropping, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
@@ -2416,8 +2281,8 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the ImageAnalysis object
      */
     public Observable<ServiceResponse<ImageAnalysis>> analyzeImageWithServiceResponseAsync(String url, AnalyzeImageOptionalParameter analyzeImageOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
@@ -2435,13 +2300,13 @@ public class ComputerVisionImpl implements ComputerVision {
      * @param url Publicly reachable URL of an image
      * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
      * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.ja - Japanese pt - Portuguese zh - Simplified Chinese. Possible values include: 'en', 'ja', 'pt', 'zh'
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
     public Observable<ServiceResponse<ImageAnalysis>> analyzeImageWithServiceResponseAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (url == null) {
             throw new IllegalArgumentException("Parameter url is required and cannot be null.");
@@ -2450,7 +2315,7 @@ public class ComputerVisionImpl implements ComputerVision {
         Validator.validate(details);
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String visualFeaturesConverted = this.client.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);
         String detailsConverted = this.client.serializerAdapter().serializeList(details, CollectionFormat.CSV);
         return service.analyzeImage(visualFeaturesConverted, detailsConverted, language, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
@@ -2582,10 +2447,10 @@ public class ComputerVisionImpl implements ComputerVision {
      * @return the observable to the ListModelsResult object
      */
     public Observable<ServiceResponse<ListModelsResult>> listModelsWithServiceResponseAsync() {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listModels(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ListModelsResult>>>() {
                 @Override

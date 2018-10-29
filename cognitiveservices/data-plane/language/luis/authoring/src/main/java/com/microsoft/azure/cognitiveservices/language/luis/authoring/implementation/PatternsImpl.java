@@ -48,7 +48,7 @@ public class PatternsImpl implements Patterns {
     /** The Retrofit service to perform REST calls. */
     private PatternsService service;
     /** The service client containing this operation class. */
-    private LUISAuthoringAPIImpl client;
+    private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of PatternsImpl.
@@ -56,7 +56,7 @@ public class PatternsImpl implements Patterns {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PatternsImpl(Retrofit retrofit, LUISAuthoringAPIImpl client) {
+    public PatternsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
         this.service = retrofit.create(PatternsService.class);
         this.client = client;
     }
@@ -157,8 +157,8 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the PatternRuleInfo object
      */
     public Observable<ServiceResponse<PatternRuleInfo>> addPatternWithServiceResponseAsync(UUID appId, String versionId, PatternRuleCreateObject pattern) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -170,7 +170,7 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter pattern is required and cannot be null.");
         }
         Validator.validate(pattern);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addPattern(appId, versionId, pattern, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PatternRuleInfo>>>() {
                 @Override
@@ -250,8 +250,8 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> getPatternsWithServiceResponseAsync(UUID appId, String versionId, GetPatternsOptionalParameter getPatternsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -276,8 +276,8 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> getPatternsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -285,7 +285,7 @@ public class PatternsImpl implements Patterns {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getPatterns(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
                 @Override
@@ -427,8 +427,8 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> updatePatternsWithServiceResponseAsync(UUID appId, String versionId, List<PatternRuleUpdateObject> patterns) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -440,7 +440,7 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter patterns is required and cannot be null.");
         }
         Validator.validate(patterns);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updatePatterns(appId, versionId, patterns, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
                 @Override
@@ -519,8 +519,8 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> batchAddPatternsWithServiceResponseAsync(UUID appId, String versionId, List<PatternRuleCreateObject> patterns) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -532,7 +532,7 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter patterns is required and cannot be null.");
         }
         Validator.validate(patterns);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.batchAddPatterns(appId, versionId, patterns, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
                 @Override
@@ -611,8 +611,8 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePatternsWithServiceResponseAsync(UUID appId, String versionId, List<UUID> patternIds) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -624,7 +624,7 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter patternIds is required and cannot be null.");
         }
         Validator.validate(patternIds);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deletePatterns(appId, versionId, patternIds, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -707,8 +707,8 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the PatternRuleInfo object
      */
     public Observable<ServiceResponse<PatternRuleInfo>> updatePatternWithServiceResponseAsync(UUID appId, String versionId, UUID patternId, PatternRuleUpdateObject pattern) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -723,7 +723,7 @@ public class PatternsImpl implements Patterns {
             throw new IllegalArgumentException("Parameter pattern is required and cannot be null.");
         }
         Validator.validate(pattern);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updatePattern(appId, versionId, patternId, pattern, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PatternRuleInfo>>>() {
                 @Override
@@ -802,8 +802,8 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePatternWithServiceResponseAsync(UUID appId, String versionId, UUID patternId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -814,7 +814,7 @@ public class PatternsImpl implements Patterns {
         if (patternId == null) {
             throw new IllegalArgumentException("Parameter patternId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deletePattern(appId, versionId, patternId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -898,8 +898,8 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> getIntentPatternsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, GetIntentPatternsOptionalParameter getIntentPatternsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -928,8 +928,8 @@ public class PatternsImpl implements Patterns {
      * @return the observable to the List&lt;PatternRuleInfo&gt; object
      */
     public Observable<ServiceResponse<List<PatternRuleInfo>>> getIntentPatternsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -940,7 +940,7 @@ public class PatternsImpl implements Patterns {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getIntentPatterns(appId, versionId, intentId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternRuleInfo>>>>() {
                 @Override
