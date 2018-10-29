@@ -14,7 +14,7 @@
 
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
-    <version>10.1.0</version>
+    <version>10.2.0</version>
 
     <name>Azure Storage Blob</name>
     <description>The Azure Storage Java Blob library.</description>
