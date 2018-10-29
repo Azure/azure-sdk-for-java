@@ -13,12 +13,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Input values.
  */
-public class OperationInputs {
+public class SubdomainAvailabilityInputs {
     /**
-     * The name of the IoT Central application instance to check.
+     * The subdomain of the IoT Central application instance to check.
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    @JsonProperty(value = "subdomain", required = true)
+    private String subdomain;
 
     /**
      * The type of the IoT Central resource to query.
@@ -27,22 +27,22 @@ public class OperationInputs {
     private String type;
 
     /**
-     * Get the name of the IoT Central application instance to check.
+     * Get the subdomain of the IoT Central application instance to check.
      *
-     * @return the name value
+     * @return the subdomain value
      */
-    public String name() {
-        return this.name;
+    public String subdomain() {
+        return this.subdomain;
     }
 
     /**
-     * Set the name of the IoT Central application instance to check.
+     * Set the subdomain of the IoT Central application instance to check.
      *
-     * @param name the name value to set
-     * @return the OperationInputs object itself.
+     * @param subdomain the subdomain value to set
+     * @return the SubdomainAvailabilityInputs object itself.
      */
-    public OperationInputs withName(String name) {
-        this.name = name;
+    public SubdomainAvailabilityInputs withSubdomain(String subdomain) {
+        this.subdomain = subdomain;
         return this;
     }
 
@@ -59,9 +59,9 @@ public class OperationInputs {
      * Set the type of the IoT Central resource to query.
      *
      * @param type the type value to set
-     * @return the OperationInputs object itself.
+     * @return the SubdomainAvailabilityInputs object itself.
      */
-    public OperationInputs withType(String type) {
+    public SubdomainAvailabilityInputs withType(String type) {
         this.type = type;
         return this;
     }

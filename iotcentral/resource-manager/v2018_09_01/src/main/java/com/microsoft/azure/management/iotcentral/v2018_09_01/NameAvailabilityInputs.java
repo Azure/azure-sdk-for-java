@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Input values.
  */
-public class OperationInputs {
+public class NameAvailabilityInputs {
     /**
      * The name of the IoT Central application instance to check.
      */
@@ -39,9 +39,9 @@ public class OperationInputs {
      * Set the name of the IoT Central application instance to check.
      *
      * @param name the name value to set
-     * @return the OperationInputs object itself.
+     * @return the NameAvailabilityInputs object itself.
      */
-    public OperationInputs withName(String name) {
+    public NameAvailabilityInputs withName(String name) {
         this.name = name;
         return this;
     }
@@ -59,9 +59,9 @@ public class OperationInputs {
      * Set the type of the IoT Central resource to query.
      *
      * @param type the type value to set
-     * @return the OperationInputs object itself.
+     * @return the NameAvailabilityInputs object itself.
      */
-    public OperationInputs withType(String type) {
+    public NameAvailabilityInputs withType(String type) {
         this.type = type;
         return this;
     }
