@@ -51,18 +51,6 @@ public class StorageManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** The API version to use for this operation. */
-    private String apiVersion;
-
-    /**
-     * Gets The API version to use for this operation.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
-    }
-
     /** Gets or sets the preferred language for the response. */
     private String acceptLanguage;
 
@@ -185,6 +173,19 @@ public class StorageManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The BlobServicesInner object to access its operations.
+     */
+    private BlobServicesInner blobServices;
+
+    /**
+     * Gets the BlobServicesInner object to access its operations.
+     * @return the BlobServicesInner object.
+     */
+    public BlobServicesInner blobServices() {
+        return this.blobServices;
+    }
+
+    /**
      * The BlobContainersInner object to access its operations.
      */
     private BlobContainersInner blobContainers;
@@ -195,6 +196,19 @@ public class StorageManagementClientImpl extends AzureServiceClient {
      */
     public BlobContainersInner blobContainers() {
         return this.blobContainers;
+    }
+
+    /**
+     * The ManagementPoliciesInner object to access its operations.
+     */
+    private ManagementPoliciesInner managementPolicies;
+
+    /**
+     * Gets the ManagementPoliciesInner object to access its operations.
+     * @return the ManagementPoliciesInner object.
+     */
+    public ManagementPoliciesInner managementPolicies() {
+        return this.managementPolicies;
     }
 
     /**
@@ -228,7 +242,6 @@ public class StorageManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2018-07-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -236,7 +249,9 @@ public class StorageManagementClientImpl extends AzureServiceClient {
         this.skus = new SkusInner(restClient().retrofit(), this);
         this.storageAccounts = new StorageAccountsInner(restClient().retrofit(), this);
         this.usages = new UsagesInner(restClient().retrofit(), this);
+        this.blobServices = new BlobServicesInner(restClient().retrofit(), this);
         this.blobContainers = new BlobContainersInner(restClient().retrofit(), this);
+        this.managementPolicies = new ManagementPoliciesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -247,6 +262,6 @@ public class StorageManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "StorageManagementClient", "2018-07-01");
+        return String.format("%s (%s)", super.userAgent(), "StorageManagementClient");
     }
 }
