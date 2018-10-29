@@ -10,6 +10,7 @@ package com.microsoft.azure.graphrbac.implementation;
 
 import java.util.List;
 import com.microsoft.azure.graphrbac.AppRole;
+import com.microsoft.azure.graphrbac.RequiredResourceAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -74,6 +75,15 @@ public class ApplicationInner extends DirectoryObjectInner {
      */
     @JsonProperty(value = "oauth2AllowImplicitFlow")
     private Boolean oauth2AllowImplicitFlow;
+
+    /**
+     * Specifies resources that this application requires access to and the set
+     * of OAuth permission scopes and application roles that it needs under
+     * each of those resources. This pre-configuration of required resource
+     * access drives the consent experience.
+     */
+    @JsonProperty(value = "requiredResourceAccess")
+    private List<RequiredResourceAccess> requiredResourceAccess;
 
     /**
      * Get the application ID.
@@ -252,6 +262,26 @@ public class ApplicationInner extends DirectoryObjectInner {
      */
     public ApplicationInner withOauth2AllowImplicitFlow(Boolean oauth2AllowImplicitFlow) {
         this.oauth2AllowImplicitFlow = oauth2AllowImplicitFlow;
+        return this;
+    }
+
+    /**
+     * Get specifies resources that this application requires access to and the set of OAuth permission scopes and application roles that it needs under each of those resources. This pre-configuration of required resource access drives the consent experience.
+     *
+     * @return the requiredResourceAccess value
+     */
+    public List<RequiredResourceAccess> requiredResourceAccess() {
+        return this.requiredResourceAccess;
+    }
+
+    /**
+     * Set specifies resources that this application requires access to and the set of OAuth permission scopes and application roles that it needs under each of those resources. This pre-configuration of required resource access drives the consent experience.
+     *
+     * @param requiredResourceAccess the requiredResourceAccess value to set
+     * @return the ApplicationInner object itself.
+     */
+    public ApplicationInner withRequiredResourceAccess(List<RequiredResourceAccess> requiredResourceAccess) {
+        this.requiredResourceAccess = requiredResourceAccess;
         return this;
     }
 

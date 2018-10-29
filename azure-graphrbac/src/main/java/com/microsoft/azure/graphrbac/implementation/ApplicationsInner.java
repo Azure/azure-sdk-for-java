@@ -95,6 +95,10 @@ public class ApplicationsInner {
         @POST("{tenantID}/applications/{applicationObjectId}/$links/owners")
         Observable<Response<ResponseBody>> addOwner(@Path("applicationObjectId") String applicationObjectId, @Path("tenantID") String tenantID, @Body AddOwnerParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Applications removeOwner" })
+        @HTTP(path = "{tenantID}/applications/{applicationObjectId}/$links/owners/{ownerObjectId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> removeOwner(@Path("applicationObjectId") String applicationObjectId, @Path("ownerObjectId") String ownerObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Applications listKeyCredentials" })
         @GET("{tenantID}/applications/{applicationObjectId}/keyCredentials")
         Observable<Response<ResponseBody>> listKeyCredentials(@Path("applicationObjectId") String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -857,6 +861,91 @@ public class ApplicationsInner {
     }
 
     private ServiceResponse<Void> addOwnerDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Remove a member from owners.
+     *
+     * @param applicationObjectId The object ID of the application from which to remove the owner.
+     * @param ownerObjectId Owner object id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void removeOwner(String applicationObjectId, String ownerObjectId) {
+        removeOwnerWithServiceResponseAsync(applicationObjectId, ownerObjectId).toBlocking().single().body();
+    }
+
+    /**
+     * Remove a member from owners.
+     *
+     * @param applicationObjectId The object ID of the application from which to remove the owner.
+     * @param ownerObjectId Owner object id
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> removeOwnerAsync(String applicationObjectId, String ownerObjectId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(removeOwnerWithServiceResponseAsync(applicationObjectId, ownerObjectId), serviceCallback);
+    }
+
+    /**
+     * Remove a member from owners.
+     *
+     * @param applicationObjectId The object ID of the application from which to remove the owner.
+     * @param ownerObjectId Owner object id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> removeOwnerAsync(String applicationObjectId, String ownerObjectId) {
+        return removeOwnerWithServiceResponseAsync(applicationObjectId, ownerObjectId).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Remove a member from owners.
+     *
+     * @param applicationObjectId The object ID of the application from which to remove the owner.
+     * @param ownerObjectId Owner object id
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> removeOwnerWithServiceResponseAsync(String applicationObjectId, String ownerObjectId) {
+        if (applicationObjectId == null) {
+            throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
+        }
+        if (ownerObjectId == null) {
+            throw new IllegalArgumentException("Parameter ownerObjectId is required and cannot be null.");
+        }
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.removeOwner(applicationObjectId, ownerObjectId, this.client.tenantID(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = removeOwnerDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> removeOwnerDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(GraphErrorException.class)
