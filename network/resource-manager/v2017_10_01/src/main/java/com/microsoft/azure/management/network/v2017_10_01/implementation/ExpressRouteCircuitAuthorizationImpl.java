@@ -32,7 +32,7 @@ class ExpressRouteCircuitAuthorizationImpl extends CreatableUpdatableImpl<Expres
         this.manager = manager;
         // Set resource name
         this.authorizationName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.circuitName = IdParsingUtils.getValueFromIdByName(inner.id(), "expressRouteCircuits");
         this.authorizationName = IdParsingUtils.getValueFromIdByName(inner.id(), "authorizations");

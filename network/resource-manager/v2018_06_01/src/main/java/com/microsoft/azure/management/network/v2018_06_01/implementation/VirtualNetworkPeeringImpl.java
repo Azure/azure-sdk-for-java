@@ -34,7 +34,7 @@ class VirtualNetworkPeeringImpl extends CreatableUpdatableImpl<VirtualNetworkPee
         this.manager = manager;
         // Set resource name
         this.virtualNetworkPeeringName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.virtualNetworkName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworks");
         this.virtualNetworkPeeringName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkPeerings");

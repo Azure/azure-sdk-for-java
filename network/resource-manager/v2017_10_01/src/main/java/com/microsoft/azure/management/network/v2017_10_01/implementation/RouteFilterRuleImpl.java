@@ -38,7 +38,7 @@ class RouteFilterRuleImpl extends CreatableUpdatableImpl<RouteFilterRule, RouteF
         this.manager = manager;
         // Set resource name
         this.ruleName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.routeFilterName = IdParsingUtils.getValueFromIdByName(inner.id(), "routeFilters");
         this.ruleName = IdParsingUtils.getValueFromIdByName(inner.id(), "routeFilterRules");
