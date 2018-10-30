@@ -10,35 +10,33 @@ package com.microsoft.azure.management.iotcentral.v2018_09_01;
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Error details.
+ * Details of error response.
  */
-@JsonFlatten
-public class ErrorDetails {
+public class ErrorResponseBody {
     /**
      * The error code.
      */
-    @JsonProperty(value = "error.code", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /**
      * The error message.
      */
-    @JsonProperty(value = "error.message", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
      * The target of the particular error.
      */
-    @JsonProperty(value = "error.target", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /**
      * A list of additional details about the error.
      */
-    @JsonProperty(value = "error.details")
+    @JsonProperty(value = "details")
     private List<ErrorResponseBody> details;
 
     /**
@@ -81,9 +79,9 @@ public class ErrorDetails {
      * Set a list of additional details about the error.
      *
      * @param details the details value to set
-     * @return the ErrorDetails object itself.
+     * @return the ErrorResponseBody object itself.
      */
-    public ErrorDetails withDetails(List<ErrorResponseBody> details) {
+    public ErrorResponseBody withDetails(List<ErrorResponseBody> details) {
         this.details = details;
         return this;
     }
