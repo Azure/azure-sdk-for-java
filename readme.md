@@ -44,7 +44,7 @@ the required versions of Apache Qpid Proton-J, and the cryptography library BCPK
    	<dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId> 
-   		<version>1.2.0</version>
+   		<version>1.2.1</version>
    	</dependency>
 ```
 

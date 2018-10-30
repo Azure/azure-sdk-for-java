@@ -81,7 +81,21 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
         // all until "last-1" deliveries will be partial
         // reactor will raise onDelivery event for all of these - we only need the last one
         if (!delivery.isPartial()) {
-            this.amqpReceiver.onReceiveComplete(delivery);
+
+            // One of our customers hit an issue - where duplicate 'Delivery' events are raised to Reactor in proton-j layer
+            // While processing the duplicate event - reactor hits an IllegalStateException in proton-j layer
+            // before we fix proton-j - this work around ensures that we ignore the duplicate Delivery event
+            if (delivery.isSettled()) {
+                if (TRACE_LOGGER.isWarnEnabled()) {
+                    TRACE_LOGGER.warn(
+                            receiveLink != null
+                                    ? String.format(Locale.US, "linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], remoteCondition[%s], delivery.isSettled[%s]",
+                                        receiveLink.getName(), receiveLink.getCredit(), receiveLink.getRemoteCredit(), receiveLink.getRemoteCondition(), delivery.isSettled())
+                                    : String.format(Locale.US, "delivery.isSettled[%s]", delivery.isSettled()));
+                }
+            } else {
+                this.amqpReceiver.onReceiveComplete(delivery);
+            }
         }
 
         if (TRACE_LOGGER.isTraceEnabled() && receiveLink != null) {
