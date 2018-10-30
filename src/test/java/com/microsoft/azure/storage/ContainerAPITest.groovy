@@ -1076,6 +1076,8 @@ class ContainerAPITest extends APISpec {
         dir.create(null, null, null, null).blockingGet()
         AppendBlobURL subBlob = cu.createAppendBlobURL("b/c")
         subBlob.create(null, null, null, null).blockingGet()
+        blob = cu.createAppendBlobURL("d")
+        blob.create().blockingGet()
 
         when:
         ContainerListBlobHierarchySegmentResponse response =
