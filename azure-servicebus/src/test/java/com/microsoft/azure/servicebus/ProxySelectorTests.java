@@ -45,7 +45,6 @@ public class ProxySelectorTests {
         try {
             QueueClient sendClient = new QueueClient(connectionStringBuilder, ReceiveMode.PEEKLOCK);
         } catch (ServiceBusException ex) {
-            // todo? Better assert statement?
             Assert.assertEquals(
                "Error{condition=amqp:connection:framing-error, description='connection aborted', info=null}",
                 ex.getLocalizedMessage());

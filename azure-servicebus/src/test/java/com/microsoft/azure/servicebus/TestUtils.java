@@ -50,13 +50,9 @@ public class TestUtils {
 
     public static String getNamespaceConnectionString() { return namespaceConnectionString; }
 
-    public static int getProxyPort() { return proxyPort; }
-
-    public static Boolean isProxyEnabled() { return !StringUtil.isNullOrEmpty(proxyHostName) && proxyPort != 0; }
-
     public static ClientSettings getClientSettings() {
         if (runWithProxy) {
-            setDefaultProxySelector();
+            setUpDefaultProxySelector();
         }
         return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
     }
@@ -67,8 +63,7 @@ public class TestUtils {
         return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
     }
 
-    private static void setDefaultProxySelector() {
-	    // TODO: this needs a less confusing name (not "set") as it doesn't allow the caller to set the default
+    private static void setUpDefaultProxySelector() {
         ProxySelector.setDefault(new ProxySelector() {
             @Override
             public List<Proxy> select(URI uri) {

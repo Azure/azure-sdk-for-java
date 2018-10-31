@@ -126,7 +126,7 @@ public class ProxyConnectionHandler extends WebSocketConnectionHandler {
         final String usernamePasswordPair = proxyUserName + ":" + proxyPassword;
         proxyAuthorizationHeader.put(
                 "Proxy-Authorization",
-                "Basic" + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes()));
+                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes()));
         return proxyAuthorizationHeader;
     }
 
