@@ -82,12 +82,6 @@ public class ApplicationProperties {
     private String marketplaceIdentifier;
 
     /**
-     * The additional properties for application.
-     */
-    @JsonProperty(value = "additionalProperties")
-    private String additionalProperties;
-
-    /**
      * Get the list of roles in the cluster.
      *
      * @return the computeProfile value
@@ -261,26 +255,6 @@ public class ApplicationProperties {
      */
     public String marketplaceIdentifier() {
         return this.marketplaceIdentifier;
-    }
-
-    /**
-     * Get the additional properties for application.
-     *
-     * @return the additionalProperties value
-     */
-    public String additionalProperties() {
-        return this.additionalProperties;
-    }
-
-    /**
-     * Set the additional properties for application.
-     *
-     * @param additionalProperties the additionalProperties value to set
-     * @return the ApplicationProperties object itself.
-     */
-    public ApplicationProperties withAdditionalProperties(String additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
     }
 
 }
