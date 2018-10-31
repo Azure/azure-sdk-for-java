@@ -16,6 +16,8 @@
 package com.microsoft.azure.storage.blob
 
 import com.microsoft.azure.storage.APISpec
+import com.microsoft.rest.v2.http.HttpHeaders
+import com.microsoft.rest.v2.http.HttpMethod
 import com.microsoft.rest.v2.http.HttpPipelineLogLevel
 import com.microsoft.rest.v2.http.HttpPipelineLogger
 import com.microsoft.rest.v2.http.HttpRequest
@@ -55,7 +57,7 @@ class LoggingTest extends APISpec {
         def policy = factory.create(mockDownstream, requestPolicyOptions)
 
         when:
-        policy.sendAsync(new HttpRequest(null, null, null, null)).blockingGet()
+        policy.sendAsync(getMockRequest()).blockingGet()
 
         then:
         /*
@@ -106,7 +108,7 @@ class LoggingTest extends APISpec {
         def policy = factory.create(mockDownstream, requestPolicyOptions)
 
         when:
-        policy.sendAsync(new HttpRequest(null, null, null, null)).blockingGet()
+        policy.sendAsync(getMockRequest()).blockingGet()
 
         then:
         logCount * logger.log(HttpPipelineLogLevel.WARNING, _, _) >>
@@ -138,7 +140,7 @@ class LoggingTest extends APISpec {
         def policy = factory.create(mockDownstream, requestPolicyOptions)
 
         when:
-        policy.sendAsync(new HttpRequest(null, null, null, null)).blockingGet()
+        policy.sendAsync(getMockRequest()).blockingGet()
 
         then:
         1 * logger.log(HttpPipelineLogLevel.ERROR, _, _) >>
@@ -172,7 +174,7 @@ class LoggingTest extends APISpec {
         def policy = factory.create(mockDownstream, requestPolicyOptions)
 
         when:
-        policy.sendAsync(new HttpRequest(null, null, null, null)).blockingGet()
+        policy.sendAsync(getMockRequest()).blockingGet()
 
         then:
         /*
@@ -211,7 +213,7 @@ class LoggingTest extends APISpec {
         def policy = factory.create(mockDownstream, requestPolicyOptions)
 
         when:
-        policy.sendAsync(new HttpRequest(null, null, null, null)).blockingGet()
+        policy.sendAsync(getMockRequest()).blockingGet()
 
         then:
         thrown(RuntimeException) // Because we return this from the downstream, it will be thrown when we blockingGet.
@@ -243,5 +245,138 @@ class LoggingTest extends APISpec {
 
         then:
         2 * logger.log(*_)
+    }
+
+    def "Shared key logs"() {
+        setup:
+        def factory = new LoggingFactory(new LoggingOptions(2000))
+
+        def logger = getMockLogger(HttpPipelineLogLevel.INFO)
+        def requestPolicyOptions = new RequestPolicyOptions(logger)
+
+        def mockDownstream = Mock(RequestPolicy) {
+            sendAsync(_) >> Single.just(getStubResponse(200))
+        }
+
+        def policy = factory.create(mockDownstream, requestPolicyOptions)
+
+        def userAgentValue = "Azure-Storage/0.1 "
+        def authorizationValue = "authorizationValue"
+        def dateValue = "Mon, 29 Oct 2018 21:12:12 GMT"
+        def requestId = UUID.randomUUID().toString()
+        def httpHeaders = new HttpHeaders()
+        httpHeaders.set(Constants.HeaderConstants.VERSION, Constants.HeaderConstants.TARGET_STORAGE_VERSION)
+        httpHeaders.set(Constants.HeaderConstants.USER_AGENT, userAgentValue)
+        httpHeaders.set(Constants.HeaderConstants.AUTHORIZATION, authorizationValue)
+        httpHeaders.set(Constants.HeaderConstants.DATE, dateValue)
+        httpHeaders.set(Constants.HeaderConstants.CLIENT_REQUEST_ID_HEADER, requestId)
+        def urlString = "http://devtest.blob.core.windows.net/test-container/test-blob"
+        def url = new URL(urlString)
+
+        when:
+        policy.sendAsync(new HttpRequest(null, HttpMethod.HEAD, url, httpHeaders, null, null)).blockingGet()
+
+        then:
+        1 * logger.log(HttpPipelineLogLevel.INFO, _, _) >>
+                { HttpPipelineLogLevel level, String message, Object[] params ->
+                    if (!message.contains("OUTGOING REQUEST")) {
+                        throw new IllegalArgumentException(message)
+                    }
+                }
+        1 * logger.log(HttpPipelineLogLevel.INFO, _, _) >>
+                { HttpPipelineLogLevel level, String message, Object[] params ->
+                    if (!(message.contains("Success")
+                            && message.contains("Request try")
+                            && message.contains(HttpMethod.HEAD.toString())
+                            && message.contains(urlString)
+                            && message.contains(url.toString())
+                            && message.contains(Constants.HeaderConstants.VERSION)
+                            && message.contains(Constants.HeaderConstants.TARGET_STORAGE_VERSION)
+                            && message.contains(Constants.HeaderConstants.DATE)
+                            && message.contains(dateValue)
+                            && message.contains(Constants.HeaderConstants.CLIENT_REQUEST_ID_HEADER)
+                            && message.contains(requestId)
+                            && message.contains(Constants.HeaderConstants.USER_AGENT)
+                            && message.contains(userAgentValue)
+                            && message.contains(Constants.HeaderConstants.AUTHORIZATION)
+                            && message.contains(Constants.REDACTED)
+                            && !message.contains(authorizationValue))) {
+                        throw new IllegalArgumentException(message)
+                    }
+                }
+    }
+
+    def "SAS logs"() {
+        setup:
+        def factory = new LoggingFactory(new LoggingOptions(2000))
+
+        def logger = getMockLogger(HttpPipelineLogLevel.INFO)
+        def requestPolicyOptions = new RequestPolicyOptions(logger)
+
+        def mockDownstream = Mock(RequestPolicy) {
+            sendAsync(_) >> Single.just(getStubResponse(200))
+        }
+
+        def policy = factory.create(mockDownstream, requestPolicyOptions)
+
+        def userAgentValue = "Azure-Storage/0.1 "
+        def dateValue = "Mon, 29 Oct 2018 21:12:12 GMT"
+        def requestId = UUID.randomUUID().toString()
+        def copySource = "http://dev.blob.core.windows.net/test-container/test-blob?snapshot=2018-10-30T19:19:22.1016437Z&sv=2018-03-28&ss=b&srt=co&st=2018-10-29T20:45:11Z&se=2018-10-29T22:45:11Z&sp=rwdlac&sig=copySourceSignature"
+        def httpHeaders = new HttpHeaders()
+        httpHeaders.set(Constants.HeaderConstants.VERSION, Constants.HeaderConstants.TARGET_STORAGE_VERSION)
+        httpHeaders.set(Constants.HeaderConstants.USER_AGENT, userAgentValue)
+        httpHeaders.set(Constants.HeaderConstants.DATE, dateValue)
+        httpHeaders.set(Constants.HeaderConstants.CLIENT_REQUEST_ID_HEADER, requestId)
+        httpHeaders.set(Constants.HeaderConstants.COPY_SOURCE, copySource)
+        def urlString = "http://dev.blob.core.windows.net/test-container/test-blob?sv=2018-03-29&ss=f&srt=s&st=2018-10-30T20%3A45%3A11Z&se=2019-10-29T22%3A45%3A11Z&sp=rw&sig=urlSignature&comp=incrementalcopy"
+        def url = new URL(urlString)
+
+        when:
+        policy.sendAsync(new HttpRequest(null, HttpMethod.PUT, url, httpHeaders, null, null)).blockingGet()
+
+        then:
+        1 * logger.log(HttpPipelineLogLevel.INFO, _, _) >>
+                { HttpPipelineLogLevel level, String message, Object[] params ->
+                    if (!message.contains("OUTGOING REQUEST")) {
+                        throw new IllegalArgumentException(message)
+                    }
+                }
+        1 * logger.log(HttpPipelineLogLevel.INFO, _, _) >>
+                { HttpPipelineLogLevel level, String message, Object[] params ->
+                    if (!(message.contains("Success")
+                            && message.contains("Request try")
+                            && message.contains(HttpMethod.PUT.toString())
+                            && message.contains(Constants.HeaderConstants.VERSION)
+                            && message.contains(Constants.HeaderConstants.TARGET_STORAGE_VERSION)
+                            && message.contains(Constants.HeaderConstants.DATE)
+                            && message.contains(dateValue)
+                            && message.contains(Constants.HeaderConstants.CLIENT_REQUEST_ID_HEADER)
+                            && message.contains(requestId)
+                            && message.contains(Constants.HeaderConstants.USER_AGENT)
+                            && message.contains(userAgentValue)
+
+                            // SAS URL parameters
+                            && message.contains("sv=2018-03-29")
+                            && message.contains("ss=f")
+                            && message.contains("srt=s")
+                            && message.contains("st=2018-10-30T20%3A45%3A11Z")
+                            && message.contains("se=2019-10-29T22%3A45%3A11Z")
+                            && message.contains("sp=rw")
+                            && !message.contains("sig=urlSignature")
+
+                            // Copy Source URL parameters
+                            && message.contains("sv=2018-03-28")
+                            && message.contains("ss=b")
+                            && message.contains("srt=co")
+                            && message.contains("st=2018-10-29T20%3A45%3A11Z")
+                            && message.contains("se=2018-10-29T22%3A45%3A11Z")
+                            && message.contains("sp=rwdlac")
+                            && message.contains("sig=REDACTED")
+                            && !message.contains("copySourceSignature")
+                    )) {
+                        throw new IllegalArgumentException(message)
+                    }
+                }
     }
 }

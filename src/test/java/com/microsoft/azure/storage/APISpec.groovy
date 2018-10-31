@@ -367,6 +367,14 @@ class APISpec extends Specification {
         }
     }
 
+    def getMockRequest() {
+        HttpHeaders headers = new HttpHeaders()
+        headers.set(Constants.HeaderConstants.CONTENT_ENCODING, "en-US")
+        URL url = new URL("http://devtest.blob.core.windows.net/test-container/test-blob")
+        HttpRequest request = new HttpRequest(null, HttpMethod.POST, url, headers, null, null)
+        return request
+    }
+
     def waitForCopy(BlobURL bu, CopyStatusType status) {
         OffsetDateTime start = OffsetDateTime.now()
         while (status != CopyStatusType.SUCCESS) {
@@ -419,6 +427,8 @@ class APISpec extends Specification {
 
         sleep(30000) // Wait for the policy to take effect.
     }
+
+
 
     /*
     This method returns a stub of an HttpResponse. This is for when we want to test policies in isolation but don't care

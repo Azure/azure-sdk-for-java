@@ -56,6 +56,10 @@ final class Constants {
      */
     static final String SNAPSHOT_QUERY_PARAMETER = "snapshot";
     /**
+     * The word redacted.
+     */
+    static final String REDACTED = "REDACTED";
+    /**
      * The default amount of parallelism for TransferManager operations.
      */
     // We chose this to match Go, which followed AWS' default.
@@ -153,6 +157,16 @@ final class Constants {
         static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
 
         /**
+         * The copy source header.
+         */
+        static final String COPY_SOURCE = "x-ms-copy-source";
+
+        /**
+         * The version header.
+         */
+        static final String VERSION = "x-ms-version";
+
+        /**
          * The current storage version header value.
          */
         static final String TARGET_STORAGE_VERSION = "2018-03-28";
@@ -173,6 +187,93 @@ final class Constants {
         static final String USER_AGENT_VERSION = "10.2.0";
 
         private HeaderConstants() {
+            // Private to prevent construction.
+        }
+    }
+
+    static final class UrlConstants {
+
+        /**
+         * The SAS service version parameter.
+         */
+        static final String SAS_SERVICE_VERSION = "sv";
+
+        /**
+         * The SAS services parameter.
+         */
+        static final String SAS_SERVICES = "ss";
+
+        /**
+         * The SAS resource types parameter.
+         */
+        static final String SAS_RESOURCES_TYPES = "srt";
+
+        /**
+         * The SAS protocol parameter.
+         */
+        static final String SAS_PROTOCOL = "spr";
+
+        /**
+         * The SAS start time parameter.
+         */
+        static final String SAS_START_TIME = "st";
+
+        /**
+         * The SAS expiration time parameter.
+         */
+        static final String SAS_EXPIRY_TIME = "se";
+
+        /**
+         * The SAS IP range parameter.
+         */
+        static final String SAS_IP_RANGE = "sip";
+
+        /**
+         * The SAS signed identifier parameter.
+         */
+        static final String SAS_SIGNED_IDENTIFIER = "si";
+
+        /**
+         * The SAS signed resource parameter.
+         */
+        static final String SAS_SIGNED_RESOURCE = "sr";
+
+        /**
+         * The SAS signed permissions parameter.
+         */
+        static final String SAS_SIGNED_PERMISSIONS = "sp";
+
+        /**
+         * The SAS signature parameter.
+         */
+        static final String SAS_SIGNATURE = "sig";
+
+        /**
+         * The SAS cache control parameter.
+         */
+        static final String SAS_CACHE_CONTROL = "rscc";
+
+        /**
+         * The SAS content disposition parameter.
+         */
+        static final String SAS_CONTENT_DISPOSITION = "rscd";
+
+        /**
+         * The SAS content encoding parameter.
+         */
+        static final String SAS_CONTENT_ENCODING = "rsce";
+
+        /**
+         * The SAS content language parameter.
+         */
+        static final String SAS_CONTENT_LANGUAGE = "rscl";
+
+        /**
+         * The SAS content type parameter.
+         */
+        static final String SAS_CONTENT_TYPE = "rsct";
+
+        private UrlConstants() {
             // Private to prevent construction.
         }
     }

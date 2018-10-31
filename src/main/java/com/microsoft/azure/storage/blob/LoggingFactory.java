@@ -24,6 +24,9 @@ import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import io.reactivex.Single;
 
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Locale;
 
 /**
@@ -164,12 +167,89 @@ public final class LoggingFactory implements RequestPolicyFactory {
                         }
 
                         if (options.shouldLog(currentLevel)) {
+                            String additionalMessageInfo = buildAdditionalMessageInfo(request);
                             String messageInfo = String.format(Locale.ROOT,
-                                    "Request try:'%d', request duration:'%d' ms, operation duration:'%d' ms%n",
-                                    tryCount, requestCompletionTime, operationDuration);
+                                    "Request try:'%d', request duration:'%d' ms, operation duration:'%d' ms%n%s",
+                                    tryCount, requestCompletionTime, operationDuration, additionalMessageInfo);
                             options.log(currentLevel, logMessage + messageInfo);
                         }
                     });
+        }
+
+        private String buildAdditionalMessageInfo(final HttpRequest httpRequest) {
+            HttpRequest sanitizedRequest = buildSanitizedRequest(httpRequest);
+            StringBuilder stringBuilder = new StringBuilder();
+            String format = "%s: %s" + System.lineSeparator();
+            stringBuilder.append(String.format(format, sanitizedRequest.httpMethod().toString(), sanitizedRequest.url().toString()));
+            sanitizedRequest.headers().forEach((header) -> stringBuilder.append(String.format(format, header.name(), header.value())));
+            return stringBuilder.toString();
+        }
+
+        private HttpRequest buildSanitizedRequest(final HttpRequest initialRequest) {
+            // Build new URL and redact SAS signature, if present
+            URL url = sanitizeURL(initialRequest.url());
+
+            // Build resultRequest
+            HttpRequest resultRequest = new HttpRequest(
+                    initialRequest.callerMethod(),
+                    initialRequest.httpMethod(),
+                    url,
+                    initialRequest.headers(),
+                    initialRequest.body(),
+                    initialRequest.responseDecoder());
+
+            // Redact Authorization header, if present
+            if(resultRequest.headers().value(Constants.HeaderConstants.AUTHORIZATION) != null) {
+                resultRequest.headers().set(Constants.HeaderConstants.AUTHORIZATION, Constants.REDACTED);
+            }
+
+            // Redact Copy Source header SAS signature, if present
+            if(resultRequest.headers().value(Constants.HeaderConstants.COPY_SOURCE) != null) {
+                try {
+                    URL copySourceUrl = sanitizeURL(new URL(resultRequest.headers().value(Constants.HeaderConstants.COPY_SOURCE)));
+                    resultRequest.headers().set(Constants.HeaderConstants.COPY_SOURCE, copySourceUrl.toString());
+                } catch(MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            return resultRequest;
+        }
+
+        private URL sanitizeURL(URL initialURL) {
+            String urlString = initialURL.toString();
+            URL resultURL = initialURL;
+            try {
+                BlobURLParts urlParts = URLParser.parse(initialURL);
+                if(urlParts.sasQueryParameters() == null || urlParts.sasQueryParameters().signature() == null) {
+                    return resultURL;
+                }
+                urlParts.withSasQueryParameters(new SASQueryParameters(
+                        urlParts.sasQueryParameters().version(),
+                        urlParts.sasQueryParameters().services(),
+                        urlParts.sasQueryParameters().resourceTypes(),
+                        urlParts.sasQueryParameters().protocol(),
+                        urlParts.sasQueryParameters().startTime(),
+                        urlParts.sasQueryParameters().expiryTime(),
+                        urlParts.sasQueryParameters().ipRange(),
+                        urlParts.sasQueryParameters().identifier(),
+                        urlParts.sasQueryParameters().resource(),
+                        urlParts.sasQueryParameters().permissions(),
+                        Constants.REDACTED,
+                        urlParts.sasQueryParameters().cacheControl(),
+                        urlParts.sasQueryParameters().contentDisposition(),
+                        urlParts.sasQueryParameters().contentEncoding(),
+                        urlParts.sasQueryParameters().contentLanguage(),
+                        urlParts.sasQueryParameters().contentType()
+                ));
+                resultURL = urlParts.toURL();
+
+                /* We are only making valid changes to what has already been validated as a URL (since we got it from a URL object),
+               so there should be no need for either us or the caller to check this error. */
+            } catch(UnknownHostException | MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+            return resultURL;
         }
     }
 }
