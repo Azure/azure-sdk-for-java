@@ -30,6 +30,16 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
     String appServicePlanName();
 
     /**
+     * @return the currentNumberOfWorkers value.
+     */
+    Integer currentNumberOfWorkers();
+
+    /**
+     * @return the currentWorkerSize value.
+     */
+    String currentWorkerSize();
+
+    /**
      * @return the geoRegion value.
      */
     String geoRegion();
@@ -65,6 +75,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
     Integer maximumNumberOfWorkers();
 
     /**
+     * @return the mdmId value.
+     */
+    String mdmId();
+
+    /**
      * @return the name value.
      */
     String name();
@@ -73,6 +88,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
      * @return the numberOfSites value.
      */
     Integer numberOfSites();
+
+    /**
+     * @return the numberOfWorkers value.
+     */
+    Integer numberOfWorkers();
 
     /**
      * @return the perSiteScaling value.
@@ -133,6 +153,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
      * @return the type value.
      */
     String type();
+
+    /**
+     * @return the workerSize value.
+     */
+    Integer workerSize();
 
     /**
      * @return the workerTierName value.

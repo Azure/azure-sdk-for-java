@@ -135,6 +135,36 @@ public class AppServicePlanInner extends Resource {
     private ProvisioningState provisioningState;
 
     /**
+     * The mdmId property.
+     */
+    @JsonProperty(value = "properties.mdmId", access = JsonProperty.Access.WRITE_ONLY)
+    private String mdmId;
+
+    /**
+     * The currentNumberOfWorkers property.
+     */
+    @JsonProperty(value = "properties.currentNumberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer currentNumberOfWorkers;
+
+    /**
+     * The currentWorkerSize property.
+     */
+    @JsonProperty(value = "properties.currentWorkerSize", access = JsonProperty.Access.WRITE_ONLY)
+    private String currentWorkerSize;
+
+    /**
+     * The numberOfWorkers property.
+     */
+    @JsonProperty(value = "properties.numberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer numberOfWorkers;
+
+    /**
+     * The workerSize property.
+     */
+    @JsonProperty(value = "properties.workerSize", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer workerSize;
+
+    /**
      * The sku property.
      */
     @JsonProperty(value = "sku")
@@ -409,6 +439,51 @@ public class AppServicePlanInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the mdmId value.
+     *
+     * @return the mdmId value
+     */
+    public String mdmId() {
+        return this.mdmId;
+    }
+
+    /**
+     * Get the currentNumberOfWorkers value.
+     *
+     * @return the currentNumberOfWorkers value
+     */
+    public Integer currentNumberOfWorkers() {
+        return this.currentNumberOfWorkers;
+    }
+
+    /**
+     * Get the currentWorkerSize value.
+     *
+     * @return the currentWorkerSize value
+     */
+    public String currentWorkerSize() {
+        return this.currentWorkerSize;
+    }
+
+    /**
+     * Get the numberOfWorkers value.
+     *
+     * @return the numberOfWorkers value
+     */
+    public Integer numberOfWorkers() {
+        return this.numberOfWorkers;
+    }
+
+    /**
+     * Get the workerSize value.
+     *
+     * @return the workerSize value
+     */
+    public Integer workerSize() {
+        return this.workerSize;
     }
 
     /**
