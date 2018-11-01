@@ -31,6 +31,11 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
     String adminSiteName();
 
     /**
+     * @return the appServicePlanKind value.
+     */
+    String appServicePlanKind();
+
+    /**
      * @return the appServicePlanName value.
      */
     String appServicePlanName();

@@ -135,6 +135,12 @@ public class AppServicePlanInner extends Resource {
     private ProvisioningState provisioningState;
 
     /**
+     * The appServicePlanKind property.
+     */
+    @JsonProperty(value = "properties.kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String appServicePlanKind;
+
+    /**
      * The mdmId property.
      */
     @JsonProperty(value = "properties.mdmId", access = JsonProperty.Access.WRITE_ONLY)
@@ -439,6 +445,15 @@ public class AppServicePlanInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the appServicePlanKind value.
+     *
+     * @return the appServicePlanKind value
+     */
+    public String appServicePlanKind() {
+        return this.appServicePlanKind;
     }
 
     /**

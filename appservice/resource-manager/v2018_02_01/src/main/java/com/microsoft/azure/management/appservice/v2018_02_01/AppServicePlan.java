@@ -31,6 +31,26 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
     String adminSiteName();
 
     /**
+     * @return the appServicePlanKind value.
+     */
+    String appServicePlanKind();
+
+    /**
+     * @return the appServicePlanName value.
+     */
+    String appServicePlanName();
+
+    /**
+     * @return the currentNumberOfWorkers value.
+     */
+    Integer currentNumberOfWorkers();
+
+    /**
+     * @return the currentWorkerSize value.
+     */
+    String currentWorkerSize();
+
+    /**
      * @return the freeOfferExpirationTime value.
      */
     DateTime freeOfferExpirationTime();
@@ -76,9 +96,19 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
     Integer maximumNumberOfWorkers();
 
     /**
+     * @return the mdmId value.
+     */
+    String mdmId();
+
+    /**
      * @return the numberOfSites value.
      */
     Integer numberOfSites();
+
+    /**
+     * @return the numberOfWorkers value.
+     */
+    Integer numberOfWorkers();
 
     /**
      * @return the perSiteScaling value.
@@ -131,6 +161,11 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
     Integer targetWorkerSizeId();
 
     /**
+     * @return the workerSize value.
+     */
+    String workerSize();
+
+    /**
      * @return the workerTierName value.
      */
     String workerTierName();
@@ -165,6 +200,16 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
              * Specifies adminSiteName.
              */
             WithCreate withAdminSiteName(String adminSiteName);
+        }
+
+        /**
+         * The stage of the appserviceplan update allowing to specify AppServicePlanName.
+         */
+        interface WithAppServicePlanName {
+            /**
+             * Specifies appServicePlanName.
+             */
+            WithCreate withAppServicePlanName(String appServicePlanName);
         }
 
         /**
@@ -312,7 +357,7 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<AppServicePlan>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminSiteName, DefinitionStages.WithFreeOfferExpirationTime, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHyperV, DefinitionStages.WithIsSpot, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithMaximumElasticWorkerCount, DefinitionStages.WithPerSiteScaling, DefinitionStages.WithReserved, DefinitionStages.WithSku, DefinitionStages.WithSpotExpirationTime, DefinitionStages.WithTargetWorkerCount, DefinitionStages.WithTargetWorkerSizeId, DefinitionStages.WithWorkerTierName {
+        interface WithCreate extends Creatable<AppServicePlan>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminSiteName, DefinitionStages.WithAppServicePlanName, DefinitionStages.WithFreeOfferExpirationTime, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHyperV, DefinitionStages.WithIsSpot, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithMaximumElasticWorkerCount, DefinitionStages.WithPerSiteScaling, DefinitionStages.WithReserved, DefinitionStages.WithSku, DefinitionStages.WithSpotExpirationTime, DefinitionStages.WithTargetWorkerCount, DefinitionStages.WithTargetWorkerSizeId, DefinitionStages.WithWorkerTierName {
         }
     }
     /**

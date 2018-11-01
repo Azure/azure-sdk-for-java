@@ -23,6 +23,12 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class AppServicePlanInner extends Resource {
     /**
+     * Name for the App Service plan.
+     */
+    @JsonProperty(value = "properties.name")
+    private String appServicePlanName;
+
+    /**
      * Target worker tier assigned to the App Service plan.
      */
     @JsonProperty(value = "properties.workerTierName")
@@ -156,6 +162,42 @@ public class AppServicePlanInner extends Resource {
     private ProvisioningState provisioningState;
 
     /**
+     * The appServicePlanKind property.
+     */
+    @JsonProperty(value = "properties.kind", access = JsonProperty.Access.WRITE_ONLY)
+    private String appServicePlanKind;
+
+    /**
+     * The mdmId property.
+     */
+    @JsonProperty(value = "properties.mdmId", access = JsonProperty.Access.WRITE_ONLY)
+    private String mdmId;
+
+    /**
+     * The currentNumberOfWorkers property.
+     */
+    @JsonProperty(value = "properties.currentNumberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer currentNumberOfWorkers;
+
+    /**
+     * The currentWorkerSize property.
+     */
+    @JsonProperty(value = "properties.currentWorkerSize", access = JsonProperty.Access.WRITE_ONLY)
+    private String currentWorkerSize;
+
+    /**
+     * The numberOfWorkers property.
+     */
+    @JsonProperty(value = "properties.numberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer numberOfWorkers;
+
+    /**
+     * The workerSize property.
+     */
+    @JsonProperty(value = "properties.workerSize", access = JsonProperty.Access.WRITE_ONLY)
+    private String workerSize;
+
+    /**
      * The sku property.
      */
     @JsonProperty(value = "sku")
@@ -166,6 +208,26 @@ public class AppServicePlanInner extends Resource {
      */
     @JsonProperty(value = "kind")
     private String kind;
+
+    /**
+     * Get name for the App Service plan.
+     *
+     * @return the appServicePlanName value
+     */
+    public String appServicePlanName() {
+        return this.appServicePlanName;
+    }
+
+    /**
+     * Set name for the App Service plan.
+     *
+     * @param appServicePlanName the appServicePlanName value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withAppServicePlanName(String appServicePlanName) {
+        this.appServicePlanName = appServicePlanName;
+        return this;
+    }
 
     /**
      * Get target worker tier assigned to the App Service plan.
@@ -490,6 +552,60 @@ public class AppServicePlanInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the appServicePlanKind value.
+     *
+     * @return the appServicePlanKind value
+     */
+    public String appServicePlanKind() {
+        return this.appServicePlanKind;
+    }
+
+    /**
+     * Get the mdmId value.
+     *
+     * @return the mdmId value
+     */
+    public String mdmId() {
+        return this.mdmId;
+    }
+
+    /**
+     * Get the currentNumberOfWorkers value.
+     *
+     * @return the currentNumberOfWorkers value
+     */
+    public Integer currentNumberOfWorkers() {
+        return this.currentNumberOfWorkers;
+    }
+
+    /**
+     * Get the currentWorkerSize value.
+     *
+     * @return the currentWorkerSize value
+     */
+    public String currentWorkerSize() {
+        return this.currentWorkerSize;
+    }
+
+    /**
+     * Get the numberOfWorkers value.
+     *
+     * @return the numberOfWorkers value
+     */
+    public Integer numberOfWorkers() {
+        return this.numberOfWorkers;
+    }
+
+    /**
+     * Get the workerSize value.
+     *
+     * @return the workerSize value
+     */
+    public String workerSize() {
+        return this.workerSize;
     }
 
     /**

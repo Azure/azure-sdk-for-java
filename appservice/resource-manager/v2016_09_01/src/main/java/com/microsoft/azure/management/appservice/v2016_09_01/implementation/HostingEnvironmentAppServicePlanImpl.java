@@ -39,6 +39,11 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     }
 
     @Override
+    public String appServicePlanKind() {
+        return this.inner().appServicePlanKind();
+    }
+
+    @Override
     public String appServicePlanName() {
         return this.inner().appServicePlanName();
     }

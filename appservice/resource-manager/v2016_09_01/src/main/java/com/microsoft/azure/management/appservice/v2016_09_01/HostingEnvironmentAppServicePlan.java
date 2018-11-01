@@ -25,6 +25,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
     String adminSiteName();
 
     /**
+     * @return the appServicePlanKind value.
+     */
+    String appServicePlanKind();
+
+    /**
      * @return the appServicePlanName value.
      */
     String appServicePlanName();
