@@ -27,6 +27,12 @@ public class ResourceLimits {
     private Double cpu;
 
     /**
+     * The GPU limit of this container instance.
+     */
+    @JsonProperty(value = "gpu")
+    private GpuResource gpu;
+
+    /**
      * Get the memory limit in GB of this container instance.
      *
      * @return the memoryInGB value
@@ -63,6 +69,26 @@ public class ResourceLimits {
      */
     public ResourceLimits withCpu(Double cpu) {
         this.cpu = cpu;
+        return this;
+    }
+
+    /**
+     * Get the GPU limit of this container instance.
+     *
+     * @return the gpu value
+     */
+    public GpuResource gpu() {
+        return this.gpu;
+    }
+
+    /**
+     * Set the GPU limit of this container instance.
+     *
+     * @param gpu the gpu value to set
+     * @return the ResourceLimits object itself.
+     */
+    public ResourceLimits withGpu(GpuResource gpu) {
+        this.gpu = gpu;
         return this;
     }
 

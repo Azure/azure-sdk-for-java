@@ -27,6 +27,12 @@ public class ResourceRequests {
     private double cpu;
 
     /**
+     * The GPU request of this container instance.
+     */
+    @JsonProperty(value = "gpu")
+    private GpuResource gpu;
+
+    /**
      * Get the memory request in GB of this container instance.
      *
      * @return the memoryInGB value
@@ -63,6 +69,26 @@ public class ResourceRequests {
      */
     public ResourceRequests withCpu(double cpu) {
         this.cpu = cpu;
+        return this;
+    }
+
+    /**
+     * Get the GPU request of this container instance.
+     *
+     * @return the gpu value
+     */
+    public GpuResource gpu() {
+        return this.gpu;
+    }
+
+    /**
+     * Set the GPU request of this container instance.
+     *
+     * @param gpu the gpu value to set
+     * @return the ResourceRequests object itself.
+     */
+    public ResourceRequests withGpu(GpuResource gpu) {
+        this.gpu = gpu;
         return this;
     }
 

@@ -22,6 +22,7 @@ import com.microsoft.azure.management.containerinstance.v2018_10_01.Volume;
 import com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerGroupPropertiesInstanceView;
 import com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerGroupDiagnostics;
 import com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerGroupNetworkProfile;
+import com.microsoft.azure.management.containerinstance.v2018_10_01.DnsConfiguration;
 import java.util.ArrayList;
 import com.microsoft.azure.management.containerinstance.v2018_10_01.;
 import rx.functions.Func1;
@@ -87,6 +88,11 @@ class ContainerGroupImpl extends GroupableResourceCoreImpl<ContainerGroup, Conta
     }
 
     @Override
+    public DnsConfiguration dnsConfig() {
+        return this.inner().dnsConfig();
+    }
+
+    @Override
     public ContainerGroupIdentity identity() {
         return this.inner().identity();
     }
@@ -146,6 +152,12 @@ class ContainerGroupImpl extends GroupableResourceCoreImpl<ContainerGroup, Conta
     @Override
     public ContainerGroupImpl withDiagnostics(ContainerGroupDiagnostics diagnostics) {
         this.inner().withDiagnostics(diagnostics);
+        return this;
+    }
+
+    @Override
+    public ContainerGroupImpl withDnsConfig(DnsConfiguration dnsConfig) {
+        this.inner().withDnsConfig(dnsConfig);
         return this;
     }
 
