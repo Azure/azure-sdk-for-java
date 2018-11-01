@@ -157,7 +157,7 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
     /**
      * @return the workerSize value.
      */
-    Integer workerSize();
+    String workerSize();
 
     /**
      * @return the workerTierName value.

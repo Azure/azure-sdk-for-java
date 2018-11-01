@@ -180,7 +180,7 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     }
 
     @Override
-    public Integer workerSize() {
+    public String workerSize() {
         return this.inner().workerSize();
     }
 

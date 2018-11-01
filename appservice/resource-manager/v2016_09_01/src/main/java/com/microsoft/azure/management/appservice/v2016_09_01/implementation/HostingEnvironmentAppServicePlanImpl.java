@@ -169,7 +169,7 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     }
 
     @Override
-    public Integer workerSize() {
+    public String workerSize() {
         return this.inner().workerSize();
     }
 

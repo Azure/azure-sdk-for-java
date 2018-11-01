@@ -162,7 +162,7 @@ public class AppServicePlanInner extends Resource {
      * The workerSize property.
      */
     @JsonProperty(value = "properties.workerSize", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer workerSize;
+    private String workerSize;
 
     /**
      * The sku property.
@@ -482,7 +482,7 @@ public class AppServicePlanInner extends Resource {
      *
      * @return the workerSize value
      */
-    public Integer workerSize() {
+    public String workerSize() {
         return this.workerSize;
     }
 

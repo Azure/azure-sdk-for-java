@@ -138,7 +138,7 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
     /**
      * @return the workerSize value.
      */
-    Integer workerSize();
+    String workerSize();
 
     /**
      * @return the workerTierName value.
