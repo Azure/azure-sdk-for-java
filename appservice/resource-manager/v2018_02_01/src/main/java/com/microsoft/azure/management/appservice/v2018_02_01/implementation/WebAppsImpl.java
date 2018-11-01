@@ -2924,9 +2924,9 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Observable<NetworkTrace> getNetworkTraceOperationV2SlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+    public Observable<NetworkTrace> getNetworkTraceOperationSlotV2Async(String resourceGroupName, String name, String operationId, String slot) {
         WebAppsInner client = this.inner();
-        return client.getNetworkTraceOperationV2SlotAsync(resourceGroupName, name, operationId, slot)
+        return client.getNetworkTraceOperationSlotV2Async(resourceGroupName, name, operationId, slot)
         .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
             @Override
             public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
@@ -2960,9 +2960,9 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Observable<NetworkTrace> getNetworkTracesV2SlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+    public Observable<NetworkTrace> getNetworkTracesSlotV2Async(String resourceGroupName, String name, String operationId, String slot) {
         WebAppsInner client = this.inner();
-        return client.getNetworkTracesV2SlotAsync(resourceGroupName, name, operationId, slot)
+        return client.getNetworkTracesSlotV2Async(resourceGroupName, name, operationId, slot)
         .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
             @Override
             public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {

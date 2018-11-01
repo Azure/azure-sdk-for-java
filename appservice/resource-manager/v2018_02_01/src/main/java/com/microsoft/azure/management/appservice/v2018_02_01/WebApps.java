@@ -2711,7 +2711,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NetworkTrace> getNetworkTraceOperationV2SlotAsync(String resourceGroupName, String name, String operationId, String slot);
+    Observable<NetworkTrace> getNetworkTraceOperationSlotV2Async(String resourceGroupName, String name, String operationId, String slot);
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
@@ -2736,7 +2736,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NetworkTrace> getNetworkTracesV2SlotAsync(String resourceGroupName, String name, String operationId, String slot);
+    Observable<NetworkTrace> getNetworkTracesSlotV2Async(String resourceGroupName, String name, String operationId, String slot);
 
     /**
      * Gets perfmon counters for web app.

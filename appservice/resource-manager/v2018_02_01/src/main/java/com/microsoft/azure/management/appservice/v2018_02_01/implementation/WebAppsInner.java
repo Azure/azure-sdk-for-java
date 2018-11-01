@@ -1178,13 +1178,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/{operationId}")
         Observable<Response<ResponseBody>> getNetworkTracesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getNetworkTraceOperationV2Slot" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getNetworkTraceOperationSlotV2" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTraces/current/operationresults/{operationId}")
-        Observable<Response<ResponseBody>> getNetworkTraceOperationV2Slot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getNetworkTraceOperationSlotV2(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getNetworkTracesV2Slot" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getNetworkTracesSlotV2" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTraces/{operationId}")
-        Observable<Response<ResponseBody>> getNetworkTracesV2Slot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getNetworkTracesSlotV2(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps generateNewSitePublishingPasswordSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/newpassword")
@@ -31675,8 +31675,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;NetworkTraceInner&gt; object if successful.
      */
-    public List<NetworkTraceInner> getNetworkTraceOperationV2Slot(String resourceGroupName, String name, String operationId, String slot) {
-        return getNetworkTraceOperationV2SlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).toBlocking().single().body();
+    public List<NetworkTraceInner> getNetworkTraceOperationSlotV2(String resourceGroupName, String name, String operationId, String slot) {
+        return getNetworkTraceOperationSlotV2WithServiceResponseAsync(resourceGroupName, name, operationId, slot).toBlocking().single().body();
     }
 
     /**
@@ -31691,8 +31691,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<NetworkTraceInner>> getNetworkTraceOperationV2SlotAsync(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<List<NetworkTraceInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(getNetworkTraceOperationV2SlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot), serviceCallback);
+    public ServiceFuture<List<NetworkTraceInner>> getNetworkTraceOperationSlotV2Async(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<List<NetworkTraceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(getNetworkTraceOperationSlotV2WithServiceResponseAsync(resourceGroupName, name, operationId, slot), serviceCallback);
     }
 
     /**
@@ -31706,8 +31706,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;NetworkTraceInner&gt; object
      */
-    public Observable<List<NetworkTraceInner>> getNetworkTraceOperationV2SlotAsync(String resourceGroupName, String name, String operationId, String slot) {
-        return getNetworkTraceOperationV2SlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).map(new Func1<ServiceResponse<List<NetworkTraceInner>>, List<NetworkTraceInner>>() {
+    public Observable<List<NetworkTraceInner>> getNetworkTraceOperationSlotV2Async(String resourceGroupName, String name, String operationId, String slot) {
+        return getNetworkTraceOperationSlotV2WithServiceResponseAsync(resourceGroupName, name, operationId, slot).map(new Func1<ServiceResponse<List<NetworkTraceInner>>, List<NetworkTraceInner>>() {
             @Override
             public List<NetworkTraceInner> call(ServiceResponse<List<NetworkTraceInner>> response) {
                 return response.body();
@@ -31726,7 +31726,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;NetworkTraceInner&gt; object
      */
-    public Observable<ServiceResponse<List<NetworkTraceInner>>> getNetworkTraceOperationV2SlotWithServiceResponseAsync(String resourceGroupName, String name, String operationId, String slot) {
+    public Observable<ServiceResponse<List<NetworkTraceInner>>> getNetworkTraceOperationSlotV2WithServiceResponseAsync(String resourceGroupName, String name, String operationId, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -31745,12 +31745,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getNetworkTraceOperationV2Slot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getNetworkTraceOperationSlotV2(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<NetworkTraceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<NetworkTraceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<NetworkTraceInner>> clientResponse = getNetworkTraceOperationV2SlotDelegate(response);
+                        ServiceResponse<List<NetworkTraceInner>> clientResponse = getNetworkTraceOperationSlotV2Delegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -31759,7 +31759,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<List<NetworkTraceInner>> getNetworkTraceOperationV2SlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<NetworkTraceInner>> getNetworkTraceOperationSlotV2Delegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<NetworkTraceInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
                 .register(202, new TypeToken<List<NetworkTraceInner>>() { }.getType())
@@ -31780,8 +31780,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;NetworkTraceInner&gt; object if successful.
      */
-    public List<NetworkTraceInner> getNetworkTracesV2Slot(String resourceGroupName, String name, String operationId, String slot) {
-        return getNetworkTracesV2SlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).toBlocking().single().body();
+    public List<NetworkTraceInner> getNetworkTracesSlotV2(String resourceGroupName, String name, String operationId, String slot) {
+        return getNetworkTracesSlotV2WithServiceResponseAsync(resourceGroupName, name, operationId, slot).toBlocking().single().body();
     }
 
     /**
@@ -31796,8 +31796,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<NetworkTraceInner>> getNetworkTracesV2SlotAsync(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<List<NetworkTraceInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(getNetworkTracesV2SlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot), serviceCallback);
+    public ServiceFuture<List<NetworkTraceInner>> getNetworkTracesSlotV2Async(String resourceGroupName, String name, String operationId, String slot, final ServiceCallback<List<NetworkTraceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(getNetworkTracesSlotV2WithServiceResponseAsync(resourceGroupName, name, operationId, slot), serviceCallback);
     }
 
     /**
@@ -31811,8 +31811,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;NetworkTraceInner&gt; object
      */
-    public Observable<List<NetworkTraceInner>> getNetworkTracesV2SlotAsync(String resourceGroupName, String name, String operationId, String slot) {
-        return getNetworkTracesV2SlotWithServiceResponseAsync(resourceGroupName, name, operationId, slot).map(new Func1<ServiceResponse<List<NetworkTraceInner>>, List<NetworkTraceInner>>() {
+    public Observable<List<NetworkTraceInner>> getNetworkTracesSlotV2Async(String resourceGroupName, String name, String operationId, String slot) {
+        return getNetworkTracesSlotV2WithServiceResponseAsync(resourceGroupName, name, operationId, slot).map(new Func1<ServiceResponse<List<NetworkTraceInner>>, List<NetworkTraceInner>>() {
             @Override
             public List<NetworkTraceInner> call(ServiceResponse<List<NetworkTraceInner>> response) {
                 return response.body();
@@ -31831,7 +31831,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;NetworkTraceInner&gt; object
      */
-    public Observable<ServiceResponse<List<NetworkTraceInner>>> getNetworkTracesV2SlotWithServiceResponseAsync(String resourceGroupName, String name, String operationId, String slot) {
+    public Observable<ServiceResponse<List<NetworkTraceInner>>> getNetworkTracesSlotV2WithServiceResponseAsync(String resourceGroupName, String name, String operationId, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -31850,12 +31850,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getNetworkTracesV2Slot(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getNetworkTracesSlotV2(resourceGroupName, name, operationId, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<NetworkTraceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<NetworkTraceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<NetworkTraceInner>> clientResponse = getNetworkTracesV2SlotDelegate(response);
+                        ServiceResponse<List<NetworkTraceInner>> clientResponse = getNetworkTracesSlotV2Delegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -31864,7 +31864,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<List<NetworkTraceInner>> getNetworkTracesV2SlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<NetworkTraceInner>> getNetworkTracesSlotV2Delegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<NetworkTraceInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<NetworkTraceInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
