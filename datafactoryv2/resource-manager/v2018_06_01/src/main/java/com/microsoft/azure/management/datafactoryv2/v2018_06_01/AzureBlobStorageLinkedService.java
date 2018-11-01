@@ -30,11 +30,23 @@ public class AzureBlobStorageLinkedService extends LinkedServiceInner {
     private Object connectionString;
 
     /**
+     * The Azure key vault secret reference of accountKey in connection string.
+     */
+    @JsonProperty(value = "typeProperties.accountKey")
+    private AzureKeyVaultSecretReference accountKey;
+
+    /**
      * SAS URI of the Azure Blob Storage resource. It is mutually exclusive
      * with connectionString, serviceEndpoint property.
      */
     @JsonProperty(value = "typeProperties.sasUri")
     private SecretBase sasUri;
+
+    /**
+     * The Azure key vault secret reference of sasToken in sas uri.
+     */
+    @JsonProperty(value = "typeProperties.sasToken")
+    private AzureKeyVaultSecretReference sasToken;
 
     /**
      * Blob service endpoint of the Azure Blob Storage resource. It is mutually
@@ -93,6 +105,26 @@ public class AzureBlobStorageLinkedService extends LinkedServiceInner {
     }
 
     /**
+     * Get the Azure key vault secret reference of accountKey in connection string.
+     *
+     * @return the accountKey value
+     */
+    public AzureKeyVaultSecretReference accountKey() {
+        return this.accountKey;
+    }
+
+    /**
+     * Set the Azure key vault secret reference of accountKey in connection string.
+     *
+     * @param accountKey the accountKey value to set
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService withAccountKey(AzureKeyVaultSecretReference accountKey) {
+        this.accountKey = accountKey;
+        return this;
+    }
+
+    /**
      * Get sAS URI of the Azure Blob Storage resource. It is mutually exclusive with connectionString, serviceEndpoint property.
      *
      * @return the sasUri value
@@ -109,6 +141,26 @@ public class AzureBlobStorageLinkedService extends LinkedServiceInner {
      */
     public AzureBlobStorageLinkedService withSasUri(SecretBase sasUri) {
         this.sasUri = sasUri;
+        return this;
+    }
+
+    /**
+     * Get the Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value
+     */
+    public AzureKeyVaultSecretReference sasToken() {
+        return this.sasToken;
+    }
+
+    /**
+     * Set the Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService withSasToken(AzureKeyVaultSecretReference sasToken) {
+        this.sasToken = sasToken;
         return this;
     }
 
