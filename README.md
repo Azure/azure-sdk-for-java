@@ -3,7 +3,13 @@
 This project provides a client library in Java that makes it easy to consume Microsoft Azure Storage services. For documentation please see the [Storage API doc page](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/client?view=azure-java-preview) and the [quick start document](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-java-v10).
 Please note that this version of the library is a compete overhaul of the current Azure Storage Java Client Library, and is based on the new Storage SDK architecture, also referred to as V10.
 
-> If you are looking for the Azure Storage Android SDK, please visit [https://github.com/Azure/azure-storage-android](https://github.com/Azure/azure-storage-android).
+| SDK Name      | Version       | Description | Maven/API Reference Links |
+| ------------- | ------------- | ----------- | ----- |
+| [Blob Storage SDK v10 for Java](https://github.com/Azure/azure-storage-java/)  | v10.2.0  | The next generation async Storage SDK | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage-blob) - [Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage/client?view=azure-java-stable) |
+| [Queue Storage SDK v10 for Java](https://github.com/azure/azure-storage-java/tree/New-Storage-SDK-V10-Preview) | V10.0.0-Preview | The next generation async Storage SDK | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage-queue) - References pending
+| [Storage SDK v8 for Java](https://github.com/azure/azure-storage-java/tree/legacy-master)  | v8  | Legacy Storage SDK (sync only) | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-storage) - [Reference](https://docs.microsoft.com/en-us/java/api/overview/azure/storage_stable?view=azure-java-legacy)|
+| [Storage SDK for Android](https://github.com/Azure/azure-storage-android) | v2 | Storage SDK for Android | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure.android/azure-storage-android) - [Reference](http://azure.github.io/azure-storage-android/)
+| [Azure Management Libraries for Java](https://github.com/Azure/azure-libraries-for-java) | v1 | Management libraries including Storage Resource Provider APIs | [Maven](https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-resources) - [Reference](http://azure.github.io/azure-storage-android/)|
 
 ## Migrating to V10
 
