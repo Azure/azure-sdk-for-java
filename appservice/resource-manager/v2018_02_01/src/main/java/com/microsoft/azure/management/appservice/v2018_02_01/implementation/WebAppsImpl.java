@@ -830,21 +830,27 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId) {
-        WebAppsInner client = this.inner();
-        return client.getNetworkTraceOperationAsync(resourceGroupName, name, operationId).toCompletable();
-    }
-
-    @Override
     public Completable startWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
         return client.startWebSiteNetworkTraceAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override
-    public Completable startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
+    public Observable<NetworkTrace> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
-        return client.startWebSiteNetworkTraceOperationAsync(resourceGroupName, name).toCompletable();
+        return client.startWebSiteNetworkTraceOperationAsync(resourceGroupName, name)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -962,9 +968,21 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable startNetworkTraceAsync(String resourceGroupName, String name) {
+    public Observable<NetworkTrace> startNetworkTraceAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
-        return client.startNetworkTraceAsync(resourceGroupName, name).toCompletable();
+        return client.startNetworkTraceAsync(resourceGroupName, name)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -2852,9 +2870,75 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable getNetworkTraceOperationV2Async(String resourceGroupName, String name, String operationId) {
+    public Observable<NetworkTrace> getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId) {
         WebAppsInner client = this.inner();
-        return client.getNetworkTraceOperationV2Async(resourceGroupName, name, operationId).toCompletable();
+        return client.getNetworkTraceOperationAsync(resourceGroupName, name, operationId)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<NetworkTrace> getNetworkTraceOperationV2Async(String resourceGroupName, String name, String operationId) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTraceOperationV2Async(resourceGroupName, name, operationId)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<NetworkTrace> getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTraceOperationSlotAsync(resourceGroupName, name, operationId, slot)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<NetworkTrace> getNetworkTraceOperationSlotV2Async(String resourceGroupName, String name, String operationId, String slot) {
+        WebAppsInner client = this.inner();
+        return client.getNetworkTraceOperationSlotV2Async(resourceGroupName, name, operationId, slot)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -2873,12 +2957,6 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
                 return new NetworkTraceImpl(inner, manager());
             }
         });
-    }
-
-    @Override
-    public Completable getNetworkTraceOperationSlotV2Async(String resourceGroupName, String name, String operationId, String slot) {
-        WebAppsInner client = this.inner();
-        return client.getNetworkTraceOperationSlotV2Async(resourceGroupName, name, operationId, slot).toCompletable();
     }
 
     @Override
@@ -3554,21 +3632,27 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot) {
-        WebAppsInner client = this.inner();
-        return client.getNetworkTraceOperationSlotAsync(resourceGroupName, name, operationId, slot).toCompletable();
-    }
-
-    @Override
     public Completable startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
         return client.startWebSiteNetworkTraceSlotAsync(resourceGroupName, name, slot).toCompletable();
     }
 
     @Override
-    public Completable startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<NetworkTrace> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
-        return client.startWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot).toCompletable();
+        return client.startWebSiteNetworkTraceOperationSlotAsync(resourceGroupName, name, slot)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -3686,9 +3770,21 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<NetworkTrace> startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
-        return client.startNetworkTraceSlotAsync(resourceGroupName, name, slot).toCompletable();
+        return client.startNetworkTraceSlotAsync(resourceGroupName, name, slot)
+        .flatMap(new Func1<List<NetworkTraceInner>, Observable<NetworkTraceInner>>() {
+            @Override
+            public Observable<NetworkTraceInner> call(List<NetworkTraceInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<NetworkTraceInner, NetworkTrace>() {
+            @Override
+            public NetworkTrace call(NetworkTraceInner inner) {
+                return new NetworkTraceImpl(inner, manager());
+            }
+        });
     }
 
     @Override

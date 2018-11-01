@@ -516,18 +516,6 @@ public interface WebApps {
     Observable<Operation> migrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequest migrationRequestEnvelope);
 
     /**
-     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param operationId GUID of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId);
-
-    /**
      * Start capturing network packets for the site (To be deprecated).
      * Start capturing network packets for the site (To be deprecated).
      *
@@ -547,7 +535,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name);
+    Observable<NetworkTrace> startWebSiteNetworkTraceOperationAsync(String resourceGroupName, String name);
 
     /**
      * Stop ongoing capturing network packets for the site.
@@ -720,7 +708,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startNetworkTraceAsync(String resourceGroupName, String name);
+    Observable<NetworkTrace> startNetworkTraceAsync(String resourceGroupName, String name);
 
     /**
      * Stops an app (or deployment slot, if specified).
@@ -2685,7 +2673,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getNetworkTraceOperationV2Async(String resourceGroupName, String name, String operationId);
+    Observable<NetworkTrace> getNetworkTraceOperationAsync(String resourceGroupName, String name, String operationId);
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
@@ -2697,7 +2685,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NetworkTrace> getNetworkTracesV2Async(String resourceGroupName, String name, String operationId);
+    Observable<NetworkTrace> getNetworkTraceOperationV2Async(String resourceGroupName, String name, String operationId);
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
@@ -2710,7 +2698,32 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getNetworkTraceOperationSlotV2Async(String resourceGroupName, String name, String operationId, String slot);
+    Observable<NetworkTrace> getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot);
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkTrace> getNetworkTraceOperationSlotV2Async(String resourceGroupName, String name, String operationId, String slot);
+
+    /**
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param operationId GUID of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkTrace> getNetworkTracesV2Async(String resourceGroupName, String name, String operationId);
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
@@ -3437,19 +3450,6 @@ public interface WebApps {
     Observable<FunctionSecrets> listSyncFunctionTriggersSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
-     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param operationId GUID of the operation.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will get an operation for the production slot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable getNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String operationId, String slot);
-
-    /**
      * Start capturing network packets for the site (To be deprecated).
      * Start capturing network packets for the site (To be deprecated).
      *
@@ -3471,7 +3471,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot);
+    Observable<NetworkTrace> startWebSiteNetworkTraceOperationSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Stop ongoing capturing network packets for the site.
@@ -3659,7 +3659,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
+    Observable<NetworkTrace> startNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Stops an app (or deployment slot, if specified).

@@ -162,37 +162,37 @@ public class AppServicePlanInner extends Resource {
     private ProvisioningState provisioningState;
 
     /**
-     * The appServicePlanKind property.
+     * Kind of resource.
      */
     @JsonProperty(value = "properties.kind", access = JsonProperty.Access.WRITE_ONLY)
     private String appServicePlanKind;
 
     /**
-     * The mdmId property.
+     * MDM ID of the App Service plan.
      */
     @JsonProperty(value = "properties.mdmId", access = JsonProperty.Access.WRITE_ONLY)
     private String mdmId;
 
     /**
-     * The currentNumberOfWorkers property.
+     * Current worker count.
      */
     @JsonProperty(value = "properties.currentNumberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
     private Integer currentNumberOfWorkers;
 
     /**
-     * The currentWorkerSize property.
+     * Current worker size.
      */
     @JsonProperty(value = "properties.currentWorkerSize", access = JsonProperty.Access.WRITE_ONLY)
     private String currentWorkerSize;
 
     /**
-     * The numberOfWorkers property.
+     * Worker count.
      */
     @JsonProperty(value = "properties.numberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
     private Integer numberOfWorkers;
 
     /**
-     * The workerSize property.
+     * Worker size.
      */
     @JsonProperty(value = "properties.workerSize", access = JsonProperty.Access.WRITE_ONLY)
     private String workerSize;
@@ -555,7 +555,7 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the appServicePlanKind value.
+     * Get kind of resource.
      *
      * @return the appServicePlanKind value
      */
@@ -564,7 +564,7 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the mdmId value.
+     * Get mDM ID of the App Service plan.
      *
      * @return the mdmId value
      */
@@ -573,7 +573,7 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the currentNumberOfWorkers value.
+     * Get current worker count.
      *
      * @return the currentNumberOfWorkers value
      */
@@ -582,7 +582,7 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the currentWorkerSize value.
+     * Get current worker size.
      *
      * @return the currentWorkerSize value
      */
@@ -591,7 +591,7 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the numberOfWorkers value.
+     * Get worker count.
      *
      * @return the numberOfWorkers value
      */
@@ -600,7 +600,7 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Get the workerSize value.
+     * Get worker size.
      *
      * @return the workerSize value
      */
