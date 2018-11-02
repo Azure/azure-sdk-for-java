@@ -36,11 +36,6 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
     DateTime creationDate();
 
     /**
-     * @return the identity value.
-     */
-    RegistryIdentity identity();
-
-    /**
      * @return the loginServer value.
      */
     String loginServer();
@@ -112,18 +107,6 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
         }
 
         /**
-         * The stage of the registry definition allowing to specify Identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies identity.
-             * @param identity The identity of the container registry
-             * @return the next definition stage
-             */
-            WithCreate withIdentity(RegistryIdentity identity);
-        }
-
-        /**
          * The stage of the registry definition allowing to specify StorageAccount.
          */
         interface WithStorageAccount {
@@ -140,13 +123,13 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Registry>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminUserEnabled, DefinitionStages.WithIdentity, DefinitionStages.WithStorageAccount {
+        interface WithCreate extends Creatable<Registry>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminUserEnabled, DefinitionStages.WithStorageAccount {
         }
     }
     /**
      * The template for a Registry update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Registry>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminUserEnabled, UpdateStages.WithIdentity, UpdateStages.WithSku, UpdateStages.WithStorageAccount {
+    interface Update extends Appliable<Registry>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminUserEnabled, UpdateStages.WithSku, UpdateStages.WithStorageAccount {
     }
 
     /**
@@ -163,18 +146,6 @@ public interface Registry extends HasInner<RegistryInner>, Resource, GroupableRe
              * @return the next update stage
              */
             Update withAdminUserEnabled(Boolean adminUserEnabled);
-        }
-
-        /**
-         * The stage of the registry update allowing to specify Identity.
-         */
-        interface WithIdentity {
-            /**
-             * Specifies identity.
-             * @param identity The identity of the container registry
-             * @return the next update stage
-             */
-            Update withIdentity(RegistryIdentity identity);
         }
 
         /**
