@@ -36,10 +36,11 @@ public class AzureStorageLinkedService extends LinkedServiceInner {
 
     /**
      * SAS URI of the Azure Storage resource. It is mutually exclusive with
-     * connectionString property.
+     * connectionString property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.sasUri")
-    private SecretBase sasUri;
+    private Object sasUri;
 
     /**
      * The Azure key vault secret reference of sasToken in sas uri.
@@ -96,21 +97,21 @@ public class AzureStorageLinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get sAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property.
+     * Get sAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string, SecureString or AzureKeyVaultSecretReference.
      *
      * @return the sasUri value
      */
-    public SecretBase sasUri() {
+    public Object sasUri() {
         return this.sasUri;
     }
 
     /**
-     * Set sAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property.
+     * Set sAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string, SecureString or AzureKeyVaultSecretReference.
      *
      * @param sasUri the sasUri value to set
      * @return the AzureStorageLinkedService object itself.
      */
-    public AzureStorageLinkedService withSasUri(SecretBase sasUri) {
+    public AzureStorageLinkedService withSasUri(Object sasUri) {
         this.sasUri = sasUri;
         return this;
     }
