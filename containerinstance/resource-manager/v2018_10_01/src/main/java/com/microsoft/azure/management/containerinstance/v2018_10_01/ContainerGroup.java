@@ -37,6 +37,11 @@ public interface ContainerGroup extends HasInner<ContainerGroupInner>, Resource,
     ContainerGroupDiagnostics diagnostics();
 
     /**
+     * @return the dnsConfig value.
+     */
+    DnsConfiguration dnsConfig();
+
+    /**
      * @return the identity value.
      */
     ContainerGroupIdentity identity();
@@ -134,6 +139,16 @@ public interface ContainerGroup extends HasInner<ContainerGroupInner>, Resource,
         }
 
         /**
+         * The stage of the containergroup update allowing to specify DnsConfig.
+         */
+        interface WithDnsConfig {
+            /**
+             * Specifies dnsConfig.
+             */
+            WithCreate withDnsConfig(DnsConfiguration dnsConfig);
+        }
+
+        /**
          * The stage of the containergroup update allowing to specify Identity.
          */
         interface WithIdentity {
@@ -198,7 +213,7 @@ public interface ContainerGroup extends HasInner<ContainerGroupInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ContainerGroup>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithDiagnostics, DefinitionStages.WithIdentity, DefinitionStages.WithImageRegistryCredentials, DefinitionStages.WithIpAddress, DefinitionStages.WithNetworkProfile, DefinitionStages.WithRestartPolicy, DefinitionStages.WithVolumes {
+        interface WithCreate extends Creatable<ContainerGroup>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithDiagnostics, DefinitionStages.WithDnsConfig, DefinitionStages.WithIdentity, DefinitionStages.WithImageRegistryCredentials, DefinitionStages.WithIpAddress, DefinitionStages.WithNetworkProfile, DefinitionStages.WithRestartPolicy, DefinitionStages.WithVolumes {
         }
     }
     /**

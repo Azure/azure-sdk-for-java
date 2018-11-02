@@ -18,6 +18,7 @@ import com.microsoft.azure.management.containerinstance.v2018_10_01.Volume;
 import com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerGroupPropertiesInstanceView;
 import com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerGroupDiagnostics;
 import com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerGroupNetworkProfile;
+import com.microsoft.azure.management.containerinstance.v2018_10_01.DnsConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -102,6 +103,12 @@ public class ContainerGroupInner extends Resource {
      */
     @JsonProperty(value = "properties.networkProfile")
     private ContainerGroupNetworkProfile networkProfile;
+
+    /**
+     * The DNS config information for a container group.
+     */
+    @JsonProperty(value = "properties.dnsConfig")
+    private DnsConfiguration dnsConfig;
 
     /**
      * Get the identity of the container group, if configured.
@@ -306,6 +313,26 @@ public class ContainerGroupInner extends Resource {
      */
     public ContainerGroupInner withNetworkProfile(ContainerGroupNetworkProfile networkProfile) {
         this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
+     * Get the DNS config information for a container group.
+     *
+     * @return the dnsConfig value
+     */
+    public DnsConfiguration dnsConfig() {
+        return this.dnsConfig;
+    }
+
+    /**
+     * Set the DNS config information for a container group.
+     *
+     * @param dnsConfig the dnsConfig value to set
+     * @return the ContainerGroupInner object itself.
+     */
+    public ContainerGroupInner withDnsConfig(DnsConfiguration dnsConfig) {
+        this.dnsConfig = dnsConfig;
         return this;
     }
 
