@@ -7,6 +7,8 @@ package com.microsoft.azure.keyvault.extensions;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+
+import com.google.common.util.concurrent.MoreExecutors;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
@@ -160,7 +162,7 @@ public class KeyVaultKey implements IKey {
                         new JsonWebKeyEncryptionAlgorithm(algorithm),
                         ciphertext,
                         null);
-        return Futures.transform(futureCall, new DecryptResultTransform());
+        return Futures.transform(futureCall, new DecryptResultTransform(), MoreExecutors.directExecutor());
     }
 
     @Override
@@ -198,7 +200,7 @@ public class KeyVaultKey implements IKey {
                         new JsonWebKeyEncryptionAlgorithm(algorithm),
                         ciphertext,
                         null);
-        return Futures.transform(futureCall, new DecryptResultTransform());
+        return Futures.transform(futureCall, new DecryptResultTransform(), MoreExecutors.directExecutor());
     }
 
     @Override
@@ -218,7 +220,7 @@ public class KeyVaultKey implements IKey {
                         new JsonWebKeySignatureAlgorithm(algorithm),
                         digest,
                         null);
-        return Futures.transform(futureCall, new SignResultTransform(algorithm));
+        return Futures.transform(futureCall, new SignResultTransform(algorithm), MoreExecutors.directExecutor());
     }
 
     @Override

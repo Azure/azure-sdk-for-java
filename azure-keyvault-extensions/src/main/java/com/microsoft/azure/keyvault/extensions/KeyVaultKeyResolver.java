@@ -7,6 +7,8 @@
 package com.microsoft.azure.keyvault.extensions;
 
 import java.security.Provider;
+
+import com.google.common.util.concurrent.MoreExecutors;
 import org.apache.commons.codec.binary.Base64;
 
 import com.google.common.base.Function;
@@ -98,13 +100,13 @@ public class KeyVaultKeyResolver implements IKeyResolver {
     private ListenableFuture<IKey> resolveKeyFromSecretAsync(String kid) {
         
         ListenableFuture<SecretBundle> futureCall = client.getSecretAsync(kid, null);
-        return Futures.transform(futureCall, new FutureKeyFromSecret());
+        return Futures.transform(futureCall, new FutureKeyFromSecret(), MoreExecutors.directExecutor());
     }
 
     private ListenableFuture<IKey> resolveKeyFromKeyAsync(String kid) {
         
         ListenableFuture<KeyBundle> futureCall = client.getKeyAsync(kid, null);
-        return Futures.transform(futureCall, new FutureKeyFromKey());
+        return Futures.transform(futureCall, new FutureKeyFromKey(), MoreExecutors.directExecutor());
     }
 
     @Override

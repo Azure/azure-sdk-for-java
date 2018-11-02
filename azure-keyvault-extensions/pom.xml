@@ -8,12 +8,12 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-parent</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-keyvault-extensions</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Key Vault Extensions</name>
@@ -64,7 +64,6 @@
     <dependency>
     	<groupId>com.microsoft.azure</groupId>
     	<artifactId>azure-keyvault</artifactId>
-      <version>1.1.1</version>
     </dependency>
     
     <!-- Other Microsoft Azure Dependencies -->
