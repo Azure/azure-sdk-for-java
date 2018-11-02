@@ -56,66 +56,6 @@ public interface QnAMakerClient {
     String userAgent();
 
     /**
-     * Gets Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'.
-     *
-     * @return the environment value.
-     */
-    String environment();
-
-    /**
-     * Sets Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'.
-     *
-     * @param environment the environment value.
-     * @return the service client itself
-     */
-    QnAMakerClient withEnvironment(String environment);
-
-    /**
-     * Gets Knowledgebase id..
-     *
-     * @return the kbId value.
-     */
-    String kbId();
-
-    /**
-     * Sets Knowledgebase id..
-     *
-     * @param kbId the kbId value.
-     * @return the service client itself
-     */
-    QnAMakerClient withKbId(String kbId);
-
-    /**
-     * Gets Operation id..
-     *
-     * @return the operationId value.
-     */
-    String operationId();
-
-    /**
-     * Sets Operation id..
-     *
-     * @param operationId the operationId value.
-     * @return the service client itself
-     */
-    QnAMakerClient withOperationId(String operationId);
-
-    /**
-     * Gets type of Key.
-     *
-     * @return the keyType value.
-     */
-    String keyType();
-
-    /**
-     * Sets type of Key.
-     *
-     * @param keyType the keyType value.
-     * @return the service client itself
-     */
-    QnAMakerClient withKeyType(String keyType);
-
-    /**
      * Gets Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com)..
      *
      * @return the endpoint value.
@@ -213,37 +153,41 @@ public interface QnAMakerClient {
     /**
      * Re-generates an endpoint key.
      *
+     * @param keyType type of Key
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EndpointKeysDTO object if successful.
      */
-    EndpointKeysDTO refreshEndpointKeys();
+    EndpointKeysDTO refreshEndpointKeys(String keyType);
 
     /**
      * Re-generates an endpoint key.
      *
+     * @param keyType type of Key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<EndpointKeysDTO> refreshEndpointKeysAsync(final ServiceCallback<EndpointKeysDTO> serviceCallback);
+    ServiceFuture<EndpointKeysDTO> refreshEndpointKeysAsync(String keyType, final ServiceCallback<EndpointKeysDTO> serviceCallback);
 
     /**
      * Re-generates an endpoint key.
      *
+     * @param keyType type of Key
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointKeysDTO object
      */
-    Observable<EndpointKeysDTO> refreshEndpointKeysAsync();
+    Observable<EndpointKeysDTO> refreshEndpointKeysAsync(String keyType);
 
     /**
      * Re-generates an endpoint key.
      *
+     * @param keyType type of Key
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointKeysDTO object
      */
-    Observable<ServiceResponse<EndpointKeysDTO>> refreshEndpointKeysWithServiceResponseAsync();
+    Observable<ServiceResponse<EndpointKeysDTO>> refreshEndpointKeysWithServiceResponseAsync(String keyType);
 
     /**
      * Download alterations from runtime.
@@ -356,217 +300,241 @@ public interface QnAMakerClient {
     /**
      * Gets details of a specific long running operation.
      *
+     * @param operationId Operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Operation object if successful.
      */
-    Operation getOperationDetails();
+    Operation getOperationDetails(String operationId);
 
     /**
      * Gets details of a specific long running operation.
      *
+     * @param operationId Operation id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Operation> getOperationDetailsAsync(final ServiceCallback<Operation> serviceCallback);
+    ServiceFuture<Operation> getOperationDetailsAsync(String operationId, final ServiceCallback<Operation> serviceCallback);
 
     /**
      * Gets details of a specific long running operation.
      *
+     * @param operationId Operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Operation object
      */
-    Observable<Operation> getOperationDetailsAsync();
+    Observable<Operation> getOperationDetailsAsync(String operationId);
 
     /**
      * Gets details of a specific long running operation.
      *
+     * @param operationId Operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Operation object
      */
-    Observable<ServiceResponseWithHeaders<Operation, GetOperationDetailsHeaders>> getOperationDetailsWithServiceResponseAsync();
+    Observable<ServiceResponseWithHeaders<Operation, GetOperationDetailsHeaders>> getOperationDetailsWithServiceResponseAsync(String operationId);
 
     /**
      * Gets details of a specific knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the KnowledgebaseDTO object if successful.
      */
-    KnowledgebaseDTO getKnowledgebaseDetails();
+    KnowledgebaseDTO getKnowledgebaseDetails(String kbId);
 
     /**
      * Gets details of a specific knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<KnowledgebaseDTO> getKnowledgebaseDetailsAsync(final ServiceCallback<KnowledgebaseDTO> serviceCallback);
+    ServiceFuture<KnowledgebaseDTO> getKnowledgebaseDetailsAsync(String kbId, final ServiceCallback<KnowledgebaseDTO> serviceCallback);
 
     /**
      * Gets details of a specific knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KnowledgebaseDTO object
      */
-    Observable<KnowledgebaseDTO> getKnowledgebaseDetailsAsync();
+    Observable<KnowledgebaseDTO> getKnowledgebaseDetailsAsync(String kbId);
 
     /**
      * Gets details of a specific knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KnowledgebaseDTO object
      */
-    Observable<ServiceResponse<KnowledgebaseDTO>> getKnowledgebaseDetailsWithServiceResponseAsync();
+    Observable<ServiceResponse<KnowledgebaseDTO>> getKnowledgebaseDetailsWithServiceResponseAsync(String kbId);
 
     /**
      * Deletes the knowledgebase and all its data.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deleteKnowledgebase();
+    void deleteKnowledgebase(String kbId);
 
     /**
      * Deletes the knowledgebase and all its data.
      *
+     * @param kbId Knowledgebase id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> deleteKnowledgebaseAsync(final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteKnowledgebaseAsync(String kbId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Deletes the knowledgebase and all its data.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteKnowledgebaseAsync();
+    Observable<Void> deleteKnowledgebaseAsync(String kbId);
 
     /**
      * Deletes the knowledgebase and all its data.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteKnowledgebaseWithServiceResponseAsync();
+    Observable<ServiceResponse<Void>> deleteKnowledgebaseWithServiceResponseAsync(String kbId);
 
     /**
      * Publishes all changes in test index of a knowledgebase to its prod index.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void publishKnowledgebase();
+    void publishKnowledgebase(String kbId);
 
     /**
      * Publishes all changes in test index of a knowledgebase to its prod index.
      *
+     * @param kbId Knowledgebase id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> publishKnowledgebaseAsync(final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> publishKnowledgebaseAsync(String kbId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Publishes all changes in test index of a knowledgebase to its prod index.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> publishKnowledgebaseAsync();
+    Observable<Void> publishKnowledgebaseAsync(String kbId);
 
     /**
      * Publishes all changes in test index of a knowledgebase to its prod index.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> publishKnowledgebaseWithServiceResponseAsync();
+    Observable<ServiceResponse<Void>> publishKnowledgebaseWithServiceResponseAsync(String kbId);
 
     /**
      * Replace knowledgebase contents.
      *
+     * @param kbId Knowledgebase id.
      * @param qnAList List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void replaceKnowledgebase(List<QnADTO> qnAList);
+    void replaceKnowledgebase(String kbId, List<QnADTO> qnAList);
 
     /**
      * Replace knowledgebase contents.
      *
+     * @param kbId Knowledgebase id.
      * @param qnAList List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> replaceKnowledgebaseAsync(List<QnADTO> qnAList, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> replaceKnowledgebaseAsync(String kbId, List<QnADTO> qnAList, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Replace knowledgebase contents.
      *
+     * @param kbId Knowledgebase id.
      * @param qnAList List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> replaceKnowledgebaseAsync(List<QnADTO> qnAList);
+    Observable<Void> replaceKnowledgebaseAsync(String kbId, List<QnADTO> qnAList);
 
     /**
      * Replace knowledgebase contents.
      *
+     * @param kbId Knowledgebase id.
      * @param qnAList List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> replaceKnowledgebaseWithServiceResponseAsync(List<QnADTO> qnAList);
+    Observable<ServiceResponse<Void>> replaceKnowledgebaseWithServiceResponseAsync(String kbId, List<QnADTO> qnAList);
 
     /**
      * Asynchronous operation to modify a knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @param updateKb Post body of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Operation object if successful.
      */
-    Operation updateKnowledgebase(UpdateKbOperationDTO updateKb);
+    Operation updateKnowledgebase(String kbId, UpdateKbOperationDTO updateKb);
 
     /**
      * Asynchronous operation to modify a knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @param updateKb Post body of the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Operation> updateKnowledgebaseAsync(UpdateKbOperationDTO updateKb, final ServiceCallback<Operation> serviceCallback);
+    ServiceFuture<Operation> updateKnowledgebaseAsync(String kbId, UpdateKbOperationDTO updateKb, final ServiceCallback<Operation> serviceCallback);
 
     /**
      * Asynchronous operation to modify a knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @param updateKb Post body of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Operation object
      */
-    Observable<Operation> updateKnowledgebaseAsync(UpdateKbOperationDTO updateKb);
+    Observable<Operation> updateKnowledgebaseAsync(String kbId, UpdateKbOperationDTO updateKb);
 
     /**
      * Asynchronous operation to modify a knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @param updateKb Post body of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Operation object
      */
-    Observable<ServiceResponseWithHeaders<Operation, UpdateKnowledgebaseHeaders>> updateKnowledgebaseWithServiceResponseAsync(UpdateKbOperationDTO updateKb);
+    Observable<ServiceResponseWithHeaders<Operation, UpdateKnowledgebaseHeaders>> updateKnowledgebaseWithServiceResponseAsync(String kbId, UpdateKbOperationDTO updateKb);
 
     /**
      * Asynchronous operation to create a new knowledgebase.
@@ -610,36 +578,44 @@ public interface QnAMakerClient {
     /**
      * Download the knowledgebase.
      *
+     * @param kbId Knowledgebase id.
+     * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the QnADocumentsDTO object if successful.
      */
-    QnADocumentsDTO downloadKnowledgebase();
+    QnADocumentsDTO downloadKnowledgebase(String kbId, String environment);
 
     /**
      * Download the knowledgebase.
      *
+     * @param kbId Knowledgebase id.
+     * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<QnADocumentsDTO> downloadKnowledgebaseAsync(final ServiceCallback<QnADocumentsDTO> serviceCallback);
+    ServiceFuture<QnADocumentsDTO> downloadKnowledgebaseAsync(String kbId, String environment, final ServiceCallback<QnADocumentsDTO> serviceCallback);
 
     /**
      * Download the knowledgebase.
      *
+     * @param kbId Knowledgebase id.
+     * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the QnADocumentsDTO object
      */
-    Observable<QnADocumentsDTO> downloadKnowledgebaseAsync();
+    Observable<QnADocumentsDTO> downloadKnowledgebaseAsync(String kbId, String environment);
 
     /**
      * Download the knowledgebase.
      *
+     * @param kbId Knowledgebase id.
+     * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the QnADocumentsDTO object
      */
-    Observable<ServiceResponse<QnADocumentsDTO>> downloadKnowledgebaseWithServiceResponseAsync();
+    Observable<ServiceResponse<QnADocumentsDTO>> downloadKnowledgebaseWithServiceResponseAsync(String kbId, String environment);
 
 }

@@ -67,98 +67,6 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
         return this.azureClient;
     }
 
-    /** Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'. */
-    private String environment;
-
-    /**
-     * Gets Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'.
-     *
-     * @return the environment value.
-     */
-    public String environment() {
-        return this.environment;
-    }
-
-    /**
-     * Sets Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'.
-     *
-     * @param environment the environment value.
-     * @return the service client itself
-     */
-    public QnAMakerClientImpl withEnvironment(String environment) {
-        this.environment = environment;
-        return this;
-    }
-
-    /** Knowledgebase id. */
-    private String kbId;
-
-    /**
-     * Gets Knowledgebase id.
-     *
-     * @return the kbId value.
-     */
-    public String kbId() {
-        return this.kbId;
-    }
-
-    /**
-     * Sets Knowledgebase id.
-     *
-     * @param kbId the kbId value.
-     * @return the service client itself
-     */
-    public QnAMakerClientImpl withKbId(String kbId) {
-        this.kbId = kbId;
-        return this;
-    }
-
-    /** Operation id. */
-    private String operationId;
-
-    /**
-     * Gets Operation id.
-     *
-     * @return the operationId value.
-     */
-    public String operationId() {
-        return this.operationId;
-    }
-
-    /**
-     * Sets Operation id.
-     *
-     * @param operationId the operationId value.
-     * @return the service client itself
-     */
-    public QnAMakerClientImpl withOperationId(String operationId) {
-        this.operationId = operationId;
-        return this;
-    }
-
-    /** type of Key. */
-    private String keyType;
-
-    /**
-     * Gets type of Key.
-     *
-     * @return the keyType value.
-     */
-    public String keyType() {
-        return this.keyType;
-    }
-
-    /**
-     * Sets type of Key.
-     *
-     * @param keyType the keyType value.
-     * @return the service client itself
-     */
-    public QnAMakerClientImpl withKeyType(String keyType) {
-        this.keyType = keyType;
-        return this;
-    }
-
     /** Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus.api.cognitive.microsoft.com). */
     private String endpoint;
 
@@ -435,34 +343,37 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Re-generates an endpoint key.
      *
+     * @param keyType type of Key
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EndpointKeysDTO object if successful.
      */
-    public EndpointKeysDTO refreshEndpointKeys() {
-        return refreshEndpointKeysWithServiceResponseAsync().toBlocking().single().body();
+    public EndpointKeysDTO refreshEndpointKeys(String keyType) {
+        return refreshEndpointKeysWithServiceResponseAsync(keyType).toBlocking().single().body();
     }
 
     /**
      * Re-generates an endpoint key.
      *
+     * @param keyType type of Key
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<EndpointKeysDTO> refreshEndpointKeysAsync(final ServiceCallback<EndpointKeysDTO> serviceCallback) {
-        return ServiceFuture.fromResponse(refreshEndpointKeysWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<EndpointKeysDTO> refreshEndpointKeysAsync(String keyType, final ServiceCallback<EndpointKeysDTO> serviceCallback) {
+        return ServiceFuture.fromResponse(refreshEndpointKeysWithServiceResponseAsync(keyType), serviceCallback);
     }
 
     /**
      * Re-generates an endpoint key.
      *
+     * @param keyType type of Key
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointKeysDTO object
      */
-    public Observable<EndpointKeysDTO> refreshEndpointKeysAsync() {
-        return refreshEndpointKeysWithServiceResponseAsync().map(new Func1<ServiceResponse<EndpointKeysDTO>, EndpointKeysDTO>() {
+    public Observable<EndpointKeysDTO> refreshEndpointKeysAsync(String keyType) {
+        return refreshEndpointKeysWithServiceResponseAsync(keyType).map(new Func1<ServiceResponse<EndpointKeysDTO>, EndpointKeysDTO>() {
             @Override
             public EndpointKeysDTO call(ServiceResponse<EndpointKeysDTO> response) {
                 return response.body();
@@ -473,18 +384,19 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Re-generates an endpoint key.
      *
+     * @param keyType type of Key
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EndpointKeysDTO object
      */
-    public Observable<ServiceResponse<EndpointKeysDTO>> refreshEndpointKeysWithServiceResponseAsync() {
+    public Observable<ServiceResponse<EndpointKeysDTO>> refreshEndpointKeysWithServiceResponseAsync(String keyType) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
-        if (this.keyType() == null) {
-            throw new IllegalArgumentException("Parameter this.keyType() is required and cannot be null.");
+        if (keyType == null) {
+            throw new IllegalArgumentException("Parameter keyType is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.refreshEndpointKeys(this.keyType(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.refreshEndpointKeys(keyType, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EndpointKeysDTO>>>() {
                 @Override
                 public Observable<ServiceResponse<EndpointKeysDTO>> call(Response<ResponseBody> response) {
@@ -727,34 +639,37 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Gets details of a specific long running operation.
      *
+     * @param operationId Operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Operation object if successful.
      */
-    public Operation getOperationDetails() {
-        return getOperationDetailsWithServiceResponseAsync().toBlocking().single().body();
+    public Operation getOperationDetails(String operationId) {
+        return getOperationDetailsWithServiceResponseAsync(operationId).toBlocking().single().body();
     }
 
     /**
      * Gets details of a specific long running operation.
      *
+     * @param operationId Operation id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Operation> getOperationDetailsAsync(final ServiceCallback<Operation> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(getOperationDetailsWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<Operation> getOperationDetailsAsync(String operationId, final ServiceCallback<Operation> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(getOperationDetailsWithServiceResponseAsync(operationId), serviceCallback);
     }
 
     /**
      * Gets details of a specific long running operation.
      *
+     * @param operationId Operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Operation object
      */
-    public Observable<Operation> getOperationDetailsAsync() {
-        return getOperationDetailsWithServiceResponseAsync().map(new Func1<ServiceResponseWithHeaders<Operation, GetOperationDetailsHeaders>, Operation>() {
+    public Observable<Operation> getOperationDetailsAsync(String operationId) {
+        return getOperationDetailsWithServiceResponseAsync(operationId).map(new Func1<ServiceResponseWithHeaders<Operation, GetOperationDetailsHeaders>, Operation>() {
             @Override
             public Operation call(ServiceResponseWithHeaders<Operation, GetOperationDetailsHeaders> response) {
                 return response.body();
@@ -765,18 +680,19 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Gets details of a specific long running operation.
      *
+     * @param operationId Operation id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Operation object
      */
-    public Observable<ServiceResponseWithHeaders<Operation, GetOperationDetailsHeaders>> getOperationDetailsWithServiceResponseAsync() {
+    public Observable<ServiceResponseWithHeaders<Operation, GetOperationDetailsHeaders>> getOperationDetailsWithServiceResponseAsync(String operationId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
-        if (this.operationId() == null) {
-            throw new IllegalArgumentException("Parameter this.operationId() is required and cannot be null.");
+        if (operationId == null) {
+            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.getOperationDetails(this.operationId(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.getOperationDetails(operationId, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Operation, GetOperationDetailsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Operation, GetOperationDetailsHeaders>> call(Response<ResponseBody> response) {
@@ -800,34 +716,37 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Gets details of a specific knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the KnowledgebaseDTO object if successful.
      */
-    public KnowledgebaseDTO getKnowledgebaseDetails() {
-        return getKnowledgebaseDetailsWithServiceResponseAsync().toBlocking().single().body();
+    public KnowledgebaseDTO getKnowledgebaseDetails(String kbId) {
+        return getKnowledgebaseDetailsWithServiceResponseAsync(kbId).toBlocking().single().body();
     }
 
     /**
      * Gets details of a specific knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<KnowledgebaseDTO> getKnowledgebaseDetailsAsync(final ServiceCallback<KnowledgebaseDTO> serviceCallback) {
-        return ServiceFuture.fromResponse(getKnowledgebaseDetailsWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<KnowledgebaseDTO> getKnowledgebaseDetailsAsync(String kbId, final ServiceCallback<KnowledgebaseDTO> serviceCallback) {
+        return ServiceFuture.fromResponse(getKnowledgebaseDetailsWithServiceResponseAsync(kbId), serviceCallback);
     }
 
     /**
      * Gets details of a specific knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KnowledgebaseDTO object
      */
-    public Observable<KnowledgebaseDTO> getKnowledgebaseDetailsAsync() {
-        return getKnowledgebaseDetailsWithServiceResponseAsync().map(new Func1<ServiceResponse<KnowledgebaseDTO>, KnowledgebaseDTO>() {
+    public Observable<KnowledgebaseDTO> getKnowledgebaseDetailsAsync(String kbId) {
+        return getKnowledgebaseDetailsWithServiceResponseAsync(kbId).map(new Func1<ServiceResponse<KnowledgebaseDTO>, KnowledgebaseDTO>() {
             @Override
             public KnowledgebaseDTO call(ServiceResponse<KnowledgebaseDTO> response) {
                 return response.body();
@@ -838,18 +757,19 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Gets details of a specific knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the KnowledgebaseDTO object
      */
-    public Observable<ServiceResponse<KnowledgebaseDTO>> getKnowledgebaseDetailsWithServiceResponseAsync() {
+    public Observable<ServiceResponse<KnowledgebaseDTO>> getKnowledgebaseDetailsWithServiceResponseAsync(String kbId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
-        if (this.kbId() == null) {
-            throw new IllegalArgumentException("Parameter this.kbId() is required and cannot be null.");
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.getKnowledgebaseDetails(this.kbId(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.getKnowledgebaseDetails(kbId, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KnowledgebaseDTO>>>() {
                 @Override
                 public Observable<ServiceResponse<KnowledgebaseDTO>> call(Response<ResponseBody> response) {
@@ -873,33 +793,36 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Deletes the knowledgebase and all its data.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteKnowledgebase() {
-        deleteKnowledgebaseWithServiceResponseAsync().toBlocking().single().body();
+    public void deleteKnowledgebase(String kbId) {
+        deleteKnowledgebaseWithServiceResponseAsync(kbId).toBlocking().single().body();
     }
 
     /**
      * Deletes the knowledgebase and all its data.
      *
+     * @param kbId Knowledgebase id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteKnowledgebaseAsync(final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteKnowledgebaseWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<Void> deleteKnowledgebaseAsync(String kbId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteKnowledgebaseWithServiceResponseAsync(kbId), serviceCallback);
     }
 
     /**
      * Deletes the knowledgebase and all its data.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteKnowledgebaseAsync() {
-        return deleteKnowledgebaseWithServiceResponseAsync().map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteKnowledgebaseAsync(String kbId) {
+        return deleteKnowledgebaseWithServiceResponseAsync(kbId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -910,18 +833,19 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Deletes the knowledgebase and all its data.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteKnowledgebaseWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Void>> deleteKnowledgebaseWithServiceResponseAsync(String kbId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
-        if (this.kbId() == null) {
-            throw new IllegalArgumentException("Parameter this.kbId() is required and cannot be null.");
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.deleteKnowledgebase(this.kbId(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.deleteKnowledgebase(kbId, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -945,33 +869,36 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Publishes all changes in test index of a knowledgebase to its prod index.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void publishKnowledgebase() {
-        publishKnowledgebaseWithServiceResponseAsync().toBlocking().single().body();
+    public void publishKnowledgebase(String kbId) {
+        publishKnowledgebaseWithServiceResponseAsync(kbId).toBlocking().single().body();
     }
 
     /**
      * Publishes all changes in test index of a knowledgebase to its prod index.
      *
+     * @param kbId Knowledgebase id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> publishKnowledgebaseAsync(final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(publishKnowledgebaseWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<Void> publishKnowledgebaseAsync(String kbId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(publishKnowledgebaseWithServiceResponseAsync(kbId), serviceCallback);
     }
 
     /**
      * Publishes all changes in test index of a knowledgebase to its prod index.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> publishKnowledgebaseAsync() {
-        return publishKnowledgebaseWithServiceResponseAsync().map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> publishKnowledgebaseAsync(String kbId) {
+        return publishKnowledgebaseWithServiceResponseAsync(kbId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -982,18 +909,19 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Publishes all changes in test index of a knowledgebase to its prod index.
      *
+     * @param kbId Knowledgebase id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> publishKnowledgebaseWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Void>> publishKnowledgebaseWithServiceResponseAsync(String kbId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
-        if (this.kbId() == null) {
-            throw new IllegalArgumentException("Parameter this.kbId() is required and cannot be null.");
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.publishKnowledgebase(this.kbId(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.publishKnowledgebase(kbId, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1017,36 +945,39 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Replace knowledgebase contents.
      *
+     * @param kbId Knowledgebase id.
      * @param qnAList List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void replaceKnowledgebase(List<QnADTO> qnAList) {
-        replaceKnowledgebaseWithServiceResponseAsync(qnAList).toBlocking().single().body();
+    public void replaceKnowledgebase(String kbId, List<QnADTO> qnAList) {
+        replaceKnowledgebaseWithServiceResponseAsync(kbId, qnAList).toBlocking().single().body();
     }
 
     /**
      * Replace knowledgebase contents.
      *
+     * @param kbId Knowledgebase id.
      * @param qnAList List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> replaceKnowledgebaseAsync(List<QnADTO> qnAList, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(replaceKnowledgebaseWithServiceResponseAsync(qnAList), serviceCallback);
+    public ServiceFuture<Void> replaceKnowledgebaseAsync(String kbId, List<QnADTO> qnAList, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(replaceKnowledgebaseWithServiceResponseAsync(kbId, qnAList), serviceCallback);
     }
 
     /**
      * Replace knowledgebase contents.
      *
+     * @param kbId Knowledgebase id.
      * @param qnAList List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> replaceKnowledgebaseAsync(List<QnADTO> qnAList) {
-        return replaceKnowledgebaseWithServiceResponseAsync(qnAList).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> replaceKnowledgebaseAsync(String kbId, List<QnADTO> qnAList) {
+        return replaceKnowledgebaseWithServiceResponseAsync(kbId, qnAList).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -1057,16 +988,17 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Replace knowledgebase contents.
      *
+     * @param kbId Knowledgebase id.
      * @param qnAList List of Q-A (QnADTO) to be added to the knowledgebase. Q-A Ids are assigned by the service and should be omitted.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> replaceKnowledgebaseWithServiceResponseAsync(List<QnADTO> qnAList) {
+    public Observable<ServiceResponse<Void>> replaceKnowledgebaseWithServiceResponseAsync(String kbId, List<QnADTO> qnAList) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
-        if (this.kbId() == null) {
-            throw new IllegalArgumentException("Parameter this.kbId() is required and cannot be null.");
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
         }
         if (qnAList == null) {
             throw new IllegalArgumentException("Parameter qnAList is required and cannot be null.");
@@ -1075,7 +1007,7 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
         ReplaceKbDTO replaceKb = new ReplaceKbDTO();
         replaceKb.withQnAList(qnAList);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.replaceKnowledgebase(this.kbId(), this.acceptLanguage(), replaceKb, parameterizedHost, this.userAgent())
+        return service.replaceKnowledgebase(kbId, this.acceptLanguage(), replaceKb, parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1099,37 +1031,40 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Asynchronous operation to modify a knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @param updateKb Post body of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Operation object if successful.
      */
-    public Operation updateKnowledgebase(UpdateKbOperationDTO updateKb) {
-        return updateKnowledgebaseWithServiceResponseAsync(updateKb).toBlocking().single().body();
+    public Operation updateKnowledgebase(String kbId, UpdateKbOperationDTO updateKb) {
+        return updateKnowledgebaseWithServiceResponseAsync(kbId, updateKb).toBlocking().single().body();
     }
 
     /**
      * Asynchronous operation to modify a knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @param updateKb Post body of the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Operation> updateKnowledgebaseAsync(UpdateKbOperationDTO updateKb, final ServiceCallback<Operation> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(updateKnowledgebaseWithServiceResponseAsync(updateKb), serviceCallback);
+    public ServiceFuture<Operation> updateKnowledgebaseAsync(String kbId, UpdateKbOperationDTO updateKb, final ServiceCallback<Operation> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(updateKnowledgebaseWithServiceResponseAsync(kbId, updateKb), serviceCallback);
     }
 
     /**
      * Asynchronous operation to modify a knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @param updateKb Post body of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Operation object
      */
-    public Observable<Operation> updateKnowledgebaseAsync(UpdateKbOperationDTO updateKb) {
-        return updateKnowledgebaseWithServiceResponseAsync(updateKb).map(new Func1<ServiceResponseWithHeaders<Operation, UpdateKnowledgebaseHeaders>, Operation>() {
+    public Observable<Operation> updateKnowledgebaseAsync(String kbId, UpdateKbOperationDTO updateKb) {
+        return updateKnowledgebaseWithServiceResponseAsync(kbId, updateKb).map(new Func1<ServiceResponseWithHeaders<Operation, UpdateKnowledgebaseHeaders>, Operation>() {
             @Override
             public Operation call(ServiceResponseWithHeaders<Operation, UpdateKnowledgebaseHeaders> response) {
                 return response.body();
@@ -1140,23 +1075,24 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Asynchronous operation to modify a knowledgebase.
      *
+     * @param kbId Knowledgebase id.
      * @param updateKb Post body of the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Operation object
      */
-    public Observable<ServiceResponseWithHeaders<Operation, UpdateKnowledgebaseHeaders>> updateKnowledgebaseWithServiceResponseAsync(UpdateKbOperationDTO updateKb) {
+    public Observable<ServiceResponseWithHeaders<Operation, UpdateKnowledgebaseHeaders>> updateKnowledgebaseWithServiceResponseAsync(String kbId, UpdateKbOperationDTO updateKb) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
-        if (this.kbId() == null) {
-            throw new IllegalArgumentException("Parameter this.kbId() is required and cannot be null.");
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
         }
         if (updateKb == null) {
             throw new IllegalArgumentException("Parameter updateKb is required and cannot be null.");
         }
         Validator.validate(updateKb);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.updateKnowledgebase(this.kbId(), updateKb, this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.updateKnowledgebase(kbId, updateKb, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Operation, UpdateKnowledgebaseHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Operation, UpdateKnowledgebaseHeaders>> call(Response<ResponseBody> response) {
@@ -1258,34 +1194,40 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Download the knowledgebase.
      *
+     * @param kbId Knowledgebase id.
+     * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the QnADocumentsDTO object if successful.
      */
-    public QnADocumentsDTO downloadKnowledgebase() {
-        return downloadKnowledgebaseWithServiceResponseAsync().toBlocking().single().body();
+    public QnADocumentsDTO downloadKnowledgebase(String kbId, String environment) {
+        return downloadKnowledgebaseWithServiceResponseAsync(kbId, environment).toBlocking().single().body();
     }
 
     /**
      * Download the knowledgebase.
      *
+     * @param kbId Knowledgebase id.
+     * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<QnADocumentsDTO> downloadKnowledgebaseAsync(final ServiceCallback<QnADocumentsDTO> serviceCallback) {
-        return ServiceFuture.fromResponse(downloadKnowledgebaseWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<QnADocumentsDTO> downloadKnowledgebaseAsync(String kbId, String environment, final ServiceCallback<QnADocumentsDTO> serviceCallback) {
+        return ServiceFuture.fromResponse(downloadKnowledgebaseWithServiceResponseAsync(kbId, environment), serviceCallback);
     }
 
     /**
      * Download the knowledgebase.
      *
+     * @param kbId Knowledgebase id.
+     * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the QnADocumentsDTO object
      */
-    public Observable<QnADocumentsDTO> downloadKnowledgebaseAsync() {
-        return downloadKnowledgebaseWithServiceResponseAsync().map(new Func1<ServiceResponse<QnADocumentsDTO>, QnADocumentsDTO>() {
+    public Observable<QnADocumentsDTO> downloadKnowledgebaseAsync(String kbId, String environment) {
+        return downloadKnowledgebaseWithServiceResponseAsync(kbId, environment).map(new Func1<ServiceResponse<QnADocumentsDTO>, QnADocumentsDTO>() {
             @Override
             public QnADocumentsDTO call(ServiceResponse<QnADocumentsDTO> response) {
                 return response.body();
@@ -1296,21 +1238,23 @@ public class QnAMakerClientImpl extends AzureServiceClient implements QnAMakerCl
     /**
      * Download the knowledgebase.
      *
+     * @param kbId Knowledgebase id.
+     * @param environment Specifies whether environment is Test or Prod. Possible values include: 'Prod', 'Test'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the QnADocumentsDTO object
      */
-    public Observable<ServiceResponse<QnADocumentsDTO>> downloadKnowledgebaseWithServiceResponseAsync() {
+    public Observable<ServiceResponse<QnADocumentsDTO>> downloadKnowledgebaseWithServiceResponseAsync(String kbId, String environment) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
-        if (this.kbId() == null) {
-            throw new IllegalArgumentException("Parameter this.kbId() is required and cannot be null.");
+        if (kbId == null) {
+            throw new IllegalArgumentException("Parameter kbId is required and cannot be null.");
         }
-        if (this.environment() == null) {
-            throw new IllegalArgumentException("Parameter this.environment() is required and cannot be null.");
+        if (environment == null) {
+            throw new IllegalArgumentException("Parameter environment is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.downloadKnowledgebase(this.kbId(), this.environment(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.downloadKnowledgebase(kbId, environment, this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<QnADocumentsDTO>>>() {
                 @Override
                 public Observable<ServiceResponse<QnADocumentsDTO>> call(Response<ResponseBody> response) {
