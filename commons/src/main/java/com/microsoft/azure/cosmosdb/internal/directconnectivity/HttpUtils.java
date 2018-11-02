@@ -23,13 +23,17 @@
 
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.rx.internal.Strings;
+import io.reactivex.netty.protocol.http.client.HttpRequestHeaders;
 import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLEncoder;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,18 +50,50 @@ public class HttpUtils {
         }
     }
 
+    public static URI toURI(String uri) {
+        try {
+            return new URI(uri);
+        } catch (Exception e) {
+            log.error("failed to parse {}", uri, e);
+            throw new IllegalArgumentException("failed to parse uri " + uri, e);
+        }
+    }
+
     public static Map<String, String> asMap(HttpResponseHeaders headers) {
-        HashMap<String, String> map = new HashMap<>();
+        if (headers == null) {
+            return new HashMap<>();
+        }
+
+        HashMap<String, String> map = new HashMap<>(headers.names().size());
         for (Map.Entry<String, String> entry : headers.entries()) {
             map.put(entry.getKey(), entry.getValue());
         }
         return map;
     }
 
-    public static Map<String, String> asSafeMap(HttpResponseHeaders headers) {
+    public static Map<String, String> asMap(HttpRequestHeaders headers) {
+        HashMap<String, String> map = new HashMap<>();
         if (headers == null) {
-            return Collections.EMPTY_MAP;
+            return map;
         }
-        return asMap(headers);
+        for (Map.Entry<String, String> entry : headers.entries()) {
+            map.put(entry.getKey(), entry.getValue());
+        }
+        return map;
+    }
+
+    public static String getDateHeader(Map<String, String> headerValues) {
+        if (headerValues == null) {
+            return StringUtils.EMPTY;
+        }
+
+        // Since Date header is overridden by some proxies/http client libraries, we support
+        // an additional date header 'x-ms-date' and prefer that to the regular 'date' header.
+        String date = headerValues.get(HttpConstants.HttpHeaders.X_DATE);
+        if (Strings.isNullOrEmpty(date)) {
+            date = headerValues.get(HttpConstants.HttpHeaders.HTTP_DATE);
+        }
+
+        return date != null ? date : StringUtils.EMPTY;
     }
 }

@@ -23,28 +23,8 @@
 
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
-class WFConstants {
-    static final int DefaultFabricNameResolutionTimeoutInSeconds = 10;
-
-    static class AzureNames {
-        public static final String WorkerRoleName = "WAFab";
-        public static final String NodeAddressEndpoint = "NodeAddress";
-    }
-
-    static class WireNames {
-        public static final String NamedEndpoint = "App=";
-        public static final String Namespace = "http://docs.core.windows.net";
-        public static final String Request = "Request";
-        public static final String Response = "Response";
-        public static final String RequestAction = "http://docs.core.windows.net/DocDb/Invoke";
-        public static final String ResponseAction = "http://docs.core.windows.net/DocDb/InvokeResponse";
-
-        public static final String AddressingHeaderNamespace = "http://www.w3.org/2005/08/addressing";
-        public static final String MessageIdHeaderName = "MessageID";
-        public static final String RelatesToHeaderName = "RelatesTo";
-    }
-
-    static class BackendHeaders {
+public class WFConstants {
+    public static class BackendHeaders {
         public static final String ResourceId = "x-docdb-resource-id";
         public static final String OwnerId = "x-docdb-owner-id";
         public static final String ENTITY_ID = "x-docdb-entity-id";
@@ -87,5 +67,6 @@ class WFConstants {
         public static final String GlobalCommittedLSN = "x-ms-global-committed-lsn";
         public static final String NumberOfReadRegions = "x-ms-number-of-read-regions";
         public static final String ItemLSN = "x-ms-item-lsn";
+        public static final String ALLOW_TENTATIVE_WRITES = "x-ms-cosmos-allow-tentative-writes";
     }
 }

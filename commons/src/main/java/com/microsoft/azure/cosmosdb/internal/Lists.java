@@ -21,15 +21,13 @@
  * SOFTWARE.
  */
 
-package com.microsoft.azure.cosmosdb;
+package com.microsoft.azure.cosmosdb.internal;
 
-import java.util.Collection;
 import java.util.List;
 
-public class GatewayTestUtils {
+public class Lists {
 
-    public static PartitionKeyRange setParent(PartitionKeyRange pkr, List<String> parents) {
-        pkr.setParents(parents);
-        return pkr;
+    public static <V> V firstOrDefault(List<V> list, V defaultValue) {
+        return list.isEmpty() ? defaultValue : list.get(0);
     }
 }

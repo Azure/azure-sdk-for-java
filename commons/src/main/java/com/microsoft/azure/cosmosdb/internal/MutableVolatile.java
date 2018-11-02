@@ -21,15 +21,8 @@
  * SOFTWARE.
  */
 
-package com.microsoft.azure.cosmosdb;
+package com.microsoft.azure.cosmosdb.internal;
 
-import java.util.Collection;
-import java.util.List;
-
-public class GatewayTestUtils {
-
-    public static PartitionKeyRange setParent(PartitionKeyRange pkr, List<String> parents) {
-        pkr.setParents(parents);
-        return pkr;
-    }
+public class MutableVolatile<T> {
+    public volatile T v;
 }

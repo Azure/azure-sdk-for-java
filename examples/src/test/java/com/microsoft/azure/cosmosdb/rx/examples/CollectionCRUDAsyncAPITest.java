@@ -73,7 +73,7 @@ import rx.observable.ListenableFutureObservable;
  * 
  * For example
  * <ul>
- * <li>{@link #testCreateCollection_Async()} demonstrates how to use async api
+ * <li>{@link #testCreateCollection_MultiPartition_Async()} demonstrates how to use async api
  * with java8 lambda expression.
  * 
  * <li>{@link #testCreateCollection_Async_withoutLambda()} demonstrates how to
@@ -92,7 +92,7 @@ public class CollectionCRUDAsyncAPITest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CollectionCRUDAsyncAPITest.class);
 
-    private static final String DATABASE_ID = "async-test-db";
+    private static final String DATABASE_ID = Utils.getDatabaseId(CollectionCRUDAsyncAPITest.class);
     private Database createdDatabase;
     private DocumentCollection collectionDefinition;
 
@@ -121,7 +121,7 @@ public class CollectionCRUDAsyncAPITest {
 
     @After
     public void shutdown() throws DocumentClientException {
-        asyncClient.close();
+        Utils.safeclean(asyncClient, DATABASE_ID);
     }
 
     /**

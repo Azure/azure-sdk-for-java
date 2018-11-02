@@ -21,15 +21,20 @@
  * SOFTWARE.
  */
 
-package com.microsoft.azure.cosmosdb;
+package com.microsoft.azure.cosmosdb.internal;
 
-import java.util.Collection;
-import java.util.List;
+import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 
-public class GatewayTestUtils {
+public class Longs {
+    public static long tryParse(String value, long defaultValue) {
+        if (Strings.isNullOrEmpty(value)) {
+            return defaultValue;
+        }
 
-    public static PartitionKeyRange setParent(PartitionKeyRange pkr, List<String> parents) {
-        pkr.setParents(parents);
-        return pkr;
+        try {
+            return Long.valueOf(value);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
     }
 }

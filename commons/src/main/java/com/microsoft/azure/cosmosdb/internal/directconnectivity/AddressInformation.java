@@ -23,6 +23,8 @@
 
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
+import com.microsoft.azure.cosmosdb.internal.Utils;
+
 /**
  * Used internally to encapsulate a physical address information in the Azure Cosmos DB database service.
  */
@@ -32,12 +34,10 @@ public class AddressInformation {
     private boolean isPrimary;
     private String physicalUri;
 
-    public AddressInformation() {
-    }
-
     public AddressInformation(boolean isPublic, boolean isPrimary, String physicalUri, String protocol) {
         this.isPublic = isPublic;
         this.isPrimary = isPrimary;
+        this.physicalUri = physicalUri != null ? Utils.trimBeginingAndEndingSlashes(physicalUri) + "/" : null;
         this.physicalUri = physicalUri;
         this.protocol = protocol;
     }
@@ -46,24 +46,12 @@ public class AddressInformation {
         return isPublic;
     }
 
-    public void setPublic(boolean isPublic) {
-        this.isPublic = isPublic;
-    }
-
     public boolean isPrimary() {
         return isPrimary;
     }
 
-    public void setPrimary(boolean isPrimary) {
-        this.isPrimary = isPrimary;
-    }
-
     public String getPhysicalUri() {
         return physicalUri;
-    }
-
-    public void setPhysicalUri(String physicalUri) {
-        this.physicalUri = physicalUri;
     }
 
     public String getProtocol() {

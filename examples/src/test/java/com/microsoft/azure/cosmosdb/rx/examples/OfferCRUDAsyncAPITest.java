@@ -64,7 +64,7 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 public class OfferCRUDAsyncAPITest {
     private static final Logger LOGGER = LoggerFactory.getLogger(OfferCRUDAsyncAPITest.class);
 
-    private static final String DATABASE_ID = "async-test-db";
+    private static final String DATABASE_ID = Utils.getDatabaseId(OfferCRUDAsyncAPITest.class);
     private Database createdDatabase;
 
     private AsyncDocumentClient asyncClient;
@@ -90,7 +90,7 @@ public class OfferCRUDAsyncAPITest {
 
     @After
     public void shutdown() throws DocumentClientException {
-        asyncClient.close();
+        Utils.safeclean(asyncClient, DATABASE_ID);
     }
 
     /**

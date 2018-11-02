@@ -68,7 +68,7 @@ import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 public class StoredProcedureAsyncAPITest {
     private static final Logger LOGGER = LoggerFactory.getLogger(StoredProcedureAsyncAPITest.class);
 
-    private static final String DATABASE_ID = "async-test-db";
+    private static final String DATABASE_ID = Utils.getDatabaseId(StoredProcedureAsyncAPITest.class);
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
@@ -98,7 +98,7 @@ public class StoredProcedureAsyncAPITest {
 
     @After
     public void shutdown() throws DocumentClientException {
-        asyncClient.close();
+        Utils.safeclean(asyncClient, DATABASE_ID);
     }
 
     /**

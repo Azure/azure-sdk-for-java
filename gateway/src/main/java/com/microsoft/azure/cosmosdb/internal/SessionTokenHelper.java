@@ -137,7 +137,7 @@ public class SessionTokenHelper {
         return sessionContainer.resolvePartitionLocalSessionToken(request, partitionKeyRangeId);
     }
 
-    static ISessionToken parse(String sessionToken) {
+    public static ISessionToken parse(String sessionToken) {
         ValueHolder<ISessionToken> partitionKeyRangeSessionToken = ValueHolder.initialize(null);
 
         if (VectorSessionToken.tryCreate(sessionToken, partitionKeyRangeSessionToken)) {

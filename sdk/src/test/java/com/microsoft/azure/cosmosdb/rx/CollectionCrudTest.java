@@ -24,6 +24,8 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.net.UnknownHostException;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -45,7 +47,8 @@ public class CollectionCrudTest extends TestSuiteBase {
     protected static final int TIMEOUT = 20000;
     protected static final int SETUP_TIMEOUT = 20000;
     protected static final int SHUTDOWN_TIMEOUT = 20000;
-    
+    private static final String UNREACHABLE_HOST = "https://unreachable:443/";
+
     private AsyncDocumentClient client;
     private Database database;
 
@@ -140,7 +143,26 @@ public class CollectionCrudTest extends TestSuiteBase {
                 .indexingMode(IndexingMode.Lazy).build();
         validateSuccess(readObservable, validator);
     }
-    
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void createCollectionWithUnreachableHost() throws InterruptedException {
+        AsyncDocumentClient unreachableDocumentClient = null;
+        try {
+            unreachableDocumentClient = new AsyncDocumentClient.Builder().withServiceEndpoint(UNREACHABLE_HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY).withConnectionPolicy(ConnectionPolicy.GetDefault())
+                .withConsistencyLevel(ConsistencyLevel.Eventual).build();
+
+           DocumentCollection collectionDefinition = getCollectionDefinition();
+
+           Observable<ResourceResponse<DocumentCollection>> createObservable = unreachableDocumentClient
+                    .createCollection(database.getSelfLink(), collectionDefinition, null);
+           FailureValidator validator = new FailureValidator.Builder().instanceOf(UnknownHostException.class).build();
+           validateFailure(createObservable, validator);
+       } finally {
+            safeClose(unreachableDocumentClient);
+        }
+    }
+
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         // set up the client

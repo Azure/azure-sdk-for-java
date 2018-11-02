@@ -23,6 +23,19 @@
 
 package com.microsoft.azure.cosmosdb.internal;
 
+import com.microsoft.azure.cosmosdb.Attachment;
+import com.microsoft.azure.cosmosdb.Conflict;
+import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.Document;
+import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.Offer;
+import com.microsoft.azure.cosmosdb.Permission;
+import com.microsoft.azure.cosmosdb.Resource;
+import com.microsoft.azure.cosmosdb.StoredProcedure;
+import com.microsoft.azure.cosmosdb.Trigger;
+import com.microsoft.azure.cosmosdb.User;
+import com.microsoft.azure.cosmosdb.UserDefinedFunction;
+import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
@@ -37,12 +50,98 @@ import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 public class PathsHelper {
     public static String generatePath(ResourceType resourceType, RxDocumentServiceRequest request, boolean isFeed) {
         if (request.getIsNameBased()) {
-            return request.getPath();
+            return request.getResourceAddress();
+
+            // TODO: once https://msdata.visualstudio.com/CosmosDB/_workitems/edit/315281 is done
+            // we should wire this up against PathsHelper.generatePathForNameBased(.)
+            // return PathsHelper.generatePathForNameBased(resourceType, request.getResourceAddress(), isFeed);
         } else {
-        return PathsHelper.generatePath(resourceType, request.getResourceId(), isFeed);
+            return PathsHelper.generatePath(resourceType, request.getResourceId(), isFeed);
+        }
     }
+
+    public static String generatePathForNameBased(Resource resourceType, String resourceOwnerFullName, String resourceName) {
+        if (resourceName == null)
+            return null;
+
+        if (resourceType instanceof Database) {
+            return Paths.DATABASES_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceOwnerFullName == null) {
+            return null;
+        } else if (resourceType instanceof DocumentCollection) {
+            return resourceOwnerFullName + "/" + Paths.COLLECTIONS_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceType instanceof StoredProcedure) {
+            return resourceOwnerFullName + "/" + Paths.STORED_PROCEDURES_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceType instanceof UserDefinedFunction) {
+            return resourceOwnerFullName + "/" + Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceType instanceof Trigger) {
+            return resourceOwnerFullName + "/" + Paths.TRIGGERS_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceType instanceof Conflict) {
+            return resourceOwnerFullName + "/" + Paths.CONFLICTS_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceType instanceof Attachment) {
+            return resourceOwnerFullName + "/" + Paths.ATTACHMENTS_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceType instanceof User) {
+            return resourceOwnerFullName + "/" + Paths.USERS_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceType instanceof Permission) {
+            return resourceOwnerFullName + "/" + Paths.PERMISSIONS_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceType instanceof Document) {
+            return resourceOwnerFullName + "/" + Paths.DOCUMENTS_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceType instanceof Offer) {
+            return Paths.OFFERS_PATH_SEGMENT + "/" + resourceName;
+        } else if (resourceType instanceof Resource) {
+            // just generic Resource type.
+            return null;
+        }
+
+        String errorMessage = String.format(RMResources.UnknownResourceType, resourceType.toString());
+        assert false : errorMessage;
+        throw new IllegalArgumentException(errorMessage);
     }
-    
+
+    private static String generatePathForNameBased(ResourceType resourceType, String resourceFullName, boolean isFeed) {
+        if (isFeed && Strings.isNullOrEmpty(resourceFullName) && resourceType != ResourceType.Database) {
+            String errorMessage = String.format(RMResources.UnexpectedResourceType, resourceType);
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        String resourcePath = null;
+        if (!isFeed) {
+            resourcePath = resourceFullName;
+        } else if (resourceType == ResourceType.Database) {
+            return Paths.DATABASES_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.DocumentCollection) {
+            resourcePath = resourceFullName + "/" + Paths.COLLECTIONS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.StoredProcedure) {
+            resourcePath = resourceFullName + "/" + Paths.STORED_PROCEDURES_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.UserDefinedFunction) {
+            resourcePath = resourceFullName + "/" + Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.Trigger) {
+            resourcePath = resourceFullName + "/" + Paths.TRIGGERS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.Conflict) {
+            resourcePath = resourceFullName + "/" + Paths.CONFLICTS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.Attachment) {
+            resourcePath = resourceFullName + "/" + Paths.ATTACHMENTS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.User) {
+            resourcePath = resourceFullName + "/" + Paths.USERS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.Permission) {
+            resourcePath = resourceFullName + "/" + Paths.PERMISSIONS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.Document) {
+            resourcePath = resourceFullName + "/" + Paths.DOCUMENTS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.Offer) {
+            return resourceFullName + "/" + Paths.OFFERS_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.PartitionKeyRange) {
+            return resourceFullName + "/" + Paths.PARTITION_KEY_RANGE_PATH_SEGMENT;
+        } else if (resourceType == ResourceType.Schema) {
+            resourcePath = resourceFullName + "/" + Paths.SCHEMAS_PATH_SEGMENT;
+        } else {
+            String errorMessage = String.format(RMResources.UnknownResourceType, resourceType.toString());
+            assert false : errorMessage;
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+        return resourcePath;
+    }
+
     public static String generatePath(ResourceType resourceType, String ownerOrResourceId, boolean isFeed) {
         if (isFeed && (ownerOrResourceId == null || ownerOrResourceId.isEmpty()) && 
             resourceType != ResourceType.Database && 
@@ -324,9 +423,9 @@ public class PathsHelper {
     /**
      * Method which will return boolean based on whether it is able to parse the
      * name segment from resource url , and fill info in PathInfo object
-     * @param resourceUrl  Complete ResourceLink 
+     * @param resourceUrl  Complete ResourceLink
+     * @param segments
      * @param pathInfo Path info object which will hold information
-     * @param clientVersion The Client version
      * @return
      */
     public static boolean tryParseNameSegments(String resourceUrl, String[] segments, PathInfo pathInfo) {

@@ -68,11 +68,9 @@ public class RetryThrottleTest extends TestSuiteBase {
     private final static int TOTAL_DOCS = 500;
     private final static int LARGE_TIMEOUT = 30000;
 
-    private AsyncDocumentClient client;
+    private SpyClientUnderTestFactory.ClientWithGatewaySpy client;
     private Database database;
     private DocumentCollection collection;
-    private RxGatewayStoreModel gateway;
-    private RxGatewayStoreModel spyGateway;
     private AsyncDocumentClient houseKeepingClient;
 
     @Test(groups = { "internal" }, timeOut = LARGE_TIMEOUT )
@@ -82,15 +80,14 @@ public class RetryThrottleTest extends TestSuiteBase {
         retryOptions.setMaxRetryAttemptsOnThrottledRequests(Integer.MAX_VALUE);
         retryOptions.setMaxRetryWaitTimeInSeconds(LARGE_TIMEOUT);
         policy.setRetryOptions(retryOptions);
-        
-        client = new AsyncDocumentClient.Builder()
+
+        AsyncDocumentClient.Builder builder = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(policy)
-                .withConsistencyLevel(ConsistencyLevel.Eventual)
-                .build();
-        
-        registerSpyProxy();
+                .withConsistencyLevel(ConsistencyLevel.Eventual);
+
+        client = SpyClientUnderTestFactory.createClientWithGatewaySpy(builder);
         
         // create a document to ensure collection is cached
         client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false).toBlocking().single();
@@ -113,9 +110,9 @@ public class RetryThrottleTest extends TestSuiteBase {
                     // increment the counter per Document Create operations
                     totalCount.incrementAndGet();
                 }
-                return gateway.processMessage(req).doOnNext(rsp -> successCount.incrementAndGet());
+                return client.getOrigGatewayStoreModel().processMessage(req).doOnNext(rsp -> successCount.incrementAndGet());
             }
-        }).when(this.spyGateway).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
         
         List<ResourceResponse<Document>> rsps = Observable.merge(list, 100).toList().toSingle().toBlocking().value();
         System.out.println("total: " + totalCount.get());
@@ -126,9 +123,8 @@ public class RetryThrottleTest extends TestSuiteBase {
     
     @Test(groups = { "internal" }, timeOut = TIMEOUT)
     public void retryDocumentCreate() throws Exception {
-        client = createGatewayRxDocumentClient().build();
-        registerSpyProxy();
-               
+        client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createGatewayRxDocumentClient());
+
         // create a document to ensure collection is cached
         client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false).toBlocking().single();
 
@@ -143,16 +139,16 @@ public class RetryThrottleTest extends TestSuiteBase {
             public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
                 if (req.getOperationType() != OperationType.Create) {
-                    return gateway.processMessage(req);
+                    return client.getOrigGatewayStoreModel().processMessage(req);
                 }
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
                     return Observable.error(new DocumentClientException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS));
                 } else {
-                    return gateway.processMessage(req);
+                    return client.getOrigGatewayStoreModel().processMessage(req);
                 }
             }
-        }).when(this.spyGateway).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
@@ -163,20 +159,6 @@ public class RetryThrottleTest extends TestSuiteBase {
     @AfterMethod(groups = { "internal" })
     private void afterMethod() {
         safeClose(client);
-    }
-    
-    private void registerSpyProxy() {
-
-        RxDocumentClientImpl clientImpl = (RxDocumentClientImpl) client;
-        try {
-            Field f = RxDocumentClientImpl.class.getDeclaredField("gatewayProxy");
-            f.setAccessible(true);
-            this.gateway = (RxGatewayStoreModel) f.get(clientImpl);
-            this.spyGateway = Mockito.spy(gateway);
-            f.set(clientImpl, this.spyGateway);
-        } catch (Exception e) {
-            fail("failed to register spy proxy due to " + e.getMessage());
-        }
     }
     
     @BeforeClass(groups = { "internal" }, timeOut = SETUP_TIMEOUT)

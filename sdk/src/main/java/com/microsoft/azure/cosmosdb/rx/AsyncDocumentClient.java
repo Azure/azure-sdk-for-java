@@ -30,6 +30,7 @@ import java.util.List;
 import com.microsoft.azure.cosmosdb.Attachment;
 import com.microsoft.azure.cosmosdb.ChangeFeedOptions;
 import com.microsoft.azure.cosmosdb.Conflict;
+import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
@@ -107,6 +108,7 @@ public interface AsyncDocumentClient {
         URI serviceEndpoint;
         List<Permission> permissionFeed;
         int eventLoopSize = -1;
+        boolean enableExperimentalDirectMode = false;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -179,6 +181,17 @@ public interface AsyncDocumentClient {
             this.connectionPolicy = connectionPolicy;
             return this;
         }
+
+        /**
+         * This method is "not" public only internal for direct mode dev.
+         * If this is not set, and ConnectionPolicy.DirectHttps is set
+         * we will throw exception.
+         * @return
+         */
+        Builder withExperimentalDirectModeEnabled(boolean enableExperimentalDirectMode) {
+            this.enableExperimentalDirectMode = enableExperimentalDirectMode;
+            return this;
+        }
         
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
@@ -193,8 +206,14 @@ public interface AsyncDocumentClient {
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty()),
                     "cannot build client without masterKey or resource token");
 
+            if (!this.enableExperimentalDirectMode &&
+                this.connectionPolicy != null && this.connectionPolicy.getConnectionMode() == ConnectionMode.DirectHttps) {
+                // not supported
+                throw new UnsupportedOperationException("Direct Https is not supported");
+            }
+
             return new RxDocumentClientImpl(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, desiredConsistencyLevel,
-                    eventLoopSize);
+                eventLoopSize);
         }
     }
 

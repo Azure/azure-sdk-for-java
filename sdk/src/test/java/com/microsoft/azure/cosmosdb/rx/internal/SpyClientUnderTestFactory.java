@@ -47,6 +47,73 @@ import static org.mockito.Mockito.doAnswer;
 
 public class SpyClientUnderTestFactory {
 
+    public static class ClientWithGatewaySpy extends RxDocumentClientImpl {
+
+        private RxGatewayStoreModel origRxGatewayStoreModel;
+        private RxGatewayStoreModel spyRxGatewayStoreModel;
+
+        List<RxDocumentServiceRequest> requests =
+                Collections.synchronizedList(new ArrayList<>());
+
+        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, -1);
+        }
+
+        public List<RxDocumentServiceRequest> getCapturedRequests() {
+            return requests;
+        }
+
+        @Override
+        RxGatewayStoreModel createRxGatewayProxy(ConnectionPolicy connectionPolicy,
+                                                 ConsistencyLevel consistencyLevel,
+                                                 QueryCompatibilityMode queryCompatibilityMode,
+                                                 String masterKey, Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap,
+                                                 UserAgentContainer userAgentContainer,
+                                                 GlobalEndpointManager globalEndpointManager,
+                                                 CompositeHttpClient<ByteBuf, ByteBuf> rxClient) {
+            this.origRxGatewayStoreModel = super.createRxGatewayProxy(
+                    connectionPolicy,
+                    consistencyLevel,
+                    queryCompatibilityMode,
+                    masterKey,
+                    resourceTokensMap,
+                    userAgentContainer,
+                    globalEndpointManager,
+                    rxClient);
+
+            this.spyRxGatewayStoreModel = Mockito.spy(this.origRxGatewayStoreModel);
+
+            return this.spyRxGatewayStoreModel;
+        }
+
+        private void initRequestCapture() {
+            doAnswer(new Answer() {
+                @Override
+                public Object answer(InvocationOnMock invocationOnMock)  {
+                    RxDocumentServiceRequest req = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
+
+                    return ClientWithGatewaySpy.this.origRxGatewayStoreModel.processMessage(req);
+                }
+            }).when(ClientWithGatewaySpy.this.spyRxGatewayStoreModel).processMessage(Mockito.any(RxDocumentServiceRequest.class));
+        }
+
+        public void stubCaptureRequest() {
+            initRequestCapture();
+        }
+
+        public void clearCapturedRequests() {
+            requests.clear();
+        }
+
+        public RxGatewayStoreModel getSpyGatewayStoreModel() {
+            return spyRxGatewayStoreModel;
+        }
+
+        public RxGatewayStoreModel getOrigGatewayStoreModel() {
+            return origRxGatewayStoreModel;
+        }
+    }
+
     public static class ClientUnderTest extends RxDocumentClientImpl {
 
         private volatile boolean captureRequest = false;
@@ -93,6 +160,17 @@ public class SpyClientUnderTestFactory {
         public CompositeHttpClient<ByteBuf, ByteBuf> getSpyHttpClient() {
             return spyHttpClient;
         }
+    }
+
+    public static ClientWithGatewaySpy createClientWithGatewaySpy(AsyncDocumentClient.Builder builder) {
+        return new SpyClientBuilder(builder).buildWithGatewaySpy();
+    }
+
+    public static ClientWithGatewaySpy createClientWithGatewaySpy(URI serviceEndpoint,
+                                                        String masterKey,
+                                                        ConnectionPolicy connectionPolicy,
+                                                        ConsistencyLevel consistencyLevel) {
+        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel);
     }
 
     public ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {

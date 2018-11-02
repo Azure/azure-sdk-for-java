@@ -22,37 +22,8 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
-import static com.microsoft.azure.cosmosdb.BridgeInternal.documentFromObject;
-import static com.microsoft.azure.cosmosdb.BridgeInternal.toDatabaseAccount;
-import static com.microsoft.azure.cosmosdb.BridgeInternal.toFeedResponsePage;
-import static com.microsoft.azure.cosmosdb.BridgeInternal.toResourceResponse;
-import static com.microsoft.azure.cosmosdb.BridgeInternal.toStoredProcedureResponse;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.SSLException;
-
-import io.netty.handler.logging.LogLevel;
-import org.apache.commons.lang3.StringUtils;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.AccessConditionType;
 import com.microsoft.azure.cosmosdb.Attachment;
 import com.microsoft.azure.cosmosdb.BridgeInternal;
@@ -63,6 +34,7 @@ import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.DatabaseAccount;
+import com.microsoft.azure.cosmosdb.DatabaseAccountManagerInternal;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
@@ -88,58 +60,70 @@ import com.microsoft.azure.cosmosdb.Trigger;
 import com.microsoft.azure.cosmosdb.Undefined;
 import com.microsoft.azure.cosmosdb.User;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
-import com.microsoft.azure.cosmosdb.internal.ResourceTokenAuthorizationHelper;
 import com.microsoft.azure.cosmosdb.internal.BaseAuthorizationTokenProvider;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.internal.LifeCycleUtils;
 import com.microsoft.azure.cosmosdb.internal.OperationType;
 import com.microsoft.azure.cosmosdb.internal.PathInfo;
 import com.microsoft.azure.cosmosdb.internal.PathParser;
 import com.microsoft.azure.cosmosdb.internal.Paths;
 import com.microsoft.azure.cosmosdb.internal.PathsHelper;
 import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
+import com.microsoft.azure.cosmosdb.internal.ResourceTokenAuthorizationHelper;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.RuntimeConstants;
 import com.microsoft.azure.cosmosdb.internal.SessionContainer;
 import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
 import com.microsoft.azure.cosmosdb.internal.Utils;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.ServerStoreModel;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreClient;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreClientFactory;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyAndResourceTokenPair;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxClientCollectionCache;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxCollectionCache;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxPartitionKeyRangeCache;
+import com.microsoft.azure.cosmosdb.rx.internal.directconnectivity.GlobalAddressResolver;
 import com.microsoft.azure.cosmosdb.rx.internal.query.DocumentQueryExecutionContextFactory;
 import com.microsoft.azure.cosmosdb.rx.internal.query.IDocumentQueryClient;
 import com.microsoft.azure.cosmosdb.rx.internal.query.IDocumentQueryExecutionContext;
 import com.microsoft.azure.cosmosdb.rx.internal.query.Paginator;
-
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
-import io.netty.channel.ChannelPipeline;
-import io.netty.handler.proxy.HttpProxyHandler;
-import io.netty.handler.ssl.SslContext;
-import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.SslHandler;
-import io.netty.handler.ssl.SslProvider;
 import io.reactivex.netty.RxNetty;
 import io.reactivex.netty.channel.RxEventLoopProvider;
 import io.reactivex.netty.channel.SingleNioLoopProvider;
-import io.reactivex.netty.client.RxClient;
-import io.reactivex.netty.pipeline.PipelineConfigurator;
-import io.reactivex.netty.pipeline.PipelineConfiguratorComposite;
-import io.reactivex.netty.pipeline.ssl.SSLEngineFactory;
-import io.reactivex.netty.pipeline.ssl.SslCompletionHandler;
-import io.reactivex.netty.protocol.http.HttpObjectAggregationConfigurator;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClientBuilder;
-import io.reactivex.netty.protocol.http.client.HttpClientPipelineConfigurator;
-import io.reactivex.netty.protocol.http.client.HttpClientRequest;
-import io.reactivex.netty.protocol.http.client.HttpClientResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
 import rx.functions.Func2;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import static com.microsoft.azure.cosmosdb.BridgeInternal.documentFromObject;
+import static com.microsoft.azure.cosmosdb.BridgeInternal.toDatabaseAccount;
+import static com.microsoft.azure.cosmosdb.BridgeInternal.toFeedResponsePage;
+import static com.microsoft.azure.cosmosdb.BridgeInternal.toResourceResponse;
+import static com.microsoft.azure.cosmosdb.BridgeInternal.toStoredProcedureResponse;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -155,6 +139,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final BaseAuthorizationTokenProvider authorizationTokenProvider;
     private final RxClientCollectionCache collectionCache;
     private final RxStoreModel gatewayProxy;
+    private final UserAgentContainer userAgentContainer;
+    private RxStoreModel storeModel;
+    private GlobalAddressResolver addressResolver;
+
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
     private final boolean hasAuthKeyResourceToken;
@@ -168,6 +156,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final GlobalEndpointManager globalEndpointManager;
     private final RetryPolicy retryPolicy;
     private volatile boolean useMultipleWriteLocations;
+    // creator of TransportClient is responsible for disposing it.
+    private StoreClientFactory storeClientFactory;
 
     private static final ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private Configs config = Configs.getInstance();
@@ -250,7 +240,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost());
         this.consistencyLevel = consistencyLevel;
 
-        UserAgentContainer userAgentContainer = new UserAgentContainer();
+        this.userAgentContainer = new UserAgentContainer();
 
         String userAgentSuffix = this.connectionPolicy.getUserAgentSuffix();
         if (userAgentSuffix != null && userAgentSuffix.length() > 0) {
@@ -281,15 +271,58 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.gatewayProxy = createRxGatewayProxy(this.connectionPolicy, consistencyLevel, this.queryCompatibilityMode,
                 this.masterKeyOrResourceToken, this.resourceTokensMap, userAgentContainer, this.globalEndpointManager, this.rxClient);
 
+        this.globalEndpointManager.init();
+
         this.collectionCache = new RxClientCollectionCache(this.gatewayProxy, this, this.retryPolicy);
 
         this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(
                 RxDocumentClientImpl.this,
                 collectionCache);
 
-        if (this.connectionPolicy.getConnectionMode() == ConnectionMode.DirectHttps) {
-            throw new UnsupportedOperationException("Direct Https is not supported");
-        }   
+        if (this.connectionPolicy.getConnectionMode() == ConnectionMode.Gateway) {
+            this.storeModel = this.gatewayProxy;
+        } else {
+            this.initializeDirectConnectivity();
+        }
+    }
+
+    private void initializeDirectConnectivity() {
+        this.storeClientFactory = new StoreClientFactory(
+            Protocol.Https,
+            //this.connectionPolicy.ConnectionProtocol, // RNTBD support
+            this.connectionPolicy.getRequestTimeoutInMillis() / 1000,
+           // this.maxConcurrentConnectionOpenRequests,
+            0,
+            this.userAgentContainer
+
+//            TODO: RNTBD support
+//            https://msdata.visualstudio.com/CosmosDB/SDK/_workitems/edit/262496
+//
+//            this.eventSource,
+//            this.openConnectionTimeoutInSeconds,
+//            this.idleConnectionTimeoutInSeconds,
+//            this.timerPoolGranularityInSeconds,
+//            this.maxRntbdChannels,
+//            this.rntbdPartitionCount,
+//            this.maxRequestsPerRntbdChannel,
+//            this.rntbdReceiveHangDetectionTimeSeconds,
+//            this.rntbdSendHangDetectionTimeSeconds);
+        );
+
+        this.addressResolver = new GlobalAddressResolver(
+            this.rxClient,
+            this.globalEndpointManager,
+            Protocol.Https,
+            this,
+            this.collectionCache,
+            this.partitionKeyRangeCache,
+            userAgentContainer,
+            // TODO: Gateway Configuration Reader
+            //     this.gatewayConfigurationReader,
+            null,
+            this.connectionPolicy);
+
+        this.createStoreModel(true);
     }
 
     DatabaseAccountManagerInternal asDatabaseAccountManagerInternal() {
@@ -327,72 +360,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private CompositeHttpClientBuilder<ByteBuf, ByteBuf> httpClientBuilder() {
-        class DefaultSSLEngineFactory implements SSLEngineFactory {
-            private final SslContext sslContex;
 
-            private DefaultSSLEngineFactory() {
-                try {
-                    SslProvider sslProvider = SslContext.defaultClientProvider();
-                    sslContex = SslContextBuilder.forClient().sslProvider(sslProvider).build();
-                } catch (SSLException e) {
-                    throw new IllegalStateException("Failed to create default SSL context", e);
-                }
-            }
+        HttpClientFactory factory = new HttpClientFactory()
+                .withConfig(this.config)
+                .withMaxIdleConnectionTimeoutInMillis(this.connectionPolicy.getIdleConnectionTimeoutInMillis())
+                .withPoolSize(this.connectionPolicy.getMaxPoolSize())
+                .withHttpProxy(this.connectionPolicy.getProxy())
+                .withRequestTimeoutInMillis(this.connectionPolicy.getRequestTimeoutInMillis());
 
-            @Override
-            public SSLEngine createSSLEngine(ByteBufAllocator allocator) {
-                return sslContex.newEngine(allocator);
-            }
-        }
-
-        class SslPipelineConfiguratorUsedWithProxy<I, O> implements PipelineConfigurator<I, O> {
-
-            private final SSLEngineFactory sslEngineFactory;
-
-            private SslPipelineConfiguratorUsedWithProxy(SSLEngineFactory sslEngineFactory) {
-                this.sslEngineFactory = sslEngineFactory;
-            }
-
-            @Override
-            public void configureNewPipeline(ChannelPipeline pipeline) {
-                final SslHandler sslHandler = new SslHandler(sslEngineFactory.createSSLEngine(pipeline.channel().alloc()));
-                if(connectionPolicy.getProxy() != null) {
-                    pipeline.addAfter(Constants.Properties.HTTP_PROXY_HANDLER_NAME,Constants.Properties.SSL_HANDLER_NAME, sslHandler);
-                } else {
-                    pipeline.addFirst(Constants.Properties.SSL_HANDLER_NAME, sslHandler);
-                }
-                pipeline.addAfter(Constants.Properties.SSL_HANDLER_NAME, Constants.Properties.SSL_COMPLETION_HANDLER_NAME,
-                                  new SslCompletionHandler(sslHandler.handshakeFuture()));
-            }
-        }
-
-        DefaultSSLEngineFactory defaultSSLEngineFactory = new DefaultSSLEngineFactory();
-        CompositeHttpClientBuilder<ByteBuf, ByteBuf> builder = new CompositeHttpClientBuilder<ByteBuf, ByteBuf>()
-                .withMaxConnections(connectionPolicy.getMaxPoolSize())
-                .withIdleConnectionsTimeoutMillis(this.connectionPolicy.getIdleConnectionTimeoutInMillis())
-                .pipelineConfigurator(pipeline -> {
-                    if(connectionPolicy.getProxy() != null) {
-                        pipeline.addFirst(Constants.Properties.HTTP_PROXY_HANDLER_NAME, new HttpProxyHandler(connectionPolicy.getProxy()));
-                    }
-                })
-                .appendPipelineConfigurator(new SslPipelineConfiguratorUsedWithProxy<HttpClientResponse<ByteBuf>,HttpClientRequest<ByteBuf>>(defaultSSLEngineFactory))
-                .appendPipelineConfigurator(createClientPipelineConfigurator());
-
-        RxClient.ClientConfig config = new RxClient.ClientConfig.Builder()
-                .readTimeout(connectionPolicy.getRequestTimeoutInMillis(), TimeUnit.MILLISECONDS).build();
-        return builder.config(config);
+        return factory.toHttpClientBuilder();
     }
 
-    private PipelineConfigurator createClientPipelineConfigurator() {
-        PipelineConfigurator clientPipelineConfigurator = new PipelineConfiguratorComposite(
-                new HttpClientPipelineConfigurator<ByteBuf, ByteBuf>(
-                        config.getMaxHttpInitialLineLength(),
-                        config.getMaxHttpHeaderSize(),
-                        config.getMaxHttpChunkSize(),
-                        true),
-                new HttpObjectAggregationConfigurator(config.getMaxHttpBodyLength()));
-        return clientPipelineConfigurator;
+    private void createStoreModel(boolean subscribeRntbdStatus) {
+        //EnableReadRequestsFallback, if not explicity set on the connection policy,
+        //is false if the account's consistency is bounded staleness,
+        //and true otherwise.
+
+        StoreClient storeClient = this.storeClientFactory.createStoreClient(
+            this.addressResolver,
+            this.sessionContainer,
+            null,
+            this,
+            false
+        );
+
+        // TODO RNTBD work
+
+        this.storeModel = new ServerStoreModel(storeClient);
     }
+
 
     @Override
     public URI getServiceEndpoint() {
@@ -428,10 +424,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<Database>> createDatabase(Database database, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createDatabaseInternal(database, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createDatabaseInternal(database, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Database>> createDatabaseInternal(Database database, RequestOptions options) {
+    private Observable<ResourceResponse<Database>> createDatabaseInternal(Database database, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
 
             if (database == null) {
@@ -444,7 +441,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
                     ResourceType.Database, Paths.DATABASES_ROOT, database, requestHeaders);
-
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
             return this.create(request).map(response -> toResourceResponse(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in creating a database. due to [{}]", e.getMessage(), e);
@@ -454,10 +453,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<Database>> deleteDatabase(String databaseLink, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDatabaseInternal(databaseLink, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDatabaseInternal(databaseLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Database>> deleteDatabaseInternal(String databaseLink, RequestOptions options) {
+    private Observable<ResourceResponse<Database>> deleteDatabaseInternal(String databaseLink, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(databaseLink)) {
                 throw new IllegalArgumentException("databaseLink");
@@ -468,6 +469,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Database, path, requestHeaders);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
             return this.delete(request).map(response -> toResourceResponse(response, Database.class));
         } catch (Exception e) {
@@ -578,11 +582,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<DocumentCollection>> createCollection(String databaseLink,
             DocumentCollection collection, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> this.createCollectionInternal(databaseLink, collection, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> this.createCollectionInternal(databaseLink, collection, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<DocumentCollection>> createCollectionInternal(String databaseLink,
-            DocumentCollection collection, RequestOptions options) {
+            DocumentCollection collection, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(databaseLink)) {
                 throw new IllegalArgumentException("databaseLink");
@@ -599,6 +604,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
                     ResourceType.DocumentCollection, path, collection, requestHeaders);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.create(request).map(response -> toResourceResponse(response, DocumentCollection.class));
         } catch (Exception e) {
             logger.debug("Failure in creating a collection. due to [{}]", e.getMessage(), e);
@@ -609,11 +618,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<DocumentCollection>> replaceCollection(DocumentCollection collection,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceCollectionInternal(collection, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceCollectionInternal(collection, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<DocumentCollection>> replaceCollectionInternal(DocumentCollection collection,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (collection == null) {
                 throw new IllegalArgumentException("collection");
@@ -630,6 +640,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             // TODO: .Net has some logic for updating session token which we don't
             // have here
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
             return this.replace(request).map(response -> toResourceResponse(response, DocumentCollection.class));
 
@@ -642,11 +655,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteCollectionInternal(collectionLink, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteCollectionInternal(collectionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<DocumentCollection>> deleteCollectionInternal(String collectionLink,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(collectionLink)) {
                 throw new IllegalArgumentException("collectionLink");
@@ -657,6 +671,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.DocumentCollection, path, requestHeaders);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.delete(request).map(response -> toResourceResponse(response, DocumentCollection.class));
 
         } catch (Exception e) {
@@ -1074,7 +1092,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Observable<RxDocumentServiceResponse> create(RxDocumentServiceRequest request) {
         populateHeaders(request, HttpConstants.HttpMethods.POST);
         applySessionToken(request);
-        return gatewayProxy.processMessage(request)
+
+        RxStoreModel storeProxy = this.getStoreProxy(request);
+        return storeProxy.processMessage(request)
                 .doOnNext(response -> { captureSessionToken(request, response); });
     }
 
@@ -1108,18 +1128,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<Document>> createDocument(String collectionLink, Object document,
             RequestOptions options, boolean disableAutomaticIdGeneration) {
-
         IDocumentClientRetryPolicy requestRetryPolicy = this.retryPolicy.getRequestPolicy();
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink);
         }
 
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration), requestRetryPolicy);
+        IDocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), requestRetryPolicy);
     }
     
-    
     private Observable<ResourceResponse<Document>> createDocumentInternal(String collectionLink, Object document,
-            RequestOptions options, final boolean disableAutomaticIdGeneration) {
+            RequestOptions options, final boolean disableAutomaticIdGeneration, IDocumentClientRetryPolicy requestRetryPolicy) {
 
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
@@ -1129,7 +1148,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Observable<RxDocumentServiceResponse> responseObservable = requestObs
                     .toObservable()
-                    .flatMap(req -> { 
+                    .flatMap(req -> {
+                        if (requestRetryPolicy != null) {
+                            requestRetryPolicy.onBeforeSendRequest(req);
+                        }
+
                         return create(req);
                     });
 
@@ -1155,18 +1178,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options == null || options.getPartitionKey() == null) {
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink);
         }
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration), requestRetryPolicy);
+        IDocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertDocumentInternal(collectionLink, document, options, disableAutomaticIdGeneration, finalRetryPolicyInstance), requestRetryPolicy);
     }
 
     private Observable<ResourceResponse<Document>> upsertDocumentInternal(String collectionLink, Object document,
-            RequestOptions options, boolean disableAutomaticIdGeneration) {
+            RequestOptions options, boolean disableAutomaticIdGeneration, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
 
             Observable<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(collectionLink, document,
                     options, disableAutomaticIdGeneration, OperationType.Upsert).toObservable();
 
-            Observable<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(req -> upsert(req));
+            Observable<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(req -> {
+                if (retryPolicyInstance != null) {
+                    retryPolicyInstance.onBeforeSendRequest(req);
+                }
+
+                return upsert(req);});
             return responseObservable
                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
 
@@ -1185,11 +1214,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String collectionLink = Utils.getCollectionName(documentLink);
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink);
         }
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(documentLink, document, options), requestRetryPolicy);
+        IDocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(documentLink, document, options, finalRequestRetryPolicy), requestRetryPolicy);
     }
 
     private Observable<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Object document,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(documentLink)) {
                 throw new IllegalArgumentException("documentLink");
@@ -1201,7 +1231,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Document typedDocument = documentFromObject(document, mapper);
 
-            return this.replaceDocumentInternal(documentLink, typedDocument, options);
+            return this.replaceDocumentInternal(documentLink, typedDocument, options, retryPolicyInstance);
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a document due to [{}]", e.getMessage());
@@ -1216,17 +1246,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String collectionLink = document.getSelfLink();
             requestRetryPolicy = new PartitionKeyMismatchRetryPolicy(collectionCache, requestRetryPolicy, collectionLink);
         }
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(document, options), requestRetryPolicy);
+        IDocumentClientRetryPolicy finalRequestRetryPolicy = requestRetryPolicy;
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceDocumentInternal(document, options, finalRequestRetryPolicy), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<Document>> replaceDocumentInternal(Document document, RequestOptions options) {
+    private Observable<ResourceResponse<Document>> replaceDocumentInternal(Document document, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             if (document == null) {
                 throw new IllegalArgumentException("document");
             }
 
-            return this.replaceDocumentInternal(document.getSelfLink(), document, options);
+            return this.replaceDocumentInternal(document.getSelfLink(), document, options, retryPolicyInstance);
 
         } catch (Exception e) {
             logger.debug("Failure in replacing a database due to [{}]", e.getMessage());
@@ -1235,7 +1266,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Observable<ResourceResponse<Document>> replaceDocumentInternal(String documentLink, Document document,
-            RequestOptions options) throws DocumentClientException {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) throws DocumentClientException {
 
         if (document == null) {
             throw new IllegalArgumentException("document");
@@ -1252,16 +1283,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Single<DocumentCollection> collectionObs = collectionCache.resolveCollectionAsync(request);
         Single<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, document, options, collectionObs);
 
-        return requestObs.toObservable().flatMap(req -> replace(request)
-                .map(resp -> toResourceResponse(resp, Document.class)) );
+        return requestObs.toObservable().flatMap(req -> {
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+            return replace(request)
+                .map(resp -> toResourceResponse(resp, Document.class));} );
     }
     
     @Override
     public Observable<ResourceResponse<Document>> deleteDocument(String documentLink, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy requestRetryPolicy = this.retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteDocumentInternal(documentLink, options, requestRetryPolicy), requestRetryPolicy);
     }
 
-    private Observable<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, RequestOptions options) {
+    private Observable<ResourceResponse<Document>> deleteDocumentInternal(String documentLink, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(documentLink)) {
                 throw new IllegalArgumentException("documentLink");
@@ -1277,8 +1314,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Single<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, options, collectionObs);
 
-            return requestObs.toObservable().flatMap(req -> this.delete(req)
-                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class)));
+            return requestObs.toObservable().flatMap(req -> {
+                if (retryPolicyInstance != null) {
+                    retryPolicyInstance.onBeforeSendRequest(req);
+                }
+                return this.delete(req)
+                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));});
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
@@ -1292,7 +1333,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(() -> readDocumentInternal(documentLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Document>> readDocumentInternal(String documentLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
+    private Observable<ResourceResponse<Document>> readDocumentInternal(String documentLink, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(documentLink)) {
                 throw new IllegalArgumentException("documentLink");
@@ -1460,11 +1502,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<StoredProcedure>> createStoredProcedure(String collectionLink,
             StoredProcedure storedProcedure, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createStoredProcedureInternal(collectionLink, storedProcedure, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy requestRetryPolicy = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createStoredProcedureInternal(collectionLink, storedProcedure, options, requestRetryPolicy), requestRetryPolicy);
     }
 
     private Observable<ResourceResponse<StoredProcedure>> createStoredProcedureInternal(String collectionLink,
-            StoredProcedure storedProcedure, RequestOptions options) {
+            StoredProcedure storedProcedure, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
         // this is to ensure we capture most up to date information (e.g.,
@@ -1475,6 +1518,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     collectionLink, storedProcedure.getId());
             RxDocumentServiceRequest request = getStoredProcedureRequest(collectionLink, storedProcedure, options,
                     OperationType.Create);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
             return this.create(request).map(response -> toResourceResponse(response, StoredProcedure.class));
 
@@ -1488,11 +1534,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<StoredProcedure>> upsertStoredProcedure(String collectionLink,
             StoredProcedure storedProcedure, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertStoredProcedureInternal(collectionLink, storedProcedure, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy requestRetryPolicy = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertStoredProcedureInternal(collectionLink, storedProcedure, options, requestRetryPolicy), requestRetryPolicy);
     }
 
     private Observable<ResourceResponse<StoredProcedure>> upsertStoredProcedureInternal(String collectionLink,
-            StoredProcedure storedProcedure, RequestOptions options) {
+            StoredProcedure storedProcedure, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
         // this is to ensure we capture most up to date information (e.g.,
@@ -1503,6 +1550,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     collectionLink, storedProcedure.getId());
             RxDocumentServiceRequest request = getStoredProcedureRequest(collectionLink, storedProcedure, options,
                     OperationType.Upsert);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
             return this.upsert(request).map(response -> toResourceResponse(response, StoredProcedure.class));
 
@@ -1516,11 +1566,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<StoredProcedure>> replaceStoredProcedure(StoredProcedure storedProcedure,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceStoredProcedureInternal(storedProcedure, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy requestRetryPolicy = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceStoredProcedureInternal(storedProcedure, options, requestRetryPolicy), requestRetryPolicy);
     }
 
     private Observable<ResourceResponse<StoredProcedure>> replaceStoredProcedureInternal(StoredProcedure storedProcedure,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
 
             if (storedProcedure == null) {
@@ -1534,6 +1585,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.StoredProcedure, path, storedProcedure, requestHeaders);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.replace(request).map(response -> toResourceResponse(response, StoredProcedure.class));
 
         } catch (Exception e) {
@@ -1545,11 +1600,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<StoredProcedure>> deleteStoredProcedure(String storedProcedureLink,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteStoredProcedureInternal(storedProcedureLink, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy requestRetryPolicy = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteStoredProcedureInternal(storedProcedureLink, options, requestRetryPolicy), requestRetryPolicy);
     }
 
     private Observable<ResourceResponse<StoredProcedure>> deleteStoredProcedureInternal(String storedProcedureLink,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
         // this is to ensure we capture most up to date information (e.g.,
@@ -1565,6 +1621,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.StoredProcedure, path, requestHeaders);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
             return this.delete(request).map(response -> toResourceResponse(response, StoredProcedure.class));
 
@@ -1685,17 +1744,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<Trigger>> createTrigger(String collectionLink, Trigger trigger,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createTriggerInternal(collectionLink, trigger, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createTriggerInternal(collectionLink, trigger, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<Trigger>> createTriggerInternal(String collectionLink, Trigger trigger,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
 
             logger.debug("Creating a Trigger. collectionLink [{}], trigger id [{}]", collectionLink,
                     trigger.getId());
             RxDocumentServiceRequest request = getTriggerRequest(collectionLink, trigger, options,
                     OperationType.Create);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.create(request).map(response -> toResourceResponse(response, Trigger.class));
 
         } catch (Exception e) {
@@ -1707,17 +1771,22 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<Trigger>> upsertTrigger(String collectionLink, Trigger trigger,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertTriggerInternal(collectionLink, trigger, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertTriggerInternal(collectionLink, trigger, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<Trigger>> upsertTriggerInternal(String collectionLink, Trigger trigger,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
 
             logger.debug("Upserting a Trigger. collectionLink [{}], trigger id [{}]", collectionLink,
                     trigger.getId());
             RxDocumentServiceRequest request = getTriggerRequest(collectionLink, trigger, options,
                     OperationType.Upsert);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.upsert(request).map(response -> toResourceResponse(response, Trigger.class));
 
         } catch (Exception e) {
@@ -1746,10 +1815,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<Trigger>> replaceTrigger(Trigger trigger, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceTriggerInternal(trigger, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceTriggerInternal(trigger, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Trigger>> replaceTriggerInternal(Trigger trigger, RequestOptions options) {
+    private Observable<ResourceResponse<Trigger>> replaceTriggerInternal(Trigger trigger, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             if (trigger == null) {
@@ -1763,6 +1834,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.Trigger, path, trigger, requestHeaders);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.replace(request).map(response -> toResourceResponse(response, Trigger.class));
 
         } catch (Exception e) {
@@ -1773,10 +1848,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<Trigger>> deleteTrigger(String triggerLink, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteTriggerInternal(triggerLink, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteTriggerInternal(triggerLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Trigger>> deleteTriggerInternal(String triggerLink, RequestOptions options) {
+    private Observable<ResourceResponse<Trigger>> deleteTriggerInternal(String triggerLink, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(triggerLink)) {
                 throw new IllegalArgumentException("triggerLink");
@@ -1787,6 +1863,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Trigger, path, requestHeaders);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.delete(request).map(response -> toResourceResponse(response, Trigger.class));
 
         } catch (Exception e) {
@@ -1797,11 +1877,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<Trigger>> readTrigger(String triggerLink, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> readTriggerInternal(triggerLink, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> readTriggerInternal(triggerLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Trigger>> readTriggerInternal(String triggerLink, RequestOptions options) {
-
+    private Observable<ResourceResponse<Trigger>> readTriggerInternal(String triggerLink, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (StringUtils.isEmpty(triggerLink)) {
                 throw new IllegalArgumentException("triggerLink");
@@ -1812,6 +1893,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.Trigger, path, requestHeaders);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.read(request).map(response -> toResourceResponse(response, Trigger.class));
 
         } catch (Exception e) {
@@ -1846,11 +1931,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<UserDefinedFunction>> createUserDefinedFunction(String collectionLink,
             UserDefinedFunction udf, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createUserDefinedFunctionInternal(collectionLink, udf, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createUserDefinedFunctionInternal(collectionLink, udf, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<UserDefinedFunction>> createUserDefinedFunctionInternal(String collectionLink,
-            UserDefinedFunction udf, RequestOptions options) {
+            UserDefinedFunction udf, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
         // this is to ensure we capture most up to date information (e.g.,
@@ -1860,6 +1946,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     udf.getId());
             RxDocumentServiceRequest request = getUserDefinedFunctionRequest(collectionLink, udf, options,
                     OperationType.Create);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
             return this.create(request).map(response -> toResourceResponse(response, UserDefinedFunction.class));
 
@@ -1873,11 +1962,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunction(String collectionLink,
             UserDefinedFunction udf, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertUserDefinedFunctionInternal(collectionLink, udf, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertUserDefinedFunctionInternal(collectionLink, udf, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunctionInternal(String collectionLink,
-            UserDefinedFunction udf, RequestOptions options) {
+            UserDefinedFunction udf, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
         // this is to ensure we capture most up to date information (e.g.,
@@ -1887,6 +1977,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     udf.getId());
             RxDocumentServiceRequest request = getUserDefinedFunctionRequest(collectionLink, udf, options,
                     OperationType.Upsert);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.upsert(request).map(response -> toResourceResponse(response, UserDefinedFunction.class));
 
         } catch (Exception e) {
@@ -1899,11 +1993,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<UserDefinedFunction>> replaceUserDefinedFunction(UserDefinedFunction udf,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceUserDefinedFunctionInternal(udf, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceUserDefinedFunctionInternal(udf, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<UserDefinedFunction>> replaceUserDefinedFunctionInternal(UserDefinedFunction udf,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
         // this is to ensure we capture most up to date information (e.g.,
@@ -1920,6 +2015,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.UserDefinedFunction, path, udf, requestHeaders);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.replace(request).map(response -> toResourceResponse(response, UserDefinedFunction.class));
 
         } catch (Exception e) {
@@ -1932,11 +2031,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<UserDefinedFunction>> deleteUserDefinedFunction(String udfLink,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteUserDefinedFunctionInternal(udfLink, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteUserDefinedFunctionInternal(udfLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<UserDefinedFunction>> deleteUserDefinedFunctionInternal(String udfLink,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         // we are using an observable factory here
         // observable will be created fresh upon subscription
         // this is to ensure we capture most up to date information (e.g.,
@@ -1951,6 +2051,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.UserDefinedFunction, path, requestHeaders);
+            if (retryPolicyInstance != null){
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.delete(request).map(response -> toResourceResponse(response, UserDefinedFunction.class));
 
         } catch (Exception e) {
@@ -2025,18 +2129,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<Attachment>> createAttachment(String documentLink, Attachment attachment,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createAttachmentInternal(documentLink, attachment, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createAttachmentInternal(documentLink, attachment, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<Attachment>> createAttachmentInternal(String documentLink, Attachment attachment,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             logger.debug("Creating a Attachment. documentLink [{}], attachment id [{}]", documentLink,
                     attachment.getId());
             Observable<RxDocumentServiceRequest> reqObs = getAttachmentRequest(documentLink, attachment, options,
                     OperationType.Create).toObservable();
-            return reqObs.flatMap(req -> create(req).map(response -> toResourceResponse(response, Attachment.class)));
+            return reqObs.flatMap(req -> {
+                if (retryPolicyInstance != null) {
+                    retryPolicyInstance.onBeforeSendRequest(req);
+                }
+
+                return create(req).map(response -> toResourceResponse(response, Attachment.class));
+            });
 
         } catch (Exception e) {
             logger.debug("Failure in creating a Attachment due to [{}]", e.getMessage(), e);
@@ -2048,18 +2159,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<Attachment>> upsertAttachment(String documentLink, Attachment attachment,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertAttachmentInternal(documentLink, attachment, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertAttachmentInternal(documentLink, attachment, options, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<Attachment>> upsertAttachmentInternal(String documentLink, Attachment attachment,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             logger.debug("Upserting a Attachment. documentLink [{}], attachment id [{}]", documentLink,
                     attachment.getId());
             Observable<RxDocumentServiceRequest> reqObs = getAttachmentRequest(documentLink, attachment, options,
                     OperationType.Upsert).toObservable();
-            return reqObs.flatMap(req -> upsert(req).map(response -> toResourceResponse(response, Attachment.class)));
+            return reqObs.flatMap(req -> {
+                if (retryPolicyInstance != null) {
+                    retryPolicyInstance.onBeforeSendRequest(req);
+                }
+
+                return upsert(req).map(response -> toResourceResponse(response, Attachment.class));
+            });
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a Attachment due to [{}]", e.getMessage(), e);
@@ -2069,10 +2187,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<Attachment>> replaceAttachment(Attachment attachment, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceAttachmentInternal(attachment, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceAttachmentInternal(attachment, options, retryPolicyInstance), retryPolicy.getRequestPolicy());
     }
 
-    private Observable<ResourceResponse<Attachment>> replaceAttachmentInternal(Attachment attachment, RequestOptions options) {
+    private Observable<ResourceResponse<Attachment>> replaceAttachmentInternal(Attachment attachment, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (attachment == null) {
                 throw new IllegalArgumentException("attachment");
@@ -2086,7 +2206,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.Attachment, path, attachment, requestHeaders);
             Observable<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).toObservable();
-            return reqObs.flatMap(req -> replace(request).map(response -> toResourceResponse(response, Attachment.class)));
+            return reqObs.flatMap(req -> {
+                if (retryPolicyInstance != null) {
+                    retryPolicyInstance.onBeforeSendRequest(request);
+                }
+
+                return replace(request).map(response -> toResourceResponse(response, Attachment.class));
+            });
         } catch (Exception e) {
             logger.debug("Failure in replacing a Attachment due to [{}]", e.getMessage(), e);
             return Observable.error(e);
@@ -2095,10 +2221,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<Attachment>> deleteAttachment(String attachmentLink, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteAttachmentInternal(attachmentLink, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteAttachmentInternal(attachmentLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Attachment>> deleteAttachmentInternal(String attachmentLink, RequestOptions options) {
+    private Observable<ResourceResponse<Attachment>> deleteAttachmentInternal(String attachmentLink, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             if (StringUtils.isEmpty(attachmentLink)) {
@@ -2112,7 +2240,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     ResourceType.Attachment, path, requestHeaders);
             
             Observable<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).toObservable();
-            return reqObs.flatMap(req -> delete(req).map(resp -> toResourceResponse(resp, Attachment.class)));
+            return reqObs.flatMap(req -> {
+                if (retryPolicyInstance != null) {
+                    retryPolicyInstance.onBeforeSendRequest(req);
+                }
+
+                return delete(req).map(resp -> toResourceResponse(resp, Attachment.class));
+            });
             
         } catch (Exception e) {
             logger.debug("Failure in deleting a Attachment due to [{}]", e.getMessage(), e);
@@ -2249,17 +2383,23 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public Observable<ResourceResponse<Attachment>> createAttachment(String documentLink, InputStream mediaStream,
             MediaOptions options, RequestOptions requestOptions) {
         IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
-        return ObservableHelper.inlineIfPossibleAsObs(() -> createAttachmentInternal(documentLink, mediaStream, options, requestOptions), retryPolicyInstance);
+        return ObservableHelper.inlineIfPossibleAsObs(() -> createAttachmentInternal(documentLink, mediaStream, options, requestOptions, retryPolicyInstance), retryPolicyInstance);
     }
 
     private Observable<ResourceResponse<Attachment>> createAttachmentInternal(String documentLink, InputStream mediaStream,
-            MediaOptions options, RequestOptions requestOptions) {
+            MediaOptions options, RequestOptions requestOptions, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             logger.debug("Creating a Attachment. attachmentLink [{}]", documentLink);
             Observable<RxDocumentServiceRequest> reqObs = getAttachmentRequest(documentLink, mediaStream, options,
                     requestOptions, OperationType.Create).toObservable();
-            return reqObs.flatMap(req -> create(req).map(response -> toResourceResponse(response, Attachment.class)));
+            return reqObs.flatMap(req -> {
+                if (retryPolicyInstance != null) {
+                    retryPolicyInstance.onBeforeSendRequest(req);
+                }
+
+                return create(req).map(response -> toResourceResponse(response, Attachment.class));
+            });
 
         } catch (Exception e) {
             logger.debug("Failure in creating a Attachment due to [{}]", e.getMessage(), e);
@@ -2270,17 +2410,24 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<Attachment>> upsertAttachment(String documentLink, InputStream mediaStream,
             MediaOptions options, RequestOptions requestOptions) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertAttachmentInternal(documentLink, mediaStream, options, requestOptions), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertAttachmentInternal(documentLink, mediaStream, options, requestOptions, retryPolicyInstance), retryPolicy.getRequestPolicy());
     }
 
     private Observable<ResourceResponse<Attachment>> upsertAttachmentInternal(String documentLink, InputStream mediaStream,
-            MediaOptions options, RequestOptions requestOptions) {
+            MediaOptions options, RequestOptions requestOptions, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             logger.debug("Upserting a Attachment. attachmentLink [{}]", documentLink);
             Observable<RxDocumentServiceRequest> reqObs = getAttachmentRequest(documentLink, mediaStream, options,
                     requestOptions, OperationType.Upsert).toObservable();
-            return reqObs.flatMap(req -> upsert(req).map(response -> toResourceResponse(response, Attachment.class)));
+            return reqObs.flatMap(req -> {
+                if (retryPolicyInstance != null) {
+                    retryPolicyInstance.onBeforeSendRequest(req);
+                }
+
+                return upsert(req).map(response -> toResourceResponse(response, Attachment.class));
+            });
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a Attachment due to [{}]", e.getMessage(), e);
@@ -2362,10 +2509,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<Conflict>> deleteConflict(String conflictLink, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteConflictInternal(conflictLink, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteConflictInternal(conflictLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Conflict>> deleteConflictInternal(String conflictLink, RequestOptions options) {
+    private Observable<ResourceResponse<Conflict>> deleteConflictInternal(String conflictLink, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             if (StringUtils.isEmpty(conflictLink)) {
@@ -2378,7 +2527,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Conflict, path, requestHeaders);
             Observable<RxDocumentServiceRequest> reqObs = addPartitionKeyInformation(request, null, options).toObservable();
-            return reqObs.flatMap(req -> this.delete(request).map(response -> toResourceResponse(response, Conflict.class)));
+            return reqObs.flatMap(req -> {
+                if (retryPolicyInstance != null) {
+                    retryPolicyInstance.onBeforeSendRequest(request);
+                }
+
+                return this.delete(request).map(response -> toResourceResponse(response, Conflict.class));
+            });
 
         } catch (Exception e) {
             logger.debug("Failure in deleting a Conflict due to [{}]", e.getMessage(), e);
@@ -2405,13 +2560,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<User>> upsertUser(String databaseLink, User user, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertUserInternal(databaseLink, user, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertUserInternal(databaseLink, user, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<User>> upsertUserInternal(String databaseLink, User user, RequestOptions options) {
+    private Observable<ResourceResponse<User>> upsertUserInternal(String databaseLink, User user, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             logger.debug("Upserting a User. databaseLink [{}], user id [{}]", databaseLink, user.getId());
             RxDocumentServiceRequest request = getUserRequest(databaseLink, user, options, OperationType.Upsert);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.upsert(request).map(response -> toResourceResponse(response, User.class));
 
         } catch (Exception e) {
@@ -2440,10 +2601,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<User>> replaceUser(User user, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceUserInternal(user, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replaceUserInternal(user, options, retryPolicyInstance), retryPolicy.getRequestPolicy());
     }
 
-    private Observable<ResourceResponse<User>> replaceUserInternal(User user, RequestOptions options) {
+    private Observable<ResourceResponse<User>> replaceUserInternal(User user, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (user == null) {
                 throw new IllegalArgumentException("user");
@@ -2455,6 +2617,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.User, path, user, requestHeaders);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.replace(request).map(response -> toResourceResponse(response, User.class));
 
         } catch (Exception e) {
@@ -2465,10 +2631,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
 
     public Observable<ResourceResponse<User>> deleteUser(String userLink, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteUserInternal(userLink, options), retryPolicy.getRequestPolicy());
+        IDocumentClientRetryPolicy retryPolicyInstance =  retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deleteUserInternal(userLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<User>> deleteUserInternal(String userLink, RequestOptions options) {
+    private Observable<ResourceResponse<User>> deleteUserInternal(String userLink, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             if (StringUtils.isEmpty(userLink)) {
@@ -2479,6 +2647,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.User, path, requestHeaders);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.delete(request).map(response -> toResourceResponse(response, User.class));
 
         } catch (Exception e) {
@@ -2560,16 +2732,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     @Override
     public Observable<ResourceResponse<Permission>> upsertPermission(String userLink, Permission permission,
             RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertPermissionInternal(userLink, permission, options), retryPolicy.getRequestPolicy());        
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> upsertPermissionInternal(userLink, permission, options, retryPolicyInstance), retryPolicy.getRequestPolicy());
     }
 
     private Observable<ResourceResponse<Permission>> upsertPermissionInternal(String userLink, Permission permission,
-            RequestOptions options) {
+            RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             logger.debug("Upserting a Permission. userLink [{}], permission id [{}]", userLink, permission.getId());
             RxDocumentServiceRequest request = getPermissionRequest(userLink, permission, options,
                     OperationType.Upsert);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.upsert(request).map(response -> toResourceResponse(response, Permission.class));
 
         } catch (Exception e) {
@@ -2598,10 +2775,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<Permission>> replacePermission(Permission permission, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> replacePermissionInternal(permission, options), retryPolicy.getRequestPolicy());        
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> replacePermissionInternal(permission, options, retryPolicyInstance), retryPolicy.getRequestPolicy());
     }
 
-    private Observable<ResourceResponse<Permission>> replacePermissionInternal(Permission permission, RequestOptions options) {
+    private Observable<ResourceResponse<Permission>> replacePermissionInternal(Permission permission, RequestOptions options, IDocumentClientRetryPolicy retryPolicyInstance) {
         try {
             if (permission == null) {
                 throw new IllegalArgumentException("permission");
@@ -2613,6 +2791,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.Permission, path, permission, requestHeaders);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.replace(request).map(response -> toResourceResponse(response, Permission.class));
 
         } catch (Exception e) {
@@ -2623,10 +2805,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public Observable<ResourceResponse<Permission>> deletePermission(String permissionLink, RequestOptions options) {
-        return ObservableHelper.inlineIfPossibleAsObs(() -> deletePermissionInternal(permissionLink, options), retryPolicy.getRequestPolicy());        
+        IDocumentClientRetryPolicy retryPolicyInstance = retryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> deletePermissionInternal(permissionLink, options, retryPolicyInstance), retryPolicyInstance);
     }
 
-    private Observable<ResourceResponse<Permission>> deletePermissionInternal(String permissionLink, RequestOptions options) {
+    private Observable<ResourceResponse<Permission>> deletePermissionInternal(String permissionLink, RequestOptions options,
+            IDocumentClientRetryPolicy retryPolicyInstance) {
 
         try {
             if (StringUtils.isEmpty(permissionLink)) {
@@ -2637,6 +2821,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = getRequestHeaders(options);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Permission, path, requestHeaders);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             return this.delete(request).map(response -> toResourceResponse(response, Permission.class));
 
         } catch (Exception e) {
@@ -2863,9 +3051,76 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         });
     }
 
+    /**
+     * Certain requests must be routed through gateway even when the client connectivity mode is direct.
+     *
+     * @param request
+     * @return RxStoreModel
+     */
+    private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
+        // If a request is configured to always use Gateway mode(in some cases when targeting .NET Core)
+        // we return the Gateway store model
+        if (request.UseGatewayMode) {
+            return this.gatewayProxy;
+        }
+
+        ResourceType resourceType = request.getResourceType();
+        OperationType operationType = request.getOperationType();
+
+        // now we only support create document in direct mode
+        // TODO: once other operations are supported in direct mode update this.
+        if (resourceType == ResourceType.Document && operationType == OperationType.Create) {
+            return this.storeModel;
+        } else if (true){
+            return this.gatewayProxy;
+        }
+
+        if (resourceType == ResourceType.Offer ||
+            resourceType.isScript() && operationType != OperationType.ExecuteJavaScript ||
+            resourceType == ResourceType.PartitionKeyRange) {
+            return this.gatewayProxy;
+        }
+
+        if (operationType == OperationType.Create
+            || operationType == OperationType.Upsert) {
+            if (resourceType == ResourceType.Database ||
+                resourceType == ResourceType.User ||
+                resourceType == ResourceType.DocumentCollection ||
+                resourceType == ResourceType.Permission) {
+                return this.gatewayProxy;
+            } else {
+                return this.storeModel;
+            }
+        } else if (operationType == OperationType.Delete) {
+            if (resourceType == ResourceType.Database ||
+                resourceType == ResourceType.User ||
+                resourceType == ResourceType.DocumentCollection) {
+                return this.gatewayProxy;
+            } else {
+                return this.storeModel;
+            }
+        } else if (operationType == OperationType.Replace) {
+            if (resourceType == ResourceType.DocumentCollection) {
+                return this.gatewayProxy;
+            } else {
+                return this.storeModel;
+            }
+        } else if (operationType == OperationType.Read) {
+            if (resourceType == ResourceType.DocumentCollection) {
+                return this.gatewayProxy;
+            } else {
+                return this.storeModel;
+            }
+        } else {
+            return this.storeModel;
+        }
+    }
+
     @Override
     public void close() {
-        this.globalEndpointManager.close();
+        LifeCycleUtils.closeQuietly(this.globalEndpointManager);
+        LifeCycleUtils.closeQuietly(this.storeClientFactory);
+
         try {
             this.rxClient.shutdown();
         } catch (Exception e) {

@@ -27,11 +27,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.Error;
 import com.microsoft.azure.cosmosdb.rx.internal.RMResources;
 
 public interface FailureValidator {
+
+    static FailureValidator.Builder builder() {
+        return new Builder();
+    }
 
     void validate(Throwable t);
 
@@ -116,6 +121,57 @@ public interface FailureValidator {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(DocumentClientException.class);
                     assertThat(((DocumentClientException) t).getSubStatusCode()).isEqualTo(substatusCode);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder responseHeader(String key, String value) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(DocumentClientException.class);
+                    assertThat(((DocumentClientException) t).getResponseHeaders().get(key)).isEqualTo(value);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder lsn(long lsn) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(DocumentClientException.class);
+                    DocumentClientException ex = (DocumentClientException) t;
+                    assertThat(BridgeInternal.getLSN(ex)).isEqualTo(lsn);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder partitionKeyRangeId(String pkrid) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(DocumentClientException.class);
+                    DocumentClientException ex = (DocumentClientException) t;
+                    assertThat(BridgeInternal.getPartitionKeyRangeId(ex)).isEqualTo(pkrid);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder resourceAddress(String resourceAddress) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(DocumentClientException.class);
+                    DocumentClientException ex = (DocumentClientException) t;
+                    assertThat(BridgeInternal.getResourceAddress(ex)).isEqualTo(resourceAddress);
                 }
             });
             return this;

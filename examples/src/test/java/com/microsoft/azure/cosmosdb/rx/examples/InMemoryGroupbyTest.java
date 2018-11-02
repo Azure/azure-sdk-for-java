@@ -51,7 +51,7 @@ import rx.observables.GroupedObservable;
 public class InMemoryGroupbyTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryGroupbyTest.class);
-    private static final String DATABASE_ID = "in-memory-groupby";
+    private static final String DATABASE_ID = Utils.getDatabaseId(InMemoryGroupbyTest.class);
 
     private AsyncDocumentClient asyncClient;
     private Database createdDatabase;
@@ -109,7 +109,7 @@ public class InMemoryGroupbyTest {
 
     @After
     public void shutdown() throws DocumentClientException {
-        asyncClient.close();
+        Utils.safeclean(asyncClient, DATABASE_ID);
     }
 
     /**

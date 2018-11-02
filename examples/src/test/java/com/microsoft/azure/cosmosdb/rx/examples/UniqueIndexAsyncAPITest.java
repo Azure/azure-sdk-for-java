@@ -56,7 +56,7 @@ import static org.hamcrest.Matchers.hasSize;
 public class UniqueIndexAsyncAPITest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UniqueIndexAsyncAPITest.class);
-    private static final String DATABASE_ID = "async-test-db";
+    private static final String DATABASE_ID = Utils.getDatabaseId(UniqueIndexAsyncAPITest.class);
 
     private AsyncDocumentClient client;
     private Database createdDatabase;
@@ -122,8 +122,7 @@ public class UniqueIndexAsyncAPITest {
 
     @After
     public void shutdown() {
-        cleanUpGeneratedDatabases();
-        client.close();
+        Utils.safeclean(client, DATABASE_ID);
     }
 
     private String getCollectionLink(DocumentCollection collection) {

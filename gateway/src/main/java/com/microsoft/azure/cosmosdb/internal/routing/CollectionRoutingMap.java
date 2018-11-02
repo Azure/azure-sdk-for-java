@@ -27,11 +27,12 @@ import java.util.Collection;
 import java.util.List;
 
 import com.microsoft.azure.cosmosdb.PartitionKeyRange;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 /**
  * Used internally in request routing in the Azure Cosmos DB database service.
  */
-public interface CollectionRoutingMap {
+public interface CollectionRoutingMap<TPartitionInfo> {
     List<PartitionKeyRange> getOrderedPartitionKeyRanges();
 
     PartitionKeyRange getRangeByEffectivePartitionKey(String effectivePartitionKeyValue);
@@ -41,4 +42,14 @@ public interface CollectionRoutingMap {
     Collection<PartitionKeyRange> getOverlappingRanges(Range<String> range);
 
     Collection<PartitionKeyRange> getOverlappingRanges(Collection<Range<String>> providedPartitionKeyRanges);
+
+    PartitionKeyRange tryGetRangeByPartitionKeyRangeId(String partitionKeyRangeId);
+
+    TPartitionInfo tryGetInfoByPartitionKeyRangeId(String partitionKeyRangeId);
+
+    boolean IsGone(String partitionKeyRangeId);
+
+    String getCollectionUniqueId();
+
+    CollectionRoutingMap tryCombine(List<ImmutablePair<PartitionKeyRange, TPartitionInfo>> ranges);
 }

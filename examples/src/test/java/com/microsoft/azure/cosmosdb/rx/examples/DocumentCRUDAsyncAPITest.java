@@ -88,7 +88,7 @@ public class DocumentCRUDAsyncAPITest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentCRUDAsyncAPITest.class);
 
-    private static final String DATABASE_ID = "async-test-db";
+    private static final String DATABASE_ID = Utils.getDatabaseId(DocumentCRUDAsyncAPITest.class);
 
     private AsyncDocumentClient asyncClient;
     private Database createdDatabase;
@@ -127,7 +127,7 @@ public class DocumentCRUDAsyncAPITest {
 
     @After
     public void shutdown() throws DocumentClientException {
-        asyncClient.close();
+        Utils.safeclean(asyncClient, DATABASE_ID);
     }
 
     /**

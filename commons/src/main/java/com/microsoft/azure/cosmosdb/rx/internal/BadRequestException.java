@@ -23,16 +23,52 @@
 package com.microsoft.azure.cosmosdb.rx.internal;
 
 import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.HttpUtils;
+import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+
+import java.net.URI;
+import java.util.HashMap;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
  * This is meant to be internally used only by our sdk.
  */
 public class BadRequestException extends DocumentClientException {
-
     private static final long serialVersionUID = 1L;
 
-    public BadRequestException(String errorMessage) {
-        super(400, errorMessage);
+    public BadRequestException(String message, Exception innerException) {
+        super(message, innerException, new HashMap<>(), HttpConstants.StatusCodes.BADREQUEST, null);
+    }
+
+    public BadRequestException() {
+        this(RMResources.BadRequest);
+    }
+
+    public BadRequestException(String message) {
+        this(message, (Exception) null, (HttpResponseHeaders) null, null);
+    }
+
+    public BadRequestException(String message, HttpResponseHeaders headers, String requestUri) {
+        this(message, null, headers, requestUri);
+    }
+
+    public BadRequestException(String message, HttpResponseHeaders headers, URI requestUri) {
+        this(message, headers, requestUri != null ? requestUri.toString() : null);
+    }
+
+    public BadRequestException(Exception innerException) {
+        this(RMResources.BadRequest, innerException, null, null);
+    }
+
+    public BadRequestException(String message,
+                             Exception innerException,
+                             HttpResponseHeaders headers,
+                             String requestUri) {
+        super(String.format("%s: %s", RMResources.BadRequest, message),
+                innerException,
+                HttpUtils.asMap(headers),
+                HttpConstants.StatusCodes.BADREQUEST,
+                requestUri != null ? requestUri.toString() : null);
     }
 }

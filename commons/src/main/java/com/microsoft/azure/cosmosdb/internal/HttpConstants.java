@@ -124,6 +124,8 @@ public class HttpConstants {
         //Request validation
         public static final String REQUEST_VALIDATION_FAILURE = "x-ms-request-validation-failure";
 
+        public static final String WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH = "x-ms-write-request-trigger-refresh";
+
         // Quota Info
         public static final String MAX_RESOURCE_QUOTA = "x-ms-resource-quota";
         public static final String CURRENT_RESOURCE_QUOTA_USAGE = "x-ms-resource-usage";
@@ -222,7 +224,7 @@ public class HttpConstants {
 
         // TODO: FIXME we can use maven plugin for generating a version file
         // @see https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
-        public static final String SDK_VERSION = "2.2.0";
+        public static final String SDK_VERSION = "2.2.1-SNAPSHOT";
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }
 
@@ -231,13 +233,18 @@ public class HttpConstants {
         // Client error
         public static final int MINIMUM_STATUSCODE_AS_ERROR_GATEWAY = 400;
         public static final int BADREQUEST = 400;
+        public static final int UNAUTHORIZED = 401;
         public static final int FORBIDDEN = 403;
         public static final int NOTFOUND = 404;
+        public static final int METHOD_NOT_ALLOWED = 405;
+        public static final int REQUEST_TIMEOUT = 408;
         public static final int CONFLICT = 409;
         public static final int GONE = 410;
+        public static final int PRECONDITION_FAILED = 412;
+        public static final int REQUEST_ENTITY_TOO_LARGE = 413;
+        public static final int LOCKED = 423;
         public static final int TOO_MANY_REQUESTS = 429;
         public static final int RETRY_WITH = 449;
-        public static final int TIMEOUT = 408;
 
         public static final int SERVICE_UNAVAILABLE = 503;
         public static final int INTERNAL_SERVER_ERROR = 500;
@@ -251,7 +258,8 @@ public class HttpConstants {
         // 410: StatusCodeType_Gone: substatus
         public static final int NAME_CACHE_IS_STALE = 1000;
         public static final int PARTITION_KEY_RANGE_GONE = 1002;
-        public static final int SPLITTING = 1007;
+        public static final int COMPLETING_SPLIT = 1007;
+        public static final int COMPLETING_PARTITION_MIGRATION = 1008;
 
         // 403: Forbidden substatus
         public static final int FORBIDDEN_WRITEFORBIDDEN = 3;

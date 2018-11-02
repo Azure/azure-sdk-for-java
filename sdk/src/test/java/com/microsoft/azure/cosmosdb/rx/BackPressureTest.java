@@ -52,7 +52,7 @@ import rx.schedulers.Schedulers;
 
 public class BackPressureTest extends TestSuiteBase {
 
-    private static final int TIMEOUT = 120000;
+    private static final int TIMEOUT = 200000;
     private static final int SETUP_TIMEOUT = 60000;
 
     private static final String DATABASE_ID = getDatabaseId(BackPressureTest.class);
@@ -172,9 +172,9 @@ public class BackPressureTest extends TestSuiteBase {
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
                         createdCollection.getResourceId())
                         , null).first().map(FeedResponse::getResults).toBlocking().single().get(0);
-        offer.setThroughput(10000);
+        offer.setThroughput(6000);
         offer = client.replaceOffer(offer).toBlocking().single().getResource();
-        assertThat(offer.getThroughput()).isEqualTo(10000);
+        assertThat(offer.getThroughput()).isEqualTo(6000);
 
         ArrayList<Document> docDefList = new ArrayList<>();
         for(int i = 0; i < 1000; i++) {

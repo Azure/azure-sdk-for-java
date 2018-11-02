@@ -93,7 +93,7 @@ public class DocumentQueryAsyncAPITest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentQueryAsyncAPITest.class);
 
-    private static final String DATABASE_ID = "async-test-db";
+    private static final String DATABASE_ID = Utils.getDatabaseId(DocumentQueryAsyncAPITest.class);
 
     private AsyncDocumentClient asyncClient;
 
@@ -142,7 +142,7 @@ public class DocumentQueryAsyncAPITest {
 
     @After
     public void shutdown() throws DocumentClientException {
-        asyncClient.close();
+        Utils.safeclean(asyncClient, DATABASE_ID);
     }
 
     /**

@@ -21,15 +21,21 @@
  * SOFTWARE.
  */
 
-package com.microsoft.azure.cosmosdb;
+package com.microsoft.azure.cosmosdb.internal;
 
-import java.util.Collection;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class GatewayTestUtils {
-
-    public static PartitionKeyRange setParent(PartitionKeyRange pkr, List<String> parents) {
-        pkr.setParents(parents);
-        return pkr;
+public class LifeCycleUtils {
+    private final static Logger logger = LoggerFactory.getLogger(LifeCycleUtils.class);
+    public static void closeQuietly(AutoCloseable closeable) {
+        try {
+            if (closeable != null) {
+                logger.debug("closing an instance of {}", closeable.getClass().getCanonicalName());
+                closeable.close();
+            }
+        } catch (Exception e) {
+            logger.warn("attempting to close an instance of {} failed", closeable.getClass().getCanonicalName(), e);
+        }
     }
 }

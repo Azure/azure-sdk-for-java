@@ -54,8 +54,8 @@ import rx.Observable;
 public class ChangeFeedTest extends TestSuiteBase {
 
     private static final int SETUP_TIMEOUT = 40000;
-
-    public static final String DATABASE_ID = getDatabaseId(ChangeFeedTest.class);
+    private static final int TIMEOUT = 30000;
+    private static final String DATABASE_ID = getDatabaseId(ChangeFeedTest.class);
     private static final String PartitionKeyFieldName = "mypk";
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -83,6 +83,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     public ChangeFeedTest() {
         clientBuilder = createGatewayRxDocumentClient();
+        subscriberValidationTimeout = TIMEOUT;
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -112,7 +113,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void changesFromParitionKeyRangeId_FromBeginning() throws Exception {
+    public void changesFromPartitionKeyRangeId_FromBeginning() throws Exception {
         List<String> partitionKeyRangeIds = client.readPartitionKeyRanges(getCollectionLink(), null)
                 .flatMap(p -> Observable.from(p.getResults()), 1)
                 .map(pkr -> pkr.getId())

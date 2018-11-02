@@ -30,6 +30,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import com.google.common.collect.ImmutableList;
+import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.testng.annotations.Test;
@@ -55,10 +57,6 @@ public class InMemoryCollectionRoutingMapTest {
         assertThat("2").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(2).getId());
         assertThat("3").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(3).getId());
 
-        assertThat((Integer) 0).isEqualTo(routingMap.getOrderedPartitionInfo().get(0));
-        assertThat((Integer) 1).isEqualTo(routingMap.getOrderedPartitionInfo().get(1));
-        assertThat((Integer) 2).isEqualTo(routingMap.getOrderedPartitionInfo().get(2));
-        assertThat((Integer) 3).isEqualTo(routingMap.getOrderedPartitionInfo().get(3));
 
         assertThat("0").isEqualTo(routingMap.getRangeByEffectivePartitionKey("").getId());
         assertThat("0").isEqualTo(routingMap.getRangeByEffectivePartitionKey("0000000000").getId());
@@ -121,9 +119,141 @@ public class InMemoryCollectionRoutingMapTest {
 
         routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(Arrays.asList(
                 new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("2", "", "0000000030"), 2),
-                new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("2", "0000000030", "FF"), 2)),
+                new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("3", "0000000030", "FF"), 2)),
                 StringUtils.EMPTY);
 
         assertThat(routingMap).isNotNull();
+    }
+
+
+    @Test(groups = {"unit"})
+    public void goneRanges() {
+        CollectionRoutingMap routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
+            ImmutableList.of(
+                new ImmutablePair(new PartitionKeyRange("2", "", "0000000030", ImmutableList.of("1", "0")), null),
+                new ImmutablePair(new PartitionKeyRange("3", "0000000030", "0000000032", ImmutableList.of("5")), null),
+                new ImmutablePair(new PartitionKeyRange("4", "0000000032", "FF"), null)),
+            StringUtils.EMPTY);
+
+        assertThat(routingMap.IsGone("1")).isTrue();
+        assertThat(routingMap.IsGone("0")).isTrue();
+        assertThat(routingMap.IsGone("5")).isTrue();
+
+        assertThat(routingMap.IsGone("2")).isFalse();
+        assertThat(routingMap.IsGone("3")).isFalse();
+        assertThat(routingMap.IsGone("4")).isFalse();
+        assertThat(routingMap.IsGone("100")).isFalse();
+    }
+
+    @Test(groups = {"unit"})
+    public void tryCombineRanges() {
+        CollectionRoutingMap routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
+            ImmutableList.of(
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "2",
+                        "0000000050",
+                        "0000000070"),
+                    null),
+
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "0",
+                        "",
+                        "0000000030"),
+                    null),
+
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "1",
+                        "0000000030",
+                        "0000000050"),
+                    null),
+
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "3",
+                        "0000000070",
+                        "FF"),
+                    null)
+            ), StringUtils.EMPTY);
+
+        CollectionRoutingMap newRoutingMap = routingMap.tryCombine(
+            ImmutableList.of(
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "4",
+                        "",
+                        "0000000010",
+                        ImmutableList.of("0")
+                    ),
+                    null),
+
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "5",
+                        "0000000010",
+                        "0000000030",
+                        ImmutableList.of("0")
+                    ),
+                    null)
+            ));
+
+        assertThat(newRoutingMap).isNotNull();
+
+        newRoutingMap = routingMap.tryCombine(
+            ImmutableList.of(
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "6",
+                        "",
+                        "0000000005",
+                        ImmutableList.of("0", "4")
+                    ),
+                    null),
+
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "7",
+                        "0000000005",
+                        "0000000010",
+                        ImmutableList.of("0", "4")
+                    ),
+                    null),
+
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "8",
+                        "0000000010",
+                        "0000000015",
+                        ImmutableList.of("0", "5")
+                    ),
+                    null),
+
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "9",
+                        "0000000015",
+                        "0000000030",
+                        ImmutableList.of("0", "5")
+                    ),
+                    null)
+            ));
+
+        assertThat(newRoutingMap).isNotNull();
+
+        newRoutingMap = routingMap.tryCombine(
+            ImmutableList.of(
+                new ImmutablePair(
+                    new PartitionKeyRange(
+                        "10",
+                        "",
+                        "0000000002",
+                        ImmutableList.of("0", "4", "6")
+                    ),
+                    null)
+            ));
+
+        assertThat(newRoutingMap).isNull();
     }
 }

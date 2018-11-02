@@ -26,6 +26,7 @@ package com.microsoft.azure.cosmosdb.rx.internal;
 import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.DatabaseAccount;
+import com.microsoft.azure.cosmosdb.DatabaseAccountManagerInternal;
 import com.microsoft.azure.cosmosdb.internal.routing.LocationCache;
 import com.microsoft.azure.cosmosdb.rx.internal.routing.LocationHelper;
 import org.slf4j.Logger;
@@ -54,7 +55,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Endpoint region cache manager implementation. Supports cross region address routing based on
  * availability and preference list.
  */
-public class GlobalEndpointManager {
+public class GlobalEndpointManager implements AutoCloseable {
     private static final Logger logger = LoggerFactory.getLogger(GlobalEndpointManager.class);
 
     private final int backgroundRefreshLocationTimeIntervalInMS;
@@ -89,8 +90,9 @@ public class GlobalEndpointManager {
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
+    }
 
-        // TODO: should we block on the first initialization?
+    public void init() {
         startRefreshLocationTimerAsync(true);
     }
 

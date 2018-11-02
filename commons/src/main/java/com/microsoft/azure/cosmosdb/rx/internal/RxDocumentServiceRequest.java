@@ -46,6 +46,8 @@ import rx.observables.StringObservable;
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
  */
 public class RxDocumentServiceRequest {
+    public volatile boolean forcePartitionKeyRangeRefresh;
+    public volatile boolean forceCollectionRoutingMapRefresh;
     private String resourceId;
     private final ResourceType resourceType;
     private final String path;
@@ -55,7 +57,7 @@ public class RxDocumentServiceRequest {
     private final boolean isNameBased;
     private final OperationType operationType;
     private final String resourceAddress;
-    private volatile boolean forceNameCacheRefresh;
+    public volatile boolean forceNameCacheRefresh;
     private volatile URI endpointOverride = null;
     private final String activityId;
     private volatile String resourceFullName;
@@ -358,6 +360,17 @@ public class RxDocumentServiceRequest {
     public static RxDocumentServiceRequest create(OperationType operation,
                                                   ResourceType resourceType) {
         return new RxDocumentServiceRequest(operation, null, resourceType, null, null);
+    }
+
+    public static RxDocumentServiceRequest createFromName(
+            OperationType operationType,
+            String resourceFullName,
+            ResourceType resourceType) {
+        return  RxDocumentServiceRequest.create(
+            operationType,
+            resourceType,
+            resourceFullName,
+            new HashMap<>());
     }
     
     private static String extractIdFromUri(String path) {

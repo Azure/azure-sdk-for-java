@@ -20,16 +20,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package com.microsoft.azure.cosmosdb;
 
-import java.util.Collection;
-import java.util.List;
+import rx.Observable;
 
-public class GatewayTestUtils {
+import java.net.URI;
 
-    public static PartitionKeyRange setParent(PartitionKeyRange pkr, List<String> parents) {
-        pkr.setParents(parents);
-        return pkr;
-    }
+public interface DatabaseAccountManagerInternal {
+
+    /**
+     * Gets database account information.
+     *
+     * @param endpoint the endpoint from which gets the database account
+     * @return the database account.
+     */
+    Observable<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint);
+
+    /**
+     * Gets the connection policy
+     *
+     * @return connection policy
+     */
+    ConnectionPolicy getConnectionPolicy();
+
+    /**
+     * Gets the service endpoint
+     *
+     * @return service endpoint
+     */
+    URI getServiceEndpoint();
+
 }

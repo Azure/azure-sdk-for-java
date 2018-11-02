@@ -23,9 +23,14 @@
 package com.microsoft.azure.cosmosdb.rx.internal.caches;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.rx.internal.NotFoundException;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
@@ -53,12 +58,10 @@ import rx.Single;
  * This is meant to be internally used only by our sdk.
  **/
 public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
-
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
 
     private final AsyncCache<String, CollectionRoutingMap> routingMapCache;
     private final AsyncDocumentClient client;
-
     private final RxCollectionCache collectionCache;
 
     public RxPartitionKeyRangeCache(AsyncDocumentClient client, RxCollectionCache collectionCache) {
@@ -85,6 +88,11 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
                     return Single.error(err);
                 });
+    }
+
+    @Override
+    public Single<CollectionRoutingMap> tryLookupAsync(String collectionRid, CollectionRoutingMap previousValue, boolean forceRefreshCollectionRoutingMap) {
+        return tryLookupAsync(collectionRid, previousValue);
     }
 
     /* (non-Javadoc)
@@ -182,11 +190,29 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             List<ImmutablePair<PartitionKeyRange, Boolean>> rangesTuples =
                     ranges.stream().map(range -> new  ImmutablePair<>(range, true)).collect(Collectors.toList());
 
-            // TODO: this may return null if the provided ranges is not complete
-            // is this better to return null in this case?
-            InMemoryCollectionRoutingMap<Boolean> collectionRoutingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(rangesTuples,
-                    StringUtils.EMPTY);
-            return Single.just(collectionRoutingMap);
+
+            CollectionRoutingMap routingMap;
+            if (previousRoutingMap == null)
+            {
+                // Splits could have happened during change feed query and we might have a mix of gone and new ranges.
+                Set<String> goneRanges = new HashSet<>(ranges.stream().flatMap(range -> CollectionUtils.emptyIfNull(range.getParents()).stream()).collect(Collectors.toSet()));
+
+                routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
+                    rangesTuples.stream().filter(tuple -> !goneRanges.contains(tuple.left.getId())).collect(Collectors.toList()),
+                    collectionRid);
+            }
+            else
+            {
+                routingMap = previousRoutingMap.tryCombine(ranges);
+            }
+
+            if (routingMap == null)
+            {
+                // Range information either doesn't exist or is not complete.
+                return Single.error(new NotFoundException(String.format("GetRoutingMapForCollectionAsync(collectionRid: {%s}), Range information either doesn't exist or is not complete.", collectionRid)));
+            }
+
+            return Single.just(routingMap);
         });
     }
 
@@ -196,7 +222,6 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
                 collectionRid,
                 ResourceType.PartitionKeyRange,
                 null
-                // TODOAuthorizationTokenType.Invalid)
                 ); //this request doesn't actually go to server
 
         request.requestContext.resolvedCollectionRid = collectionRid;

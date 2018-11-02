@@ -51,7 +51,7 @@ import static org.hamcrest.Matchers.*;
 public class ConflictAPITest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConflictAPITest.class);
-    private static final String DATABASE_ID = ConflictAPITest.class.getName();
+    private static final String DATABASE_ID = Utils.getDatabaseId(ConflictAPITest.class);
 
     private AsyncDocumentClient client;
 
@@ -99,7 +99,7 @@ public class ConflictAPITest {
 
     @After
     public void shutdown() {
-        client.close();
+        Utils.safeclean(client, DATABASE_ID);
     }
 
     /**

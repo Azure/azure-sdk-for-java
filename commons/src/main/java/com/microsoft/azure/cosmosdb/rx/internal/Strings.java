@@ -45,6 +45,14 @@ public class Strings {
         return StringUtils.equals(str1, str2);
     }
 
+    public static boolean areEqualIgnoreCase(String str1, String str2) {
+        return StringUtils.equalsIgnoreCase(str1, str2);
+    }
+
+    public static boolean containsIgnoreCase(String str1, String str2) {
+        return StringUtils.containsIgnoreCase(str1, str2);
+    }
+
     public static int compare(String str1, String str2) {
         return StringUtils.compare(str1, str2);
     }

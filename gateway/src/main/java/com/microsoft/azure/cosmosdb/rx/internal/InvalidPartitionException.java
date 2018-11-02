@@ -24,6 +24,11 @@ package com.microsoft.azure.cosmosdb.rx.internal;
 
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.HttpUtils;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.WFConstants;
+import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+
+import java.net.URI;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -33,8 +38,42 @@ public class InvalidPartitionException extends DocumentClientException {
 
     private static final long serialVersionUID = 1L;
 
+    public InvalidPartitionException() {
+        this(RMResources.Gone);
+    }
+
     public InvalidPartitionException(String msg) {
-        // TODO: these constants are in RMResource in .Net
         super(HttpConstants.StatusCodes.GONE, msg);
+    }
+
+    public InvalidPartitionException(String msg, String resourceAddress) {
+        super(msg, null, null, HttpConstants.StatusCodes.GONE, resourceAddress);
+    }
+
+    public InvalidPartitionException(String message, HttpResponseHeaders headers, String requestUri) {
+        this(message, null, headers, requestUri);
+    }
+
+    public InvalidPartitionException(Exception innerException) {
+        this(RMResources.Gone, innerException, null, null);
+    }
+
+    public InvalidPartitionException(String message,
+                             Exception innerException,
+                             HttpResponseHeaders headers,
+                             String requestUri) {
+        super(String.format("%s: %s", RMResources.Gone, message),
+                innerException,
+                HttpUtils.asMap(headers),
+                HttpConstants.StatusCodes.GONE,
+                requestUri);
+
+        setSubStatus();
+    }
+
+    private void setSubStatus() {
+        this.getResponseHeaders().put(
+                WFConstants.BackendHeaders.SubStatus,
+                Integer.toString(HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE));
     }
 }

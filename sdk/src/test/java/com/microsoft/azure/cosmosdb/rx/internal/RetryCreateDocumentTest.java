@@ -23,27 +23,7 @@
 
 package com.microsoft.azure.cosmosdb.rx.internal;
 
-import static org.assertj.core.api.Assertions.fail;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.doAnswer;
-
-import java.lang.reflect.Field;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import com.google.common.collect.ImmutableMap;
-import com.microsoft.azure.cosmosdb.ConnectionPolicy;
-import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
@@ -52,29 +32,42 @@ import com.microsoft.azure.cosmosdb.Error;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.OperationType;
+import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.FailureValidator;
 import com.microsoft.azure.cosmosdb.rx.ResourceResponseValidator;
-import com.microsoft.azure.cosmosdb.rx.TestConfigurations;
 import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
-import com.microsoft.azure.cosmosdb.rx.Utils;
-
+import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import rx.Observable;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.doAnswer;
 
 public class RetryCreateDocumentTest extends TestSuiteBase {
     private final static String DATABASE_ID = getDatabaseId(RetryCreateDocumentTest.class);
-
-    private final static int TIMEOUT = 7000;
-    {
-        subscriberValidationTimeout = TIMEOUT;
-    }
+    private final AsyncDocumentClient.Builder clientBuilder;
     
-    private AsyncDocumentClient client;
+    private SpyClientUnderTestFactory.ClientWithGatewaySpy client;
 
     private Database database;
     private DocumentCollection collection;
-    private RxGatewayStoreModel gateway;
-    private RxGatewayStoreModel spyGateway;
+
+    @Factory(dataProvider = "clientBuilders")
+    public RetryCreateDocumentTest(AsyncDocumentClient.Builder clientBuilder) {
+        this.clientBuilder = clientBuilder;
+    }
 
     @Test(groups = { "internal" }, timeOut = TIMEOUT)
     public void retryDocumentCreate() throws Exception {
@@ -92,7 +85,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
                 if (req.getOperationType() != OperationType.Create) {
-                    return gateway.processMessage(req);
+                    return client.getOrigGatewayStoreModel().processMessage(req);
                 }
 
                 int currentAttempt = count.getAndIncrement();
@@ -103,10 +96,10 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
                     return Observable.error(new DocumentClientException(HttpConstants.StatusCodes.BADREQUEST, new Error() , header));
                 } else {
-                    return gateway.processMessage(req);
+                    return client.getOrigGatewayStoreModel().processMessage(req);
                 }
             }
-        }).when(this.spyGateway).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
@@ -116,40 +109,43 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
     @Test(groups = { "internal" }, timeOut = TIMEOUT)
     public void createDocument_noRetryOnNonRetriableFailure() throws Exception {
-        // create a document to ensure collection is cached
-        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).toBlocking().single();
 
-        Document docDefinition = getDocumentDefinition();
-
-        Observable<ResourceResponse<Document>> createObservable = client
-                .createDocument(collection.getSelfLink(), docDefinition, null, false);
         AtomicInteger count = new AtomicInteger();
-
         doAnswer(new Answer< Observable<RxDocumentServiceResponse>>() {
             @Override
             public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
-                if (req.getOperationType() != OperationType.Create) {
-                    return gateway.processMessage(req);
+
+                if (req.getResourceType() != ResourceType.Document) {
+                    return client.getOrigGatewayStoreModel().processMessage(req);
                 }
 
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
+                    return client.getOrigGatewayStoreModel().processMessage(req);
+                } else {
                     Map<String, String> header = ImmutableMap.of(
                             HttpConstants.HttpHeaders.SUB_STATUS,
                             Integer.toString(2));          
 
                     return Observable.error(new DocumentClientException(1, new Error() , header));
-                } else {
-                    return gateway.processMessage(req);
                 }
             }
-        }).when(this.spyGateway).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
+
+        // create a document to ensure collection is cached
+        client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false)
+                .toBlocking()
+                .single();
+
+        Document docDefinition = getDocumentDefinition();
+
+        Observable<ResourceResponse<Document>> createObservable = client
+                .createDocument(collection.getSelfLink(), docDefinition, null, false);
 
         // validate
-
         FailureValidator validator = new FailureValidator.Builder().statusCode(1).subStatusCode(2).build();
-        validateFailure(createObservable, validator);
+        validateFailure(createObservable, validator, TIMEOUT);
     }
 
     @Test(groups = { "internal" }, timeOut = TIMEOUT)
@@ -157,10 +153,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         // create a document to ensure collection is cached
         client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).toBlocking().single();
 
-        Document docDefinition = getDocumentDefinition();
 
-        Observable<ResourceResponse<Document>> createObservable = client
-                .createDocument(collection.getSelfLink(), docDefinition, null, false);
         AtomicInteger count = new AtomicInteger();
 
         doAnswer(new Answer< Observable<RxDocumentServiceResponse>>() {
@@ -168,7 +161,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
                 if (req.getOperationType() != OperationType.Create) {
-                    return gateway.processMessage(req);
+                    return client.getOrigGatewayStoreModel().processMessage(req);
                 }
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
@@ -178,58 +171,36 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
                     return Observable.error(new DocumentClientException(1, new Error() , header));
                 } else {
-                    return gateway.processMessage(req);
+                    return client.getOrigGatewayStoreModel().processMessage(req);
                 }
             }
-        }).when(this.spyGateway).processMessage(anyObject());
+        }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
 
+        Document docDefinition = getDocumentDefinition();
+
+        Observable<ResourceResponse<Document>> createObservable = client
+                .createDocument(collection.getSelfLink(), docDefinition, null, false);
         // validate
 
         FailureValidator validator = new FailureValidator.Builder().statusCode(1).subStatusCode(2).build();
         validateFailure(createObservable.timeout(100, TimeUnit.MILLISECONDS), validator);
     }
-
-    private void registerSpyProxy() {
-
-        RxDocumentClientImpl clientImpl = (RxDocumentClientImpl) client;
-        try {
-            Field f = RxDocumentClientImpl.class.getDeclaredField("gatewayProxy");
-            f.setAccessible(true);
-            this.gateway = (RxGatewayStoreModel) f.get(clientImpl);
-            this.spyGateway = Mockito.spy(gateway);
-            f.set(clientImpl, this.spyGateway);
-        } catch (Exception e) {
-            fail("failed to register spy proxy due to " + e.getMessage());
-        }
-    }
     
     @BeforeMethod(groups = { "internal" })
     public void beforeMethod() {
-        Mockito.reset(this.spyGateway);
+        Mockito.reset(client.getSpyGatewayStoreModel());
     }
 
     @BeforeClass(groups = { "internal" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         // set up the client        
-        client = new AsyncDocumentClient.Builder()
-                .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(ConnectionPolicy.GetDefault())
-                .withConsistencyLevel(ConsistencyLevel.Session)
-                .build();
-        registerSpyProxy();
+        client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder);
 
         Database databaseDefinition = new Database();
         databaseDefinition.setId(DATABASE_ID);
 
-        try {
-            client.deleteDatabase(Utils.getDatabaseLink(databaseDefinition, true), null).toBlocking().single();
-        } catch (Exception e) {
-            // ignore failure if it doesn't exist
-        }
-
-        database = client.createDatabase(databaseDefinition, null).toBlocking().single().getResource();
-        collection = client.createCollection(database.getSelfLink(), getCollectionDefinition(), null).toBlocking().single().getResource();
+        database = safeCreateDatabase(client, databaseDefinition);
+        collection = safeCreateCollection(client, database.getId(), getCollectionDefinition(), null);
     }
 
     private Document getDocumentDefinition() {
@@ -245,7 +216,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
     @AfterClass(groups = { "internal" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        client.deleteDatabase(database.getSelfLink(), null).toBlocking().single();
+        safeDeleteDatabase(client, database.getId());
         safeClose(client);
     }
 }

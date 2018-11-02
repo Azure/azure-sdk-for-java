@@ -25,30 +25,46 @@ package com.microsoft.azure.cosmosdb.rx.internal;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
+import io.netty.channel.ChannelPipeline;
 import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
+import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
 import io.reactivex.netty.client.RxClient;
 import io.reactivex.netty.pipeline.PipelineConfigurator;
 import io.reactivex.netty.pipeline.PipelineConfiguratorComposite;
 import io.reactivex.netty.pipeline.ssl.SSLEngineFactory;
+import io.reactivex.netty.pipeline.ssl.SslCompletionHandler;
 import io.reactivex.netty.protocol.http.HttpObjectAggregationConfigurator;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClientBuilder;
 import io.reactivex.netty.protocol.http.client.HttpClientPipelineConfigurator;
+import io.reactivex.netty.protocol.http.client.HttpClientRequest;
+import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
+
+import com.microsoft.azure.cosmosdb.internal.Constants;
+import org.slf4j.LoggerFactory;
+
+import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Helper class internally used for instantiating rx http client.
  */
 public class HttpClientFactory {
+    private final static String NETWORK_LOG_CATEGORY = "com.microsoft.azure.cosmosdb.netty-network";
+
     private Configs configs;
     private Integer maxPoolSize;
     private Integer maxIdleConnectionTimeoutInMillis;
     private Integer requestTimeoutInMillis;
+    private InetSocketAddress proxy;
+    private LogLevel logLevel;
 
     public HttpClientFactory() {
     }
@@ -63,6 +79,16 @@ public class HttpClientFactory {
         return this;
     }
 
+    public HttpClientFactory withHttpProxy(InetSocketAddress proxy) {
+        this.proxy = proxy;
+        return this;
+    }
+
+    public HttpClientFactory withNettyLogLevel(LogLevel logLevel) {
+        this.logLevel = logLevel;
+        return this;
+    }
+
     public HttpClientFactory withMaxIdleConnectionTimeoutInMillis(int maxIdleConnectionTimeoutInMillis) {
         this.maxIdleConnectionTimeoutInMillis = maxIdleConnectionTimeoutInMillis;
         return this;
@@ -73,7 +99,9 @@ public class HttpClientFactory {
         return this;
     }
 
-    static class DefaultSSLEngineFactory implements SSLEngineFactory {
+    // TODO: perf we should share the same instance of SSLContext for all http clients and rntbd client
+    // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/308360
+    class DefaultSSLEngineFactory implements SSLEngineFactory {
         private final SslContext sslContext;
 
         private DefaultSSLEngineFactory() {
@@ -90,6 +118,26 @@ public class HttpClientFactory {
             return sslContext.newEngine(allocator);
         }
     }
+    class SslPipelineConfiguratorUsedWithProxy<I, O> implements PipelineConfigurator<I, O> {
+
+        private final SSLEngineFactory sslEngineFactory;
+
+        private SslPipelineConfiguratorUsedWithProxy(SSLEngineFactory sslEngineFactory) {
+            this.sslEngineFactory = sslEngineFactory;
+        }
+
+        @Override
+        public void configureNewPipeline(ChannelPipeline pipeline) {
+            final SslHandler sslHandler = new SslHandler(sslEngineFactory.createSSLEngine(pipeline.channel().alloc()));
+            if(proxy != null) {
+                pipeline.addAfter(Constants.Properties.HTTP_PROXY_HANDLER_NAME,Constants.Properties.SSL_HANDLER_NAME, sslHandler);
+            } else {
+                pipeline.addFirst(Constants.Properties.SSL_HANDLER_NAME, sslHandler);
+            }
+            pipeline.addAfter(Constants.Properties.SSL_HANDLER_NAME, Constants.Properties.SSL_COMPLETION_HANDLER_NAME,
+                              new SslCompletionHandler(sslHandler.handshakeFuture()));
+        }
+    }
 
     public CompositeHttpClientBuilder<ByteBuf, ByteBuf> toHttpClientBuilder() {
 
@@ -97,14 +145,8 @@ public class HttpClientFactory {
             throw new IllegalArgumentException("configs is null");
         }
 
-
-        CompositeHttpClientBuilder<ByteBuf, ByteBuf> builder = new CompositeHttpClientBuilder<ByteBuf, ByteBuf>()
-                .withSslEngineFactory(new DefaultSSLEngineFactory());
-        builder = builder.pipelineConfigurator(createClientPipelineConfigurator(configs));
-
-
-        builder = builder.enableWireLogging(LogLevel.TRACE);
-
+        DefaultSSLEngineFactory defaultSSLEngineFactory = new DefaultSSLEngineFactory();
+        CompositeHttpClientBuilder<ByteBuf, ByteBuf> builder = new CompositeHttpClientBuilder<ByteBuf, ByteBuf>();
         if (maxPoolSize != null) {
             builder = builder.withMaxConnections(maxPoolSize);
         }
@@ -112,6 +154,20 @@ public class HttpClientFactory {
         if (maxIdleConnectionTimeoutInMillis != null) {
             builder = builder.withIdleConnectionsTimeoutMillis(maxIdleConnectionTimeoutInMillis);
         }
+
+        builder = builder.pipelineConfigurator(pipeline -> {
+            LoggingHandler loggingHandler = getLoggingHandler();
+
+            if (loggingHandler != null) {
+                pipeline.addFirst(Constants.Properties.LOGGING_HANDLER_NAME, loggingHandler);
+            }
+
+            if(proxy != null) {
+                pipeline.addFirst(Constants.Properties.HTTP_PROXY_HANDLER_NAME, new HttpProxyHandler(proxy));
+            }
+        })
+        .appendPipelineConfigurator(new SslPipelineConfiguratorUsedWithProxy<HttpClientResponse<ByteBuf>,HttpClientRequest<ByteBuf>>(defaultSSLEngineFactory))
+        .appendPipelineConfigurator(createClientPipelineConfigurator(configs));
 
         if (requestTimeoutInMillis != null) {
             RxClient.ClientConfig.Builder clientConfigBuilder = new RxClient.ClientConfig.Builder();
@@ -143,5 +199,13 @@ public class HttpClientFactory {
                         true),
                 new HttpObjectAggregationConfigurator(config.getMaxHttpBodyLength()));
         return clientPipelineConfigurator;
+    }
+
+    private static LoggingHandler getLoggingHandler() {
+        if (LoggerFactory.getLogger(NETWORK_LOG_CATEGORY).isTraceEnabled()) {
+            return new LoggingHandler(NETWORK_LOG_CATEGORY, LogLevel.TRACE);
+        }
+
+        return null;
     }
 }

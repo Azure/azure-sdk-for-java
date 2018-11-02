@@ -30,6 +30,8 @@ import com.microsoft.azure.cosmosdb.DocumentClientException;
  */
 public interface ISessionToken {
 
+    String PARTITION_KEY_RANGE_SESSION_SEPARATOR = ":";
+
     /**
      * Returns true if this instance of session token is valid with respect to <code>other</code> session token.
      * This is used to decide if the the client can accept server's response (based on comparison between client's

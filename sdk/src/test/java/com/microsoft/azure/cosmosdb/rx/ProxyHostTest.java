@@ -22,14 +22,29 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
+import java.io.StringWriter;
 import java.util.UUID;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.WriterAppender;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import com.microsoft.azure.cosmosdb.rx.proxy.HttpProxyServer;
+
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
+
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
@@ -39,6 +54,8 @@ import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * This class help to test proxy host feature scenarios where user can provide proxy
@@ -101,11 +118,63 @@ public class ProxyHostTest extends TestSuiteBase{
         }
     }
 
+    /**
+     * This test will try to create document via http proxy server with netty wire logging and validate it.
+     *
+     * @throws Exception
+     */
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void createDocumentWithValidHttpProxyWithNettyWireLogging() throws Exception {
+        LogManager.getRootLogger().setLevel(Level.INFO);
+        LogManager.getLogger(LogLevelTest.NETWORK_LOGGING_CATEGORY).setLevel(Level.TRACE);
+        AsyncDocumentClient clientWithRightProxy = null;
+        try {
+            StringWriter consoleWriter = new StringWriter();
+            WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
+            Logger.getLogger(LogLevelTest.NETWORK_LOGGING_CATEGORY).addAppender(appender);
+
+            ConnectionPolicy connectionPolicy =new ConnectionPolicy();
+            connectionPolicy.setProxy(PROXY_HOST, PROXY_PORT);
+            clientWithRightProxy = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
+                    .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                    .withConnectionPolicy(connectionPolicy)
+                    .withConsistencyLevel(ConsistencyLevel.Session).build();
+            Document docDefinition = getDocumentDefinition();
+            Observable<ResourceResponse<Document>> createObservable = clientWithRightProxy
+                    .createDocument(getCollectionLink(), docDefinition, null, false);
+            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+                    .withId(docDefinition.getId())
+                    .build();
+            validateSuccess(createObservable, validator);
+
+            assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_1);
+            assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_2);
+            assertThat(consoleWriter.toString()).contains(LogLevelTest.LOG_PATTERN_3);
+        } finally {
+            safeClose(clientWithRightProxy);
+        }
+    }
+
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
         httpProxyServer.shutDown();
+
+        LogManager.resetConfiguration();
+        PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
+    }
+
+    @BeforeMethod(groups = { "simple"})
+    public void beforeMethod() {
+        LogManager.resetConfiguration();
+        PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
+    }
+
+    @AfterMethod(groups = { "simple" }, alwaysRun = true)
+    public void afterMethod() {
+        LogManager.resetConfiguration();
+        PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }
 
     private String getCollectionLink() {

@@ -48,9 +48,11 @@ public class DocumentClientException extends Exception {
     private static final long serialVersionUID = 1L;
 
     private Error error;
-    private String resourceAddress;
     private int statusCode;
     private Map<String, String> responseHeaders;
+    String resourceAddress;
+    String partitionKeyRangeId;
+    long lsn;
 
     /**
      * Creates a new instance of the DocumentClientException class.

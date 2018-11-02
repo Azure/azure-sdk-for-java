@@ -21,15 +21,26 @@
  * SOFTWARE.
  */
 
-package com.microsoft.azure.cosmosdb;
+package com.microsoft.azure.cosmosdb.rx.examples;
 
-import java.util.Collection;
-import java.util.List;
+import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
-public class GatewayTestUtils {
+public class Utils {
 
-    public static PartitionKeyRange setParent(PartitionKeyRange pkr, List<String> parents) {
-        pkr.setParents(parents);
-        return pkr;
+    public static void safeclean(AsyncDocumentClient client, String databaseId) {
+        if (client != null) {
+            if (databaseId != null) {
+                try {
+                    client.deleteDatabase("/dbs/" + databaseId, null).toBlocking().single();
+                } catch (Exception e) {
+                }
+            }
+
+            client.close();
+        }
+    }
+
+    public static String getDatabaseId(Class<?> klass) {
+        return String.format("java.rx.examples.%s", klass.getName());
     }
 }

@@ -23,7 +23,7 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
@@ -59,6 +59,14 @@ public class PartitionKeyRange extends Resource {
         this.setId(id);
         this.setMinInclusive(minInclusive);
         this.setMaxExclusive(maxExclusive);
+    }
+
+    public PartitionKeyRange(String id, String minInclusive, String maxExclusive, List<String> parents) {
+        super();
+        this.setId(id);
+        this.setMinInclusive(minInclusive);
+        this.setMaxExclusive(maxExclusive);
+        this.setParents(parents);
     }
 
     public String getMinInclusive() {
@@ -103,7 +111,7 @@ public class PartitionKeyRange extends Resource {
         return hash;
     }
 
-    void setParents(Collection<String> parents) {
+    void setParents(List<String> parents) {
         this.set(Constants.Properties.PARENTS, parents);
     }
 
@@ -111,5 +119,5 @@ public class PartitionKeyRange extends Resource {
      * Used internally to indicate the ID of the parent range
      * @return a list partition key range ID
      */
-    public Collection<String> getParents() { return this.getCollection(Constants.Properties.PARENTS, String.class); }
+    public List<String> getParents() { return (List<String>) this.getCollection(Constants.Properties.PARENTS, String.class); }
 }

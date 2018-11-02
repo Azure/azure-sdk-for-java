@@ -42,4 +42,11 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
                 desiredConsistencyLevel);
     }
 
+    public SpyClientUnderTestFactory.ClientWithGatewaySpy buildWithGatewaySpy() {
+        return SpyClientUnderTestFactory.createClientWithGatewaySpy(
+                serviceEndpoint,
+                masterKeyOrResourceToken,
+                connectionPolicy,
+                desiredConsistencyLevel);
+    }
 }

@@ -34,7 +34,7 @@ import com.microsoft.azure.cosmosdb.internal.OperationType;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.rx.internal.GlobalEndpointManager;
 import com.microsoft.azure.cosmosdb.rx.internal.Configs;
-import com.microsoft.azure.cosmosdb.rx.internal.DatabaseAccountManagerInternal;
+import com.microsoft.azure.cosmosdb.DatabaseAccountManagerInternal;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.Utils;
 import org.apache.commons.collections4.list.UnmodifiableList;
