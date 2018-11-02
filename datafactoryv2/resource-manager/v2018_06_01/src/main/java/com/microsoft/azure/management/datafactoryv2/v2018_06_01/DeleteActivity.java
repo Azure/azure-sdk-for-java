@@ -30,7 +30,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * Delete activity dataset reference.
      */
-    @JsonProperty(value = "typeProperties.dataset")
+    @JsonProperty(value = "typeProperties.dataset", required = true)
     private DatasetReference dataset;
 
     /**
