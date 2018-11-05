@@ -9,24 +9,13 @@
 package com.microsoft.azure.management.logic.v2016_06_01;
 
 import rx.Observable;
+import com.microsoft.azure.management.logic.v2016_06_01.implementation.WorkflowRunActionRepetitionsRequestHistoriesInner;
+import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing WorkflowRunActionRepetitionsRequestHistories.
  */
-public interface WorkflowRunActionRepetitionsRequestHistories {
-    /**
-     * List a workflow run repetition request history.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<RequestHistoryListResult> listAsync(String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName);
-
+public interface WorkflowRunActionRepetitionsRequestHistories extends HasInner<WorkflowRunActionRepetitionsRequestHistoriesInner> {
     /**
      * Gets a workflow run repetition request history.
      *
@@ -39,6 +28,19 @@ public interface WorkflowRunActionRepetitionsRequestHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RequestHistory> getAsync(String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName, String requestHistoryName);
+    Observable<RepetitionActionRunWorkflowRequestHistory> getAsync(String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName, String requestHistoryName);
+
+    /**
+     * List a workflow run repetition request history.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param actionName The workflow action name.
+     * @param repetitionName The workflow repetition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RepetitionActionRunWorkflowRequestHistory> listAsync(final String resourceGroupName, final String workflowName, final String runName, final String actionName, final String repetitionName);
 
 }

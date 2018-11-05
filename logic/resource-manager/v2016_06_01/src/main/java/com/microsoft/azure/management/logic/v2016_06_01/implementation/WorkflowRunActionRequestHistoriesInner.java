@@ -10,17 +10,23 @@ package com.microsoft.azure.management.logic.v2016_06_01.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
-import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -52,12 +58,16 @@ public class WorkflowRunActionRequestHistoriesInner {
      */
     interface WorkflowRunActionRequestHistoriesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionRequestHistories list" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/requestHistories")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/requestHistories")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workflowName") String workflowName, @Path("runName") String runName, @Path("actionName") String actionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionRequestHistories get" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/requestHistories/{requestHistoryName}")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/runs/{runName}/actions/{actionName}/requestHistories/{requestHistoryName}")
         Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workflowName") String workflowName, @Path("runName") String runName, @Path("actionName") String actionName, @Path("requestHistoryName") String requestHistoryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionRequestHistories listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -71,10 +81,16 @@ public class WorkflowRunActionRequestHistoriesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the RequestHistoryListResultInner object if successful.
+     * @return the PagedList&lt;RequestHistoryInner&gt; object if successful.
      */
-    public RequestHistoryListResultInner list(String resourceGroupName, String workflowName, String runName, String actionName) {
-        return listWithServiceResponseAsync(resourceGroupName, workflowName, runName, actionName).toBlocking().single().body();
+    public PagedList<RequestHistoryInner> list(final String resourceGroupName, final String workflowName, final String runName, final String actionName) {
+        ServiceResponse<Page<RequestHistoryInner>> response = listSinglePageAsync(resourceGroupName, workflowName, runName, actionName).toBlocking().single();
+        return new PagedList<RequestHistoryInner>(response.body()) {
+            @Override
+            public Page<RequestHistoryInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
@@ -88,8 +104,16 @@ public class WorkflowRunActionRequestHistoriesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RequestHistoryListResultInner> listAsync(String resourceGroupName, String workflowName, String runName, String actionName, final ServiceCallback<RequestHistoryListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, workflowName, runName, actionName), serviceCallback);
+    public ServiceFuture<List<RequestHistoryInner>> listAsync(final String resourceGroupName, final String workflowName, final String runName, final String actionName, final ListOperationCallback<RequestHistoryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(resourceGroupName, workflowName, runName, actionName),
+            new Func1<String, Observable<ServiceResponse<Page<RequestHistoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RequestHistoryInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -100,15 +124,16 @@ public class WorkflowRunActionRequestHistoriesInner {
      * @param runName The workflow run name.
      * @param actionName The workflow action name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RequestHistoryListResultInner object
+     * @return the observable to the PagedList&lt;RequestHistoryInner&gt; object
      */
-    public Observable<RequestHistoryListResultInner> listAsync(String resourceGroupName, String workflowName, String runName, String actionName) {
-        return listWithServiceResponseAsync(resourceGroupName, workflowName, runName, actionName).map(new Func1<ServiceResponse<RequestHistoryListResultInner>, RequestHistoryListResultInner>() {
-            @Override
-            public RequestHistoryListResultInner call(ServiceResponse<RequestHistoryListResultInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<RequestHistoryInner>> listAsync(final String resourceGroupName, final String workflowName, final String runName, final String actionName) {
+        return listWithServiceResponseAsync(resourceGroupName, workflowName, runName, actionName)
+            .map(new Func1<ServiceResponse<Page<RequestHistoryInner>>, Page<RequestHistoryInner>>() {
+                @Override
+                public Page<RequestHistoryInner> call(ServiceResponse<Page<RequestHistoryInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -119,9 +144,33 @@ public class WorkflowRunActionRequestHistoriesInner {
      * @param runName The workflow run name.
      * @param actionName The workflow action name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RequestHistoryListResultInner object
+     * @return the observable to the PagedList&lt;RequestHistoryInner&gt; object
      */
-    public Observable<ServiceResponse<RequestHistoryListResultInner>> listWithServiceResponseAsync(String resourceGroupName, String workflowName, String runName, String actionName) {
+    public Observable<ServiceResponse<Page<RequestHistoryInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String workflowName, final String runName, final String actionName) {
+        return listSinglePageAsync(resourceGroupName, workflowName, runName, actionName)
+            .concatMap(new Func1<ServiceResponse<Page<RequestHistoryInner>>, Observable<ServiceResponse<Page<RequestHistoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RequestHistoryInner>>> call(ServiceResponse<Page<RequestHistoryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List a workflow run request history.
+     *
+    ServiceResponse<PageImpl<RequestHistoryInner>> * @param resourceGroupName The resource group name.
+    ServiceResponse<PageImpl<RequestHistoryInner>> * @param workflowName The workflow name.
+    ServiceResponse<PageImpl<RequestHistoryInner>> * @param runName The workflow run name.
+    ServiceResponse<PageImpl<RequestHistoryInner>> * @param actionName The workflow action name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;RequestHistoryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<RequestHistoryInner>>> listSinglePageAsync(final String resourceGroupName, final String workflowName, final String runName, final String actionName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -141,12 +190,12 @@ public class WorkflowRunActionRequestHistoriesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), resourceGroupName, workflowName, runName, actionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RequestHistoryListResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RequestHistoryInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<RequestHistoryListResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<RequestHistoryInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RequestHistoryListResultInner> clientResponse = listDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<RequestHistoryInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RequestHistoryInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -154,9 +203,9 @@ public class WorkflowRunActionRequestHistoriesInner {
             });
     }
 
-    private ServiceResponse<RequestHistoryListResultInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RequestHistoryListResultInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<RequestHistoryListResultInner>() { }.getType())
+    private ServiceResponse<PageImpl<RequestHistoryInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RequestHistoryInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<RequestHistoryInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -264,6 +313,117 @@ public class WorkflowRunActionRequestHistoriesInner {
     private ServiceResponse<RequestHistoryInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RequestHistoryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RequestHistoryInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * List a workflow run request history.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;RequestHistoryInner&gt; object if successful.
+     */
+    public PagedList<RequestHistoryInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<RequestHistoryInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<RequestHistoryInner>(response.body()) {
+            @Override
+            public Page<RequestHistoryInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * List a workflow run request history.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RequestHistoryInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<RequestHistoryInner>> serviceFuture, final ListOperationCallback<RequestHistoryInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<RequestHistoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RequestHistoryInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List a workflow run request history.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RequestHistoryInner&gt; object
+     */
+    public Observable<Page<RequestHistoryInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<RequestHistoryInner>>, Page<RequestHistoryInner>>() {
+                @Override
+                public Page<RequestHistoryInner> call(ServiceResponse<Page<RequestHistoryInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * List a workflow run request history.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RequestHistoryInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RequestHistoryInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<RequestHistoryInner>>, Observable<ServiceResponse<Page<RequestHistoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RequestHistoryInner>>> call(ServiceResponse<Page<RequestHistoryInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List a workflow run request history.
+     *
+    ServiceResponse<PageImpl<RequestHistoryInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;RequestHistoryInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<RequestHistoryInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RequestHistoryInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RequestHistoryInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<RequestHistoryInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RequestHistoryInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<RequestHistoryInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RequestHistoryInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<RequestHistoryInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

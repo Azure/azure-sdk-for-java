@@ -9,23 +9,13 @@
 package com.microsoft.azure.management.logic.v2018_07_01_preview;
 
 import rx.Observable;
+import com.microsoft.azure.management.logic.v2018_07_01_preview.implementation.WorkflowRunActionRequestHistoriesInner;
+import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing WorkflowRunActionRequestHistories.
  */
-public interface WorkflowRunActionRequestHistories {
-    /**
-     * List a workflow run request history.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<RequestHistoryListResult> listAsync(String resourceGroupName, String workflowName, String runName, String actionName);
-
+public interface WorkflowRunActionRequestHistories extends HasInner<WorkflowRunActionRequestHistoriesInner> {
     /**
      * Gets a workflow run request history.
      *
@@ -37,6 +27,18 @@ public interface WorkflowRunActionRequestHistories {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RequestHistory> getAsync(String resourceGroupName, String workflowName, String runName, String actionName, String requestHistoryName);
+    Observable<ActionRunWorkflowRequestHistory> getAsync(String resourceGroupName, String workflowName, String runName, String actionName, String requestHistoryName);
+
+    /**
+     * List a workflow run request history.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param actionName The workflow action name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ActionRunWorkflowRequestHistory> listAsync(final String resourceGroupName, final String workflowName, final String runName, final String actionName);
 
 }
