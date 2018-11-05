@@ -237,6 +237,32 @@ public class LogicManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The WorkflowRunActionRepetitionsRequestHistoriesInner object to access its operations.
+     */
+    private WorkflowRunActionRepetitionsRequestHistoriesInner workflowRunActionRepetitionsRequestHistories;
+
+    /**
+     * Gets the WorkflowRunActionRepetitionsRequestHistoriesInner object to access its operations.
+     * @return the WorkflowRunActionRepetitionsRequestHistoriesInner object.
+     */
+    public WorkflowRunActionRepetitionsRequestHistoriesInner workflowRunActionRepetitionsRequestHistories() {
+        return this.workflowRunActionRepetitionsRequestHistories;
+    }
+
+    /**
+     * The WorkflowRunActionRequestHistoriesInner object to access its operations.
+     */
+    private WorkflowRunActionRequestHistoriesInner workflowRunActionRequestHistories;
+
+    /**
+     * Gets the WorkflowRunActionRequestHistoriesInner object to access its operations.
+     * @return the WorkflowRunActionRequestHistoriesInner object.
+     */
+    public WorkflowRunActionRequestHistoriesInner workflowRunActionRequestHistories() {
+        return this.workflowRunActionRequestHistories;
+    }
+
+    /**
      * The WorkflowRunActionScopeRepetitionsInner object to access its operations.
      */
     private WorkflowRunActionScopeRepetitionsInner workflowRunActionScopeRepetitions;
@@ -435,6 +461,8 @@ public class LogicManagementClientImpl extends AzureServiceClient {
         this.workflowRuns = new WorkflowRunsInner(restClient().retrofit(), this);
         this.workflowRunActions = new WorkflowRunActionsInner(restClient().retrofit(), this);
         this.workflowRunActionRepetitions = new WorkflowRunActionRepetitionsInner(restClient().retrofit(), this);
+        this.workflowRunActionRepetitionsRequestHistories = new WorkflowRunActionRepetitionsRequestHistoriesInner(restClient().retrofit(), this);
+        this.workflowRunActionRequestHistories = new WorkflowRunActionRequestHistoriesInner(restClient().retrofit(), this);
         this.workflowRunActionScopeRepetitions = new WorkflowRunActionScopeRepetitionsInner(restClient().retrofit(), this);
         this.workflowRunOperations = new WorkflowRunOperationsInner(restClient().retrofit(), this);
         this.integrationAccounts = new IntegrationAccountsInner(restClient().retrofit(), this);
