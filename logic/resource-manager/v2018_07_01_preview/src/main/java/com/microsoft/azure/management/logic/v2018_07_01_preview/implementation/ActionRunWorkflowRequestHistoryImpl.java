@@ -11,9 +11,7 @@ package com.microsoft.azure.management.logic.v2018_07_01_preview.implementation;
 import com.microsoft.azure.management.logic.v2018_07_01_preview.ActionRunWorkflowRequestHistory;
 import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
-import org.joda.time.DateTime;
-import com.microsoft.azure.management.logic.v2018_07_01_preview.Request;
-import com.microsoft.azure.management.logic.v2018_07_01_preview.Response;
+import com.microsoft.azure.management.logic.v2018_07_01_preview.RequestHistoryProperties;
 import java.util.Map;
 
 class ActionRunWorkflowRequestHistoryImpl extends IndexableRefreshableWrapperImpl<ActionRunWorkflowRequestHistory, RequestHistoryInner> implements ActionRunWorkflowRequestHistory {
@@ -48,11 +46,6 @@ class ActionRunWorkflowRequestHistoryImpl extends IndexableRefreshableWrapperImp
 
 
     @Override
-    public DateTime endTime() {
-        return this.inner().endTime();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
     }
@@ -68,18 +61,8 @@ class ActionRunWorkflowRequestHistoryImpl extends IndexableRefreshableWrapperImp
     }
 
     @Override
-    public Request request() {
-        return this.inner().request();
-    }
-
-    @Override
-    public Response response() {
-        return this.inner().response();
-    }
-
-    @Override
-    public DateTime startTime() {
-        return this.inner().startTime();
+    public RequestHistoryProperties properties() {
+        return this.inner().properties();
     }
 
     @Override

@@ -8,9 +8,7 @@
 
 package com.microsoft.azure.management.logic.v2018_07_01_preview.implementation;
 
-import org.joda.time.DateTime;
-import com.microsoft.azure.management.logic.v2018_07_01_preview.Request;
-import com.microsoft.azure.management.logic.v2018_07_01_preview.Response;
+import com.microsoft.azure.management.logic.v2018_07_01_preview.RequestHistoryProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.SkipParentValidation;
 import com.microsoft.azure.Resource;
@@ -21,106 +19,28 @@ import com.microsoft.azure.Resource;
 @SkipParentValidation
 public class RequestHistoryInner extends Resource {
     /**
-     * The time the request started.
+     * The request history properties.
      */
-    @JsonProperty(value = "startTime")
-    private DateTime startTime;
+    @JsonProperty(value = "properties")
+    private RequestHistoryProperties properties;
 
     /**
-     * The time the request ended.
-     */
-    @JsonProperty(value = "endTime")
-    private DateTime endTime;
-
-    /**
-     * The request.
-     */
-    @JsonProperty(value = "request")
-    private Request request;
-
-    /**
-     * The response.
-     */
-    @JsonProperty(value = "response")
-    private Response response;
-
-    /**
-     * Get the time the request started.
+     * Get the request history properties.
      *
-     * @return the startTime value
+     * @return the properties value
      */
-    public DateTime startTime() {
-        return this.startTime;
+    public RequestHistoryProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Set the time the request started.
+     * Set the request history properties.
      *
-     * @param startTime the startTime value to set
+     * @param properties the properties value to set
      * @return the RequestHistoryInner object itself.
      */
-    public RequestHistoryInner withStartTime(DateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    /**
-     * Get the time the request ended.
-     *
-     * @return the endTime value
-     */
-    public DateTime endTime() {
-        return this.endTime;
-    }
-
-    /**
-     * Set the time the request ended.
-     *
-     * @param endTime the endTime value to set
-     * @return the RequestHistoryInner object itself.
-     */
-    public RequestHistoryInner withEndTime(DateTime endTime) {
-        this.endTime = endTime;
-        return this;
-    }
-
-    /**
-     * Get the request.
-     *
-     * @return the request value
-     */
-    public Request request() {
-        return this.request;
-    }
-
-    /**
-     * Set the request.
-     *
-     * @param request the request value to set
-     * @return the RequestHistoryInner object itself.
-     */
-    public RequestHistoryInner withRequest(Request request) {
-        this.request = request;
-        return this;
-    }
-
-    /**
-     * Get the response.
-     *
-     * @return the response value
-     */
-    public Response response() {
-        return this.response;
-    }
-
-    /**
-     * Set the response.
-     *
-     * @param response the response value to set
-     * @return the RequestHistoryInner object itself.
-     */
-    public RequestHistoryInner withResponse(Response response) {
-        this.response = response;
+    public RequestHistoryInner withProperties(RequestHistoryProperties properties) {
+        this.properties = properties;
         return this;
     }
 

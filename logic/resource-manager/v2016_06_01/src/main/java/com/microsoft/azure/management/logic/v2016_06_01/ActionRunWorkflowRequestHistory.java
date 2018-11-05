@@ -14,18 +14,12 @@ import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.logic.v2016_06_01.implementation.LogicManager;
-import org.joda.time.DateTime;
 import java.util.Map;
 
 /**
  * Type representing ActionRunWorkflowRequestHistory.
  */
 public interface ActionRunWorkflowRequestHistory extends HasInner<RequestHistoryInner>, Indexable, Refreshable<ActionRunWorkflowRequestHistory>, HasManager<LogicManager> {
-    /**
-     * @return the endTime value.
-     */
-    DateTime endTime();
-
     /**
      * @return the id value.
      */
@@ -42,19 +36,9 @@ public interface ActionRunWorkflowRequestHistory extends HasInner<RequestHistory
     String name();
 
     /**
-     * @return the request value.
+     * @return the properties value.
      */
-    Request request();
-
-    /**
-     * @return the response value.
-     */
-    Response response();
-
-    /**
-     * @return the startTime value.
-     */
-    DateTime startTime();
+    RequestHistoryProperties properties();
 
     /**
      * @return the tags value.
