@@ -24,8 +24,8 @@ public class DeleteActivity extends ExecutionActivity {
      * If true, files under the folder path will be deleted recursively.
      * Default is true. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "typeProperties.recursive", required = true)
-    private boolean recursive;
+    @JsonProperty(value = "typeProperties.recursive")
+    private Object recursive;
 
     /**
      * Delete activity dataset reference.
@@ -38,7 +38,7 @@ public class DeleteActivity extends ExecutionActivity {
      *
      * @return the recursive value
      */
-    public boolean recursive() {
+    public Object recursive() {
         return this.recursive;
     }
 
@@ -48,7 +48,7 @@ public class DeleteActivity extends ExecutionActivity {
      * @param recursive the recursive value to set
      * @return the DeleteActivity object itself.
      */
-    public DeleteActivity withRecursive(boolean recursive) {
+    public DeleteActivity withRecursive(Object recursive) {
         this.recursive = recursive;
         return this;
     }
