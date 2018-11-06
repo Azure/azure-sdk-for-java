@@ -21,7 +21,7 @@ public class RoleDefinitionFilter {
     private String roleName;
 
     /**
-     * Get the roleName value.
+     * Get returns role definition with the specific name.
      *
      * @return the roleName value
      */
@@ -30,7 +30,7 @@ public class RoleDefinitionFilter {
     }
 
     /**
-     * Set the roleName value.
+     * Set returns role definition with the specific name.
      *
      * @param roleName the roleName value to set
      * @return the RoleDefinitionFilter object itself.

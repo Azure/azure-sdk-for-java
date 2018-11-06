@@ -16,11 +16,11 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.authorization.v2015_07_01.ClassicAdministrators;
 import com.microsoft.azure.management.authorization.v2015_07_01.Permissions;
 import com.microsoft.azure.management.authorization.v2015_07_01.ProviderOperationsMetadatas;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignments;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinitions;
+import com.microsoft.azure.management.authorization.v2015_07_01.ClassicAdministrators;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -28,11 +28,11 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Authorization resource management.
  */
 public final class AuthorizationManager extends ManagerCore<AuthorizationManager, AuthorizationManagementClientImpl> {
-    private ClassicAdministrators classicAdministrators;
     private Permissions permissions;
     private ProviderOperationsMetadatas providerOperationsMetadatas;
     private RoleAssignments roleAssignments;
     private RoleDefinitions roleDefinitions;
+    private ClassicAdministrators classicAdministrators;
     /**
     * Get a Configurable instance that can be used to create AuthorizationManager with optional configuration.
     *
@@ -81,16 +81,6 @@ public final class AuthorizationManager extends ManagerCore<AuthorizationManager
     }
 
     /**
-     * @return Entry point to manage ClassicAdministrators.
-     */
-    public ClassicAdministrators classicAdministrators() {
-        if (this.classicAdministrators == null) {
-            this.classicAdministrators = new ClassicAdministratorsImpl(this);
-        }
-        return this.classicAdministrators;
-    }
-
-    /**
      * @return Entry point to manage Permissions.
      */
     public Permissions permissions() {
@@ -128,6 +118,16 @@ public final class AuthorizationManager extends ManagerCore<AuthorizationManager
             this.roleDefinitions = new RoleDefinitionsImpl(this);
         }
         return this.roleDefinitions;
+    }
+
+    /**
+     * @return Entry point to manage ClassicAdministrators.
+     */
+    public ClassicAdministrators classicAdministrators() {
+        if (this.classicAdministrators == null) {
+            this.classicAdministrators = new ClassicAdministratorsImpl(this);
+        }
+        return this.classicAdministrators;
     }
 
     /**
