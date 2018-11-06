@@ -51,11 +51,11 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** The API version to use for the operation. */
+    /** The API version to use for this operation. */
     private String apiVersion;
 
     /**
-     * Gets The API version to use for the operation.
+     * Gets The API version to use for this operation.
      *
      * @return the apiVersion value.
      */
@@ -63,11 +63,11 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** Gets or sets the preferred language for the response. */
+    /** The preferred language for the response. */
     private String acceptLanguage;
 
     /**
-     * Gets Gets or sets the preferred language for the response.
+     * Gets The preferred language for the response.
      *
      * @return the acceptLanguage value.
      */
@@ -76,7 +76,7 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the preferred language for the response.
+     * Sets The preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
@@ -86,11 +86,11 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
+    /** The retry timeout in seconds for Long Running Operations. Default value is 30. */
     private int longRunningOperationRetryTimeout;
 
     /**
-     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Gets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @return the longRunningOperationRetryTimeout value.
      */
@@ -99,7 +99,7 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Sets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
@@ -109,11 +109,11 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
+    /** Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
     private boolean generateClientRequestId;
 
     /**
-     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Gets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @return the generateClientRequestId value.
      */
@@ -122,7 +122,7 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Sets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
@@ -130,19 +130,6 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     public AuthorizationManagementClientImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
         return this;
-    }
-
-    /**
-     * The ClassicAdministratorsInner object to access its operations.
-     */
-    private ClassicAdministratorsInner classicAdministrators;
-
-    /**
-     * Gets the ClassicAdministratorsInner object to access its operations.
-     * @return the ClassicAdministratorsInner object.
-     */
-    public ClassicAdministratorsInner classicAdministrators() {
-        return this.classicAdministrators;
     }
 
     /**
@@ -198,6 +185,19 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ClassicAdministratorsInner object to access its operations.
+     */
+    private ClassicAdministratorsInner classicAdministrators;
+
+    /**
+     * Gets the ClassicAdministratorsInner object to access its operations.
+     * @return the ClassicAdministratorsInner object.
+     */
+    public ClassicAdministratorsInner classicAdministrators() {
+        return this.classicAdministrators;
+    }
+
+    /**
      * Initializes an instance of AuthorizationManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -232,11 +232,11 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.classicAdministrators = new ClassicAdministratorsInner(restClient().retrofit(), this);
         this.permissions = new PermissionsInner(restClient().retrofit(), this);
         this.providerOperationsMetadatas = new ProviderOperationsMetadatasInner(restClient().retrofit(), this);
         this.roleAssignments = new RoleAssignmentsInner(restClient().retrofit(), this);
         this.roleDefinitions = new RoleDefinitionsInner(restClient().retrofit(), this);
+        this.classicAdministrators = new ClassicAdministratorsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -247,6 +247,6 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "AuthorizationManagementClient", "2015-07-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "AuthorizationManagementClient", "2015-07-01");
     }
 }

@@ -49,7 +49,8 @@ class ProviderOperationsMetadatasImpl extends WrapperImpl<ProviderOperationsMeta
             public Iterable<ProviderOperationsMetadataInner> call(Page<ProviderOperationsMetadataInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ProviderOperationsMetadataInner, ProviderOperationsMetadata>() {
+        })
+        .map(new Func1<ProviderOperationsMetadataInner, ProviderOperationsMetadata>() {
             @Override
             public ProviderOperationsMetadata call(ProviderOperationsMetadataInner inner) {
                 return new ProviderOperationsMetadataImpl(inner, manager());

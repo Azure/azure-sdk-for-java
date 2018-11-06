@@ -33,7 +33,7 @@ public class RoleAssignmentPropertiesWithScope {
     private String principalId;
 
     /**
-     * Get the scope value.
+     * Get the role assignment scope.
      *
      * @return the scope value
      */
@@ -42,7 +42,7 @@ public class RoleAssignmentPropertiesWithScope {
     }
 
     /**
-     * Set the scope value.
+     * Set the role assignment scope.
      *
      * @param scope the scope value to set
      * @return the RoleAssignmentPropertiesWithScope object itself.
@@ -53,7 +53,7 @@ public class RoleAssignmentPropertiesWithScope {
     }
 
     /**
-     * Get the roleDefinitionId value.
+     * Get the role definition ID.
      *
      * @return the roleDefinitionId value
      */
@@ -62,7 +62,7 @@ public class RoleAssignmentPropertiesWithScope {
     }
 
     /**
-     * Set the roleDefinitionId value.
+     * Set the role definition ID.
      *
      * @param roleDefinitionId the roleDefinitionId value to set
      * @return the RoleAssignmentPropertiesWithScope object itself.
@@ -73,7 +73,7 @@ public class RoleAssignmentPropertiesWithScope {
     }
 
     /**
-     * Get the principalId value.
+     * Get the principal ID.
      *
      * @return the principalId value
      */
@@ -82,7 +82,7 @@ public class RoleAssignmentPropertiesWithScope {
     }
 
     /**
-     * Set the principalId value.
+     * Set the principal ID.
      *
      * @param principalId the principalId value to set
      * @return the RoleAssignmentPropertiesWithScope object itself.

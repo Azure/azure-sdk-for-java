@@ -17,7 +17,7 @@ public class RoleAssignmentProperties {
     /**
      * The role definition ID used in the role assignment.
      */
-    @JsonProperty(value = "roleDefinitionId")
+    @JsonProperty(value = "roleDefinitionId", required = true)
     private String roleDefinitionId;
 
     /**
@@ -25,11 +25,11 @@ public class RoleAssignmentProperties {
      * Active Directory. It can point to a user, service principal, or security
      * group.
      */
-    @JsonProperty(value = "principalId")
+    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /**
-     * Get the roleDefinitionId value.
+     * Get the role definition ID used in the role assignment.
      *
      * @return the roleDefinitionId value
      */
@@ -38,7 +38,7 @@ public class RoleAssignmentProperties {
     }
 
     /**
-     * Set the roleDefinitionId value.
+     * Set the role definition ID used in the role assignment.
      *
      * @param roleDefinitionId the roleDefinitionId value to set
      * @return the RoleAssignmentProperties object itself.
@@ -49,7 +49,7 @@ public class RoleAssignmentProperties {
     }
 
     /**
-     * Get the principalId value.
+     * Get the principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security group.
      *
      * @return the principalId value
      */
@@ -58,7 +58,7 @@ public class RoleAssignmentProperties {
     }
 
     /**
-     * Set the principalId value.
+     * Set the principal ID assigned to the role. This maps to the ID inside the Active Directory. It can point to a user, service principal, or security group.
      *
      * @param principalId the principalId value to set
      * @return the RoleAssignmentProperties object itself.
