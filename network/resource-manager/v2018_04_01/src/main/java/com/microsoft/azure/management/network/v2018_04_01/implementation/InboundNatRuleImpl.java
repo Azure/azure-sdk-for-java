@@ -34,7 +34,7 @@ class InboundNatRuleImpl extends CreatableUpdatableImpl<InboundNatRule, InboundN
         this.manager = manager;
         // Set resource name
         this.inboundNatRuleName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.loadBalancerName = IdParsingUtils.getValueFromIdByName(inner.id(), "loadBalancers");
         this.inboundNatRuleName = IdParsingUtils.getValueFromIdByName(inner.id(), "inboundNatRules");

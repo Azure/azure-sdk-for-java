@@ -37,7 +37,7 @@ class SubnetImpl extends CreatableUpdatableImpl<Subnet, SubnetInner, SubnetImpl>
         this.manager = manager;
         // Set resource name
         this.subnetName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.virtualNetworkName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworks");
         this.subnetName = IdParsingUtils.getValueFromIdByName(inner.id(), "subnets");

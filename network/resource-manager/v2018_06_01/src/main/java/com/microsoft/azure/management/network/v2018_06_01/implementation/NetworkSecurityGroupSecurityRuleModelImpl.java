@@ -27,6 +27,7 @@ class NetworkSecurityGroupSecurityRuleModelImpl extends IndexableRefreshableWrap
     NetworkSecurityGroupSecurityRuleModelImpl(SecurityRuleInner inner,  NetworkManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.networkSecurityGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "networkSecurityGroups");
         this.defaultSecurityRuleName = IdParsingUtils.getValueFromIdByName(inner.id(), "defaultSecurityRules");
