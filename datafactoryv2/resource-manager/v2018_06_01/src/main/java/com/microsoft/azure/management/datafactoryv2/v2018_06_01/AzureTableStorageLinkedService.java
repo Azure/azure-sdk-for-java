@@ -29,11 +29,24 @@ public class AzureTableStorageLinkedService extends LinkedServiceInner {
     private Object connectionString;
 
     /**
+     * The Azure key vault secret reference of accountKey in connection string.
+     */
+    @JsonProperty(value = "typeProperties.accountKey")
+    private AzureKeyVaultSecretReference accountKey;
+
+    /**
      * SAS URI of the Azure Storage resource. It is mutually exclusive with
-     * connectionString property.
+     * connectionString property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.sasUri")
-    private SecretBase sasUri;
+    private Object sasUri;
+
+    /**
+     * The Azure key vault secret reference of sasToken in sas uri.
+     */
+    @JsonProperty(value = "typeProperties.sasToken")
+    private AzureKeyVaultSecretReference sasToken;
 
     /**
      * The encrypted credential used for authentication. Credentials are
@@ -64,22 +77,62 @@ public class AzureTableStorageLinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get sAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property.
+     * Get the Azure key vault secret reference of accountKey in connection string.
+     *
+     * @return the accountKey value
+     */
+    public AzureKeyVaultSecretReference accountKey() {
+        return this.accountKey;
+    }
+
+    /**
+     * Set the Azure key vault secret reference of accountKey in connection string.
+     *
+     * @param accountKey the accountKey value to set
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    public AzureTableStorageLinkedService withAccountKey(AzureKeyVaultSecretReference accountKey) {
+        this.accountKey = accountKey;
+        return this;
+    }
+
+    /**
+     * Get sAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string, SecureString or AzureKeyVaultSecretReference.
      *
      * @return the sasUri value
      */
-    public SecretBase sasUri() {
+    public Object sasUri() {
         return this.sasUri;
     }
 
     /**
-     * Set sAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property.
+     * Set sAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string, SecureString or AzureKeyVaultSecretReference.
      *
      * @param sasUri the sasUri value to set
      * @return the AzureTableStorageLinkedService object itself.
      */
-    public AzureTableStorageLinkedService withSasUri(SecretBase sasUri) {
+    public AzureTableStorageLinkedService withSasUri(Object sasUri) {
         this.sasUri = sasUri;
+        return this;
+    }
+
+    /**
+     * Get the Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value
+     */
+    public AzureKeyVaultSecretReference sasToken() {
+        return this.sasToken;
+    }
+
+    /**
+     * Set the Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    public AzureTableStorageLinkedService withSasToken(AzureKeyVaultSecretReference sasToken) {
+        this.sasToken = sasToken;
         return this;
     }
 
