@@ -37,7 +37,7 @@ class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRoute
         this.manager = manager;
         // Set resource name
         this.peeringName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.circuitName = IdParsingUtils.getValueFromIdByName(inner.id(), "expressRouteCircuits");
         this.peeringName = IdParsingUtils.getValueFromIdByName(inner.id(), "peerings");

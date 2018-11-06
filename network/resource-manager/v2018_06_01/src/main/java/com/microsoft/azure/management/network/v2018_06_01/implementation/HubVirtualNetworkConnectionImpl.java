@@ -24,6 +24,7 @@ class HubVirtualNetworkConnectionImpl extends IndexableRefreshableWrapperImpl<Hu
     HubVirtualNetworkConnectionImpl(HubVirtualNetworkConnectionInner inner,  NetworkManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.virtualHubName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualHubs");
         this.connectionName = IdParsingUtils.getValueFromIdByName(inner.id(), "hubVirtualNetworkConnections");
