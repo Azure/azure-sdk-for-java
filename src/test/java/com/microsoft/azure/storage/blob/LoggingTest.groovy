@@ -24,7 +24,12 @@ import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Single
+import org.slf4j.LoggerFactory
 import spock.lang.Unroll
+import uk.org.lidalia.slf4jtest.TestLogger
+import uk.org.lidalia.slf4jtest.TestLoggerFactory
+
+import java.util.logging.Logger
 
 class LoggingTest extends APISpec {
     /*
@@ -37,6 +42,34 @@ class LoggingTest extends APISpec {
         return Mock(HttpPipelineLogger) {
             minimumLogLevel() >> level
         }
+    }
+
+    /*
+    Clean out the logs directory so we can validate that it grows, which is how we test default logging. We only
+    need to do this once per test past rather than per test, and we don't have to be entirely successful. This should
+    just keep it from growing too large.
+     */
+    def setupSpec() {
+        File logsDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs")
+        for (File file : logsDir.listFiles()) {
+            file.delete()
+        }
+    }
+
+    /*
+    We test that default logging is on by checking that the size of the logging folder has grown in Warning and Error
+    cases when we expect default logging. We cannot check a specific file because we have no way of retrieving the
+    filename, and there is some randomness involved. We can rely on a fairly naive implementation of this method
+    as we know the directory will exist and that there will be no subdirectories.
+     */
+    def calculateLogsDirectorySize() {
+        File logsDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs")
+        long length = 0
+
+        for (File file : logsDir.listFiles()){
+            length += file.size()
+        }
+        return length
     }
 
     @Unroll
@@ -55,6 +88,9 @@ class LoggingTest extends APISpec {
         }
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
+        def logDirectorySize = calculateLogsDirectorySize()
+        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        slf4jLogger.clearAll()
 
         when:
         policy.sendAsync(getMockRequest()).blockingGet()
@@ -64,7 +100,7 @@ class LoggingTest extends APISpec {
         logCount1 * <method> means that we expect this method to be called with these parameters logCount1 number of
         times. '_' means we don't care what the value of that parameter is, so in both of these cases, we are specifying
         that log should be called with HttpPipelineLogLevel.INFO as the first argument, and the other arguments can
-        be anything. The '>>' operator allows us to specify some behavior on the mocked logger when this method is
+        be anything. The '>>' operator allows us to specify some behavior on the mocked forceLogger when this method is
         called. Because there is lots of string formatting going on, we can't match against the log string in the
         argument list, so we perform some logic to see if it looks correct and throw if it looks incorrect to actually
         validate the logging behavior.
@@ -83,6 +119,8 @@ class LoggingTest extends APISpec {
                 }
         0 * logger.log(HttpPipelineLogLevel.WARNING, _, _)
         0 * logger.log(HttpPipelineLogLevel.ERROR, _, _)
+        logDirectorySize == calculateLogsDirectorySize()
+        slf4jLogger.getAllLoggingEvents().size() == 2 // The slf4j test logger is always set to info.
 
         where:
         logLevel                     | logCount1 | logCount2
@@ -94,7 +132,7 @@ class LoggingTest extends APISpec {
     @Unroll
     def "Successful slow response"() {
         setup:
-        def factory = new LoggingFactory(new LoggingOptions(500))
+        def factory = new LoggingFactory(new LoggingOptions(500, disableDefault))
 
         def logger = getMockLogger(logLevel)
         def requestPolicyOptions = new RequestPolicyOptions(logger)
@@ -106,6 +144,9 @@ class LoggingTest extends APISpec {
         }
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
+        int logDirectorySize = calculateLogsDirectorySize()
+        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        slf4jLogger.clearAll()
 
         when:
         policy.sendAsync(getMockRequest()).blockingGet()
@@ -118,12 +159,14 @@ class LoggingTest extends APISpec {
                     }
                 }
         0 * logger.log(HttpPipelineLogLevel.ERROR, _, _)
+        calculateLogsDirectorySize().compareTo(logDirectorySize) == result
+        slf4jLogger.getAllLoggingEvents().size() == 2 // The slf4j test logger is always set to info.
 
         where:
-        logLevel                     | logCount
-        HttpPipelineLogLevel.INFO    | 1
-        HttpPipelineLogLevel.WARNING | 1
-        HttpPipelineLogLevel.ERROR   | 0
+        logLevel                     | logCount | disableDefault || result
+        HttpPipelineLogLevel.INFO    | 1        | false          || 1
+        HttpPipelineLogLevel.WARNING | 1        | true           || 0
+        HttpPipelineLogLevel.ERROR   | 0        | false          || 1
     }
 
     @Unroll
@@ -138,6 +181,9 @@ class LoggingTest extends APISpec {
         }
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
+        def logDirectorySize = calculateLogsDirectorySize()
+        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        slf4jLogger.clearAll()
 
         when:
         policy.sendAsync(getMockRequest()).blockingGet()
@@ -149,6 +195,8 @@ class LoggingTest extends APISpec {
                         throw new IllegalArgumentException(message)
                     }
                 }
+        calculateLogsDirectorySize() > logDirectorySize
+        slf4jLogger.getAllLoggingEvents().size() == 2 // The slf4j test logger is always set to info.
 
         where:
         logLevel                     | code
@@ -172,6 +220,9 @@ class LoggingTest extends APISpec {
         }
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
+        def logDirectorySize = calculateLogsDirectorySize()
+        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        slf4jLogger.clearAll()
 
         when:
         policy.sendAsync(getMockRequest()).blockingGet()
@@ -183,6 +234,8 @@ class LoggingTest extends APISpec {
         the case of these status codes.
          */
         0 * logger.log(HttpPipelineLogLevel.ERROR, _, _)
+        calculateLogsDirectorySize() == logDirectorySize
+        slf4jLogger.getAllLoggingEvents().size() == 2 // The slf4j test logger is always set to info.
 
         /*
         Note that these where-tables usually have a column of '_' if we only need to test one variable. However, because
@@ -211,6 +264,9 @@ class LoggingTest extends APISpec {
         }
 
         def policy = factory.create(mockDownstream, requestPolicyOptions)
+        def logDirectorySize = calculateLogsDirectorySize()
+        def slf4jLogger = TestLoggerFactory.getTestLogger("Azure Storage Java SDK")
+        slf4jLogger.clearAll()
 
         when:
         policy.sendAsync(getMockRequest()).blockingGet()
@@ -223,6 +279,8 @@ class LoggingTest extends APISpec {
                         throw new IllegalArgumentException(message)
                     }
                 }
+        calculateLogsDirectorySize() > logDirectorySize
+        slf4jLogger.getAllLoggingEvents().size() == 2 // The slf4j test logger is always set to info.
 
         where:
         logLevel                     | duration
@@ -231,6 +289,9 @@ class LoggingTest extends APISpec {
         HttpPipelineLogLevel.ERROR   | 500
     }
 
+    /*
+    This is a basic test to validate that a basic scenario works in the context of an actual Pipeline.
+     */
     def "Pipeline integration test"() {
         setup:
         def logger = getMockLogger(HttpPipelineLogLevel.INFO)
@@ -247,6 +308,9 @@ class LoggingTest extends APISpec {
         2 * logger.log(*_)
     }
 
+    /*
+    This test validates the content of the logs when shared key is used. Note that the Auth header is redacted.
+     */
     def "Shared key logs"() {
         setup:
         def factory = new LoggingFactory(new LoggingOptions(2000))
@@ -306,6 +370,9 @@ class LoggingTest extends APISpec {
                 }
     }
 
+    /*
+    This test validates the contents of the logs when sas is used. Note that the signatures are redacted.
+     */
     def "SAS logs"() {
         setup:
         def factory = new LoggingFactory(new LoggingOptions(2000))
@@ -379,4 +446,12 @@ class LoggingTest extends APISpec {
                     }
                 }
     }
+
+    // Test creating directory and when directory exists
+    // Test slf4j logging and default logging and HttpPipeline logging
+    // Test that event logging only logs warnings and errors
+    // Check that string is not formatted if we don't need to log?
+    // Can attach a spy to the LoggerFactory.getLogger and make sure things are called the right number of times.
+    // Test when the forceLogger fails to load
+    // Test why the force logger seems to be printing some things to stdout? (Repro by setting the log level to warning)
 }

@@ -1,3 +1,7 @@
+XXXX.XX.XX Version XX.X.X
+* Added support for SLF4J.
+* Included default logging to log warnings and errors to the temp directory by default.
+
 2018.10.29 Version 10.2.0
 * Added overloads which only accept the required parameters.
 * Added CopyFromURL, which will do a synchronous server-side copy, meaning the service will not return an HTTP response until it has completed the copy.
