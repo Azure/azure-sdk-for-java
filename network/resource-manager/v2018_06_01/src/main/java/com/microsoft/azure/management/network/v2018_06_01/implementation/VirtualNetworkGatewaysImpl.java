@@ -120,22 +120,28 @@ class VirtualNetworkGatewaysImpl extends GroupableResourcesCoreImpl<VirtualNetwo
     }
 
     @Override
-    public Completable generatevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
+    public Completable resetVpnClientSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayName) {
         VirtualNetworkGatewaysInner client = this.inner();
-        return client.generatevpnclientpackageAsync(resourceGroupName, virtualNetworkGatewayName, parameters).toCompletable();
+        return client.resetVpnClientSharedKeyAsync(resourceGroupName, virtualNetworkGatewayName).toCompletable();
     }
 
     @Override
-    public Completable generateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
+    public Observable<String> generatevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
         VirtualNetworkGatewaysInner client = this.inner();
-        return client.generateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters).toCompletable();
-    }
+        return client.generatevpnclientpackageAsync(resourceGroupName, virtualNetworkGatewayName, parameters)
+    ;}
 
     @Override
-    public Completable getVpnProfilePackageUrlAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+    public Observable<String> generateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters) {
         VirtualNetworkGatewaysInner client = this.inner();
-        return client.getVpnProfilePackageUrlAsync(resourceGroupName, virtualNetworkGatewayName).toCompletable();
-    }
+        return client.generateVpnProfileAsync(resourceGroupName, virtualNetworkGatewayName, parameters)
+    ;}
+
+    @Override
+    public Observable<String> getVpnProfilePackageUrlAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+        VirtualNetworkGatewaysInner client = this.inner();
+        return client.getVpnProfilePackageUrlAsync(resourceGroupName, virtualNetworkGatewayName)
+    ;}
 
     @Override
     public Observable<BgpPeerStatusListResult> getBgpPeerStatusAsync(String resourceGroupName, String virtualNetworkGatewayName) {
@@ -150,10 +156,10 @@ class VirtualNetworkGatewaysImpl extends GroupableResourcesCoreImpl<VirtualNetwo
     }
 
     @Override
-    public Completable supportedVpnDevicesAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+    public Observable<String> supportedVpnDevicesAsync(String resourceGroupName, String virtualNetworkGatewayName) {
         VirtualNetworkGatewaysInner client = this.inner();
-        return client.supportedVpnDevicesAsync(resourceGroupName, virtualNetworkGatewayName).toCompletable();
-    }
+        return client.supportedVpnDevicesAsync(resourceGroupName, virtualNetworkGatewayName)
+    ;}
 
     @Override
     public Observable<GatewayRouteListResult> getLearnedRoutesAsync(String resourceGroupName, String virtualNetworkGatewayName) {
@@ -236,9 +242,9 @@ class VirtualNetworkGatewaysImpl extends GroupableResourcesCoreImpl<VirtualNetwo
     }
 
     @Override
-    public Completable vpnDeviceConfigurationScriptAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnDeviceScriptParameters parameters) {
+    public Observable<String> vpnDeviceConfigurationScriptAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnDeviceScriptParameters parameters) {
         VirtualNetworkGatewaysInner client = this.inner();
-        return client.vpnDeviceConfigurationScriptAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters).toCompletable();
-    }
+        return client.vpnDeviceConfigurationScriptAsync(resourceGroupName, virtualNetworkGatewayConnectionName, parameters)
+    ;}
 
 }

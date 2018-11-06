@@ -32,7 +32,7 @@ class RouteImpl extends CreatableUpdatableImpl<Route, RouteInner, RouteImpl> imp
         this.manager = manager;
         // Set resource name
         this.routeName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.routeTableName = IdParsingUtils.getValueFromIdByName(inner.id(), "routeTables");
         this.routeName = IdParsingUtils.getValueFromIdByName(inner.id(), "routes");

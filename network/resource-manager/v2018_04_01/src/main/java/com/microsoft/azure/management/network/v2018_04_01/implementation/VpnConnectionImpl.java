@@ -37,7 +37,7 @@ class VpnConnectionImpl extends CreatableUpdatableImpl<VpnConnection, VpnConnect
         this.manager = manager;
         // Set resource name
         this.connectionName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.gatewayName = IdParsingUtils.getValueFromIdByName(inner.id(), "vpnGateways");
         this.connectionName = IdParsingUtils.getValueFromIdByName(inner.id(), "vpnConnections");
