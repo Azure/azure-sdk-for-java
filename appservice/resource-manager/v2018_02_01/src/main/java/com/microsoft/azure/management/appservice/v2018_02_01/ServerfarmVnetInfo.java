@@ -41,6 +41,11 @@ public interface ServerfarmVnetInfo extends HasInner<VnetInfoInner>, Indexable, 
     String id();
 
     /**
+     * @return the isSwift value.
+     */
+    Boolean isSwift();
+
+    /**
      * @return the kind value.
      */
     String kind();

@@ -252,6 +252,16 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
     Integer reservedInstanceCount();
 
     /**
+     * @return the scmIpSecurityRestrictions value.
+     */
+    List<IpSecurityRestriction> scmIpSecurityRestrictions();
+
+    /**
+     * @return the scmIpSecurityRestrictionsUseMain value.
+     */
+    Boolean scmIpSecurityRestrictionsUseMain();
+
+    /**
      * @return the scmType value.
      */
     ScmType scmType();

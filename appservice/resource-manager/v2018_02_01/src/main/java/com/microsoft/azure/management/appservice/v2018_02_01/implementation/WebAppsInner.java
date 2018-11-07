@@ -537,6 +537,22 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql/status")
         Observable<Response<ResponseBody>> getMigrateMySqlStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getSwiftVirtualNetworkConnection1" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork")
+        Observable<Response<ResponseBody>> getSwiftVirtualNetworkConnection1(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps createOrUpdateSwiftVirtualNetworkConnection1" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork")
+        Observable<Response<ResponseBody>> createOrUpdateSwiftVirtualNetworkConnection1(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteSwiftVirtualNetwork1" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteSwiftVirtualNetwork1(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateSwiftVirtualNetworkConnection1" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork")
+        Observable<Response<ResponseBody>> updateSwiftVirtualNetworkConnection1(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listNetworkFeatures" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkFeatures/{view}")
         Observable<Response<ResponseBody>> listNetworkFeatures(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1150,6 +1166,22 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/migratemysql/status")
         Observable<Response<ResponseBody>> getMigrateMySqlStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getSwiftVirtualNetworkConnectionSlot1" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork")
+        Observable<Response<ResponseBody>> getSwiftVirtualNetworkConnectionSlot1(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps createOrUpdateSwiftVirtualNetworkConnectionSlot1" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork")
+        Observable<Response<ResponseBody>> createOrUpdateSwiftVirtualNetworkConnectionSlot1(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteSwiftVirtualNetworkSlot1" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteSwiftVirtualNetworkSlot1(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateSwiftVirtualNetworkConnectionSlot1" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork")
+        Observable<Response<ResponseBody>> updateSwiftVirtualNetworkConnectionSlot1(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listNetworkFeaturesSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkFeatures/{view}")
         Observable<Response<ResponseBody>> listNetworkFeaturesSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("view") String view, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1348,6 +1380,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshots")
         Observable<Response<ResponseBody>> listSnapshotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshotsFromDRSecondarySlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshotsdr")
+        Observable<Response<ResponseBody>> listSnapshotsFromDRSecondarySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getSourceControlSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web")
         Observable<Response<ResponseBody>> getSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1479,6 +1515,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshots" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshots")
         Observable<Response<ResponseBody>> listSnapshots(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshotsFromDRSecondary" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshotsdr")
+        Observable<Response<ResponseBody>> listSnapshotsFromDRSecondary(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getSourceControl" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
@@ -1776,6 +1816,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET
         Observable<Response<ResponseBody>> listSnapshotsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshotsFromDRSecondarySlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSnapshotsFromDRSecondarySlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listTriggeredWebJobsSlotNext" })
         @GET
         Observable<Response<ResponseBody>> listTriggeredWebJobsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1799,6 +1843,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshotsNext" })
         @GET
         Observable<Response<ResponseBody>> listSnapshotsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshotsFromDRSecondaryNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSnapshotsFromDRSecondaryNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listTriggeredWebJobsNext" })
         @GET
@@ -13759,6 +13807,398 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     private ServiceResponse<MigrateMySqlStatusInner> getMigrateMySqlStatusDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<MigrateMySqlStatusInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<MigrateMySqlStatusInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner getSwiftVirtualNetworkConnection1(String resourceGroupName, String name) {
+        return getSwiftVirtualNetworkConnection1WithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSwiftVirtualNetworkConnection1WithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name) {
+        return getSwiftVirtualNetworkConnection1WithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> getSwiftVirtualNetworkConnection1WithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getSwiftVirtualNetworkConnection1(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = getSwiftVirtualNetworkConnection1Delegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnection1Delegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner createOrUpdateSwiftVirtualNetworkConnection1(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        return createOrUpdateSwiftVirtualNetworkConnection1WithServiceResponseAsync(resourceGroupName, name, connectionEnvelope).toBlocking().single().body();
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateSwiftVirtualNetworkConnection1WithServiceResponseAsync(resourceGroupName, name, connectionEnvelope), serviceCallback);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        return createOrUpdateSwiftVirtualNetworkConnection1WithServiceResponseAsync(resourceGroupName, name, connectionEnvelope).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> createOrUpdateSwiftVirtualNetworkConnection1WithServiceResponseAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        return service.createOrUpdateSwiftVirtualNetworkConnection1(resourceGroupName, name, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = createOrUpdateSwiftVirtualNetworkConnection1Delegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnection1Delegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteSwiftVirtualNetwork1(String resourceGroupName, String name) {
+        deleteSwiftVirtualNetwork1WithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteSwiftVirtualNetwork1Async(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSwiftVirtualNetwork1WithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteSwiftVirtualNetwork1Async(String resourceGroupName, String name) {
+        return deleteSwiftVirtualNetwork1WithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteSwiftVirtualNetwork1WithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteSwiftVirtualNetwork1(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteSwiftVirtualNetwork1Delegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteSwiftVirtualNetwork1Delegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner updateSwiftVirtualNetworkConnection1(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        return updateSwiftVirtualNetworkConnection1WithServiceResponseAsync(resourceGroupName, name, connectionEnvelope).toBlocking().single().body();
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSwiftVirtualNetworkConnection1WithServiceResponseAsync(resourceGroupName, name, connectionEnvelope), serviceCallback);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        return updateSwiftVirtualNetworkConnection1WithServiceResponseAsync(resourceGroupName, name, connectionEnvelope).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> updateSwiftVirtualNetworkConnection1WithServiceResponseAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        return service.updateSwiftVirtualNetworkConnection1(resourceGroupName, name, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = updateSwiftVirtualNetworkConnection1Delegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnection1Delegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -30673,6 +31113,426 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner getSwiftVirtualNetworkConnectionSlot1(String resourceGroupName, String name, String slot) {
+        return getSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot) {
+        return getSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> getSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getSwiftVirtualNetworkConnectionSlot1(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = getSwiftVirtualNetworkConnectionSlot1Delegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> getSwiftVirtualNetworkConnectionSlot1Delegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner createOrUpdateSwiftVirtualNetworkConnectionSlot1(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        return createOrUpdateSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope).toBlocking().single().body();
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope), serviceCallback);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        return createOrUpdateSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> createOrUpdateSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        return service.createOrUpdateSwiftVirtualNetworkConnectionSlot1(resourceGroupName, name, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = createOrUpdateSwiftVirtualNetworkConnectionSlot1Delegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> createOrUpdateSwiftVirtualNetworkConnectionSlot1Delegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteSwiftVirtualNetworkSlot1(String resourceGroupName, String name, String slot) {
+        deleteSwiftVirtualNetworkSlot1WithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteSwiftVirtualNetworkSlot1Async(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteSwiftVirtualNetworkSlot1WithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteSwiftVirtualNetworkSlot1Async(String resourceGroupName, String name, String slot) {
+        return deleteSwiftVirtualNetworkSlot1WithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteSwiftVirtualNetworkSlot1WithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteSwiftVirtualNetworkSlot1(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteSwiftVirtualNetworkSlot1Delegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteSwiftVirtualNetworkSlot1Delegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SwiftVirtualNetworkInner object if successful.
+     */
+    public SwiftVirtualNetworkInner updateSwiftVirtualNetworkConnectionSlot1(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        return updateSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope).toBlocking().single().body();
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope, final ServiceCallback<SwiftVirtualNetworkInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope), serviceCallback);
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        return updateSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(resourceGroupName, name, slot, connectionEnvelope).map(new Func1<ServiceResponse<SwiftVirtualNetworkInner>, SwiftVirtualNetworkInner>() {
+            @Override
+            public SwiftVirtualNetworkInner call(ServiceResponse<SwiftVirtualNetworkInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+     in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SwiftVirtualNetworkInner object
+     */
+    public Observable<ServiceResponse<SwiftVirtualNetworkInner>> updateSwiftVirtualNetworkConnectionSlot1WithServiceResponseAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (connectionEnvelope == null) {
+            throw new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(connectionEnvelope);
+        return service.updateSwiftVirtualNetworkConnectionSlot1(resourceGroupName, name, slot, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SwiftVirtualNetworkInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SwiftVirtualNetworkInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SwiftVirtualNetworkInner> clientResponse = updateSwiftVirtualNetworkConnectionSlot1Delegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SwiftVirtualNetworkInner> updateSwiftVirtualNetworkConnectionSlot1Delegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SwiftVirtualNetworkInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SwiftVirtualNetworkInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Gets all network features used by the app (or deployment slot, if specified).
      * Gets all network features used by the app (or deployment slot, if specified).
      *
@@ -36472,6 +37332,142 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param slot Website Slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SnapshotInner&gt; object if successful.
+     */
+    public PagedList<SnapshotInner> listSnapshotsFromDRSecondarySlot(final String resourceGroupName, final String name, final String slot) {
+        ServiceResponse<Page<SnapshotInner>> response = listSnapshotsFromDRSecondarySlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
+        return new PagedList<SnapshotInner>(response.body()) {
+            @Override
+            public Page<SnapshotInner> nextPage(String nextPageLink) {
+                return listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param slot Website Slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsFromDRSecondarySlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSnapshotsFromDRSecondarySlotSinglePageAsync(resourceGroupName, name, slot),
+            new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(String nextPageLink) {
+                    return listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param slot Website Slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<Page<SnapshotInner>> listSnapshotsFromDRSecondarySlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return listSnapshotsFromDRSecondarySlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
+                @Override
+                public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param slot Website Slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondarySlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
+        return listSnapshotsFromDRSecondarySlotSinglePageAsync(resourceGroupName, name, slot)
+            .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSnapshotsFromDRSecondarySlotNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+    ServiceResponse<PageImpl<SnapshotInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<SnapshotInner>> * @param name Website Name.
+    ServiceResponse<PageImpl<SnapshotInner>> * @param slot Website Slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondarySlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSnapshotsFromDRSecondarySlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsFromDRSecondarySlotDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsFromDRSecondarySlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Gets the source control configuration of an app.
      * Gets the source control configuration of an app.
      *
@@ -40361,6 +41357,134 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SnapshotInner&gt; object if successful.
+     */
+    public PagedList<SnapshotInner> listSnapshotsFromDRSecondary(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<SnapshotInner>> response = listSnapshotsFromDRSecondarySinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<SnapshotInner>(response.body()) {
+            @Override
+            public Page<SnapshotInner> nextPage(String nextPageLink) {
+                return listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsFromDRSecondaryAsync(final String resourceGroupName, final String name, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSnapshotsFromDRSecondarySinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(String nextPageLink) {
+                    return listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<Page<SnapshotInner>> listSnapshotsFromDRSecondaryAsync(final String resourceGroupName, final String name) {
+        return listSnapshotsFromDRSecondaryWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
+                @Override
+                public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondaryWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return listSnapshotsFromDRSecondarySinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSnapshotsFromDRSecondaryNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+    ServiceResponse<PageImpl<SnapshotInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<SnapshotInner>> * @param name Website Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondarySinglePageAsync(final String resourceGroupName, final String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSnapshotsFromDRSecondary(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsFromDRSecondaryDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsFromDRSecondaryDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
@@ -48828,6 +49952,122 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SnapshotInner&gt; object if successful.
+     */
+    public PagedList<SnapshotInner> listSnapshotsFromDRSecondarySlotNext(final String nextPageLink) {
+        ServiceResponse<Page<SnapshotInner>> response = listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SnapshotInner>(response.body()) {
+            @Override
+            public Page<SnapshotInner> nextPage(String nextPageLink) {
+                return listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsFromDRSecondarySlotNextAsync(final String nextPageLink, final ServiceFuture<List<SnapshotInner>> serviceFuture, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(String nextPageLink) {
+                    return listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<Page<SnapshotInner>> listSnapshotsFromDRSecondarySlotNextAsync(final String nextPageLink) {
+        return listSnapshotsFromDRSecondarySlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
+                @Override
+                public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondarySlotNextWithServiceResponseAsync(final String nextPageLink) {
+        return listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSnapshotsFromDRSecondarySlotNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+    ServiceResponse<PageImpl<SnapshotInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondarySlotNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSnapshotsFromDRSecondarySlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsFromDRSecondarySlotNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsFromDRSecondarySlotNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * List triggered web jobs for an app, or a deployment slot.
      * List triggered web jobs for an app, or a deployment slot.
      *
@@ -49518,6 +50758,122 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SnapshotInner&gt; object if successful.
+     */
+    public PagedList<SnapshotInner> listSnapshotsFromDRSecondaryNext(final String nextPageLink) {
+        ServiceResponse<Page<SnapshotInner>> response = listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SnapshotInner>(response.body()) {
+            @Override
+            public Page<SnapshotInner> nextPage(String nextPageLink) {
+                return listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsFromDRSecondaryNextAsync(final String nextPageLink, final ServiceFuture<List<SnapshotInner>> serviceFuture, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(String nextPageLink) {
+                    return listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<Page<SnapshotInner>> listSnapshotsFromDRSecondaryNextAsync(final String nextPageLink) {
+        return listSnapshotsFromDRSecondaryNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
+                @Override
+                public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondaryNextWithServiceResponseAsync(final String nextPageLink) {
+        return listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSnapshotsFromDRSecondaryNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+    ServiceResponse<PageImpl<SnapshotInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondaryNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSnapshotsFromDRSecondaryNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsFromDRSecondaryNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsFromDRSecondaryNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)

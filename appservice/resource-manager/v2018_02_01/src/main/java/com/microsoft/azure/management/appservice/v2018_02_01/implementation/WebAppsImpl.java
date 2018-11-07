@@ -32,6 +32,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.Operation;
 import com.microsoft.azure.management.appservice.v2018_02_01.NetworkTrace;
 import com.microsoft.azure.management.appservice.v2018_02_01.SitePhpErrorLogFlag;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotDifference;
+import com.microsoft.azure.management.appservice.v2018_02_01.Snapshot;
 import com.microsoft.azure.management.appservice.v2018_02_01.CsmSlotEntity;
 import com.microsoft.azure.management.appservice.v2018_02_01.StorageMigrationOptions;
 import com.microsoft.azure.management.appservice.v2018_02_01.MigrateMySqlRequest;
@@ -45,7 +46,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SiteLogsConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.User;
 import com.microsoft.azure.management.appservice.v2018_02_01.PushSettings;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotConfigNamesResource;
-import com.microsoft.azure.management.appservice.v2018_02_01.Snapshot;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfigurationSnapshotInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.ContinuousWebJob;
 import com.microsoft.azure.management.appservice.v2018_02_01.Deployment;
@@ -830,6 +830,48 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.getSwiftVirtualNetworkConnection1Async(resourceGroupName, name)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.createOrUpdateSwiftVirtualNetworkConnection1Async(resourceGroupName, name, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteSwiftVirtualNetwork1Async(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.deleteSwiftVirtualNetwork1Async(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.updateSwiftVirtualNetworkConnection1Async(resourceGroupName, name, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Completable startWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
         return client.startWebSiteNetworkTraceAsync(resourceGroupName, name).toCompletable();
@@ -959,6 +1001,24 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Completable swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity) {
         WebAppsInner client = this.inner();
         return client.swapSlotWithProductionAsync(resourceGroupName, name, slotSwapEntity).toCompletable();
+    }
+
+    @Override
+    public Observable<Snapshot> listSnapshotsFromDRSecondaryAsync(final String resourceGroupName, final String name) {
+        WebAppsInner client = this.inner();
+        return client.listSnapshotsFromDRSecondaryAsync(resourceGroupName, name)
+        .flatMapIterable(new Func1<Page<SnapshotInner>, Iterable<SnapshotInner>>() {
+            @Override
+            public Iterable<SnapshotInner> call(Page<SnapshotInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<SnapshotInner, Snapshot>() {
+            @Override
+            public Snapshot call(SnapshotInner inner) {
+                return new SnapshotImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -3632,6 +3692,48 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.getSwiftVirtualNetworkConnectionSlot1Async(resourceGroupName, name, slot)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.createOrUpdateSwiftVirtualNetworkConnectionSlot1Async(resourceGroupName, name, slot, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteSwiftVirtualNetworkSlot1Async(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.deleteSwiftVirtualNetworkSlot1Async(resourceGroupName, name, slot).toCompletable();
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.updateSwiftVirtualNetworkConnectionSlot1Async(resourceGroupName, name, slot, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Completable startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
         return client.startWebSiteNetworkTraceSlotAsync(resourceGroupName, name, slot).toCompletable();
@@ -3761,6 +3863,24 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Completable swapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity) {
         WebAppsInner client = this.inner();
         return client.swapSlotSlotAsync(resourceGroupName, name, slot, slotSwapEntity).toCompletable();
+    }
+
+    @Override
+    public Observable<Snapshot> listSnapshotsFromDRSecondarySlotAsync(final String resourceGroupName, final String name, final String slot) {
+        WebAppsInner client = this.inner();
+        return client.listSnapshotsFromDRSecondarySlotAsync(resourceGroupName, name, slot)
+        .flatMapIterable(new Func1<Page<SnapshotInner>, Iterable<SnapshotInner>>() {
+            @Override
+            public Iterable<SnapshotInner> call(Page<SnapshotInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<SnapshotInner, Snapshot>() {
+            @Override
+            public Snapshot call(SnapshotInner inner) {
+                return new SnapshotImpl(inner, manager());
+            }
+        });
     }
 
     @Override

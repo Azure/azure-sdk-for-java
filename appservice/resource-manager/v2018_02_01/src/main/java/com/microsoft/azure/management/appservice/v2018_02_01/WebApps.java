@@ -516,6 +516,56 @@ public interface WebApps {
     Observable<Operation> migrateMySqlAsync(String resourceGroupName, String name, MigrateMySqlRequest migrationRequestEnvelope);
 
     /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name);
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteSwiftVirtualNetwork1Async(String resourceGroupName, String name);
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnection1Async(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
      * Start capturing network packets for the site (To be deprecated).
      * Start capturing network packets for the site (To be deprecated).
      *
@@ -687,6 +737,17 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity);
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Snapshot> listSnapshotsFromDRSecondaryAsync(final String resourceGroupName, final String name);
 
     /**
      * Starts an app (or deployment slot, if specified).
@@ -3450,6 +3511,60 @@ public interface WebApps {
     Observable<FunctionSecrets> listSyncFunctionTriggersSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
+     * Gets a Swift Virtual Network connection.
+     * Gets a Swift Virtual Network connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the production slot's Virtual Network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot);
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     * Deletes a Swift Virtual Network connection from an app (or deployment slot).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteSwiftVirtualNetworkSlot1Async(String resourceGroupName, String name, String slot);
+
+    /**
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
+    in use by another App Service Plan other than the one this App is in.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for the production slot.
+     * @param connectionEnvelope Properties of the Virtual Network connection. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnectionSlot1Async(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope);
+
+    /**
      * Start capturing network packets for the site (To be deprecated).
      * Start capturing network packets for the site (To be deprecated).
      *
@@ -3636,6 +3751,18 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable swapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity);
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param slot Website Slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Snapshot> listSnapshotsFromDRSecondarySlotAsync(final String resourceGroupName, final String name, final String slot);
 
     /**
      * Starts an app (or deployment slot, if specified).

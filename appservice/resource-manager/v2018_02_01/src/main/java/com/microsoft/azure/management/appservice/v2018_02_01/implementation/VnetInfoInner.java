@@ -59,6 +59,12 @@ public class VnetInfoInner extends ProxyOnlyResource {
     private String dnsServers;
 
     /**
+     * Flag that is used to denote if this is VNET injection.
+     */
+    @JsonProperty(value = "properties.isSwift")
+    private Boolean isSwift;
+
+    /**
      * Get the Virtual Network's resource ID.
      *
      * @return the vnetResourceId value
@@ -144,6 +150,26 @@ public class VnetInfoInner extends ProxyOnlyResource {
      */
     public VnetInfoInner withDnsServers(String dnsServers) {
         this.dnsServers = dnsServers;
+        return this;
+    }
+
+    /**
+     * Get flag that is used to denote if this is VNET injection.
+     *
+     * @return the isSwift value
+     */
+    public Boolean isSwift() {
+        return this.isSwift;
+    }
+
+    /**
+     * Set flag that is used to denote if this is VNET injection.
+     *
+     * @param isSwift the isSwift value to set
+     * @return the VnetInfoInner object itself.
+     */
+    public VnetInfoInner withIsSwift(Boolean isSwift) {
+        this.isSwift = isSwift;
         return this;
     }
 
