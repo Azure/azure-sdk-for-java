@@ -1070,24 +1070,29 @@ class ContainerAPITest extends APISpec {
 
     def "List blobs hier delim"() {
         setup:
-        AppendBlobURL blob = cu.createAppendBlobURL("a")
-        blob.create(null, null, null, null).blockingGet()
-        AppendBlobURL dir = cu.createAppendBlobURL("b/")
-        dir.create(null, null, null, null).blockingGet()
-        AppendBlobURL subBlob = cu.createAppendBlobURL("b/c")
-        subBlob.create(null, null, null, null).blockingGet()
-        blob = cu.createAppendBlobURL("d")
-        blob.create().blockingGet()
+        def blobNames = Arrays.asList("a", "b/a", "c", "d/a", "e", "f", "g/a")
+        for (String blobName : blobNames) {
+            def bu = cu.createAppendBlobURL(blobName)
+            bu.create().blockingGet()
+        }
 
         when:
         ContainerListBlobHierarchySegmentResponse response =
                 cu.listBlobsHierarchySegment(null, "/", null, null).blockingGet()
 
+        and:
+        def expectedBlobs = Arrays.asList("a", "c", "e", "f")
+        def expectedPrefixes = Arrays.asList("b/", "d/", "g/")
+
         then:
-        response.body().segment().blobPrefixes().size() == 1
-        response.body().segment().blobPrefixes().get(0).name() == "b/"
-        response.body().segment().blobItems().size() == 1
-        response.body().segment().blobItems().get(0).name() == "a"
+        response.body().segment().blobItems().size() == 4
+        for (int i=0; i<expectedBlobs.size(); i++) {
+            assert expectedBlobs.get(i) == response.body().segment().blobItems().get(i).name()
+        }
+        for (int i=0; i<expectedPrefixes.size(); i++) {
+            assert expectedPrefixes.get(i) == response.body().segment().blobPrefixes().get(i).name()
+        }
+        response.body().segment().blobPrefixes().size() == 3
     }
 
     def "List blobs hier marker"() {

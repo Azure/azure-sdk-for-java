@@ -1,3 +1,6 @@
+XXXX.XX.XX Version XX.X.X
+* Fixed a bug in hierarchical listings that would sometimes return incomplete results.
+
 2018.10.29 Version 10.2.0
 * Added overloads which only accept the required parameters.
 * Added CopyFromURL, which will do a synchronous server-side copy, meaning the service will not return an HTTP response until it has completed the copy.
