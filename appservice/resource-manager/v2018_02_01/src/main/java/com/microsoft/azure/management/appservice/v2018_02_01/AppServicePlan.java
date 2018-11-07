@@ -36,11 +36,6 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
     String appServicePlanKind();
 
     /**
-     * @return the appServicePlanName value.
-     */
-    String appServicePlanName();
-
-    /**
      * @return the currentNumberOfWorkers value.
      */
     Integer currentNumberOfWorkers();
@@ -203,16 +198,6 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
         }
 
         /**
-         * The stage of the appserviceplan update allowing to specify AppServicePlanName.
-         */
-        interface WithAppServicePlanName {
-            /**
-             * Specifies appServicePlanName.
-             */
-            WithCreate withAppServicePlanName(String appServicePlanName);
-        }
-
-        /**
          * The stage of the appserviceplan update allowing to specify FreeOfferExpirationTime.
          */
         interface WithFreeOfferExpirationTime {
@@ -357,7 +342,7 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<AppServicePlan>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminSiteName, DefinitionStages.WithAppServicePlanName, DefinitionStages.WithFreeOfferExpirationTime, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHyperV, DefinitionStages.WithIsSpot, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithMaximumElasticWorkerCount, DefinitionStages.WithPerSiteScaling, DefinitionStages.WithReserved, DefinitionStages.WithSku, DefinitionStages.WithSpotExpirationTime, DefinitionStages.WithTargetWorkerCount, DefinitionStages.WithTargetWorkerSizeId, DefinitionStages.WithWorkerTierName {
+        interface WithCreate extends Creatable<AppServicePlan>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminSiteName, DefinitionStages.WithFreeOfferExpirationTime, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHyperV, DefinitionStages.WithIsSpot, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithMaximumElasticWorkerCount, DefinitionStages.WithPerSiteScaling, DefinitionStages.WithReserved, DefinitionStages.WithSku, DefinitionStages.WithSpotExpirationTime, DefinitionStages.WithTargetWorkerCount, DefinitionStages.WithTargetWorkerSizeId, DefinitionStages.WithWorkerTierName {
         }
     }
     /**

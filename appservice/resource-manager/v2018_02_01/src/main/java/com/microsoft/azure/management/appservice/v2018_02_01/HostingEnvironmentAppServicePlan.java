@@ -30,11 +30,6 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
     String appServicePlanKind();
 
     /**
-     * @return the appServicePlanName value.
-     */
-    String appServicePlanName();
-
-    /**
      * @return the currentNumberOfWorkers value.
      */
     Integer currentNumberOfWorkers();

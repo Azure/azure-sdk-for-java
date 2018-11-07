@@ -80,11 +80,6 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     }
 
     @Override
-    public String appServicePlanName() {
-        return this.inner().appServicePlanName();
-    }
-
-    @Override
     public Integer currentNumberOfWorkers() {
         return this.inner().currentNumberOfWorkers();
     }
@@ -212,12 +207,6 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     @Override
     public String workerTierName() {
         return this.inner().workerTierName();
-    }
-
-    @Override
-    public AppServicePlanImpl withAppServicePlanName(String appServicePlanName) {
-        this.inner().withAppServicePlanName(appServicePlanName);
-        return this;
     }
 
     @Override

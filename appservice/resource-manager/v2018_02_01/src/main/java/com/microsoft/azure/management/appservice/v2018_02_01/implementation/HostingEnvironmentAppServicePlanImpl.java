@@ -44,11 +44,6 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     }
 
     @Override
-    public String appServicePlanName() {
-        return this.inner().appServicePlanName();
-    }
-
-    @Override
     public Integer currentNumberOfWorkers() {
         return this.inner().currentNumberOfWorkers();
     }

@@ -23,12 +23,6 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class AppServicePlanInner extends Resource {
     /**
-     * Name for the App Service plan.
-     */
-    @JsonProperty(value = "properties.name")
-    private String appServicePlanName;
-
-    /**
      * Target worker tier assigned to the App Service plan.
      */
     @JsonProperty(value = "properties.workerTierName")
@@ -208,26 +202,6 @@ public class AppServicePlanInner extends Resource {
      */
     @JsonProperty(value = "kind")
     private String kind;
-
-    /**
-     * Get name for the App Service plan.
-     *
-     * @return the appServicePlanName value
-     */
-    public String appServicePlanName() {
-        return this.appServicePlanName;
-    }
-
-    /**
-     * Set name for the App Service plan.
-     *
-     * @param appServicePlanName the appServicePlanName value to set
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withAppServicePlanName(String appServicePlanName) {
-        this.appServicePlanName = appServicePlanName;
-        return this;
-    }
 
     /**
      * Get target worker tier assigned to the App Service plan.
