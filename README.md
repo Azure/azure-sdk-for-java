@@ -74,7 +74,7 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 asyncClient = new AsyncDocumentClient.Builder()
 				.withServiceEndpoint(HOST)
-				.withMasterKey(MASTER_KEY)
+				.withMasterKeyOrResourceToken(MASTER_KEY)
 				.withConnectionPolicy(ConnectionPolicy.GetDefault())
 				.withConsistencyLevel(ConsistencyLevel.Eventual)
 				.build();
