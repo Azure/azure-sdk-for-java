@@ -16,10 +16,10 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.datafactoryv2.v2018_06_01.DataPlaneReadOnlyTokenRequest;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.FactoryRepoUpdate;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.FactoryUpdateParameters;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.GitHubAccessTokenRequest;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.UserAccessPolicy;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -102,9 +102,9 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getGitHubAccessToken")
         Observable<Response<ResponseBody>> getGitHubAccessToken(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body GitHubAccessTokenRequest gitHubAccessTokenRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories getDataPlaneReadOnlyToken" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getDataPlaneReadOnlyToken")
-        Observable<Response<ResponseBody>> getDataPlaneReadOnlyToken(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body DataPlaneReadOnlyTokenRequest dataPlaneReadOnlyTokenRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories getDataPlaneAccess" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getDataPlaneAccess")
+        Observable<Response<ResponseBody>> getDataPlaneAccess(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body UserAccessPolicy policy, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories listNext" })
         @GET
@@ -1057,62 +1057,62 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
     }
 
     /**
-     * Get Data Plane read only token.
+     * Get Data Plane access.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param dataPlaneReadOnlyTokenRequest Data Plane read only access token request definition.
+     * @param policy Data Plane user access policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DataPlaneReadOnlyTokenResponseInner object if successful.
+     * @return the AccessPolicyResponseInner object if successful.
      */
-    public DataPlaneReadOnlyTokenResponseInner getDataPlaneReadOnlyToken(String resourceGroupName, String factoryName, DataPlaneReadOnlyTokenRequest dataPlaneReadOnlyTokenRequest) {
-        return getDataPlaneReadOnlyTokenWithServiceResponseAsync(resourceGroupName, factoryName, dataPlaneReadOnlyTokenRequest).toBlocking().single().body();
+    public AccessPolicyResponseInner getDataPlaneAccess(String resourceGroupName, String factoryName, UserAccessPolicy policy) {
+        return getDataPlaneAccessWithServiceResponseAsync(resourceGroupName, factoryName, policy).toBlocking().single().body();
     }
 
     /**
-     * Get Data Plane read only token.
+     * Get Data Plane access.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param dataPlaneReadOnlyTokenRequest Data Plane read only access token request definition.
+     * @param policy Data Plane user access policy definition.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DataPlaneReadOnlyTokenResponseInner> getDataPlaneReadOnlyTokenAsync(String resourceGroupName, String factoryName, DataPlaneReadOnlyTokenRequest dataPlaneReadOnlyTokenRequest, final ServiceCallback<DataPlaneReadOnlyTokenResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getDataPlaneReadOnlyTokenWithServiceResponseAsync(resourceGroupName, factoryName, dataPlaneReadOnlyTokenRequest), serviceCallback);
+    public ServiceFuture<AccessPolicyResponseInner> getDataPlaneAccessAsync(String resourceGroupName, String factoryName, UserAccessPolicy policy, final ServiceCallback<AccessPolicyResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getDataPlaneAccessWithServiceResponseAsync(resourceGroupName, factoryName, policy), serviceCallback);
     }
 
     /**
-     * Get Data Plane read only token.
+     * Get Data Plane access.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param dataPlaneReadOnlyTokenRequest Data Plane read only access token request definition.
+     * @param policy Data Plane user access policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DataPlaneReadOnlyTokenResponseInner object
+     * @return the observable to the AccessPolicyResponseInner object
      */
-    public Observable<DataPlaneReadOnlyTokenResponseInner> getDataPlaneReadOnlyTokenAsync(String resourceGroupName, String factoryName, DataPlaneReadOnlyTokenRequest dataPlaneReadOnlyTokenRequest) {
-        return getDataPlaneReadOnlyTokenWithServiceResponseAsync(resourceGroupName, factoryName, dataPlaneReadOnlyTokenRequest).map(new Func1<ServiceResponse<DataPlaneReadOnlyTokenResponseInner>, DataPlaneReadOnlyTokenResponseInner>() {
+    public Observable<AccessPolicyResponseInner> getDataPlaneAccessAsync(String resourceGroupName, String factoryName, UserAccessPolicy policy) {
+        return getDataPlaneAccessWithServiceResponseAsync(resourceGroupName, factoryName, policy).map(new Func1<ServiceResponse<AccessPolicyResponseInner>, AccessPolicyResponseInner>() {
             @Override
-            public DataPlaneReadOnlyTokenResponseInner call(ServiceResponse<DataPlaneReadOnlyTokenResponseInner> response) {
+            public AccessPolicyResponseInner call(ServiceResponse<AccessPolicyResponseInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Get Data Plane read only token.
+     * Get Data Plane access.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param dataPlaneReadOnlyTokenRequest Data Plane read only access token request definition.
+     * @param policy Data Plane user access policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DataPlaneReadOnlyTokenResponseInner object
+     * @return the observable to the AccessPolicyResponseInner object
      */
-    public Observable<ServiceResponse<DataPlaneReadOnlyTokenResponseInner>> getDataPlaneReadOnlyTokenWithServiceResponseAsync(String resourceGroupName, String factoryName, DataPlaneReadOnlyTokenRequest dataPlaneReadOnlyTokenRequest) {
+    public Observable<ServiceResponse<AccessPolicyResponseInner>> getDataPlaneAccessWithServiceResponseAsync(String resourceGroupName, String factoryName, UserAccessPolicy policy) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1125,16 +1125,16 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (dataPlaneReadOnlyTokenRequest == null) {
-            throw new IllegalArgumentException("Parameter dataPlaneReadOnlyTokenRequest is required and cannot be null.");
+        if (policy == null) {
+            throw new IllegalArgumentException("Parameter policy is required and cannot be null.");
         }
-        Validator.validate(dataPlaneReadOnlyTokenRequest);
-        return service.getDataPlaneReadOnlyToken(this.client.subscriptionId(), resourceGroupName, factoryName, this.client.apiVersion(), dataPlaneReadOnlyTokenRequest, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DataPlaneReadOnlyTokenResponseInner>>>() {
+        Validator.validate(policy);
+        return service.getDataPlaneAccess(this.client.subscriptionId(), resourceGroupName, factoryName, this.client.apiVersion(), policy, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AccessPolicyResponseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<DataPlaneReadOnlyTokenResponseInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<AccessPolicyResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DataPlaneReadOnlyTokenResponseInner> clientResponse = getDataPlaneReadOnlyTokenDelegate(response);
+                        ServiceResponse<AccessPolicyResponseInner> clientResponse = getDataPlaneAccessDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1143,9 +1143,9 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
             });
     }
 
-    private ServiceResponse<DataPlaneReadOnlyTokenResponseInner> getDataPlaneReadOnlyTokenDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<DataPlaneReadOnlyTokenResponseInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<DataPlaneReadOnlyTokenResponseInner>() { }.getType())
+    private ServiceResponse<AccessPolicyResponseInner> getDataPlaneAccessDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<AccessPolicyResponseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<AccessPolicyResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

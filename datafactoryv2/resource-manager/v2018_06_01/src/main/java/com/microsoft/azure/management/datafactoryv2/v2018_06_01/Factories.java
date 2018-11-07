@@ -34,15 +34,15 @@ public interface Factories extends SupportsCreating<Factory.DefinitionStages.Bla
     Observable<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest);
 
     /**
-     * Get Data Plane read only token.
+     * Get Data Plane access.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param dataPlaneReadOnlyTokenRequest Data Plane read only access token request definition.
+     * @param policy Data Plane user access policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<DataPlaneReadOnlyTokenResponse> getDataPlaneReadOnlyTokenAsync(String resourceGroupName, String factoryName, DataPlaneReadOnlyTokenRequest dataPlaneReadOnlyTokenRequest);
+    Observable<AccessPolicyResponse> getDataPlaneAccessAsync(String resourceGroupName, String factoryName, UserAccessPolicy policy);
 
     /**
      * Updates a factory's repo information.

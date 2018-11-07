@@ -30,11 +30,24 @@ public class AzureBlobStorageLinkedService extends LinkedServiceInner {
     private Object connectionString;
 
     /**
+     * The Azure key vault secret reference of accountKey in connection string.
+     */
+    @JsonProperty(value = "typeProperties.accountKey")
+    private AzureKeyVaultSecretReference accountKey;
+
+    /**
      * SAS URI of the Azure Blob Storage resource. It is mutually exclusive
-     * with connectionString, serviceEndpoint property.
+     * with connectionString, serviceEndpoint property. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.sasUri")
-    private SecretBase sasUri;
+    private Object sasUri;
+
+    /**
+     * The Azure key vault secret reference of sasToken in sas uri.
+     */
+    @JsonProperty(value = "typeProperties.sasToken")
+    private AzureKeyVaultSecretReference sasToken;
 
     /**
      * Blob service endpoint of the Azure Blob Storage resource. It is mutually
@@ -93,22 +106,62 @@ public class AzureBlobStorageLinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get sAS URI of the Azure Blob Storage resource. It is mutually exclusive with connectionString, serviceEndpoint property.
+     * Get the Azure key vault secret reference of accountKey in connection string.
+     *
+     * @return the accountKey value
+     */
+    public AzureKeyVaultSecretReference accountKey() {
+        return this.accountKey;
+    }
+
+    /**
+     * Set the Azure key vault secret reference of accountKey in connection string.
+     *
+     * @param accountKey the accountKey value to set
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService withAccountKey(AzureKeyVaultSecretReference accountKey) {
+        this.accountKey = accountKey;
+        return this;
+    }
+
+    /**
+     * Get sAS URI of the Azure Blob Storage resource. It is mutually exclusive with connectionString, serviceEndpoint property. Type: string, SecureString or AzureKeyVaultSecretReference.
      *
      * @return the sasUri value
      */
-    public SecretBase sasUri() {
+    public Object sasUri() {
         return this.sasUri;
     }
 
     /**
-     * Set sAS URI of the Azure Blob Storage resource. It is mutually exclusive with connectionString, serviceEndpoint property.
+     * Set sAS URI of the Azure Blob Storage resource. It is mutually exclusive with connectionString, serviceEndpoint property. Type: string, SecureString or AzureKeyVaultSecretReference.
      *
      * @param sasUri the sasUri value to set
      * @return the AzureBlobStorageLinkedService object itself.
      */
-    public AzureBlobStorageLinkedService withSasUri(SecretBase sasUri) {
+    public AzureBlobStorageLinkedService withSasUri(Object sasUri) {
         this.sasUri = sasUri;
+        return this;
+    }
+
+    /**
+     * Get the Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @return the sasToken value
+     */
+    public AzureKeyVaultSecretReference sasToken() {
+        return this.sasToken;
+    }
+
+    /**
+     * Set the Azure key vault secret reference of sasToken in sas uri.
+     *
+     * @param sasToken the sasToken value to set
+     * @return the AzureBlobStorageLinkedService object itself.
+     */
+    public AzureBlobStorageLinkedService withSasToken(AzureKeyVaultSecretReference sasToken) {
+        this.sasToken = sasToken;
         return this;
     }
 

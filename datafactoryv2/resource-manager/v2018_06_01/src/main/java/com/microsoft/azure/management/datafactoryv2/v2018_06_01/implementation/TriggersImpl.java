@@ -15,7 +15,7 @@ import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.datafactoryv2.v2018_06_01.TriggerResource;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.FactoryTriggerResource;
 
 class TriggersImpl extends WrapperImpl<TriggersInner> implements Triggers {
     private final DataFactoryManager manager;
@@ -30,16 +30,16 @@ class TriggersImpl extends WrapperImpl<TriggersInner> implements Triggers {
     }
 
     @Override
-    public TriggerResourceImpl define(String name) {
+    public FactoryTriggerResourceImpl define(String name) {
         return wrapModel(name);
     }
 
-    private TriggerResourceImpl wrapModel(TriggerResourceInner inner) {
-        return  new TriggerResourceImpl(inner, manager());
+    private FactoryTriggerResourceImpl wrapModel(TriggerResourceInner inner) {
+        return  new FactoryTriggerResourceImpl(inner, manager());
     }
 
-    private TriggerResourceImpl wrapModel(String name) {
-        return new TriggerResourceImpl(name, this.manager());
+    private FactoryTriggerResourceImpl wrapModel(String name) {
+        return new FactoryTriggerResourceImpl(name, this.manager());
     }
 
     @Override
@@ -55,7 +55,7 @@ class TriggersImpl extends WrapperImpl<TriggersInner> implements Triggers {
     }
 
     @Override
-    public Observable<TriggerResource> listByFactoryAsync(final String resourceGroupName, final String factoryName) {
+    public Observable<FactoryTriggerResource> listByFactoryAsync(final String resourceGroupName, final String factoryName) {
         TriggersInner client = this.inner();
         return client.listByFactoryAsync(resourceGroupName, factoryName)
         .flatMapIterable(new Func1<Page<TriggerResourceInner>, Iterable<TriggerResourceInner>>() {
@@ -64,21 +64,21 @@ class TriggersImpl extends WrapperImpl<TriggersInner> implements Triggers {
                 return page.items();
             }
         })
-        .map(new Func1<TriggerResourceInner, TriggerResource>() {
+        .map(new Func1<TriggerResourceInner, FactoryTriggerResource>() {
             @Override
-            public TriggerResource call(TriggerResourceInner inner) {
+            public FactoryTriggerResource call(TriggerResourceInner inner) {
                 return wrapModel(inner);
             }
         });
     }
 
     @Override
-    public Observable<TriggerResource> getAsync(String resourceGroupName, String factoryName, String triggerName) {
+    public Observable<FactoryTriggerResource> getAsync(String resourceGroupName, String factoryName, String triggerName) {
         TriggersInner client = this.inner();
         return client.getAsync(resourceGroupName, factoryName, triggerName)
-        .map(new Func1<TriggerResourceInner, TriggerResource>() {
+        .map(new Func1<TriggerResourceInner, FactoryTriggerResource>() {
             @Override
-            public TriggerResource call(TriggerResourceInner inner) {
+            public FactoryTriggerResource call(TriggerResourceInner inner) {
                 return wrapModel(inner);
             }
        });

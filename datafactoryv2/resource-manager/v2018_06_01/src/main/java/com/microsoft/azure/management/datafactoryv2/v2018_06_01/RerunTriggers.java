@@ -9,25 +9,26 @@
 package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 
 import com.microsoft.azure.arm.collection.SupportsCreating;
-import rx.Completable;
 import rx.Observable;
-import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.TriggersInner;
+import rx.Completable;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.RerunTriggersInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing Triggers.
+ * Type representing RerunTriggers.
  */
-public interface Triggers extends SupportsCreating<FactoryTriggerResource.DefinitionStages.Blank>, HasInner<TriggersInner> {
+public interface RerunTriggers extends SupportsCreating<TriggerFactoryTriggerResource.DefinitionStages.Blank>, HasInner<RerunTriggersInner> {
     /**
      * Starts a trigger.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
+     * @param rerunTriggerName The rerun trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startAsync(String resourceGroupName, String factoryName, String triggerName);
+    Completable startAsync(String resourceGroupName, String factoryName, String triggerName, String rerunTriggerName);
 
     /**
      * Stops a trigger.
@@ -35,13 +36,26 @@ public interface Triggers extends SupportsCreating<FactoryTriggerResource.Defini
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
+     * @param rerunTriggerName The rerun trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable stopAsync(String resourceGroupName, String factoryName, String triggerName);
+    Completable stopAsync(String resourceGroupName, String factoryName, String triggerName, String rerunTriggerName);
 
     /**
-     * Gets a trigger.
+     * Cancels a trigger.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param rerunTriggerName The rerun trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable cancelAsync(String resourceGroupName, String factoryName, String triggerName, String rerunTriggerName);
+
+    /**
+     * Lists rerun triggers by an original trigger name.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -49,27 +63,6 @@ public interface Triggers extends SupportsCreating<FactoryTriggerResource.Defini
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<FactoryTriggerResource> getAsync(String resourceGroupName, String factoryName, String triggerName);
-
-    /**
-     * Lists triggers.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<FactoryTriggerResource> listByFactoryAsync(final String resourceGroupName, final String factoryName);
-
-    /**
-     * Deletes a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteAsync(String resourceGroupName, String factoryName, String triggerName);
+    Observable<TriggerFactoryTriggerResource> listByTriggerAsync(final String resourceGroupName, final String factoryName, final String triggerName);
 
 }
