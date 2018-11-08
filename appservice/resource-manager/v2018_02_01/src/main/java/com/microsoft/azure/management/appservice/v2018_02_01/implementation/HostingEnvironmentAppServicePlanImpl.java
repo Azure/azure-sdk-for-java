@@ -11,23 +11,23 @@ package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentAppServicePlan;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
+import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.v2018_02_01.ProvisioningState;
 import com.microsoft.azure.management.appservice.v2018_02_01.SkuDescription;
-import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.StatusOptions;
 import java.util.Map;
 
 class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInner> implements HostingEnvironmentAppServicePlan {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    HostingEnvironmentAppServicePlanImpl(AppServicePlanInner inner,  AppServiceManager manager) {
+    HostingEnvironmentAppServicePlanImpl(AppServicePlanInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -39,6 +39,11 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     }
 
     @Override
+    public DateTime freeOfferExpirationTime() {
+        return this.inner().freeOfferExpirationTime();
+    }
+
+    @Override
     public String geoRegion() {
         return this.inner().geoRegion();
     }
@@ -46,6 +51,11 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     @Override
     public HostingEnvironmentProfile hostingEnvironmentProfile() {
         return this.inner().hostingEnvironmentProfile();
+    }
+
+    @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
     }
 
     @Override
@@ -71,6 +81,11 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     @Override
     public String location() {
         return this.inner().location();
+    }
+
+    @Override
+    public Integer maximumElasticWorkerCount() {
+        return this.inner().maximumElasticWorkerCount();
     }
 
     @Override

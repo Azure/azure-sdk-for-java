@@ -13,13 +13,13 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class ServerfarmVnetGatewayImpl extends CreatableUpdatableImpl<ServerfarmVnetGateway, VnetGatewayInner, ServerfarmVnetGatewayImpl> implements ServerfarmVnetGateway, ServerfarmVnetGateway.Update {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String vnetName;
     private String gatewayName;
 
-    ServerfarmVnetGatewayImpl(String name, AppServiceManager manager) {
+    ServerfarmVnetGatewayImpl(String name, CertificateRegistrationManager manager) {
         super(name, new VnetGatewayInner());
         this.manager = manager;
         // Set resource name
@@ -27,12 +27,12 @@ class ServerfarmVnetGatewayImpl extends CreatableUpdatableImpl<ServerfarmVnetGat
         //
     }
 
-    ServerfarmVnetGatewayImpl(VnetGatewayInner inner, AppServiceManager manager) {
+    ServerfarmVnetGatewayImpl(VnetGatewayInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.gatewayName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "serverfarms");
         this.vnetName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkConnections");
@@ -41,7 +41,7 @@ class ServerfarmVnetGatewayImpl extends CreatableUpdatableImpl<ServerfarmVnetGat
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

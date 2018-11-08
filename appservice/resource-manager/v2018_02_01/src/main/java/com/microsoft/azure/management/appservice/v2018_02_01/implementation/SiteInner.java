@@ -16,7 +16,6 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.v2018_02_01.CloningInfo;
-import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRecoveryRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -98,10 +97,16 @@ public class SiteInner extends Resource {
     private Boolean reserved;
 
     /**
-     * Hyper-V sandbox.
+     * Obsolete: Hyper-V sandbox.
      */
     @JsonProperty(value = "properties.isXenon")
     private Boolean isXenon;
+
+    /**
+     * Hyper-V sandbox.
+     */
+    @JsonProperty(value = "properties.hyperV")
+    private Boolean hyperV;
 
     /**
      * Last time the app was modified, in UTC. Read-only.
@@ -214,13 +219,6 @@ public class SiteInner extends Resource {
      */
     @JsonProperty(value = "properties.cloningInfo")
     private CloningInfo cloningInfo;
-
-    /**
-     * If specified during app creation, the app is created from a previous
-     * snapshot.
-     */
-    @JsonProperty(value = "properties.snapshotInfo")
-    private SnapshotRecoveryRequest snapshotInfo;
 
     /**
      * Name of the resource group the app belongs to. Read-only.
@@ -403,7 +401,7 @@ public class SiteInner extends Resource {
     }
 
     /**
-     * Get hyper-V sandbox.
+     * Get obsolete: Hyper-V sandbox.
      *
      * @return the isXenon value
      */
@@ -412,13 +410,33 @@ public class SiteInner extends Resource {
     }
 
     /**
-     * Set hyper-V sandbox.
+     * Set obsolete: Hyper-V sandbox.
      *
      * @param isXenon the isXenon value to set
      * @return the SiteInner object itself.
      */
     public SiteInner withIsXenon(Boolean isXenon) {
         this.isXenon = isXenon;
+        return this;
+    }
+
+    /**
+     * Get hyper-V sandbox.
+     *
+     * @return the hyperV value
+     */
+    public Boolean hyperV() {
+        return this.hyperV;
+    }
+
+    /**
+     * Set hyper-V sandbox.
+     *
+     * @param hyperV the hyperV value to set
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withHyperV(Boolean hyperV) {
+        this.hyperV = hyperV;
         return this;
     }
 
@@ -665,26 +683,6 @@ public class SiteInner extends Resource {
      */
     public SiteInner withCloningInfo(CloningInfo cloningInfo) {
         this.cloningInfo = cloningInfo;
-        return this;
-    }
-
-    /**
-     * Get if specified during app creation, the app is created from a previous snapshot.
-     *
-     * @return the snapshotInfo value
-     */
-    public SnapshotRecoveryRequest snapshotInfo() {
-        return this.snapshotInfo;
-    }
-
-    /**
-     * Set if specified during app creation, the app is created from a previous snapshot.
-     *
-     * @param snapshotInfo the snapshotInfo value to set
-     * @return the SiteInner object itself.
-     */
-    public SiteInner withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo) {
-        this.snapshotInfo = snapshotInfo;
         return this;
     }
 

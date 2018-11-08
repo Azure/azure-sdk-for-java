@@ -75,14 +75,14 @@ import com.microsoft.azure.management.appservice.v2016_08_01.VnetGateway;
 import com.microsoft.azure.management.appservice.v2016_08_01.WebJob;
 
 class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
-    private final AppServiceManager manager;
+    private final WebManager manager;
 
-    WebAppsImpl(AppServiceManager manager) {
+    WebAppsImpl(WebManager manager) {
         super(manager.inner().webApps());
         this.manager = manager;
     }
 
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
@@ -656,16 +656,16 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable getWebSiteContainerLogsAsync(String resourceGroupName, String name) {
+    public Observable<InputStream> getWebSiteContainerLogsAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
-        return client.getWebSiteContainerLogsAsync(resourceGroupName, name).toCompletable();
-    }
+        return client.getWebSiteContainerLogsAsync(resourceGroupName, name)
+    ;}
 
     @Override
-    public Completable getFunctionsAdminTokenAsync(String resourceGroupName, String name) {
+    public Observable<String> getFunctionsAdminTokenAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
-        return client.getFunctionsAdminTokenAsync(resourceGroupName, name).toCompletable();
-    }
+        return client.getFunctionsAdminTokenAsync(resourceGroupName, name)
+    ;}
 
     @Override
     public Observable<RelayServiceConnectionEntity> listRelayServiceConnectionsAsync(String resourceGroupName, String name) {
@@ -770,16 +770,16 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable startWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
+    public Observable<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
-        return client.startWebSiteNetworkTraceAsync(resourceGroupName, name).toCompletable();
-    }
+        return client.startWebSiteNetworkTraceAsync(resourceGroupName, name)
+    ;}
 
     @Override
-    public Completable stopWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
+    public Observable<String> stopWebSiteNetworkTraceAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
-        return client.stopWebSiteNetworkTraceAsync(resourceGroupName, name).toCompletable();
-    }
+        return client.stopWebSiteNetworkTraceAsync(resourceGroupName, name)
+    ;}
 
     @Override
     public Completable generateNewSitePublishingPasswordAsync(String resourceGroupName, String name) {
@@ -800,16 +800,16 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable getProcessDumpAsync(String resourceGroupName, String name, String processId) {
+    public Observable<InputStream> getProcessDumpAsync(String resourceGroupName, String name, String processId) {
         WebAppsInner client = this.inner();
-        return client.getProcessDumpAsync(resourceGroupName, name, processId).toCompletable();
-    }
+        return client.getProcessDumpAsync(resourceGroupName, name, processId)
+    ;}
 
     @Override
-    public Completable listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name) {
+    public Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
-        return client.listPublishingProfileXmlWithSecretsAsync(resourceGroupName, name).toCompletable();
-    }
+        return client.listPublishingProfileXmlWithSecretsAsync(resourceGroupName, name)
+    ;}
 
     @Override
     public Completable recoverAsync(String resourceGroupName, String name, SnapshotRecoveryRequest recoveryEntity) {
@@ -1418,16 +1418,16 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable getWebSiteContainerLogsZipAsync(String resourceGroupName, String name) {
+    public Observable<InputStream> getWebSiteContainerLogsZipAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
-        return client.getWebSiteContainerLogsZipAsync(resourceGroupName, name).toCompletable();
-    }
+        return client.getWebSiteContainerLogsZipAsync(resourceGroupName, name)
+    ;}
 
     @Override
-    public Completable getWebSiteContainerLogsZipSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<InputStream> getWebSiteContainerLogsZipSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
-        return client.getWebSiteContainerLogsZipSlotAsync(resourceGroupName, name, slot).toCompletable();
-    }
+        return client.getWebSiteContainerLogsZipSlotAsync(resourceGroupName, name, slot)
+    ;}
 
     @Override
     public Observable<ContinuousWebJob> getContinuousWebJobAsync(String resourceGroupName, String name, String webJobName) {
@@ -2192,10 +2192,10 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable getInstanceProcessDumpAsync(String resourceGroupName, String name, String processId, String instanceId) {
+    public Observable<InputStream> getInstanceProcessDumpAsync(String resourceGroupName, String name, String processId, String instanceId) {
         WebAppsInner client = this.inner();
-        return client.getInstanceProcessDumpAsync(resourceGroupName, name, processId, instanceId).toCompletable();
-    }
+        return client.getInstanceProcessDumpAsync(resourceGroupName, name, processId, instanceId)
+    ;}
 
     @Override
     public Observable<SiteInstance> listInstanceIdentifiersSlotAsync(final String resourceGroupName, final String name, final String slot) {
@@ -2216,10 +2216,10 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable getInstanceProcessDumpSlotAsync(String resourceGroupName, String name, String processId, String slot, String instanceId) {
+    public Observable<InputStream> getInstanceProcessDumpSlotAsync(String resourceGroupName, String name, String processId, String slot, String instanceId) {
         WebAppsInner client = this.inner();
-        return client.getInstanceProcessDumpSlotAsync(resourceGroupName, name, processId, slot, instanceId).toCompletable();
-    }
+        return client.getInstanceProcessDumpSlotAsync(resourceGroupName, name, processId, slot, instanceId)
+    ;}
 
     @Override
     public Observable<ProcessInfo> getInstanceProcessAsync(String resourceGroupName, String name, String processId, String instanceId) {
@@ -3176,16 +3176,16 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable getWebSiteContainerLogsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<InputStream> getWebSiteContainerLogsSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
-        return client.getWebSiteContainerLogsSlotAsync(resourceGroupName, name, slot).toCompletable();
-    }
+        return client.getWebSiteContainerLogsSlotAsync(resourceGroupName, name, slot)
+    ;}
 
     @Override
-    public Completable getFunctionsAdminTokenSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<String> getFunctionsAdminTokenSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
-        return client.getFunctionsAdminTokenSlotAsync(resourceGroupName, name, slot).toCompletable();
-    }
+        return client.getFunctionsAdminTokenSlotAsync(resourceGroupName, name, slot)
+    ;}
 
     @Override
     public Observable<RelayServiceConnectionEntity> listRelayServiceConnectionsSlotAsync(String resourceGroupName, String name, String slot) {
@@ -3266,16 +3266,16 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
-        return client.startWebSiteNetworkTraceSlotAsync(resourceGroupName, name, slot).toCompletable();
-    }
+        return client.startWebSiteNetworkTraceSlotAsync(resourceGroupName, name, slot)
+    ;}
 
     @Override
-    public Completable stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<String> stopWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
-        return client.stopWebSiteNetworkTraceSlotAsync(resourceGroupName, name, slot).toCompletable();
-    }
+        return client.stopWebSiteNetworkTraceSlotAsync(resourceGroupName, name, slot)
+    ;}
 
     @Override
     public Completable generateNewSitePublishingPasswordSlotAsync(String resourceGroupName, String name, String slot) {
@@ -3296,16 +3296,16 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
-    public Completable getProcessDumpSlotAsync(String resourceGroupName, String name, String processId, String slot) {
+    public Observable<InputStream> getProcessDumpSlotAsync(String resourceGroupName, String name, String processId, String slot) {
         WebAppsInner client = this.inner();
-        return client.getProcessDumpSlotAsync(resourceGroupName, name, processId, slot).toCompletable();
-    }
+        return client.getProcessDumpSlotAsync(resourceGroupName, name, processId, slot)
+    ;}
 
     @Override
-    public Completable listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot) {
+    public Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
-        return client.listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName, name, slot).toCompletable();
-    }
+        return client.listPublishingProfileXmlWithSecretsSlotAsync(resourceGroupName, name, slot)
+    ;}
 
     @Override
     public Completable recoverSlotAsync(String resourceGroupName, String name, String slot, SnapshotRecoveryRequest recoveryEntity) {

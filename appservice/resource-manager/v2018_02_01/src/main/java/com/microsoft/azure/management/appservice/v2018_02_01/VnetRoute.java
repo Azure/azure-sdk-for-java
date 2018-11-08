@@ -15,12 +15,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing VnetRoute.
  */
-public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatable<VnetRoute.Update>, HasManager<AppServiceManager> {
+public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatable<VnetRoute.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the endAddress value.
      */
@@ -78,6 +78,10 @@ public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatabl
         interface WithVirtualNetworkConnection {
            /**
             * Specifies resourceGroupName, name, vnetName.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Name of the App Service plan
+            * @param vnetName Name of the Virtual Network
+            * @return the next definition stage
             */
             WithCreate withExistingVirtualNetworkConnection(String resourceGroupName, String name, String vnetName);
         }
@@ -88,6 +92,8 @@ public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatabl
         interface WithEndAddress {
             /**
              * Specifies endAddress.
+             * @param endAddress The ending address for this route. If the start address is specified in CIDR notation, this must be omitted
+             * @return the next definition stage
              */
             WithCreate withEndAddress(String endAddress);
         }
@@ -98,6 +104,8 @@ public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatabl
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -108,6 +116,12 @@ public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatabl
         interface WithRouteType {
             /**
              * Specifies routeType.
+             * @param routeType The type of route this is:
+ DEFAULT - By default, every app has routes to the local address ranges specified by RFC1918
+ INHERITED - Routes inherited from the real Virtual Network routes
+ STATIC - Static route set on the app only
+ These values will be used for syncing an app's routes with those from a Virtual Network. Possible values include: 'DEFAULT', 'INHERITED', 'STATIC'
+             * @return the next definition stage
              */
             WithCreate withRouteType(RouteType routeType);
         }
@@ -118,6 +132,8 @@ public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatabl
         interface WithStartAddress {
             /**
              * Specifies startAddress.
+             * @param startAddress The starting address for this route. This may also include a CIDR notation, in which case the end address must not be specified
+             * @return the next definition stage
              */
             WithCreate withStartAddress(String startAddress);
         }
@@ -146,6 +162,8 @@ public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatabl
         interface WithEndAddress {
             /**
              * Specifies endAddress.
+             * @param endAddress The ending address for this route. If the start address is specified in CIDR notation, this must be omitted
+             * @return the next update stage
              */
             Update withEndAddress(String endAddress);
         }
@@ -156,6 +174,8 @@ public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatabl
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -166,6 +186,12 @@ public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatabl
         interface WithRouteType {
             /**
              * Specifies routeType.
+             * @param routeType The type of route this is:
+ DEFAULT - By default, every app has routes to the local address ranges specified by RFC1918
+ INHERITED - Routes inherited from the real Virtual Network routes
+ STATIC - Static route set on the app only
+ These values will be used for syncing an app's routes with those from a Virtual Network. Possible values include: 'DEFAULT', 'INHERITED', 'STATIC'
+             * @return the next update stage
              */
             Update withRouteType(RouteType routeType);
         }
@@ -176,6 +202,8 @@ public interface VnetRoute extends HasInner<VnetRouteInner>, Indexable, Updatabl
         interface WithStartAddress {
             /**
              * Specifies startAddress.
+             * @param startAddress The starting address for this route. This may also include a CIDR notation, in which case the end address must not be specified
+             * @return the next update stage
              */
             Update withStartAddress(String startAddress);
         }

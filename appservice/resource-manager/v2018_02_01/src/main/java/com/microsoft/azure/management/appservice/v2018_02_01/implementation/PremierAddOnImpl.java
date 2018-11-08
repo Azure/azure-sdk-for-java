@@ -11,36 +11,41 @@ package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 import com.microsoft.azure.management.appservice.v2018_02_01.PremierAddOn;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import com.microsoft.azure.management.appservice.v2018_02_01.PremierAddOnPatchResource;
 import java.util.Map;
+import rx.functions.Func1;
 
 class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOnInner, PremierAddOnImpl> implements PremierAddOn, PremierAddOn.Definition, PremierAddOn.Update {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String premierAddOnName;
+    private PremierAddOnPatchResource updateParameter;
 
-    PremierAddOnImpl(String name, AppServiceManager manager) {
+    PremierAddOnImpl(String name, CertificateRegistrationManager manager) {
         super(name, new PremierAddOnInner());
         this.manager = manager;
         // Set resource name
         this.premierAddOnName = name;
         //
+        this.updateParameter = new PremierAddOnPatchResource();
     }
 
-    PremierAddOnImpl(PremierAddOnInner inner, AppServiceManager manager) {
+    PremierAddOnImpl(PremierAddOnInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.premierAddOnName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.premierAddOnName = IdParsingUtils.getValueFromIdByName(inner.id(), "premieraddons");
         //
+        this.updateParameter = new PremierAddOnPatchResource();
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -48,13 +53,27 @@ class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOn
     public Observable<PremierAddOn> createResourceAsync() {
         WebAppsInner client = this.manager().inner().webApps();
         return client.addPremierAddOnAsync(this.resourceGroupName, this.name, this.premierAddOnName, this.inner())
+            .map(new Func1<PremierAddOnInner, PremierAddOnInner>() {
+               @Override
+               public PremierAddOnInner call(PremierAddOnInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<PremierAddOn> updateResourceAsync() {
         WebAppsInner client = this.manager().inner().webApps();
-        return client.addPremierAddOnAsync(this.resourceGroupName, this.name, this.premierAddOnName, this.inner())
+        return client.updatePremierAddOnAsync(this.resourceGroupName, this.name, this.premierAddOnName, this.updateParameter)
+            .map(new Func1<PremierAddOnInner, PremierAddOnInner>() {
+               @Override
+               public PremierAddOnInner call(PremierAddOnInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
@@ -69,6 +88,9 @@ class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOn
         return this.inner().id() == null;
     }
 
+    private void resetCreateUpdateParameters() {
+        this.updateParameter = new PremierAddOnPatchResource();
+    }
 
     @Override
     public String id() {
@@ -139,44 +161,68 @@ class PremierAddOnImpl extends CreatableUpdatableImpl<PremierAddOn, PremierAddOn
     }
 
     @Override
-    public PremierAddOnImpl withKind(String kind) {
-        this.inner().withKind(kind);
-        return this;
-    }
-
-    @Override
-    public PremierAddOnImpl withMarketplaceOffer(String marketplaceOffer) {
-        this.inner().withMarketplaceOffer(marketplaceOffer);
-        return this;
-    }
-
-    @Override
-    public PremierAddOnImpl withMarketplacePublisher(String marketplacePublisher) {
-        this.inner().withMarketplacePublisher(marketplacePublisher);
-        return this;
-    }
-
-    @Override
-    public PremierAddOnImpl withProduct(String product) {
-        this.inner().withProduct(product);
-        return this;
-    }
-
-    @Override
-    public PremierAddOnImpl withSku(String sku) {
-        this.inner().withSku(sku);
-        return this;
-    }
-
-    @Override
     public PremierAddOnImpl withTags(Map<String, String> tags) {
         this.inner().withTags(tags);
         return this;
     }
 
     @Override
+    public PremierAddOnImpl withKind(String kind) {
+        if (isInCreateMode()) {
+            this.inner().withKind(kind);
+        } else {
+            this.updateParameter.withKind(kind);
+        }
+        return this;
+    }
+
+    @Override
+    public PremierAddOnImpl withMarketplaceOffer(String marketplaceOffer) {
+        if (isInCreateMode()) {
+            this.inner().withMarketplaceOffer(marketplaceOffer);
+        } else {
+            this.updateParameter.withMarketplaceOffer(marketplaceOffer);
+        }
+        return this;
+    }
+
+    @Override
+    public PremierAddOnImpl withMarketplacePublisher(String marketplacePublisher) {
+        if (isInCreateMode()) {
+            this.inner().withMarketplacePublisher(marketplacePublisher);
+        } else {
+            this.updateParameter.withMarketplacePublisher(marketplacePublisher);
+        }
+        return this;
+    }
+
+    @Override
+    public PremierAddOnImpl withProduct(String product) {
+        if (isInCreateMode()) {
+            this.inner().withProduct(product);
+        } else {
+            this.updateParameter.withProduct(product);
+        }
+        return this;
+    }
+
+    @Override
+    public PremierAddOnImpl withSku(String sku) {
+        if (isInCreateMode()) {
+            this.inner().withSku(sku);
+        } else {
+            this.updateParameter.withSku(sku);
+        }
+        return this;
+    }
+
+    @Override
     public PremierAddOnImpl withVendor(String vendor) {
-        this.inner().withVendor(vendor);
+        if (isInCreateMode()) {
+            this.inner().withVendor(vendor);
+        } else {
+            this.updateParameter.withVendor(vendor);
+        }
         return this;
     }
 

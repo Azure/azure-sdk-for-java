@@ -19,15 +19,16 @@ import com.microsoft.azure.management.appservice.v2016_03_01.DetectorDefinition;
 import com.microsoft.azure.management.appservice.v2016_03_01.AnalysisData;
 
 class DiagnosticAnalysisImpl extends IndexableRefreshableWrapperImpl<DiagnosticAnalysis, DiagnosticAnalysisInner> implements DiagnosticAnalysis {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String siteName;
     private String diagnosticCategory;
     private String analysisName;
 
-    DiagnosticAnalysisImpl(DiagnosticAnalysisInner inner,  AppServiceManager manager) {
+    DiagnosticAnalysisImpl(DiagnosticAnalysisInner inner,  WebManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.siteName = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.diagnosticCategory = IdParsingUtils.getValueFromIdByName(inner.id(), "diagnostics");
@@ -35,7 +36,7 @@ class DiagnosticAnalysisImpl extends IndexableRefreshableWrapperImpl<DiagnosticA
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

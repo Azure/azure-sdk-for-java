@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing SiteHybridConnection.
  */
-public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, Indexable, Refreshable<SiteHybridConnection>, Updatable<SiteHybridConnection.Update>, HasManager<AppServiceManager> {
+public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, Indexable, Refreshable<SiteHybridConnection>, Updatable<SiteHybridConnection.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the hostname value.
      */
@@ -104,6 +104,10 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithHybridConnectionNamespace {
            /**
             * Specifies resourceGroupName, name, namespaceName.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name The name of the web app
+            * @param namespaceName The namespace for this hybrid connection
+            * @return the next definition stage
             */
             WithCreate withExistingHybridConnectionNamespace(String resourceGroupName, String name, String namespaceName);
         }
@@ -114,6 +118,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithHostname {
             /**
              * Specifies hostname.
+             * @param hostname The hostname of the endpoint
+             * @return the next definition stage
              */
             WithCreate withHostname(String hostname);
         }
@@ -124,6 +130,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -134,6 +142,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithPort {
             /**
              * Specifies port.
+             * @param port The port of the endpoint
+             * @return the next definition stage
              */
             WithCreate withPort(Integer port);
         }
@@ -144,6 +154,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithRelayArmUri {
             /**
              * Specifies relayArmUri.
+             * @param relayArmUri The ARM URI to the Service Bus relay
+             * @return the next definition stage
              */
             WithCreate withRelayArmUri(String relayArmUri);
         }
@@ -154,6 +166,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithRelayName {
             /**
              * Specifies relayName.
+             * @param relayName The name of the Service Bus relay
+             * @return the next definition stage
              */
             WithCreate withRelayName(String relayName);
         }
@@ -164,6 +178,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithSendKeyName {
             /**
              * Specifies sendKeyName.
+             * @param sendKeyName The name of the Service Bus key which has Send permissions. This is used to authenticate to Service Bus
+             * @return the next definition stage
              */
             WithCreate withSendKeyName(String sendKeyName);
         }
@@ -174,6 +190,9 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithSendKeyValue {
             /**
              * Specifies sendKeyValue.
+             * @param sendKeyValue The value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be returned
+ normally, use the POST /listKeys API instead
+             * @return the next definition stage
              */
             WithCreate withSendKeyValue(String sendKeyValue);
         }
@@ -184,6 +203,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithServiceBusNamespace {
             /**
              * Specifies serviceBusNamespace.
+             * @param serviceBusNamespace The name of the Service Bus namespace
+             * @return the next definition stage
              */
             WithCreate withServiceBusNamespace(String serviceBusNamespace);
         }
@@ -194,6 +215,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithServiceBusSuffix {
             /**
              * Specifies serviceBusSuffix.
+             * @param serviceBusSuffix The suffix for the service bus endpoint. By default this is .servicebus.windows.net
+             * @return the next definition stage
              */
             WithCreate withServiceBusSuffix(String serviceBusSuffix);
         }
@@ -222,6 +245,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithHostname {
             /**
              * Specifies hostname.
+             * @param hostname The hostname of the endpoint
+             * @return the next update stage
              */
             Update withHostname(String hostname);
         }
@@ -232,6 +257,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -242,6 +269,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithPort {
             /**
              * Specifies port.
+             * @param port The port of the endpoint
+             * @return the next update stage
              */
             Update withPort(Integer port);
         }
@@ -252,6 +281,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithRelayArmUri {
             /**
              * Specifies relayArmUri.
+             * @param relayArmUri The ARM URI to the Service Bus relay
+             * @return the next update stage
              */
             Update withRelayArmUri(String relayArmUri);
         }
@@ -262,6 +293,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithRelayName {
             /**
              * Specifies relayName.
+             * @param relayName The name of the Service Bus relay
+             * @return the next update stage
              */
             Update withRelayName(String relayName);
         }
@@ -272,6 +305,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithSendKeyName {
             /**
              * Specifies sendKeyName.
+             * @param sendKeyName The name of the Service Bus key which has Send permissions. This is used to authenticate to Service Bus
+             * @return the next update stage
              */
             Update withSendKeyName(String sendKeyName);
         }
@@ -282,6 +317,9 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithSendKeyValue {
             /**
              * Specifies sendKeyValue.
+             * @param sendKeyValue The value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be returned
+ normally, use the POST /listKeys API instead
+             * @return the next update stage
              */
             Update withSendKeyValue(String sendKeyValue);
         }
@@ -292,6 +330,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithServiceBusNamespace {
             /**
              * Specifies serviceBusNamespace.
+             * @param serviceBusNamespace The name of the Service Bus namespace
+             * @return the next update stage
              */
             Update withServiceBusNamespace(String serviceBusNamespace);
         }
@@ -302,6 +342,8 @@ public interface SiteHybridConnection extends HasInner<HybridConnectionInner>, I
         interface WithServiceBusSuffix {
             /**
              * Specifies serviceBusSuffix.
+             * @param serviceBusSuffix The suffix for the service bus endpoint. By default this is .servicebus.windows.net
+             * @return the next update stage
              */
             Update withServiceBusSuffix(String serviceBusSuffix);
         }

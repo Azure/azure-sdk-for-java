@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing HostNameBinding.
  */
-public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexable, Refreshable<HostNameBinding>, Updatable<HostNameBinding.Update>, HasManager<AppServiceManager> {
+public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexable, Refreshable<HostNameBinding>, Updatable<HostNameBinding.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the azureResourceName value.
      */
@@ -109,6 +109,9 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithSite {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Name of the app
+            * @return the next definition stage
             */
             WithCreate withExistingSite(String resourceGroupName, String name);
         }
@@ -119,6 +122,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithAzureResourceName {
             /**
              * Specifies azureResourceName.
+             * @param azureResourceName Azure resource name
+             * @return the next definition stage
              */
             WithCreate withAzureResourceName(String azureResourceName);
         }
@@ -129,6 +134,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithAzureResourceType {
             /**
              * Specifies azureResourceType.
+             * @param azureResourceType Azure resource type. Possible values include: 'Website', 'TrafficManager'
+             * @return the next definition stage
              */
             WithCreate withAzureResourceType(AzureResourceType azureResourceType);
         }
@@ -139,6 +146,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithCustomHostNameDnsRecordType {
             /**
              * Specifies customHostNameDnsRecordType.
+             * @param customHostNameDnsRecordType Custom DNS record type. Possible values include: 'CName', 'A'
+             * @return the next definition stage
              */
             WithCreate withCustomHostNameDnsRecordType(CustomHostNameDnsRecordType customHostNameDnsRecordType);
         }
@@ -149,6 +158,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithDomainId {
             /**
              * Specifies domainId.
+             * @param domainId Fully qualified ARM domain resource URI
+             * @return the next definition stage
              */
             WithCreate withDomainId(String domainId);
         }
@@ -159,6 +170,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithHostNameType {
             /**
              * Specifies hostNameType.
+             * @param hostNameType Hostname type. Possible values include: 'Verified', 'Managed'
+             * @return the next definition stage
              */
             WithCreate withHostNameType(HostNameType hostNameType);
         }
@@ -169,6 +182,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -179,6 +194,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithSiteName {
             /**
              * Specifies siteName.
+             * @param siteName App Service app name
+             * @return the next definition stage
              */
             WithCreate withSiteName(String siteName);
         }
@@ -189,6 +206,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithSslState {
             /**
              * Specifies sslState.
+             * @param sslState SSL type. Possible values include: 'Disabled', 'SniEnabled', 'IpBasedEnabled'
+             * @return the next definition stage
              */
             WithCreate withSslState(SslState sslState);
         }
@@ -199,6 +218,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithThumbprint {
             /**
              * Specifies thumbprint.
+             * @param thumbprint SSL certificate thumbprint
+             * @return the next definition stage
              */
             WithCreate withThumbprint(String thumbprint);
         }
@@ -227,6 +248,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithAzureResourceName {
             /**
              * Specifies azureResourceName.
+             * @param azureResourceName Azure resource name
+             * @return the next update stage
              */
             Update withAzureResourceName(String azureResourceName);
         }
@@ -237,6 +260,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithAzureResourceType {
             /**
              * Specifies azureResourceType.
+             * @param azureResourceType Azure resource type. Possible values include: 'Website', 'TrafficManager'
+             * @return the next update stage
              */
             Update withAzureResourceType(AzureResourceType azureResourceType);
         }
@@ -247,6 +272,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithCustomHostNameDnsRecordType {
             /**
              * Specifies customHostNameDnsRecordType.
+             * @param customHostNameDnsRecordType Custom DNS record type. Possible values include: 'CName', 'A'
+             * @return the next update stage
              */
             Update withCustomHostNameDnsRecordType(CustomHostNameDnsRecordType customHostNameDnsRecordType);
         }
@@ -257,6 +284,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithDomainId {
             /**
              * Specifies domainId.
+             * @param domainId Fully qualified ARM domain resource URI
+             * @return the next update stage
              */
             Update withDomainId(String domainId);
         }
@@ -267,6 +296,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithHostNameType {
             /**
              * Specifies hostNameType.
+             * @param hostNameType Hostname type. Possible values include: 'Verified', 'Managed'
+             * @return the next update stage
              */
             Update withHostNameType(HostNameType hostNameType);
         }
@@ -277,6 +308,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -287,6 +320,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithSiteName {
             /**
              * Specifies siteName.
+             * @param siteName App Service app name
+             * @return the next update stage
              */
             Update withSiteName(String siteName);
         }
@@ -297,6 +332,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithSslState {
             /**
              * Specifies sslState.
+             * @param sslState SSL type. Possible values include: 'Disabled', 'SniEnabled', 'IpBasedEnabled'
+             * @return the next update stage
              */
             Update withSslState(SslState sslState);
         }
@@ -307,6 +344,8 @@ public interface HostNameBinding extends HasInner<HostNameBindingInner>, Indexab
         interface WithThumbprint {
             /**
              * Specifies thumbprint.
+             * @param thumbprint SSL certificate thumbprint
+             * @return the next update stage
              */
             Update withThumbprint(String thumbprint);
         }

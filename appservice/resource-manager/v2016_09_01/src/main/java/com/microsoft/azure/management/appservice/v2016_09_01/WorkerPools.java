@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_09_01.implementation.WebManager;
 import java.util.List;
 
 /**
  * Type representing WorkerPools.
  */
-public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexable, Refreshable<WorkerPools>, Updatable<WorkerPools.Update>, HasManager<AppServiceManager> {
+public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexable, Refreshable<WorkerPools>, Updatable<WorkerPools.Update>, HasManager<WebManager> {
     /**
      * @return the computeMode value.
      */
@@ -95,6 +95,9 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithHostingEnvironment {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Name of the App Service Environment
+            * @return the next definition stage
             */
             WithCreate withExistingHostingEnvironment(String resourceGroupName, String name);
         }
@@ -105,6 +108,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithComputeMode {
             /**
              * Specifies computeMode.
+             * @param computeMode Shared or dedicated app hosting. Possible values include: 'Shared', 'Dedicated', 'Dynamic'
+             * @return the next definition stage
              */
             WithCreate withComputeMode(ComputeModeOptions computeMode);
         }
@@ -115,6 +120,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -125,6 +132,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku the sku parameter value
+             * @return the next definition stage
              */
             WithCreate withSku(SkuDescription sku);
         }
@@ -135,6 +144,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithWorkerCount {
             /**
              * Specifies workerCount.
+             * @param workerCount Number of instances in the worker pool
+             * @return the next definition stage
              */
             WithCreate withWorkerCount(Integer workerCount);
         }
@@ -145,6 +156,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithWorkerSize {
             /**
              * Specifies workerSize.
+             * @param workerSize VM size of the worker pool instances
+             * @return the next definition stage
              */
             WithCreate withWorkerSize(String workerSize);
         }
@@ -155,6 +168,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithWorkerSizeId {
             /**
              * Specifies workerSizeId.
+             * @param workerSizeId Worker size ID for referencing this worker pool
+             * @return the next definition stage
              */
             WithCreate withWorkerSizeId(Integer workerSizeId);
         }
@@ -183,6 +198,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithComputeMode {
             /**
              * Specifies computeMode.
+             * @param computeMode Shared or dedicated app hosting. Possible values include: 'Shared', 'Dedicated', 'Dynamic'
+             * @return the next update stage
              */
             Update withComputeMode(ComputeModeOptions computeMode);
         }
@@ -193,6 +210,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -203,6 +222,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku the sku parameter value
+             * @return the next update stage
              */
             Update withSku(SkuDescription sku);
         }
@@ -213,6 +234,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithWorkerCount {
             /**
              * Specifies workerCount.
+             * @param workerCount Number of instances in the worker pool
+             * @return the next update stage
              */
             Update withWorkerCount(Integer workerCount);
         }
@@ -223,6 +246,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithWorkerSize {
             /**
              * Specifies workerSize.
+             * @param workerSize VM size of the worker pool instances
+             * @return the next update stage
              */
             Update withWorkerSize(String workerSize);
         }
@@ -233,6 +258,8 @@ public interface WorkerPools extends HasInner<WorkerPoolResourceInner>, Indexabl
         interface WithWorkerSizeId {
             /**
              * Specifies workerSizeId.
+             * @param workerSizeId Worker size ID for referencing this worker pool
+             * @return the next update stage
              */
             Update withWorkerSizeId(Integer workerSizeId);
         }

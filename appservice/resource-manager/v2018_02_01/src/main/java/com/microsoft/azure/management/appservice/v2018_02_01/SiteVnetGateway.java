@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing SiteVnetGateway.
  */
-public interface SiteVnetGateway extends HasInner<VnetGatewayInner>, Indexable, Refreshable<SiteVnetGateway>, Updatable<SiteVnetGateway.Update>, HasManager<AppServiceManager> {
+public interface SiteVnetGateway extends HasInner<VnetGatewayInner>, Indexable, Refreshable<SiteVnetGateway>, Updatable<SiteVnetGateway.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
@@ -74,6 +74,11 @@ public interface SiteVnetGateway extends HasInner<VnetGatewayInner>, Indexable, 
         interface WithVirtualNetworkConnection {
            /**
             * Specifies resourceGroupName, name, vnetName, slot.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Name of the app
+            * @param vnetName Name of the Virtual Network
+            * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update a gateway for the production slot's Virtual Network
+            * @return the next definition stage
             */
             WithVpnPackageUri withExistingVirtualNetworkConnection(String resourceGroupName, String name, String vnetName, String slot);
         }
@@ -84,6 +89,8 @@ public interface SiteVnetGateway extends HasInner<VnetGatewayInner>, Indexable, 
         interface WithVpnPackageUri {
            /**
             * Specifies vpnPackageUri.
+            * @param vpnPackageUri The URI where the VPN package can be downloaded
+            * @return the next definition stage
             */
             WithCreate withVpnPackageUri(String vpnPackageUri);
         }
@@ -94,6 +101,8 @@ public interface SiteVnetGateway extends HasInner<VnetGatewayInner>, Indexable, 
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -104,6 +113,8 @@ public interface SiteVnetGateway extends HasInner<VnetGatewayInner>, Indexable, 
         interface WithVnetName {
             /**
              * Specifies vnetName.
+             * @param vnetName The Virtual Network name
+             * @return the next definition stage
              */
             WithCreate withVnetName(String vnetName);
         }
@@ -132,6 +143,8 @@ public interface SiteVnetGateway extends HasInner<VnetGatewayInner>, Indexable, 
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -142,6 +155,8 @@ public interface SiteVnetGateway extends HasInner<VnetGatewayInner>, Indexable, 
         interface WithVnetName {
             /**
              * Specifies vnetName.
+             * @param vnetName The Virtual Network name
+             * @return the next update stage
              */
             Update withVnetName(String vnetName);
         }
