@@ -40,7 +40,7 @@ public class CheckSkuAvailabilityParameter {
     private String type;
 
     /**
-     * Get the skus value.
+     * Get the SKU of the resource.
      *
      * @return the skus value
      */
@@ -49,7 +49,7 @@ public class CheckSkuAvailabilityParameter {
     }
 
     /**
-     * Set the skus value.
+     * Set the SKU of the resource.
      *
      * @param skus the skus value to set
      * @return the CheckSkuAvailabilityParameter object itself.
@@ -60,7 +60,7 @@ public class CheckSkuAvailabilityParameter {
     }
 
     /**
-     * Get the kind value.
+     * Get the Kind of the resource. Possible values include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7', 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction', 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'.
      *
      * @return the kind value
      */
@@ -69,7 +69,7 @@ public class CheckSkuAvailabilityParameter {
     }
 
     /**
-     * Set the kind value.
+     * Set the Kind of the resource. Possible values include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7', 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction', 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'.
      *
      * @param kind the kind value to set
      * @return the CheckSkuAvailabilityParameter object itself.
@@ -80,7 +80,7 @@ public class CheckSkuAvailabilityParameter {
     }
 
     /**
-     * Get the type value.
+     * Get the Type of the resource.
      *
      * @return the type value
      */
@@ -89,7 +89,7 @@ public class CheckSkuAvailabilityParameter {
     }
 
     /**
-     * Set the type value.
+     * Set the Type of the resource.
      *
      * @param type the type value to set
      * @return the CheckSkuAvailabilityParameter object itself.
