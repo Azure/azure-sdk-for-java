@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.billing.v2018_03_01_preview.implementation;
 
-import com.microsoft.azure.management.billing.v2018_03_01_preview.DownloadUrl;
 import org.joda.time.LocalDate;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,7 +24,7 @@ public class InvoiceInner extends ProxyResource {
      * cease to work after its expiry time is reached.
      */
     @JsonProperty(value = "properties.downloadUrl")
-    private DownloadUrl downloadUrl;
+    private DownloadUrlInner downloadUrl;
 
     /**
      * The start of the date range covered by the invoice.
@@ -50,7 +49,7 @@ public class InvoiceInner extends ProxyResource {
      *
      * @return the downloadUrl value
      */
-    public DownloadUrl downloadUrl() {
+    public DownloadUrlInner downloadUrl() {
         return this.downloadUrl;
     }
 
@@ -60,7 +59,7 @@ public class InvoiceInner extends ProxyResource {
      * @param downloadUrl the downloadUrl value to set
      * @return the InvoiceInner object itself.
      */
-    public InvoiceInner withDownloadUrl(DownloadUrl downloadUrl) {
+    public InvoiceInner withDownloadUrl(DownloadUrlInner downloadUrl) {
         this.downloadUrl = downloadUrl;
         return this;
     }

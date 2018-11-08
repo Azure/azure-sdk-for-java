@@ -8,14 +8,12 @@
 
 package com.microsoft.azure.management.billing.v2018_03_01_preview;
 
-import rx.Completable;
-import com.microsoft.azure.management.billing.v2018_03_01_preview.implementation.InvoicePricesheetsInner;
-import com.microsoft.azure.arm.model.HasInner;
+import rx.Observable;
 
 /**
  * Type representing InvoicePricesheets.
  */
-public interface InvoicePricesheets extends HasInner<InvoicePricesheetsInner> {
+public interface InvoicePricesheets {
     /**
      * Get pricesheet data for invoice id (invoiceName).
      *
@@ -24,6 +22,6 @@ public interface InvoicePricesheets extends HasInner<InvoicePricesheetsInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getAsync(String billingAccountId, String invoiceName);
+    Observable<DownloadUrl> postAsync(String billingAccountId, String invoiceName);
 
 }

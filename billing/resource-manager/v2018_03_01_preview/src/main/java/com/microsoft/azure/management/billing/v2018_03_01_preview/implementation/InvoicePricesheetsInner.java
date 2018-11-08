@@ -11,16 +11,16 @@ package com.microsoft.azure.management.billing.v2018_03_01_preview.implementatio
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.ErrorResponseException;
-import com.microsoft.azure.management.billing.v2018_03_01_preview.InvoicePricesheetGetHeaders;
+import com.microsoft.azure.management.billing.v2018_03_01_preview.InvoicePricesheetPostHeaders;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
 import okhttp3.ResponseBody;
-import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
 import rx.functions.Func1;
@@ -52,9 +52,13 @@ public class InvoicePricesheetsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface InvoicePricesheetsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_03_01_preview.InvoicePricesheets get" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoices/{invoiceName}/pricesheet/download")
-        Observable<Response<ResponseBody>> get(@Path("billingAccountId") String billingAccountId, @Path("invoiceName") String invoiceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_03_01_preview.InvoicePricesheets post" })
+        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoices/{invoiceName}/pricesheets/default/download")
+        Observable<Response<ResponseBody>> post(@Path("billingAccountId") String billingAccountId, @Path("invoiceName") String invoiceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_03_01_preview.InvoicePricesheets beginPost" })
+        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoices/{invoiceName}/pricesheets/default/download")
+        Observable<Response<ResponseBody>> beginPost(@Path("billingAccountId") String billingAccountId, @Path("invoiceName") String invoiceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -66,9 +70,10 @@ public class InvoicePricesheetsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DownloadUrlInner object if successful.
      */
-    public void get(String billingAccountId, String invoiceName) {
-        getWithServiceResponseAsync(billingAccountId, invoiceName).toBlocking().single().body();
+    public DownloadUrlInner post(String billingAccountId, String invoiceName) {
+        return postWithServiceResponseAsync(billingAccountId, invoiceName).toBlocking().last().body();
     }
 
     /**
@@ -80,8 +85,8 @@ public class InvoicePricesheetsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> getAsync(String billingAccountId, String invoiceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(getWithServiceResponseAsync(billingAccountId, invoiceName), serviceCallback);
+    public ServiceFuture<DownloadUrlInner> postAsync(String billingAccountId, String invoiceName, final ServiceCallback<DownloadUrlInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(postWithServiceResponseAsync(billingAccountId, invoiceName), serviceCallback);
     }
 
     /**
@@ -90,12 +95,12 @@ public class InvoicePricesheetsInner {
      * @param billingAccountId Azure Billing Account ID.
      * @param invoiceName The name of an invoice resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @return the observable for the request
      */
-    public Observable<Void> getAsync(String billingAccountId, String invoiceName) {
-        return getWithServiceResponseAsync(billingAccountId, invoiceName).map(new Func1<ServiceResponseWithHeaders<Void, InvoicePricesheetGetHeaders>, Void>() {
+    public Observable<DownloadUrlInner> postAsync(String billingAccountId, String invoiceName) {
+        return postWithServiceResponseAsync(billingAccountId, invoiceName).map(new Func1<ServiceResponseWithHeaders<DownloadUrlInner, InvoicePricesheetPostHeaders>, DownloadUrlInner>() {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, InvoicePricesheetGetHeaders> response) {
+            public DownloadUrlInner call(ServiceResponseWithHeaders<DownloadUrlInner, InvoicePricesheetPostHeaders> response) {
                 return response.body();
             }
         });
@@ -107,9 +112,9 @@ public class InvoicePricesheetsInner {
      * @param billingAccountId Azure Billing Account ID.
      * @param invoiceName The name of an invoice resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @return the observable for the request
      */
-    public Observable<ServiceResponseWithHeaders<Void, InvoicePricesheetGetHeaders>> getWithServiceResponseAsync(String billingAccountId, String invoiceName) {
+    public Observable<ServiceResponseWithHeaders<DownloadUrlInner, InvoicePricesheetPostHeaders>> postWithServiceResponseAsync(String billingAccountId, String invoiceName) {
         if (billingAccountId == null) {
             throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
         }
@@ -119,12 +124,78 @@ public class InvoicePricesheetsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(billingAccountId, invoiceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, InvoicePricesheetGetHeaders>>>() {
+        Observable<Response<ResponseBody>> observable = service.post(billingAccountId, invoiceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<DownloadUrlInner>() { }.getType(), InvoicePricesheetPostHeaders.class);
+    }
+
+    /**
+     * Get pricesheet data for invoice id (invoiceName).
+     *
+     * @param billingAccountId Azure Billing Account ID.
+     * @param invoiceName The name of an invoice resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DownloadUrlInner object if successful.
+     */
+    public DownloadUrlInner beginPost(String billingAccountId, String invoiceName) {
+        return beginPostWithServiceResponseAsync(billingAccountId, invoiceName).toBlocking().single().body();
+    }
+
+    /**
+     * Get pricesheet data for invoice id (invoiceName).
+     *
+     * @param billingAccountId Azure Billing Account ID.
+     * @param invoiceName The name of an invoice resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<DownloadUrlInner> beginPostAsync(String billingAccountId, String invoiceName, final ServiceCallback<DownloadUrlInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginPostWithServiceResponseAsync(billingAccountId, invoiceName), serviceCallback);
+    }
+
+    /**
+     * Get pricesheet data for invoice id (invoiceName).
+     *
+     * @param billingAccountId Azure Billing Account ID.
+     * @param invoiceName The name of an invoice resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DownloadUrlInner object
+     */
+    public Observable<DownloadUrlInner> beginPostAsync(String billingAccountId, String invoiceName) {
+        return beginPostWithServiceResponseAsync(billingAccountId, invoiceName).map(new Func1<ServiceResponseWithHeaders<DownloadUrlInner, InvoicePricesheetPostHeaders>, DownloadUrlInner>() {
+            @Override
+            public DownloadUrlInner call(ServiceResponseWithHeaders<DownloadUrlInner, InvoicePricesheetPostHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get pricesheet data for invoice id (invoiceName).
+     *
+     * @param billingAccountId Azure Billing Account ID.
+     * @param invoiceName The name of an invoice resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DownloadUrlInner object
+     */
+    public Observable<ServiceResponseWithHeaders<DownloadUrlInner, InvoicePricesheetPostHeaders>> beginPostWithServiceResponseAsync(String billingAccountId, String invoiceName) {
+        if (billingAccountId == null) {
+            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+        }
+        if (invoiceName == null) {
+            throw new IllegalArgumentException("Parameter invoiceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginPost(billingAccountId, invoiceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<DownloadUrlInner, InvoicePricesheetPostHeaders>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<Void, InvoicePricesheetGetHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<DownloadUrlInner, InvoicePricesheetPostHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<Void, InvoicePricesheetGetHeaders> clientResponse = getDelegate(response);
+                        ServiceResponseWithHeaders<DownloadUrlInner, InvoicePricesheetPostHeaders> clientResponse = beginPostDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -133,11 +204,12 @@ public class InvoicePricesheetsInner {
             });
     }
 
-    private ServiceResponseWithHeaders<Void, InvoicePricesheetGetHeaders> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
+    private ServiceResponseWithHeaders<DownloadUrlInner, InvoicePricesheetPostHeaders> beginPostDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<DownloadUrlInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<DownloadUrlInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ErrorResponseException.class)
-                .buildWithHeaders(response, InvoicePricesheetGetHeaders.class);
+                .buildWithHeaders(response, InvoicePricesheetPostHeaders.class);
     }
 
 }

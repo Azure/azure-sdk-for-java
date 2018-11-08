@@ -11,7 +11,9 @@ package com.microsoft.azure.management.billing.v2018_03_01_preview.implementatio
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.InvoicePricesheets;
-import rx.Completable;
+import rx.functions.Func1;
+import rx.Observable;
+import com.microsoft.azure.management.billing.v2018_03_01_preview.DownloadUrl;
 
 class InvoicePricesheetsImpl extends WrapperImpl<InvoicePricesheetsInner> implements InvoicePricesheets {
     private final BillingManager manager;
@@ -26,9 +28,15 @@ class InvoicePricesheetsImpl extends WrapperImpl<InvoicePricesheetsInner> implem
     }
 
     @Override
-    public Completable getAsync(String billingAccountId, String invoiceName) {
+    public Observable<DownloadUrl> postAsync(String billingAccountId, String invoiceName) {
         InvoicePricesheetsInner client = this.inner();
-        return client.getAsync(billingAccountId, invoiceName).toCompletable();
+        return client.postAsync(billingAccountId, invoiceName)
+        .map(new Func1<DownloadUrlInner, DownloadUrl>() {
+            @Override
+            public DownloadUrl call(DownloadUrlInner inner) {
+                return new DownloadUrlImpl(inner, manager());
+            }
+        });
     }
 
 }

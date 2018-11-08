@@ -8,42 +8,24 @@
 
 package com.microsoft.azure.management.billing.v2018_03_01_preview;
 
+import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.arm.resources.models.HasManager;
+import com.microsoft.azure.management.billing.v2018_03_01_preview.implementation.BillingManager;
+import com.microsoft.azure.management.billing.v2018_03_01_preview.implementation.DownloadUrlInner;
 import org.joda.time.DateTime;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A secure URL that can be used to download a PDF invoice until the URL
- * expires.
+ * Type representing DownloadUrl.
  */
-public class DownloadUrl {
+public interface DownloadUrl extends HasInner<DownloadUrlInner>, HasManager<BillingManager> {
     /**
-     * The time in UTC at which this download URL will expire.
+     * @return the expiryTime value.
      */
-    @JsonProperty(value = "expiryTime", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime expiryTime;
+    DateTime expiryTime();
 
     /**
-     * The URL to the PDF file.
+     * @return the url value.
      */
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
-    private String url;
-
-    /**
-     * Get the time in UTC at which this download URL will expire.
-     *
-     * @return the expiryTime value
-     */
-    public DateTime expiryTime() {
-        return this.expiryTime;
-    }
-
-    /**
-     * Get the URL to the PDF file.
-     *
-     * @return the url value
-     */
-    public String url() {
-        return this.url;
-    }
+    String url();
 
 }
