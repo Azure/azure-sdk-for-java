@@ -13,13 +13,11 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.ErrorResponseException;
-import com.microsoft.azure.management.billing.v2018_03_01_preview.InvoicesPricesheetHeaders;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
@@ -62,10 +60,6 @@ public class InvoicesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_03_01_preview.Invoices list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Billing/invoices")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Query("$skiptoken") String skiptoken, @Query("$top") Integer top, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_03_01_preview.Invoices pricesheet" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoices/{invoiceName}/pricesheet/download")
-        Observable<Response<ResponseBody>> pricesheet(@Path("billingAccountId") String billingAccountId, @Path("invoiceName") String invoiceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_03_01_preview.Invoices get" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Billing/invoices/{invoiceName}")
@@ -310,88 +304,6 @@ public class InvoicesInner {
                 .register(200, new TypeToken<PageImpl<InvoiceInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
-    }
-
-    /**
-     * Get pricesheet data for invoice id (invoiceName).
-     *
-     * @param billingAccountId Azure Billing Account ID.
-     * @param invoiceName The name of an invoice resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void pricesheet(String billingAccountId, String invoiceName) {
-        pricesheetWithServiceResponseAsync(billingAccountId, invoiceName).toBlocking().single().body();
-    }
-
-    /**
-     * Get pricesheet data for invoice id (invoiceName).
-     *
-     * @param billingAccountId Azure Billing Account ID.
-     * @param invoiceName The name of an invoice resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> pricesheetAsync(String billingAccountId, String invoiceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(pricesheetWithServiceResponseAsync(billingAccountId, invoiceName), serviceCallback);
-    }
-
-    /**
-     * Get pricesheet data for invoice id (invoiceName).
-     *
-     * @param billingAccountId Azure Billing Account ID.
-     * @param invoiceName The name of an invoice resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> pricesheetAsync(String billingAccountId, String invoiceName) {
-        return pricesheetWithServiceResponseAsync(billingAccountId, invoiceName).map(new Func1<ServiceResponseWithHeaders<Void, InvoicesPricesheetHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, InvoicesPricesheetHeaders> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get pricesheet data for invoice id (invoiceName).
-     *
-     * @param billingAccountId Azure Billing Account ID.
-     * @param invoiceName The name of an invoice resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, InvoicesPricesheetHeaders>> pricesheetWithServiceResponseAsync(String billingAccountId, String invoiceName) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
-        }
-        if (invoiceName == null) {
-            throw new IllegalArgumentException("Parameter invoiceName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.pricesheet(billingAccountId, invoiceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, InvoicesPricesheetHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, InvoicesPricesheetHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, InvoicesPricesheetHeaders> clientResponse = pricesheetDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponseWithHeaders<Void, InvoicesPricesheetHeaders> pricesheetDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .buildWithHeaders(response, InvoicesPricesheetHeaders.class);
     }
 
     /**

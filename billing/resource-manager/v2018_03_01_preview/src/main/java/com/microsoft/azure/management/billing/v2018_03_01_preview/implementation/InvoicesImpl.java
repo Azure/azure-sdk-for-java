@@ -17,7 +17,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.Invoice;
 import com.microsoft.azure.arm.utils.PagedListConverter;
-import rx.Completable;
 
 class InvoicesImpl extends WrapperImpl<InvoicesInner> implements Invoices {
     private PagedListConverter<InvoiceInner, Invoice> converter;
@@ -88,12 +87,6 @@ class InvoicesImpl extends WrapperImpl<InvoicesInner> implements Invoices {
                 return wrapModel(inner);
             }
         });
-    }
-
-    @Override
-    public Completable pricesheetAsync(String billingAccountId, String invoiceName) {
-        InvoicesInner client = this.inner();
-        return client.pricesheetAsync(billingAccountId, invoiceName).toCompletable();
     }
 
 }

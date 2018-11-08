@@ -12,7 +12,6 @@ import com.microsoft.azure.arm.collection.SupportsListing;
 import rx.Observable;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.implementation.InvoicesInner;
 import com.microsoft.azure.arm.model.HasInner;
-import rx.Completable;
 
 /**
  * Type representing Invoices.
@@ -34,15 +33,5 @@ public interface Invoices extends SupportsListing<Invoice>, HasInner<InvoicesInn
      * @return the observable for the request
      */
     Observable<Invoice> getLatestAsync();
-
-    /**
-     * Get pricesheet data for invoice id (invoiceName).
-     *
-     * @param billingAccountId Azure Billing Account ID.
-     * @param invoiceName The name of an invoice resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable pricesheetAsync(String billingAccountId, String invoiceName);
 
 }
