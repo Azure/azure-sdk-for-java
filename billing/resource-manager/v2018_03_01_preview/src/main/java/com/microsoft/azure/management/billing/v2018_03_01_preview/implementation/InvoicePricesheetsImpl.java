@@ -28,9 +28,9 @@ class InvoicePricesheetsImpl extends WrapperImpl<InvoicePricesheetsInner> implem
     }
 
     @Override
-    public Observable<DownloadUrl> postAsync(String billingAccountId, String invoiceName) {
+    public Observable<DownloadUrl> downloadAsync(String billingAccountId, String invoiceName) {
         InvoicePricesheetsInner client = this.inner();
-        return client.postAsync(billingAccountId, invoiceName)
+        return client.downloadAsync(billingAccountId, invoiceName)
         .map(new Func1<DownloadUrlInner, DownloadUrl>() {
             @Override
             public DownloadUrl call(DownloadUrlInner inner) {

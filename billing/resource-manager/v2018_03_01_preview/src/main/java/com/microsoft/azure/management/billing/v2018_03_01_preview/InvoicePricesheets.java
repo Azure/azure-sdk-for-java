@@ -22,6 +22,6 @@ public interface InvoicePricesheets {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<DownloadUrl> postAsync(String billingAccountId, String invoiceName);
+    Observable<DownloadUrl> downloadAsync(String billingAccountId, String invoiceName);
 
 }
