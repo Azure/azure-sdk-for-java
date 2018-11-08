@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.2.2
+* Fixed a packaging bug.
+
 ### 2.2.1
 * Fixed a NPE bug in write retry path.
 * Fixed a NPE bug in endpoint management.
