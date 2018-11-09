@@ -2,17 +2,17 @@ trigger:
 - master
 
 jobs:
-- template: test.client.yml
+- template: client.test.yml
   parameters:
     name: Linux
     vmImage: 'ubuntu-16.04'
 
-- template: test.client.yml
+- template: client.test.yml
   parameters:
     name: macOS
     vmImage: 'macOS-10.13'
 
-- template: test.client.yml
+- template: client.test.yml
   parameters:
     name: Windows
     vmImage: 'vs2017-win2016'
