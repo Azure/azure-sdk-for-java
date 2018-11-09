@@ -11,6 +11,7 @@ package com.microsoft.azure.management.profile_2018_03_01_hybrid;
 import com.microsoft.azure.arm.core.TestBase;
 import com.microsoft.azure.arm.resources.Region;
 import com.microsoft.azure.arm.utils.SdkContext;
+import com.microsoft.azure.management.resources.v2016_06_01.Subscription;
 import com.microsoft.azure.management.resources.v2018_02_01.ResourceGroup;
 import com.microsoft.azure.management.storage.v2016_01_01.Kind;
 import com.microsoft.azure.management.storage.v2016_01_01.Sku;
@@ -20,24 +21,30 @@ import com.microsoft.rest.RestClient;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+
 public class AzureTests extends TestBase {
-    protected static Azure azure;
+    protected static Azure.Authenticated authenticated;
     private static String rgName;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        azure = Azure.authenticate(restClient, defaultSubscription);
+        authenticated = Azure.authenticate(restClient);
     }
 
     @Override
     protected void cleanUpResources() {
-        azure.resourceGroups().deleteAsync(rgName).await();
     }
 
     @Test
-    public void firstTest() {
-        ResourceGroup rg = azure.resourceGroups().listAsync()
-                .toBlocking().last();
+    public void firstTest() throws Exception {
+        List<Subscription> subscriptions = authenticated.subscriptions().list();
+
+        if (subscriptions == null || subscriptions.size() == 0) {
+            Assert.fail("Credential isn't assigned to any subscription");
+        }
+
+        Azure azure = authenticated.withSubscription(subscriptions.get(0).subscriptionId());
 
         rgName = SdkContext.randomResourceName("rg", 20);
         String saName = SdkContext.randomResourceName("sa", 20);
