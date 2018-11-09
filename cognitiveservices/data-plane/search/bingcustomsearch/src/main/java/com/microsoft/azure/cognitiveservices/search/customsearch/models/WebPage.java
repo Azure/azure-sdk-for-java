@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a webpage that is relevant to the query.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = WebPage.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("WebPage")
 public class WebPage extends CreativeWork {
     /**
@@ -58,7 +58,7 @@ public class WebPage extends CreativeWork {
     private List<WebMetaTag> searchTags;
 
     /**
-     * Get the displayUrl value.
+     * Get the display URL of the webpage. The URL is meant for display purposes only and is not well formed.
      *
      * @return the displayUrl value
      */
@@ -67,7 +67,7 @@ public class WebPage extends CreativeWork {
     }
 
     /**
-     * Get the snippet value.
+     * Get a snippet of text from the webpage that describes its contents.
      *
      * @return the snippet value
      */
@@ -76,7 +76,7 @@ public class WebPage extends CreativeWork {
     }
 
     /**
-     * Get the deepLinks value.
+     * Get a list of links to related content that Bing found in the website that contains this webpage. The Webpage object in this context includes only the name, url, urlPingSuffix, and snippet fields.
      *
      * @return the deepLinks value
      */
@@ -85,7 +85,7 @@ public class WebPage extends CreativeWork {
     }
 
     /**
-     * Get the dateLastCrawled value.
+     * Get the last time that Bing crawled the webpage. The date is in the form, YYYY-MM-DDTHH:MM:SS. For example, 2015-04-13T05:23:39.
      *
      * @return the dateLastCrawled value
      */
@@ -94,7 +94,7 @@ public class WebPage extends CreativeWork {
     }
 
     /**
-     * Get the searchTags value.
+     * Get a list of search tags that the webpage owner specified on the webpage. The API returns only indexed search tags. The name field of the MetaTag object contains the indexed search tag. Search tags begin with search.* (for example, search.assetId). The content field contains the tag's value.
      *
      * @return the searchTags value
      */

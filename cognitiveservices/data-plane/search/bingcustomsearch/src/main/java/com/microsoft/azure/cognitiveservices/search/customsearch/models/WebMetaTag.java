@@ -27,7 +27,7 @@ public class WebMetaTag {
     private String content;
 
     /**
-     * Get the name value.
+     * Get the metadata.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class WebMetaTag {
     }
 
     /**
-     * Get the content value.
+     * Get the name of the metadata.
      *
      * @return the content value
      */

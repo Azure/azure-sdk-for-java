@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The top-level response that represents a failed request.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ErrorResponse.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ErrorResponse")
 public class ErrorResponse extends Response {
     /**
@@ -26,7 +26,7 @@ public class ErrorResponse extends Response {
     private List<Error> errors;
 
     /**
-     * Get the errors value.
+     * Get a list of errors that describe the reasons why the request failed.
      *
      * @return the errors value
      */
@@ -35,7 +35,7 @@ public class ErrorResponse extends Response {
     }
 
     /**
-     * Set the errors value.
+     * Set a list of errors that describe the reasons why the request failed.
      *
      * @param errors the errors value to set
      * @return the ErrorResponse object itself.

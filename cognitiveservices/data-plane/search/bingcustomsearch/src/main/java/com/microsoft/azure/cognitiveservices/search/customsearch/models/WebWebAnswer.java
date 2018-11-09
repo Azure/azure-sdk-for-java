@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a list of relevant webpage links.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = WebWebAnswer.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Web/WebAnswer")
 public class WebWebAnswer extends SearchResultsAnswer {
     /**
@@ -34,7 +34,7 @@ public class WebWebAnswer extends SearchResultsAnswer {
     private Boolean someResultsRemoved;
 
     /**
-     * Get the value value.
+     * Get a list of webpages that are relevant to the query.
      *
      * @return the value value
      */
@@ -43,7 +43,7 @@ public class WebWebAnswer extends SearchResultsAnswer {
     }
 
     /**
-     * Set the value value.
+     * Set a list of webpages that are relevant to the query.
      *
      * @param value the value value to set
      * @return the WebWebAnswer object itself.
@@ -54,7 +54,7 @@ public class WebWebAnswer extends SearchResultsAnswer {
     }
 
     /**
-     * Get the someResultsRemoved value.
+     * Get a Boolean value that indicates whether the response excluded some results from the answer. If Bing excluded some results, the value is true.
      *
      * @return the someResultsRemoved value
      */

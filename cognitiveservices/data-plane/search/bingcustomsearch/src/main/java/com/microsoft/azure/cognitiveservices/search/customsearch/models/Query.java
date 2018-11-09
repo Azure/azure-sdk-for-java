@@ -44,7 +44,7 @@ public class Query {
     private String searchLink;
 
     /**
-     * Get the text value.
+     * Get the query string. Use this string as the query term in a new search request.
      *
      * @return the text value
      */
@@ -53,7 +53,7 @@ public class Query {
     }
 
     /**
-     * Set the text value.
+     * Set the query string. Use this string as the query term in a new search request.
      *
      * @param text the text value to set
      * @return the Query object itself.
@@ -64,7 +64,7 @@ public class Query {
     }
 
     /**
-     * Get the displayText value.
+     * Get the display version of the query term. This version of the query term may contain special characters that highlight the search term found in the query string. The string contains the highlighting characters only if the query enabled hit highlighting.
      *
      * @return the displayText value
      */
@@ -73,7 +73,7 @@ public class Query {
     }
 
     /**
-     * Get the webSearchUrl value.
+     * Get the URL that takes the user to the Bing search results page for the query.Only related search results include this field.
      *
      * @return the webSearchUrl value
      */

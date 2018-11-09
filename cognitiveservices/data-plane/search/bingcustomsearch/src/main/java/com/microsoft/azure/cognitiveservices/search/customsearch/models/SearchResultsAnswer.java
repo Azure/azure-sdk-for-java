@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The SearchResultsAnswer model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SearchResultsAnswer.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("SearchResultsAnswer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Web/WebAnswer", value = WebWebAnswer.class)
@@ -52,7 +52,7 @@ public class SearchResultsAnswer extends Answer {
     }
 
     /**
-     * Get the totalEstimatedMatches value.
+     * Get the estimated number of webpages that are relevant to the query. Use this number along with the count and offset query parameters to page the results.
      *
      * @return the totalEstimatedMatches value
      */
