@@ -22,13 +22,13 @@ import com.microsoft.azure.management.appservice.v2018_02_01.BackupItem;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfigResource;
 import com.microsoft.azure.management.appservice.v2018_02_01.BackupRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.StringDictionary;
+import com.microsoft.azure.management.appservice.v2018_02_01.SwiftVirtualNetwork;
 import com.microsoft.azure.management.appservice.v2018_02_01.RestoreRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.RelayServiceConnectionEntity;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteCloneability;
 import com.microsoft.azure.management.appservice.v2018_02_01.FunctionSecrets;
 import com.microsoft.azure.management.appservice.v2018_02_01.StorageMigrationResponse;
 import com.microsoft.azure.management.appservice.v2018_02_01.Operation;
-import com.microsoft.azure.management.appservice.v2018_02_01.SwiftVirtualNetwork;
 import com.microsoft.azure.management.appservice.v2018_02_01.NetworkTrace;
 import com.microsoft.azure.management.appservice.v2018_02_01.SitePhpErrorLogFlag;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotDifference;
@@ -626,6 +626,48 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.getSwiftVirtualNetworkConnectionAsync(resourceGroupName, name)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.createOrUpdateSwiftVirtualNetworkConnectionAsync(resourceGroupName, name, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteSwiftVirtualNetworkAsync(String resourceGroupName, String name) {
+        WebAppsInner client = this.inner();
+        return client.deleteSwiftVirtualNetworkAsync(resourceGroupName, name).toCompletable();
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.updateSwiftVirtualNetworkConnectionAsync(resourceGroupName, name, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<SiteConfigResource> getConfigurationAsync(String resourceGroupName, String name) {
         WebAppsInner client = this.inner();
         return client.getConfigurationAsync(resourceGroupName, name)
@@ -783,48 +825,6 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             @Override
             public Operation call(OperationInner inner) {
                 return new OperationImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name) {
-        WebAppsInner client = this.inner();
-        return client.getSwiftVirtualNetworkConnectionAsync(resourceGroupName, name)
-        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
-            @Override
-            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
-                return new SwiftVirtualNetworkImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
-        WebAppsInner client = this.inner();
-        return client.createOrUpdateSwiftVirtualNetworkConnectionAsync(resourceGroupName, name, connectionEnvelope)
-        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
-            @Override
-            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
-                return new SwiftVirtualNetworkImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Completable deleteSwiftVirtualNetworkAsync(String resourceGroupName, String name) {
-        WebAppsInner client = this.inner();
-        return client.deleteSwiftVirtualNetworkAsync(resourceGroupName, name).toCompletable();
-    }
-
-    @Override
-    public Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnectionAsync(String resourceGroupName, String name, SwiftVirtualNetworkInner connectionEnvelope) {
-        WebAppsInner client = this.inner();
-        return client.updateSwiftVirtualNetworkConnectionAsync(resourceGroupName, name, connectionEnvelope)
-        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
-            @Override
-            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
-                return new SwiftVirtualNetworkImpl(inner, manager());
             }
         });
     }
@@ -3470,6 +3470,48 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     }
 
     @Override
+    public Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.getSwiftVirtualNetworkConnectionSlotAsync(resourceGroupName, name, slot)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.createOrUpdateSwiftVirtualNetworkConnectionSlotAsync(resourceGroupName, name, slot, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable deleteSwiftVirtualNetworkSlotAsync(String resourceGroupName, String name, String slot) {
+        WebAppsInner client = this.inner();
+        return client.deleteSwiftVirtualNetworkSlotAsync(resourceGroupName, name, slot).toCompletable();
+    }
+
+    @Override
+    public Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
+        WebAppsInner client = this.inner();
+        return client.updateSwiftVirtualNetworkConnectionSlotAsync(resourceGroupName, name, slot, connectionEnvelope)
+        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
+            @Override
+            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
+                return new SwiftVirtualNetworkImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<SiteConfigResource> getConfigurationSlotAsync(String resourceGroupName, String name, String slot) {
         WebAppsInner client = this.inner();
         return client.getConfigurationSlotAsync(resourceGroupName, name, slot)
@@ -3603,48 +3645,6 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             @Override
             public FunctionSecrets call(FunctionSecretsInner inner) {
                 return new FunctionSecretsImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<SwiftVirtualNetwork> getSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot) {
-        WebAppsInner client = this.inner();
-        return client.getSwiftVirtualNetworkConnectionSlotAsync(resourceGroupName, name, slot)
-        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
-            @Override
-            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
-                return new SwiftVirtualNetworkImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<SwiftVirtualNetwork> createOrUpdateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
-        WebAppsInner client = this.inner();
-        return client.createOrUpdateSwiftVirtualNetworkConnectionSlotAsync(resourceGroupName, name, slot, connectionEnvelope)
-        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
-            @Override
-            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
-                return new SwiftVirtualNetworkImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Completable deleteSwiftVirtualNetworkSlotAsync(String resourceGroupName, String name, String slot) {
-        WebAppsInner client = this.inner();
-        return client.deleteSwiftVirtualNetworkSlotAsync(resourceGroupName, name, slot).toCompletable();
-    }
-
-    @Override
-    public Observable<SwiftVirtualNetwork> updateSwiftVirtualNetworkConnectionSlotAsync(String resourceGroupName, String name, String slot, SwiftVirtualNetworkInner connectionEnvelope) {
-        WebAppsInner client = this.inner();
-        return client.updateSwiftVirtualNetworkConnectionSlotAsync(resourceGroupName, name, slot, connectionEnvelope)
-        .map(new Func1<SwiftVirtualNetworkInner, SwiftVirtualNetwork>() {
-            @Override
-            public SwiftVirtualNetwork call(SwiftVirtualNetworkInner inner) {
-                return new SwiftVirtualNetworkImpl(inner, manager());
             }
         });
     }
