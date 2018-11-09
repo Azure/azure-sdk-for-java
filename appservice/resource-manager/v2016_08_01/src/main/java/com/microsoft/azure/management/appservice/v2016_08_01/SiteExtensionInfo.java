@@ -16,14 +16,14 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import java.util.List;
 import org.joda.time.DateTime;
 
 /**
  * Type representing SiteExtensionInfo.
  */
-public interface SiteExtensionInfo extends HasInner<SiteExtensionInfoInner>, Indexable, Refreshable<SiteExtensionInfo>, Updatable<SiteExtensionInfo.Update>, HasManager<AppServiceManager> {
+public interface SiteExtensionInfo extends HasInner<SiteExtensionInfoInner>, Indexable, Refreshable<SiteExtensionInfo>, Updatable<SiteExtensionInfo.Update>, HasManager<WebManager> {
     /**
      * @return the authors value.
      */
@@ -166,6 +166,9 @@ public interface SiteExtensionInfo extends HasInner<SiteExtensionInfoInner>, Ind
         interface WithSite {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Site name
+            * @return the next definition stage
             */
             WithCreate withExistingSite(String resourceGroupName, String name);
         }

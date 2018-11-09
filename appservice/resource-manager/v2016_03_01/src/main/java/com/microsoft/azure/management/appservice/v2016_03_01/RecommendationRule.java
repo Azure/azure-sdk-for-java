@@ -10,7 +10,7 @@ package com.microsoft.azure.management.appservice.v2016_03_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_03_01.implementation.WebManager;
 import com.microsoft.azure.management.appservice.v2016_03_01.implementation.RecommendationRuleInner;
 import java.util.UUID;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Type representing RecommendationRule.
  */
-public interface RecommendationRule extends HasInner<RecommendationRuleInner>, HasManager<AppServiceManager> {
+public interface RecommendationRule extends HasInner<RecommendationRuleInner>, HasManager<WebManager> {
     /**
      * @return the actionName value.
      */

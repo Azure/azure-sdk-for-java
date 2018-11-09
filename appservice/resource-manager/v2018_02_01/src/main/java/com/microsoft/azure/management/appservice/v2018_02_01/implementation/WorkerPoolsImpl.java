@@ -16,12 +16,12 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2018_02_01.SkuDescription;
 
 class WorkerPoolsImpl extends CreatableUpdatableImpl<WorkerPools, WorkerPoolResourceInner, WorkerPoolsImpl> implements WorkerPools, WorkerPools.Definition, WorkerPools.Update {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String workerPoolName;
 
-    WorkerPoolsImpl(String name, AppServiceManager manager) {
+    WorkerPoolsImpl(String name, CertificateRegistrationManager manager) {
         super(name, new WorkerPoolResourceInner());
         this.manager = manager;
         // Set resource name
@@ -29,12 +29,12 @@ class WorkerPoolsImpl extends CreatableUpdatableImpl<WorkerPools, WorkerPoolReso
         //
     }
 
-    WorkerPoolsImpl(WorkerPoolResourceInner inner, AppServiceManager manager) {
+    WorkerPoolsImpl(WorkerPoolResourceInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.workerPoolName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "hostingEnvironments");
         this.workerPoolName = IdParsingUtils.getValueFromIdByName(inner.id(), "workerPools");
@@ -42,7 +42,7 @@ class WorkerPoolsImpl extends CreatableUpdatableImpl<WorkerPools, WorkerPoolReso
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

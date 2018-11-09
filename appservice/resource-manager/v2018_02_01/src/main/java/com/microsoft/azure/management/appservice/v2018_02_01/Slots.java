@@ -16,7 +16,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import java.util.Map;
@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * Type representing Slots.
  */
-public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots>, Updatable<Slots.Update>, HasManager<AppServiceManager> {
+public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots>, Updatable<Slots.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the availabilityState value.
      */
@@ -94,6 +94,11 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
      * @return the httpsOnly value.
      */
     Boolean httpsOnly();
+
+    /**
+     * @return the hyperV value.
+     */
+    Boolean hyperV();
 
     /**
      * @return the id value.
@@ -186,11 +191,6 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
     SlotSwapStatus slotSwapStatus();
 
     /**
-     * @return the snapshotInfo value.
-     */
-    SnapshotRecoveryRequest snapshotInfo();
-
-    /**
      * @return the state value.
      */
     String state();
@@ -247,6 +247,9 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithSite {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter
+            * @return the next definition stage
             */
             WithLocation withExistingSite(String resourceGroupName, String name);
         }
@@ -257,6 +260,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location Resource Location
+            * @return the next definition stage
             */
             WithCreate withLocation(String location);
         }
@@ -267,6 +272,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithClientAffinityEnabled {
             /**
              * Specifies clientAffinityEnabled.
+             * @param clientAffinityEnabled &lt;code&gt;true&lt;/code&gt; to enable client affinity; &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies, which route client requests in the same session to the same instance. Default is &lt;code&gt;true&lt;/code&gt;
+             * @return the next definition stage
              */
             WithCreate withClientAffinityEnabled(Boolean clientAffinityEnabled);
         }
@@ -277,6 +284,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithClientCertEnabled {
             /**
              * Specifies clientCertEnabled.
+             * @param clientCertEnabled &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is &lt;code&gt;false&lt;/code&gt;
+             * @return the next definition stage
              */
             WithCreate withClientCertEnabled(Boolean clientCertEnabled);
         }
@@ -287,6 +296,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithCloningInfo {
             /**
              * Specifies cloningInfo.
+             * @param cloningInfo If specified during app creation, the app is cloned from a source app
+             * @return the next definition stage
              */
             WithCreate withCloningInfo(CloningInfo cloningInfo);
         }
@@ -297,6 +308,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithContainerSize {
             /**
              * Specifies containerSize.
+             * @param containerSize Size of the function container
+             * @return the next definition stage
              */
             WithCreate withContainerSize(Integer containerSize);
         }
@@ -307,6 +320,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithDailyMemoryTimeQuota {
             /**
              * Specifies dailyMemoryTimeQuota.
+             * @param dailyMemoryTimeQuota Maximum allowed daily memory-time quota (applicable on dynamic apps only)
+             * @return the next definition stage
              */
             WithCreate withDailyMemoryTimeQuota(Integer dailyMemoryTimeQuota);
         }
@@ -317,6 +332,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithEnabled {
             /**
              * Specifies enabled.
+             * @param enabled &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the app (takes the app offline)
+             * @return the next definition stage
              */
             WithCreate withEnabled(Boolean enabled);
         }
@@ -327,6 +344,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithHostingEnvironmentProfile {
             /**
              * Specifies hostingEnvironmentProfile.
+             * @param hostingEnvironmentProfile App Service Environment to use for the app
+             * @return the next definition stage
              */
             WithCreate withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile);
         }
@@ -337,6 +356,9 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithHostNamesDisabled {
             /**
              * Specifies hostNamesDisabled.
+             * @param hostNamesDisabled &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+  If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process
+             * @return the next definition stage
              */
             WithCreate withHostNamesDisabled(Boolean hostNamesDisabled);
         }
@@ -347,6 +369,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithHostNameSslStates {
             /**
              * Specifies hostNameSslStates.
+             * @param hostNameSslStates Hostname SSL states are used to manage the SSL bindings for app's hostnames
+             * @return the next definition stage
              */
             WithCreate withHostNameSslStates(List<HostNameSslState> hostNameSslStates);
         }
@@ -357,8 +381,23 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithHttpsOnly {
             /**
              * Specifies httpsOnly.
+             * @param httpsOnly HttpsOnly: configures a web site to accept only https requests. Issues redirect for
+ http requests
+             * @return the next definition stage
              */
             WithCreate withHttpsOnly(Boolean httpsOnly);
+        }
+
+        /**
+         * The stage of the slots definition allowing to specify HyperV.
+         */
+        interface WithHyperV {
+            /**
+             * Specifies hyperV.
+             * @param hyperV Hyper-V sandbox
+             * @return the next definition stage
+             */
+            WithCreate withHyperV(Boolean hyperV);
         }
 
         /**
@@ -367,6 +406,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithIdentity {
             /**
              * Specifies identity.
+             * @param identity the identity parameter value
+             * @return the next definition stage
              */
             WithCreate withIdentity(ManagedServiceIdentity identity);
         }
@@ -377,6 +418,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithIsXenon {
             /**
              * Specifies isXenon.
+             * @param isXenon Obsolete: Hyper-V sandbox
+             * @return the next definition stage
              */
             WithCreate withIsXenon(Boolean isXenon);
         }
@@ -387,6 +430,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -397,6 +442,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithReserved {
             /**
              * Specifies reserved.
+             * @param reserved &lt;code&gt;true&lt;/code&gt; if reserved; otherwise, &lt;code&gt;false&lt;/code&gt;
+             * @return the next definition stage
              */
             WithCreate withReserved(Boolean reserved);
         }
@@ -407,6 +454,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithScmSiteAlsoStopped {
             /**
              * Specifies scmSiteAlsoStopped.
+             * @param scmSiteAlsoStopped &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is &lt;code&gt;false&lt;/code&gt;
+             * @return the next definition stage
              */
             WithCreate withScmSiteAlsoStopped(Boolean scmSiteAlsoStopped);
         }
@@ -417,6 +466,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithServerFarmId {
             /**
              * Specifies serverFarmId.
+             * @param serverFarmId Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}"
+             * @return the next definition stage
              */
             WithCreate withServerFarmId(String serverFarmId);
         }
@@ -427,18 +478,10 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithSiteConfig {
             /**
              * Specifies siteConfig.
+             * @param siteConfig Configuration of the app
+             * @return the next definition stage
              */
             WithCreate withSiteConfig(SiteConfig siteConfig);
-        }
-
-        /**
-         * The stage of the slots definition allowing to specify SnapshotInfo.
-         */
-        interface WithSnapshotInfo {
-            /**
-             * Specifies snapshotInfo.
-             */
-            WithCreate withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo);
         }
 
         /**
@@ -447,6 +490,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -456,13 +501,13 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Slots>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig, DefinitionStages.WithSnapshotInfo, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<Slots>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithHyperV, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig, DefinitionStages.WithTags {
         }
     }
     /**
      * The template for a Slots update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Slots>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig, UpdateStages.WithSnapshotInfo {
+    interface Update extends Appliable<Slots>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithHyperV, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
     }
 
     /**
@@ -475,6 +520,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithClientAffinityEnabled {
             /**
              * Specifies clientAffinityEnabled.
+             * @param clientAffinityEnabled &lt;code&gt;true&lt;/code&gt; to enable client affinity; &lt;code&gt;false&lt;/code&gt; to stop sending session affinity cookies, which route client requests in the same session to the same instance. Default is &lt;code&gt;true&lt;/code&gt;
+             * @return the next update stage
              */
             Update withClientAffinityEnabled(Boolean clientAffinityEnabled);
         }
@@ -485,6 +532,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithClientCertEnabled {
             /**
              * Specifies clientCertEnabled.
+             * @param clientCertEnabled &lt;code&gt;true&lt;/code&gt; to enable client certificate authentication (TLS mutual authentication); otherwise, &lt;code&gt;false&lt;/code&gt;. Default is &lt;code&gt;false&lt;/code&gt;
+             * @return the next update stage
              */
             Update withClientCertEnabled(Boolean clientCertEnabled);
         }
@@ -495,6 +544,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithCloningInfo {
             /**
              * Specifies cloningInfo.
+             * @param cloningInfo If specified during app creation, the app is cloned from a source app
+             * @return the next update stage
              */
             Update withCloningInfo(CloningInfo cloningInfo);
         }
@@ -505,6 +556,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithContainerSize {
             /**
              * Specifies containerSize.
+             * @param containerSize Size of the function container
+             * @return the next update stage
              */
             Update withContainerSize(Integer containerSize);
         }
@@ -515,6 +568,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithDailyMemoryTimeQuota {
             /**
              * Specifies dailyMemoryTimeQuota.
+             * @param dailyMemoryTimeQuota Maximum allowed daily memory-time quota (applicable on dynamic apps only)
+             * @return the next update stage
              */
             Update withDailyMemoryTimeQuota(Integer dailyMemoryTimeQuota);
         }
@@ -525,6 +580,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithEnabled {
             /**
              * Specifies enabled.
+             * @param enabled &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables the app (takes the app offline)
+             * @return the next update stage
              */
             Update withEnabled(Boolean enabled);
         }
@@ -535,6 +592,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithHostingEnvironmentProfile {
             /**
              * Specifies hostingEnvironmentProfile.
+             * @param hostingEnvironmentProfile App Service Environment to use for the app
+             * @return the next update stage
              */
             Update withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile);
         }
@@ -545,6 +604,9 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithHostNamesDisabled {
             /**
              * Specifies hostNamesDisabled.
+             * @param hostNamesDisabled &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+  If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process
+             * @return the next update stage
              */
             Update withHostNamesDisabled(Boolean hostNamesDisabled);
         }
@@ -555,6 +617,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithHostNameSslStates {
             /**
              * Specifies hostNameSslStates.
+             * @param hostNameSslStates Hostname SSL states are used to manage the SSL bindings for app's hostnames
+             * @return the next update stage
              */
             Update withHostNameSslStates(List<HostNameSslState> hostNameSslStates);
         }
@@ -565,8 +629,23 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithHttpsOnly {
             /**
              * Specifies httpsOnly.
+             * @param httpsOnly HttpsOnly: configures a web site to accept only https requests. Issues redirect for
+ http requests
+             * @return the next update stage
              */
             Update withHttpsOnly(Boolean httpsOnly);
+        }
+
+        /**
+         * The stage of the slots update allowing to specify HyperV.
+         */
+        interface WithHyperV {
+            /**
+             * Specifies hyperV.
+             * @param hyperV Hyper-V sandbox
+             * @return the next update stage
+             */
+            Update withHyperV(Boolean hyperV);
         }
 
         /**
@@ -575,6 +654,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithIsXenon {
             /**
              * Specifies isXenon.
+             * @param isXenon Obsolete: Hyper-V sandbox
+             * @return the next update stage
              */
             Update withIsXenon(Boolean isXenon);
         }
@@ -585,6 +666,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -595,6 +678,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithReserved {
             /**
              * Specifies reserved.
+             * @param reserved &lt;code&gt;true&lt;/code&gt; if reserved; otherwise, &lt;code&gt;false&lt;/code&gt;
+             * @return the next update stage
              */
             Update withReserved(Boolean reserved);
         }
@@ -605,6 +690,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithScmSiteAlsoStopped {
             /**
              * Specifies scmSiteAlsoStopped.
+             * @param scmSiteAlsoStopped &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is &lt;code&gt;false&lt;/code&gt;
+             * @return the next update stage
              */
             Update withScmSiteAlsoStopped(Boolean scmSiteAlsoStopped);
         }
@@ -615,6 +702,8 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithServerFarmId {
             /**
              * Specifies serverFarmId.
+             * @param serverFarmId Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}"
+             * @return the next update stage
              */
             Update withServerFarmId(String serverFarmId);
         }
@@ -625,18 +714,10 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         interface WithSiteConfig {
             /**
              * Specifies siteConfig.
+             * @param siteConfig Configuration of the app
+             * @return the next update stage
              */
             Update withSiteConfig(SiteConfig siteConfig);
-        }
-
-        /**
-         * The stage of the slots update allowing to specify SnapshotInfo.
-         */
-        interface WithSnapshotInfo {
-            /**
-             * Specifies snapshotInfo.
-             */
-            Update withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo);
         }
 
     }

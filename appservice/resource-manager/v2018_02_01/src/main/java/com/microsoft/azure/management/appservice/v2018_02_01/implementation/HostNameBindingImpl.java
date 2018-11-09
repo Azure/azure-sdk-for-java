@@ -17,12 +17,12 @@ import com.microsoft.azure.management.appservice.v2018_02_01.HostNameType;
 import com.microsoft.azure.management.appservice.v2018_02_01.SslState;
 
 class HostNameBindingImpl extends CreatableUpdatableImpl<HostNameBinding, HostNameBindingInner, HostNameBindingImpl> implements HostNameBinding, HostNameBinding.Definition, HostNameBinding.Update {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String hostName;
 
-    HostNameBindingImpl(String name, AppServiceManager manager) {
+    HostNameBindingImpl(String name, CertificateRegistrationManager manager) {
         super(name, new HostNameBindingInner());
         this.manager = manager;
         // Set resource name
@@ -30,12 +30,12 @@ class HostNameBindingImpl extends CreatableUpdatableImpl<HostNameBinding, HostNa
         //
     }
 
-    HostNameBindingImpl(HostNameBindingInner inner, AppServiceManager manager) {
+    HostNameBindingImpl(HostNameBindingInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.hostName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.hostName = IdParsingUtils.getValueFromIdByName(inner.id(), "hostNameBindings");
@@ -43,7 +43,7 @@ class HostNameBindingImpl extends CreatableUpdatableImpl<HostNameBinding, HostNa
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

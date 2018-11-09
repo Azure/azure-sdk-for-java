@@ -11,18 +11,23 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServicePlanInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import org.joda.time.DateTime;
 import java.util.Map;
 
 /**
  * Type representing HostingEnvironmentAppServicePlan.
  */
-public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePlanInner>, HasManager<AppServiceManager> {
+public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePlanInner>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the adminSiteName value.
      */
     String adminSiteName();
+
+    /**
+     * @return the freeOfferExpirationTime value.
+     */
+    DateTime freeOfferExpirationTime();
 
     /**
      * @return the geoRegion value.
@@ -33,6 +38,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
      * @return the hostingEnvironmentProfile value.
      */
     HostingEnvironmentProfile hostingEnvironmentProfile();
+
+    /**
+     * @return the hyperV value.
+     */
+    Boolean hyperV();
 
     /**
      * @return the id value.
@@ -58,6 +68,11 @@ public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePla
      * @return the location value.
      */
     String location();
+
+    /**
+     * @return the maximumElasticWorkerCount value.
+     */
+    Integer maximumElasticWorkerCount();
 
     /**
      * @return the maximumNumberOfWorkers value.

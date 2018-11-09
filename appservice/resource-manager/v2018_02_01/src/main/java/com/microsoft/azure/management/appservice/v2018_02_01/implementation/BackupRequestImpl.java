@@ -15,15 +15,20 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2018_02_01.DatabaseBackupSetting;
 
 class BackupRequestImpl extends WrapperImpl<BackupRequestInner> implements BackupRequest {
-    private final AppServiceManager manager;
-    BackupRequestImpl(BackupRequestInner inner, AppServiceManager manager) {
+    private final CertificateRegistrationManager manager;
+    BackupRequestImpl(BackupRequestInner inner, CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public String backupName() {
+        return this.inner().backupName();
     }
 
     @Override

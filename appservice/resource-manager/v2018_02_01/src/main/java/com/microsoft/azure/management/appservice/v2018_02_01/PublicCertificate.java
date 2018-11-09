@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing PublicCertificate.
  */
-public interface PublicCertificate extends HasInner<PublicCertificateInner>, Indexable, Refreshable<PublicCertificate>, Updatable<PublicCertificate.Update>, HasManager<AppServiceManager> {
+public interface PublicCertificate extends HasInner<PublicCertificateInner>, Indexable, Refreshable<PublicCertificate>, Updatable<PublicCertificate.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the blob value.
      */
@@ -79,6 +79,9 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithSite {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Name of the app
+            * @return the next definition stage
             */
             WithCreate withExistingSite(String resourceGroupName, String name);
         }
@@ -89,6 +92,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithBlob {
             /**
              * Specifies blob.
+             * @param blob Public Certificate byte array
+             * @return the next definition stage
              */
             WithCreate withBlob(byte[] blob);
         }
@@ -99,6 +104,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -109,6 +116,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithPublicCertificateLocation {
             /**
              * Specifies publicCertificateLocation.
+             * @param publicCertificateLocation Public Certificate Location. Possible values include: 'CurrentUserMy', 'LocalMachineMy', 'Unknown'
+             * @return the next definition stage
              */
             WithCreate withPublicCertificateLocation(PublicCertificateLocation publicCertificateLocation);
         }
@@ -137,6 +146,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithBlob {
             /**
              * Specifies blob.
+             * @param blob Public Certificate byte array
+             * @return the next update stage
              */
             Update withBlob(byte[] blob);
         }
@@ -147,6 +158,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -157,6 +170,8 @@ public interface PublicCertificate extends HasInner<PublicCertificateInner>, Ind
         interface WithPublicCertificateLocation {
             /**
              * Specifies publicCertificateLocation.
+             * @param publicCertificateLocation Public Certificate Location. Possible values include: 'CurrentUserMy', 'LocalMachineMy', 'Unknown'
+             * @return the next update stage
              */
             Update withPublicCertificateLocation(PublicCertificateLocation publicCertificateLocation);
         }

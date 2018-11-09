@@ -13,12 +13,12 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class DomainOwnershipIdentifierImpl extends CreatableUpdatableImpl<DomainOwnershipIdentifier, DomainOwnershipIdentifierInner, DomainOwnershipIdentifierImpl> implements DomainOwnershipIdentifier, DomainOwnershipIdentifier.Definition, DomainOwnershipIdentifier.Update {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String domainName;
     private String name;
 
-    DomainOwnershipIdentifierImpl(String name, AppServiceManager manager) {
+    DomainOwnershipIdentifierImpl(String name, CertificateRegistrationManager manager) {
         super(name, new DomainOwnershipIdentifierInner());
         this.manager = manager;
         // Set resource name
@@ -26,12 +26,12 @@ class DomainOwnershipIdentifierImpl extends CreatableUpdatableImpl<DomainOwnersh
         //
     }
 
-    DomainOwnershipIdentifierImpl(DomainOwnershipIdentifierInner inner, AppServiceManager manager) {
+    DomainOwnershipIdentifierImpl(DomainOwnershipIdentifierInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.name = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.domainName = IdParsingUtils.getValueFromIdByName(inner.id(), "domains");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "domainOwnershipIdentifiers");
@@ -39,7 +39,7 @@ class DomainOwnershipIdentifierImpl extends CreatableUpdatableImpl<DomainOwnersh
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

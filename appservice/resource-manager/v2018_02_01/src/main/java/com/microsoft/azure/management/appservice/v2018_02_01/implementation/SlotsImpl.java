@@ -21,19 +21,18 @@ import com.microsoft.azure.management.appservice.v2018_02_01.HostNameSslState;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.v2018_02_01.CloningInfo;
-import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRecoveryRequest;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
 import rx.functions.Func1;
 
 class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> implements Slots, Slots.Definition, Slots.Update {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String slot;
     private SitePatchResource updateParameter;
 
-    SlotsImpl(String name, AppServiceManager manager) {
+    SlotsImpl(String name, CertificateRegistrationManager manager) {
         super(name, new SiteInner());
         this.manager = manager;
         // Set resource name
@@ -42,12 +41,12 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
         this.updateParameter = new SitePatchResource();
     }
 
-    SlotsImpl(SiteInner inner, AppServiceManager manager) {
+    SlotsImpl(SiteInner inner, CertificateRegistrationManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.slot = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.slot = IdParsingUtils.getValueFromIdByName(inner.id(), "slots");
@@ -56,7 +55,7 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -174,6 +173,11 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     }
 
     @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -261,11 +265,6 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     @Override
     public SlotSwapStatus slotSwapStatus() {
         return this.inner().slotSwapStatus();
-    }
-
-    @Override
-    public SnapshotRecoveryRequest snapshotInfo() {
-        return this.inner().snapshotInfo();
     }
 
     @Override
@@ -429,6 +428,16 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     }
 
     @Override
+    public SlotsImpl withHyperV(Boolean hyperV) {
+        if (isInCreateMode()) {
+            this.inner().withHyperV(hyperV);
+        } else {
+            this.updateParameter.withHyperV(hyperV);
+        }
+        return this;
+    }
+
+    @Override
     public SlotsImpl withIsXenon(Boolean isXenon) {
         if (isInCreateMode()) {
             this.inner().withIsXenon(isXenon);
@@ -484,16 +493,6 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
             this.inner().withSiteConfig(siteConfig);
         } else {
             this.updateParameter.withSiteConfig(siteConfig);
-        }
-        return this;
-    }
-
-    @Override
-    public SlotsImpl withSnapshotInfo(SnapshotRecoveryRequest snapshotInfo) {
-        if (isInCreateMode()) {
-            this.inner().withSnapshotInfo(snapshotInfo);
-        } else {
-            this.updateParameter.withSnapshotInfo(snapshotInfo);
         }
         return this;
     }

@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.Map;
 import org.joda.time.DateTime;
 import java.util.List;
@@ -26,7 +26,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppS
 /**
  * Type representing AppServiceCertificateOrder.
  */
-public interface AppServiceCertificateOrder extends HasInner<AppServiceCertificateOrderInner>, Resource, GroupableResourceCore<AppServiceManager, AppServiceCertificateOrderInner>, HasResourceGroup, Refreshable<AppServiceCertificateOrder>, Updatable<AppServiceCertificateOrder.Update>, HasManager<AppServiceManager> {
+public interface AppServiceCertificateOrder extends HasInner<AppServiceCertificateOrderInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, AppServiceCertificateOrderInner>, HasResourceGroup, Refreshable<AppServiceCertificateOrder>, Updatable<AppServiceCertificateOrder.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the appServiceCertificateNotRenewableReasons value.
      */
@@ -155,76 +155,92 @@ public interface AppServiceCertificateOrder extends HasInner<AppServiceCertifica
         interface WithProductType {
            /**
             * Specifies productType.
-            */
+            * @param productType Certificate product type. Possible values include: 'StandardDomainValidatedSsl', 'StandardDomainValidatedWildCardSsl'
+            * @return the next definition stage
+*/
             WithCreate withProductType(CertificateProductType productType);
         }
 
         /**
-         * The stage of the appservicecertificateorder update allowing to specify AutoRenew.
+         * The stage of the appservicecertificateorder definition allowing to specify AutoRenew.
          */
         interface WithAutoRenew {
             /**
              * Specifies autoRenew.
+             * @param autoRenew &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when it expires; otherwise, &lt;code&gt;false&lt;/code&gt;
+             * @return the next definition stage
              */
             WithCreate withAutoRenew(Boolean autoRenew);
         }
 
         /**
-         * The stage of the appservicecertificateorder update allowing to specify Certificates.
+         * The stage of the appservicecertificateorder definition allowing to specify Certificates.
          */
         interface WithCertificates {
             /**
              * Specifies certificates.
+             * @param certificates State of the Key Vault secret
+             * @return the next definition stage
              */
             WithCreate withCertificates(Map<String, AppServiceCertificate> certificates);
         }
 
         /**
-         * The stage of the appservicecertificateorder update allowing to specify Csr.
+         * The stage of the appservicecertificateorder definition allowing to specify Csr.
          */
         interface WithCsr {
             /**
              * Specifies csr.
+             * @param csr Last CSR that was created for this order
+             * @return the next definition stage
              */
             WithCreate withCsr(String csr);
         }
 
         /**
-         * The stage of the appservicecertificateorder update allowing to specify DistinguishedName.
+         * The stage of the appservicecertificateorder definition allowing to specify DistinguishedName.
          */
         interface WithDistinguishedName {
             /**
              * Specifies distinguishedName.
+             * @param distinguishedName Certificate distinguished name
+             * @return the next definition stage
              */
             WithCreate withDistinguishedName(String distinguishedName);
         }
 
         /**
-         * The stage of the appservicecertificateorder update allowing to specify KeySize.
+         * The stage of the appservicecertificateorder definition allowing to specify KeySize.
          */
         interface WithKeySize {
             /**
              * Specifies keySize.
+             * @param keySize Certificate key size
+             * @return the next definition stage
              */
             WithCreate withKeySize(Integer keySize);
         }
 
         /**
-         * The stage of the appservicecertificateorder update allowing to specify Kind.
+         * The stage of the appservicecertificateorder definition allowing to specify Kind.
          */
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
 
         /**
-         * The stage of the appservicecertificateorder update allowing to specify ValidityInYears.
+         * The stage of the appservicecertificateorder definition allowing to specify ValidityInYears.
          */
         interface WithValidityInYears {
             /**
              * Specifies validityInYears.
+             * @param validityInYears Duration in years (must be between 1 and 3)
+             * @return the next definition stage
              */
             WithCreate withValidityInYears(Integer validityInYears);
         }
@@ -248,71 +264,85 @@ public interface AppServiceCertificateOrder extends HasInner<AppServiceCertifica
      */
     interface UpdateStages {
         /**
-         * The stage of the appservicecertificateorder {0} allowing to specify AutoRenew.
+         * The stage of the appservicecertificateorder update allowing to specify AutoRenew.
          */
         interface WithAutoRenew {
             /**
              * Specifies autoRenew.
+             * @param autoRenew &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when it expires; otherwise, &lt;code&gt;false&lt;/code&gt;
+             * @return the next update stage
              */
             Update withAutoRenew(Boolean autoRenew);
         }
 
         /**
-         * The stage of the appservicecertificateorder {0} allowing to specify Certificates.
+         * The stage of the appservicecertificateorder update allowing to specify Certificates.
          */
         interface WithCertificates {
             /**
              * Specifies certificates.
+             * @param certificates State of the Key Vault secret
+             * @return the next update stage
              */
             Update withCertificates(Map<String, AppServiceCertificate> certificates);
         }
 
         /**
-         * The stage of the appservicecertificateorder {0} allowing to specify Csr.
+         * The stage of the appservicecertificateorder update allowing to specify Csr.
          */
         interface WithCsr {
             /**
              * Specifies csr.
+             * @param csr Last CSR that was created for this order
+             * @return the next update stage
              */
             Update withCsr(String csr);
         }
 
         /**
-         * The stage of the appservicecertificateorder {0} allowing to specify DistinguishedName.
+         * The stage of the appservicecertificateorder update allowing to specify DistinguishedName.
          */
         interface WithDistinguishedName {
             /**
              * Specifies distinguishedName.
+             * @param distinguishedName Certificate distinguished name
+             * @return the next update stage
              */
             Update withDistinguishedName(String distinguishedName);
         }
 
         /**
-         * The stage of the appservicecertificateorder {0} allowing to specify KeySize.
+         * The stage of the appservicecertificateorder update allowing to specify KeySize.
          */
         interface WithKeySize {
             /**
              * Specifies keySize.
+             * @param keySize Certificate key size
+             * @return the next update stage
              */
             Update withKeySize(Integer keySize);
         }
 
         /**
-         * The stage of the appservicecertificateorder {0} allowing to specify Kind.
+         * The stage of the appservicecertificateorder update allowing to specify Kind.
          */
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
 
         /**
-         * The stage of the appservicecertificateorder {0} allowing to specify ValidityInYears.
+         * The stage of the appservicecertificateorder update allowing to specify ValidityInYears.
          */
         interface WithValidityInYears {
             /**
              * Specifies validityInYears.
+             * @param validityInYears Duration in years (must be between 1 and 3)
+             * @return the next update stage
              */
             Update withValidityInYears(Integer validityInYears);
         }

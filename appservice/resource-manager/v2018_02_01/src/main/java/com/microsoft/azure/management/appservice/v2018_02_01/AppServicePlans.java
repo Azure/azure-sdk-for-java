@@ -99,7 +99,7 @@ public interface AppServicePlans {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getServerFarmSkusAsync(String resourceGroupName, String name);
+    Observable<Object> getServerFarmSkusAsync(String resourceGroupName, String name);
 
     /**
      * List all capabilities of an App Service plan.
@@ -162,7 +162,7 @@ public interface AppServicePlans {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName);
+    Observable<String> listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName);
 
     /**
      * Get the maximum number of Hybrid Connections allowed in an App Service plan.

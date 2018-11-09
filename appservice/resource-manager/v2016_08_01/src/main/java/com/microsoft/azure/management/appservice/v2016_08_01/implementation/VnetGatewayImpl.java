@@ -13,27 +13,27 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class VnetGatewayImpl extends CreatableUpdatableImpl<VnetGateway, VnetGatewayInner, VnetGatewayImpl> implements VnetGateway, VnetGateway.Definition, VnetGateway.Update {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String vnetName;
     private String gatewayName;
     private String slot;
 
-    VnetGatewayImpl(String name, AppServiceManager manager) {
+    VnetGatewayImpl(String name, WebManager manager) {
         super(name, new VnetGatewayInner());
         this.manager = manager;
         // Set resource name
-        this.slot = name;
+        this.gatewayName = name;
         //
     }
 
-    VnetGatewayImpl(VnetGatewayInner inner, AppServiceManager manager) {
+    VnetGatewayImpl(VnetGatewayInner inner, WebManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.slot = inner.name();
-        // resource ancestor names
+        this.gatewayName = inner.name();
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.vnetName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkConnections");
@@ -43,7 +43,7 @@ class VnetGatewayImpl extends CreatableUpdatableImpl<VnetGateway, VnetGatewayInn
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

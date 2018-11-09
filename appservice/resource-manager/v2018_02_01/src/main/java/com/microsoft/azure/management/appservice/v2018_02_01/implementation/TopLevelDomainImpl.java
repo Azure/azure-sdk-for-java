@@ -15,16 +15,17 @@ import rx.Observable;
 
 class TopLevelDomainImpl extends IndexableRefreshableWrapperImpl<TopLevelDomain, TopLevelDomainInner> implements TopLevelDomain {
     private String name;
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    TopLevelDomainImpl(TopLevelDomainInner inner,  AppServiceManager manager) {
+    TopLevelDomainImpl(TopLevelDomainInner inner,  CertificateRegistrationManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "topLevelDomains");
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import org.joda.time.DateTime;
 
 /**
  * Type representing Deployment.
  */
-public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refreshable<Deployment>, Updatable<Deployment.Update>, HasManager<AppServiceManager> {
+public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refreshable<Deployment>, Updatable<Deployment.Update>, HasManager<WebManager> {
     /**
      * @return the active value.
      */
@@ -115,6 +115,9 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithSite {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Name of the app
+            * @return the next definition stage
             */
             WithCreate withExistingSite(String resourceGroupName, String name);
         }
@@ -125,6 +128,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithActive {
             /**
              * Specifies active.
+             * @param active True if deployment is currently active, false if completed and null if not started
+             * @return the next definition stage
              */
             WithCreate withActive(Boolean active);
         }
@@ -135,6 +140,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithAuthor {
             /**
              * Specifies author.
+             * @param author Who authored the deployment
+             * @return the next definition stage
              */
             WithCreate withAuthor(String author);
         }
@@ -145,6 +152,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithAuthorEmail {
             /**
              * Specifies authorEmail.
+             * @param authorEmail Author email
+             * @return the next definition stage
              */
             WithCreate withAuthorEmail(String authorEmail);
         }
@@ -155,6 +164,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithDeployer {
             /**
              * Specifies deployer.
+             * @param deployer Who performed the deployment
+             * @return the next definition stage
              */
             WithCreate withDeployer(String deployer);
         }
@@ -165,6 +176,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithDeploymentId {
             /**
              * Specifies deploymentId.
+             * @param deploymentId Identifier for deployment
+             * @return the next definition stage
              */
             WithCreate withDeploymentId(String deploymentId);
         }
@@ -175,6 +188,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithDetails {
             /**
              * Specifies details.
+             * @param details Details on deployment
+             * @return the next definition stage
              */
             WithCreate withDetails(String details);
         }
@@ -185,6 +200,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithEndTime {
             /**
              * Specifies endTime.
+             * @param endTime End time
+             * @return the next definition stage
              */
             WithCreate withEndTime(DateTime endTime);
         }
@@ -195,6 +212,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -205,6 +224,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithMessage {
             /**
              * Specifies message.
+             * @param message Details about deployment status
+             * @return the next definition stage
              */
             WithCreate withMessage(String message);
         }
@@ -215,6 +236,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithStartTime {
             /**
              * Specifies startTime.
+             * @param startTime Start time
+             * @return the next definition stage
              */
             WithCreate withStartTime(DateTime startTime);
         }
@@ -225,6 +248,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithStatus {
             /**
              * Specifies status.
+             * @param status Deployment status
+             * @return the next definition stage
              */
             WithCreate withStatus(Integer status);
         }
@@ -253,6 +278,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithActive {
             /**
              * Specifies active.
+             * @param active True if deployment is currently active, false if completed and null if not started
+             * @return the next update stage
              */
             Update withActive(Boolean active);
         }
@@ -263,6 +290,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithAuthor {
             /**
              * Specifies author.
+             * @param author Who authored the deployment
+             * @return the next update stage
              */
             Update withAuthor(String author);
         }
@@ -273,6 +302,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithAuthorEmail {
             /**
              * Specifies authorEmail.
+             * @param authorEmail Author email
+             * @return the next update stage
              */
             Update withAuthorEmail(String authorEmail);
         }
@@ -283,6 +314,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithDeployer {
             /**
              * Specifies deployer.
+             * @param deployer Who performed the deployment
+             * @return the next update stage
              */
             Update withDeployer(String deployer);
         }
@@ -293,6 +326,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithDeploymentId {
             /**
              * Specifies deploymentId.
+             * @param deploymentId Identifier for deployment
+             * @return the next update stage
              */
             Update withDeploymentId(String deploymentId);
         }
@@ -303,6 +338,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithDetails {
             /**
              * Specifies details.
+             * @param details Details on deployment
+             * @return the next update stage
              */
             Update withDetails(String details);
         }
@@ -313,6 +350,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithEndTime {
             /**
              * Specifies endTime.
+             * @param endTime End time
+             * @return the next update stage
              */
             Update withEndTime(DateTime endTime);
         }
@@ -323,6 +362,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -333,6 +374,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithMessage {
             /**
              * Specifies message.
+             * @param message Details about deployment status
+             * @return the next update stage
              */
             Update withMessage(String message);
         }
@@ -343,6 +386,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithStartTime {
             /**
              * Specifies startTime.
+             * @param startTime Start time
+             * @return the next update stage
              */
             Update withStartTime(DateTime startTime);
         }
@@ -353,6 +398,8 @@ public interface Deployment extends HasInner<DeploymentInner>, Indexable, Refres
         interface WithStatus {
             /**
              * Specifies status.
+             * @param status Deployment status
+             * @return the next update stage
              */
             Update withStatus(Integer status);
         }

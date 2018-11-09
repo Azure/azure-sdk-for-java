@@ -13,15 +13,16 @@ import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperI
 import rx.Observable;
 
 class ServerfarmHybridConnectionImpl extends IndexableRefreshableWrapperImpl<ServerfarmHybridConnection, HybridConnectionInner> implements ServerfarmHybridConnection {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String namespaceName;
     private String relayName;
 
-    ServerfarmHybridConnectionImpl(HybridConnectionInner inner,  AppServiceManager manager) {
+    ServerfarmHybridConnectionImpl(HybridConnectionInner inner,  CertificateRegistrationManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "serverfarms");
         this.namespaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "hybridConnectionNamespaces");
@@ -29,7 +30,7 @@ class ServerfarmHybridConnectionImpl extends IndexableRefreshableWrapperImpl<Ser
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 

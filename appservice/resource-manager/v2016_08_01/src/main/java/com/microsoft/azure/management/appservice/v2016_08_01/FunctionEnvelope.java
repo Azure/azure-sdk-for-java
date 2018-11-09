@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2016_08_01.implementation.WebManager;
 import java.util.Map;
 
 /**
  * Type representing FunctionEnvelope.
  */
-public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Indexable, Refreshable<FunctionEnvelope>, Updatable<FunctionEnvelope.Update>, HasManager<AppServiceManager> {
+public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Indexable, Refreshable<FunctionEnvelope>, Updatable<FunctionEnvelope.Update>, HasManager<WebManager> {
     /**
      * @return the config value.
      */
@@ -115,6 +115,9 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithSite {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Site name
+            * @return the next definition stage
             */
             WithCreate withExistingSite(String resourceGroupName, String name);
         }
@@ -125,6 +128,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithConfig {
             /**
              * Specifies config.
+             * @param config Config information
+             * @return the next definition stage
              */
             WithCreate withConfig(Object config);
         }
@@ -135,6 +140,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithConfigHref {
             /**
              * Specifies configHref.
+             * @param configHref Config URI
+             * @return the next definition stage
              */
             WithCreate withConfigHref(String configHref);
         }
@@ -145,6 +152,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithFiles {
             /**
              * Specifies files.
+             * @param files File list
+             * @return the next definition stage
              */
             WithCreate withFiles(Map<String, String> files);
         }
@@ -155,6 +164,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithHref {
             /**
              * Specifies href.
+             * @param href Function URI
+             * @return the next definition stage
              */
             WithCreate withHref(String href);
         }
@@ -165,6 +176,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -175,6 +188,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithScriptHref {
             /**
              * Specifies scriptHref.
+             * @param scriptHref Script URI
+             * @return the next definition stage
              */
             WithCreate withScriptHref(String scriptHref);
         }
@@ -185,6 +200,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithScriptRootPathHref {
             /**
              * Specifies scriptRootPathHref.
+             * @param scriptRootPathHref Script root path URI
+             * @return the next definition stage
              */
             WithCreate withScriptRootPathHref(String scriptRootPathHref);
         }
@@ -195,6 +212,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithSecretsFileHref {
             /**
              * Specifies secretsFileHref.
+             * @param secretsFileHref Secrets file URI
+             * @return the next definition stage
              */
             WithCreate withSecretsFileHref(String secretsFileHref);
         }
@@ -205,6 +224,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithTestData {
             /**
              * Specifies testData.
+             * @param testData Test data used when testing via the Azure Portal
+             * @return the next definition stage
              */
             WithCreate withTestData(String testData);
         }
@@ -233,6 +254,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithConfig {
             /**
              * Specifies config.
+             * @param config Config information
+             * @return the next update stage
              */
             Update withConfig(Object config);
         }
@@ -243,6 +266,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithConfigHref {
             /**
              * Specifies configHref.
+             * @param configHref Config URI
+             * @return the next update stage
              */
             Update withConfigHref(String configHref);
         }
@@ -253,6 +278,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithFiles {
             /**
              * Specifies files.
+             * @param files File list
+             * @return the next update stage
              */
             Update withFiles(Map<String, String> files);
         }
@@ -263,6 +290,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithHref {
             /**
              * Specifies href.
+             * @param href Function URI
+             * @return the next update stage
              */
             Update withHref(String href);
         }
@@ -273,6 +302,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -283,6 +314,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithScriptHref {
             /**
              * Specifies scriptHref.
+             * @param scriptHref Script URI
+             * @return the next update stage
              */
             Update withScriptHref(String scriptHref);
         }
@@ -293,6 +326,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithScriptRootPathHref {
             /**
              * Specifies scriptRootPathHref.
+             * @param scriptRootPathHref Script root path URI
+             * @return the next update stage
              */
             Update withScriptRootPathHref(String scriptRootPathHref);
         }
@@ -303,6 +338,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithSecretsFileHref {
             /**
              * Specifies secretsFileHref.
+             * @param secretsFileHref Secrets file URI
+             * @return the next update stage
              */
             Update withSecretsFileHref(String secretsFileHref);
         }
@@ -313,6 +350,8 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         interface WithTestData {
             /**
              * Specifies testData.
+             * @param testData Test data used when testing via the Azure Portal
+             * @return the next update stage
              */
             Update withTestData(String testData);
         }

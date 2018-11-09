@@ -19,9 +19,9 @@ import com.microsoft.azure.management.appservice.v2018_02_01.ProvisioningState;
 import com.microsoft.azure.management.appservice.v2018_02_01.SkuDescription;
 import rx.functions.Func1;
 
-class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppServicePlanInner, AppServicePlanImpl, AppServiceManager> implements AppServicePlan, AppServicePlan.Definition, AppServicePlan.Update {
+class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppServicePlanInner, AppServicePlanImpl, CertificateRegistrationManager> implements AppServicePlan, AppServicePlan.Definition, AppServicePlan.Update {
     private AppServicePlanPatchResource updateParameter;
-    AppServicePlanImpl(String name, AppServicePlanInner inner, AppServiceManager manager) {
+    AppServicePlanImpl(String name, AppServicePlanInner inner, CertificateRegistrationManager manager) {
         super(name, inner, manager);
         this.updateParameter = new AppServicePlanPatchResource();
     }
@@ -75,6 +75,11 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     }
 
     @Override
+    public DateTime freeOfferExpirationTime() {
+        return this.inner().freeOfferExpirationTime();
+    }
+
+    @Override
     public String geoRegion() {
         return this.inner().geoRegion();
     }
@@ -82,6 +87,11 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     @Override
     public HostingEnvironmentProfile hostingEnvironmentProfile() {
         return this.inner().hostingEnvironmentProfile();
+    }
+
+    @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
     }
 
     @Override
@@ -97,6 +107,11 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     @Override
     public String kind() {
         return this.inner().kind();
+    }
+
+    @Override
+    public Integer maximumElasticWorkerCount() {
+        return this.inner().maximumElasticWorkerCount();
     }
 
     @Override
@@ -181,11 +196,31 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     }
 
     @Override
+    public AppServicePlanImpl withFreeOfferExpirationTime(DateTime freeOfferExpirationTime) {
+        if (isInCreateMode()) {
+            this.inner().withFreeOfferExpirationTime(freeOfferExpirationTime);
+        } else {
+            this.updateParameter.withFreeOfferExpirationTime(freeOfferExpirationTime);
+        }
+        return this;
+    }
+
+    @Override
     public AppServicePlanImpl withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
         if (isInCreateMode()) {
             this.inner().withHostingEnvironmentProfile(hostingEnvironmentProfile);
         } else {
             this.updateParameter.withHostingEnvironmentProfile(hostingEnvironmentProfile);
+        }
+        return this;
+    }
+
+    @Override
+    public AppServicePlanImpl withHyperV(Boolean hyperV) {
+        if (isInCreateMode()) {
+            this.inner().withHyperV(hyperV);
+        } else {
+            this.updateParameter.withHyperV(hyperV);
         }
         return this;
     }
@@ -216,6 +251,16 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
             this.inner().withKind(kind);
         } else {
             this.updateParameter.withKind(kind);
+        }
+        return this;
+    }
+
+    @Override
+    public AppServicePlanImpl withMaximumElasticWorkerCount(Integer maximumElasticWorkerCount) {
+        if (isInCreateMode()) {
+            this.inner().withMaximumElasticWorkerCount(maximumElasticWorkerCount);
+        } else {
+            this.updateParameter.withMaximumElasticWorkerCount(maximumElasticWorkerCount);
         }
         return this;
     }
