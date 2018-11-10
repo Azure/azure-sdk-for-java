@@ -16,6 +16,7 @@ import com.microsoft.azure.management.network.v2018_08_01.IPAllocationMethod;
 import com.microsoft.azure.management.network.v2018_08_01.IPVersion;
 import com.microsoft.azure.management.network.v2018_08_01.IPConfiguration;
 import com.microsoft.azure.management.network.v2018_08_01.PublicIPAddressDnsSettings;
+import com.microsoft.azure.management.network.v2018_08_01.DdoSSettings;
 import java.util.List;
 import com.microsoft.azure.management.network.v2018_08_01.IpTag;
 import com.microsoft.azure.SubResource;
@@ -50,6 +51,11 @@ class PublicIPAddressImpl extends GroupableResourceCoreImpl<PublicIPAddress, Pub
         return this.inner().id() == null;
     }
 
+
+    @Override
+    public DdoSSettings ddosSettings() {
+        return this.inner().ddosSettings();
+    }
 
     @Override
     public PublicIPAddressDnsSettings dnsSettings() {
@@ -114,6 +120,12 @@ class PublicIPAddressImpl extends GroupableResourceCoreImpl<PublicIPAddress, Pub
     @Override
     public List<String> zones() {
         return this.inner().zones();
+    }
+
+    @Override
+    public PublicIPAddressImpl withDdosSettings(DdoSSettings ddosSettings) {
+        this.inner().withDdosSettings(ddosSettings);
+        return this;
     }
 
     @Override

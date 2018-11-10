@@ -27,6 +27,11 @@ import com.microsoft.azure.management.network.v2018_08_01.implementation.PublicI
  */
 public interface PublicIPAddress extends HasInner<PublicIPAddressInner>, Resource, GroupableResourceCore<NetworkManager, PublicIPAddressInner>, HasResourceGroup, Refreshable<PublicIPAddress>, Updatable<PublicIPAddress.Update>, HasManager<NetworkManager> {
     /**
+     * @return the ddosSettings value.
+     */
+    DdoSSettings ddosSettings();
+
+    /**
      * @return the dnsSettings value.
      */
     PublicIPAddressDnsSettings dnsSettings();
@@ -111,6 +116,18 @@ public interface PublicIPAddress extends HasInner<PublicIPAddressInner>, Resourc
          * The stage of the PublicIPAddress definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
+        }
+
+        /**
+         * The stage of the publicipaddress definition allowing to specify DdosSettings.
+         */
+        interface WithDdosSettings {
+            /**
+             * Specifies ddosSettings.
+             * @param ddosSettings The DDoS protection custom policy associated with the public IP address
+             * @return the next definition stage
+             */
+            WithCreate withDdosSettings(DdoSSettings ddosSettings);
         }
 
         /**
@@ -262,19 +279,31 @@ public interface PublicIPAddress extends HasInner<PublicIPAddressInner>, Resourc
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PublicIPAddress>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithDnsSettings, DefinitionStages.WithEtag, DefinitionStages.WithIdleTimeoutInMinutes, DefinitionStages.WithIpAddress, DefinitionStages.WithIpTags, DefinitionStages.WithProvisioningState, DefinitionStages.WithPublicIPAddressVersion, DefinitionStages.WithPublicIPAllocationMethod, DefinitionStages.WithPublicIPPrefix, DefinitionStages.WithResourceGuid, DefinitionStages.WithSku, DefinitionStages.WithZones {
+        interface WithCreate extends Creatable<PublicIPAddress>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithDdosSettings, DefinitionStages.WithDnsSettings, DefinitionStages.WithEtag, DefinitionStages.WithIdleTimeoutInMinutes, DefinitionStages.WithIpAddress, DefinitionStages.WithIpTags, DefinitionStages.WithProvisioningState, DefinitionStages.WithPublicIPAddressVersion, DefinitionStages.WithPublicIPAllocationMethod, DefinitionStages.WithPublicIPPrefix, DefinitionStages.WithResourceGuid, DefinitionStages.WithSku, DefinitionStages.WithZones {
         }
     }
     /**
      * The template for a PublicIPAddress update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PublicIPAddress>, Resource.UpdateWithTags<Update>, UpdateStages.WithDnsSettings, UpdateStages.WithEtag, UpdateStages.WithIdleTimeoutInMinutes, UpdateStages.WithIpAddress, UpdateStages.WithIpTags, UpdateStages.WithProvisioningState, UpdateStages.WithPublicIPAddressVersion, UpdateStages.WithPublicIPAllocationMethod, UpdateStages.WithPublicIPPrefix, UpdateStages.WithResourceGuid, UpdateStages.WithSku, UpdateStages.WithZones {
+    interface Update extends Appliable<PublicIPAddress>, Resource.UpdateWithTags<Update>, UpdateStages.WithDdosSettings, UpdateStages.WithDnsSettings, UpdateStages.WithEtag, UpdateStages.WithIdleTimeoutInMinutes, UpdateStages.WithIpAddress, UpdateStages.WithIpTags, UpdateStages.WithProvisioningState, UpdateStages.WithPublicIPAddressVersion, UpdateStages.WithPublicIPAllocationMethod, UpdateStages.WithPublicIPPrefix, UpdateStages.WithResourceGuid, UpdateStages.WithSku, UpdateStages.WithZones {
     }
 
     /**
      * Grouping of PublicIPAddress update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the publicipaddress update allowing to specify DdosSettings.
+         */
+        interface WithDdosSettings {
+            /**
+             * Specifies ddosSettings.
+             * @param ddosSettings The DDoS protection custom policy associated with the public IP address
+             * @return the next update stage
+             */
+            Update withDdosSettings(DdoSSettings ddosSettings);
+        }
+
         /**
          * The stage of the publicipaddress update allowing to specify DnsSettings.
          */

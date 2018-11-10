@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.v2018_08_01.IPAllocationMethod;
 import com.microsoft.azure.management.network.v2018_08_01.IPVersion;
 import com.microsoft.azure.management.network.v2018_08_01.IPConfiguration;
 import com.microsoft.azure.management.network.v2018_08_01.PublicIPAddressDnsSettings;
+import com.microsoft.azure.management.network.v2018_08_01.DdoSSettings;
 import java.util.List;
 import com.microsoft.azure.management.network.v2018_08_01.IpTag;
 import com.microsoft.azure.SubResource;
@@ -58,6 +59,12 @@ public class PublicIPAddressInner extends Resource {
      */
     @JsonProperty(value = "properties.dnsSettings")
     private PublicIPAddressDnsSettings dnsSettings;
+
+    /**
+     * The DDoS protection custom policy associated with the public IP address.
+     */
+    @JsonProperty(value = "properties.ddosSettings")
+    private DdoSSettings ddosSettings;
 
     /**
      * The list of tags associated with the public IP address.
@@ -201,6 +208,26 @@ public class PublicIPAddressInner extends Resource {
      */
     public PublicIPAddressInner withDnsSettings(PublicIPAddressDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
+        return this;
+    }
+
+    /**
+     * Get the DDoS protection custom policy associated with the public IP address.
+     *
+     * @return the ddosSettings value
+     */
+    public DdoSSettings ddosSettings() {
+        return this.ddosSettings;
+    }
+
+    /**
+     * Set the DDoS protection custom policy associated with the public IP address.
+     *
+     * @param ddosSettings the ddosSettings value to set
+     * @return the PublicIPAddressInner object itself.
+     */
+    public PublicIPAddressInner withDdosSettings(DdoSSettings ddosSettings) {
+        this.ddosSettings = ddosSettings;
         return this;
     }
 
