@@ -38,7 +38,4 @@
     </dependencies>
   </dependencyManagement>
 
-  <modules>
-    <module>./template/client</module>
-  </modules>
 </project>
