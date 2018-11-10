@@ -17,26 +17,26 @@ public class TriggerRolloverRequest {
     /**
      * Certificate Data.
      */
-    @JsonProperty(value = "certificateData")
-    private String certificateData;
+    @JsonProperty(value = "serverCertificate")
+    private String serverCertificate;
 
     /**
      * Get certificate Data.
      *
-     * @return the certificateData value
+     * @return the serverCertificate value
      */
-    public String certificateData() {
-        return this.certificateData;
+    public String serverCertificate() {
+        return this.serverCertificate;
     }
 
     /**
      * Set certificate Data.
      *
-     * @param certificateData the certificateData value to set
+     * @param serverCertificate the serverCertificate value to set
      * @return the TriggerRolloverRequest object itself.
      */
-    public TriggerRolloverRequest withCertificateData(String certificateData) {
-        this.certificateData = certificateData;
+    public TriggerRolloverRequest withServerCertificate(String serverCertificate) {
+        this.serverCertificate = serverCertificate;
         return this;
     }
 
