@@ -25,11 +25,6 @@ class NotificationSettingsCollectionImpl extends WrapperImpl<NotificationSetting
     }
 
     @Override
-    public String nextLink() {
-        return this.inner().nextLink();
-    }
-
-    @Override
     public List<NotificationSettingInner> value() {
         return this.inner().value();
     }

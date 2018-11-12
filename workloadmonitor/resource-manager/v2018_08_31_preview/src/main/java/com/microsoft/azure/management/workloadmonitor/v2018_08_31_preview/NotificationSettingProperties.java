@@ -18,7 +18,7 @@ public class NotificationSettingProperties {
     /**
      * List of action group resource ids to be notified.
      */
-    @JsonProperty(value = "ActionGroupResourceIds", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "actionGroupResourceIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> actionGroupResourceIds;
 
     /**

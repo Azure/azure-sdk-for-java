@@ -20,11 +20,6 @@ import java.util.List;
  */
 public interface NotificationSettingsCollection extends HasInner<NotificationSettingsCollectionInner>, HasManager<WorkloadMonitorManager> {
     /**
-     * @return the nextLink value.
-     */
-    String nextLink();
-
-    /**
      * @return the value value.
      */
     List<NotificationSettingInner> value();

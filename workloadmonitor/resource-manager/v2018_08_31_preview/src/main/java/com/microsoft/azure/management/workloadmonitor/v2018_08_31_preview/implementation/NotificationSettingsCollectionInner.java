@@ -16,25 +16,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class NotificationSettingsCollectionInner {
     /**
-     * URL to the next set of results.
-     */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
-    private String nextLink;
-
-    /**
      * Collection of components.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<NotificationSettingInner> value;
-
-    /**
-     * Get uRL to the next set of results.
-     *
-     * @return the nextLink value
-     */
-    public String nextLink() {
-        return this.nextLink;
-    }
 
     /**
      * Get collection of components.

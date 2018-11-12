@@ -27,7 +27,7 @@ public class NotificationSettingInner extends ProxyResource {
     /**
      * List of action group resource ids to be notified.
      */
-    @JsonProperty(value = "properties.ActionGroupResourceIds", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.actionGroupResourceIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> actionGroupResourceIds;
 
     /**
