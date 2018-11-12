@@ -25,8 +25,8 @@ class NotificationSettingImpl extends WrapperImpl<NotificationSettingInner> impl
     }
 
     @Override
-    public List<String> actionGroups() {
-        return this.inner().actionGroups();
+    public List<String> actionGroupResourceIds() {
+        return this.inner().actionGroupResourceIds();
     }
 
     @Override

@@ -27,8 +27,8 @@ public class NotificationSettingInner extends ProxyResource {
     /**
      * List of action group resource ids to be notified.
      */
-    @JsonProperty(value = "properties.actionGroups", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> actionGroups;
+    @JsonProperty(value = "properties.ActionGroupResourceIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> actionGroupResourceIds;
 
     /**
      * Get for optimistic concurrency control.
@@ -42,10 +42,10 @@ public class NotificationSettingInner extends ProxyResource {
     /**
      * Get list of action group resource ids to be notified.
      *
-     * @return the actionGroups value
+     * @return the actionGroupResourceIds value
      */
-    public List<String> actionGroups() {
-        return this.actionGroups;
+    public List<String> actionGroupResourceIds() {
+        return this.actionGroupResourceIds;
     }
 
 }

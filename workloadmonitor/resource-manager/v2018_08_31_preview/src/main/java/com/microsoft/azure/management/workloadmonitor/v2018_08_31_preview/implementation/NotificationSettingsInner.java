@@ -13,17 +13,21 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.ErrorResponseException;
+import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettingProperties;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
@@ -59,6 +63,10 @@ public class NotificationSettingsInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettings listByResource" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.WorkloadMonitor/notificationSettings")
         Observable<Response<ResponseBody>> listByResource(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceNamespace") String resourceNamespace, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Query("$skiptoken") String skiptoken, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettings update" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.WorkloadMonitor/notificationSettings")
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceNamespace") String resourceNamespace, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NotificationSettingProperties body, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettings listByResourceNext" })
         @GET
@@ -333,6 +341,103 @@ public class NotificationSettingsInner {
     private ServiceResponse<PageImpl<NotificationSettingInner>> listByResourceDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<NotificationSettingInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<NotificationSettingInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Update notification settings for a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceNamespace The Namespace of the resource.
+     * @param resourceType The type of the resource.
+     * @param resourceName Name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the NotificationSettingsCollectionInner object if successful.
+     */
+    public NotificationSettingsCollectionInner update(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+        return updateWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName).toBlocking().single().body();
+    }
+
+    /**
+     * Update notification settings for a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceNamespace The Namespace of the resource.
+     * @param resourceType The type of the resource.
+     * @param resourceName Name of the resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<NotificationSettingsCollectionInner> updateAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, final ServiceCallback<NotificationSettingsCollectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName), serviceCallback);
+    }
+
+    /**
+     * Update notification settings for a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceNamespace The Namespace of the resource.
+     * @param resourceType The type of the resource.
+     * @param resourceName Name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the NotificationSettingsCollectionInner object
+     */
+    public Observable<NotificationSettingsCollectionInner> updateAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+        return updateWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName).map(new Func1<ServiceResponse<NotificationSettingsCollectionInner>, NotificationSettingsCollectionInner>() {
+            @Override
+            public NotificationSettingsCollectionInner call(ServiceResponse<NotificationSettingsCollectionInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Update notification settings for a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceNamespace The Namespace of the resource.
+     * @param resourceType The type of the resource.
+     * @param resourceName Name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the NotificationSettingsCollectionInner object
+     */
+    public Observable<ServiceResponse<NotificationSettingsCollectionInner>> updateWithServiceResponseAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceNamespace == null) {
+            throw new IllegalArgumentException("Parameter resourceNamespace is required and cannot be null.");
+        }
+        if (resourceType == null) {
+            throw new IllegalArgumentException("Parameter resourceType is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        return service.update(this.client.subscriptionId(), resourceGroupName, resourceNamespace, resourceType, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), body, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NotificationSettingsCollectionInner>>>() {
+                @Override
+                public Observable<ServiceResponse<NotificationSettingsCollectionInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<NotificationSettingsCollectionInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<NotificationSettingsCollectionInner> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NotificationSettingsCollectionInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<NotificationSettingsCollectionInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

@@ -26,4 +26,16 @@ public interface NotificationSettings {
      */
     Observable<NotificationSetting> listByResourceAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName);
 
+    /**
+     * Update notification settings for a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceNamespace The Namespace of the resource.
+     * @param resourceType The type of the resource.
+     * @param resourceName Name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NotificationSettingsCollection> updateAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName);
+
 }

@@ -15,6 +15,7 @@ import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSetting;
+import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettingsCollection;
 
 class NotificationSettingsImpl extends WrapperImpl<NotificationSettingsInner> implements NotificationSettings {
     private final WorkloadMonitorManager manager;
@@ -42,6 +43,18 @@ class NotificationSettingsImpl extends WrapperImpl<NotificationSettingsInner> im
             @Override
             public NotificationSetting call(NotificationSettingInner inner) {
                 return new NotificationSettingImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<NotificationSettingsCollection> updateAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+        NotificationSettingsInner client = this.inner();
+        return client.updateAsync(resourceGroupName, resourceNamespace, resourceType, resourceName)
+        .map(new Func1<NotificationSettingsCollectionInner, NotificationSettingsCollection>() {
+            @Override
+            public NotificationSettingsCollection call(NotificationSettingsCollectionInner inner) {
+                return new NotificationSettingsCollectionImpl(inner, manager());
             }
         });
     }
