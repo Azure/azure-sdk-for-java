@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,18 +15,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class NotificationSettingsCollectionInner {
     /**
-     * Collection of components.
+     * The properties property.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<NotificationSettingInner> value;
+    @JsonProperty(value = "properties")
+    private NotificationSettingInner properties;
 
     /**
-     * Get collection of components.
+     * Get the properties value.
      *
-     * @return the value value
+     * @return the properties value
      */
-    public List<NotificationSettingInner> value() {
-        return this.value;
+    public NotificationSettingInner properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties value.
+     *
+     * @param properties the properties value to set
+     * @return the NotificationSettingsCollectionInner object itself.
+     */
+    public NotificationSettingsCollectionInner withProperties(NotificationSettingInner properties) {
+        this.properties = properties;
+        return this;
     }
 
 }

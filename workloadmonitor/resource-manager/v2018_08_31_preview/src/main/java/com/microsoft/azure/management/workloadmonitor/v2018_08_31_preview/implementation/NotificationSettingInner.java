@@ -10,34 +10,17 @@ package com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.imple
 
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * Model for component.
+ * Model for properties of a NotificationSetting.
  */
-@JsonFlatten
 public class NotificationSettingInner extends ProxyResource {
-    /**
-     * For optimistic concurrency control.
-     */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
-    private String etag;
-
     /**
      * List of action group resource ids to be notified.
      */
-    @JsonProperty(value = "properties.actionGroupResourceIds", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "actionGroupResourceIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> actionGroupResourceIds;
-
-    /**
-     * Get for optimistic concurrency control.
-     *
-     * @return the etag value
-     */
-    public String etag() {
-        return this.etag;
-    }
 
     /**
      * Get list of action group resource ids to be notified.

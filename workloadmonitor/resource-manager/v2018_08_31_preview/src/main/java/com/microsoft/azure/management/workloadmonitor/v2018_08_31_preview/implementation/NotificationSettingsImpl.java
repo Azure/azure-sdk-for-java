@@ -14,7 +14,6 @@ import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.Notifi
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSetting;
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettingsCollection;
 
 class NotificationSettingsImpl extends WrapperImpl<NotificationSettingsInner> implements NotificationSettings {
@@ -30,19 +29,19 @@ class NotificationSettingsImpl extends WrapperImpl<NotificationSettingsInner> im
     }
 
     @Override
-    public Observable<NotificationSetting> listByResourceAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName) {
+    public Observable<NotificationSettingsCollection> listByResourceAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName) {
         NotificationSettingsInner client = this.inner();
         return client.listByResourceAsync(resourceGroupName, resourceNamespace, resourceType, resourceName)
-        .flatMapIterable(new Func1<Page<NotificationSettingInner>, Iterable<NotificationSettingInner>>() {
+        .flatMapIterable(new Func1<Page<NotificationSettingsCollectionInner>, Iterable<NotificationSettingsCollectionInner>>() {
             @Override
-            public Iterable<NotificationSettingInner> call(Page<NotificationSettingInner> page) {
+            public Iterable<NotificationSettingsCollectionInner> call(Page<NotificationSettingsCollectionInner> page) {
                 return page.items();
             }
         })
-        .map(new Func1<NotificationSettingInner, NotificationSetting>() {
+        .map(new Func1<NotificationSettingsCollectionInner, NotificationSettingsCollection>() {
             @Override
-            public NotificationSetting call(NotificationSettingInner inner) {
-                return new NotificationSettingImpl(inner, manager());
+            public NotificationSettingsCollection call(NotificationSettingsCollectionInner inner) {
+                return new NotificationSettingsCollectionImpl(inner, manager());
             }
         });
     }
