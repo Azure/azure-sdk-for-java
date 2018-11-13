@@ -44,6 +44,11 @@ class DeletedSiteImpl extends WrapperImpl<DeletedSiteInner> implements DeletedSi
     }
 
     @Override
+    public String geoRegionName() {
+        return this.inner().geoRegionName();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
