@@ -30,7 +30,7 @@ jobs:
   steps:
   - task: Maven@3
     inputs:
-      mavenPomFile: 'pom.client.xml'
+      mavenPomFile: 'pom.client.build.xml'
       options: '--batch-mode'  #hides dependencies download progress from CI output
       mavenOptions: '-Xmx3072m -Dmaven.test.skip=true -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
       javaHomeOption: 'JDKVersion'
