@@ -38,6 +38,11 @@ public interface DeletedSite extends HasInner<DeletedSiteInner>, HasManager<Cert
     String deletedTimestamp();
 
     /**
+     * @return the geoRegionName value.
+     */
+    String geoRegionName();
+
+    /**
      * @return the id value.
      */
     String id();
