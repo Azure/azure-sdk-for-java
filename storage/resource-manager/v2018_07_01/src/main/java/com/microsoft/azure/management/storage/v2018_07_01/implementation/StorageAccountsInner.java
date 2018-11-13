@@ -18,6 +18,7 @@ import com.microsoft.azure.management.storage.v2018_07_01.AccountSasParameters;
 import com.microsoft.azure.management.storage.v2018_07_01.ServiceSasParameters;
 import com.microsoft.azure.management.storage.v2018_07_01.StorageAccountCheckNameAvailabilityParameters;
 import com.microsoft.azure.management.storage.v2018_07_01.StorageAccountCreateParameters;
+import com.microsoft.azure.management.storage.v2018_07_01.StorageAccountExpand;
 import com.microsoft.azure.management.storage.v2018_07_01.StorageAccountRegenerateKeyParameters;
 import com.microsoft.azure.management.storage.v2018_07_01.StorageAccountUpdateParameters;
 import com.microsoft.azure.Page;
@@ -87,7 +88,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2018_07_01.StorageAccounts getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}")
-        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") StorageAccountExpand expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2018_07_01.StorageAccounts update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}")
@@ -513,7 +514,89 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2018-07-01";
-        return service.getByResourceGroup(resourceGroupName, accountName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        final StorageAccountExpand expand = null;
+        return service.getByResourceGroup(resourceGroupName, accountName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageAccountInner>>>() {
+                @Override
+                public Observable<ServiceResponse<StorageAccountInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<StorageAccountInner> clientResponse = getByResourceGroupDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Returns the properties for the specified storage account including but not limited to name, SKU name, location, and account status. The ListKeys operation should be used to retrieve storage keys.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param expand May be used to expand the properties within account's properties. By default, data is not included when fecthing properties. Currently we only support geoReplicationStats. Possible values include: 'geoReplicationStats'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the StorageAccountInner object if successful.
+     */
+    public StorageAccountInner getByResourceGroup(String resourceGroupName, String accountName, StorageAccountExpand expand) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, accountName, expand).toBlocking().single().body();
+    }
+
+    /**
+     * Returns the properties for the specified storage account including but not limited to name, SKU name, location, and account status. The ListKeys operation should be used to retrieve storage keys.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param expand May be used to expand the properties within account's properties. By default, data is not included when fecthing properties. Currently we only support geoReplicationStats. Possible values include: 'geoReplicationStats'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<StorageAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName, StorageAccountExpand expand, final ServiceCallback<StorageAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, accountName, expand), serviceCallback);
+    }
+
+    /**
+     * Returns the properties for the specified storage account including but not limited to name, SKU name, location, and account status. The ListKeys operation should be used to retrieve storage keys.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param expand May be used to expand the properties within account's properties. By default, data is not included when fecthing properties. Currently we only support geoReplicationStats. Possible values include: 'geoReplicationStats'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageAccountInner object
+     */
+    public Observable<StorageAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName, StorageAccountExpand expand) {
+        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, accountName, expand).map(new Func1<ServiceResponse<StorageAccountInner>, StorageAccountInner>() {
+            @Override
+            public StorageAccountInner call(ServiceResponse<StorageAccountInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns the properties for the specified storage account including but not limited to name, SKU name, location, and account status. The ListKeys operation should be used to retrieve storage keys.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param expand May be used to expand the properties within account's properties. By default, data is not included when fecthing properties. Currently we only support geoReplicationStats. Possible values include: 'geoReplicationStats'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageAccountInner object
+     */
+    public Observable<ServiceResponse<StorageAccountInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String accountName, StorageAccountExpand expand) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2018-07-01";
+        return service.getByResourceGroup(resourceGroupName, accountName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageAccountInner>>>() {
                 @Override
                 public Observable<ServiceResponse<StorageAccountInner>> call(Response<ResponseBody> response) {

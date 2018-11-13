@@ -57,6 +57,11 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
     Encryption encryption();
 
     /**
+     * @return the geoReplicationStats value.
+     */
+    GeoReplicationStats geoReplicationStats();
+
+    /**
      * @return the identity value.
      */
     Identity identity();
