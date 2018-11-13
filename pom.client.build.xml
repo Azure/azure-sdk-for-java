@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-sdk-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>./pom.client.xml</relativePath>
+  </parent>
+
+  <artifactId>azure-sdk-parent-build</artifactId>
+  <version>${parent.version}</version>
+  <packaging>pom</packaging>
+
+  <name>Microsoft Azure SDK Build</name>
+  <description>This package bundles all the SDKs in a multi-module for build/CI purposes.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <modules>
+    <module>./template/client</module>
+  </modules>
+</project>
