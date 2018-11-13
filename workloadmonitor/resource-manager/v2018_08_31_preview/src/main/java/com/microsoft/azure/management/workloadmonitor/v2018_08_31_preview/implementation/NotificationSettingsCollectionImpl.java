@@ -10,6 +10,7 @@ package com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.imple
 
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettingsCollection;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import java.util.List;
 
 class NotificationSettingsCollectionImpl extends WrapperImpl<NotificationSettingsCollectionInner> implements NotificationSettingsCollection {
     private final WorkloadMonitorManager manager;
@@ -24,8 +25,38 @@ class NotificationSettingsCollectionImpl extends WrapperImpl<NotificationSetting
     }
 
     @Override
-    public NotificationSettingInner properties() {
-        return this.inner().properties();
+    public List<String> actionGroupResourceIds() {
+        return this.inner().actionGroupResourceIds();
+    }
+
+    @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
+    }
+
+    @Override
+    public String notificationSettingId() {
+        return this.inner().notificationSettingId();
+    }
+
+    @Override
+    public String notificationSettingName() {
+        return this.inner().notificationSettingName();
+    }
+
+    @Override
+    public String notificationSettingType() {
+        return this.inner().notificationSettingType();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
     }
 
 }

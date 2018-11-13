@@ -13,7 +13,6 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettings;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.Page;
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettingsCollection;
 
 class NotificationSettingsImpl extends WrapperImpl<NotificationSettingsInner> implements NotificationSettings {
@@ -29,15 +28,9 @@ class NotificationSettingsImpl extends WrapperImpl<NotificationSettingsInner> im
     }
 
     @Override
-    public Observable<NotificationSettingsCollection> listByResourceAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName) {
+    public Observable<NotificationSettingsCollection> listByResourceAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
         NotificationSettingsInner client = this.inner();
         return client.listByResourceAsync(resourceGroupName, resourceNamespace, resourceType, resourceName)
-        .flatMapIterable(new Func1<Page<NotificationSettingsCollectionInner>, Iterable<NotificationSettingsCollectionInner>>() {
-            @Override
-            public Iterable<NotificationSettingsCollectionInner> call(Page<NotificationSettingsCollectionInner> page) {
-                return page.items();
-            }
-        })
         .map(new Func1<NotificationSettingsCollectionInner, NotificationSettingsCollection>() {
             @Override
             public NotificationSettingsCollection call(NotificationSettingsCollectionInner inner) {

@@ -10,11 +10,7 @@ package com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.imple
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.ErrorResponseException;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -27,7 +23,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -60,16 +55,12 @@ public class NotificationSettingsInner {
     interface NotificationSettingsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettings listByResource" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.WorkloadMonitor/notificationSettings")
-        Observable<Response<ResponseBody>> listByResource(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceNamespace") String resourceNamespace, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Query("$skiptoken") String skiptoken, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByResource(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceNamespace") String resourceNamespace, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettings update" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceNamespace}/{resourceType}/{resourceName}/providers/Microsoft.WorkloadMonitor/notificationSettings")
         Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceNamespace") String resourceNamespace, @Path("resourceType") String resourceType, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body NotificationSettingInner body, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettings listByResourceNext" })
-        @GET
-        Observable<Response<ResponseBody>> listByResourceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
     }
 
     /**
@@ -84,14 +75,8 @@ public class NotificationSettingsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NotificationSettingsCollectionInner object if successful.
      */
-    public NotificationSettingsCollectionInner listByResource(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName) {
-        ServiceResponse<NotificationSettingsCollectionInner> response = listByResourceSinglePageAsync(resourceGroupName, resourceNamespace, resourceType, resourceName).toBlocking().single();
-        return new NotificationSettingsCollectionInner(response.body()) {
-            @Override
-            public NotificationSettingsCollectionInner nextPage(String nextPageLink) {
-                return listByResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
+    public NotificationSettingsCollectionInner listByResource(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+        return listByResourceWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName).toBlocking().single().body();
     }
 
     /**
@@ -105,16 +90,8 @@ public class NotificationSettingsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NotificationSettingsCollectionInner> listByResourceAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName, final ListOperationCallback<Void> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByResourceSinglePageAsync(resourceGroupName, resourceNamespace, resourceType, resourceName),
-            new Func1<String, Observable<ServiceResponse<NotificationSettingsCollectionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<NotificationSettingsCollectionInner>> call(String nextPageLink) {
-                    return listByResourceNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
+    public ServiceFuture<NotificationSettingsCollectionInner> listByResourceAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, final ServiceCallback<NotificationSettingsCollectionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listByResourceWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName), serviceCallback);
     }
 
     /**
@@ -127,14 +104,13 @@ public class NotificationSettingsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationSettingsCollectionInner object
      */
-    public Observable<NotificationSettingsCollectionInner> listByResourceAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName) {
-        return listByResourceWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName)
-            .map(new Func1<ServiceResponse<NotificationSettingsCollectionInner>, NotificationSettingsCollectionInner>() {
-                @Override
-                public NotificationSettingsCollectionInner call(ServiceResponse<NotificationSettingsCollectionInner> response) {
-                    return response.body();
-                }
-            });
+    public Observable<NotificationSettingsCollectionInner> listByResourceAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+        return listByResourceWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName).map(new Func1<ServiceResponse<NotificationSettingsCollectionInner>, NotificationSettingsCollectionInner>() {
+            @Override
+            public NotificationSettingsCollectionInner call(ServiceResponse<NotificationSettingsCollectionInner> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
@@ -147,31 +123,7 @@ public class NotificationSettingsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationSettingsCollectionInner object
      */
-    public Observable<ServiceResponse<NotificationSettingsCollectionInner>> listByResourceWithServiceResponseAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName) {
-        return listByResourceSinglePageAsync(resourceGroupName, resourceNamespace, resourceType, resourceName)
-            .concatMap(new Func1<ServiceResponse<NotificationSettingsCollectionInner>, Observable<ServiceResponse<NotificationSettingsCollectionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<NotificationSettingsCollectionInner>> call(ServiceResponse<NotificationSettingsCollectionInner> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listByResourceNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceNamespace The Namespace of the resource.
-     * @param resourceType The type of the resource.
-     * @param resourceName Name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the NotificationSettingsCollectionInner object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<NotificationSettingsCollectionInner>> listByResourceSinglePageAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName) {
+    public Observable<ServiceResponse<NotificationSettingsCollectionInner>> listByResourceWithServiceResponseAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -187,148 +139,13 @@ public class NotificationSettingsInner {
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
-        final String skiptoken = null;
-        return service.listByResource(this.client.subscriptionId(), resourceGroupName, resourceNamespace, resourceType, resourceName, this.client.apiVersion(), skiptoken, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByResource(this.client.subscriptionId(), resourceGroupName, resourceNamespace, resourceType, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NotificationSettingsCollectionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NotificationSettingsCollectionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<NotificationSettingsCollectionInner> result = listByResourceDelegate(response);
-                        return Observable.just(new ServiceResponse<NotificationSettingsCollectionInner>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceNamespace The Namespace of the resource.
-     * @param resourceType The type of the resource.
-     * @param resourceName Name of the resource.
-     * @param skiptoken The page-continuation token to use with a paged version of this API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the NotificationSettingsCollectionInner object if successful.
-     */
-    public NotificationSettingsCollectionInner listByResource(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName, final String skiptoken) {
-        ServiceResponse<NotificationSettingsCollectionInner> response = listByResourceSinglePageAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, skiptoken).toBlocking().single();
-        return new NotificationSettingsCollectionInner(response.body()) {
-            @Override
-            public NotificationSettingsCollectionInner nextPage(String nextPageLink) {
-                return listByResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceNamespace The Namespace of the resource.
-     * @param resourceType The type of the resource.
-     * @param resourceName Name of the resource.
-     * @param skiptoken The page-continuation token to use with a paged version of this API.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<NotificationSettingsCollectionInner> listByResourceAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName, final String skiptoken, final ListOperationCallback<Void> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByResourceSinglePageAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, skiptoken),
-            new Func1<String, Observable<ServiceResponse<NotificationSettingsCollectionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<NotificationSettingsCollectionInner>> call(String nextPageLink) {
-                    return listByResourceNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceNamespace The Namespace of the resource.
-     * @param resourceType The type of the resource.
-     * @param resourceName Name of the resource.
-     * @param skiptoken The page-continuation token to use with a paged version of this API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the NotificationSettingsCollectionInner object
-     */
-    public Observable<NotificationSettingsCollectionInner> listByResourceAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName, final String skiptoken) {
-        return listByResourceWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, skiptoken)
-            .map(new Func1<ServiceResponse<NotificationSettingsCollectionInner>, NotificationSettingsCollectionInner>() {
-                @Override
-                public NotificationSettingsCollectionInner call(ServiceResponse<NotificationSettingsCollectionInner> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceNamespace The Namespace of the resource.
-     * @param resourceType The type of the resource.
-     * @param resourceName Name of the resource.
-     * @param skiptoken The page-continuation token to use with a paged version of this API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the NotificationSettingsCollectionInner object
-     */
-    public Observable<ServiceResponse<NotificationSettingsCollectionInner>> listByResourceWithServiceResponseAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName, final String skiptoken) {
-        return listByResourceSinglePageAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, skiptoken)
-            .concatMap(new Func1<ServiceResponse<NotificationSettingsCollectionInner>, Observable<ServiceResponse<NotificationSettingsCollectionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<NotificationSettingsCollectionInner>> call(ServiceResponse<NotificationSettingsCollectionInner> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listByResourceNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-    ServiceResponse<NotificationSettingsCollectionInner> * @param resourceGroupName The name of the resource group. The name is case insensitive.
-    ServiceResponse<NotificationSettingsCollectionInner> * @param resourceNamespace The Namespace of the resource.
-    ServiceResponse<NotificationSettingsCollectionInner> * @param resourceType The type of the resource.
-    ServiceResponse<NotificationSettingsCollectionInner> * @param resourceName Name of the resource.
-    ServiceResponse<NotificationSettingsCollectionInner> * @param skiptoken The page-continuation token to use with a paged version of this API.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the NotificationSettingsCollectionInner object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<NotificationSettingsCollectionInner>> listByResourceSinglePageAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName, final String skiptoken) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (resourceNamespace == null) {
-            throw new IllegalArgumentException("Parameter resourceNamespace is required and cannot be null.");
-        }
-        if (resourceType == null) {
-            throw new IllegalArgumentException("Parameter resourceType is required and cannot be null.");
-        }
-        if (resourceName == null) {
-            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
-        }
-        return service.listByResource(this.client.subscriptionId(), resourceGroupName, resourceNamespace, resourceType, resourceName, this.client.apiVersion(), skiptoken, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NotificationSettingsCollectionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<NotificationSettingsCollectionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<NotificationSettingsCollectionInner> result = listByResourceDelegate(response);
-                        return Observable.just(new ServiceResponse<NotificationSettingsCollectionInner>(result.body(), result.response()));
+                        ServiceResponse<NotificationSettingsCollectionInner> clientResponse = listByResourceDelegate(response);
+                        return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -434,117 +251,6 @@ public class NotificationSettingsInner {
     }
 
     private ServiceResponse<NotificationSettingsCollectionInner> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NotificationSettingsCollectionInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<NotificationSettingsCollectionInner>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the NotificationSettingsCollectionInner object if successful.
-     */
-    public NotificationSettingsCollectionInner listByResourceNext(final String nextPageLink) {
-        ServiceResponse<NotificationSettingsCollectionInner> response = listByResourceNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new NotificationSettingsCollectionInner(response.body()) {
-            @Override
-            public NotificationSettingsCollectionInner nextPage(String nextPageLink) {
-                return listByResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<NotificationSettingsCollectionInner> listByResourceNextAsync(final String nextPageLink, final ServiceFuture<NotificationSettingsCollectionInner> serviceFuture, final ListOperationCallback<Void> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByResourceNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<NotificationSettingsCollectionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<NotificationSettingsCollectionInner>> call(String nextPageLink) {
-                    return listByResourceNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the NotificationSettingsCollectionInner object
-     */
-    public Observable<NotificationSettingsCollectionInner> listByResourceNextAsync(final String nextPageLink) {
-        return listByResourceNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<NotificationSettingsCollectionInner>, NotificationSettingsCollectionInner>() {
-                @Override
-                public NotificationSettingsCollectionInner call(ServiceResponse<NotificationSettingsCollectionInner> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the NotificationSettingsCollectionInner object
-     */
-    public Observable<ServiceResponse<NotificationSettingsCollectionInner>> listByResourceNextWithServiceResponseAsync(final String nextPageLink) {
-        return listByResourceNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<NotificationSettingsCollectionInner>, Observable<ServiceResponse<NotificationSettingsCollectionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<NotificationSettingsCollectionInner>> call(ServiceResponse<NotificationSettingsCollectionInner> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listByResourceNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get list of notification settings for a resource.
-     *
-    ServiceResponse<NotificationSettingsCollectionInner> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the NotificationSettingsCollectionInner object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<NotificationSettingsCollectionInner>> listByResourceNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.listByResourceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NotificationSettingsCollectionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<NotificationSettingsCollectionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<NotificationSettingsCollectionInner> result = listByResourceNextDelegate(response);
-                        return Observable.just(new ServiceResponse<NotificationSettingsCollectionInner>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<NotificationSettingsCollectionInner> listByResourceNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<NotificationSettingsCollectionInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<NotificationSettingsCollectionInner>() { }.getType())
                 .registerError(ErrorResponseException.class)

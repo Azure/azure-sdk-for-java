@@ -24,7 +24,7 @@ public interface NotificationSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NotificationSettingsCollection> listByResourceAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName);
+    Observable<NotificationSettingsCollection> listByResourceAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName);
 
     /**
      * Update notification settings for a resource.

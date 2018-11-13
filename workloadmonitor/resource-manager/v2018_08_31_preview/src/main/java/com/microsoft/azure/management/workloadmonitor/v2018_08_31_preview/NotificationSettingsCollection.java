@@ -12,15 +12,45 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation.WorkloadMonitorManager;
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation.NotificationSettingsCollectionInner;
-import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation.NotificationSettingInner;
+import java.util.List;
 
 /**
  * Type representing NotificationSettingsCollection.
  */
 public interface NotificationSettingsCollection extends HasInner<NotificationSettingsCollectionInner>, HasManager<WorkloadMonitorManager> {
     /**
-     * @return the properties value.
+     * @return the actionGroupResourceIds value.
      */
-    NotificationSettingInner properties();
+    List<String> actionGroupResourceIds();
+
+    /**
+     * @return the id value.
+     */
+    String id();
+
+    /**
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * @return the notificationSettingId value.
+     */
+    String notificationSettingId();
+
+    /**
+     * @return the notificationSettingName value.
+     */
+    String notificationSettingName();
+
+    /**
+     * @return the notificationSettingType value.
+     */
+    String notificationSettingType();
+
+    /**
+     * @return the type value.
+     */
+    String type();
 
 }
