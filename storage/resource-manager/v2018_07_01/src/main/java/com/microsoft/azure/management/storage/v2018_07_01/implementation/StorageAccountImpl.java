@@ -113,6 +113,11 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
+    public Boolean failoverInProgress() {
+        return this.inner().failoverInProgress();
+    }
+
+    @Override
     public GeoReplicationStats geoReplicationStats() {
         return this.inner().geoReplicationStats();
     }
