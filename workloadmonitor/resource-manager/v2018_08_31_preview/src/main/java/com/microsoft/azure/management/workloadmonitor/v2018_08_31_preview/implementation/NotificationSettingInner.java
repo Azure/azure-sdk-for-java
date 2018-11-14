@@ -8,27 +8,27 @@
 
 package com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation;
 
-import java.util.List;
+import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettingProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * Model for properties of a NotificationSetting.
+ * Model for NotificationSetting.
  */
 public class NotificationSettingInner extends ProxyResource {
     /**
-     * List of action group resource ids to be notified.
+     * Properties of Notification Settings.
      */
-    @JsonProperty(value = "actionGroupResourceIds", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> actionGroupResourceIds;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private NotificationSettingProperties properties;
 
     /**
-     * Get list of action group resource ids to be notified.
+     * Get properties of Notification Settings.
      *
-     * @return the actionGroupResourceIds value
+     * @return the properties value
      */
-    public List<String> actionGroupResourceIds() {
-        return this.actionGroupResourceIds;
+    public NotificationSettingProperties properties() {
+        return this.properties;
     }
 
 }
