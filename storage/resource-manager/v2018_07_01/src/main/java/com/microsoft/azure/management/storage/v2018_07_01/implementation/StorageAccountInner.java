@@ -161,6 +161,13 @@ public class StorageAccountInner extends Resource {
     private Boolean isHnsEnabled;
 
     /**
+     * If the failover is in progress, the value will be true, otherwise, it
+     * will be null.
+     */
+    @JsonProperty(value = "properties.failoverInProgress", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean failoverInProgress;
+
+    /**
      * Get gets the SKU.
      *
      * @return the sku value
@@ -373,6 +380,15 @@ public class StorageAccountInner extends Resource {
     public StorageAccountInner withIsHnsEnabled(Boolean isHnsEnabled) {
         this.isHnsEnabled = isHnsEnabled;
         return this;
+    }
+
+    /**
+     * Get if the failover is in progress, the value will be true, otherwise, it will be null.
+     *
+     * @return the failoverInProgress value
+     */
+    public Boolean failoverInProgress() {
+        return this.failoverInProgress;
     }
 
 }
