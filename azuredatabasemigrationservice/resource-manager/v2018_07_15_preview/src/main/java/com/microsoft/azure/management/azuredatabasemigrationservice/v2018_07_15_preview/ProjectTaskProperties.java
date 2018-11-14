@@ -10,6 +10,7 @@ package com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15
 
 import java.util.List;
 import com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.implementation.CommandPropertiesInner;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -74,6 +75,12 @@ public class ProjectTaskProperties {
     private List<CommandPropertiesInner> commands;
 
     /**
+     * Key value pairs of client data to attach meta data information to task.
+     */
+    @JsonProperty(value = "clientData")
+    private Map<String, String> clientData;
+
+    /**
      * Get array of errors. This is ignored if submitted.
      *
      * @return the errors value
@@ -98,6 +105,26 @@ public class ProjectTaskProperties {
      */
     public List<CommandPropertiesInner> commands() {
         return this.commands;
+    }
+
+    /**
+     * Get key value pairs of client data to attach meta data information to task.
+     *
+     * @return the clientData value
+     */
+    public Map<String, String> clientData() {
+        return this.clientData;
+    }
+
+    /**
+     * Set key value pairs of client data to attach meta data information to task.
+     *
+     * @param clientData the clientData value to set
+     * @return the ProjectTaskProperties object itself.
+     */
+    public ProjectTaskProperties withClientData(Map<String, String> clientData) {
+        this.clientData = clientData;
+        return this;
     }
 
 }
