@@ -38,6 +38,18 @@ class HelperTest extends APISpec {
         e.getMessage().contains("<?xml") // Ensure that the details in the payload are printable
     }
 
+    /*
+    This test is to validate the workaround for the autorest bug that forgets to set the request property on the
+    response.
+     */
+    def "Request property"() {
+        when:
+        def response = cu.delete().blockingGet()
+
+        then:
+        response.request() != null
+    }
+
     @Unroll
     def "Blob range"() {
         expect:
