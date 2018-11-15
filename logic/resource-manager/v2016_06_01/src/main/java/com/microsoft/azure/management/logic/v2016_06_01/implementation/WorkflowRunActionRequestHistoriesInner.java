@@ -12,7 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.logic.v2016_06_01.ApiErrorException;
+import com.microsoft.azure.management.logic.v2016_06_01.ErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -79,7 +79,7 @@ public class WorkflowRunActionRequestHistoriesInner {
      * @param runName The workflow run name.
      * @param actionName The workflow action name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RequestHistoryInner&gt; object if successful.
      */
@@ -203,10 +203,10 @@ public class WorkflowRunActionRequestHistoriesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<RequestHistoryInner>> listDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<RequestHistoryInner>, ApiErrorException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<RequestHistoryInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RequestHistoryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RequestHistoryInner>>() { }.getType())
-                .registerError(ApiErrorException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -219,7 +219,7 @@ public class WorkflowRunActionRequestHistoriesInner {
      * @param actionName The workflow action name.
      * @param requestHistoryName The request history name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RequestHistoryInner object if successful.
      */
@@ -310,10 +310,10 @@ public class WorkflowRunActionRequestHistoriesInner {
             });
     }
 
-    private ServiceResponse<RequestHistoryInner> getDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RequestHistoryInner, ApiErrorException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<RequestHistoryInner> getDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RequestHistoryInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RequestHistoryInner>() { }.getType())
-                .registerError(ApiErrorException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -322,7 +322,7 @@ public class WorkflowRunActionRequestHistoriesInner {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ApiErrorException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;RequestHistoryInner&gt; object if successful.
      */
@@ -421,10 +421,10 @@ public class WorkflowRunActionRequestHistoriesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<RequestHistoryInner>> listNextDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<RequestHistoryInner>, ApiErrorException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<RequestHistoryInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RequestHistoryInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<RequestHistoryInner>>() { }.getType())
-                .registerError(ApiErrorException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
