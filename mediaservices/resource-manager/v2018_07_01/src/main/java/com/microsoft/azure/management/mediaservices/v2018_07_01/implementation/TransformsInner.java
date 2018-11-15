@@ -64,7 +64,7 @@ public class TransformsInner {
     interface TransformsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mediaservices.v2018_07_01.Transforms list" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Query("$top") Integer top, @Query("$skip") Integer skip, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Query("$orderby") String orderby, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.mediaservices.v2018_07_01.Transforms get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}")
@@ -196,9 +196,8 @@ public class TransformsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        final Integer top = null;
-        final Integer skip = null;
-        return service.list(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), filter, top, skip, this.client.acceptLanguage(), this.client.userAgent())
+        final String orderby = null;
+        return service.list(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), filter, orderby, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransformInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TransformInner>>> call(Response<ResponseBody> response) {
@@ -219,15 +218,14 @@ public class TransformsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param skip Specifies a non-negative integer n that excludes the first n items of the queried collection from the result. The service returns items starting at position n+1.
+     * @param orderby Specifies the the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TransformInner&gt; object if successful.
      */
-    public PagedList<TransformInner> list(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip) {
-        ServiceResponse<Page<TransformInner>> response = listSinglePageAsync(resourceGroupName, accountName, filter, top, skip).toBlocking().single();
+    public PagedList<TransformInner> list(final String resourceGroupName, final String accountName, final String filter, final String orderby) {
+        ServiceResponse<Page<TransformInner>> response = listSinglePageAsync(resourceGroupName, accountName, filter, orderby).toBlocking().single();
         return new PagedList<TransformInner>(response.body()) {
             @Override
             public Page<TransformInner> nextPage(String nextPageLink) {
@@ -243,15 +241,14 @@ public class TransformsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param skip Specifies a non-negative integer n that excludes the first n items of the queried collection from the result. The service returns items starting at position n+1.
+     * @param orderby Specifies the the key by which the result collection should be ordered.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<TransformInner>> listAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final ListOperationCallback<TransformInner> serviceCallback) {
+    public ServiceFuture<List<TransformInner>> listAsync(final String resourceGroupName, final String accountName, final String filter, final String orderby, final ListOperationCallback<TransformInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(resourceGroupName, accountName, filter, top, skip),
+            listSinglePageAsync(resourceGroupName, accountName, filter, orderby),
             new Func1<String, Observable<ServiceResponse<Page<TransformInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TransformInner>>> call(String nextPageLink) {
@@ -268,13 +265,12 @@ public class TransformsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param skip Specifies a non-negative integer n that excludes the first n items of the queried collection from the result. The service returns items starting at position n+1.
+     * @param orderby Specifies the the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TransformInner&gt; object
      */
-    public Observable<Page<TransformInner>> listAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip) {
-        return listWithServiceResponseAsync(resourceGroupName, accountName, filter, top, skip)
+    public Observable<Page<TransformInner>> listAsync(final String resourceGroupName, final String accountName, final String filter, final String orderby) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName, filter, orderby)
             .map(new Func1<ServiceResponse<Page<TransformInner>>, Page<TransformInner>>() {
                 @Override
                 public Page<TransformInner> call(ServiceResponse<Page<TransformInner>> response) {
@@ -290,13 +286,12 @@ public class TransformsInner {
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
-     * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param skip Specifies a non-negative integer n that excludes the first n items of the queried collection from the result. The service returns items starting at position n+1.
+     * @param orderby Specifies the the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TransformInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TransformInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip) {
-        return listSinglePageAsync(resourceGroupName, accountName, filter, top, skip)
+    public Observable<ServiceResponse<Page<TransformInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String filter, final String orderby) {
+        return listSinglePageAsync(resourceGroupName, accountName, filter, orderby)
             .concatMap(new Func1<ServiceResponse<Page<TransformInner>>, Observable<ServiceResponse<Page<TransformInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TransformInner>>> call(ServiceResponse<Page<TransformInner>> page) {
@@ -316,12 +311,11 @@ public class TransformsInner {
     ServiceResponse<PageImpl<TransformInner>> * @param resourceGroupName The name of the resource group within the Azure subscription.
     ServiceResponse<PageImpl<TransformInner>> * @param accountName The Media Services account name.
     ServiceResponse<PageImpl<TransformInner>> * @param filter Restricts the set of items returned.
-    ServiceResponse<PageImpl<TransformInner>> * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-    ServiceResponse<PageImpl<TransformInner>> * @param skip Specifies a non-negative integer n that excludes the first n items of the queried collection from the result. The service returns items starting at position n+1.
+    ServiceResponse<PageImpl<TransformInner>> * @param orderby Specifies the the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TransformInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TransformInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip) {
+    public Observable<ServiceResponse<Page<TransformInner>>> listSinglePageAsync(final String resourceGroupName, final String accountName, final String filter, final String orderby) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -334,7 +328,7 @@ public class TransformsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), filter, top, skip, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), resourceGroupName, accountName, this.client.apiVersion(), filter, orderby, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransformInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TransformInner>>> call(Response<ResponseBody> response) {

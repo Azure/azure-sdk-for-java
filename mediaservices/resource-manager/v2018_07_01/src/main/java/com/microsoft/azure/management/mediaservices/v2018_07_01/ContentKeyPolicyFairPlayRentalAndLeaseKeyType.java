@@ -8,52 +8,40 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for ContentKeyPolicyFairPlayRentalAndLeaseKeyType.
  */
-public enum ContentKeyPolicyFairPlayRentalAndLeaseKeyType {
-    /** Represents a ContentKeyPolicyFairPlayRentalAndLeaseKeyType that is unavailable in current API version. */
-    UNKNOWN("Unknown"),
+public final class ContentKeyPolicyFairPlayRentalAndLeaseKeyType extends ExpandableStringEnum<ContentKeyPolicyFairPlayRentalAndLeaseKeyType> {
+    /** Static value Unknown for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
+    public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType UNKNOWN = fromString("Unknown");
 
-    /** Key duration is not specified. */
-    UNDEFINED("Undefined"),
+    /** Static value Undefined for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
+    public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType UNDEFINED = fromString("Undefined");
 
-    /** Content key can be persisted with an unlimited duration. */
-    PERSISTENT_UNLIMITED("PersistentUnlimited"),
+    /** Static value PersistentUnlimited for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
+    public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType PERSISTENT_UNLIMITED = fromString("PersistentUnlimited");
 
-    /** Content key can be persisted and the valid duration is limited by the Rental Duration value. */
-    PERSISTENT_LIMITED("PersistentLimited");
+    /** Static value PersistentLimited for ContentKeyPolicyFairPlayRentalAndLeaseKeyType. */
+    public static final ContentKeyPolicyFairPlayRentalAndLeaseKeyType PERSISTENT_LIMITED = fromString("PersistentLimited");
 
-    /** The actual serialized value for a ContentKeyPolicyFairPlayRentalAndLeaseKeyType instance. */
-    private String value;
-
-    ContentKeyPolicyFairPlayRentalAndLeaseKeyType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ContentKeyPolicyFairPlayRentalAndLeaseKeyType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding ContentKeyPolicyFairPlayRentalAndLeaseKeyType
+     */
+    @JsonCreator
+    public static ContentKeyPolicyFairPlayRentalAndLeaseKeyType fromString(String name) {
+        return fromString(name, ContentKeyPolicyFairPlayRentalAndLeaseKeyType.class);
     }
 
     /**
-     * Parses a serialized value to a ContentKeyPolicyFairPlayRentalAndLeaseKeyType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ContentKeyPolicyFairPlayRentalAndLeaseKeyType object, or null if unable to parse.
+     * @return known ContentKeyPolicyFairPlayRentalAndLeaseKeyType values
      */
-    @JsonCreator
-    public static ContentKeyPolicyFairPlayRentalAndLeaseKeyType fromString(String value) {
-        ContentKeyPolicyFairPlayRentalAndLeaseKeyType[] items = ContentKeyPolicyFairPlayRentalAndLeaseKeyType.values();
-        for (ContentKeyPolicyFairPlayRentalAndLeaseKeyType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ContentKeyPolicyFairPlayRentalAndLeaseKeyType> values() {
+        return values(ContentKeyPolicyFairPlayRentalAndLeaseKeyType.class);
     }
 }

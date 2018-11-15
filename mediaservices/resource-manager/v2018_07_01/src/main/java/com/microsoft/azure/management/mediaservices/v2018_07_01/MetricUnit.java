@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for MetricUnit.
  */
-public enum MetricUnit {
-    /** The number of bytes. */
-    BYTES("Bytes"),
+public final class MetricUnit extends ExpandableStringEnum<MetricUnit> {
+    /** Static value Bytes for MetricUnit. */
+    public static final MetricUnit BYTES = fromString("Bytes");
 
-    /** The count. */
-    COUNT("Count"),
+    /** Static value Count for MetricUnit. */
+    public static final MetricUnit COUNT = fromString("Count");
 
-    /** The number of milliseconds. */
-    MILLISECONDS("Milliseconds");
+    /** Static value Milliseconds for MetricUnit. */
+    public static final MetricUnit MILLISECONDS = fromString("Milliseconds");
 
-    /** The actual serialized value for a MetricUnit instance. */
-    private String value;
-
-    MetricUnit(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a MetricUnit from its string representation.
+     * @param name a name to look for
+     * @return the corresponding MetricUnit
+     */
+    @JsonCreator
+    public static MetricUnit fromString(String name) {
+        return fromString(name, MetricUnit.class);
     }
 
     /**
-     * Parses a serialized value to a MetricUnit instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed MetricUnit object, or null if unable to parse.
+     * @return known MetricUnit values
      */
-    @JsonCreator
-    public static MetricUnit fromString(String value) {
-        MetricUnit[] items = MetricUnit.values();
-        for (MetricUnit item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<MetricUnit> values() {
+        return values(MetricUnit.class);
     }
 }
