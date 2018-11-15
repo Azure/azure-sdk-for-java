@@ -19,7 +19,6 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.EnrollmentAccounts;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.BillingPeriods;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.Invoices;
-import com.microsoft.azure.management.billing.v2018_03_01_preview.InvoicePricesheets;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.Operations;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -31,7 +30,6 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private EnrollmentAccounts enrollmentAccounts;
     private BillingPeriods billingPeriods;
     private Invoices invoices;
-    private InvoicePricesheets invoicePricesheets;
     private Operations operations;
     /**
     * Get a Configurable instance that can be used to create BillingManager with optional configuration.
@@ -108,16 +106,6 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.invoices = new InvoicesImpl(this);
         }
         return this.invoices;
-    }
-
-    /**
-     * @return Entry point to manage InvoicePricesheets.
-     */
-    public InvoicePricesheets invoicePricesheets() {
-        if (this.invoicePricesheets == null) {
-            this.invoicePricesheets = new InvoicePricesheetsImpl(this);
-        }
-        return this.invoicePricesheets;
     }
 
     /**

@@ -172,19 +172,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The InvoicePricesheetsInner object to access its operations.
-     */
-    private InvoicePricesheetsInner invoicePricesheets;
-
-    /**
-     * Gets the InvoicePricesheetsInner object to access its operations.
-     * @return the InvoicePricesheetsInner object.
-     */
-    public InvoicePricesheetsInner invoicePricesheets() {
-        return this.invoicePricesheets;
-    }
-
-    /**
      * The OperationsInner object to access its operations.
      */
     private OperationsInner operations;
@@ -235,7 +222,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.enrollmentAccounts = new EnrollmentAccountsInner(restClient().retrofit(), this);
         this.billingPeriods = new BillingPeriodsInner(restClient().retrofit(), this);
         this.invoices = new InvoicesInner(restClient().retrofit(), this);
-        this.invoicePricesheets = new InvoicePricesheetsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }

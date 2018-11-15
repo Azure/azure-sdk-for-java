@@ -47,12 +47,7 @@ class InvoiceImpl extends IndexableRefreshableWrapperImpl<Invoice, InvoiceInner>
 
     @Override
     public DownloadUrl downloadUrl() {
-        DownloadUrlInner inner = this.inner().downloadUrl();
-        if (inner != null) {
-            return  new DownloadUrlImpl(inner, manager());
-        } else {
-            return null;
-        }
+        return this.inner().downloadUrl();
     }
 
     @Override
