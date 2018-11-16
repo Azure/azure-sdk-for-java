@@ -70,12 +70,6 @@ public class Userargs {
     private Object statusdir;
 
     /**
-     * The username.
-     */
-    @JsonProperty(value = "user\\.name")
-    private String username;
-
-    /**
      * Get the list of args defined by the user.
      *
      * @return the arg value
@@ -230,26 +224,6 @@ public class Userargs {
      */
     public Userargs withStatusdir(Object statusdir) {
         this.statusdir = statusdir;
-        return this;
-    }
-
-    /**
-     * Get the username.
-     *
-     * @return the username value
-     */
-    public String username() {
-        return this.username;
-    }
-
-    /**
-     * Set the username.
-     *
-     * @param username the username value to set
-     * @return the Userargs object itself.
-     */
-    public Userargs withUsername(String username) {
-        this.username = username;
         return this;
     }
 
