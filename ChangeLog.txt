@@ -1,3 +1,6 @@
+2019.02.15 Version 10.5.0
+* Added uploadFromNonReplayableFlowable to support uploading arbitrary data sources (like network streams) to a block blob.
+
 2019.01.11 Version 10.4.0
 * Fixed a bug that caused errors when java.io.tempdir has no trailing separator.
 * Upgrade autorest-clientruntime dependency to include some bug fixes.
