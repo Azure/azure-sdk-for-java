@@ -24,7 +24,7 @@ public class Error {
      * 'ValidationFailure', 'ExtractionFailure'.
      */
     @JsonProperty(value = "code", required = true)
-    private String code;
+    private ErrorCodeType code;
 
     /**
      * A human-readable representation of the error.
@@ -57,7 +57,7 @@ public class Error {
      *
      * @return the code value
      */
-    public String code() {
+    public ErrorCodeType code() {
         return this.code;
     }
 
@@ -67,7 +67,7 @@ public class Error {
      * @param code the code value to set
      * @return the Error object itself.
      */
-    public Error withCode(String code) {
+    public Error withCode(ErrorCodeType code) {
         this.code = code;
         return this;
     }

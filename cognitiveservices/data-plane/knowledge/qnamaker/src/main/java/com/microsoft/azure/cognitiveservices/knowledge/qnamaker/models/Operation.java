@@ -19,7 +19,7 @@ public class Operation {
      * 'Running', 'Succeeded'.
      */
     @JsonProperty(value = "operationState")
-    private OperationState operationState;
+    private OperationStateType operationState;
 
     /**
      * Timestamp when the operation was created.
@@ -62,7 +62,7 @@ public class Operation {
      *
      * @return the operationState value
      */
-    public OperationState operationState() {
+    public OperationStateType operationState() {
         return this.operationState;
     }
 
@@ -72,7 +72,7 @@ public class Operation {
      * @param operationState the operationState value to set
      * @return the Operation object itself.
      */
-    public Operation withOperationState(OperationState operationState) {
+    public Operation withOperationState(OperationStateType operationState) {
         this.operationState = operationState;
         return this;
     }
