@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Arrays;
 import java.util.List;
 
+import com.microsoft.azure.keyvault.messagesecurity.MessageSecurityHelper;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity;
 
@@ -38,6 +40,11 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
             "unwrapkey");
 
     private final ChallengeCache cache = new ChallengeCache();
+    private JsonWebKey clientEncryptionKey;
+
+    public KeyVaultCredentials() {
+        clientEncryptionKey = MessageSecurityHelper.generateJsonWebKey();
+    }
 
     @Override
     public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
@@ -105,7 +112,8 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
         HttpMessageSecurity httpMessageSecurity = new HttpMessageSecurity(authResult.getAuthToken(),
                 supportsPop ? authResult.getPopKey() : "",
                 supportsPop ? challengeMap.get("x-ms-message-encryption-key") : "",
-                supportsPop ? challengeMap.get("x-ms-message-signing-key") : "");
+                supportsPop ? challengeMap.get("x-ms-message-signing-key") : "",
+                this.clientEncryptionKey);
 
         Request request = httpMessageSecurity.protectRequest(originalRequest);
         return Pair.of(request, httpMessageSecurity);

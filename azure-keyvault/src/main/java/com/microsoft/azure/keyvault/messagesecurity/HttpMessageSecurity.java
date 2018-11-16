@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -61,7 +62,30 @@ public class HttpMessageSecurity {
      *             throws IOException
      */
     public HttpMessageSecurity(String clientSecurityToken, String clientSignatureKeyString,
-            String serverEncryptionKeyString, String serverSignatureKeyString) throws IOException {
+                               String serverEncryptionKeyString, String serverSignatureKeyString) throws IOException {
+        this(clientSecurityToken, clientSignatureKeyString, serverEncryptionKeyString, serverSignatureKeyString,
+                MessageSecurityHelper.generateJsonWebKey());
+    }
+    /**
+     * Constructor.
+     *
+     * @param clientSecurityToken
+     *            pop or bearer authentication token.
+     * @param clientSignatureKeyString
+     *            string with client signing key (public + private parts) or null if
+     *            not supported
+     * @param serverEncryptionKeyString
+     *            string with server encryption key (public only) or null if not
+     *            supported
+     * @param serverSignatureKeyString
+     *            string with server signing key (public only) or null if not
+     *            supported
+     * @throws IOException
+     *             throws IOException
+     */
+    public HttpMessageSecurity(String clientSecurityToken, String clientSignatureKeyString,
+            String serverEncryptionKeyString, String serverSignatureKeyString, JsonWebKey clientEncryptionKey)
+            throws IOException {
 
         this.clientSecurityToken = clientSecurityToken;
 
@@ -75,7 +99,7 @@ public class HttpMessageSecurity {
             this.serverEncryptionKey = MessageSecurityHelper.jsonWebKeyFromString(serverEncryptionKeyString);
         }
 
-        this.clientEncryptionKey = MessageSecurityHelper.generateJsonWebKey();
+        this.clientEncryptionKey = Objects.requireNonNull(clientEncryptionKey);
     }
 
     /**
