@@ -7,18 +7,12 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.microsoft.azure.hdinsight.v2018_06_01_preview</groupId>
-    <parent>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-arm-parent</artifactId>
-        <version>0.0.3-beta</version>
-        <relativePath>../../../pom.xml</relativePath>
-    </parent>
-    <artifactId>azure-mgmt-hdinsight</artifactId>
-    <version>1.0.0-beta</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-</artifactId>
+    <version>1.7.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for HDInsight Management</name>
-    <description>This package contains Microsoft HDInsight Management SDK.</description>
+    <name>Microsoft Azure SDK for </name>
+    <description>This package contains Microsoft  SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>
@@ -46,30 +40,18 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-runtime</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-arm-client-runtime</artifactId>
+            <version>1.5.3</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-authentication</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-mgmt-resources</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-arm-client-runtime</artifactId>
-            <type>test-jar</type>
+            <version>1.5.3</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
