@@ -455,30 +455,27 @@ class BlockBlobAPITest extends APISpec {
 
     def "Get block list"() {
         setup:
-        String blockID = getBlockID()
-        String blockID2 = getBlockID()
-        bu.stageBlock(blockID, defaultFlowable, defaultDataSize, null, null).blockingGet()
-        bu.stageBlock(blockID2, defaultFlowable, defaultDataSize, null, null).blockingGet()
-        bu.commitBlockList(Arrays.asList(blockID, blockID2), null, null, null, null).blockingGet()
+        List<String> committedBlocks = Arrays.asList(getBlockID(), getBlockID())
+        bu.stageBlock(committedBlocks.get(0), defaultFlowable, defaultDataSize, null, null).blockingGet()
+        bu.stageBlock(committedBlocks.get(1), defaultFlowable, defaultDataSize, null, null).blockingGet()
+        bu.commitBlockList(committedBlocks, null, null, null, null).blockingGet()
 
-        String blockID3 = getBlockID()
-        String blockID4 = getBlockID()
-        bu.stageBlock(blockID3, defaultFlowable, defaultDataSize, null, null).blockingGet()
-        bu.stageBlock(blockID4, defaultFlowable, defaultDataSize, null, null).blockingGet()
+        List<String> uncommittedBlocks = Arrays.asList(getBlockID(), getBlockID())
+        bu.stageBlock(uncommittedBlocks.get(0), defaultFlowable, defaultDataSize, null, null).blockingGet()
+        bu.stageBlock(uncommittedBlocks.get(1), defaultFlowable, defaultDataSize, null, null).blockingGet()
+        uncommittedBlocks.sort(true)
 
         when:
         BlockBlobGetBlockListResponse response = bu.getBlockList(BlockListType.ALL, null, null)
                 .blockingGet()
 
         then:
-        response.body().committedBlocks().get(0).name() == blockID
-        response.body().committedBlocks().get(0).size() == defaultDataSize
-        response.body().committedBlocks().get(1).name() == blockID2
-        response.body().committedBlocks().get(1).size() == defaultDataSize
-        response.body().uncommittedBlocks().get(0).name() == blockID3
-        response.body().uncommittedBlocks().get(0).size() == defaultDataSize
-        response.body().uncommittedBlocks().get(1).name() == blockID4
-        response.body().uncommittedBlocks().get(1).size() == defaultDataSize
+        for (int i = 0; i < committedBlocks.size(); i++) {
+            assert response.body().committedBlocks().get(i).name() == committedBlocks.get(i)
+            assert response.body().committedBlocks().get(i).size() == defaultDataSize
+            assert response.body().uncommittedBlocks().get(i).name() == uncommittedBlocks.get(i)
+            assert response.body().uncommittedBlocks().get(i).size() == defaultDataSize
+        }
         validateBasicHeaders(response.headers())
         response.headers().contentType() != null
         response.headers().blobContentLength() == defaultDataSize * 2L
