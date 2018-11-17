@@ -1,0 +1,112 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://test-vault.vault.azure.net/keys/itwkk-p256?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.1.3 OS:Windows 10/10.0 MacAddressHash:d4d5c9d7f1b51c8cd3cbde31af4b2ef8cbe017c857c9ac45aac12bbf6a0ccb14 Java:1.8.0_192 (KeyVaultClientBase, 7.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sat, 17 Nov 2018 00:53:43 GMT",
+      "content-length" : "0",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "www-authenticate" : "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://vault.azure.net\"",
+      "retry-after" : "0",
+      "StatusCode" : "401",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "x-ms-keyvault-network-info" : "addr=131.107.147.10;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.858",
+      "x-ms-request-id" : "ac49ba06-7b23-4546-815a-e1957d12ea07",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://test-vault.vault.azure.net/keys/itwkk-p256?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.1.3 OS:Windows 10/10.0 MacAddressHash:d4d5c9d7f1b51c8cd3cbde31af4b2ef8cbe017c857c9ac45aac12bbf6a0ccb14 Java:1.8.0_192 (KeyVaultClientBase, 7.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sat, 17 Nov 2018 00:53:44 GMT",
+      "content-length" : "362",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-network-info" : "addr=131.107.147.10;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.858",
+      "x-ms-request-id" : "3a3cd3d9-a303-4eae-9ec1-b79e2a843ada",
+      "Body" : "{\"key\":{\"kid\":\"https://test-vault.vault.azure.netkeys/itwkk-p256/781570d4455e4b47add1b4d67166f875\",\"kty\":\"EC\",\"key_ops\":[\"sign\",\"verify\"],\"crv\":\"P-256\",\"x\":\"GNWftijO8XqAow-iSQ56DYxohsjDVKS45aIaCKZNhes\",\"y\":\"BCfOfwK3LGaU4xEIhFcommzyjBPDALwHiHIlmqldjmM\"},\"attributes\":{\"enabled\":true,\"created\":1542416024,\"updated\":1542416024,\"recoveryLevel\":\"Purgeable\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://test-vault.vault.azure.netkeys/itwkk-p256/781570d4455e4b47add1b4d67166f875/sign?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.1.3 OS:Windows 10/10.0 MacAddressHash:d4d5c9d7f1b51c8cd3cbde31af4b2ef8cbe017c857c9ac45aac12bbf6a0ccb14 Java:1.8.0_192 (KeyVaultClientBase, 7.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sat, 17 Nov 2018 00:53:44 GMT",
+      "content-length" : "198",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-network-info" : "addr=131.107.147.10;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.858",
+      "x-ms-request-id" : "988de6b8-cf1b-4c59-bd57-e617a1d77efd",
+      "Body" : "{\"kid\":\"https://test-vault.vault.azure.netkeys/itwkk-p256/781570d4455e4b47add1b4d67166f875\",\"value\":\"mYMoIotsi7Juy9b25qdYywqHTQyTpBNmLs0EwsR7b5d6wZ0EAY2zfRF0evxHwls5Ya1s4EzkZgbbuGxrvDdv8A\"}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://test-vault.vault.azure.netkeys/itwkk-p256/781570d4455e4b47add1b4d67166f875/verify?api-version=7.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.1.3 OS:Windows 10/10.0 MacAddressHash:d4d5c9d7f1b51c8cd3cbde31af4b2ef8cbe017c857c9ac45aac12bbf6a0ccb14 Java:1.8.0_192 (KeyVaultClientBase, 7.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Sat, 17 Nov 2018 00:53:45 GMT",
+      "content-length" : "14",
+      "server" : "Microsoft-IIS/10.0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-network-info" : "addr=131.107.147.10;act_addr_fam=InterNetwork;",
+      "x-ms-keyvault-region" : "westus2",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.1.0.858",
+      "x-ms-request-id" : "a6e78d72-40e7-47ff-8609-052ee1954215",
+      "Body" : "{\"value\":true}"
+    }
+  } ],
+  "variables" : [ ]
+}
