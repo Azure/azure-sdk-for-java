@@ -12,7 +12,6 @@
 * Removed internal dependency on javafx to be compatible with openjdk.
 * Fixed a bug that would cause downloading large files with the TransferManager to fail.
 * Fixed a bug in BlobURL.download() logic for setting up reliable download. This had the potential to download the wrong range when a download stream was retried.
-* Added request Http Method, URL, and headers to logging messages.
 
 2018.09.11 Version 10.1.0
 * Interfaces for helper types updated to be more consistent throughout the library. All types, with the exception of the options for pipeline factories, use a fluent pattern.
