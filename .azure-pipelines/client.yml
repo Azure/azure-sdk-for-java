@@ -40,6 +40,13 @@ jobs:
       goals: 'package'
     displayName: 'Package'
 
+  - task: Maven@3
+    displayName: 'Javadoc'
+    inputs:
+      goals: 'javadoc:jar'
+      options: '-DskipTests=true'
+      publishJUnitResults: false
+
   - task: CopyFiles@2
     inputs:
       contents: '**/*.jar'
