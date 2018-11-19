@@ -1,4 +1,4 @@
-XXXX.XX.XX Version XX.X.X
+2018.11.19 Version 10.3.0
 * Added support for SLF4J.
 * Included default logging to log warnings and errors to the temp directory by default.
 * Fixed a bug in hierarchical listings that would sometimes return incomplete results.
