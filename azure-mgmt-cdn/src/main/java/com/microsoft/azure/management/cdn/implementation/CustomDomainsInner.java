@@ -232,7 +232,7 @@ public class CustomDomainsInner {
     }
 
     /**
-     * Gets an exisitng custom domain within an endpoint.
+     * Gets an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -248,7 +248,7 @@ public class CustomDomainsInner {
     }
 
     /**
-     * Gets an exisitng custom domain within an endpoint.
+     * Gets an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -263,7 +263,7 @@ public class CustomDomainsInner {
     }
 
     /**
-     * Gets an exisitng custom domain within an endpoint.
+     * Gets an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
@@ -282,7 +282,7 @@ public class CustomDomainsInner {
     }
 
     /**
-     * Gets an exisitng custom domain within an endpoint.
+     * Gets an existing custom domain within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.

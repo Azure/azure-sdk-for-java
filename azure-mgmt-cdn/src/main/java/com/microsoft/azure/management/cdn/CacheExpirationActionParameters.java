@@ -34,8 +34,8 @@ public class CacheExpirationActionParameters {
     private String cacheType;
 
     /**
-     * The duration for which the the content needs to be cached. Allowed
-     * format is [d.]hh:mm:ss.
+     * The duration for which the content needs to be cached. Allowed format is
+     * [d.]hh:mm:ss.
      */
     @JsonProperty(value = "cacheDuration")
     private String cacheDuration;
@@ -110,7 +110,7 @@ public class CacheExpirationActionParameters {
     }
 
     /**
-     * Get the duration for which the the content needs to be cached. Allowed format is [d.]hh:mm:ss.
+     * Get the duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss.
      *
      * @return the cacheDuration value
      */
@@ -119,7 +119,7 @@ public class CacheExpirationActionParameters {
     }
 
     /**
-     * Set the duration for which the the content needs to be cached. Allowed format is [d.]hh:mm:ss.
+     * Set the duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss.
      *
      * @param cacheDuration the cacheDuration value to set
      * @return the CacheExpirationActionParameters object itself.
