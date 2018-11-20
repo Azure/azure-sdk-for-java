@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.authorization.v2018_09_01_preview.implementation;
 
+import com.microsoft.azure.management.authorization.v2018_09_01_preview.PrincipalType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -51,6 +52,15 @@ public class RoleAssignmentInner {
      */
     @JsonProperty(value = "properties.principalId")
     private String principalId;
+
+    /**
+     * The principal type of the assigned principal ID. Possible values
+     * include: 'User', 'Group', 'ServicePrincipal', 'Unknown',
+     * 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI',
+     * 'DirectoryObjectOrGroup', 'Everyone'.
+     */
+    @JsonProperty(value = "properties.principalType")
+    private PrincipalType principalType;
 
     /**
      * The Delegation flag for the roleassignment.
@@ -142,6 +152,26 @@ public class RoleAssignmentInner {
      */
     public RoleAssignmentInner withPrincipalId(String principalId) {
         this.principalId = principalId;
+        return this;
+    }
+
+    /**
+     * Get the principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'Unknown', 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI', 'DirectoryObjectOrGroup', 'Everyone'.
+     *
+     * @return the principalType value
+     */
+    public PrincipalType principalType() {
+        return this.principalType;
+    }
+
+    /**
+     * Set the principal type of the assigned principal ID. Possible values include: 'User', 'Group', 'ServicePrincipal', 'Unknown', 'DirectoryRoleTemplate', 'ForeignGroup', 'Application', 'MSI', 'DirectoryObjectOrGroup', 'Everyone'.
+     *
+     * @param principalType the principalType value to set
+     * @return the RoleAssignmentInner object itself.
+     */
+    public RoleAssignmentInner withPrincipalType(PrincipalType principalType) {
+        this.principalType = principalType;
         return this;
     }
 

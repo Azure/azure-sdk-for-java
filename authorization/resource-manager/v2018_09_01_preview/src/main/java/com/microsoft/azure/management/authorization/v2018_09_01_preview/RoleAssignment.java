@@ -42,6 +42,11 @@ public interface RoleAssignment extends HasInner<RoleAssignmentInner>, Indexable
     String principalId();
 
     /**
+     * @return the principalType value.
+     */
+    PrincipalType principalType();
+
+    /**
      * @return the roleDefinitionId value.
      */
     String roleDefinitionId();
