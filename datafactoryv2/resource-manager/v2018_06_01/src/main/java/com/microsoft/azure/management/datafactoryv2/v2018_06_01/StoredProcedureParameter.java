@@ -18,7 +18,7 @@ public class StoredProcedureParameter {
      * Stored procedure parameter value. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "value", required = true)
+    @JsonProperty(value = "value")
     private Object value;
 
     /**
