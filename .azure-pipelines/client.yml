@@ -43,6 +43,7 @@ jobs:
   - task: Maven@3
     displayName: 'Javadoc'
     inputs:
+      mavenPomFile: 'pom.client.build.xml'
       goals: 'javadoc:jar'
       options: '-DskipTests=true'
       publishJUnitResults: false
