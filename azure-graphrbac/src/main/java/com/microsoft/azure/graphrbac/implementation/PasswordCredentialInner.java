@@ -47,6 +47,12 @@ public class PasswordCredentialInner {
     private String value;
 
     /**
+     * Custom Key Identifier.
+     */
+    @JsonProperty(value = "customKeyIdentifier")
+    private byte[] customKeyIdentifier;
+
+    /**
      * Get unmatched properties from the message are deserialized this collection.
      *
      * @return the additionalProperties value
@@ -143,6 +149,26 @@ public class PasswordCredentialInner {
      */
     public PasswordCredentialInner withValue(String value) {
         this.value = value;
+        return this;
+    }
+
+    /**
+     * Get custom Key Identifier.
+     *
+     * @return the customKeyIdentifier value
+     */
+    public byte[] customKeyIdentifier() {
+        return this.customKeyIdentifier;
+    }
+
+    /**
+     * Set custom Key Identifier.
+     *
+     * @param customKeyIdentifier the customKeyIdentifier value to set
+     * @return the PasswordCredentialInner object itself.
+     */
+    public PasswordCredentialInner withCustomKeyIdentifier(byte[] customKeyIdentifier) {
+        this.customKeyIdentifier = customKeyIdentifier;
         return this;
     }
 
