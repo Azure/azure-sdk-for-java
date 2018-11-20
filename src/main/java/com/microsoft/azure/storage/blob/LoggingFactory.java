@@ -22,9 +22,19 @@ import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import io.reactivex.Single;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This is a factory which creates policies in an {@link HttpPipeline} for logging requests and responses. In most
@@ -33,6 +43,54 @@ import java.util.Locale;
  * when creating a custom pipeline.
  */
 public final class LoggingFactory implements RequestPolicyFactory {
+
+    private static final Logger forceLogger = Logger.getLogger("Azure Storage Java SDK");
+    private static final org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger("Azure Storage Java SDK");
+    private static final Map<HttpPipelineLogLevel, Level> javaLogLevelMap = new HashMap<>();
+    private static boolean defaultLoggerLoaded;
+
+    static {
+        try {
+            forceLogger.setLevel(Level.WARNING);
+
+            // Create the logs directory if it doesn't exist.
+            File logDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs");
+            if (!logDir.exists()) {
+                if (!logDir.mkdir()) {
+                    throw new Exception("Could not create logs directory");
+                }
+            }
+
+            /*
+            "/" the local pathname separator
+            "%t" the system temporary directory
+            "%h" the value of the "user.home" system property
+            "%g" the generation number to distinguish rotated logs
+            "%u" a unique number to resolve conflicts
+            "%%" translates to a single percent sign "%"
+
+            10MB files, 5 files
+
+            true- append mode
+             */
+            FileHandler handler = new FileHandler("%t/AzureStorageJavaSDKLogs/%u%g", 10 * Constants.MB, 5, false);
+            handler.setLevel(Level.WARNING);
+            forceLogger.addHandler(handler);
+
+            javaLogLevelMap.put(HttpPipelineLogLevel.ERROR, Level.SEVERE);
+            javaLogLevelMap.put(HttpPipelineLogLevel.WARNING, Level.WARNING);
+            javaLogLevelMap.put(HttpPipelineLogLevel.INFO, Level.INFO);
+            defaultLoggerLoaded = true;
+
+        /*
+        If we can't setup default logging, there's nothing we can do. We shouldn't interfere with the rest of logging.
+         */
+        } catch (Exception e) {
+            defaultLoggerLoaded = false;
+            System.err.println("Azure Storage default logging could not be configured due to the following exception: "
+                    + e);
+        }
+    }
 
     private final LoggingOptions loggingOptions;
 
@@ -100,19 +158,19 @@ public final class LoggingFactory implements RequestPolicyFactory {
                 this.operationStartTime = requestStartTime;
             }
 
-            if (this.options.shouldLog(HttpPipelineLogLevel.INFO)) {
-                this.options.log(HttpPipelineLogLevel.INFO,
-                        String.format("'%s'==> OUTGOING REQUEST (Try number='%d')%n", request.url(), this.tryCount));
+            if (this.shouldLog(HttpPipelineLogLevel.INFO)) {
+                String logMessage = String.format("'%s'==> OUTGOING REQUEST (Try number='%d')%n", request.url(),
+                        this.tryCount);
+                this.log(HttpPipelineLogLevel.INFO, logMessage);
             }
 
-            // TODO: Need to change logic slightly when support for writing to event log/sys log support is added
             return nextPolicy.sendAsync(request)
                     .doOnError(throwable -> {
-                        if (options.shouldLog(HttpPipelineLogLevel.ERROR)) {
-                            options.log(HttpPipelineLogLevel.ERROR,
-                                    String.format(
-                                            "Unexpected failure attempting to make request.%nError message:'%s'%n",
-                                            throwable.getMessage()));
+                        if (this.shouldLog(HttpPipelineLogLevel.ERROR)) {
+                            String logMessage = String.format(
+                                    "Unexpected failure attempting to make request.%nError message:'%s'%n",
+                                    throwable.getMessage());
+                            this.log(HttpPipelineLogLevel.ERROR, logMessage);
                         }
                     })
                     .doOnSuccess(response -> {
@@ -120,13 +178,9 @@ public final class LoggingFactory implements RequestPolicyFactory {
                         long requestCompletionTime = requestEndTime - requestStartTime;
                         long operationDuration = requestEndTime - operationStartTime;
                         HttpPipelineLogLevel currentLevel = HttpPipelineLogLevel.INFO;
-                        // Check if error should be logged since there is nothing of higher priority.
-                        if (!options.shouldLog(HttpPipelineLogLevel.ERROR)) {
-                            return;
-                        }
 
                         String logMessage = Constants.EMPTY_STRING;
-                        if (options.shouldLog(HttpPipelineLogLevel.INFO)) {
+                        if (this.shouldLog(HttpPipelineLogLevel.INFO)) {
                             // Assume success and default to informational logging.
                             logMessage = "Successfully Received Response" + System.lineSeparator();
                         }
@@ -135,7 +189,7 @@ public final class LoggingFactory implements RequestPolicyFactory {
                         if (requestCompletionTime >=
                                 factory.loggingOptions.minDurationToLogSlowRequestsInMs()) {
                             // Log a warning if the try duration exceeded the specified threshold.
-                            if (options.shouldLog(HttpPipelineLogLevel.WARNING)) {
+                            if (this.shouldLog(HttpPipelineLogLevel.WARNING)) {
                                 currentLevel = HttpPipelineLogLevel.WARNING;
                                 logMessage = String.format(Locale.ROOT,
                                         "SLOW OPERATION. Duration > %d ms.%n",
@@ -160,16 +214,154 @@ public final class LoggingFactory implements RequestPolicyFactory {
                             }
 
                             currentLevel = HttpPipelineLogLevel.ERROR;
-                            // TODO: LOG THIS TO WINDOWS EVENT LOG/SYS LOG
                         }
 
-                        if (options.shouldLog(currentLevel)) {
+                        /*
+                        We don't want to format the log message unless we have to. Format once we've determined that
+                        either the customer wants this log level or we need to force log it.
+                         */
+                        if (this.shouldLog(currentLevel)) {
+                            String additionalMessageInfo = buildAdditionalMessageInfo(request);
                             String messageInfo = String.format(Locale.ROOT,
-                                    "Request try:'%d', request duration:'%d' ms, operation duration:'%d' ms%n",
-                                    tryCount, requestCompletionTime, operationDuration);
-                            options.log(currentLevel, logMessage + messageInfo);
+                                    "Request try:'%d', request duration:'%d' ms, operation duration:'%d' ms%n%s",
+                                    tryCount, requestCompletionTime, operationDuration, additionalMessageInfo);
+                            this.log(currentLevel, logMessage + messageInfo);
                         }
                     });
+        }
+
+        private String buildAdditionalMessageInfo(final HttpRequest httpRequest) {
+            HttpRequest sanitizedRequest = buildSanitizedRequest(httpRequest);
+            StringBuilder stringBuilder = new StringBuilder();
+            String format = "%s: %s" + System.lineSeparator();
+            stringBuilder.append(String.format(format, sanitizedRequest.httpMethod().toString(),
+                    sanitizedRequest.url().toString()));
+            sanitizedRequest.headers().forEach((header) -> stringBuilder.append(String.format(format, header.name(),
+                    header.value())));
+            return stringBuilder.toString();
+        }
+
+        private HttpRequest buildSanitizedRequest(final HttpRequest initialRequest) {
+            // Build new URL and redact SAS signature, if present
+            URL url = sanitizeURL(initialRequest.url());
+
+            // Build resultRequest
+            HttpRequest resultRequest = new HttpRequest(
+                    initialRequest.callerMethod(),
+                    initialRequest.httpMethod(),
+                    url,
+                    initialRequest.headers(),
+                    initialRequest.body(),
+                    initialRequest.responseDecoder());
+
+            // Redact Authorization header, if present
+            if (resultRequest.headers().value(Constants.HeaderConstants.AUTHORIZATION) != null) {
+                resultRequest.headers().set(Constants.HeaderConstants.AUTHORIZATION, Constants.REDACTED);
+            }
+
+            // Redact Copy Source header SAS signature, if present
+            if (resultRequest.headers().value(Constants.HeaderConstants.COPY_SOURCE) != null) {
+                try {
+                    URL copySourceUrl = sanitizeURL(new URL(resultRequest.headers()
+                            .value(Constants.HeaderConstants.COPY_SOURCE)));
+                    resultRequest.headers().set(Constants.HeaderConstants.COPY_SOURCE, copySourceUrl.toString());
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            return resultRequest;
+        }
+
+        private URL sanitizeURL(URL initialURL) {
+            URL resultURL = initialURL;
+            try {
+                BlobURLParts urlParts = URLParser.parse(initialURL);
+                if (urlParts.sasQueryParameters() == null || urlParts.sasQueryParameters().signature() == null) {
+                    return resultURL;
+                }
+                urlParts.withSasQueryParameters(new SASQueryParameters(
+                        urlParts.sasQueryParameters().version(),
+                        urlParts.sasQueryParameters().services(),
+                        urlParts.sasQueryParameters().resourceTypes(),
+                        urlParts.sasQueryParameters().protocol(),
+                        urlParts.sasQueryParameters().startTime(),
+                        urlParts.sasQueryParameters().expiryTime(),
+                        urlParts.sasQueryParameters().ipRange(),
+                        urlParts.sasQueryParameters().identifier(),
+                        urlParts.sasQueryParameters().resource(),
+                        urlParts.sasQueryParameters().permissions(),
+                        Constants.REDACTED,
+                        urlParts.sasQueryParameters().cacheControl(),
+                        urlParts.sasQueryParameters().contentDisposition(),
+                        urlParts.sasQueryParameters().contentEncoding(),
+                        urlParts.sasQueryParameters().contentLanguage(),
+                        urlParts.sasQueryParameters().contentType()
+                ));
+                resultURL = urlParts.toURL();
+
+                /*
+                We are only making valid changes to what has already been validated as a URL (since we got it from a
+                URL object), so there should be no need for either us or the caller to check this error.
+                */
+            } catch (UnknownHostException | MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+            return resultURL;
+        }
+
+        /*
+        We need to support the HttpPipelineLogger as it already exists. We also want to allow users to hook up SLF4J.
+        Finally, we need to do our own default logging.
+         */
+        private void log(HttpPipelineLogLevel level, String message) {
+            /*
+            We need to explicitly check before we send it to the HttpPipelineLogger as its log function may only
+            expect to receive messages for which shouldLog() returns true.
+             */
+            if (this.options.shouldLog(level)) {
+                this.options.log(level, message);
+            }
+
+            /*
+            The Java logger and slf4j logger should do the correct thing given any log level. forceLogger is
+            configured to only log warnings and errors.
+             */
+            if (!this.factory.loggingOptions.disableDefaultLogging() && LoggingFactory.defaultLoggerLoaded) {
+                forceLogger.log(javaLogLevelMap.get(level), message);
+            }
+            if (level.equals(HttpPipelineLogLevel.ERROR)) {
+                slf4jLogger.error(message);
+            } else if (level.equals(HttpPipelineLogLevel.WARNING)) {
+                slf4jLogger.warn(message);
+            } else if (level.equals(HttpPipelineLogLevel.INFO)) {
+                slf4jLogger.info(message);
+            }
+        }
+
+        /*
+        Check the HttpPipelineLogger, SLF4J Logger, and Java Logger
+         */
+        private boolean shouldLog(HttpPipelineLogLevel level) {
+            // Default log Warnings and Errors as long as default logging is enabled.
+            if ((level.equals(HttpPipelineLogLevel.WARNING) || level.equals(HttpPipelineLogLevel.ERROR)) &&
+                    !this.factory.loggingOptions.disableDefaultLogging() && LoggingFactory.defaultLoggerLoaded) {
+                return true;
+            }
+
+            // The user has configured the HttpPipelineLogger to log at this level.
+            if (this.options.shouldLog(level)) {
+                return true;
+            }
+
+            // The SLF4J logger is configured at the given level.
+            if ((level.equals(HttpPipelineLogLevel.INFO) && slf4jLogger.isInfoEnabled()) ||
+                    (level.equals(HttpPipelineLogLevel.WARNING) && slf4jLogger.isWarnEnabled()) ||
+                    (level.equals(HttpPipelineLogLevel.ERROR) && slf4jLogger.isErrorEnabled())) {
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -159,6 +159,7 @@ public abstract class StorageURL {
         if (!(credentials instanceof AnonymousCredentials)) {
             factories.add(credentials);
         }
+        factories.add(new SetResponseFieldFactory());
         factories.add(new DecodingPolicyFactory());
         factories.add(new LoggingFactory(pipelineOptions.loggingOptions()));
 
