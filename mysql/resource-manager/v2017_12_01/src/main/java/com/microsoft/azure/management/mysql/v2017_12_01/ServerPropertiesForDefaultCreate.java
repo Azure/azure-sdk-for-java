@@ -32,7 +32,7 @@ public class ServerPropertiesForDefaultCreate extends ServerPropertiesForCreate 
     private String administratorLoginPassword;
 
     /**
-     * Get the administratorLogin value.
+     * Get the administrator's login name of a server. Can only be specified when the server is being created (and is required for creation).
      *
      * @return the administratorLogin value
      */
@@ -41,7 +41,7 @@ public class ServerPropertiesForDefaultCreate extends ServerPropertiesForCreate 
     }
 
     /**
-     * Set the administratorLogin value.
+     * Set the administrator's login name of a server. Can only be specified when the server is being created (and is required for creation).
      *
      * @param administratorLogin the administratorLogin value to set
      * @return the ServerPropertiesForDefaultCreate object itself.
@@ -52,7 +52,7 @@ public class ServerPropertiesForDefaultCreate extends ServerPropertiesForCreate 
     }
 
     /**
-     * Get the administratorLoginPassword value.
+     * Get the password of the administrator login.
      *
      * @return the administratorLoginPassword value
      */
@@ -61,7 +61,7 @@ public class ServerPropertiesForDefaultCreate extends ServerPropertiesForCreate 
     }
 
     /**
-     * Set the administratorLoginPassword value.
+     * Set the password of the administrator login.
      *
      * @param administratorLoginPassword the administratorLoginPassword value to set
      * @return the ServerPropertiesForDefaultCreate object itself.

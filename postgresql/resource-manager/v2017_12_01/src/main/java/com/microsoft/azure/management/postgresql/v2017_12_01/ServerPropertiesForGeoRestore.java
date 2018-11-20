@@ -26,7 +26,7 @@ public class ServerPropertiesForGeoRestore extends ServerPropertiesForCreate {
     private String sourceServerId;
 
     /**
-     * Get the sourceServerId value.
+     * Get the source server id to restore from.
      *
      * @return the sourceServerId value
      */
@@ -35,7 +35,7 @@ public class ServerPropertiesForGeoRestore extends ServerPropertiesForCreate {
     }
 
     /**
-     * Set the sourceServerId value.
+     * Set the source server id to restore from.
      *
      * @param sourceServerId the sourceServerId value to set
      * @return the ServerPropertiesForGeoRestore object itself.

@@ -44,7 +44,7 @@ public class OperationInner {
     private Map<String, Object> properties;
 
     /**
-     * Get the name value.
+     * Get the name of the operation being performed on this particular object.
      *
      * @return the name value
      */
@@ -53,7 +53,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the display value.
+     * Get the localized display information for this particular operation or action.
      *
      * @return the display value
      */
@@ -62,7 +62,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the origin value.
+     * Get the intended executor of the operation. Possible values include: 'NotSpecified', 'user', 'system'.
      *
      * @return the origin value
      */
@@ -71,7 +71,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the properties value.
+     * Get additional descriptions for the operation.
      *
      * @return the properties value
      */
