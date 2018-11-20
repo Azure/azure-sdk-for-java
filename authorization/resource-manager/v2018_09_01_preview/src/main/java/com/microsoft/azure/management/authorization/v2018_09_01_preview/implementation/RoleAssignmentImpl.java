@@ -111,6 +111,11 @@ class RoleAssignmentImpl extends CreatableUpdatableImpl<RoleAssignment, RoleAssi
     }
 
     @Override
+    public PrincipalType principalType() {
+        return this.inner().principalType();
+    }
+
+    @Override
     public String roleDefinitionId() {
         return this.inner().roleDefinitionId();
     }
