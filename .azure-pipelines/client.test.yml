@@ -19,7 +19,7 @@ jobs:
       publishJUnitResults: false
 
   - script: |
-      mvn jetty:run-forked -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --batch-mode -f pom.client.build.xml
+      mvn jetty:run-forked -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --batch-mode -f pom.client.xml
     displayName: 'Start Jetty'
 
   - task: Maven@3
