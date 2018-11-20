@@ -34,7 +34,7 @@ public class EndpointUpdateParameters {
     private String originHostHeader;
 
     /**
-     * A directory path on the origin that CDN can use to retreive content
+     * A directory path on the origin that CDN can use to retrieve content
      * from, e.g. contoso.cloudapp.net/originpath.
      */
     @JsonProperty(value = "properties.originPath")
@@ -102,7 +102,7 @@ public class EndpointUpdateParameters {
 
     /**
      * List of rules defining the user's geo access within a CDN endpoint. Each
-     * geo filter defines an acess rule to a specified path or content, e.g.
+     * geo filter defines an access rule to a specified path or content, e.g.
      * block APAC for path /pictures/.
      */
     @JsonProperty(value = "properties.geoFilters")
@@ -155,7 +155,7 @@ public class EndpointUpdateParameters {
     }
 
     /**
-     * Get a directory path on the origin that CDN can use to retreive content from, e.g. contoso.cloudapp.net/originpath.
+     * Get a directory path on the origin that CDN can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
      *
      * @return the originPath value
      */
@@ -164,7 +164,7 @@ public class EndpointUpdateParameters {
     }
 
     /**
-     * Set a directory path on the origin that CDN can use to retreive content from, e.g. contoso.cloudapp.net/originpath.
+     * Set a directory path on the origin that CDN can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
      *
      * @param originPath the originPath value to set
      * @return the EndpointUpdateParameters object itself.
@@ -315,7 +315,7 @@ public class EndpointUpdateParameters {
     }
 
     /**
-     * Get list of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an acess rule to a specified path or content, e.g. block APAC for path /pictures/.
+     * Get list of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an access rule to a specified path or content, e.g. block APAC for path /pictures/.
      *
      * @return the geoFilters value
      */
@@ -324,7 +324,7 @@ public class EndpointUpdateParameters {
     }
 
     /**
-     * Set list of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an acess rule to a specified path or content, e.g. block APAC for path /pictures/.
+     * Set list of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an access rule to a specified path or content, e.g. block APAC for path /pictures/.
      *
      * @param geoFilters the geoFilters value to set
      * @return the EndpointUpdateParameters object itself.
