@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CsmUsageQuotaInner {
     /**
-     * Units of measurement for the quota resourse.
+     * Units of measurement for the quota resource.
      */
     @JsonProperty(value = "unit")
     private String unit;
@@ -47,7 +47,7 @@ public class CsmUsageQuotaInner {
     private LocalizableString name;
 
     /**
-     * Get units of measurement for the quota resourse.
+     * Get units of measurement for the quota resource.
      *
      * @return the unit value
      */
@@ -56,7 +56,7 @@ public class CsmUsageQuotaInner {
     }
 
     /**
-     * Set units of measurement for the quota resourse.
+     * Set units of measurement for the quota resource.
      *
      * @param unit the unit value to set
      * @return the CsmUsageQuotaInner object itself.
