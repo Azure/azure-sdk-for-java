@@ -293,12 +293,12 @@
             <configuration>
                 <properties>
                     <property>
-<name>keyvault.vaulturi</name>
+<name>KEYVAULT_VAULTURI</name>
        		<value>https://tifchen-keyvault-fancy.vault.azure.net</value>
                     </property>
 
                     <property>
-                           		<name>keyvault.vaulturi.alt</name>
+                           		<name>KEYVAULT_VAULTURI_ALT</name>
        		<value>https://tifchen-keyvault-fancier.vault.azure.net</value>
                     </property>
                 </properties>
@@ -325,8 +325,8 @@
             </includes>
             <environmentVariables>
               <test.mode>${testMode}</test.mode>
-              <keyvault.vaulturi>https://tifchen-keyvault-fancy.vault.azure.net</keyvault.vaulturi>
-              <keyvault.vaulturi.alt>https://tifchen-keyvault-fancier.vault.azure.net</keyvault.vaulturi.alt>
+              <KEYVAULT_VAULTURI>https://tifchen-keyvault-fancy.vault.azure.net</KEYVAULT_VAULTURI>
+              <KEYVAULT_VAULTURI_ALT>https://tifchen-keyvault-fancier.vault.azure.net</KEYVAULT_VAULTURI_ALT>
             </environmentVariables>
           </configuration>
         </plugin>
