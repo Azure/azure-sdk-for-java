@@ -28,6 +28,12 @@ public class TestAllRoutesInput {
     private RoutingMessage message;
 
     /**
+     * Routing Twin Reference.
+     */
+    @JsonProperty(value = "twin")
+    private RoutingTwin twin;
+
+    /**
      * Get routing source. Possible values include: 'Invalid', 'DeviceMessages', 'TwinChangeEvents', 'DeviceLifecycleEvents', 'DeviceJobLifecycleEvents'.
      *
      * @return the routingSource value
@@ -64,6 +70,26 @@ public class TestAllRoutesInput {
      */
     public TestAllRoutesInput withMessage(RoutingMessage message) {
         this.message = message;
+        return this;
+    }
+
+    /**
+     * Get routing Twin Reference.
+     *
+     * @return the twin value
+     */
+    public RoutingTwin twin() {
+        return this.twin;
+    }
+
+    /**
+     * Set routing Twin Reference.
+     *
+     * @param twin the twin value to set
+     * @return the TestAllRoutesInput object itself.
+     */
+    public TestAllRoutesInput withTwin(RoutingTwin twin) {
+        this.twin = twin;
         return this;
     }
 
