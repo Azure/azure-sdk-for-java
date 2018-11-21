@@ -9,15 +9,18 @@
 package com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation.NotificationSettingsCollectionInner;
+import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Updatable;
+import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation.WorkloadMonitorManager;
-import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation.NotificationSettingsCollectionInner;
 import java.util.List;
 
 /**
  * Type representing NotificationSettingsCollection.
  */
-public interface NotificationSettingsCollection extends HasInner<NotificationSettingsCollectionInner>, HasManager<WorkloadMonitorManager> {
+public interface NotificationSettingsCollection extends HasInner<NotificationSettingsCollectionInner>, Indexable, Updatable<NotificationSettingsCollection.Update>, HasManager<WorkloadMonitorManager> {
     /**
      * @return the actionGroupResourceIds value.
      */
@@ -53,4 +56,15 @@ public interface NotificationSettingsCollection extends HasInner<NotificationSet
      */
     String type();
 
+    /**
+     * The template for a NotificationSettingsCollection update operation, containing all the settings that can be modified.
+     */
+    interface Update extends Appliable<NotificationSettingsCollection> {
+    }
+
+    /**
+     * Grouping of NotificationSettingsCollection update stages.
+     */
+    interface UpdateStages {
+    }
 }
