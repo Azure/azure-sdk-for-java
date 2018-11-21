@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * ARM resource for a app service enviroment.
+ * ARM resource for a app service environment.
  */
 @JsonFlatten
 public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
