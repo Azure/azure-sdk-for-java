@@ -39,22 +39,16 @@ jobs:
     displayName: 'Publish'
 
 - template: client.test.yml
-  dependsOn:
-  - 'Publish'
   parameters:
     name: Linux
     vmImage: 'ubuntu-16.04'
 
 - template: client.test.yml
-  dependsOn:
-  - 'Publish'
   parameters:
     name: macOS
     vmImage: 'macOS-10.13'
 
 - template: client.test.yml
-  dependsOn:
-  - 'Publish'
   parameters:
     name: Windows
     vmImage: 'vs2017-win2016'

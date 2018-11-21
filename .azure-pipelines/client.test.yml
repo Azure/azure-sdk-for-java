@@ -4,7 +4,8 @@ parameters:
 
 jobs:
 - job: ${{ format('Test_{0}', parameters.name) }}
-
+  dependsOn:
+  - 'Publish'
   pool:
     vmImage: ${{ parameters.vmImage }}
 
