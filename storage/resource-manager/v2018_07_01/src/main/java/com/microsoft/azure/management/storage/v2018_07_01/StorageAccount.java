@@ -62,6 +62,11 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
     Boolean failoverInProgress();
 
     /**
+     * @return the geoReplicationStats value.
+     */
+    GeoReplicationStats geoReplicationStats();
+
+    /**
      * @return the identity value.
      */
     Identity identity();
