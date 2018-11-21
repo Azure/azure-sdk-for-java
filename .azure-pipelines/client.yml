@@ -2,27 +2,7 @@ trigger:
 - master
 
 jobs:
-- template: client.test.yml
-  parameters:
-    name: Linux
-    vmImage: 'ubuntu-16.04'
-
-- template: client.test.yml
-  parameters:
-    name: macOS
-    vmImage: 'macOS-10.13'
-
-- template: client.test.yml
-  parameters:
-    name: Windows
-    vmImage: 'vs2017-win2016'
-
 - job: 'Publish'
-  
-  dependsOn:
-  - 'Test_Linux'
-  - 'Test_macOS'
-  - 'Test_Windows'
 
   pool:
     vmImage: 'ubuntu-16.04'
@@ -57,3 +37,24 @@ jobs:
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish'
+
+- template: client.test.yml
+  dependsOn:
+  - 'Publish'
+  parameters:
+    name: Linux
+    vmImage: 'ubuntu-16.04'
+
+- template: client.test.yml
+  dependsOn:
+  - 'Publish'
+  parameters:
+    name: macOS
+    vmImage: 'macOS-10.13'
+
+- template: client.test.yml
+  dependsOn:
+  - 'Publish'
+  parameters:
+    name: Windows
+    vmImage: 'vs2017-win2016'
