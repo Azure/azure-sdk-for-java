@@ -48,8 +48,8 @@ public class ServiceTypeHealthPolicy {
     private Integer maxPercentUnhealthyReplicasPerPartition;
 
     /**
-     * The maximum maximum allowed percentage of unhealthy services. Allowed
-     * values are Byte values from zero to 100.
+     * The maximum allowed percentage of unhealthy services. Allowed values are
+     * Byte values from zero to 100.
      *
      * The percentage represents the maximum tolerated percentage of services
      * that can be unhealthy before the application is considered in error.
@@ -121,7 +121,7 @@ public class ServiceTypeHealthPolicy {
     }
 
     /**
-     * Get the maximum maximum allowed percentage of unhealthy services. Allowed values are Byte values from zero to 100.
+     * Get the maximum allowed percentage of unhealthy services. Allowed values are Byte values from zero to 100.
      The percentage represents the maximum tolerated percentage of services that can be unhealthy before the application is considered in error.
      If the percentage is respected but there is at least one unhealthy service, the health is evaluated as Warning.
      This is calculated by dividing the number of unhealthy services of the specific service type over the total number of services of the specific service type.
@@ -134,7 +134,7 @@ public class ServiceTypeHealthPolicy {
     }
 
     /**
-     * Set the maximum maximum allowed percentage of unhealthy services. Allowed values are Byte values from zero to 100.
+     * Set the maximum allowed percentage of unhealthy services. Allowed values are Byte values from zero to 100.
      The percentage represents the maximum tolerated percentage of services that can be unhealthy before the application is considered in error.
      If the percentage is respected but there is at least one unhealthy service, the health is evaluated as Warning.
      This is calculated by dividing the number of unhealthy services of the specific service type over the total number of services of the specific service type.
