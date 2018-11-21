@@ -305,9 +305,7 @@ public class KeyVaultClientIntegrationTestBase {
 			DeletedCertificateBundle certificateBundle = keyVaultClient.getDeletedCertificate(vaultBaseUrl,
 					certificateName);
 			if (certificateBundle == null) {
-				if (isRecordMode()) {
-					Thread.sleep(10000);
-				}
+				SdkContext.sleep(10000);
 				pendingPollCount += 1;
 				continue;
 			} else {
@@ -322,9 +320,7 @@ public class KeyVaultClientIntegrationTestBase {
 		while (pendingPollCount < 21) {
 			DeletedKeyBundle deletedKeyBundle = keyVaultClient.getDeletedKey(vaultBaseUrl, certificateName);
 			if (deletedKeyBundle == null) {
-				if (isRecordMode()) {
-					Thread.sleep(10000);
-				}
+			    SdkContext.sleep(10000);
 				pendingPollCount += 1;
 				continue;
 			} else {
@@ -339,9 +335,7 @@ public class KeyVaultClientIntegrationTestBase {
 		while (pendingPollCount < 50) {
 			DeletedSecretBundle deletedSecretBundle = keyVaultClient.getDeletedSecret(vaultBaseUrl, secretName);
 			if (deletedSecretBundle == null) {
-				if (isRecordMode()) {
-					Thread.sleep(10000);
-				}
+				SdkContext.sleep(10000);
 				pendingPollCount += 1;
 				continue;
 			} else {

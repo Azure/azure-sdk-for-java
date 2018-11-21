@@ -39,6 +39,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.apache.commons.codec.binary.Base64;
 import org.joda.time.DateTime;
 import org.junit.Assert;
@@ -195,7 +196,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         }
         
         keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
-        Thread.sleep(20000);
+        SdkContext.sleep(20000);
     }
 
     /**
@@ -253,7 +254,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         pollOnCertificateDeletion(getVaultUri(), certificateName);
         
         keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
-        Thread.sleep(20000);
+        SdkContext.sleep(20000);
     }
 
     /**
@@ -356,7 +357,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         pollOnCertificateDeletion(getVaultUri(), certificateName);
 
         keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
-        Thread.sleep(20000);
+        SdkContext.sleep(20000);
     }
 
     /**
@@ -443,7 +444,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         pollOnCertificateDeletion(getVaultUri(), certificateName);
         
         keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
-        Thread.sleep(20000);
+        SdkContext.sleep(20000);
     }
 
     /**
@@ -497,7 +498,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         }
         
         keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
-        Thread.sleep(20000);
+        SdkContext.sleep(20000);
     }
     
     /**
@@ -545,7 +546,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         keyVaultClient.deleteCertificate(getVaultUri(), certificateName);
         pollOnCertificateDeletion(getVaultUri(), certificateName);
         keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
-        Thread.sleep(20000);
+        SdkContext.sleep(20000);
     }
     
     /**
@@ -606,7 +607,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         }
         
         keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
-        Thread.sleep(10000);
+        SdkContext.sleep(10000);
     }
     
        /**
@@ -658,7 +659,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         pollOnCertificateDeletion(getVaultUri(), certificateName);
         
         keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
-        Thread.sleep(10000);
+        SdkContext.sleep(10000);
     }
 
     /**
@@ -694,9 +695,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     ++failureCount;
                     if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
-                        if (isRecordMode()) {
-                        	Thread.sleep(failureCount * 1500);
-                        }
+                        SdkContext.sleep(failureCount * 1500);
                         continue;
                     }
                     throw e;
@@ -723,7 +722,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             keyVaultClient.deleteCertificate(getVaultUri(), toDeleteCertificateName);
             pollOnCertificateDeletion(getVaultUri(), toDeleteCertificateName);
             keyVaultClient.purgeDeletedCertificate(getVaultUri(), toDeleteCertificateName);
-            Thread.sleep(10000);
+            SdkContext.sleep(10000);
         }
     }
 
@@ -760,9 +759,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     ++failureCount;
                     if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
-                        if (isRecordMode()) {
-                        	Thread.sleep(failureCount * 1500);
-                        }
+                        SdkContext.sleep(failureCount * 1500);
                         continue;
                     }
                     throw e;
@@ -932,9 +929,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             CertificateOperation pendingCertificateOperation = keyVaultClient
                     .getCertificateOperation(getVaultUri(), certificateName);
             if (pendingCertificateOperation.status().equalsIgnoreCase(STATUS_IN_PROGRESS)) {
-            	if (isRecordMode()) {
-            		Thread.sleep(10000);
-            	}
+            	SdkContext.sleep(10000);
                 pendingPollCount += 1;
                 continue;
             }
