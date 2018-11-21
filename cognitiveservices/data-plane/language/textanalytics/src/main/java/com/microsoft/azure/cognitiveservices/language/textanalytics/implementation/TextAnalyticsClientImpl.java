@@ -13,7 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.BatchInput;
-import com.microsoft.azure.cognitiveservices.language.textanalytics.models.EntitiesBatchResult;
+import com.microsoft.azure.cognitiveservices.language.textanalytics.models.EntitiesBatchResultV2dot1;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.Input;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.KeyPhraseBatchResult;
@@ -154,7 +154,7 @@ public class TextAnalyticsClientImpl extends AzureServiceClient implements TextA
      * @param credentials the management credentials for Azure
      */
     public TextAnalyticsClientImpl(ServiceClientCredentials credentials) {
-        this("https://{Endpoint}/text/analytics/v2.0", credentials);
+        this("https://{Endpoint}/text/analytics/v2.1-preview", credentials);
     }
 
     /**
@@ -193,7 +193,7 @@ public class TextAnalyticsClientImpl extends AzureServiceClient implements TextA
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "TextAnalyticsClient", "v2.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "TextAnalyticsClient", "v2.1-preview");
     }
 
     private void initializeService() {
@@ -678,40 +678,40 @@ public class TextAnalyticsClientImpl extends AzureServiceClient implements TextA
 
     /**
      * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of recognized entities in a given document. To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.The API returns a list of known entities and general named entities ("Person", "Location", "Organization" etc) in a given document. Known entities are returned with Wikipedia Id and Wikipedia link, and also Bing Id which can be used in Bing Entity Search API. General named entities are returned with entity types. If a general named entity is also a known entity, then all information regarding it (Wikipedia Id, Bing Id, entity type etc) will be returned. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking#supported-types-for-named-entity-recognition"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt; for the list of supported Entity Types. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the EntitiesBatchResult object if successful.
+     * @return the EntitiesBatchResultV2dot1 object if successful.
      */
-    public EntitiesBatchResult entities() {
+    public EntitiesBatchResultV2dot1 entities() {
         return entitiesWithServiceResponseAsync().toBlocking().single().body();
     }
 
     /**
      * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of recognized entities in a given document. To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.The API returns a list of known entities and general named entities ("Person", "Location", "Organization" etc) in a given document. Known entities are returned with Wikipedia Id and Wikipedia link, and also Bing Id which can be used in Bing Entity Search API. General named entities are returned with entity types. If a general named entity is also a known entity, then all information regarding it (Wikipedia Id, Bing Id, entity type etc) will be returned. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking#supported-types-for-named-entity-recognition"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt; for the list of supported Entity Types. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<EntitiesBatchResult> entitiesAsync(final ServiceCallback<EntitiesBatchResult> serviceCallback) {
+    public ServiceFuture<EntitiesBatchResultV2dot1> entitiesAsync(final ServiceCallback<EntitiesBatchResultV2dot1> serviceCallback) {
         return ServiceFuture.fromResponse(entitiesWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
      * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of recognized entities in a given document. To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.The API returns a list of known entities and general named entities ("Person", "Location", "Organization" etc) in a given document. Known entities are returned with Wikipedia Id and Wikipedia link, and also Bing Id which can be used in Bing Entity Search API. General named entities are returned with entity types. If a general named entity is also a known entity, then all information regarding it (Wikipedia Id, Bing Id, entity type etc) will be returned. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking#supported-types-for-named-entity-recognition"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt; for the list of supported Entity Types. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntitiesBatchResult object
+     * @return the observable to the EntitiesBatchResultV2dot1 object
      */
-    public Observable<EntitiesBatchResult> entitiesAsync() {
-        return entitiesWithServiceResponseAsync().map(new Func1<ServiceResponse<EntitiesBatchResult>, EntitiesBatchResult>() {
+    public Observable<EntitiesBatchResultV2dot1> entitiesAsync() {
+        return entitiesWithServiceResponseAsync().map(new Func1<ServiceResponse<EntitiesBatchResultV2dot1>, EntitiesBatchResultV2dot1>() {
             @Override
-            public EntitiesBatchResult call(ServiceResponse<EntitiesBatchResult> response) {
+            public EntitiesBatchResultV2dot1 call(ServiceResponse<EntitiesBatchResultV2dot1> response) {
                 return response.body();
             }
         });
@@ -719,12 +719,12 @@ public class TextAnalyticsClientImpl extends AzureServiceClient implements TextA
 
     /**
      * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of recognized entities in a given document. To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.The API returns a list of known entities and general named entities ("Person", "Location", "Organization" etc) in a given document. Known entities are returned with Wikipedia Id and Wikipedia link, and also Bing Id which can be used in Bing Entity Search API. General named entities are returned with entity types. If a general named entity is also a known entity, then all information regarding it (Wikipedia Id, Bing Id, entity type etc) will be returned. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking#supported-types-for-named-entity-recognition"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt; for the list of supported Entity Types. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntitiesBatchResult object
+     * @return the observable to the EntitiesBatchResultV2dot1 object
      */
-    public Observable<ServiceResponse<EntitiesBatchResult>> entitiesWithServiceResponseAsync() {
+    public Observable<ServiceResponse<EntitiesBatchResultV2dot1>> entitiesWithServiceResponseAsync() {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -733,11 +733,11 @@ public class TextAnalyticsClientImpl extends AzureServiceClient implements TextA
         input.withDocuments(null);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         return service.entities(this.acceptLanguage(), input, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntitiesBatchResult>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntitiesBatchResultV2dot1>>>() {
                 @Override
-                public Observable<ServiceResponse<EntitiesBatchResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<EntitiesBatchResultV2dot1>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<EntitiesBatchResult> clientResponse = entitiesDelegate(response);
+                        ServiceResponse<EntitiesBatchResultV2dot1> clientResponse = entitiesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -748,43 +748,43 @@ public class TextAnalyticsClientImpl extends AzureServiceClient implements TextA
 
     /**
      * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of recognized entities in a given document. To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.The API returns a list of known entities and general named entities ("Person", "Location", "Organization" etc) in a given document. Known entities are returned with Wikipedia Id and Wikipedia link, and also Bing Id which can be used in Bing Entity Search API. General named entities are returned with entity types. If a general named entity is also a known entity, then all information regarding it (Wikipedia Id, Bing Id, entity type etc) will be returned. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking#supported-types-for-named-entity-recognition"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt; for the list of supported Entity Types. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @param documents the List&lt;MultiLanguageInput&gt; value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the EntitiesBatchResult object if successful.
+     * @return the EntitiesBatchResultV2dot1 object if successful.
      */
-    public EntitiesBatchResult entities(List<MultiLanguageInput> documents) {
+    public EntitiesBatchResultV2dot1 entities(List<MultiLanguageInput> documents) {
         return entitiesWithServiceResponseAsync(documents).toBlocking().single().body();
     }
 
     /**
      * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of recognized entities in a given document. To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.The API returns a list of known entities and general named entities ("Person", "Location", "Organization" etc) in a given document. Known entities are returned with Wikipedia Id and Wikipedia link, and also Bing Id which can be used in Bing Entity Search API. General named entities are returned with entity types. If a general named entity is also a known entity, then all information regarding it (Wikipedia Id, Bing Id, entity type etc) will be returned. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking#supported-types-for-named-entity-recognition"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt; for the list of supported Entity Types. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @param documents the List&lt;MultiLanguageInput&gt; value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<EntitiesBatchResult> entitiesAsync(List<MultiLanguageInput> documents, final ServiceCallback<EntitiesBatchResult> serviceCallback) {
+    public ServiceFuture<EntitiesBatchResultV2dot1> entitiesAsync(List<MultiLanguageInput> documents, final ServiceCallback<EntitiesBatchResultV2dot1> serviceCallback) {
         return ServiceFuture.fromResponse(entitiesWithServiceResponseAsync(documents), serviceCallback);
     }
 
     /**
      * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of recognized entities in a given document. To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.The API returns a list of known entities and general named entities ("Person", "Location", "Organization" etc) in a given document. Known entities are returned with Wikipedia Id and Wikipedia link, and also Bing Id which can be used in Bing Entity Search API. General named entities are returned with entity types. If a general named entity is also a known entity, then all information regarding it (Wikipedia Id, Bing Id, entity type etc) will be returned. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking#supported-types-for-named-entity-recognition"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt; for the list of supported Entity Types. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @param documents the List&lt;MultiLanguageInput&gt; value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntitiesBatchResult object
+     * @return the observable to the EntitiesBatchResultV2dot1 object
      */
-    public Observable<EntitiesBatchResult> entitiesAsync(List<MultiLanguageInput> documents) {
-        return entitiesWithServiceResponseAsync(documents).map(new Func1<ServiceResponse<EntitiesBatchResult>, EntitiesBatchResult>() {
+    public Observable<EntitiesBatchResultV2dot1> entitiesAsync(List<MultiLanguageInput> documents) {
+        return entitiesWithServiceResponseAsync(documents).map(new Func1<ServiceResponse<EntitiesBatchResultV2dot1>, EntitiesBatchResultV2dot1>() {
             @Override
-            public EntitiesBatchResult call(ServiceResponse<EntitiesBatchResult> response) {
+            public EntitiesBatchResultV2dot1 call(ServiceResponse<EntitiesBatchResultV2dot1> response) {
                 return response.body();
             }
         });
@@ -792,13 +792,13 @@ public class TextAnalyticsClientImpl extends AzureServiceClient implements TextA
 
     /**
      * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns a list of recognized entities in a given document. To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.The API returns a list of known entities and general named entities ("Person", "Location", "Organization" etc) in a given document. Known entities are returned with Wikipedia Id and Wikipedia link, and also Bing Id which can be used in Bing Entity Search API. General named entities are returned with entity types. If a general named entity is also a known entity, then all information regarding it (Wikipedia Id, Bing Id, entity type etc) will be returned. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking#supported-types-for-named-entity-recognition"&gt;Supported Entity Types in Text Analytics API&lt;/a&gt; for the list of supported Entity Types. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @param documents the List&lt;MultiLanguageInput&gt; value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntitiesBatchResult object
+     * @return the observable to the EntitiesBatchResultV2dot1 object
      */
-    public Observable<ServiceResponse<EntitiesBatchResult>> entitiesWithServiceResponseAsync(List<MultiLanguageInput> documents) {
+    public Observable<ServiceResponse<EntitiesBatchResultV2dot1>> entitiesWithServiceResponseAsync(List<MultiLanguageInput> documents) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -807,11 +807,11 @@ public class TextAnalyticsClientImpl extends AzureServiceClient implements TextA
         input.withDocuments(documents);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         return service.entities(this.acceptLanguage(), input, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntitiesBatchResult>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntitiesBatchResultV2dot1>>>() {
                 @Override
-                public Observable<ServiceResponse<EntitiesBatchResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<EntitiesBatchResultV2dot1>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<EntitiesBatchResult> clientResponse = entitiesDelegate(response);
+                        ServiceResponse<EntitiesBatchResultV2dot1> clientResponse = entitiesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -820,9 +820,9 @@ public class TextAnalyticsClientImpl extends AzureServiceClient implements TextA
             });
     }
 
-    private ServiceResponse<EntitiesBatchResult> entitiesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<EntitiesBatchResult, ErrorResponseException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<EntitiesBatchResult>() { }.getType())
+    private ServiceResponse<EntitiesBatchResultV2dot1> entitiesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<EntitiesBatchResultV2dot1, ErrorResponseException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<EntitiesBatchResultV2dot1>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
