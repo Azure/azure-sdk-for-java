@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.ProvisioningState;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.Status;
 import com.microsoft.azure.management.containerregistry.v2018_09_01.StorageAccountProperties;
+import com.microsoft.azure.management.containerregistry.v2018_09_01.NetworkRuleSet;
 import rx.functions.Func1;
 
 class RegistryImpl extends GroupableResourceCoreImpl<Registry, RegistryInner, RegistryImpl, ContainerRegistryManager> implements Registry, Registry.Definition, Registry.Update {
@@ -85,6 +86,11 @@ class RegistryImpl extends GroupableResourceCoreImpl<Registry, RegistryInner, Re
     }
 
     @Override
+    public NetworkRuleSet networkRuleSet() {
+        return this.inner().networkRuleSet();
+    }
+
+    @Override
     public ProvisioningState provisioningState() {
         return this.inner().provisioningState();
     }
@@ -120,6 +126,16 @@ class RegistryImpl extends GroupableResourceCoreImpl<Registry, RegistryInner, Re
             this.inner().withAdminUserEnabled(adminUserEnabled);
         } else {
             this.updateParameter.withAdminUserEnabled(adminUserEnabled);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
+        if (isInCreateMode()) {
+            this.inner().withNetworkRuleSet(networkRuleSet);
+        } else {
+            this.updateParameter.withNetworkRuleSet(networkRuleSet);
         }
         return this;
     }
