@@ -25,7 +25,7 @@ public class NotificationChannelFragment extends UpdateResource {
 
     /**
      * The email recipient to send notifications to (can be a list of
-     * semi-colon seperated email addresses).
+     * semi-colon separated email addresses).
      */
     @JsonProperty(value = "properties.emailRecipient")
     private String emailRecipient;
@@ -70,7 +70,7 @@ public class NotificationChannelFragment extends UpdateResource {
     }
 
     /**
-     * Get the email recipient to send notifications to (can be a list of semi-colon seperated email addresses).
+     * Get the email recipient to send notifications to (can be a list of semi-colon separated email addresses).
      *
      * @return the emailRecipient value
      */
@@ -79,7 +79,7 @@ public class NotificationChannelFragment extends UpdateResource {
     }
 
     /**
-     * Set the email recipient to send notifications to (can be a list of semi-colon seperated email addresses).
+     * Set the email recipient to send notifications to (can be a list of semi-colon separated email addresses).
      *
      * @param emailRecipient the emailRecipient value to set
      * @return the NotificationChannelFragment object itself.
