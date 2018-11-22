@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobsListByResourceGroupOptions {
     /**
-     * An OData $filter clause.. Used to filter results that are returned in
-     * the GET response.
+     * An OData $filter clause. Used to filter results that are returned in the
+     * GET response.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -36,7 +36,7 @@ public class JobsListByResourceGroupOptions {
     private Integer maxResults;
 
     /**
-     * Get an OData $filter clause.. Used to filter results that are returned in the GET response.
+     * Get an OData $filter clause. Used to filter results that are returned in the GET response.
      *
      * @return the filter value
      */
@@ -45,7 +45,7 @@ public class JobsListByResourceGroupOptions {
     }
 
     /**
-     * Set an OData $filter clause.. Used to filter results that are returned in the GET response.
+     * Set an OData $filter clause. Used to filter results that are returned in the GET response.
      *
      * @param filter the filter value to set
      * @return the JobsListByResourceGroupOptions object itself.
