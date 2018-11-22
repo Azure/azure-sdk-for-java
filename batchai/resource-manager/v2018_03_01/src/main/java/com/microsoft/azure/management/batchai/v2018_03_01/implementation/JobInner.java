@@ -64,7 +64,7 @@ public class JobInner extends Resource {
     /**
      * Information on mount volumes to be used by the job.
      * These volumes will be mounted before the job execution and will be
-     * unmouted after the job completion. The volumes will be mounted at
+     * unmounted after the job completion. The volumes will be mounted at
      * location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      */
     @JsonProperty(value = "properties.mountVolumes")
@@ -221,7 +221,7 @@ public class JobInner extends Resource {
      * it does not necessarily mean that the job command line has started
      * executing. terminating - The job is terminated by the user, the
      * terminate operation is in progress. succeeded - The job has completed
-     * running succesfully and exited with exit code 0. failed - The job has
+     * running successfully and exited with exit code 0. failed - The job has
      * finished unsuccessfully (failed with a non-zero exit code) and has
      * exhausted its retry limit. A job is also marked as failed if an error
      * occurred launching the job. Possible values include: 'queued',
@@ -305,7 +305,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get these volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+     * Get these volumes will be mounted before the job execution and will be unmounted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      *
      * @return the mountVolumes value
      */
@@ -314,7 +314,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set these volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+     * Set these volumes will be mounted before the job execution and will be unmounted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      *
      * @param mountVolumes the mountVolumes value to set
      * @return the JobInner object itself.
@@ -692,7 +692,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Get the current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running succesfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'queued', 'running', 'terminating', 'succeeded', 'failed'.
+     * Get the current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running successfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'queued', 'running', 'terminating', 'succeeded', 'failed'.
      *
      * @return the executionState value
      */
@@ -701,7 +701,7 @@ public class JobInner extends Resource {
     }
 
     /**
-     * Set the current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running succesfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'queued', 'running', 'terminating', 'succeeded', 'failed'.
+     * Set the current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running successfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'queued', 'running', 'terminating', 'succeeded', 'failed'.
      *
      * @param executionState the executionState value to set
      * @return the JobInner object itself.

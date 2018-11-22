@@ -16,14 +16,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JobsListOptions {
     /**
      * An OData $filter clause.. Used to filter results that are returned in
-     * the GET respnose.
+     * the GET response.
      */
     @JsonProperty(value = "")
     private String filter;
 
     /**
      * An OData $select clause. Used to select the properties to be returned in
-     * the GET respnose.
+     * the GET response.
      */
     @JsonProperty(value = "")
     private String select;
@@ -36,7 +36,7 @@ public class JobsListOptions {
     private Integer maxResults;
 
     /**
-     * Get an OData $filter clause.. Used to filter results that are returned in the GET respnose.
+     * Get an OData $filter clause.. Used to filter results that are returned in the GET response.
      *
      * @return the filter value
      */
@@ -45,7 +45,7 @@ public class JobsListOptions {
     }
 
     /**
-     * Set an OData $filter clause.. Used to filter results that are returned in the GET respnose.
+     * Set an OData $filter clause.. Used to filter results that are returned in the GET response.
      *
      * @param filter the filter value to set
      * @return the JobsListOptions object itself.
@@ -56,7 +56,7 @@ public class JobsListOptions {
     }
 
     /**
-     * Get an OData $select clause. Used to select the properties to be returned in the GET respnose.
+     * Get an OData $select clause. Used to select the properties to be returned in the GET response.
      *
      * @return the select value
      */
@@ -65,7 +65,7 @@ public class JobsListOptions {
     }
 
     /**
-     * Set an OData $select clause. Used to select the properties to be returned in the GET respnose.
+     * Set an OData $select clause. Used to select the properties to be returned in the GET response.
      *
      * @param select the select value to set
      * @return the JobsListOptions object itself.

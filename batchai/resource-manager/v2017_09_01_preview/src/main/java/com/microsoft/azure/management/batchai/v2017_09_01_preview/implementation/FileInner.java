@@ -24,7 +24,7 @@ public class FileInner {
     private String name;
 
     /**
-     * file downloand url, example:
+     * file download url, example:
      * https://mystg.blob.core.windows.net/mycontainer/myModel_1.dnn.
      * This will be returned only if the model has been archived. During job
      * run, this won't be returned and customers can use SSH tunneling to

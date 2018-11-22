@@ -17,7 +17,7 @@ public class OutputDirectory {
     /**
      * ID.
      * The ID of the output directory. The job can use
-     * AZ_BATCHAI_OUTPUT_&lt;id&gt; environment variale to find the directory
+     * AZ_BATCHAI_OUTPUT_&lt;id&gt; environment variable to find the directory
      * path, where &lt;id&gt; is the value of id attribute.
      */
     @JsonProperty(value = "id", required = true)
@@ -44,7 +44,7 @@ public class OutputDirectory {
     private String pathSuffix;
 
     /**
-     * Get the ID of the output directory. The job can use AZ_BATCHAI_OUTPUT_&lt;id&gt; environment variale to find the directory path, where &lt;id&gt; is the value of id attribute.
+     * Get the ID of the output directory. The job can use AZ_BATCHAI_OUTPUT_&lt;id&gt; environment variable to find the directory path, where &lt;id&gt; is the value of id attribute.
      *
      * @return the id value
      */
@@ -53,7 +53,7 @@ public class OutputDirectory {
     }
 
     /**
-     * Set the ID of the output directory. The job can use AZ_BATCHAI_OUTPUT_&lt;id&gt; environment variale to find the directory path, where &lt;id&gt; is the value of id attribute.
+     * Set the ID of the output directory. The job can use AZ_BATCHAI_OUTPUT_&lt;id&gt; environment variable to find the directory path, where &lt;id&gt; is the value of id attribute.
      *
      * @param id the id value to set
      * @return the OutputDirectory object itself.

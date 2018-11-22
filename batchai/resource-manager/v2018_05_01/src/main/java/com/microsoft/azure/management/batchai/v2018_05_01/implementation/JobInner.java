@@ -60,7 +60,7 @@ public class JobInner extends ProxyResource {
     /**
      * Mount volumes.
      * Collection of mount volumes available to the job during execution. These
-     * volumes are mounted before the job execution and unmouted after the job
+     * volumes are mounted before the job execution and unmounted after the job
      * completion. The volumes are mounted at location specified by
      * $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      */
@@ -243,7 +243,7 @@ public class JobInner extends ProxyResource {
      * it does not necessarily mean that the job command line has started
      * executing. terminating - The job is terminated by the user, the
      * terminate operation is in progress. succeeded - The job has completed
-     * running succesfully and exited with exit code 0. failed - The job has
+     * running successfully and exited with exit code 0. failed - The job has
      * finished unsuccessfully (failed with a non-zero exit code) and has
      * exhausted its retry limit. A job is also marked as failed if an error
      * occurred launching the job. Possible values include: 'queued',
@@ -306,7 +306,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Get collection of mount volumes available to the job during execution. These volumes are mounted before the job execution and unmouted after the job completion. The volumes are mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+     * Get collection of mount volumes available to the job during execution. These volumes are mounted before the job execution and unmounted after the job completion. The volumes are mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      *
      * @return the mountVolumes value
      */
@@ -315,7 +315,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Set collection of mount volumes available to the job during execution. These volumes are mounted before the job execution and unmouted after the job completion. The volumes are mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+     * Set collection of mount volumes available to the job during execution. These volumes are mounted before the job execution and unmounted after the job completion. The volumes are mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      *
      * @param mountVolumes the mountVolumes value to set
      * @return the JobInner object itself.
@@ -742,7 +742,7 @@ public class JobInner extends ProxyResource {
     }
 
     /**
-     * Get the current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running succesfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'queued', 'running', 'terminating', 'succeeded', 'failed'.
+     * Get the current state of the job. Possible values are: queued - The job is queued and able to run. A job enters this state when it is created, or when it is awaiting a retry after a failed run. running - The job is running on a compute cluster. This includes job-level preparation such as downloading resource files or set up container specified on the job - it does not necessarily mean that the job command line has started executing. terminating - The job is terminated by the user, the terminate operation is in progress. succeeded - The job has completed running successfully and exited with exit code 0. failed - The job has finished unsuccessfully (failed with a non-zero exit code) and has exhausted its retry limit. A job is also marked as failed if an error occurred launching the job. Possible values include: 'queued', 'running', 'terminating', 'succeeded', 'failed'.
      *
      * @return the executionState value
      */

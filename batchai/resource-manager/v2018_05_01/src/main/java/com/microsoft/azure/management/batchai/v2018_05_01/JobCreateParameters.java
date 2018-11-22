@@ -35,7 +35,7 @@ public class JobCreateParameters {
     /**
      * Mount volumes.
      * Information on mount volumes to be used by the job. These volumes will
-     * be mounted before the job execution and will be unmouted after the job
+     * be mounted before the job execution and will be unmounted after the job
      * completion. The volumes will be mounted at location specified by
      * $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      */
@@ -215,7 +215,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Get information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+     * Get information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmounted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      *
      * @return the mountVolumes value
      */
@@ -224,7 +224,7 @@ public class JobCreateParameters {
     }
 
     /**
-     * Set information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmouted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
+     * Set information on mount volumes to be used by the job. These volumes will be mounted before the job execution and will be unmounted after the job completion. The volumes will be mounted at location specified by $AZ_BATCHAI_JOB_MOUNT_ROOT environment variable.
      *
      * @param mountVolumes the mountVolumes value to set
      * @return the JobCreateParameters object itself.

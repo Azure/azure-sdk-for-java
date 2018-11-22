@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class KeyVaultSecretReference {
     /**
      * Key Vault resource identifier.
-     * Fully qualified resource indentifier of the Key Vault.
+     * Fully qualified resource identifier of the Key Vault.
      */
     @JsonProperty(value = "sourceVault", required = true)
     private ResourceId sourceVault;
@@ -29,7 +29,7 @@ public class KeyVaultSecretReference {
     private String secretUrl;
 
     /**
-     * Get fully qualified resource indentifier of the Key Vault.
+     * Get fully qualified resource identifier of the Key Vault.
      *
      * @return the sourceVault value
      */
@@ -38,7 +38,7 @@ public class KeyVaultSecretReference {
     }
 
     /**
-     * Set fully qualified resource indentifier of the Key Vault.
+     * Set fully qualified resource identifier of the Key Vault.
      *
      * @param sourceVault the sourceVault value to set
      * @return the KeyVaultSecretReference object itself.
