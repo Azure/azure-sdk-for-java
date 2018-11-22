@@ -180,7 +180,7 @@ public class PolicyEventInner {
     private String policySetDefinitionParameters;
 
     /**
-     * Comma seperated list of management group IDs, which represent the
+     * Comma separated list of management group IDs, which represent the
      * hierarchy of the management groups the resource is under.
      */
     @JsonProperty(value = "managementGroupIds")
@@ -727,7 +727,7 @@ public class PolicyEventInner {
     }
 
     /**
-     * Get comma seperated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
+     * Get comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
      *
      * @return the managementGroupIds value
      */
@@ -736,7 +736,7 @@ public class PolicyEventInner {
     }
 
     /**
-     * Set comma seperated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
+     * Set comma separated list of management group IDs, which represent the hierarchy of the management groups the resource is under.
      *
      * @param managementGroupIds the managementGroupIds value to set
      * @return the PolicyEventInner object itself.
