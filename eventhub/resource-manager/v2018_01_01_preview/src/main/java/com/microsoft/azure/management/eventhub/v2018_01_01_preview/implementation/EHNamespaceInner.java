@@ -65,7 +65,7 @@ public class EHNamespaceInner extends Resource {
     private Boolean isAutoInflateEnabled;
 
     /**
-     * Upper limit of throughput units when AutoInflate is enabled, vaule
+     * Upper limit of throughput units when AutoInflate is enabled, value
      * should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled =
      * true).
      */
@@ -171,7 +171,7 @@ public class EHNamespaceInner extends Resource {
     }
 
     /**
-     * Get upper limit of throughput units when AutoInflate is enabled, vaule should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled = true).
+     * Get upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled = true).
      *
      * @return the maximumThroughputUnits value
      */
@@ -180,7 +180,7 @@ public class EHNamespaceInner extends Resource {
     }
 
     /**
-     * Set upper limit of throughput units when AutoInflate is enabled, vaule should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled = true).
+     * Set upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled = true).
      *
      * @param maximumThroughputUnits the maximumThroughputUnits value to set
      * @return the EHNamespaceInner object itself.

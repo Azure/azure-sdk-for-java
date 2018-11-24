@@ -29,7 +29,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
 
     /**
      * ARM Id of the Primary/Secondary eventhub namespace name, which is part
-     * of GEO DR pairning.
+     * of GEO DR pairing.
      */
     @JsonProperty(value = "properties.partnerNamespace")
     private String partnerNamespace;
@@ -64,7 +64,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
     }
 
     /**
-     * Get aRM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairning.
+     * Get aRM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing.
      *
      * @return the partnerNamespace value
      */
@@ -73,7 +73,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
     }
 
     /**
-     * Set aRM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairning.
+     * Set aRM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing.
      *
      * @param partnerNamespace the partnerNamespace value to set
      * @return the ArmDisasterRecoveryInner object itself.
