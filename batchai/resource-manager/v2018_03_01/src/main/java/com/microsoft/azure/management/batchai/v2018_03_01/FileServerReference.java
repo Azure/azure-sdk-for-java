@@ -34,7 +34,7 @@ public class FileServerReference {
      * will be mounted.
      * Note that all cluster level file servers will be mounted under
      * $AZ_BATCHAI_MOUNT_ROOT location and job level file servers will be
-     * mouted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
+     * mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      */
     @JsonProperty(value = "relativeMountPath", required = true)
     private String relativeMountPath;
@@ -86,7 +86,7 @@ public class FileServerReference {
     }
 
     /**
-     * Get note that all cluster level file servers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level file servers will be mouted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
+     * Get note that all cluster level file servers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level file servers will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @return the relativeMountPath value
      */
@@ -95,7 +95,7 @@ public class FileServerReference {
     }
 
     /**
-     * Set note that all cluster level file servers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level file servers will be mouted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
+     * Set note that all cluster level file servers will be mounted under $AZ_BATCHAI_MOUNT_ROOT location and job level file servers will be mounted under $AZ_BATCHAI_JOB_MOUNT_ROOT.
      *
      * @param relativeMountPath the relativeMountPath value to set
      * @return the FileServerReference object itself.

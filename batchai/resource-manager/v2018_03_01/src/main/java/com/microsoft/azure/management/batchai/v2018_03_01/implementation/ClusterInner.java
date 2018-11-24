@@ -46,7 +46,7 @@ public class ClusterInner extends Resource {
     /**
      * dedicated or lowpriority.
      * The default value is dedicated. The node can get preempted while the
-     * task is running if lowpriority is choosen. This is best suited if the
+     * task is running if lowpriority is chosen. This is best suited if the
      * workload is checkpointing and can be restarted. Possible values include:
      * 'dedicated', 'lowpriority'.
      */
@@ -168,7 +168,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the default value is dedicated. The node can get preempted while the task is running if lowpriority is choosen. This is best suited if the workload is checkpointing and can be restarted. Possible values include: 'dedicated', 'lowpriority'.
+     * Get the default value is dedicated. The node can get preempted while the task is running if lowpriority is chosen. This is best suited if the workload is checkpointing and can be restarted. Possible values include: 'dedicated', 'lowpriority'.
      *
      * @return the vmPriority value
      */
@@ -177,7 +177,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the default value is dedicated. The node can get preempted while the task is running if lowpriority is choosen. This is best suited if the workload is checkpointing and can be restarted. Possible values include: 'dedicated', 'lowpriority'.
+     * Set the default value is dedicated. The node can get preempted while the task is running if lowpriority is chosen. This is best suited if the workload is checkpointing and can be restarted. Possible values include: 'dedicated', 'lowpriority'.
      *
      * @param vmPriority the vmPriority value to set
      * @return the ClusterInner object itself.

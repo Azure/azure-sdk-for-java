@@ -11,7 +11,7 @@ package com.microsoft.azure.management.batchai.v2018_05_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Unmananged file system mounting configuration.
+ * Unmanaged file system mounting configuration.
  */
 public class UnmanagedFileSystemReference {
     /**

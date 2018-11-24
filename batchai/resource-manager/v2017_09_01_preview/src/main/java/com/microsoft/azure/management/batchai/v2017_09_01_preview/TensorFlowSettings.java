@@ -57,7 +57,7 @@ public class TensorFlowSettings {
     private Integer workerCount;
 
     /**
-     * The number of parmeter server tasks.
+     * The number of parameter server tasks.
      * If specified, the value must be less than or equal to nodeCount. If not
      * specified, the default value is equal to 1 for distributed TensorFlow
      * training (This property is not applicable for single machine training).

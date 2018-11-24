@@ -56,7 +56,7 @@ public class SetupTask {
      * A path segment appended by Batch AI to stdOutErrPathPrefix to form a
      * path where stdout and stderr of the setup task will be uploaded.
      * Batch AI creates the setup task output directories under an unique path
-     * to avoid conflicts between different clusters. You can concatinate
+     * to avoid conflicts between different clusters. You can concatenate
      * stdOutErrPathPrefix and stdOutErrPathSuffix to get the full path to the
      * output directory.
      */
@@ -164,7 +164,7 @@ public class SetupTask {
     }
 
     /**
-     * Get batch AI creates the setup task output directories under an unique path to avoid conflicts between different clusters. You can concatinate stdOutErrPathPrefix and stdOutErrPathSuffix to get the full path to the output directory.
+     * Get batch AI creates the setup task output directories under an unique path to avoid conflicts between different clusters. You can concatenate stdOutErrPathPrefix and stdOutErrPathSuffix to get the full path to the output directory.
      *
      * @return the stdOutErrPathSuffix value
      */
