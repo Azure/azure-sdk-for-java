@@ -331,8 +331,7 @@ public class WorkItemConfigurationsInner {
                 @Override
                 public Observable<ServiceResponse<WorkItemConfigurationInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<WorkItemConfigurationInner> result = getDefaultDelegate(response);
-                        ServiceResponse<WorkItemConfigurationInner> clientResponse = new ServiceResponse<WorkItemConfigurationInner>(result.body(), result.response());
+                        ServiceResponse<WorkItemConfigurationInner> clientResponse = getDefaultDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -349,7 +348,7 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
@@ -364,7 +363,7 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
@@ -378,7 +377,7 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
@@ -396,7 +395,7 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
