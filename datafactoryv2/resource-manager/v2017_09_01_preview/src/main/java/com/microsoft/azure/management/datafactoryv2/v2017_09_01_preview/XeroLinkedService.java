@@ -15,7 +15,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.implementation.LinkedServiceInner;
 
 /**
- * Xero Serivce linked service.
+ * Xero Service linked service.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Xero")
