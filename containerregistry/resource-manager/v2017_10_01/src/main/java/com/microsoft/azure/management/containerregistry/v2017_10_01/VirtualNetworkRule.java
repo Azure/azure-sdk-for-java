@@ -16,13 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class VirtualNetworkRule {
     /**
      * Resource ID of a subnet, for example:
-     * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      */
     @JsonProperty(value = "id")
     private String id;
 
     /**
-     * Get resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
+     * Get resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      *
      * @return the id value
      */
@@ -31,7 +31,7 @@ public class VirtualNetworkRule {
     }
 
     /**
-     * Set resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
+     * Set resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      *
      * @param id the id value to set
      * @return the VirtualNetworkRule object itself.
