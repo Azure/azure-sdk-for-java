@@ -30,6 +30,10 @@
     "source": "specification/cognitiveservices/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "cognitiveservices/data-plane/Face": {
+    "source": "specification/cognitiveservices/data-plane/Face/readme.md",
+    "args": ""
+  },
   "compute/resource-manager": {
     "source": "specification/compute/resource-manager/readme.md",
     "args": "--multiapi --fluent"
