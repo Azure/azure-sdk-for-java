@@ -229,7 +229,7 @@ public class StorageSyncManagementClientImpl extends AzureServiceClient {
      * @param credentials the management credentials for Azure
      */
     public StorageSyncManagementClientImpl(ServiceClientCredentials credentials) {
-        this("https://management.azure.com", credentials);
+        this("https://azure.microsoft.com", credentials);
     }
 
     /**
