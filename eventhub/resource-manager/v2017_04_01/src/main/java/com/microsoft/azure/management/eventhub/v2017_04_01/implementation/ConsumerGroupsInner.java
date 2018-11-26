@@ -185,7 +185,7 @@ public class ConsumerGroupsInner {
      * @param namespaceName The Namespace name
      * @param eventHubName The Event Hub name
      * @param consumerGroupName The consumer group name
-     * @param userMetadata Usermetadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
+     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -202,7 +202,7 @@ public class ConsumerGroupsInner {
      * @param namespaceName The Namespace name
      * @param eventHubName The Event Hub name
      * @param consumerGroupName The consumer group name
-     * @param userMetadata Usermetadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
+     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -218,7 +218,7 @@ public class ConsumerGroupsInner {
      * @param namespaceName The Namespace name
      * @param eventHubName The Event Hub name
      * @param consumerGroupName The consumer group name
-     * @param userMetadata Usermetadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
+     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConsumerGroupInner object
      */
@@ -238,7 +238,7 @@ public class ConsumerGroupsInner {
      * @param namespaceName The Namespace name
      * @param eventHubName The Event Hub name
      * @param consumerGroupName The consumer group name
-     * @param userMetadata Usermetadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
+     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConsumerGroupInner object
      */
