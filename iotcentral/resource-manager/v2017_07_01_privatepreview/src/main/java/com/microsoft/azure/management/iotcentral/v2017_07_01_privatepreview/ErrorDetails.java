@@ -33,7 +33,7 @@ public class ErrorDetails {
     private String target;
 
     /**
-     * Get the code value.
+     * Get the error code.
      *
      * @return the code value
      */
@@ -42,7 +42,7 @@ public class ErrorDetails {
     }
 
     /**
-     * Get the message value.
+     * Get the error message.
      *
      * @return the message value
      */
@@ -51,7 +51,7 @@ public class ErrorDetails {
     }
 
     /**
-     * Get the target value.
+     * Get the target of the particular error.
      *
      * @return the target value
      */

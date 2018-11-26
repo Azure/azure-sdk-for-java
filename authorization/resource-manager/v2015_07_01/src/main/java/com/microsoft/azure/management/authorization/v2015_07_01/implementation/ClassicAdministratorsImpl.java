@@ -37,7 +37,8 @@ class ClassicAdministratorsImpl extends WrapperImpl<ClassicAdministratorsInner> 
             public Iterable<ClassicAdministratorInner> call(Page<ClassicAdministratorInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ClassicAdministratorInner, ClassicAdministrator>() {
+        })
+        .map(new Func1<ClassicAdministratorInner, ClassicAdministrator>() {
             @Override
             public ClassicAdministrator call(ClassicAdministratorInner inner) {
                 return new ClassicAdministratorImpl(inner, manager());

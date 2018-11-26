@@ -23,6 +23,7 @@ class StreamingEndpointImpl extends CreatableUpdatableImpl<StreamingEndpoint, St
     private String resourceGroupName;
     private String accountName;
     private String streamingEndpointName;
+    private Boolean cautoStart;
 
     StreamingEndpointImpl(String name, MediaManager manager) {
         super(name, new StreamingEndpointInner());
@@ -37,7 +38,7 @@ class StreamingEndpointImpl extends CreatableUpdatableImpl<StreamingEndpoint, St
         this.manager = manager;
         // Set resource name
         this.streamingEndpointName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "mediaservices");
         this.streamingEndpointName = IdParsingUtils.getValueFromIdByName(inner.id(), "streamingEndpoints");
@@ -52,7 +53,7 @@ class StreamingEndpointImpl extends CreatableUpdatableImpl<StreamingEndpoint, St
     @Override
     public Observable<StreamingEndpoint> createResourceAsync() {
         StreamingEndpointsInner client = this.manager().inner().streamingEndpoints();
-        return client.createAsync(this.resourceGroupName, this.accountName, this.streamingEndpointName, this.inner())
+        return client.createAsync(this.resourceGroupName, this.accountName, this.streamingEndpointName, this.inner(), this.cautoStart)
             .map(innerToFluentMap(this));
     }
 
@@ -184,6 +185,12 @@ class StreamingEndpointImpl extends CreatableUpdatableImpl<StreamingEndpoint, St
     public StreamingEndpointImpl withExistingMediaservice(String resourceGroupName, String accountName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
+        return this;
+    }
+
+    @Override
+    public StreamingEndpointImpl withAutoStart(Boolean autoStart) {
+        this.cautoStart = autoStart;
         return this;
     }
 

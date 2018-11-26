@@ -21,7 +21,7 @@ public class RoleAssignmentFilter {
     private String principalId;
 
     /**
-     * Get the principalId value.
+     * Get returns role assignment of the specific principal.
      *
      * @return the principalId value
      */
@@ -30,7 +30,7 @@ public class RoleAssignmentFilter {
     }
 
     /**
-     * Set the principalId value.
+     * Set returns role assignment of the specific principal.
      *
      * @param principalId the principalId value to set
      * @return the RoleAssignmentFilter object itself.

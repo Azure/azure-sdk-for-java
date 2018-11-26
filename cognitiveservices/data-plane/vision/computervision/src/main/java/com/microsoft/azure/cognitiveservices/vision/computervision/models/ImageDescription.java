@@ -33,13 +33,13 @@ public class ImageDescription {
     /**
      * Id of the REST API request.
      */
-    @JsonProperty(value = "description.requestId")
+    @JsonProperty(value = "requestId")
     private String requestId;
 
     /**
      * The metadata property.
      */
-    @JsonProperty(value = "description.metadata")
+    @JsonProperty(value = "metadata")
     private ImageMetadata metadata;
 
     /**

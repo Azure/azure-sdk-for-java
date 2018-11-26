@@ -108,7 +108,7 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
     /**
      * The entirety of the LiveEvent definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithMediaservice, DefinitionStages.WithInput, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithMediaservice, DefinitionStages.WithAutoStart, DefinitionStages.WithInput, DefinitionStages.WithCreate {
     }
 
     /**
@@ -127,8 +127,23 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithMediaservice {
            /**
             * Specifies resourceGroupName, accountName.
+            * @param resourceGroupName The name of the resource group within the Azure subscription
+            * @param accountName The Media Services account name
+            * @return the next definition stage
             */
-            WithInput withExistingMediaservice(String resourceGroupName, String accountName);
+            WithAutoStart withExistingMediaservice(String resourceGroupName, String accountName);
+        }
+
+        /**
+         * The stage of the liveevent definition allowing to specify AutoStart.
+         */
+        interface WithAutoStart {
+           /**
+            * Specifies autoStart.
+            * @param autoStart The flag indicates if auto start the Live Event
+            * @return the next definition stage
+            */
+            WithInput withAutoStart(Boolean autoStart);
         }
 
         /**
@@ -137,6 +152,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithInput {
            /**
             * Specifies input.
+            * @param input The Live Event input
+            * @return the next definition stage
             */
             WithCreate withInput(LiveEventInput input);
         }
@@ -147,6 +164,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithCrossSiteAccessPolicies {
             /**
              * Specifies crossSiteAccessPolicies.
+             * @param crossSiteAccessPolicies The Live Event access policies
+             * @return the next definition stage
              */
             WithCreate withCrossSiteAccessPolicies(CrossSiteAccessPolicies crossSiteAccessPolicies);
         }
@@ -157,6 +176,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The Live Event description
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -167,6 +188,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithEncoding {
             /**
              * Specifies encoding.
+             * @param encoding The Live Event encoding
+             * @return the next definition stage
              */
             WithCreate withEncoding(LiveEventEncoding encoding);
         }
@@ -177,6 +200,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The Azure Region of the resource
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -187,6 +212,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithPreview {
             /**
              * Specifies preview.
+             * @param preview The Live Event preview
+             * @return the next definition stage
              */
             WithCreate withPreview(LiveEventPreview preview);
         }
@@ -197,6 +224,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithStreamOptions {
             /**
              * Specifies streamOptions.
+             * @param streamOptions The stream options
+             * @return the next definition stage
              */
             WithCreate withStreamOptions(List<StreamOptionsFlag> streamOptions);
         }
@@ -207,6 +236,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -217,6 +248,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithVanityUrl {
             /**
              * Specifies vanityUrl.
+             * @param vanityUrl The Live Event vanity URL flag
+             * @return the next definition stage
              */
             WithCreate withVanityUrl(Boolean vanityUrl);
         }
@@ -245,6 +278,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithCrossSiteAccessPolicies {
             /**
              * Specifies crossSiteAccessPolicies.
+             * @param crossSiteAccessPolicies The Live Event access policies
+             * @return the next update stage
              */
             Update withCrossSiteAccessPolicies(CrossSiteAccessPolicies crossSiteAccessPolicies);
         }
@@ -255,6 +290,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description The Live Event description
+             * @return the next update stage
              */
             Update withDescription(String description);
         }
@@ -265,6 +302,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithEncoding {
             /**
              * Specifies encoding.
+             * @param encoding The Live Event encoding
+             * @return the next update stage
              */
             Update withEncoding(LiveEventEncoding encoding);
         }
@@ -275,6 +314,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The Azure Region of the resource
+             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -285,6 +326,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithPreview {
             /**
              * Specifies preview.
+             * @param preview The Live Event preview
+             * @return the next update stage
              */
             Update withPreview(LiveEventPreview preview);
         }
@@ -295,6 +338,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithStreamOptions {
             /**
              * Specifies streamOptions.
+             * @param streamOptions The stream options
+             * @return the next update stage
              */
             Update withStreamOptions(List<StreamOptionsFlag> streamOptions);
         }
@@ -305,6 +350,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
@@ -315,6 +362,8 @@ public interface LiveEvent extends HasInner<LiveEventInner>, Indexable, Refresha
         interface WithVanityUrl {
             /**
              * Specifies vanityUrl.
+             * @param vanityUrl The Live Event vanity URL flag
+             * @return the next update stage
              */
             Update withVanityUrl(Boolean vanityUrl);
         }

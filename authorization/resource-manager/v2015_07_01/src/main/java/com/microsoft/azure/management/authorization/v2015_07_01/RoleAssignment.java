@@ -44,7 +44,7 @@ public interface RoleAssignment extends HasInner<RoleAssignmentInner>, Indexable
     /**
      * The entirety of the RoleAssignment definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithProvider, DefinitionStages.WithScope, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithProvider, DefinitionStages.WithScope, DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
 
     /**
@@ -63,6 +63,7 @@ public interface RoleAssignment extends HasInner<RoleAssignmentInner>, Indexable
         interface WithProvider {
            /**
             * Specifies .
+            * @return the next definition stage
             */
             WithScope withExistingProvider();
         }
@@ -73,8 +74,22 @@ public interface RoleAssignment extends HasInner<RoleAssignmentInner>, Indexable
         interface WithScope {
            /**
             * Specifies scope.
+            * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For example, use '/subscriptions/{subscription-id}/' for a subscription, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}' for a resource
+            * @return the next definition stage
             */
-            WithCreate withScope(String scope);
+            WithProperties withScope(String scope);
+        }
+
+        /**
+         * The stage of the roleassignment definition allowing to specify Properties.
+         */
+        interface WithProperties {
+           /**
+            * Specifies properties.
+            * @param properties Role assignment properties
+            * @return the next definition stage
+            */
+            WithCreate withProperties(RoleAssignmentProperties properties);
         }
 
         /**
@@ -88,12 +103,24 @@ public interface RoleAssignment extends HasInner<RoleAssignmentInner>, Indexable
     /**
      * The template for a RoleAssignment update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<RoleAssignment> {
+    interface Update extends Appliable<RoleAssignment>, UpdateStages.WithProperties {
     }
 
     /**
      * Grouping of RoleAssignment update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the roleassignment update allowing to specify Properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies properties.
+             * @param properties Role assignment properties
+             * @return the next update stage
+             */
+            Update withProperties(RoleAssignmentProperties properties);
+        }
+
     }
 }

@@ -81,6 +81,9 @@ public interface Transform extends HasInner<TransformInner>, Indexable, Refresha
         interface WithMediaservice {
            /**
             * Specifies resourceGroupName, accountName.
+            * @param resourceGroupName The name of the resource group within the Azure subscription
+            * @param accountName The Media Services account name
+            * @return the next definition stage
             */
             WithOutputs withExistingMediaservice(String resourceGroupName, String accountName);
         }
@@ -91,6 +94,8 @@ public interface Transform extends HasInner<TransformInner>, Indexable, Refresha
         interface WithOutputs {
            /**
             * Specifies outputs.
+            * @param outputs An array of one or more TransformOutputs that the Transform should generate
+            * @return the next definition stage
             */
             WithCreate withOutputs(List<TransformOutput> outputs);
         }
@@ -101,6 +106,8 @@ public interface Transform extends HasInner<TransformInner>, Indexable, Refresha
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description An optional verbose description of the Transform
+             * @return the next definition stage
              */
             WithCreate withDescription(String description);
         }
@@ -129,6 +136,8 @@ public interface Transform extends HasInner<TransformInner>, Indexable, Refresha
         interface WithDescription {
             /**
              * Specifies description.
+             * @param description An optional verbose description of the Transform
+             * @return the next update stage
              */
             Update withDescription(String description);
         }

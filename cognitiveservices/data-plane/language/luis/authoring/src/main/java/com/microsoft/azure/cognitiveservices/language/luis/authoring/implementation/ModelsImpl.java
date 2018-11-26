@@ -124,7 +124,7 @@ public class ModelsImpl implements Models {
     /** The Retrofit service to perform REST calls. */
     private ModelsService service;
     /** The service client containing this operation class. */
-    private LUISAuthoringAPIImpl client;
+    private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of ModelsImpl.
@@ -132,7 +132,7 @@ public class ModelsImpl implements Models {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ModelsImpl(Retrofit retrofit, LUISAuthoringAPIImpl client) {
+    public ModelsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
         this.service = retrofit.create(ModelsService.class);
         this.client = client;
     }
@@ -626,8 +626,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addIntentWithServiceResponseAsync(UUID appId, String versionId, AddIntentOptionalParameter addIntentOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -650,8 +650,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addIntentWithServiceResponseAsync(UUID appId, String versionId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -661,7 +661,7 @@ public class ModelsImpl implements Models {
         }
         ModelCreateObject intentCreateObject = new ModelCreateObject();
         intentCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addIntent(appId, versionId, this.client.acceptLanguage(), intentCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -797,8 +797,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;IntentClassifier&gt; object
      */
     public Observable<ServiceResponse<List<IntentClassifier>>> listIntentsWithServiceResponseAsync(UUID appId, String versionId, ListIntentsOptionalParameter listIntentsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -823,8 +823,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;IntentClassifier&gt; object
      */
     public Observable<ServiceResponse<List<IntentClassifier>>> listIntentsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -832,7 +832,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listIntents(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IntentClassifier>>>>() {
                 @Override
@@ -975,8 +975,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addEntityWithServiceResponseAsync(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -999,8 +999,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addEntityWithServiceResponseAsync(UUID appId, String versionId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1010,7 +1010,7 @@ public class ModelsImpl implements Models {
         }
         ModelCreateObject modelCreateObject = new ModelCreateObject();
         modelCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addEntity(appId, versionId, this.client.acceptLanguage(), modelCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -1146,8 +1146,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<EntityExtractor>>> listEntitiesWithServiceResponseAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1172,8 +1172,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<EntityExtractor>>> listEntitiesWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1181,7 +1181,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listEntities(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityExtractor>>>>() {
                 @Override
@@ -1323,8 +1323,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, HierarchicalEntityModel hierarchicalModelCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1336,7 +1336,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter hierarchicalModelCreateObject is required and cannot be null.");
         }
         Validator.validate(hierarchicalModelCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addHierarchicalEntity(appId, versionId, hierarchicalModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -1416,8 +1416,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;HierarchicalEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<HierarchicalEntityExtractor>>> listHierarchicalEntitiesWithServiceResponseAsync(UUID appId, String versionId, ListHierarchicalEntitiesOptionalParameter listHierarchicalEntitiesOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1442,8 +1442,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;HierarchicalEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<HierarchicalEntityExtractor>>> listHierarchicalEntitiesWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1451,7 +1451,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listHierarchicalEntities(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<HierarchicalEntityExtractor>>>>() {
                 @Override
@@ -1593,8 +1593,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCompositeEntityWithServiceResponseAsync(UUID appId, String versionId, CompositeEntityModel compositeModelCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1606,7 +1606,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter compositeModelCreateObject is required and cannot be null.");
         }
         Validator.validate(compositeModelCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addCompositeEntity(appId, versionId, compositeModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -1686,8 +1686,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;CompositeEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<CompositeEntityExtractor>>> listCompositeEntitiesWithServiceResponseAsync(UUID appId, String versionId, ListCompositeEntitiesOptionalParameter listCompositeEntitiesOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1712,8 +1712,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;CompositeEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<CompositeEntityExtractor>>> listCompositeEntitiesWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1721,7 +1721,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listCompositeEntities(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<CompositeEntityExtractor>>>>() {
                 @Override
@@ -1864,8 +1864,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;ClosedListEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<ClosedListEntityExtractor>>> listClosedListsWithServiceResponseAsync(UUID appId, String versionId, ListClosedListsOptionalParameter listClosedListsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1890,8 +1890,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;ClosedListEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<ClosedListEntityExtractor>>> listClosedListsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -1899,7 +1899,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listClosedLists(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ClosedListEntityExtractor>>>>() {
                 @Override
@@ -2041,8 +2041,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addClosedListWithServiceResponseAsync(UUID appId, String versionId, ClosedListModelCreateObject closedListModelCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2054,7 +2054,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter closedListModelCreateObject is required and cannot be null.");
         }
         Validator.validate(closedListModelCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addClosedList(appId, versionId, closedListModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -2133,8 +2133,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<PrebuiltEntityExtractor>>> addPrebuiltWithServiceResponseAsync(UUID appId, String versionId, List<String> prebuiltExtractorNames) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2146,7 +2146,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter prebuiltExtractorNames is required and cannot be null.");
         }
         Validator.validate(prebuiltExtractorNames);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addPrebuilt(appId, versionId, prebuiltExtractorNames, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PrebuiltEntityExtractor>>>>() {
                 @Override
@@ -2226,8 +2226,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<PrebuiltEntityExtractor>>> listPrebuiltsWithServiceResponseAsync(UUID appId, String versionId, ListPrebuiltsOptionalParameter listPrebuiltsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2252,8 +2252,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<PrebuiltEntityExtractor>>> listPrebuiltsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2261,7 +2261,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listPrebuilts(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PrebuiltEntityExtractor>>>>() {
                 @Override
@@ -2399,8 +2399,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;AvailablePrebuiltEntityModel&gt; object
      */
     public Observable<ServiceResponse<List<AvailablePrebuiltEntityModel>>> listPrebuiltEntitiesWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2408,7 +2408,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listPrebuiltEntities(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AvailablePrebuiltEntityModel>>>>() {
                 @Override
@@ -2488,8 +2488,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;ModelInfoResponse&gt; object
      */
     public Observable<ServiceResponse<List<ModelInfoResponse>>> listModelsWithServiceResponseAsync(UUID appId, String versionId, ListModelsOptionalParameter listModelsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2514,8 +2514,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;ModelInfoResponse&gt; object
      */
     public Observable<ServiceResponse<List<ModelInfoResponse>>> listModelsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2523,7 +2523,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listModels(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ModelInfoResponse>>>>() {
                 @Override
@@ -2670,8 +2670,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;LabelTextObject&gt; object
      */
     public Observable<ServiceResponse<List<LabelTextObject>>> examplesMethodWithServiceResponseAsync(UUID appId, String versionId, String modelId, ExamplesMethodOptionalParameter examplesMethodOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2700,8 +2700,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;LabelTextObject&gt; object
      */
     public Observable<ServiceResponse<List<LabelTextObject>>> examplesMethodWithServiceResponseAsync(UUID appId, String versionId, String modelId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2712,7 +2712,7 @@ public class ModelsImpl implements Models {
         if (modelId == null) {
             throw new IllegalArgumentException("Parameter modelId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.examplesMethod(appId, versionId, modelId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LabelTextObject>>>>() {
                 @Override
@@ -2861,8 +2861,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the IntentClassifier object
      */
     public Observable<ServiceResponse<IntentClassifier>> getIntentWithServiceResponseAsync(UUID appId, String versionId, UUID intentId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2873,7 +2873,7 @@ public class ModelsImpl implements Models {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getIntent(appId, versionId, intentId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IntentClassifier>>>() {
                 @Override
@@ -2957,8 +2957,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateIntentWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, UpdateIntentOptionalParameter updateIntentOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2985,8 +2985,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateIntentWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -2999,7 +2999,7 @@ public class ModelsImpl implements Models {
         }
         ModelUpdateObject modelUpdateObject = new ModelUpdateObject();
         modelUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateIntent(appId, versionId, intentId, this.client.acceptLanguage(), modelUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -3146,8 +3146,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteIntentWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, DeleteIntentOptionalParameter deleteIntentOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -3174,8 +3174,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteIntentWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Boolean deleteUtterances) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -3186,7 +3186,7 @@ public class ModelsImpl implements Models {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteIntent(appId, versionId, intentId, deleteUtterances, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -3328,8 +3328,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityExtractor object
      */
     public Observable<ServiceResponse<EntityExtractor>> getEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -3340,7 +3340,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getEntity(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityExtractor>>>() {
                 @Override
@@ -3424,8 +3424,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -3452,8 +3452,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -3466,7 +3466,7 @@ public class ModelsImpl implements Models {
         }
         ModelUpdateObject modelUpdateObject = new ModelUpdateObject();
         modelUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateEntity(appId, versionId, entityId, this.client.acceptLanguage(), modelUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -3608,8 +3608,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -3620,7 +3620,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteEntity(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -3699,8 +3699,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the HierarchicalEntityExtractor object
      */
     public Observable<ServiceResponse<HierarchicalEntityExtractor>> getHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -3711,7 +3711,7 @@ public class ModelsImpl implements Models {
         if (hEntityId == null) {
             throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getHierarchicalEntity(appId, versionId, hEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HierarchicalEntityExtractor>>>() {
                 @Override
@@ -3794,8 +3794,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, HierarchicalEntityModel hierarchicalModelUpdateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -3810,7 +3810,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter hierarchicalModelUpdateObject is required and cannot be null.");
         }
         Validator.validate(hierarchicalModelUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateHierarchicalEntity(appId, versionId, hEntityId, hierarchicalModelUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -3889,8 +3889,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -3901,7 +3901,7 @@ public class ModelsImpl implements Models {
         if (hEntityId == null) {
             throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteHierarchicalEntity(appId, versionId, hEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -3980,8 +3980,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the CompositeEntityExtractor object
      */
     public Observable<ServiceResponse<CompositeEntityExtractor>> getCompositeEntityWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -3992,7 +3992,7 @@ public class ModelsImpl implements Models {
         if (cEntityId == null) {
             throw new IllegalArgumentException("Parameter cEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getCompositeEntity(appId, versionId, cEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CompositeEntityExtractor>>>() {
                 @Override
@@ -4075,8 +4075,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateCompositeEntityWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, CompositeEntityModel compositeModelUpdateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -4091,7 +4091,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter compositeModelUpdateObject is required and cannot be null.");
         }
         Validator.validate(compositeModelUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateCompositeEntity(appId, versionId, cEntityId, compositeModelUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -4170,8 +4170,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteCompositeEntityWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -4182,7 +4182,7 @@ public class ModelsImpl implements Models {
         if (cEntityId == null) {
             throw new IllegalArgumentException("Parameter cEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteCompositeEntity(appId, versionId, cEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -4261,8 +4261,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the ClosedListEntityExtractor object
      */
     public Observable<ServiceResponse<ClosedListEntityExtractor>> getClosedListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -4273,7 +4273,7 @@ public class ModelsImpl implements Models {
         if (clEntityId == null) {
             throw new IllegalArgumentException("Parameter clEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getClosedList(appId, versionId, clEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClosedListEntityExtractor>>>() {
                 @Override
@@ -4356,8 +4356,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateClosedListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, ClosedListModelUpdateObject closedListModelUpdateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -4372,7 +4372,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter closedListModelUpdateObject is required and cannot be null.");
         }
         Validator.validate(closedListModelUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateClosedList(appId, versionId, clEntityId, closedListModelUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -4456,8 +4456,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> patchClosedListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, PatchClosedListOptionalParameter patchClosedListOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -4484,8 +4484,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> patchClosedListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, List<WordListObject> subLists) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -4499,7 +4499,7 @@ public class ModelsImpl implements Models {
         Validator.validate(subLists);
         ClosedListModelPatchObject closedListModelPatchObject = new ClosedListModelPatchObject();
         closedListModelPatchObject.withSubLists(subLists);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.patchClosedList(appId, versionId, clEntityId, this.client.acceptLanguage(), closedListModelPatchObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -4641,8 +4641,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteClosedListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -4653,7 +4653,7 @@ public class ModelsImpl implements Models {
         if (clEntityId == null) {
             throw new IllegalArgumentException("Parameter clEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteClosedList(appId, versionId, clEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -4732,8 +4732,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the PrebuiltEntityExtractor object
      */
     public Observable<ServiceResponse<PrebuiltEntityExtractor>> getPrebuiltWithServiceResponseAsync(UUID appId, String versionId, UUID prebuiltId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -4744,7 +4744,7 @@ public class ModelsImpl implements Models {
         if (prebuiltId == null) {
             throw new IllegalArgumentException("Parameter prebuiltId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getPrebuilt(appId, versionId, prebuiltId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrebuiltEntityExtractor>>>() {
                 @Override
@@ -4823,8 +4823,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePrebuiltWithServiceResponseAsync(UUID appId, String versionId, UUID prebuiltId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -4835,7 +4835,7 @@ public class ModelsImpl implements Models {
         if (prebuiltId == null) {
             throw new IllegalArgumentException("Parameter prebuiltId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deletePrebuilt(appId, versionId, prebuiltId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -4918,8 +4918,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, int subListId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -4930,7 +4930,7 @@ public class ModelsImpl implements Models {
         if (clEntityId == null) {
             throw new IllegalArgumentException("Parameter clEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteSubList(appId, versionId, clEntityId, subListId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -5017,8 +5017,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, int subListId, WordListBaseUpdateObject wordListBaseUpdateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5033,7 +5033,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter wordListBaseUpdateObject is required and cannot be null.");
         }
         Validator.validate(wordListBaseUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateSubList(appId, versionId, clEntityId, subListId, wordListBaseUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -5117,8 +5117,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
     public Observable<ServiceResponse<List<IntentsSuggestionExample>>> getIntentSuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5145,8 +5145,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
     public Observable<ServiceResponse<List<IntentsSuggestionExample>>> getIntentSuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5157,7 +5157,7 @@ public class ModelsImpl implements Models {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getIntentSuggestions(appId, versionId, intentId, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IntentsSuggestionExample>>>>() {
                 @Override
@@ -5304,8 +5304,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
     public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> getEntitySuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5332,8 +5332,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
     public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> getEntitySuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5344,7 +5344,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getEntitySuggestions(appId, versionId, entityId, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntitiesSuggestionExample>>>>() {
                 @Override
@@ -5490,8 +5490,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the Integer object
      */
     public Observable<ServiceResponse<Integer>> addSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5506,7 +5506,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter wordListCreateObject is required and cannot be null.");
         }
         Validator.validate(wordListCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addSubList(appId, versionId, clEntityId, wordListCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
                 @Override
@@ -5586,8 +5586,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;UUID&gt; object
      */
     public Observable<ServiceResponse<List<UUID>>> addCustomPrebuiltDomainWithServiceResponseAsync(UUID appId, String versionId, AddCustomPrebuiltDomainModelsOptionalParameter addCustomPrebuiltDomainOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5610,8 +5610,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;UUID&gt; object
      */
     public Observable<ServiceResponse<List<UUID>>> addCustomPrebuiltDomainWithServiceResponseAsync(UUID appId, String versionId, String domainName) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5621,7 +5621,7 @@ public class ModelsImpl implements Models {
         }
         PrebuiltDomainCreateBaseObject prebuiltDomainObject = new PrebuiltDomainCreateBaseObject();
         prebuiltDomainObject.withDomainName(domainName);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addCustomPrebuiltDomain(appId, versionId, this.client.acceptLanguage(), prebuiltDomainObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<UUID>>>>() {
                 @Override
@@ -5756,8 +5756,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCustomPrebuiltIntentWithServiceResponseAsync(UUID appId, String versionId, PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5769,7 +5769,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter prebuiltDomainModelCreateObject is required and cannot be null.");
         }
         Validator.validate(prebuiltDomainModelCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addCustomPrebuiltIntent(appId, versionId, prebuiltDomainModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -5844,8 +5844,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;IntentClassifier&gt; object
      */
     public Observable<ServiceResponse<List<IntentClassifier>>> listCustomPrebuiltIntentsWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5853,7 +5853,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listCustomPrebuiltIntents(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IntentClassifier>>>>() {
                 @Override
@@ -5932,8 +5932,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCustomPrebuiltEntityWithServiceResponseAsync(UUID appId, String versionId, PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -5945,7 +5945,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter prebuiltDomainModelCreateObject is required and cannot be null.");
         }
         Validator.validate(prebuiltDomainModelCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addCustomPrebuiltEntity(appId, versionId, prebuiltDomainModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -6020,8 +6020,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<EntityExtractor>>> listCustomPrebuiltEntitiesWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6029,7 +6029,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listCustomPrebuiltEntities(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityExtractor>>>>() {
                 @Override
@@ -6104,8 +6104,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;CustomPrebuiltModel&gt; object
      */
     public Observable<ServiceResponse<List<CustomPrebuiltModel>>> listCustomPrebuiltModelsWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6113,7 +6113,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listCustomPrebuiltModels(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<CustomPrebuiltModel>>>>() {
                 @Override
@@ -6192,8 +6192,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteCustomPrebuiltDomainWithServiceResponseAsync(UUID appId, String versionId, String domainName) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6204,7 +6204,7 @@ public class ModelsImpl implements Models {
         if (domainName == null) {
             throw new IllegalArgumentException("Parameter domainName is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteCustomPrebuiltDomain(appId, versionId, domainName, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -6287,8 +6287,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the HierarchicalChildEntity object
      */
     public Observable<ServiceResponse<HierarchicalChildEntity>> getHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6302,7 +6302,7 @@ public class ModelsImpl implements Models {
         if (hChildId == null) {
             throw new IllegalArgumentException("Parameter hChildId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getHierarchicalEntityChild(appId, versionId, hEntityId, hChildId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HierarchicalChildEntity>>>() {
                 @Override
@@ -6390,8 +6390,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId, UpdateHierarchicalEntityChildOptionalParameter updateHierarchicalEntityChildOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6422,8 +6422,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6439,7 +6439,7 @@ public class ModelsImpl implements Models {
         }
         HierarchicalChildModelUpdateObject hierarchicalChildModelUpdateObject = new HierarchicalChildModelUpdateObject();
         hierarchicalChildModelUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateHierarchicalEntityChild(appId, versionId, hEntityId, hChildId, this.client.acceptLanguage(), hierarchicalChildModelUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -6592,8 +6592,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6607,7 +6607,7 @@ public class ModelsImpl implements Models {
         if (hChildId == null) {
             throw new IllegalArgumentException("Parameter hChildId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteHierarchicalEntityChild(appId, versionId, hEntityId, hChildId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -6691,8 +6691,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6719,8 +6719,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6733,7 +6733,7 @@ public class ModelsImpl implements Models {
         }
         HierarchicalChildModelCreateObject hierarchicalChildModelCreateObject = new HierarchicalChildModelCreateObject();
         hierarchicalChildModelCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addHierarchicalEntityChild(appId, versionId, hEntityId, this.client.acceptLanguage(), hierarchicalChildModelCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -6880,8 +6880,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCompositeEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, AddCompositeEntityChildOptionalParameter addCompositeEntityChildOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6908,8 +6908,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCompositeEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -6922,7 +6922,7 @@ public class ModelsImpl implements Models {
         }
         CompositeChildModelCreateObject compositeChildModelCreateObject = new CompositeChildModelCreateObject();
         compositeChildModelCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addCompositeEntityChild(appId, versionId, cEntityId, this.client.acceptLanguage(), compositeChildModelCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -7068,8 +7068,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteCompositeEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, UUID cChildId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7083,7 +7083,7 @@ public class ModelsImpl implements Models {
         if (cChildId == null) {
             throw new IllegalArgumentException("Parameter cChildId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteCompositeEntityChild(appId, versionId, cEntityId, cChildId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -7163,8 +7163,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;RegexEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<RegexEntityExtractor>>> getRegexEntityInfosWithServiceResponseAsync(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7189,8 +7189,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;RegexEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<RegexEntityExtractor>>> getRegexEntityInfosWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7198,7 +7198,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getRegexEntityInfos(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RegexEntityExtractor>>>>() {
                 @Override
@@ -7340,8 +7340,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createRegexEntityModelWithServiceResponseAsync(UUID appId, String versionId, RegexModelCreateObject regexEntityExtractorCreateObj) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7353,7 +7353,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter regexEntityExtractorCreateObj is required and cannot be null.");
         }
         Validator.validate(regexEntityExtractorCreateObj);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.createRegexEntityModel(appId, versionId, regexEntityExtractorCreateObj, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -7433,8 +7433,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<PatternAnyEntityExtractor>>> getPatternAnyEntityInfosWithServiceResponseAsync(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7459,8 +7459,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<PatternAnyEntityExtractor>>> getPatternAnyEntityInfosWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7468,7 +7468,7 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getPatternAnyEntityInfos(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternAnyEntityExtractor>>>>() {
                 @Override
@@ -7610,8 +7610,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createPatternAnyEntityModelWithServiceResponseAsync(UUID appId, String versionId, PatternAnyModelCreateObject extractorCreateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7623,7 +7623,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter extractorCreateObject is required and cannot be null.");
         }
         Validator.validate(extractorCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.createPatternAnyEntityModel(appId, versionId, extractorCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -7702,8 +7702,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7714,7 +7714,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
@@ -7798,8 +7798,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreateEntityRoleOptionalParameter createEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7826,8 +7826,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7840,7 +7840,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.createEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -7982,8 +7982,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getPrebuiltEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -7994,7 +7994,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getPrebuiltEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
@@ -8078,8 +8078,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreatePrebuiltEntityRoleOptionalParameter createPrebuiltEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8106,8 +8106,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8120,7 +8120,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.createPrebuiltEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -8262,8 +8262,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getClosedListEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8274,7 +8274,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getClosedListEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
@@ -8358,8 +8358,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreateClosedListEntityRoleOptionalParameter createClosedListEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8386,8 +8386,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8400,7 +8400,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.createClosedListEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -8542,8 +8542,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getRegexEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8554,7 +8554,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getRegexEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
@@ -8638,8 +8638,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreateRegexEntityRoleOptionalParameter createRegexEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8666,8 +8666,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8680,7 +8680,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.createRegexEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -8822,8 +8822,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getCompositeEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8834,7 +8834,7 @@ public class ModelsImpl implements Models {
         if (cEntityId == null) {
             throw new IllegalArgumentException("Parameter cEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getCompositeEntityRoles(appId, versionId, cEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
@@ -8918,8 +8918,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, CreateCompositeEntityRoleOptionalParameter createCompositeEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8946,8 +8946,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -8960,7 +8960,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.createCompositeEntityRole(appId, versionId, cEntityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -9102,8 +9102,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getPatternAnyEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -9114,7 +9114,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getPatternAnyEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
@@ -9198,8 +9198,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createPatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreatePatternAnyEntityRoleOptionalParameter createPatternAnyEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -9226,8 +9226,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createPatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -9240,7 +9240,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.createPatternAnyEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -9382,8 +9382,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getHierarchicalEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -9394,7 +9394,7 @@ public class ModelsImpl implements Models {
         if (hEntityId == null) {
             throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getHierarchicalEntityRoles(appId, versionId, hEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
@@ -9478,8 +9478,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, CreateHierarchicalEntityRoleOptionalParameter createHierarchicalEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -9506,8 +9506,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -9520,7 +9520,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.createHierarchicalEntityRole(appId, versionId, hEntityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -9662,8 +9662,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getCustomPrebuiltEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -9674,7 +9674,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getCustomPrebuiltEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
@@ -9758,8 +9758,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createCustomPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreateCustomPrebuiltEntityRoleOptionalParameter createCustomPrebuiltEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -9786,8 +9786,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createCustomPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -9800,7 +9800,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.createCustomPrebuiltEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
@@ -9942,8 +9942,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;ExplicitListItem&gt; object
      */
     public Observable<ServiceResponse<List<ExplicitListItem>>> getExplicitListWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -9954,7 +9954,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getExplicitList(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ExplicitListItem>>>>() {
                 @Override
@@ -10038,8 +10038,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the Integer object
      */
     public Observable<ServiceResponse<Integer>> addExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, AddExplicitListItemOptionalParameter addExplicitListItemOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10066,8 +10066,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the Integer object
      */
     public Observable<ServiceResponse<Integer>> addExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String explicitListItem) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10080,7 +10080,7 @@ public class ModelsImpl implements Models {
         }
         ExplicitListItemCreateObject item = new ExplicitListItemCreateObject();
         item.withExplicitListItem(explicitListItem);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addExplicitListItem(appId, versionId, entityId, this.client.acceptLanguage(), item, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
                 @Override
@@ -10222,8 +10222,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the RegexEntityExtractor object
      */
     public Observable<ServiceResponse<RegexEntityExtractor>> getRegexEntityEntityInfoWithServiceResponseAsync(UUID appId, String versionId, UUID regexEntityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10234,7 +10234,7 @@ public class ModelsImpl implements Models {
         if (regexEntityId == null) {
             throw new IllegalArgumentException("Parameter regexEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getRegexEntityEntityInfo(appId, versionId, regexEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegexEntityExtractor>>>() {
                 @Override
@@ -10317,8 +10317,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateRegexEntityModelWithServiceResponseAsync(UUID appId, String versionId, UUID regexEntityId, RegexModelUpdateObject regexEntityUpdateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10333,7 +10333,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter regexEntityUpdateObject is required and cannot be null.");
         }
         Validator.validate(regexEntityUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateRegexEntityModel(appId, versionId, regexEntityId, regexEntityUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -10412,8 +10412,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteRegexEntityModelWithServiceResponseAsync(UUID appId, String versionId, UUID regexEntityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10424,7 +10424,7 @@ public class ModelsImpl implements Models {
         if (regexEntityId == null) {
             throw new IllegalArgumentException("Parameter regexEntityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteRegexEntityModel(appId, versionId, regexEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -10503,8 +10503,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the PatternAnyEntityExtractor object
      */
     public Observable<ServiceResponse<PatternAnyEntityExtractor>> getPatternAnyEntityInfoWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10515,7 +10515,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getPatternAnyEntityInfo(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PatternAnyEntityExtractor>>>() {
                 @Override
@@ -10598,8 +10598,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePatternAnyEntityModelWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, PatternAnyModelUpdateObject patternAnyUpdateObject) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10614,7 +10614,7 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter patternAnyUpdateObject is required and cannot be null.");
         }
         Validator.validate(patternAnyUpdateObject);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updatePatternAnyEntityModel(appId, versionId, entityId, patternAnyUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -10693,8 +10693,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePatternAnyEntityModelWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10705,7 +10705,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deletePatternAnyEntityModel(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -10788,8 +10788,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10803,7 +10803,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
@@ -10891,8 +10891,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateEntityRoleOptionalParameter updateEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10923,8 +10923,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -10940,7 +10940,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -11093,8 +11093,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -11108,7 +11108,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -11191,8 +11191,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -11206,7 +11206,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getPrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
@@ -11294,8 +11294,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePrebuiltEntityRoleOptionalParameter updatePrebuiltEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -11326,8 +11326,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -11343,7 +11343,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updatePrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -11496,8 +11496,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -11511,7 +11511,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deletePrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -11594,8 +11594,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -11609,7 +11609,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getClosedListEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
@@ -11697,8 +11697,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateClosedListEntityRoleOptionalParameter updateClosedListEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -11729,8 +11729,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -11746,7 +11746,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateClosedListEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -11899,8 +11899,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -11914,7 +11914,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteClosedListEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -11997,8 +11997,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12012,7 +12012,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getRegexEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
@@ -12100,8 +12100,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateRegexEntityRoleOptionalParameter updateRegexEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12132,8 +12132,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12149,7 +12149,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateRegexEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -12302,8 +12302,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12317,7 +12317,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteRegexEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -12400,8 +12400,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12415,7 +12415,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getCompositeEntityRole(appId, versionId, cEntityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
@@ -12503,8 +12503,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId, UpdateCompositeEntityRoleOptionalParameter updateCompositeEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12535,8 +12535,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12552,7 +12552,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateCompositeEntityRole(appId, versionId, cEntityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -12705,8 +12705,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12720,7 +12720,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteCompositeEntityRole(appId, versionId, cEntityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -12803,8 +12803,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getPatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12818,7 +12818,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getPatternAnyEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
@@ -12906,8 +12906,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePatternAnyEntityRoleOptionalParameter updatePatternAnyEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12938,8 +12938,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -12955,7 +12955,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updatePatternAnyEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -13108,8 +13108,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -13123,7 +13123,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deletePatternAnyEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -13206,8 +13206,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -13221,7 +13221,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getHierarchicalEntityRole(appId, versionId, hEntityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
@@ -13309,8 +13309,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId, UpdateHierarchicalEntityRoleOptionalParameter updateHierarchicalEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -13341,8 +13341,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -13358,7 +13358,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateHierarchicalEntityRole(appId, versionId, hEntityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -13511,8 +13511,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -13526,7 +13526,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteHierarchicalEntityRole(appId, versionId, hEntityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -13609,8 +13609,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getCustomEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -13624,7 +13624,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getCustomEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
@@ -13712,8 +13712,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateCustomPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateCustomPrebuiltEntityRoleOptionalParameter updateCustomPrebuiltEntityRoleOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -13744,8 +13744,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateCustomPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -13761,7 +13761,7 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateCustomPrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -13914,8 +13914,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteCustomEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -13929,7 +13929,7 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteCustomEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -14012,8 +14012,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the ExplicitListItem object
      */
     public Observable<ServiceResponse<ExplicitListItem>> getExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, long itemId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -14024,7 +14024,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getExplicitListItem(appId, versionId, entityId, itemId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExplicitListItem>>>() {
                 @Override
@@ -14112,8 +14112,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, long itemId, UpdateExplicitListItemOptionalParameter updateExplicitListItemOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -14141,8 +14141,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, long itemId, String explicitListItem) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -14155,7 +14155,7 @@ public class ModelsImpl implements Models {
         }
         ExplicitListItemUpdateObject item = new ExplicitListItemUpdateObject();
         item.withExplicitListItem(explicitListItem);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.updateExplicitListItem(appId, versionId, entityId, itemId, this.client.acceptLanguage(), item, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
@@ -14308,8 +14308,8 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, long itemId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -14320,7 +14320,7 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.deleteExplicitListItem(appId, versionId, entityId, itemId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override

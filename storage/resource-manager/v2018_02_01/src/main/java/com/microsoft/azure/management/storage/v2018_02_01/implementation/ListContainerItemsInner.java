@@ -23,7 +23,7 @@ public class ListContainerItemsInner {
     private List<ListContainerItem> value;
 
     /**
-     * Get the value value.
+     * Get the list of blob containers.
      *
      * @return the value value
      */
@@ -32,7 +32,7 @@ public class ListContainerItemsInner {
     }
 
     /**
-     * Set the value value.
+     * Set the list of blob containers.
      *
      * @param value the value value to set
      * @return the ListContainerItemsInner object itself.

@@ -18,7 +18,7 @@ public class FaceDescription {
      * Possible age of the face.
      */
     @JsonProperty(value = "age")
-    private Integer age;
+    private int age;
 
     /**
      * Possible gender of the face. Possible values include: 'Male', 'Female'.
@@ -37,7 +37,7 @@ public class FaceDescription {
      *
      * @return the age value
      */
-    public Integer age() {
+    public int age() {
         return this.age;
     }
 
@@ -47,7 +47,7 @@ public class FaceDescription {
      * @param age the age value to set
      * @return the FaceDescription object itself.
      */
-    public FaceDescription withAge(Integer age) {
+    public FaceDescription withAge(int age) {
         this.age = age;
         return this;
     }

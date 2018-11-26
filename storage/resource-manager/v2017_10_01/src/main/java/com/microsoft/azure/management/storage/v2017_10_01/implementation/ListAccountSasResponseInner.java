@@ -21,7 +21,7 @@ public class ListAccountSasResponseInner {
     private String accountSasToken;
 
     /**
-     * Get the accountSasToken value.
+     * Get list SAS credentials of storage account.
      *
      * @return the accountSasToken value
      */

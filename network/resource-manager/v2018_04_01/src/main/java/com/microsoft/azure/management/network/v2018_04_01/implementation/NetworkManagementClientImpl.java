@@ -868,7 +868,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s)", super.userAgent(), "NetworkManagementClient");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "NetworkManagementClient", "2018-04-01");
     }
 
     private void initializeService() {

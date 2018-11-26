@@ -18,13 +18,13 @@ public class ImageMetadata {
      * Image width.
      */
     @JsonProperty(value = "width")
-    private Integer width;
+    private int width;
 
     /**
      * Image height.
      */
     @JsonProperty(value = "height")
-    private Integer height;
+    private int height;
 
     /**
      * Image format.
@@ -37,7 +37,7 @@ public class ImageMetadata {
      *
      * @return the width value
      */
-    public Integer width() {
+    public int width() {
         return this.width;
     }
 
@@ -47,7 +47,7 @@ public class ImageMetadata {
      * @param width the width value to set
      * @return the ImageMetadata object itself.
      */
-    public ImageMetadata withWidth(Integer width) {
+    public ImageMetadata withWidth(int width) {
         this.width = width;
         return this;
     }
@@ -57,7 +57,7 @@ public class ImageMetadata {
      *
      * @return the height value
      */
-    public Integer height() {
+    public int height() {
         return this.height;
     }
 
@@ -67,7 +67,7 @@ public class ImageMetadata {
      * @param height the height value to set
      * @return the ImageMetadata object itself.
      */
-    public ImageMetadata withHeight(Integer height) {
+    public ImageMetadata withHeight(int height) {
         this.height = height;
         return this;
     }

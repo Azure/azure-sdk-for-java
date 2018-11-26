@@ -39,7 +39,7 @@ public class TrainsImpl implements Trains {
     /** The Retrofit service to perform REST calls. */
     private TrainsService service;
     /** The service client containing this operation class. */
-    private LUISAuthoringAPIImpl client;
+    private LUISAuthoringClientImpl client;
 
     /**
      * Initializes an instance of TrainsImpl.
@@ -47,7 +47,7 @@ public class TrainsImpl implements Trains {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public TrainsImpl(Retrofit retrofit, LUISAuthoringAPIImpl client) {
+    public TrainsImpl(Retrofit retrofit, LUISAuthoringClientImpl client) {
         this.service = retrofit.create(TrainsService.class);
         this.client = client;
     }
@@ -120,8 +120,8 @@ public class TrainsImpl implements Trains {
      * @return the observable to the EnqueueTrainingResponse object
      */
     public Observable<ServiceResponse<EnqueueTrainingResponse>> trainVersionWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -129,7 +129,7 @@ public class TrainsImpl implements Trains {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.trainVersion(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EnqueueTrainingResponse>>>() {
                 @Override
@@ -204,8 +204,8 @@ public class TrainsImpl implements Trains {
      * @return the observable to the List&lt;ModelTrainingInfo&gt; object
      */
     public Observable<ServiceResponse<List<ModelTrainingInfo>>> getStatusWithServiceResponseAsync(UUID appId, String versionId) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
@@ -213,7 +213,7 @@ public class TrainsImpl implements Trains {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getStatus(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ModelTrainingInfo>>>>() {
                 @Override

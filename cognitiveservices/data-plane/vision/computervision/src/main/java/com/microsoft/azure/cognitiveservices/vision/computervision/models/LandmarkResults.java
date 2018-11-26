@@ -19,7 +19,7 @@ public class LandmarkResults {
      * The landmarks property.
      */
     @JsonProperty(value = "landmarks")
-    private List<LandmarkResultsLandmarksItem> landmarks;
+    private List<LandmarksModel> landmarks;
 
     /**
      * Id of the REST API request.
@@ -38,7 +38,7 @@ public class LandmarkResults {
      *
      * @return the landmarks value
      */
-    public List<LandmarkResultsLandmarksItem> landmarks() {
+    public List<LandmarksModel> landmarks() {
         return this.landmarks;
     }
 
@@ -48,7 +48,7 @@ public class LandmarkResults {
      * @param landmarks the landmarks value to set
      * @return the LandmarkResults object itself.
      */
-    public LandmarkResults withLandmarks(List<LandmarkResultsLandmarksItem> landmarks) {
+    public LandmarkResults withLandmarks(List<LandmarksModel> landmarks) {
         this.landmarks = landmarks;
         return this;
     }

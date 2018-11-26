@@ -36,7 +36,7 @@ public class AppNameAvailabilityInfoInner {
     private String message;
 
     /**
-     * Get the nameAvailable value.
+     * Get the value which indicates whether the provided name is available.
      *
      * @return the nameAvailable value
      */
@@ -45,7 +45,7 @@ public class AppNameAvailabilityInfoInner {
     }
 
     /**
-     * Get the reason value.
+     * Get the reason for unavailability. Possible values include: 'Invalid', 'AlreadyExists'.
      *
      * @return the reason value
      */
@@ -54,7 +54,7 @@ public class AppNameAvailabilityInfoInner {
     }
 
     /**
-     * Get the message value.
+     * Get the detailed reason message.
      *
      * @return the message value
      */
@@ -63,7 +63,7 @@ public class AppNameAvailabilityInfoInner {
     }
 
     /**
-     * Set the message value.
+     * Set the detailed reason message.
      *
      * @param message the message value to set
      * @return the AppNameAvailabilityInfoInner object itself.

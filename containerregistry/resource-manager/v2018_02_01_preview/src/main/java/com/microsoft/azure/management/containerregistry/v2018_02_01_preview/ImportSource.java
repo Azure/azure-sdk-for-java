@@ -15,10 +15,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImportSource {
     /**
-     * The resource identifier of the target Azure Container Registry.
+     * The resource identifier of the source Azure Container Registry.
      */
-    @JsonProperty(value = "resourceId", required = true)
+    @JsonProperty(value = "resourceId")
     private String resourceId;
+
+    /**
+     * The address of the source registry.
+     */
+    @JsonProperty(value = "registryUri")
+    private String registryUri;
 
     /**
      * Repository name of the source image.
@@ -32,7 +38,7 @@ public class ImportSource {
     private String sourceImage;
 
     /**
-     * Get the resource identifier of the target Azure Container Registry.
+     * Get the resource identifier of the source Azure Container Registry.
      *
      * @return the resourceId value
      */
@@ -41,13 +47,33 @@ public class ImportSource {
     }
 
     /**
-     * Set the resource identifier of the target Azure Container Registry.
+     * Set the resource identifier of the source Azure Container Registry.
      *
      * @param resourceId the resourceId value to set
      * @return the ImportSource object itself.
      */
     public ImportSource withResourceId(String resourceId) {
         this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Get the address of the source registry.
+     *
+     * @return the registryUri value
+     */
+    public String registryUri() {
+        return this.registryUri;
+    }
+
+    /**
+     * Set the address of the source registry.
+     *
+     * @param registryUri the registryUri value to set
+     * @return the ImportSource object itself.
+     */
+    public ImportSource withRegistryUri(String registryUri) {
+        this.registryUri = registryUri;
         return this;
     }
 

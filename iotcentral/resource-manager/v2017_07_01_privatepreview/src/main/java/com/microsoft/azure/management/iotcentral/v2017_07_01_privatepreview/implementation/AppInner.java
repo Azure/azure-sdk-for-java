@@ -52,7 +52,7 @@ public class AppInner extends Resource {
     private AppSkuInfo sku;
 
     /**
-     * Get the applicationId value.
+     * Get the ID of the application.
      *
      * @return the applicationId value
      */
@@ -61,7 +61,7 @@ public class AppInner extends Resource {
     }
 
     /**
-     * Get the displayName value.
+     * Get the display name of the application.
      *
      * @return the displayName value
      */
@@ -70,7 +70,7 @@ public class AppInner extends Resource {
     }
 
     /**
-     * Set the displayName value.
+     * Set the display name of the application.
      *
      * @param displayName the displayName value to set
      * @return the AppInner object itself.
@@ -81,7 +81,7 @@ public class AppInner extends Resource {
     }
 
     /**
-     * Get the subdomain value.
+     * Get the subdomain of the application.
      *
      * @return the subdomain value
      */
@@ -90,7 +90,7 @@ public class AppInner extends Resource {
     }
 
     /**
-     * Set the subdomain value.
+     * Set the subdomain of the application.
      *
      * @param subdomain the subdomain value to set
      * @return the AppInner object itself.
@@ -101,7 +101,7 @@ public class AppInner extends Resource {
     }
 
     /**
-     * Get the template value.
+     * Get the ID of the application template, which is a blueprint that defines the characteristics and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and allows the application to be defined from scratch.
      *
      * @return the template value
      */
@@ -110,7 +110,7 @@ public class AppInner extends Resource {
     }
 
     /**
-     * Set the template value.
+     * Set the ID of the application template, which is a blueprint that defines the characteristics and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and allows the application to be defined from scratch.
      *
      * @param template the template value to set
      * @return the AppInner object itself.
@@ -121,7 +121,7 @@ public class AppInner extends Resource {
     }
 
     /**
-     * Get the sku value.
+     * Get a valid instance SKU.
      *
      * @return the sku value
      */
@@ -130,7 +130,7 @@ public class AppInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set a valid instance SKU.
      *
      * @param sku the sku value to set
      * @return the AppInner object itself.

@@ -40,7 +40,7 @@ public class RoleAssignmentInner {
     private RoleAssignmentPropertiesWithScope properties;
 
     /**
-     * Get the id value.
+     * Get the role assignment ID.
      *
      * @return the id value
      */
@@ -49,7 +49,7 @@ public class RoleAssignmentInner {
     }
 
     /**
-     * Get the name value.
+     * Get the role assignment name.
      *
      * @return the name value
      */
@@ -58,7 +58,7 @@ public class RoleAssignmentInner {
     }
 
     /**
-     * Get the type value.
+     * Get the role assignment type.
      *
      * @return the type value
      */
@@ -67,7 +67,7 @@ public class RoleAssignmentInner {
     }
 
     /**
-     * Get the properties value.
+     * Get role assignment properties.
      *
      * @return the properties value
      */
@@ -76,7 +76,7 @@ public class RoleAssignmentInner {
     }
 
     /**
-     * Set the properties value.
+     * Set role assignment properties.
      *
      * @param properties the properties value to set
      * @return the RoleAssignmentInner object itself.
