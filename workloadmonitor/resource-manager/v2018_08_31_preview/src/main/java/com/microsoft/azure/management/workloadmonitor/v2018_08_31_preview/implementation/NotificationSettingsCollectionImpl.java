@@ -9,38 +9,14 @@
 package com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation;
 
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSettingsCollection;
-import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
-import rx.Observable;
+import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import java.util.List;
 
-class NotificationSettingsCollectionImpl extends CreatableUpdatableImpl<NotificationSettingsCollection, NotificationSettingsCollectionInner, NotificationSettingsCollectionImpl> implements NotificationSettingsCollection, NotificationSettingsCollection.Update {
+class NotificationSettingsCollectionImpl extends WrapperImpl<NotificationSettingsCollectionInner> implements NotificationSettingsCollection {
     private final WorkloadMonitorManager manager;
-    private String resourceGroupName;
-    private String resourceNamespace;
-    private String resourceType;
-    private String resourceName;
-    private String notificationSettingName;
-
-    NotificationSettingsCollectionImpl(String name, WorkloadMonitorManager manager) {
-        super(name, new NotificationSettingsCollectionInner());
-        this.manager = manager;
-        // Set resource name
-        this.notificationSettingName = name;
-        //
-    }
-
     NotificationSettingsCollectionImpl(NotificationSettingsCollectionInner inner, WorkloadMonitorManager manager) {
-        super(inner.name(), inner);
+        super(inner);
         this.manager = manager;
-        // Set resource name
-        this.notificationSettingName = inner.name();
-        // set resource ancestor and positional variables
-        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
-        this.resourceNamespace = IdParsingUtils.getValueFromIdByName(inner.id(), "providers");
-        this.notificationSettingName = IdParsingUtils.getValueFromIdByName(inner.id(), "notificationSettings");
-        this.resourceType = IdParsingUtils.getValueFromIdByPosition(inner.id(), 6);
-        this.resourceName = IdParsingUtils.getValueFromIdByPosition(inner.id(), 7);
-        //
     }
 
     @Override
@@ -49,63 +25,8 @@ class NotificationSettingsCollectionImpl extends CreatableUpdatableImpl<Notifica
     }
 
     @Override
-    public Observable<NotificationSettingsCollection> createResourceAsync() {
-        NotificationSettingsInner client = this.manager().inner().notificationSettings();
-        return null; // NOP createResourceAsync implementation as create is not supported
-    }
-
-    @Override
-    public Observable<NotificationSettingsCollection> updateResourceAsync() {
-        NotificationSettingsInner client = this.manager().inner().notificationSettings();
-        return client.updateAsync(this.resourceGroupName, this.resourceNamespace, this.resourceType, this.resourceName, this.notificationSettingName)
-            .map(innerToFluentMap(this));
-    }
-
-    @Override
-    protected Observable<NotificationSettingsCollectionInner> getInnerAsync() {
-        NotificationSettingsInner client = this.manager().inner().notificationSettings();
-        return null; // NOP getInnerAsync implementation as get is not supported
-    }
-
-    @Override
-    public boolean isInCreateMode() {
-        return this.inner().id() == null;
-    }
-
-
-    @Override
-    public List<String> actionGroupResourceIds() {
-        return this.inner().actionGroupResourceIds();
-    }
-
-    @Override
-    public String id() {
-        return this.inner().id();
-    }
-
-    @Override
-    public String name() {
-        return this.inner().name();
-    }
-
-    @Override
-    public String notificationSettingId() {
-        return this.inner().notificationSettingId();
-    }
-
-    @Override
-    public String notificationSettingName() {
-        return this.inner().notificationSettingName();
-    }
-
-    @Override
-    public String notificationSettingType() {
-        return this.inner().notificationSettingType();
-    }
-
-    @Override
-    public String type() {
-        return this.inner().type();
+    public List<NotificationSettingInner> value() {
+        return this.inner().value();
     }
 
 }
