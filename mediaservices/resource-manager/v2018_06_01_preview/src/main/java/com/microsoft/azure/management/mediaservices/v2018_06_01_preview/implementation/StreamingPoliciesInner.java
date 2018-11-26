@@ -215,7 +215,7 @@ public class StreamingPoliciesInner {
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -239,7 +239,7 @@ public class StreamingPoliciesInner {
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -264,7 +264,7 @@ public class StreamingPoliciesInner {
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;StreamingPolicyInner&gt; object
      */
@@ -286,7 +286,7 @@ public class StreamingPoliciesInner {
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-     * @param orderby Specifies the the key by which the result collection should be ordered.
+     * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;StreamingPolicyInner&gt; object
      */
@@ -312,7 +312,7 @@ public class StreamingPoliciesInner {
     ServiceResponse<PageImpl<StreamingPolicyInner>> * @param accountName The Media Services account name.
     ServiceResponse<PageImpl<StreamingPolicyInner>> * @param filter Restricts the set of items returned.
     ServiceResponse<PageImpl<StreamingPolicyInner>> * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The service returns the number of available items up to but not greater than the specified value n.
-    ServiceResponse<PageImpl<StreamingPolicyInner>> * @param orderby Specifies the the key by which the result collection should be ordered.
+    ServiceResponse<PageImpl<StreamingPolicyInner>> * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;StreamingPolicyInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
