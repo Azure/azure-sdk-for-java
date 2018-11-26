@@ -96,10 +96,10 @@ public interface QnAMakerClient {
     QnAMakerClient withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * Gets the Endpoints object to access its operations.
-     * @return the Endpoints object.
+     * Gets the EndpointKeys object to access its operations.
+     * @return the EndpointKeys object.
      */
-    Endpoints endpoints();
+    EndpointKeys endpointKeys();
 
     /**
      * Gets the Alterations object to access its operations.
