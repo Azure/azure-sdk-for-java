@@ -3,6 +3,10 @@
     "source": "specification/applicationinsights/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "applicationinsights/data-plane": {
+      "source": "specification/applicationinsights/data-plane/readme.md",
+      "args": "--payload-flattening-threshold=1"
+    },
   "appservice/resource-manager": {
     "source": "specification/web/resource-manager/readme.md",
     "args": "--multiapi --fluent",
@@ -22,6 +26,26 @@
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "cognitiveservices/data-plane/CustomImageSearch": {
+    "source": "specification/cognitiveservices/data-plane/CustomImageSearch/readme.md",
+    "args": ""
+  },
+  "cognitiveservices/data-plane/CustomWebSearch": {
+    "source": "specification/cognitiveservices/data-plane/CustomWebSearch/readme.md",
+    "args": ""
+  },
+  "cognitiveservices/data-plane/VisualSearch": {
+    "source": "specification/cognitiveservices/data-plane/VisualSearch/readme.md",
+    "args": ""
+  },
+  "cognitiveservices/data-plane/TextAnalytics": {
+    "source": "specification/cognitiveservices/data-plane/TextAnalytics/readme.md",
+    "args": ""
+  },
+  "cognitiveservices/data-plane/Face": {
+    "source": "specification/cognitiveservices/data-plane/Face/readme.md",
+    "args": ""
+  },
   "cognitiveservices/resource-manager": {
     "source": "specification/cognitiveservices/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -36,6 +60,14 @@
   },
   "containerregistry/resource-manager": {
     "source": "specification/containerregistry/resource-manager/readme.md",
+    "args": "--multiapi=true --fluent=true"
+  },
+  "datalakeanalytics/resource-manager": {
+    "source": "specification/datalake-analytics/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "datalakestore/resource-manager": {
+    "source": "specification/datalake-store/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "dns/resource-manager": {
@@ -49,6 +81,10 @@
   "eventgrid/data-plane": {
     "source": "specification/eventgrid/data-plane/readme.md",
     "args": "--multiapi"
+  },
+  "hdinsight/resource-manager": {
+    "source": "specification/hdinsight/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "iotcentral/resource-manager": {
     "source": "specification/iotcentral/resource-manager/readme.md",
@@ -68,8 +104,16 @@
     "source": "specification/keyvault/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "loganalytics/data-plane": {
+    "source": "specification/operationalinsights/data-plane/readme.md",
+    "args": "--payload-flattening-threshold=1 --override-client-name=LogAnalyticsDataClient"
+  },
   "logic/resource-manager": {
     "source": "specification/logic/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "notificationhubs/resource-manager": {
+    "source": "specification/notificationhubs/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "mediaservices/resource-manager": {
