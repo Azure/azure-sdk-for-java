@@ -31,7 +31,7 @@ public abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
 	
 
 	class EcdsaSignatureTransform implements ISignatureTransform {
-	    private final String ALGORITHM = "NONEwithECDSA";
+		private final String ALGORITHM = "NONEwithECDSA";
 		private final KeyPair _keyPair;
 		private final Provider _provider;
 		private final Ecdsa _algorithm;
@@ -54,7 +54,7 @@ public abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
 		@Override
 		public boolean verify(byte[] digest, byte[] signature) throws GeneralSecurityException {
 			Signature verify = Signature.getInstance(ALGORITHM, _provider);
-	        checkDigestLength(digest);
+			checkDigestLength(digest);
 			signature = SignatureEncoding.toAsn1Der(signature, _algorithm);
 			verify.initVerify(_keyPair.getPublic());
 			verify.update(digest);

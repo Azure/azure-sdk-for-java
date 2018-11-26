@@ -19,7 +19,7 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa;
 import org.apache.commons.codec.binary.Hex;
 
 public final class SignatureEncoding {
-    // SignatureEncoding is inteneded to be a static class 
+    // SignatureEncoding is intended to be a static class 
     private SignatureEncoding() { }
 
     /**
@@ -40,7 +40,7 @@ public final class SignatureEncoding {
         // verify the given algoritm is an Ecdsa signature algorithm
         if (!(baseAlgorithm instanceof Ecdsa))
         {
-            throw new IllegalArgumentException("Invalid algorithm.");
+            throw new IllegalArgumentException("Invalid algorithm; must be an instance of ECDSA.");
         }
 
         return SignatureEncoding.fromAsn1Der(asn1DerSignature, (Ecdsa)baseAlgorithm);
@@ -83,7 +83,7 @@ public final class SignatureEncoding {
         // verify the given algoritm is an Ecdsa signature algorithm
         if (!(baseAlgorithm instanceof Ecdsa))
         {
-            throw new IllegalArgumentException("Invalid algorithm.");
+            throw new IllegalArgumentException("Invalid algorithm; must be an instance of ECDSA.");
         }
 
         return SignatureEncoding.toAsn1Der(signature, (Ecdsa)baseAlgorithm);
@@ -176,10 +176,11 @@ final class Asn1DerSignatureEncoding {
         }
 
         int objLen = readFieldLength(asn1DerSignature);
+        
         // verify the object lenth is equal to the remaining length of the _asn1DerSignature
         if (objLen != asn1DerSignature.available())
         {
-            throw new IllegalArgumentException("Invalid signature." + " invalid field len " + Integer.toString(objLen));
+            throw new IllegalArgumentException(String.format("Invalid signature; invalid field len %d", objLen));
         }
 
         byte[] rawSignature = new byte[coordLength * 2];
