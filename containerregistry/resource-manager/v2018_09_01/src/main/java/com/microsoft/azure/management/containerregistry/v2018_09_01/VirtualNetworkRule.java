@@ -18,7 +18,7 @@ public class VirtualNetworkRule {
      * Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**

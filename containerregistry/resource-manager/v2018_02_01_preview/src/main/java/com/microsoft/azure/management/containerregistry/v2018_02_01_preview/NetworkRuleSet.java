@@ -19,7 +19,7 @@ public class NetworkRuleSet {
      * The default action of allow or deny when no other rules match. Possible
      * values include: 'Allow', 'Deny'.
      */
-    @JsonProperty(value = "defaultAction")
+    @JsonProperty(value = "defaultAction", required = true)
     private DefaultAction defaultAction;
 
     /**
