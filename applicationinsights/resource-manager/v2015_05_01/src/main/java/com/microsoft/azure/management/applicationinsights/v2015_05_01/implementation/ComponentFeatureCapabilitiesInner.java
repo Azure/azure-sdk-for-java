@@ -58,7 +58,7 @@ public class ComponentFeatureCapabilitiesInner {
     }
 
     /**
-     * Returns feature capabilites of the application insights component.
+     * Returns feature capabilities of the application insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
@@ -72,7 +72,7 @@ public class ComponentFeatureCapabilitiesInner {
     }
 
     /**
-     * Returns feature capabilites of the application insights component.
+     * Returns feature capabilities of the application insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
@@ -85,7 +85,7 @@ public class ComponentFeatureCapabilitiesInner {
     }
 
     /**
-     * Returns feature capabilites of the application insights component.
+     * Returns feature capabilities of the application insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
@@ -102,7 +102,7 @@ public class ComponentFeatureCapabilitiesInner {
     }
 
     /**
-     * Returns feature capabilites of the application insights component.
+     * Returns feature capabilities of the application insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
