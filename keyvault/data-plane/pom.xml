@@ -5,7 +5,12 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.microsoft.azure</groupId>
+  <parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-sdk-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../../pom.client.xml</relativePath>
+  </parent>
   <version>1.1.2</version>
   <artifactId>azure-keyvault-parent</artifactId>
   <packaging>pom</packaging>
@@ -288,12 +293,12 @@
             <configuration>
                 <properties>
                     <property>
-<name>keyvault.vaulturi</name>
+<name>KEYVAULT_VAULTURI</name>
        		<value>https://tifchen-keyvault-fancy.vault.azure.net</value>
                     </property>
 
                     <property>
-                           		<name>keyvault.vaulturi.alt</name>
+                           		<name>KEYVAULT_VAULTURI_ALT</name>
        		<value>https://tifchen-keyvault-fancier.vault.azure.net</value>
                     </property>
                 </properties>
@@ -320,8 +325,8 @@
             </includes>
             <environmentVariables>
               <test.mode>${testMode}</test.mode>
-              <keyvault.vaulturi>https://tifchen-keyvault-fancy.vault.azure.net</keyvault.vaulturi>
-              <keyvault.vaulturi.alt>https://tifchen-keyvault-fancier.vault.azure.net</keyvault.vaulturi.alt>
+              <KEYVAULT_VAULTURI>https://tifchen-keyvault-fancy.vault.azure.net</KEYVAULT_VAULTURI>
+              <KEYVAULT_VAULTURI_ALT>https://tifchen-keyvault-fancier.vault.azure.net</KEYVAULT_VAULTURI_ALT>
             </environmentVariables>
           </configuration>
         </plugin>
