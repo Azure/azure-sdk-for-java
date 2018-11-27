@@ -62,7 +62,7 @@ public class KeyCredentialInner {
      * Custom Key Identifier.
      */
     @JsonProperty(value = "customKeyIdentifier")
-    private byte[] customKeyIdentifier;
+    private String customKeyIdentifier;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -209,7 +209,7 @@ public class KeyCredentialInner {
      *
      * @return the customKeyIdentifier value
      */
-    public byte[] customKeyIdentifier() {
+    public String customKeyIdentifier() {
         return this.customKeyIdentifier;
     }
 
@@ -219,7 +219,7 @@ public class KeyCredentialInner {
      * @param customKeyIdentifier the customKeyIdentifier value to set
      * @return the KeyCredentialInner object itself.
      */
-    public KeyCredentialInner withCustomKeyIdentifier(byte[] customKeyIdentifier) {
+    public KeyCredentialInner withCustomKeyIdentifier(String customKeyIdentifier) {
         this.customKeyIdentifier = customKeyIdentifier;
         return this;
     }

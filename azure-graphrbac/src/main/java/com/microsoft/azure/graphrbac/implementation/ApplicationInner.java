@@ -86,6 +86,18 @@ public class ApplicationInner extends DirectoryObjectInner {
     private List<RequiredResourceAccess> requiredResourceAccess;
 
     /**
+     * A collection of KeyCredential objects.
+     */
+    @JsonProperty(value = "keyCredentials")
+    private List<KeyCredentialInner> keyCredentials;
+
+    /**
+     * A collection of PasswordCredential objects.
+     */
+    @JsonProperty(value = "passwordCredentials")
+    private List<PasswordCredentialInner> passwordCredentials;
+
+    /**
      * Get the application ID.
      *
      * @return the appId value
@@ -282,6 +294,46 @@ public class ApplicationInner extends DirectoryObjectInner {
      */
     public ApplicationInner withRequiredResourceAccess(List<RequiredResourceAccess> requiredResourceAccess) {
         this.requiredResourceAccess = requiredResourceAccess;
+        return this;
+    }
+
+    /**
+     * Get a collection of KeyCredential objects.
+     *
+     * @return the keyCredentials value
+     */
+    public List<KeyCredentialInner> keyCredentials() {
+        return this.keyCredentials;
+    }
+
+    /**
+     * Set a collection of KeyCredential objects.
+     *
+     * @param keyCredentials the keyCredentials value to set
+     * @return the ApplicationInner object itself.
+     */
+    public ApplicationInner withKeyCredentials(List<KeyCredentialInner> keyCredentials) {
+        this.keyCredentials = keyCredentials;
+        return this;
+    }
+
+    /**
+     * Get a collection of PasswordCredential objects.
+     *
+     * @return the passwordCredentials value
+     */
+    public List<PasswordCredentialInner> passwordCredentials() {
+        return this.passwordCredentials;
+    }
+
+    /**
+     * Set a collection of PasswordCredential objects.
+     *
+     * @param passwordCredentials the passwordCredentials value to set
+     * @return the ApplicationInner object itself.
+     */
+    public ApplicationInner withPasswordCredentials(List<PasswordCredentialInner> passwordCredentials) {
+        this.passwordCredentials = passwordCredentials;
         return this;
     }
 
