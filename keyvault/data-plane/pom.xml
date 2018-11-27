@@ -11,7 +11,7 @@
     <version>1.0-SNAPSHOT</version>
     <relativePath>../../pom.client.xml</relativePath>
   </parent>
-  <version>1.1.2</version>
+  <version>1.2.0</version>
   <artifactId>azure-keyvault-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -95,27 +95,27 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-keyvault-webkey</artifactId>
-        <version>1.1.2</version>
+        <version>1.2.0</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-keyvault-cryptography</artifactId>
-        <version>1.1.2</version>
+        <version>1.2.0</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-keyvault-core</artifactId>
-        <version>1.1.2</version>
+        <version>1.2.0</version>
       </dependency>
       <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-keyvault</artifactId>
-      <version>1.1.2</version>
+      <version>1.2.0</version>
     </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-keyvault-extensions</artifactId>
-        <version>1.1.2</version>
+        <version>1.2.0</version>
       </dependency>
       
       <!-- Other Microsoft Azure Dependencies -->
