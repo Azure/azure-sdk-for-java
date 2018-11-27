@@ -51,9 +51,9 @@ class NotificationSettingsImpl extends WrapperImpl<NotificationSettingsInner> im
     }
 
     @Override
-    public Observable<NotificationSetting> getAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, String notificationSettingName) {
+    public Observable<NotificationSetting> getAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
         NotificationSettingsInner client = this.inner();
-        return client.getAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName)
+        return client.getAsync(resourceGroupName, resourceNamespace, resourceType, resourceName)
         .map(new Func1<NotificationSettingInner, NotificationSetting>() {
             @Override
             public NotificationSetting call(NotificationSettingInner inner) {

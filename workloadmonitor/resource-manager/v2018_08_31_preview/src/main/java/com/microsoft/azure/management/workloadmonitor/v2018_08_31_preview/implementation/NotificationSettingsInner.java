@@ -355,14 +355,13 @@ public class NotificationSettingsInner {
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
-     * @param notificationSettingName Name of the notificationSetting
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NotificationSettingInner object if successful.
      */
-    public NotificationSettingInner get(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, String notificationSettingName) {
-        return getWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName).toBlocking().single().body();
+    public NotificationSettingInner get(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+        return getWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName).toBlocking().single().body();
     }
 
     /**
@@ -372,13 +371,12 @@ public class NotificationSettingsInner {
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
-     * @param notificationSettingName Name of the notificationSetting
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NotificationSettingInner> getAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, String notificationSettingName, final ServiceCallback<NotificationSettingInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName), serviceCallback);
+    public ServiceFuture<NotificationSettingInner> getAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, final ServiceCallback<NotificationSettingInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName), serviceCallback);
     }
 
     /**
@@ -388,12 +386,11 @@ public class NotificationSettingsInner {
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
-     * @param notificationSettingName Name of the notificationSetting
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationSettingInner object
      */
-    public Observable<NotificationSettingInner> getAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, String notificationSettingName) {
-        return getWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName).map(new Func1<ServiceResponse<NotificationSettingInner>, NotificationSettingInner>() {
+    public Observable<NotificationSettingInner> getAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+        return getWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName).map(new Func1<ServiceResponse<NotificationSettingInner>, NotificationSettingInner>() {
             @Override
             public NotificationSettingInner call(ServiceResponse<NotificationSettingInner> response) {
                 return response.body();
@@ -408,11 +405,10 @@ public class NotificationSettingsInner {
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
-     * @param notificationSettingName Name of the notificationSetting
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationSettingInner object
      */
-    public Observable<ServiceResponse<NotificationSettingInner>> getWithServiceResponseAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, String notificationSettingName) {
+    public Observable<ServiceResponse<NotificationSettingInner>> getWithServiceResponseAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -428,9 +424,7 @@ public class NotificationSettingsInner {
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
-        if (notificationSettingName == null) {
-            throw new IllegalArgumentException("Parameter notificationSettingName is required and cannot be null.");
-        }
+        final String notificationSettingName = "default";
         return service.get(this.client.subscriptionId(), resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NotificationSettingInner>>>() {
                 @Override
@@ -459,14 +453,13 @@ public class NotificationSettingsInner {
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
-     * @param notificationSettingName Name of the notificationSetting
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the NotificationSettingInner object if successful.
      */
-    public NotificationSettingInner update(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, String notificationSettingName) {
-        return updateWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName).toBlocking().single().body();
+    public NotificationSettingInner update(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+        return updateWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName).toBlocking().single().body();
     }
 
     /**
@@ -476,13 +469,12 @@ public class NotificationSettingsInner {
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
-     * @param notificationSettingName Name of the notificationSetting
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NotificationSettingInner> updateAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, String notificationSettingName, final ServiceCallback<NotificationSettingInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName), serviceCallback);
+    public ServiceFuture<NotificationSettingInner> updateAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, final ServiceCallback<NotificationSettingInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName), serviceCallback);
     }
 
     /**
@@ -492,12 +484,11 @@ public class NotificationSettingsInner {
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
-     * @param notificationSettingName Name of the notificationSetting
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationSettingInner object
      */
-    public Observable<NotificationSettingInner> updateAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, String notificationSettingName) {
-        return updateWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName).map(new Func1<ServiceResponse<NotificationSettingInner>, NotificationSettingInner>() {
+    public Observable<NotificationSettingInner> updateAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
+        return updateWithServiceResponseAsync(resourceGroupName, resourceNamespace, resourceType, resourceName).map(new Func1<ServiceResponse<NotificationSettingInner>, NotificationSettingInner>() {
             @Override
             public NotificationSettingInner call(ServiceResponse<NotificationSettingInner> response) {
                 return response.body();
@@ -512,11 +503,10 @@ public class NotificationSettingsInner {
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
-     * @param notificationSettingName Name of the notificationSetting
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the NotificationSettingInner object
      */
-    public Observable<ServiceResponse<NotificationSettingInner>> updateWithServiceResponseAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, String notificationSettingName) {
+    public Observable<ServiceResponse<NotificationSettingInner>> updateWithServiceResponseAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -532,9 +522,7 @@ public class NotificationSettingsInner {
         if (resourceName == null) {
             throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
         }
-        if (notificationSettingName == null) {
-            throw new IllegalArgumentException("Parameter notificationSettingName is required and cannot be null.");
-        }
+        final String notificationSettingName = "default";
         return service.update(this.client.subscriptionId(), resourceGroupName, resourceNamespace, resourceType, resourceName, notificationSettingName, this.client.apiVersion(), this.client.acceptLanguage(), body, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NotificationSettingInner>>>() {
                 @Override

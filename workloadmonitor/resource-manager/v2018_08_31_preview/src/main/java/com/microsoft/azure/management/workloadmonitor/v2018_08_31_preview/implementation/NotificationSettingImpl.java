@@ -19,13 +19,12 @@ class NotificationSettingImpl extends CreatableUpdatableImpl<NotificationSetting
     private String resourceNamespace;
     private String resourceType;
     private String resourceName;
-    private String notificationSettingName;
 
     NotificationSettingImpl(String name, WorkloadMonitorManager manager) {
         super(name, new NotificationSettingInner());
         this.manager = manager;
         // Set resource name
-        this.notificationSettingName = name;
+        this.resourceNamespace = name;
         //
     }
 
@@ -33,11 +32,10 @@ class NotificationSettingImpl extends CreatableUpdatableImpl<NotificationSetting
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.notificationSettingName = inner.name();
+        this.resourceNamespace = inner.name();
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.resourceNamespace = IdParsingUtils.getValueFromIdByName(inner.id(), "providers");
-        this.notificationSettingName = IdParsingUtils.getValueFromIdByName(inner.id(), "notificationSettings");
         this.resourceType = IdParsingUtils.getValueFromIdByPosition(inner.id(), 6);
         this.resourceName = IdParsingUtils.getValueFromIdByPosition(inner.id(), 7);
         //
@@ -57,7 +55,7 @@ class NotificationSettingImpl extends CreatableUpdatableImpl<NotificationSetting
     @Override
     public Observable<NotificationSetting> updateResourceAsync() {
         NotificationSettingsInner client = this.manager().inner().notificationSettings();
-        return client.updateAsync(this.resourceGroupName, this.resourceNamespace, this.resourceType, this.resourceName, this.notificationSettingName)
+        return client.updateAsync(this.resourceGroupName, this.resourceNamespace, this.resourceType, this.resourceName)
             .map(innerToFluentMap(this));
     }
 

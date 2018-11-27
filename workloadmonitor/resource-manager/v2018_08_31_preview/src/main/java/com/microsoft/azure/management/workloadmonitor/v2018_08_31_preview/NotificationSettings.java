@@ -35,10 +35,9 @@ public interface NotificationSettings extends HasInner<NotificationSettingsInner
      * @param resourceNamespace The Namespace of the resource.
      * @param resourceType The type of the resource.
      * @param resourceName Name of the resource.
-     * @param notificationSettingName Name of the notificationSetting
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NotificationSetting> getAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName, String notificationSettingName);
+    Observable<NotificationSetting> getAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName);
 
 }
