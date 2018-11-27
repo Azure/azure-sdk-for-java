@@ -30,7 +30,7 @@ public class FactoryRepoConfiguration {
     private String accountName;
 
     /**
-     * Rrepository name.
+     * Repository name.
      */
     @JsonProperty(value = "repositoryName", required = true)
     private String repositoryName;
@@ -74,7 +74,7 @@ public class FactoryRepoConfiguration {
     }
 
     /**
-     * Get rrepository name.
+     * Get repository name.
      *
      * @return the repositoryName value
      */
@@ -83,7 +83,7 @@ public class FactoryRepoConfiguration {
     }
 
     /**
-     * Set rrepository name.
+     * Set repository name.
      *
      * @param repositoryName the repositoryName value to set
      * @return the FactoryRepoConfiguration object itself.
