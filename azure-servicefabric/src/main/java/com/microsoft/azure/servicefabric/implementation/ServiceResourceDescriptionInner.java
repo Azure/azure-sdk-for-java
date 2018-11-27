@@ -8,27 +8,34 @@
 
 package com.microsoft.azure.servicefabric.implementation;
 
-import com.microsoft.azure.servicefabric.OperatingSystemTypes;
+import com.microsoft.azure.servicefabric.OperatingSystemType;
 import java.util.List;
 import com.microsoft.azure.servicefabric.ContainerCodePackageProperties;
 import com.microsoft.azure.servicefabric.NetworkRef;
 import com.microsoft.azure.servicefabric.DiagnosticsRef;
+import com.microsoft.azure.servicefabric.AutoScalingPolicy;
+import com.microsoft.azure.servicefabric.ResourceStatus;
 import com.microsoft.azure.servicefabric.HealthState;
-import com.microsoft.azure.servicefabric.ServiceResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Describes a service fabric service resource.
+ * This type describes a service resource.
  */
 @JsonFlatten
 public class ServiceResourceDescriptionInner {
     /**
-     * The Operating system type required by the code in service. Possible
-     * values include: 'Linux', 'Windows'.
+     * Name of the Service resource.
+     */
+    @JsonProperty(value = "name", required = true)
+    private String name;
+
+    /**
+     * The operation system required by the code in service. Possible values
+     * include: 'Linux', 'Windows'.
      */
     @JsonProperty(value = "properties.osType", required = true)
-    private OperatingSystemTypes osType;
+    private OperatingSystemType osType;
 
     /**
      * Describes the set of code packages that forms the service. A code
@@ -65,42 +72,75 @@ public class ServiceResourceDescriptionInner {
     private Integer replicaCount;
 
     /**
-     * The health state of a Service Fabric entity such as Cluster, Node,
-     * Application, Service, Partition, Replica etc. Possible values include:
-     * 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
+     * Auto scaling policies.
      */
-    @JsonProperty(value = "properties.healthState")
+    @JsonProperty(value = "properties.autoScalingPolicies")
+    private List<AutoScalingPolicy> autoScalingPolicies;
+
+    /**
+     * Status of the service. Possible values include: 'Unknown', 'Ready',
+     * 'Upgrading', 'Creating', 'Deleting', 'Failed'.
+     */
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
+    private ResourceStatus status;
+
+    /**
+     * Gives additional information about the current status of the service.
+     */
+    @JsonProperty(value = "properties.statusDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private String statusDetails;
+
+    /**
+     * Describes the health state of an application resource. Possible values
+     * include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
+     */
+    @JsonProperty(value = "properties.healthState", access = JsonProperty.Access.WRITE_ONLY)
     private HealthState healthState;
 
     /**
-     * Represents the status of the service. Possible values include:
-     * 'Unknown', 'Active', 'Upgrading', 'Deleting', 'Creating', 'Failed'.
+     * When the service's health state is not 'Ok', this additional details
+     * from service fabric Health Manager for the user to know why the service
+     * is marked unhealthy.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private ServiceResourceStatus status;
+    @JsonProperty(value = "properties.unhealthyEvaluation", access = JsonProperty.Access.WRITE_ONLY)
+    private String unhealthyEvaluation;
 
     /**
-     * Service resource name.
+     * Get name of the Service resource.
+     *
+     * @return the name value
      */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    public String name() {
+        return this.name;
+    }
 
     /**
-     * Get the Operating system type required by the code in service. Possible values include: 'Linux', 'Windows'.
+     * Set name of the Service resource.
+     *
+     * @param name the name value to set
+     * @return the ServiceResourceDescriptionInner object itself.
+     */
+    public ServiceResourceDescriptionInner withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the operation system required by the code in service. Possible values include: 'Linux', 'Windows'.
      *
      * @return the osType value
      */
-    public OperatingSystemTypes osType() {
+    public OperatingSystemType osType() {
         return this.osType;
     }
 
     /**
-     * Set the Operating system type required by the code in service. Possible values include: 'Linux', 'Windows'.
+     * Set the operation system required by the code in service. Possible values include: 'Linux', 'Windows'.
      *
      * @param osType the osType value to set
      * @return the ServiceResourceDescriptionInner object itself.
      */
-    public ServiceResourceDescriptionInner withOsType(OperatingSystemTypes osType) {
+    public ServiceResourceDescriptionInner withOsType(OperatingSystemType osType) {
         this.osType = osType;
         return this;
     }
@@ -206,7 +246,45 @@ public class ServiceResourceDescriptionInner {
     }
 
     /**
-     * Get the health state of a Service Fabric entity such as Cluster, Node, Application, Service, Partition, Replica etc. Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
+     * Get auto scaling policies.
+     *
+     * @return the autoScalingPolicies value
+     */
+    public List<AutoScalingPolicy> autoScalingPolicies() {
+        return this.autoScalingPolicies;
+    }
+
+    /**
+     * Set auto scaling policies.
+     *
+     * @param autoScalingPolicies the autoScalingPolicies value to set
+     * @return the ServiceResourceDescriptionInner object itself.
+     */
+    public ServiceResourceDescriptionInner withAutoScalingPolicies(List<AutoScalingPolicy> autoScalingPolicies) {
+        this.autoScalingPolicies = autoScalingPolicies;
+        return this;
+    }
+
+    /**
+     * Get status of the service. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'.
+     *
+     * @return the status value
+     */
+    public ResourceStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get gives additional information about the current status of the service.
+     *
+     * @return the statusDetails value
+     */
+    public String statusDetails() {
+        return this.statusDetails;
+    }
+
+    /**
+     * Get describes the health state of an application resource. Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
      *
      * @return the healthState value
      */
@@ -215,43 +293,12 @@ public class ServiceResourceDescriptionInner {
     }
 
     /**
-     * Set the health state of a Service Fabric entity such as Cluster, Node, Application, Service, Partition, Replica etc. Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
+     * Get when the service's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the service is marked unhealthy.
      *
-     * @param healthState the healthState value to set
-     * @return the ServiceResourceDescriptionInner object itself.
+     * @return the unhealthyEvaluation value
      */
-    public ServiceResourceDescriptionInner withHealthState(HealthState healthState) {
-        this.healthState = healthState;
-        return this;
-    }
-
-    /**
-     * Get represents the status of the service. Possible values include: 'Unknown', 'Active', 'Upgrading', 'Deleting', 'Creating', 'Failed'.
-     *
-     * @return the status value
-     */
-    public ServiceResourceStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get service resource name.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set service resource name.
-     *
-     * @param name the name value to set
-     * @return the ServiceResourceDescriptionInner object itself.
-     */
-    public ServiceResourceDescriptionInner withName(String name) {
-        this.name = name;
-        return this;
+    public String unhealthyEvaluation() {
+        return this.unhealthyEvaluation;
     }
 
 }

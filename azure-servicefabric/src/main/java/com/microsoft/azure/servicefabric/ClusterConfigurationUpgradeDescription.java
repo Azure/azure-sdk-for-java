@@ -16,13 +16,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ClusterConfigurationUpgradeDescription {
     /**
-     * The cluster configuration.
+     * The cluster configuration as a JSON string. For example, [this
+     * file](https://github.com/Azure-Samples/service-fabric-dotnet-standalone-cluster-configuration/blob/master/Samples/ClusterConfig.Unsecure.DevCluster.json)
+     * contains JSON describing the [nodes and other properties of the
+     * cluster](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-manifest).
      */
     @JsonProperty(value = "ClusterConfig", required = true)
     private String clusterConfig;
 
     /**
-     * The length of time between attempts to perform a health checks if the
+     * The length of time between attempts to perform health checks if the
      * application or cluster is not healthy.
      */
     @JsonProperty(value = "HealthCheckRetryTimeout")
@@ -36,7 +39,8 @@ public class ClusterConfigurationUpgradeDescription {
     private Period healthCheckWaitDurationInSeconds;
 
     /**
-     * The length of time that the application or cluster must remain healthy.
+     * The length of time that the application or cluster must remain healthy
+     * before the upgrade proceeds to the next upgrade domain.
      */
     @JsonProperty(value = "HealthCheckStableDurationInSeconds")
     private Period healthCheckStableDurationInSeconds;
@@ -90,7 +94,7 @@ public class ClusterConfigurationUpgradeDescription {
     private ApplicationHealthPolicies applicationHealthPolicies;
 
     /**
-     * Get the cluster configuration.
+     * Get the cluster configuration as a JSON string. For example, [this file](https://github.com/Azure-Samples/service-fabric-dotnet-standalone-cluster-configuration/blob/master/Samples/ClusterConfig.Unsecure.DevCluster.json) contains JSON describing the [nodes and other properties of the cluster](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-manifest).
      *
      * @return the clusterConfig value
      */
@@ -99,7 +103,7 @@ public class ClusterConfigurationUpgradeDescription {
     }
 
     /**
-     * Set the cluster configuration.
+     * Set the cluster configuration as a JSON string. For example, [this file](https://github.com/Azure-Samples/service-fabric-dotnet-standalone-cluster-configuration/blob/master/Samples/ClusterConfig.Unsecure.DevCluster.json) contains JSON describing the [nodes and other properties of the cluster](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-manifest).
      *
      * @param clusterConfig the clusterConfig value to set
      * @return the ClusterConfigurationUpgradeDescription object itself.
@@ -110,7 +114,7 @@ public class ClusterConfigurationUpgradeDescription {
     }
 
     /**
-     * Get the length of time between attempts to perform a health checks if the application or cluster is not healthy.
+     * Get the length of time between attempts to perform health checks if the application or cluster is not healthy.
      *
      * @return the healthCheckRetryTimeout value
      */
@@ -119,7 +123,7 @@ public class ClusterConfigurationUpgradeDescription {
     }
 
     /**
-     * Set the length of time between attempts to perform a health checks if the application or cluster is not healthy.
+     * Set the length of time between attempts to perform health checks if the application or cluster is not healthy.
      *
      * @param healthCheckRetryTimeout the healthCheckRetryTimeout value to set
      * @return the ClusterConfigurationUpgradeDescription object itself.
@@ -150,7 +154,7 @@ public class ClusterConfigurationUpgradeDescription {
     }
 
     /**
-     * Get the length of time that the application or cluster must remain healthy.
+     * Get the length of time that the application or cluster must remain healthy before the upgrade proceeds to the next upgrade domain.
      *
      * @return the healthCheckStableDurationInSeconds value
      */
@@ -159,7 +163,7 @@ public class ClusterConfigurationUpgradeDescription {
     }
 
     /**
-     * Set the length of time that the application or cluster must remain healthy.
+     * Set the length of time that the application or cluster must remain healthy before the upgrade proceeds to the next upgrade domain.
      *
      * @param healthCheckStableDurationInSeconds the healthCheckStableDurationInSeconds value to set
      * @return the ClusterConfigurationUpgradeDescription object itself.

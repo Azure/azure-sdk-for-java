@@ -16,11 +16,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ServiceReplicaProperties {
     /**
-     * The Operating system type required by the code in service. Possible
-     * values include: 'Linux', 'Windows'.
+     * The operation system required by the code in service. Possible values
+     * include: 'Linux', 'Windows'.
      */
     @JsonProperty(value = "osType", required = true)
-    private OperatingSystemTypes osType;
+    private OperatingSystemType osType;
 
     /**
      * Describes the set of code packages that forms the service. A code
@@ -44,21 +44,21 @@ public class ServiceReplicaProperties {
     private DiagnosticsRef diagnostics;
 
     /**
-     * Get the Operating system type required by the code in service. Possible values include: 'Linux', 'Windows'.
+     * Get the operation system required by the code in service. Possible values include: 'Linux', 'Windows'.
      *
      * @return the osType value
      */
-    public OperatingSystemTypes osType() {
+    public OperatingSystemType osType() {
         return this.osType;
     }
 
     /**
-     * Set the Operating system type required by the code in service. Possible values include: 'Linux', 'Windows'.
+     * Set the operation system required by the code in service. Possible values include: 'Linux', 'Windows'.
      *
      * @param osType the osType value to set
      * @return the ServiceReplicaProperties object itself.
      */
-    public ServiceReplicaProperties withOsType(OperatingSystemTypes osType) {
+    public ServiceReplicaProperties withOsType(OperatingSystemType osType) {
         this.osType = osType;
         return this;
     }

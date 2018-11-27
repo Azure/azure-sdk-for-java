@@ -28,7 +28,9 @@ public class ImageRegistryCredential {
     private String username;
 
     /**
-     * The password for the private registry.
+     * The password for the private registry. The password is required for
+     * create or update operations, however it is not returned in the get or
+     * list operations.
      */
     @JsonProperty(value = "password")
     private String password;
@@ -74,7 +76,7 @@ public class ImageRegistryCredential {
     }
 
     /**
-     * Get the password for the private registry.
+     * Get the password for the private registry. The password is required for create or update operations, however it is not returned in the get or list operations.
      *
      * @return the password value
      */
@@ -83,7 +85,7 @@ public class ImageRegistryCredential {
     }
 
     /**
-     * Set the password for the private registry.
+     * Set the password for the private registry. The password is required for create or update operations, however it is not returned in the get or list operations.
      *
      * @param password the password value to set
      * @return the ImageRegistryCredential object itself.

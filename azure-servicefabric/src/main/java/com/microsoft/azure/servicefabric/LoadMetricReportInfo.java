@@ -22,10 +22,17 @@ public class LoadMetricReportInfo {
     private String name;
 
     /**
-     * The value of the load for the metric..
+     * The value of the load for the metric. In future releases of Service
+     * Fabric this parameter will be deprecated in favor of CurrentValue.
      */
     @JsonProperty(value = "Value")
     private Integer value;
+
+    /**
+     * The double value of the load for the metric.
+     */
+    @JsonProperty(value = "CurrentValue")
+    private String currentValue;
 
     /**
      * The UTC time when the load is reported.
@@ -54,7 +61,7 @@ public class LoadMetricReportInfo {
     }
 
     /**
-     * Get the value of the load for the metric..
+     * Get the value of the load for the metric. In future releases of Service Fabric this parameter will be deprecated in favor of CurrentValue.
      *
      * @return the value value
      */
@@ -63,13 +70,33 @@ public class LoadMetricReportInfo {
     }
 
     /**
-     * Set the value of the load for the metric..
+     * Set the value of the load for the metric. In future releases of Service Fabric this parameter will be deprecated in favor of CurrentValue.
      *
      * @param value the value value to set
      * @return the LoadMetricReportInfo object itself.
      */
     public LoadMetricReportInfo withValue(Integer value) {
         this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the double value of the load for the metric.
+     *
+     * @return the currentValue value
+     */
+    public String currentValue() {
+        return this.currentValue;
+    }
+
+    /**
+     * Set the double value of the load for the metric.
+     *
+     * @param currentValue the currentValue value to set
+     * @return the LoadMetricReportInfo object itself.
+     */
+    public LoadMetricReportInfo withCurrentValue(String currentValue) {
+        this.currentValue = currentValue;
         return this;
     }
 

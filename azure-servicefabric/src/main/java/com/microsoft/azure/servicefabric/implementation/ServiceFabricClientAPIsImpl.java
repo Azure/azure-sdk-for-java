@@ -11,7 +11,6 @@ package com.microsoft.azure.servicefabric.implementation;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.servicefabric.ApplicationDescription;
 import com.microsoft.azure.servicefabric.ApplicationHealthPolicy;
 import com.microsoft.azure.servicefabric.ApplicationUpgradeDescription;
@@ -30,6 +29,7 @@ import com.microsoft.azure.servicefabric.DataLossMode;
 import com.microsoft.azure.servicefabric.DeactivationIntent;
 import com.microsoft.azure.servicefabric.DeactivationIntentDescription;
 import com.microsoft.azure.servicefabric.DeployServicePackageToNodeDescription;
+import com.microsoft.azure.servicefabric.DisableBackupDescription;
 import com.microsoft.azure.servicefabric.EnableBackupDescription;
 import com.microsoft.azure.servicefabric.FabricErrorException;
 import com.microsoft.azure.servicefabric.GetBackupByStorageQueryDescription;
@@ -173,6 +173,123 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     }
 
     /**
+     * The MeshSecretsInner object to access its operations.
+     */
+    private MeshSecretsInner meshSecrets;
+
+    /**
+     * Gets the MeshSecretsInner object to access its operations.
+     * @return the MeshSecretsInner object.
+     */
+    public MeshSecretsInner meshSecrets() {
+        return this.meshSecrets;
+    }
+
+    /**
+     * The MeshSecretValuesInner object to access its operations.
+     */
+    private MeshSecretValuesInner meshSecretValues;
+
+    /**
+     * Gets the MeshSecretValuesInner object to access its operations.
+     * @return the MeshSecretValuesInner object.
+     */
+    public MeshSecretValuesInner meshSecretValues() {
+        return this.meshSecretValues;
+    }
+
+    /**
+     * The MeshVolumesInner object to access its operations.
+     */
+    private MeshVolumesInner meshVolumes;
+
+    /**
+     * Gets the MeshVolumesInner object to access its operations.
+     * @return the MeshVolumesInner object.
+     */
+    public MeshVolumesInner meshVolumes() {
+        return this.meshVolumes;
+    }
+
+    /**
+     * The MeshNetworksInner object to access its operations.
+     */
+    private MeshNetworksInner meshNetworks;
+
+    /**
+     * Gets the MeshNetworksInner object to access its operations.
+     * @return the MeshNetworksInner object.
+     */
+    public MeshNetworksInner meshNetworks() {
+        return this.meshNetworks;
+    }
+
+    /**
+     * The MeshApplicationsInner object to access its operations.
+     */
+    private MeshApplicationsInner meshApplications;
+
+    /**
+     * Gets the MeshApplicationsInner object to access its operations.
+     * @return the MeshApplicationsInner object.
+     */
+    public MeshApplicationsInner meshApplications() {
+        return this.meshApplications;
+    }
+
+    /**
+     * The MeshServicesInner object to access its operations.
+     */
+    private MeshServicesInner meshServices;
+
+    /**
+     * Gets the MeshServicesInner object to access its operations.
+     * @return the MeshServicesInner object.
+     */
+    public MeshServicesInner meshServices() {
+        return this.meshServices;
+    }
+
+    /**
+     * The MeshCodePackagesInner object to access its operations.
+     */
+    private MeshCodePackagesInner meshCodePackages;
+
+    /**
+     * Gets the MeshCodePackagesInner object to access its operations.
+     * @return the MeshCodePackagesInner object.
+     */
+    public MeshCodePackagesInner meshCodePackages() {
+        return this.meshCodePackages;
+    }
+
+    /**
+     * The MeshServiceReplicasInner object to access its operations.
+     */
+    private MeshServiceReplicasInner meshServiceReplicas;
+
+    /**
+     * Gets the MeshServiceReplicasInner object to access its operations.
+     * @return the MeshServiceReplicasInner object.
+     */
+    public MeshServiceReplicasInner meshServiceReplicas() {
+        return this.meshServiceReplicas;
+    }
+
+    /**
+     * The MeshGatewaysInner object to access its operations.
+     */
+    private MeshGatewaysInner meshGateways;
+
+    /**
+     * Gets the MeshGatewaysInner object to access its operations.
+     * @return the MeshGatewaysInner object.
+     */
+    public MeshGatewaysInner meshGateways() {
+        return this.meshGateways;
+    }
+
+    /**
      * Initializes an instance of ServiceFabricClientAPIs client.
      *
      * @param credentials the management credentials for Azure
@@ -206,6 +323,15 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.meshSecrets = new MeshSecretsInner(restClient().retrofit(), this);
+        this.meshSecretValues = new MeshSecretValuesInner(restClient().retrofit(), this);
+        this.meshVolumes = new MeshVolumesInner(restClient().retrofit(), this);
+        this.meshNetworks = new MeshNetworksInner(restClient().retrofit(), this);
+        this.meshApplications = new MeshApplicationsInner(restClient().retrofit(), this);
+        this.meshServices = new MeshServicesInner(restClient().retrofit(), this);
+        this.meshCodePackages = new MeshCodePackagesInner(restClient().retrofit(), this);
+        this.meshServiceReplicas = new MeshServiceReplicasInner(restClient().retrofit(), this);
+        this.meshGateways = new MeshGatewaysInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }
@@ -217,7 +343,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ServiceFabricClientAPIs", "6.3.0.9");
+        return String.format("%s (%s, %s)", super.userAgent(), "ServiceFabricClientAPIs", "6.4.0.36");
     }
 
     private void initializeService() {
@@ -312,6 +438,10 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getAadMetadata" })
         @GET("$/GetAadMetadata")
         Observable<Response<ResponseBody>> getAadMetadata(@Query("api-version") String apiVersion, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getClusterVersion" })
+        @GET("$/GetClusterVersion")
+        Observable<Response<ResponseBody>> getClusterVersion(@Query("api-version") String apiVersion, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getNodeInfoList" })
         @GET("Nodes")
@@ -655,7 +785,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getDeployedCodePackageInfoList" })
         @GET("Nodes/{nodeName}/$/GetApplications/{applicationId}/$/GetCodePackages")
-        Observable<Response<ResponseBody>> getDeployedCodePackageInfoList(@Path("nodeName") String nodeName, @Path(value = "applicationId", encoded = true) String applicationId, @Query("api-version") String apiVersion, @Query("ServiceManifestName") String serviceManifestName, @Query("CodePackageName") String codePackageName, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getDeployedCodePackageInfoList(@Path("nodeName") String nodeName, @Path(value = "applicationId", encoded = true) String applicationId, @Query("api-version") String apiVersion, @Query("ServiceManifestName") String serviceManifestName, @Query("CodePackageName") String codePackageName1, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs restartDeployedCodePackage" })
         @POST("Nodes/{nodeName}/$/GetApplications/{applicationId}/$/GetCodePackages/$/Restart")
@@ -663,11 +793,11 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getContainerLogsDeployedOnNode" })
         @GET("Nodes/{nodeName}/$/GetApplications/{applicationId}/$/GetCodePackages/$/ContainerLogs")
-        Observable<Response<ResponseBody>> getContainerLogsDeployedOnNode(@Path("nodeName") String nodeName, @Path(value = "applicationId", encoded = true) String applicationId, @Query("api-version") String apiVersion, @Query("ServiceManifestName") String serviceManifestName, @Query("CodePackageName") String codePackageName, @Query("Tail") String tail, @Query("Previous") Boolean previous, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getContainerLogsDeployedOnNode(@Path("nodeName") String nodeName, @Path(value = "applicationId", encoded = true) String applicationId, @Query("api-version") String apiVersion, @Query("ServiceManifestName") String serviceManifestName, @Query("CodePackageName") String codePackageName1, @Query("Tail") String tail, @Query("Previous") Boolean previous, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs invokeContainerApi" })
         @POST("Nodes/{nodeName}/$/GetApplications/{applicationId}/$/GetCodePackages/$/ContainerApi")
-        Observable<Response<ResponseBody>> invokeContainerApi(@Path("nodeName") String nodeName, @Path(value = "applicationId", encoded = true) String applicationId, @Query("api-version") String apiVersion, @Query("ServiceManifestName") String serviceManifestName, @Query("CodePackageName") String codePackageName, @Query("CodePackageInstanceId") String codePackageInstanceId, @Query("timeout") Long timeout, @Body ContainerApiRequestBody containerApiRequestBody, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> invokeContainerApi(@Path("nodeName") String nodeName, @Path(value = "applicationId", encoded = true) String applicationId, @Query("api-version") String apiVersion, @Query("ServiceManifestName") String serviceManifestName, @Query("CodePackageName") String codePackageName1, @Query("CodePackageInstanceId") String codePackageInstanceId, @Query("timeout") Long timeout, @Body ContainerApiRequestBody containerApiRequestBody, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs createComposeDeployment" })
         @PUT("ComposeDeployments/$/Create")
@@ -692,6 +822,10 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs startComposeDeploymentUpgrade" })
         @POST("ComposeDeployments/{deploymentName}/$/Upgrade")
         Observable<Response<ResponseBody>> startComposeDeploymentUpgrade(@Path(value = "deploymentName", encoded = true) String deploymentName, @Query("api-version") String apiVersion, @Body ComposeDeploymentUpgradeDescription composeDeploymentUpgradeDescription, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs startRollbackComposeDeploymentUpgrade" })
+        @POST("ComposeDeployments/{deploymentName}/$/RollbackUpgrade")
+        Observable<Response<ResponseBody>> startRollbackComposeDeploymentUpgrade(@Path(value = "deploymentName", encoded = true) String deploymentName, @Query("api-version") String apiVersion, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getChaos" })
         @GET("Tools/Chaos")
@@ -835,7 +969,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs disableApplicationBackup" })
         @POST("Applications/{applicationId}/$/DisableBackup")
-        Observable<Response<ResponseBody>> disableApplicationBackup(@Path(value = "applicationId", encoded = true) String applicationId, @Query("api-version") String apiVersion, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> disableApplicationBackup(@Path(value = "applicationId", encoded = true) String applicationId, @Query("api-version") String apiVersion, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Body DisableBackupDescription disableBackupDescription, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getApplicationBackupConfigurationInfo" })
         @GET("Applications/{applicationId}/$/GetBackupConfigurationInfo")
@@ -859,7 +993,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs disableServiceBackup" })
         @POST("Services/{serviceId}/$/DisableBackup")
-        Observable<Response<ResponseBody>> disableServiceBackup(@Path(value = "serviceId", encoded = true) String serviceId, @Query("api-version") String apiVersion, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> disableServiceBackup(@Path(value = "serviceId", encoded = true) String serviceId, @Query("api-version") String apiVersion, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Body DisableBackupDescription disableBackupDescription, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getServiceBackupConfigurationInfo" })
         @GET("Services/{serviceId}/$/GetBackupConfigurationInfo")
@@ -883,7 +1017,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs disablePartitionBackup" })
         @POST("Partitions/{partitionId}/$/DisableBackup")
-        Observable<Response<ResponseBody>> disablePartitionBackup(@Path(value = "partitionId", encoded = true) UUID partitionId1, @Query("api-version") String apiVersion, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> disablePartitionBackup(@Path(value = "partitionId", encoded = true) UUID partitionId1, @Query("api-version") String apiVersion, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Body DisableBackupDescription disableBackupDescription, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getPartitionBackupConfigurationInfo" })
         @GET("Partitions/{partitionId}/$/GetBackupConfigurationInfo")
@@ -1008,46 +1142,6 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getCorrelatedEventList" })
         @GET("EventsStore/CorrelatedEvents/{eventInstanceId}/$/Events")
         Observable<Response<ResponseBody>> getCorrelatedEventList(@Path("eventInstanceId") String eventInstanceId, @Query("api-version") String apiVersion, @Query("timeout") Long timeout, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs createApplicationResource" })
-        @PUT("Resources/Applications/{applicationResourceName}")
-        Observable<Response<ResponseBody>> createApplicationResource(@Path(value = "applicationResourceName", encoded = true) String applicationResourceName, @Query("api-version") String apiVersion, @Body ApplicationResourceDescriptionInner applicationResourceDescription, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getApplicationResource" })
-        @GET("Resources/Applications/{applicationResourceName}")
-        Observable<Response<ResponseBody>> getApplicationResource(@Path(value = "applicationResourceName", encoded = true) String applicationResourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs deleteApplicationResource" })
-        @HTTP(path = "Resources/Applications/{applicationResourceName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteApplicationResource(@Path(value = "applicationResourceName", encoded = true) String applicationResourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getServices" })
-        @GET("Resources/Applications/{applicationResourceName}/Services")
-        Observable<Response<ResponseBody>> getServices(@Path(value = "applicationResourceName", encoded = true) String applicationResourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getService" })
-        @GET("Resources/Applications/{applicationResourceName}/Services/{serviceResourceName}")
-        Observable<Response<ResponseBody>> getService(@Path(value = "applicationResourceName", encoded = true) String applicationResourceName, @Path(value = "serviceResourceName", encoded = true) String serviceResourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getReplicas" })
-        @GET("Resources/Applications/{applicationResourceName}/Services/{serviceResourceName}/replicas")
-        Observable<Response<ResponseBody>> getReplicas(@Path(value = "applicationResourceName", encoded = true) String applicationResourceName, @Path(value = "serviceResourceName", encoded = true) String serviceResourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getReplica" })
-        @GET("Resources/Applications/{applicationResourceName}/Services/{serviceResourceName}/Replicas/{replicaName}")
-        Observable<Response<ResponseBody>> getReplica(@Path(value = "applicationResourceName", encoded = true) String applicationResourceName, @Path(value = "serviceResourceName", encoded = true) String serviceResourceName, @Path(value = "replicaName", encoded = true) String replicaName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs createVolumeResource" })
-        @PUT("Resources/Volumes/{volumeResourceName}")
-        Observable<Response<ResponseBody>> createVolumeResource(@Path(value = "volumeResourceName", encoded = true) String volumeResourceName, @Query("api-version") String apiVersion, @Body VolumeResourceDescriptionInner volumeResourceDescription, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs getVolumeResource" })
-        @GET("Resources/Volumes/{volumeResourceName}")
-        Observable<Response<ResponseBody>> getVolumeResource(@Path(value = "volumeResourceName", encoded = true) String volumeResourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.servicefabric.ServiceFabricClientAPIs deleteVolumeResource" })
-        @HTTP(path = "Resources/Volumes/{volumeResourceName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteVolumeResource(@Path(value = "volumeResourceName", encoded = true) String volumeResourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -3790,8 +3884,8 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     }
 
     /**
-     * Rollback the upgrade of a Service Fabric cluster.
-     * Rollback the code or configuration upgrade of a Service Fabric cluster.
+     * Roll back the upgrade of a Service Fabric cluster.
+     * Roll back the code or configuration upgrade of a Service Fabric cluster.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws FabricErrorException thrown if the request is rejected by server
@@ -3802,8 +3896,8 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     }
 
     /**
-     * Rollback the upgrade of a Service Fabric cluster.
-     * Rollback the code or configuration upgrade of a Service Fabric cluster.
+     * Roll back the upgrade of a Service Fabric cluster.
+     * Roll back the code or configuration upgrade of a Service Fabric cluster.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3814,8 +3908,8 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     }
 
     /**
-     * Rollback the upgrade of a Service Fabric cluster.
-     * Rollback the code or configuration upgrade of a Service Fabric cluster.
+     * Roll back the upgrade of a Service Fabric cluster.
+     * Roll back the code or configuration upgrade of a Service Fabric cluster.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -3830,8 +3924,8 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     }
 
     /**
-     * Rollback the upgrade of a Service Fabric cluster.
-     * Rollback the code or configuration upgrade of a Service Fabric cluster.
+     * Roll back the upgrade of a Service Fabric cluster.
+     * Roll back the code or configuration upgrade of a Service Fabric cluster.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -3854,8 +3948,8 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     }
 
     /**
-     * Rollback the upgrade of a Service Fabric cluster.
-     * Rollback the code or configuration upgrade of a Service Fabric cluster.
+     * Roll back the upgrade of a Service Fabric cluster.
+     * Roll back the code or configuration upgrade of a Service Fabric cluster.
      *
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3867,8 +3961,8 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     }
 
     /**
-     * Rollback the upgrade of a Service Fabric cluster.
-     * Rollback the code or configuration upgrade of a Service Fabric cluster.
+     * Roll back the upgrade of a Service Fabric cluster.
+     * Roll back the code or configuration upgrade of a Service Fabric cluster.
      *
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -3880,8 +3974,8 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     }
 
     /**
-     * Rollback the upgrade of a Service Fabric cluster.
-     * Rollback the code or configuration upgrade of a Service Fabric cluster.
+     * Roll back the upgrade of a Service Fabric cluster.
+     * Roll back the code or configuration upgrade of a Service Fabric cluster.
      *
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3897,8 +3991,8 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     }
 
     /**
-     * Rollback the upgrade of a Service Fabric cluster.
-     * Rollback the code or configuration upgrade of a Service Fabric cluster.
+     * Roll back the upgrade of a Service Fabric cluster.
+     * Roll back the code or configuration upgrade of a Service Fabric cluster.
      *
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4689,6 +4783,146 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     private ServiceResponse<AadMetadataObjectInner> getAadMetadataDelegate(Response<ResponseBody> response) throws FabricErrorException, IOException {
         return this.restClient().responseBuilderFactory().<AadMetadataObjectInner, FabricErrorException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<AadMetadataObjectInner>() { }.getType())
+                .registerError(FabricErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the current Service Fabric cluster version.
+     * If a cluster upgrade is happening, then this API will return the lowest (older) version of the current and target cluster runtime versions.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws FabricErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ClusterVersionInner object if successful.
+     */
+    public ClusterVersionInner getClusterVersion() {
+        return getClusterVersionWithServiceResponseAsync().toBlocking().single().body();
+    }
+
+    /**
+     * Get the current Service Fabric cluster version.
+     * If a cluster upgrade is happening, then this API will return the lowest (older) version of the current and target cluster runtime versions.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ClusterVersionInner> getClusterVersionAsync(final ServiceCallback<ClusterVersionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getClusterVersionWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * Get the current Service Fabric cluster version.
+     * If a cluster upgrade is happening, then this API will return the lowest (older) version of the current and target cluster runtime versions.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ClusterVersionInner object
+     */
+    public Observable<ClusterVersionInner> getClusterVersionAsync() {
+        return getClusterVersionWithServiceResponseAsync().map(new Func1<ServiceResponse<ClusterVersionInner>, ClusterVersionInner>() {
+            @Override
+            public ClusterVersionInner call(ServiceResponse<ClusterVersionInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get the current Service Fabric cluster version.
+     * If a cluster upgrade is happening, then this API will return the lowest (older) version of the current and target cluster runtime versions.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ClusterVersionInner object
+     */
+    public Observable<ServiceResponse<ClusterVersionInner>> getClusterVersionWithServiceResponseAsync() {
+        final String apiVersion = "6.4";
+        final Long timeout = null;
+        return service.getClusterVersion(apiVersion, timeout, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClusterVersionInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ClusterVersionInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ClusterVersionInner> clientResponse = getClusterVersionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Get the current Service Fabric cluster version.
+     * If a cluster upgrade is happening, then this API will return the lowest (older) version of the current and target cluster runtime versions.
+     *
+     * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws FabricErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ClusterVersionInner object if successful.
+     */
+    public ClusterVersionInner getClusterVersion(Long timeout) {
+        return getClusterVersionWithServiceResponseAsync(timeout).toBlocking().single().body();
+    }
+
+    /**
+     * Get the current Service Fabric cluster version.
+     * If a cluster upgrade is happening, then this API will return the lowest (older) version of the current and target cluster runtime versions.
+     *
+     * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ClusterVersionInner> getClusterVersionAsync(Long timeout, final ServiceCallback<ClusterVersionInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getClusterVersionWithServiceResponseAsync(timeout), serviceCallback);
+    }
+
+    /**
+     * Get the current Service Fabric cluster version.
+     * If a cluster upgrade is happening, then this API will return the lowest (older) version of the current and target cluster runtime versions.
+     *
+     * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ClusterVersionInner object
+     */
+    public Observable<ClusterVersionInner> getClusterVersionAsync(Long timeout) {
+        return getClusterVersionWithServiceResponseAsync(timeout).map(new Func1<ServiceResponse<ClusterVersionInner>, ClusterVersionInner>() {
+            @Override
+            public ClusterVersionInner call(ServiceResponse<ClusterVersionInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get the current Service Fabric cluster version.
+     * If a cluster upgrade is happening, then this API will return the lowest (older) version of the current and target cluster runtime versions.
+     *
+     * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ClusterVersionInner object
+     */
+    public Observable<ServiceResponse<ClusterVersionInner>> getClusterVersionWithServiceResponseAsync(Long timeout) {
+        final String apiVersion = "6.4";
+        return service.getClusterVersion(apiVersion, timeout, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClusterVersionInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ClusterVersionInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ClusterVersionInner> clientResponse = getClusterVersionDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ClusterVersionInner> getClusterVersionDelegate(Response<ResponseBody> response) throws FabricErrorException, IOException {
+        return this.restClient().responseBuilderFactory().<ClusterVersionInner, FabricErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<ClusterVersionInner>() { }.getType())
                 .registerError(FabricErrorException.class)
                 .build(response);
     }
@@ -7271,7 +7505,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster.
-     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specified service type is not found in the cluster.
+     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specificed service type is not found in the cluster.
      *
      * @param applicationTypeName The name of the application type.
      * @param serviceTypeName Specifies the name of a Service Fabric service type.
@@ -7287,7 +7521,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster.
-     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specified service type is not found in the cluster.
+     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specificed service type is not found in the cluster.
      *
      * @param applicationTypeName The name of the application type.
      * @param serviceTypeName Specifies the name of a Service Fabric service type.
@@ -7302,7 +7536,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster.
-     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specified service type is not found in the cluster.
+     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specificed service type is not found in the cluster.
      *
      * @param applicationTypeName The name of the application type.
      * @param serviceTypeName Specifies the name of a Service Fabric service type.
@@ -7321,7 +7555,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster.
-     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specified service type is not found in the cluster.
+     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specificed service type is not found in the cluster.
      *
      * @param applicationTypeName The name of the application type.
      * @param serviceTypeName Specifies the name of a Service Fabric service type.
@@ -7357,7 +7591,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster.
-     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specified service type is not found in the cluster.
+     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specificed service type is not found in the cluster.
      *
      * @param applicationTypeName The name of the application type.
      * @param serviceTypeName Specifies the name of a Service Fabric service type.
@@ -7374,7 +7608,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster.
-     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specified service type is not found in the cluster.
+     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specificed service type is not found in the cluster.
      *
      * @param applicationTypeName The name of the application type.
      * @param serviceTypeName Specifies the name of a Service Fabric service type.
@@ -7390,7 +7624,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster.
-     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specified service type is not found in the cluster.
+     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specificed service type is not found in the cluster.
      *
      * @param applicationTypeName The name of the application type.
      * @param serviceTypeName Specifies the name of a Service Fabric service type.
@@ -7410,7 +7644,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster.
-     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specified service type is not found in the cluster.
+     * Gets the information about a specific service type that is supported by a provisioned application type in a Service Fabric cluster. The provided application type must exist. Otherwise, a 404 status is returned. A 204 response is returned if the specificed service type is not found in the cluster.
      *
      * @param applicationTypeName The name of the application type.
      * @param serviceTypeName Specifies the name of a Service Fabric service type.
@@ -14437,6 +14671,9 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      - Int64Range (2) - Indicates that the PartitionKeyValue parameter is an int64 partition key. This is valid for the partitions with partitioning scheme as Int64Range. The value is 2.
      - Named (3) - Indicates that the PartitionKeyValue parameter is a name of the partition. This is valid for the partitions with partitioning scheme as Named. The value is 3.
      * @param partitionKeyValue Partition key. This is required if the partition scheme for the service is Int64Range or Named.
+     This is not the partition ID, but rather, either the integer key value, or the name of the partition ID.
+     For example, if your service is using ranged partitions from 0 to 10, then they PartitionKeyValue would be an
+     integer in that range. Query service description to see the range or name.
      * @param previousRspVersion The value in the Version field of the response that was received previously. This is required if the user knows that the result that was gotten previously is stale.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -14460,6 +14697,9 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      - Int64Range (2) - Indicates that the PartitionKeyValue parameter is an int64 partition key. This is valid for the partitions with partitioning scheme as Int64Range. The value is 2.
      - Named (3) - Indicates that the PartitionKeyValue parameter is a name of the partition. This is valid for the partitions with partitioning scheme as Named. The value is 3.
      * @param partitionKeyValue Partition key. This is required if the partition scheme for the service is Int64Range or Named.
+     This is not the partition ID, but rather, either the integer key value, or the name of the partition ID.
+     For example, if your service is using ranged partitions from 0 to 10, then they PartitionKeyValue would be an
+     integer in that range. Query service description to see the range or name.
      * @param previousRspVersion The value in the Version field of the response that was received previously. This is required if the user knows that the result that was gotten previously is stale.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -14482,6 +14722,9 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      - Int64Range (2) - Indicates that the PartitionKeyValue parameter is an int64 partition key. This is valid for the partitions with partitioning scheme as Int64Range. The value is 2.
      - Named (3) - Indicates that the PartitionKeyValue parameter is a name of the partition. This is valid for the partitions with partitioning scheme as Named. The value is 3.
      * @param partitionKeyValue Partition key. This is required if the partition scheme for the service is Int64Range or Named.
+     This is not the partition ID, but rather, either the integer key value, or the name of the partition ID.
+     For example, if your service is using ranged partitions from 0 to 10, then they PartitionKeyValue would be an
+     integer in that range. Query service description to see the range or name.
      * @param previousRspVersion The value in the Version field of the response that was received previously. This is required if the user knows that the result that was gotten previously is stale.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -14508,6 +14751,9 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      - Int64Range (2) - Indicates that the PartitionKeyValue parameter is an int64 partition key. This is valid for the partitions with partitioning scheme as Int64Range. The value is 2.
      - Named (3) - Indicates that the PartitionKeyValue parameter is a name of the partition. This is valid for the partitions with partitioning scheme as Named. The value is 3.
      * @param partitionKeyValue Partition key. This is required if the partition scheme for the service is Int64Range or Named.
+     This is not the partition ID, but rather, either the integer key value, or the name of the partition ID.
+     For example, if your service is using ranged partitions from 0 to 10, then they PartitionKeyValue would be an
+     integer in that range. Query service description to see the range or name.
      * @param previousRspVersion The value in the Version field of the response that was received previously. This is required if the user knows that the result that was gotten previously is stale.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -14603,7 +14849,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.0";
+        final String apiVersion = "6.4";
         final String continuationToken = null;
         final Long timeout = null;
         return service.getPartitionInfoList(serviceId, apiVersion, continuationToken, timeout, this.acceptLanguage(), this.userAgent())
@@ -14692,7 +14938,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.0";
+        final String apiVersion = "6.4";
         return service.getPartitionInfoList(serviceId, apiVersion, continuationToken, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedServicePartitionInfoListInner>>>() {
                 @Override
@@ -22445,6 +22691,158 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     }
 
     /**
+     * Starts rolling back a compose deployment upgrade in the Service Fabric cluster.
+     * Rollback a service fabric compose deployment upgrade.
+     *
+     * @param deploymentName The identity of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws FabricErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void startRollbackComposeDeploymentUpgrade(String deploymentName) {
+        startRollbackComposeDeploymentUpgradeWithServiceResponseAsync(deploymentName).toBlocking().single().body();
+    }
+
+    /**
+     * Starts rolling back a compose deployment upgrade in the Service Fabric cluster.
+     * Rollback a service fabric compose deployment upgrade.
+     *
+     * @param deploymentName The identity of the deployment.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> startRollbackComposeDeploymentUpgradeAsync(String deploymentName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(startRollbackComposeDeploymentUpgradeWithServiceResponseAsync(deploymentName), serviceCallback);
+    }
+
+    /**
+     * Starts rolling back a compose deployment upgrade in the Service Fabric cluster.
+     * Rollback a service fabric compose deployment upgrade.
+     *
+     * @param deploymentName The identity of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> startRollbackComposeDeploymentUpgradeAsync(String deploymentName) {
+        return startRollbackComposeDeploymentUpgradeWithServiceResponseAsync(deploymentName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Starts rolling back a compose deployment upgrade in the Service Fabric cluster.
+     * Rollback a service fabric compose deployment upgrade.
+     *
+     * @param deploymentName The identity of the deployment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> startRollbackComposeDeploymentUpgradeWithServiceResponseAsync(String deploymentName) {
+        if (deploymentName == null) {
+            throw new IllegalArgumentException("Parameter deploymentName is required and cannot be null.");
+        }
+        final String apiVersion = "6.4-preview";
+        final Long timeout = null;
+        return service.startRollbackComposeDeploymentUpgrade(deploymentName, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = startRollbackComposeDeploymentUpgradeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Starts rolling back a compose deployment upgrade in the Service Fabric cluster.
+     * Rollback a service fabric compose deployment upgrade.
+     *
+     * @param deploymentName The identity of the deployment.
+     * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws FabricErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void startRollbackComposeDeploymentUpgrade(String deploymentName, Long timeout) {
+        startRollbackComposeDeploymentUpgradeWithServiceResponseAsync(deploymentName, timeout).toBlocking().single().body();
+    }
+
+    /**
+     * Starts rolling back a compose deployment upgrade in the Service Fabric cluster.
+     * Rollback a service fabric compose deployment upgrade.
+     *
+     * @param deploymentName The identity of the deployment.
+     * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> startRollbackComposeDeploymentUpgradeAsync(String deploymentName, Long timeout, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(startRollbackComposeDeploymentUpgradeWithServiceResponseAsync(deploymentName, timeout), serviceCallback);
+    }
+
+    /**
+     * Starts rolling back a compose deployment upgrade in the Service Fabric cluster.
+     * Rollback a service fabric compose deployment upgrade.
+     *
+     * @param deploymentName The identity of the deployment.
+     * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> startRollbackComposeDeploymentUpgradeAsync(String deploymentName, Long timeout) {
+        return startRollbackComposeDeploymentUpgradeWithServiceResponseAsync(deploymentName, timeout).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Starts rolling back a compose deployment upgrade in the Service Fabric cluster.
+     * Rollback a service fabric compose deployment upgrade.
+     *
+     * @param deploymentName The identity of the deployment.
+     * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> startRollbackComposeDeploymentUpgradeWithServiceResponseAsync(String deploymentName, Long timeout) {
+        if (deploymentName == null) {
+            throw new IllegalArgumentException("Parameter deploymentName is required and cannot be null.");
+        }
+        final String apiVersion = "6.4-preview";
+        return service.startRollbackComposeDeploymentUpgrade(deploymentName, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = startRollbackComposeDeploymentUpgradeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> startRollbackComposeDeploymentUpgradeDelegate(Response<ResponseBody> response) throws FabricErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<Void, FabricErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(FabricErrorException.class)
+                .build(response);
+    }
+
+    /**
      * Get the status of Chaos.
      * Get the status of Chaos indicating whether or not Chaos is running, the Chaos parameters used for running Chaos and the status of the Chaos Schedule.
      *
@@ -23710,7 +24108,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Deletes existing image store content.
-     * Deletes existing image store content being found within the given image store relative path. This can be used to delete uploaded application packages once they are provisioned.
+     * Deletes existing image store content being found within the given image store relative path. This command can be used to delete uploaded application packages once they are provisioned.
      *
      * @param contentPath Relative path to file or folder in the image store from its root.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -23723,7 +24121,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Deletes existing image store content.
-     * Deletes existing image store content being found within the given image store relative path. This can be used to delete uploaded application packages once they are provisioned.
+     * Deletes existing image store content being found within the given image store relative path. This command can be used to delete uploaded application packages once they are provisioned.
      *
      * @param contentPath Relative path to file or folder in the image store from its root.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -23736,7 +24134,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Deletes existing image store content.
-     * Deletes existing image store content being found within the given image store relative path. This can be used to delete uploaded application packages once they are provisioned.
+     * Deletes existing image store content being found within the given image store relative path. This command can be used to delete uploaded application packages once they are provisioned.
      *
      * @param contentPath Relative path to file or folder in the image store from its root.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -23753,7 +24151,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Deletes existing image store content.
-     * Deletes existing image store content being found within the given image store relative path. This can be used to delete uploaded application packages once they are provisioned.
+     * Deletes existing image store content being found within the given image store relative path. This command can be used to delete uploaded application packages once they are provisioned.
      *
      * @param contentPath Relative path to file or folder in the image store from its root.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -23781,7 +24179,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Deletes existing image store content.
-     * Deletes existing image store content being found within the given image store relative path. This can be used to delete uploaded application packages once they are provisioned.
+     * Deletes existing image store content being found within the given image store relative path. This command can be used to delete uploaded application packages once they are provisioned.
      *
      * @param contentPath Relative path to file or folder in the image store from its root.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
@@ -23795,7 +24193,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Deletes existing image store content.
-     * Deletes existing image store content being found within the given image store relative path. This can be used to delete uploaded application packages once they are provisioned.
+     * Deletes existing image store content being found within the given image store relative path. This command can be used to delete uploaded application packages once they are provisioned.
      *
      * @param contentPath Relative path to file or folder in the image store from its root.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
@@ -23809,7 +24207,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Deletes existing image store content.
-     * Deletes existing image store content being found within the given image store relative path. This can be used to delete uploaded application packages once they are provisioned.
+     * Deletes existing image store content being found within the given image store relative path. This command can be used to delete uploaded application packages once they are provisioned.
      *
      * @param contentPath Relative path to file or folder in the image store from its root.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
@@ -23827,7 +24225,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Deletes existing image store content.
-     * Deletes existing image store content being found within the given image store relative path. This can be used to delete uploaded application packages once they are provisioned.
+     * Deletes existing image store content being found within the given image store relative path. This command can be used to delete uploaded application packages once they are provisioned.
      *
      * @param contentPath Relative path to file or folder in the image store from its root.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
@@ -27068,7 +27466,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets a list of user-induced fault operations filtered by provided input.
-     * Gets the a list of user-induced fault operations filtered by provided input.
+     * Gets the list of user-induced fault operations filtered by provided input.
      *
      * @param typeFilter Used to filter on OperationType for user-induced operations.
      - 65535 - select all
@@ -27095,7 +27493,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets a list of user-induced fault operations filtered by provided input.
-     * Gets the a list of user-induced fault operations filtered by provided input.
+     * Gets the list of user-induced fault operations filtered by provided input.
      *
      * @param typeFilter Used to filter on OperationType for user-induced operations.
      - 65535 - select all
@@ -27121,7 +27519,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets a list of user-induced fault operations filtered by provided input.
-     * Gets the a list of user-induced fault operations filtered by provided input.
+     * Gets the list of user-induced fault operations filtered by provided input.
      *
      * @param typeFilter Used to filter on OperationType for user-induced operations.
      - 65535 - select all
@@ -27151,7 +27549,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets a list of user-induced fault operations filtered by provided input.
-     * Gets the a list of user-induced fault operations filtered by provided input.
+     * Gets the list of user-induced fault operations filtered by provided input.
      *
      * @param typeFilter Used to filter on OperationType for user-induced operations.
      - 65535 - select all
@@ -27189,7 +27587,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets a list of user-induced fault operations filtered by provided input.
-     * Gets the a list of user-induced fault operations filtered by provided input.
+     * Gets the list of user-induced fault operations filtered by provided input.
      *
      * @param typeFilter Used to filter on OperationType for user-induced operations.
      - 65535 - select all
@@ -27217,7 +27615,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets a list of user-induced fault operations filtered by provided input.
-     * Gets the a list of user-induced fault operations filtered by provided input.
+     * Gets the list of user-induced fault operations filtered by provided input.
      *
      * @param typeFilter Used to filter on OperationType for user-induced operations.
      - 65535 - select all
@@ -27244,7 +27642,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets a list of user-induced fault operations filtered by provided input.
-     * Gets the a list of user-induced fault operations filtered by provided input.
+     * Gets the list of user-induced fault operations filtered by provided input.
      *
      * @param typeFilter Used to filter on OperationType for user-induced operations.
      - 65535 - select all
@@ -27275,7 +27673,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
 
     /**
      * Gets a list of user-induced fault operations filtered by provided input.
-     * Gets the a list of user-induced fault operations filtered by provided input.
+     * Gets the list of user-induced fault operations filtered by provided input.
      *
      * @param typeFilter Used to filter on OperationType for user-induced operations.
      - 65535 - select all
@@ -27330,7 +27728,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      Important note:  if this API is invoked with force==true, internal state may be left behind.
      *
      * @param operationId A GUID that identifies a call of this API.  This is passed into the corresponding GetProgress API
-     * @param force Indicates whether to gracefully rollback and clean up internal system state modified by executing the user-induced operation.
+     * @param force Indicates whether to gracefully roll back and clean up internal system state modified by executing the user-induced operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws FabricErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -27351,7 +27749,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      Important note:  if this API is invoked with force==true, internal state may be left behind.
      *
      * @param operationId A GUID that identifies a call of this API.  This is passed into the corresponding GetProgress API
-     * @param force Indicates whether to gracefully rollback and clean up internal system state modified by executing the user-induced operation.
+     * @param force Indicates whether to gracefully roll back and clean up internal system state modified by executing the user-induced operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -27372,7 +27770,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      Important note:  if this API is invoked with force==true, internal state may be left behind.
      *
      * @param operationId A GUID that identifies a call of this API.  This is passed into the corresponding GetProgress API
-     * @param force Indicates whether to gracefully rollback and clean up internal system state modified by executing the user-induced operation.
+     * @param force Indicates whether to gracefully roll back and clean up internal system state modified by executing the user-induced operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -27397,7 +27795,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      Important note:  if this API is invoked with force==true, internal state may be left behind.
      *
      * @param operationId A GUID that identifies a call of this API.  This is passed into the corresponding GetProgress API
-     * @param force Indicates whether to gracefully rollback and clean up internal system state modified by executing the user-induced operation.
+     * @param force Indicates whether to gracefully roll back and clean up internal system state modified by executing the user-induced operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -27433,7 +27831,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      Important note:  if this API is invoked with force==true, internal state may be left behind.
      *
      * @param operationId A GUID that identifies a call of this API.  This is passed into the corresponding GetProgress API
-     * @param force Indicates whether to gracefully rollback and clean up internal system state modified by executing the user-induced operation.
+     * @param force Indicates whether to gracefully roll back and clean up internal system state modified by executing the user-induced operation.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws FabricErrorException thrown if the request is rejected by server
@@ -27455,7 +27853,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      Important note:  if this API is invoked with force==true, internal state may be left behind.
      *
      * @param operationId A GUID that identifies a call of this API.  This is passed into the corresponding GetProgress API
-     * @param force Indicates whether to gracefully rollback and clean up internal system state modified by executing the user-induced operation.
+     * @param force Indicates whether to gracefully roll back and clean up internal system state modified by executing the user-induced operation.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -27477,7 +27875,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      Important note:  if this API is invoked with force==true, internal state may be left behind.
      *
      * @param operationId A GUID that identifies a call of this API.  This is passed into the corresponding GetProgress API
-     * @param force Indicates whether to gracefully rollback and clean up internal system state modified by executing the user-induced operation.
+     * @param force Indicates whether to gracefully roll back and clean up internal system state modified by executing the user-induced operation.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -27503,7 +27901,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      Important note:  if this API is invoked with force==true, internal state may be left behind.
      *
      * @param operationId A GUID that identifies a call of this API.  This is passed into the corresponding GetProgress API
-     * @param force Indicates whether to gracefully rollback and clean up internal system state modified by executing the user-induced operation.
+     * @param force Indicates whether to gracefully roll back and clean up internal system state modified by executing the user-induced operation.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -27590,7 +27988,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter backupPolicyDescription is required and cannot be null.");
         }
         Validator.validate(backupPolicyDescription);
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.createBackupPolicy(backupPolicyDescription, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
@@ -27666,7 +28064,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter backupPolicyDescription is required and cannot be null.");
         }
         Validator.validate(backupPolicyDescription);
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.createBackupPolicy(backupPolicyDescription, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -27743,7 +28141,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.deleteBackupPolicy(backupPolicyName, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
@@ -27818,7 +28216,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.deleteBackupPolicy(backupPolicyName, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -27889,7 +28287,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @return the observable to the PagedBackupPolicyDescriptionListInner object
      */
     public Observable<ServiceResponse<PagedBackupPolicyDescriptionListInner>> getBackupPolicyListWithServiceResponseAsync() {
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final String continuationToken = null;
         final Long maxResults = null;
         final Long timeout = null;
@@ -27968,7 +28366,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @return the observable to the PagedBackupPolicyDescriptionListInner object
      */
     public Observable<ServiceResponse<PagedBackupPolicyDescriptionListInner>> getBackupPolicyListWithServiceResponseAsync(String continuationToken, Long maxResults, Long timeout) {
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getBackupPolicyList(apiVersion, continuationToken, maxResults, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedBackupPolicyDescriptionListInner>>>() {
                 @Override
@@ -28046,7 +28444,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.getBackupPolicyByName(backupPolicyName, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BackupPolicyDescriptionInner>>>() {
@@ -28122,7 +28520,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getBackupPolicyByName(backupPolicyName, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BackupPolicyDescriptionInner>>>() {
                 @Override
@@ -28200,7 +28598,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final String continuationToken = null;
         final Long maxResults = null;
         final Long timeout = null;
@@ -28286,7 +28684,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getAllEntitiesBackedUpByPolicy(backupPolicyName, apiVersion, continuationToken, maxResults, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedBackupEntityListInner>>>() {
                 @Override
@@ -28371,7 +28769,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter backupPolicyDescription is required and cannot be null.");
         }
         Validator.validate(backupPolicyDescription);
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.updateBackupPolicy(backupPolicyName, backupPolicyDescription, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
@@ -28454,7 +28852,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter backupPolicyDescription is required and cannot be null.");
         }
         Validator.validate(backupPolicyDescription);
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.updateBackupPolicy(backupPolicyName, backupPolicyDescription, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -28550,7 +28948,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         EnableBackupDescription enableBackupDescription = new EnableBackupDescription();
         enableBackupDescription.withBackupPolicyName(backupPolicyName);
@@ -28646,7 +29044,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         EnableBackupDescription enableBackupDescription = new EnableBackupDescription();
         enableBackupDescription.withBackupPolicyName(backupPolicyName);
         return service.enableApplicationBackup(applicationId, apiVersion, timeout, this.acceptLanguage(), enableBackupDescription, this.userAgent())
@@ -28677,12 +29075,13 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param applicationId The identity of the application. This is typically the full name of the application without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the application name is "fabric:/myapp/app1", the application identity would be "myapp~app1" in 6.0+ and "myapp/app1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws FabricErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void disableApplicationBackup(String applicationId) {
-        disableApplicationBackupWithServiceResponseAsync(applicationId).toBlocking().single().body();
+    public void disableApplicationBackup(String applicationId, boolean cleanBackup) {
+        disableApplicationBackupWithServiceResponseAsync(applicationId, cleanBackup).toBlocking().single().body();
     }
 
     /**
@@ -28692,12 +29091,13 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param applicationId The identity of the application. This is typically the full name of the application without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the application name is "fabric:/myapp/app1", the application identity would be "myapp~app1" in 6.0+ and "myapp/app1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> disableApplicationBackupAsync(String applicationId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(disableApplicationBackupWithServiceResponseAsync(applicationId), serviceCallback);
+    public ServiceFuture<Void> disableApplicationBackupAsync(String applicationId, boolean cleanBackup, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disableApplicationBackupWithServiceResponseAsync(applicationId, cleanBackup), serviceCallback);
     }
 
     /**
@@ -28707,11 +29107,12 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param applicationId The identity of the application. This is typically the full name of the application without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the application name is "fabric:/myapp/app1", the application identity would be "myapp~app1" in 6.0+ and "myapp/app1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> disableApplicationBackupAsync(String applicationId) {
-        return disableApplicationBackupWithServiceResponseAsync(applicationId).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> disableApplicationBackupAsync(String applicationId, boolean cleanBackup) {
+        return disableApplicationBackupWithServiceResponseAsync(applicationId, cleanBackup).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -28726,16 +29127,19 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param applicationId The identity of the application. This is typically the full name of the application without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the application name is "fabric:/myapp/app1", the application identity would be "myapp~app1" in 6.0+ and "myapp/app1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> disableApplicationBackupWithServiceResponseAsync(String applicationId) {
+    public Observable<ServiceResponse<Void>> disableApplicationBackupWithServiceResponseAsync(String applicationId, boolean cleanBackup) {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
-        return service.disableApplicationBackup(applicationId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
+        DisableBackupDescription disableBackupDescription = new DisableBackupDescription();
+        disableBackupDescription.withCleanBackup(cleanBackup);
+        return service.disableApplicationBackup(applicationId, apiVersion, timeout, this.acceptLanguage(), disableBackupDescription, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -28756,13 +29160,14 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param applicationId The identity of the application. This is typically the full name of the application without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the application name is "fabric:/myapp/app1", the application identity would be "myapp~app1" in 6.0+ and "myapp/app1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws FabricErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void disableApplicationBackup(String applicationId, Long timeout) {
-        disableApplicationBackupWithServiceResponseAsync(applicationId, timeout).toBlocking().single().body();
+    public void disableApplicationBackup(String applicationId, boolean cleanBackup, Long timeout) {
+        disableApplicationBackupWithServiceResponseAsync(applicationId, cleanBackup, timeout).toBlocking().single().body();
     }
 
     /**
@@ -28772,13 +29177,14 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param applicationId The identity of the application. This is typically the full name of the application without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the application name is "fabric:/myapp/app1", the application identity would be "myapp~app1" in 6.0+ and "myapp/app1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> disableApplicationBackupAsync(String applicationId, Long timeout, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(disableApplicationBackupWithServiceResponseAsync(applicationId, timeout), serviceCallback);
+    public ServiceFuture<Void> disableApplicationBackupAsync(String applicationId, boolean cleanBackup, Long timeout, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disableApplicationBackupWithServiceResponseAsync(applicationId, cleanBackup, timeout), serviceCallback);
     }
 
     /**
@@ -28788,12 +29194,13 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param applicationId The identity of the application. This is typically the full name of the application without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the application name is "fabric:/myapp/app1", the application identity would be "myapp~app1" in 6.0+ and "myapp/app1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> disableApplicationBackupAsync(String applicationId, Long timeout) {
-        return disableApplicationBackupWithServiceResponseAsync(applicationId, timeout).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> disableApplicationBackupAsync(String applicationId, boolean cleanBackup, Long timeout) {
+        return disableApplicationBackupWithServiceResponseAsync(applicationId, cleanBackup, timeout).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -28808,16 +29215,19 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param applicationId The identity of the application. This is typically the full name of the application without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the application name is "fabric:/myapp/app1", the application identity would be "myapp~app1" in 6.0+ and "myapp/app1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> disableApplicationBackupWithServiceResponseAsync(String applicationId, Long timeout) {
+    public Observable<ServiceResponse<Void>> disableApplicationBackupWithServiceResponseAsync(String applicationId, boolean cleanBackup, Long timeout) {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
-        return service.disableApplicationBackup(applicationId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
+        final String apiVersion = "6.4";
+        DisableBackupDescription disableBackupDescription = new DisableBackupDescription();
+        disableBackupDescription.withCleanBackup(cleanBackup);
+        return service.disableApplicationBackup(applicationId, apiVersion, timeout, this.acceptLanguage(), disableBackupDescription, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -28902,7 +29312,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final String continuationToken = null;
         final Long maxResults = null;
         final Long timeout = null;
@@ -28996,7 +29406,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getApplicationBackupConfigurationInfo(applicationId, apiVersion, continuationToken, maxResults, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedBackupConfigurationInfoListInner>>>() {
                 @Override
@@ -29082,7 +29492,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final Boolean latest = null;
         final DateTime startDateTimeFilter = null;
@@ -29191,7 +29601,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getApplicationBackupList(applicationId, apiVersion, timeout, latest, startDateTimeFilter, endDateTimeFilter, continuationToken, maxResults, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedBackupInfoListInner>>>() {
                 @Override
@@ -29276,7 +29686,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.suspendApplicationBackup(applicationId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
@@ -29359,7 +29769,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.suspendApplicationBackup(applicationId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -29444,7 +29854,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.resumeApplicationBackup(applicationId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
@@ -29527,7 +29937,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.resumeApplicationBackup(applicationId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -29623,7 +30033,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         EnableBackupDescription enableBackupDescription = new EnableBackupDescription();
         enableBackupDescription.withBackupPolicyName(backupPolicyName);
@@ -29719,7 +30129,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         EnableBackupDescription enableBackupDescription = new EnableBackupDescription();
         enableBackupDescription.withBackupPolicyName(backupPolicyName);
         return service.enableServiceBackup(serviceId, apiVersion, timeout, this.acceptLanguage(), enableBackupDescription, this.userAgent())
@@ -29751,12 +30161,13 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param serviceId The identity of the service. This ID is typically the full name of the service without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the service name is "fabric:/myapp/app1/svc1", the service identity would be "myapp~app1~svc1" in 6.0+ and "myapp/app1/svc1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws FabricErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void disableServiceBackup(String serviceId) {
-        disableServiceBackupWithServiceResponseAsync(serviceId).toBlocking().single().body();
+    public void disableServiceBackup(String serviceId, boolean cleanBackup) {
+        disableServiceBackupWithServiceResponseAsync(serviceId, cleanBackup).toBlocking().single().body();
     }
 
     /**
@@ -29767,12 +30178,13 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param serviceId The identity of the service. This ID is typically the full name of the service without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the service name is "fabric:/myapp/app1/svc1", the service identity would be "myapp~app1~svc1" in 6.0+ and "myapp/app1/svc1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> disableServiceBackupAsync(String serviceId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(disableServiceBackupWithServiceResponseAsync(serviceId), serviceCallback);
+    public ServiceFuture<Void> disableServiceBackupAsync(String serviceId, boolean cleanBackup, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disableServiceBackupWithServiceResponseAsync(serviceId, cleanBackup), serviceCallback);
     }
 
     /**
@@ -29783,11 +30195,12 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param serviceId The identity of the service. This ID is typically the full name of the service without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the service name is "fabric:/myapp/app1/svc1", the service identity would be "myapp~app1~svc1" in 6.0+ and "myapp/app1/svc1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> disableServiceBackupAsync(String serviceId) {
-        return disableServiceBackupWithServiceResponseAsync(serviceId).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> disableServiceBackupAsync(String serviceId, boolean cleanBackup) {
+        return disableServiceBackupWithServiceResponseAsync(serviceId, cleanBackup).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -29803,16 +30216,19 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param serviceId The identity of the service. This ID is typically the full name of the service without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the service name is "fabric:/myapp/app1/svc1", the service identity would be "myapp~app1~svc1" in 6.0+ and "myapp/app1/svc1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> disableServiceBackupWithServiceResponseAsync(String serviceId) {
+    public Observable<ServiceResponse<Void>> disableServiceBackupWithServiceResponseAsync(String serviceId, boolean cleanBackup) {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
-        return service.disableServiceBackup(serviceId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
+        DisableBackupDescription disableBackupDescription = new DisableBackupDescription();
+        disableBackupDescription.withCleanBackup(cleanBackup);
+        return service.disableServiceBackup(serviceId, apiVersion, timeout, this.acceptLanguage(), disableBackupDescription, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -29834,13 +30250,14 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param serviceId The identity of the service. This ID is typically the full name of the service without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the service name is "fabric:/myapp/app1/svc1", the service identity would be "myapp~app1~svc1" in 6.0+ and "myapp/app1/svc1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws FabricErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void disableServiceBackup(String serviceId, Long timeout) {
-        disableServiceBackupWithServiceResponseAsync(serviceId, timeout).toBlocking().single().body();
+    public void disableServiceBackup(String serviceId, boolean cleanBackup, Long timeout) {
+        disableServiceBackupWithServiceResponseAsync(serviceId, cleanBackup, timeout).toBlocking().single().body();
     }
 
     /**
@@ -29851,13 +30268,14 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param serviceId The identity of the service. This ID is typically the full name of the service without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the service name is "fabric:/myapp/app1/svc1", the service identity would be "myapp~app1~svc1" in 6.0+ and "myapp/app1/svc1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> disableServiceBackupAsync(String serviceId, Long timeout, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(disableServiceBackupWithServiceResponseAsync(serviceId, timeout), serviceCallback);
+    public ServiceFuture<Void> disableServiceBackupAsync(String serviceId, boolean cleanBackup, Long timeout, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disableServiceBackupWithServiceResponseAsync(serviceId, cleanBackup, timeout), serviceCallback);
     }
 
     /**
@@ -29868,12 +30286,13 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param serviceId The identity of the service. This ID is typically the full name of the service without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the service name is "fabric:/myapp/app1/svc1", the service identity would be "myapp~app1~svc1" in 6.0+ and "myapp/app1/svc1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> disableServiceBackupAsync(String serviceId, Long timeout) {
-        return disableServiceBackupWithServiceResponseAsync(serviceId, timeout).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> disableServiceBackupAsync(String serviceId, boolean cleanBackup, Long timeout) {
+        return disableServiceBackupWithServiceResponseAsync(serviceId, cleanBackup, timeout).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -29889,16 +30308,19 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      * @param serviceId The identity of the service. This ID is typically the full name of the service without the 'fabric:' URI scheme.
      Starting from version 6.0, hierarchical names are delimited with the "~" character.
      For example, if the service name is "fabric:/myapp/app1/svc1", the service identity would be "myapp~app1~svc1" in 6.0+ and "myapp/app1/svc1" in previous versions.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> disableServiceBackupWithServiceResponseAsync(String serviceId, Long timeout) {
+    public Observable<ServiceResponse<Void>> disableServiceBackupWithServiceResponseAsync(String serviceId, boolean cleanBackup, Long timeout) {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
-        return service.disableServiceBackup(serviceId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
+        final String apiVersion = "6.4";
+        DisableBackupDescription disableBackupDescription = new DisableBackupDescription();
+        disableBackupDescription.withCleanBackup(cleanBackup);
+        return service.disableServiceBackup(serviceId, apiVersion, timeout, this.acceptLanguage(), disableBackupDescription, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -29983,7 +30405,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final String continuationToken = null;
         final Long maxResults = null;
         final Long timeout = null;
@@ -30077,7 +30499,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getServiceBackupConfigurationInfo(serviceId, apiVersion, continuationToken, maxResults, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedBackupConfigurationInfoListInner>>>() {
                 @Override
@@ -30163,7 +30585,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final Boolean latest = null;
         final DateTime startDateTimeFilter = null;
@@ -30272,7 +30694,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getServiceBackupList(serviceId, apiVersion, timeout, latest, startDateTimeFilter, endDateTimeFilter, continuationToken, maxResults, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedBackupInfoListInner>>>() {
                 @Override
@@ -30357,7 +30779,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.suspendServiceBackup(serviceId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
@@ -30440,7 +30862,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.suspendServiceBackup(serviceId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -30525,7 +30947,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.resumeServiceBackup(serviceId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
@@ -30608,7 +31030,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (serviceId == null) {
             throw new IllegalArgumentException("Parameter serviceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.resumeServiceBackup(serviceId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -30696,7 +31118,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         EnableBackupDescription enableBackupDescription = new EnableBackupDescription();
         enableBackupDescription.withBackupPolicyName(backupPolicyName);
@@ -30784,7 +31206,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (backupPolicyName == null) {
             throw new IllegalArgumentException("Parameter backupPolicyName is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         EnableBackupDescription enableBackupDescription = new EnableBackupDescription();
         enableBackupDescription.withBackupPolicyName(backupPolicyName);
         return service.enablePartitionBackup(partitionId, apiVersion, timeout, this.acceptLanguage(), enableBackupDescription, this.userAgent())
@@ -30814,12 +31236,13 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      In case the backup is enabled for the Service Fabric application or service, which this partition is part of, this partition would continue to be periodically backed up as per the policy mapped at the higher level entity.
      *
      * @param partitionId The identity of the partition.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws FabricErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void disablePartitionBackup(UUID partitionId) {
-        disablePartitionBackupWithServiceResponseAsync(partitionId).toBlocking().single().body();
+    public void disablePartitionBackup(UUID partitionId, boolean cleanBackup) {
+        disablePartitionBackupWithServiceResponseAsync(partitionId, cleanBackup).toBlocking().single().body();
     }
 
     /**
@@ -30828,12 +31251,13 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      In case the backup is enabled for the Service Fabric application or service, which this partition is part of, this partition would continue to be periodically backed up as per the policy mapped at the higher level entity.
      *
      * @param partitionId The identity of the partition.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> disablePartitionBackupAsync(UUID partitionId, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(disablePartitionBackupWithServiceResponseAsync(partitionId), serviceCallback);
+    public ServiceFuture<Void> disablePartitionBackupAsync(UUID partitionId, boolean cleanBackup, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disablePartitionBackupWithServiceResponseAsync(partitionId, cleanBackup), serviceCallback);
     }
 
     /**
@@ -30842,11 +31266,12 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      In case the backup is enabled for the Service Fabric application or service, which this partition is part of, this partition would continue to be periodically backed up as per the policy mapped at the higher level entity.
      *
      * @param partitionId The identity of the partition.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> disablePartitionBackupAsync(UUID partitionId) {
-        return disablePartitionBackupWithServiceResponseAsync(partitionId).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> disablePartitionBackupAsync(UUID partitionId, boolean cleanBackup) {
+        return disablePartitionBackupWithServiceResponseAsync(partitionId, cleanBackup).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -30860,16 +31285,19 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      In case the backup is enabled for the Service Fabric application or service, which this partition is part of, this partition would continue to be periodically backed up as per the policy mapped at the higher level entity.
      *
      * @param partitionId The identity of the partition.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> disablePartitionBackupWithServiceResponseAsync(UUID partitionId) {
+    public Observable<ServiceResponse<Void>> disablePartitionBackupWithServiceResponseAsync(UUID partitionId, boolean cleanBackup) {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
-        return service.disablePartitionBackup(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
+        DisableBackupDescription disableBackupDescription = new DisableBackupDescription();
+        disableBackupDescription.withCleanBackup(cleanBackup);
+        return service.disablePartitionBackup(partitionId, apiVersion, timeout, this.acceptLanguage(), disableBackupDescription, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -30889,13 +31317,14 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      In case the backup is enabled for the Service Fabric application or service, which this partition is part of, this partition would continue to be periodically backed up as per the policy mapped at the higher level entity.
      *
      * @param partitionId The identity of the partition.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws FabricErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void disablePartitionBackup(UUID partitionId, Long timeout) {
-        disablePartitionBackupWithServiceResponseAsync(partitionId, timeout).toBlocking().single().body();
+    public void disablePartitionBackup(UUID partitionId, boolean cleanBackup, Long timeout) {
+        disablePartitionBackupWithServiceResponseAsync(partitionId, cleanBackup, timeout).toBlocking().single().body();
     }
 
     /**
@@ -30904,13 +31333,14 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      In case the backup is enabled for the Service Fabric application or service, which this partition is part of, this partition would continue to be periodically backed up as per the policy mapped at the higher level entity.
      *
      * @param partitionId The identity of the partition.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> disablePartitionBackupAsync(UUID partitionId, Long timeout, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(disablePartitionBackupWithServiceResponseAsync(partitionId, timeout), serviceCallback);
+    public ServiceFuture<Void> disablePartitionBackupAsync(UUID partitionId, boolean cleanBackup, Long timeout, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(disablePartitionBackupWithServiceResponseAsync(partitionId, cleanBackup, timeout), serviceCallback);
     }
 
     /**
@@ -30919,12 +31349,13 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      In case the backup is enabled for the Service Fabric application or service, which this partition is part of, this partition would continue to be periodically backed up as per the policy mapped at the higher level entity.
      *
      * @param partitionId The identity of the partition.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> disablePartitionBackupAsync(UUID partitionId, Long timeout) {
-        return disablePartitionBackupWithServiceResponseAsync(partitionId, timeout).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> disablePartitionBackupAsync(UUID partitionId, boolean cleanBackup, Long timeout) {
+        return disablePartitionBackupWithServiceResponseAsync(partitionId, cleanBackup, timeout).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -30938,16 +31369,19 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
      In case the backup is enabled for the Service Fabric application or service, which this partition is part of, this partition would continue to be periodically backed up as per the policy mapped at the higher level entity.
      *
      * @param partitionId The identity of the partition.
+     * @param cleanBackup Boolean flag to delete backups. It can be set to true for deleting all the backups which were created for the backup entity that is getting disabled for backup.
      * @param timeout The server timeout for performing the operation in seconds. This timeout specifies the time duration that the client is willing to wait for the requested operation to complete. The default value for this parameter is 60 seconds.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> disablePartitionBackupWithServiceResponseAsync(UUID partitionId, Long timeout) {
+    public Observable<ServiceResponse<Void>> disablePartitionBackupWithServiceResponseAsync(UUID partitionId, boolean cleanBackup, Long timeout) {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
-        return service.disablePartitionBackup(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
+        final String apiVersion = "6.4";
+        DisableBackupDescription disableBackupDescription = new DisableBackupDescription();
+        disableBackupDescription.withCleanBackup(cleanBackup);
+        return service.disablePartitionBackup(partitionId, apiVersion, timeout, this.acceptLanguage(), disableBackupDescription, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -31024,7 +31458,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.getPartitionBackupConfigurationInfo(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PartitionBackupConfigurationInfoInner>>>() {
@@ -31100,7 +31534,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getPartitionBackupConfigurationInfo(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PartitionBackupConfigurationInfoInner>>>() {
                 @Override
@@ -31178,7 +31612,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final Boolean latest = null;
         final DateTime startDateTimeFilter = null;
@@ -31269,7 +31703,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getPartitionBackupList(partitionId, apiVersion, timeout, latest, startDateTimeFilter, endDateTimeFilter, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedBackupInfoListInner>>>() {
                 @Override
@@ -31346,7 +31780,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.suspendPartitionBackup(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
@@ -31421,7 +31855,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.suspendPartitionBackup(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -31498,7 +31932,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.resumePartitionBackup(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
@@ -31573,7 +32007,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.resumePartitionBackup(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -31654,7 +32088,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Integer backupTimeout = null;
         final Long timeout = null;
         final BackupStorageDescription backupStorage = null;
@@ -31746,7 +32180,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
         Validator.validate(backupStorage);
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         BackupPartitionDescription backupPartitionDescription = null;
         if (backupStorage != null) {
             backupPartitionDescription = new BackupPartitionDescription();
@@ -31829,7 +32263,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.getPartitionBackupProgress(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BackupProgressInfoInner>>>() {
@@ -31905,7 +32339,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getPartitionBackupProgress(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BackupProgressInfoInner>>>() {
                 @Override
@@ -31994,7 +32428,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter restorePartitionDescription is required and cannot be null.");
         }
         Validator.validate(restorePartitionDescription);
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Integer restoreTimeout = null;
         final Long timeout = null;
         return service.restorePartition(partitionId, restorePartitionDescription, restoreTimeout, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
@@ -32086,7 +32520,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter restorePartitionDescription is required and cannot be null.");
         }
         Validator.validate(restorePartitionDescription);
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.restorePartition(partitionId, restorePartitionDescription, restoreTimeout, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -32164,7 +32598,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.getPartitionRestoreProgress(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RestoreProgressInfoInner>>>() {
@@ -32240,7 +32674,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (partitionId == null) {
             throw new IllegalArgumentException("Parameter partitionId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getPartitionRestoreProgress(partitionId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RestoreProgressInfoInner>>>() {
                 @Override
@@ -32319,7 +32753,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter getBackupByStorageQueryDescription is required and cannot be null.");
         }
         Validator.validate(getBackupByStorageQueryDescription);
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String continuationToken = null;
         final Long maxResults = null;
@@ -32406,7 +32840,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter getBackupByStorageQueryDescription is required and cannot be null.");
         }
         Validator.validate(getBackupByStorageQueryDescription);
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getBackupsFromBackupLocation(apiVersion, timeout, continuationToken, maxResults, getBackupByStorageQueryDescription, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedBackupInfoListInner>>>() {
                 @Override
@@ -33946,7 +34380,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -34044,7 +34478,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getClusterEventList(apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ClusterEventInner>>>>() {
                 @Override
@@ -34319,7 +34753,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -34424,7 +34858,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getNodeEventList(nodeName, apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<NodeEventInner>>>>() {
                 @Override
@@ -34509,7 +34943,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -34607,7 +35041,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getNodesEventList(apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<NodeEventInner>>>>() {
                 @Override
@@ -34707,7 +35141,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -34820,7 +35254,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getApplicationEventList(applicationId, apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ApplicationEventInner>>>>() {
                 @Override
@@ -34905,7 +35339,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -35003,7 +35437,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getApplicationsEventList(apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ApplicationEventInner>>>>() {
                 @Override
@@ -35103,7 +35537,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -35216,7 +35650,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getServiceEventList(serviceId, apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ServiceEventInner>>>>() {
                 @Override
@@ -35301,7 +35735,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -35399,7 +35833,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getServicesEventList(apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ServiceEventInner>>>>() {
                 @Override
@@ -35491,7 +35925,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -35596,7 +36030,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getPartitionEventList(partitionId, apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PartitionEventInner>>>>() {
                 @Override
@@ -35681,7 +36115,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -35779,7 +36213,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getPartitionsEventList(apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PartitionEventInner>>>>() {
                 @Override
@@ -35878,7 +36312,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -35990,7 +36424,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getPartitionReplicaEventList(partitionId, replicaId, apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ReplicaEventInner>>>>() {
                 @Override
@@ -36082,7 +36516,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         final String eventsTypesFilter = null;
         final Boolean excludeAnalysisEvents = null;
@@ -36187,7 +36621,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (endTimeUtc == null) {
             throw new IllegalArgumentException("Parameter endTimeUtc is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getPartitionReplicasEventList(partitionId, apiVersion, timeout, startTimeUtc, endTimeUtc, eventsTypesFilter, excludeAnalysisEvents, skipCorrelationLookup, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ReplicaEventInner>>>>() {
                 @Override
@@ -36265,7 +36699,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (eventInstanceId == null) {
             throw new IllegalArgumentException("Parameter eventInstanceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         final Long timeout = null;
         return service.getCorrelatedEventList(eventInstanceId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<FabricEventInner>>>>() {
@@ -36341,7 +36775,7 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
         if (eventInstanceId == null) {
             throw new IllegalArgumentException("Parameter eventInstanceId is required and cannot be null.");
         }
-        final String apiVersion = "6.2-preview";
+        final String apiVersion = "6.4";
         return service.getCorrelatedEventList(eventInstanceId, apiVersion, timeout, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<FabricEventInner>>>>() {
                 @Override
@@ -36359,832 +36793,6 @@ public class ServiceFabricClientAPIsImpl extends AzureServiceClient {
     private ServiceResponse<List<FabricEventInner>> getCorrelatedEventListDelegate(Response<ResponseBody> response) throws FabricErrorException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<List<FabricEventInner>, FabricErrorException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<List<FabricEventInner>>() { }.getType())
-                .registerError(FabricErrorException.class)
-                .build(response);
-    }
-
-    /**
-     * Creates or updates an application resource.
-     * Creates an application with the specified name and description. If an application with the same name already exists, then its description are updated to the one indicated in this request.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param applicationResourceDescription Description for creating an application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws FabricErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void createApplicationResource(String applicationResourceName, ApplicationResourceDescriptionInner applicationResourceDescription) {
-        createApplicationResourceWithServiceResponseAsync(applicationResourceName, applicationResourceDescription).toBlocking().single().body();
-    }
-
-    /**
-     * Creates or updates an application resource.
-     * Creates an application with the specified name and description. If an application with the same name already exists, then its description are updated to the one indicated in this request.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param applicationResourceDescription Description for creating an application resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> createApplicationResourceAsync(String applicationResourceName, ApplicationResourceDescriptionInner applicationResourceDescription, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(createApplicationResourceWithServiceResponseAsync(applicationResourceName, applicationResourceDescription), serviceCallback);
-    }
-
-    /**
-     * Creates or updates an application resource.
-     * Creates an application with the specified name and description. If an application with the same name already exists, then its description are updated to the one indicated in this request.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param applicationResourceDescription Description for creating an application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> createApplicationResourceAsync(String applicationResourceName, ApplicationResourceDescriptionInner applicationResourceDescription) {
-        return createApplicationResourceWithServiceResponseAsync(applicationResourceName, applicationResourceDescription).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates an application resource.
-     * Creates an application with the specified name and description. If an application with the same name already exists, then its description are updated to the one indicated in this request.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param applicationResourceDescription Description for creating an application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> createApplicationResourceWithServiceResponseAsync(String applicationResourceName, ApplicationResourceDescriptionInner applicationResourceDescription) {
-        if (applicationResourceName == null) {
-            throw new IllegalArgumentException("Parameter applicationResourceName is required and cannot be null.");
-        }
-        if (applicationResourceDescription == null) {
-            throw new IllegalArgumentException("Parameter applicationResourceDescription is required and cannot be null.");
-        }
-        Validator.validate(applicationResourceDescription);
-        final String apiVersion = "6.3-preview";
-        return service.createApplicationResource(applicationResourceName, apiVersion, applicationResourceDescription, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = createApplicationResourceDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> createApplicationResourceDelegate(Response<ResponseBody> response) throws FabricErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<Void, FabricErrorException>newInstance(this.serializerAdapter())
-                .register(201, new TypeToken<Void>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(FabricErrorException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets the application with the given name.
-     * Gets the application with the given name. This includes the information about the application's services and other runtime information.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws FabricErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ApplicationResourceDescriptionInner object if successful.
-     */
-    public ApplicationResourceDescriptionInner getApplicationResource(String applicationResourceName) {
-        return getApplicationResourceWithServiceResponseAsync(applicationResourceName).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the application with the given name.
-     * Gets the application with the given name. This includes the information about the application's services and other runtime information.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ApplicationResourceDescriptionInner> getApplicationResourceAsync(String applicationResourceName, final ServiceCallback<ApplicationResourceDescriptionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getApplicationResourceWithServiceResponseAsync(applicationResourceName), serviceCallback);
-    }
-
-    /**
-     * Gets the application with the given name.
-     * Gets the application with the given name. This includes the information about the application's services and other runtime information.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ApplicationResourceDescriptionInner object
-     */
-    public Observable<ApplicationResourceDescriptionInner> getApplicationResourceAsync(String applicationResourceName) {
-        return getApplicationResourceWithServiceResponseAsync(applicationResourceName).map(new Func1<ServiceResponse<ApplicationResourceDescriptionInner>, ApplicationResourceDescriptionInner>() {
-            @Override
-            public ApplicationResourceDescriptionInner call(ServiceResponse<ApplicationResourceDescriptionInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the application with the given name.
-     * Gets the application with the given name. This includes the information about the application's services and other runtime information.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ApplicationResourceDescriptionInner object
-     */
-    public Observable<ServiceResponse<ApplicationResourceDescriptionInner>> getApplicationResourceWithServiceResponseAsync(String applicationResourceName) {
-        if (applicationResourceName == null) {
-            throw new IllegalArgumentException("Parameter applicationResourceName is required and cannot be null.");
-        }
-        final String apiVersion = "6.3-preview";
-        return service.getApplicationResource(applicationResourceName, apiVersion, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationResourceDescriptionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ApplicationResourceDescriptionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ApplicationResourceDescriptionInner> clientResponse = getApplicationResourceDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ApplicationResourceDescriptionInner> getApplicationResourceDelegate(Response<ResponseBody> response) throws FabricErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<ApplicationResourceDescriptionInner, FabricErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<ApplicationResourceDescriptionInner>() { }.getType())
-                .registerError(FabricErrorException.class)
-                .build(response);
-    }
-
-    /**
-     * Deletes the specified application.
-     * Deletes the application identified by the name.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws FabricErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void deleteApplicationResource(String applicationResourceName) {
-        deleteApplicationResourceWithServiceResponseAsync(applicationResourceName).toBlocking().single().body();
-    }
-
-    /**
-     * Deletes the specified application.
-     * Deletes the application identified by the name.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteApplicationResourceAsync(String applicationResourceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteApplicationResourceWithServiceResponseAsync(applicationResourceName), serviceCallback);
-    }
-
-    /**
-     * Deletes the specified application.
-     * Deletes the application identified by the name.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteApplicationResourceAsync(String applicationResourceName) {
-        return deleteApplicationResourceWithServiceResponseAsync(applicationResourceName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes the specified application.
-     * Deletes the application identified by the name.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteApplicationResourceWithServiceResponseAsync(String applicationResourceName) {
-        if (applicationResourceName == null) {
-            throw new IllegalArgumentException("Parameter applicationResourceName is required and cannot be null.");
-        }
-        final String apiVersion = "6.3-preview";
-        return service.deleteApplicationResource(applicationResourceName, apiVersion, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteApplicationResourceDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteApplicationResourceDelegate(Response<ResponseBody> response) throws FabricErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<Void, FabricErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(FabricErrorException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets all the services in the application resource.
-     * The operation returns the service descriptions of all the services in the application resource.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedServiceResourceDescriptionListInner object if successful.
-     */
-    public PagedServiceResourceDescriptionListInner getServices(String applicationResourceName) {
-        return getServicesWithServiceResponseAsync(applicationResourceName).toBlocking().single().body();
-    }
-
-    /**
-     * Gets all the services in the application resource.
-     * The operation returns the service descriptions of all the services in the application resource.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<PagedServiceResourceDescriptionListInner> getServicesAsync(String applicationResourceName, final ServiceCallback<PagedServiceResourceDescriptionListInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getServicesWithServiceResponseAsync(applicationResourceName), serviceCallback);
-    }
-
-    /**
-     * Gets all the services in the application resource.
-     * The operation returns the service descriptions of all the services in the application resource.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedServiceResourceDescriptionListInner object
-     */
-    public Observable<PagedServiceResourceDescriptionListInner> getServicesAsync(String applicationResourceName) {
-        return getServicesWithServiceResponseAsync(applicationResourceName).map(new Func1<ServiceResponse<PagedServiceResourceDescriptionListInner>, PagedServiceResourceDescriptionListInner>() {
-            @Override
-            public PagedServiceResourceDescriptionListInner call(ServiceResponse<PagedServiceResourceDescriptionListInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets all the services in the application resource.
-     * The operation returns the service descriptions of all the services in the application resource.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedServiceResourceDescriptionListInner object
-     */
-    public Observable<ServiceResponse<PagedServiceResourceDescriptionListInner>> getServicesWithServiceResponseAsync(String applicationResourceName) {
-        if (applicationResourceName == null) {
-            throw new IllegalArgumentException("Parameter applicationResourceName is required and cannot be null.");
-        }
-        final String apiVersion = "6.3-preview";
-        return service.getServices(applicationResourceName, apiVersion, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedServiceResourceDescriptionListInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PagedServiceResourceDescriptionListInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PagedServiceResourceDescriptionListInner> clientResponse = getServicesDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PagedServiceResourceDescriptionListInner> getServicesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<PagedServiceResourceDescriptionListInner, CloudException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<PagedServiceResourceDescriptionListInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets the description of the specified service in an application resource.
-     * Gets the description of the service resource.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ServiceResourceDescriptionInner object if successful.
-     */
-    public ServiceResourceDescriptionInner getService(String applicationResourceName, String serviceResourceName) {
-        return getServiceWithServiceResponseAsync(applicationResourceName, serviceResourceName).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the description of the specified service in an application resource.
-     * Gets the description of the service resource.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ServiceResourceDescriptionInner> getServiceAsync(String applicationResourceName, String serviceResourceName, final ServiceCallback<ServiceResourceDescriptionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getServiceWithServiceResponseAsync(applicationResourceName, serviceResourceName), serviceCallback);
-    }
-
-    /**
-     * Gets the description of the specified service in an application resource.
-     * Gets the description of the service resource.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServiceResourceDescriptionInner object
-     */
-    public Observable<ServiceResourceDescriptionInner> getServiceAsync(String applicationResourceName, String serviceResourceName) {
-        return getServiceWithServiceResponseAsync(applicationResourceName, serviceResourceName).map(new Func1<ServiceResponse<ServiceResourceDescriptionInner>, ServiceResourceDescriptionInner>() {
-            @Override
-            public ServiceResourceDescriptionInner call(ServiceResponse<ServiceResourceDescriptionInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the description of the specified service in an application resource.
-     * Gets the description of the service resource.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServiceResourceDescriptionInner object
-     */
-    public Observable<ServiceResponse<ServiceResourceDescriptionInner>> getServiceWithServiceResponseAsync(String applicationResourceName, String serviceResourceName) {
-        if (applicationResourceName == null) {
-            throw new IllegalArgumentException("Parameter applicationResourceName is required and cannot be null.");
-        }
-        if (serviceResourceName == null) {
-            throw new IllegalArgumentException("Parameter serviceResourceName is required and cannot be null.");
-        }
-        final String apiVersion = "6.3-preview";
-        return service.getService(applicationResourceName, serviceResourceName, apiVersion, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceResourceDescriptionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ServiceResourceDescriptionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ServiceResourceDescriptionInner> clientResponse = getServiceDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ServiceResourceDescriptionInner> getServiceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<ServiceResourceDescriptionInner, CloudException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<ServiceResourceDescriptionInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets replicas of a given service in an application resource.
-     * Gets the information about all replicas of a given service of an application. The information includes the runtime properties of the replica instance.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedServiceResourceReplicaDescriptionListInner object if successful.
-     */
-    public PagedServiceResourceReplicaDescriptionListInner getReplicas(String applicationResourceName, String serviceResourceName) {
-        return getReplicasWithServiceResponseAsync(applicationResourceName, serviceResourceName).toBlocking().single().body();
-    }
-
-    /**
-     * Gets replicas of a given service in an application resource.
-     * Gets the information about all replicas of a given service of an application. The information includes the runtime properties of the replica instance.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<PagedServiceResourceReplicaDescriptionListInner> getReplicasAsync(String applicationResourceName, String serviceResourceName, final ServiceCallback<PagedServiceResourceReplicaDescriptionListInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getReplicasWithServiceResponseAsync(applicationResourceName, serviceResourceName), serviceCallback);
-    }
-
-    /**
-     * Gets replicas of a given service in an application resource.
-     * Gets the information about all replicas of a given service of an application. The information includes the runtime properties of the replica instance.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedServiceResourceReplicaDescriptionListInner object
-     */
-    public Observable<PagedServiceResourceReplicaDescriptionListInner> getReplicasAsync(String applicationResourceName, String serviceResourceName) {
-        return getReplicasWithServiceResponseAsync(applicationResourceName, serviceResourceName).map(new Func1<ServiceResponse<PagedServiceResourceReplicaDescriptionListInner>, PagedServiceResourceReplicaDescriptionListInner>() {
-            @Override
-            public PagedServiceResourceReplicaDescriptionListInner call(ServiceResponse<PagedServiceResourceReplicaDescriptionListInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets replicas of a given service in an application resource.
-     * Gets the information about all replicas of a given service of an application. The information includes the runtime properties of the replica instance.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedServiceResourceReplicaDescriptionListInner object
-     */
-    public Observable<ServiceResponse<PagedServiceResourceReplicaDescriptionListInner>> getReplicasWithServiceResponseAsync(String applicationResourceName, String serviceResourceName) {
-        if (applicationResourceName == null) {
-            throw new IllegalArgumentException("Parameter applicationResourceName is required and cannot be null.");
-        }
-        if (serviceResourceName == null) {
-            throw new IllegalArgumentException("Parameter serviceResourceName is required and cannot be null.");
-        }
-        final String apiVersion = "6.3-preview";
-        return service.getReplicas(applicationResourceName, serviceResourceName, apiVersion, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PagedServiceResourceReplicaDescriptionListInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PagedServiceResourceReplicaDescriptionListInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PagedServiceResourceReplicaDescriptionListInner> clientResponse = getReplicasDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PagedServiceResourceReplicaDescriptionListInner> getReplicasDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<PagedServiceResourceReplicaDescriptionListInner, CloudException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<PagedServiceResourceReplicaDescriptionListInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets a specific replica of a given service in an application resource.
-     * Gets the information about the specified replica of a given service of an application. The information includes the runtime properties of the replica instance.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @param replicaName Service Fabric replica name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ServiceResourceReplicaDescriptionInner object if successful.
-     */
-    public ServiceResourceReplicaDescriptionInner getReplica(String applicationResourceName, String serviceResourceName, String replicaName) {
-        return getReplicaWithServiceResponseAsync(applicationResourceName, serviceResourceName, replicaName).toBlocking().single().body();
-    }
-
-    /**
-     * Gets a specific replica of a given service in an application resource.
-     * Gets the information about the specified replica of a given service of an application. The information includes the runtime properties of the replica instance.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @param replicaName Service Fabric replica name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<ServiceResourceReplicaDescriptionInner> getReplicaAsync(String applicationResourceName, String serviceResourceName, String replicaName, final ServiceCallback<ServiceResourceReplicaDescriptionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getReplicaWithServiceResponseAsync(applicationResourceName, serviceResourceName, replicaName), serviceCallback);
-    }
-
-    /**
-     * Gets a specific replica of a given service in an application resource.
-     * Gets the information about the specified replica of a given service of an application. The information includes the runtime properties of the replica instance.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @param replicaName Service Fabric replica name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServiceResourceReplicaDescriptionInner object
-     */
-    public Observable<ServiceResourceReplicaDescriptionInner> getReplicaAsync(String applicationResourceName, String serviceResourceName, String replicaName) {
-        return getReplicaWithServiceResponseAsync(applicationResourceName, serviceResourceName, replicaName).map(new Func1<ServiceResponse<ServiceResourceReplicaDescriptionInner>, ServiceResourceReplicaDescriptionInner>() {
-            @Override
-            public ServiceResourceReplicaDescriptionInner call(ServiceResponse<ServiceResourceReplicaDescriptionInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets a specific replica of a given service in an application resource.
-     * Gets the information about the specified replica of a given service of an application. The information includes the runtime properties of the replica instance.
-     *
-     * @param applicationResourceName Service Fabric application resource name.
-     * @param serviceResourceName Service Fabric service resource name.
-     * @param replicaName Service Fabric replica name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ServiceResourceReplicaDescriptionInner object
-     */
-    public Observable<ServiceResponse<ServiceResourceReplicaDescriptionInner>> getReplicaWithServiceResponseAsync(String applicationResourceName, String serviceResourceName, String replicaName) {
-        if (applicationResourceName == null) {
-            throw new IllegalArgumentException("Parameter applicationResourceName is required and cannot be null.");
-        }
-        if (serviceResourceName == null) {
-            throw new IllegalArgumentException("Parameter serviceResourceName is required and cannot be null.");
-        }
-        if (replicaName == null) {
-            throw new IllegalArgumentException("Parameter replicaName is required and cannot be null.");
-        }
-        final String apiVersion = "6.3-preview";
-        return service.getReplica(applicationResourceName, serviceResourceName, replicaName, apiVersion, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceResourceReplicaDescriptionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ServiceResourceReplicaDescriptionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ServiceResourceReplicaDescriptionInner> clientResponse = getReplicaDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ServiceResourceReplicaDescriptionInner> getReplicaDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<ServiceResourceReplicaDescriptionInner, CloudException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<ServiceResourceReplicaDescriptionInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Creates or updates a volume resource.
-     * Creates a volume resource with the specified name and description. If a volume with the same name already exists, then its description is updated to the one indicated in this request.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @param volumeResourceDescription Description for creating a volume resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws FabricErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void createVolumeResource(String volumeResourceName, VolumeResourceDescriptionInner volumeResourceDescription) {
-        createVolumeResourceWithServiceResponseAsync(volumeResourceName, volumeResourceDescription).toBlocking().single().body();
-    }
-
-    /**
-     * Creates or updates a volume resource.
-     * Creates a volume resource with the specified name and description. If a volume with the same name already exists, then its description is updated to the one indicated in this request.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @param volumeResourceDescription Description for creating a volume resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> createVolumeResourceAsync(String volumeResourceName, VolumeResourceDescriptionInner volumeResourceDescription, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(createVolumeResourceWithServiceResponseAsync(volumeResourceName, volumeResourceDescription), serviceCallback);
-    }
-
-    /**
-     * Creates or updates a volume resource.
-     * Creates a volume resource with the specified name and description. If a volume with the same name already exists, then its description is updated to the one indicated in this request.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @param volumeResourceDescription Description for creating a volume resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> createVolumeResourceAsync(String volumeResourceName, VolumeResourceDescriptionInner volumeResourceDescription) {
-        return createVolumeResourceWithServiceResponseAsync(volumeResourceName, volumeResourceDescription).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates a volume resource.
-     * Creates a volume resource with the specified name and description. If a volume with the same name already exists, then its description is updated to the one indicated in this request.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @param volumeResourceDescription Description for creating a volume resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> createVolumeResourceWithServiceResponseAsync(String volumeResourceName, VolumeResourceDescriptionInner volumeResourceDescription) {
-        if (volumeResourceName == null) {
-            throw new IllegalArgumentException("Parameter volumeResourceName is required and cannot be null.");
-        }
-        if (volumeResourceDescription == null) {
-            throw new IllegalArgumentException("Parameter volumeResourceDescription is required and cannot be null.");
-        }
-        Validator.validate(volumeResourceDescription);
-        final String apiVersion = "6.3-preview";
-        return service.createVolumeResource(volumeResourceName, apiVersion, volumeResourceDescription, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = createVolumeResourceDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> createVolumeResourceDelegate(Response<ResponseBody> response) throws FabricErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<Void, FabricErrorException>newInstance(this.serializerAdapter())
-                .register(201, new TypeToken<Void>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(FabricErrorException.class)
-                .build(response);
-    }
-
-    /**
-     * Gets the volume resource.
-     * Gets the information about the volume resource with a given name. This information includes the volume description and other runtime information.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws FabricErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the VolumeResourceDescriptionInner object if successful.
-     */
-    public VolumeResourceDescriptionInner getVolumeResource(String volumeResourceName) {
-        return getVolumeResourceWithServiceResponseAsync(volumeResourceName).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the volume resource.
-     * Gets the information about the volume resource with a given name. This information includes the volume description and other runtime information.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<VolumeResourceDescriptionInner> getVolumeResourceAsync(String volumeResourceName, final ServiceCallback<VolumeResourceDescriptionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getVolumeResourceWithServiceResponseAsync(volumeResourceName), serviceCallback);
-    }
-
-    /**
-     * Gets the volume resource.
-     * Gets the information about the volume resource with a given name. This information includes the volume description and other runtime information.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the VolumeResourceDescriptionInner object
-     */
-    public Observable<VolumeResourceDescriptionInner> getVolumeResourceAsync(String volumeResourceName) {
-        return getVolumeResourceWithServiceResponseAsync(volumeResourceName).map(new Func1<ServiceResponse<VolumeResourceDescriptionInner>, VolumeResourceDescriptionInner>() {
-            @Override
-            public VolumeResourceDescriptionInner call(ServiceResponse<VolumeResourceDescriptionInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the volume resource.
-     * Gets the information about the volume resource with a given name. This information includes the volume description and other runtime information.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the VolumeResourceDescriptionInner object
-     */
-    public Observable<ServiceResponse<VolumeResourceDescriptionInner>> getVolumeResourceWithServiceResponseAsync(String volumeResourceName) {
-        if (volumeResourceName == null) {
-            throw new IllegalArgumentException("Parameter volumeResourceName is required and cannot be null.");
-        }
-        final String apiVersion = "6.3-preview";
-        return service.getVolumeResource(volumeResourceName, apiVersion, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VolumeResourceDescriptionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<VolumeResourceDescriptionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<VolumeResourceDescriptionInner> clientResponse = getVolumeResourceDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<VolumeResourceDescriptionInner> getVolumeResourceDelegate(Response<ResponseBody> response) throws FabricErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<VolumeResourceDescriptionInner, FabricErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<VolumeResourceDescriptionInner>() { }.getType())
-                .registerError(FabricErrorException.class)
-                .build(response);
-    }
-
-    /**
-     * Deletes the volume resource.
-     * Deletes the volume identified by the name.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws FabricErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void deleteVolumeResource(String volumeResourceName) {
-        deleteVolumeResourceWithServiceResponseAsync(volumeResourceName).toBlocking().single().body();
-    }
-
-    /**
-     * Deletes the volume resource.
-     * Deletes the volume identified by the name.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteVolumeResourceAsync(String volumeResourceName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteVolumeResourceWithServiceResponseAsync(volumeResourceName), serviceCallback);
-    }
-
-    /**
-     * Deletes the volume resource.
-     * Deletes the volume identified by the name.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteVolumeResourceAsync(String volumeResourceName) {
-        return deleteVolumeResourceWithServiceResponseAsync(volumeResourceName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes the volume resource.
-     * Deletes the volume identified by the name.
-     *
-     * @param volumeResourceName Service Fabric volume resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteVolumeResourceWithServiceResponseAsync(String volumeResourceName) {
-        if (volumeResourceName == null) {
-            throw new IllegalArgumentException("Parameter volumeResourceName is required and cannot be null.");
-        }
-        final String apiVersion = "6.3-preview";
-        return service.deleteVolumeResource(volumeResourceName, apiVersion, this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteVolumeResourceDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteVolumeResourceDelegate(Response<ResponseBody> response) throws FabricErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<Void, FabricErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(FabricErrorException.class)
                 .build(response);
     }

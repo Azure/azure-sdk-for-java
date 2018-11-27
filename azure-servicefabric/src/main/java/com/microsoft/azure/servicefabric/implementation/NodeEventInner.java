@@ -20,22 +20,18 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("NodeEvent")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "NodeAborted", value = NodeAbortedEvent.class),
-    @JsonSubTypes.Type(name = "NodeAborting", value = NodeAbortingEvent.class),
-    @JsonSubTypes.Type(name = "NodeAdded", value = NodeAddedEvent.class),
-    @JsonSubTypes.Type(name = "NodeClose", value = NodeCloseEvent.class),
-    @JsonSubTypes.Type(name = "NodeClosing", value = NodeClosingEvent.class),
-    @JsonSubTypes.Type(name = "NodeDeactivateComplete", value = NodeDeactivateCompleteEvent.class),
-    @JsonSubTypes.Type(name = "NodeDeactivateStart", value = NodeDeactivateStartEvent.class),
+    @JsonSubTypes.Type(name = "NodeAddedToCluster", value = NodeAddedToClusterEvent.class),
+    @JsonSubTypes.Type(name = "NodeClosed", value = NodeClosedEvent.class),
+    @JsonSubTypes.Type(name = "NodeDeactivateCompleted", value = NodeDeactivateCompletedEvent.class),
+    @JsonSubTypes.Type(name = "NodeDeactivateStarted", value = NodeDeactivateStartedEvent.class),
     @JsonSubTypes.Type(name = "NodeDown", value = NodeDownEvent.class),
-    @JsonSubTypes.Type(name = "NodeHealthReportCreated", value = NodeHealthReportCreatedEvent.class),
+    @JsonSubTypes.Type(name = "NodeNewHealthReport", value = NodeNewHealthReportEvent.class),
     @JsonSubTypes.Type(name = "NodeHealthReportExpired", value = NodeHealthReportExpiredEvent.class),
-    @JsonSubTypes.Type(name = "NodeOpenedSuccess", value = NodeOpenedSuccessEvent.class),
+    @JsonSubTypes.Type(name = "NodeOpenSucceeded", value = NodeOpenSucceededEvent.class),
     @JsonSubTypes.Type(name = "NodeOpenFailed", value = NodeOpenFailedEvent.class),
-    @JsonSubTypes.Type(name = "NodeOpening", value = NodeOpeningEvent.class),
-    @JsonSubTypes.Type(name = "NodeRemoved", value = NodeRemovedEvent.class),
+    @JsonSubTypes.Type(name = "NodeRemovedFromCluster", value = NodeRemovedFromClusterEvent.class),
     @JsonSubTypes.Type(name = "NodeUp", value = NodeUpEvent.class),
-    @JsonSubTypes.Type(name = "ChaosRestartNodeFaultCompleted", value = ChaosRestartNodeFaultCompletedEvent.class),
-    @JsonSubTypes.Type(name = "ChaosRestartNodeFaultScheduled", value = ChaosRestartNodeFaultScheduledEvent.class)
+    @JsonSubTypes.Type(name = "ChaosNodeRestartScheduled", value = ChaosNodeRestartScheduledEvent.class)
 })
 public class NodeEventInner extends FabricEventInner {
     /**

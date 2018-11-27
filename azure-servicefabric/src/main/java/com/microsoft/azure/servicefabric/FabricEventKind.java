@@ -46,92 +46,83 @@ public final class FabricEventKind extends ExpandableStringEnum<FabricEventKind>
     /** Static value ApplicationDeleted for FabricEventKind. */
     public static final FabricEventKind APPLICATION_DELETED = fromString("ApplicationDeleted");
 
-    /** Static value ApplicationHealthReportCreated for FabricEventKind. */
-    public static final FabricEventKind APPLICATION_HEALTH_REPORT_CREATED = fromString("ApplicationHealthReportCreated");
+    /** Static value ApplicationNewHealthReport for FabricEventKind. */
+    public static final FabricEventKind APPLICATION_NEW_HEALTH_REPORT = fromString("ApplicationNewHealthReport");
 
     /** Static value ApplicationHealthReportExpired for FabricEventKind. */
     public static final FabricEventKind APPLICATION_HEALTH_REPORT_EXPIRED = fromString("ApplicationHealthReportExpired");
 
-    /** Static value ApplicationUpgradeComplete for FabricEventKind. */
-    public static final FabricEventKind APPLICATION_UPGRADE_COMPLETE = fromString("ApplicationUpgradeComplete");
+    /** Static value ApplicationUpgradeCompleted for FabricEventKind. */
+    public static final FabricEventKind APPLICATION_UPGRADE_COMPLETED = fromString("ApplicationUpgradeCompleted");
 
-    /** Static value ApplicationUpgradeDomainComplete for FabricEventKind. */
-    public static final FabricEventKind APPLICATION_UPGRADE_DOMAIN_COMPLETE = fromString("ApplicationUpgradeDomainComplete");
+    /** Static value ApplicationUpgradeDomainCompleted for FabricEventKind. */
+    public static final FabricEventKind APPLICATION_UPGRADE_DOMAIN_COMPLETED = fromString("ApplicationUpgradeDomainCompleted");
 
-    /** Static value ApplicationUpgradeRollbackComplete for FabricEventKind. */
-    public static final FabricEventKind APPLICATION_UPGRADE_ROLLBACK_COMPLETE = fromString("ApplicationUpgradeRollbackComplete");
+    /** Static value ApplicationUpgradeRollbackCompleted for FabricEventKind. */
+    public static final FabricEventKind APPLICATION_UPGRADE_ROLLBACK_COMPLETED = fromString("ApplicationUpgradeRollbackCompleted");
 
-    /** Static value ApplicationUpgradeRollbackStart for FabricEventKind. */
-    public static final FabricEventKind APPLICATION_UPGRADE_ROLLBACK_START = fromString("ApplicationUpgradeRollbackStart");
+    /** Static value ApplicationUpgradeRollbackStarted for FabricEventKind. */
+    public static final FabricEventKind APPLICATION_UPGRADE_ROLLBACK_STARTED = fromString("ApplicationUpgradeRollbackStarted");
 
-    /** Static value ApplicationUpgradeStart for FabricEventKind. */
-    public static final FabricEventKind APPLICATION_UPGRADE_START = fromString("ApplicationUpgradeStart");
+    /** Static value ApplicationUpgradeStarted for FabricEventKind. */
+    public static final FabricEventKind APPLICATION_UPGRADE_STARTED = fromString("ApplicationUpgradeStarted");
 
-    /** Static value DeployedApplicationHealthReportCreated for FabricEventKind. */
-    public static final FabricEventKind DEPLOYED_APPLICATION_HEALTH_REPORT_CREATED = fromString("DeployedApplicationHealthReportCreated");
+    /** Static value DeployedApplicationNewHealthReport for FabricEventKind. */
+    public static final FabricEventKind DEPLOYED_APPLICATION_NEW_HEALTH_REPORT = fromString("DeployedApplicationNewHealthReport");
 
     /** Static value DeployedApplicationHealthReportExpired for FabricEventKind. */
     public static final FabricEventKind DEPLOYED_APPLICATION_HEALTH_REPORT_EXPIRED = fromString("DeployedApplicationHealthReportExpired");
 
-    /** Static value ProcessDeactivated for FabricEventKind. */
-    public static final FabricEventKind PROCESS_DEACTIVATED = fromString("ProcessDeactivated");
+    /** Static value ApplicationProcessExited for FabricEventKind. */
+    public static final FabricEventKind APPLICATION_PROCESS_EXITED = fromString("ApplicationProcessExited");
 
-    /** Static value ContainerDeactivated for FabricEventKind. */
-    public static final FabricEventKind CONTAINER_DEACTIVATED = fromString("ContainerDeactivated");
+    /** Static value ApplicationContainerInstanceExited for FabricEventKind. */
+    public static final FabricEventKind APPLICATION_CONTAINER_INSTANCE_EXITED = fromString("ApplicationContainerInstanceExited");
 
     /** Static value NodeAborted for FabricEventKind. */
     public static final FabricEventKind NODE_ABORTED = fromString("NodeAborted");
 
-    /** Static value NodeAborting for FabricEventKind. */
-    public static final FabricEventKind NODE_ABORTING = fromString("NodeAborting");
+    /** Static value NodeAddedToCluster for FabricEventKind. */
+    public static final FabricEventKind NODE_ADDED_TO_CLUSTER = fromString("NodeAddedToCluster");
 
-    /** Static value NodeAdded for FabricEventKind. */
-    public static final FabricEventKind NODE_ADDED = fromString("NodeAdded");
+    /** Static value NodeClosed for FabricEventKind. */
+    public static final FabricEventKind NODE_CLOSED = fromString("NodeClosed");
 
-    /** Static value NodeClose for FabricEventKind. */
-    public static final FabricEventKind NODE_CLOSE = fromString("NodeClose");
+    /** Static value NodeDeactivateCompleted for FabricEventKind. */
+    public static final FabricEventKind NODE_DEACTIVATE_COMPLETED = fromString("NodeDeactivateCompleted");
 
-    /** Static value NodeClosing for FabricEventKind. */
-    public static final FabricEventKind NODE_CLOSING = fromString("NodeClosing");
-
-    /** Static value NodeDeactivateComplete for FabricEventKind. */
-    public static final FabricEventKind NODE_DEACTIVATE_COMPLETE = fromString("NodeDeactivateComplete");
-
-    /** Static value NodeDeactivateStart for FabricEventKind. */
-    public static final FabricEventKind NODE_DEACTIVATE_START = fromString("NodeDeactivateStart");
+    /** Static value NodeDeactivateStarted for FabricEventKind. */
+    public static final FabricEventKind NODE_DEACTIVATE_STARTED = fromString("NodeDeactivateStarted");
 
     /** Static value NodeDown for FabricEventKind. */
     public static final FabricEventKind NODE_DOWN = fromString("NodeDown");
 
-    /** Static value NodeHealthReportCreated for FabricEventKind. */
-    public static final FabricEventKind NODE_HEALTH_REPORT_CREATED = fromString("NodeHealthReportCreated");
+    /** Static value NodeNewHealthReport for FabricEventKind. */
+    public static final FabricEventKind NODE_NEW_HEALTH_REPORT = fromString("NodeNewHealthReport");
 
     /** Static value NodeHealthReportExpired for FabricEventKind. */
     public static final FabricEventKind NODE_HEALTH_REPORT_EXPIRED = fromString("NodeHealthReportExpired");
 
-    /** Static value NodeOpenedSuccess for FabricEventKind. */
-    public static final FabricEventKind NODE_OPENED_SUCCESS = fromString("NodeOpenedSuccess");
+    /** Static value NodeOpenSucceeded for FabricEventKind. */
+    public static final FabricEventKind NODE_OPEN_SUCCEEDED = fromString("NodeOpenSucceeded");
 
     /** Static value NodeOpenFailed for FabricEventKind. */
     public static final FabricEventKind NODE_OPEN_FAILED = fromString("NodeOpenFailed");
 
-    /** Static value NodeOpening for FabricEventKind. */
-    public static final FabricEventKind NODE_OPENING = fromString("NodeOpening");
-
-    /** Static value NodeRemoved for FabricEventKind. */
-    public static final FabricEventKind NODE_REMOVED = fromString("NodeRemoved");
+    /** Static value NodeRemovedFromCluster for FabricEventKind. */
+    public static final FabricEventKind NODE_REMOVED_FROM_CLUSTER = fromString("NodeRemovedFromCluster");
 
     /** Static value NodeUp for FabricEventKind. */
     public static final FabricEventKind NODE_UP = fromString("NodeUp");
 
-    /** Static value PartitionHealthReportCreated for FabricEventKind. */
-    public static final FabricEventKind PARTITION_HEALTH_REPORT_CREATED = fromString("PartitionHealthReportCreated");
+    /** Static value PartitionNewHealthReport for FabricEventKind. */
+    public static final FabricEventKind PARTITION_NEW_HEALTH_REPORT = fromString("PartitionNewHealthReport");
 
     /** Static value PartitionHealthReportExpired for FabricEventKind. */
     public static final FabricEventKind PARTITION_HEALTH_REPORT_EXPIRED = fromString("PartitionHealthReportExpired");
 
-    /** Static value PartitionReconfigurationCompleted for FabricEventKind. */
-    public static final FabricEventKind PARTITION_RECONFIGURATION_COMPLETED = fromString("PartitionReconfigurationCompleted");
+    /** Static value PartitionReconfigured for FabricEventKind. */
+    public static final FabricEventKind PARTITION_RECONFIGURED = fromString("PartitionReconfigured");
 
     /** Static value PartitionPrimaryMoveAnalysis for FabricEventKind. */
     public static final FabricEventKind PARTITION_PRIMARY_MOVE_ANALYSIS = fromString("PartitionPrimaryMoveAnalysis");
@@ -142,50 +133,50 @@ public final class FabricEventKind extends ExpandableStringEnum<FabricEventKind>
     /** Static value ServiceDeleted for FabricEventKind. */
     public static final FabricEventKind SERVICE_DELETED = fromString("ServiceDeleted");
 
-    /** Static value ServiceHealthReportCreated for FabricEventKind. */
-    public static final FabricEventKind SERVICE_HEALTH_REPORT_CREATED = fromString("ServiceHealthReportCreated");
+    /** Static value ServiceNewHealthReport for FabricEventKind. */
+    public static final FabricEventKind SERVICE_NEW_HEALTH_REPORT = fromString("ServiceNewHealthReport");
 
     /** Static value ServiceHealthReportExpired for FabricEventKind. */
     public static final FabricEventKind SERVICE_HEALTH_REPORT_EXPIRED = fromString("ServiceHealthReportExpired");
 
-    /** Static value DeployedServiceHealthReportCreated for FabricEventKind. */
-    public static final FabricEventKind DEPLOYED_SERVICE_HEALTH_REPORT_CREATED = fromString("DeployedServiceHealthReportCreated");
+    /** Static value DeployedServicePackageNewHealthReport for FabricEventKind. */
+    public static final FabricEventKind DEPLOYED_SERVICE_PACKAGE_NEW_HEALTH_REPORT = fromString("DeployedServicePackageNewHealthReport");
 
-    /** Static value DeployedServiceHealthReportExpired for FabricEventKind. */
-    public static final FabricEventKind DEPLOYED_SERVICE_HEALTH_REPORT_EXPIRED = fromString("DeployedServiceHealthReportExpired");
+    /** Static value DeployedServicePackageHealthReportExpired for FabricEventKind. */
+    public static final FabricEventKind DEPLOYED_SERVICE_PACKAGE_HEALTH_REPORT_EXPIRED = fromString("DeployedServicePackageHealthReportExpired");
 
-    /** Static value StatefulReplicaHealthReportCreated for FabricEventKind. */
-    public static final FabricEventKind STATEFUL_REPLICA_HEALTH_REPORT_CREATED = fromString("StatefulReplicaHealthReportCreated");
+    /** Static value StatefulReplicaNewHealthReport for FabricEventKind. */
+    public static final FabricEventKind STATEFUL_REPLICA_NEW_HEALTH_REPORT = fromString("StatefulReplicaNewHealthReport");
 
     /** Static value StatefulReplicaHealthReportExpired for FabricEventKind. */
     public static final FabricEventKind STATEFUL_REPLICA_HEALTH_REPORT_EXPIRED = fromString("StatefulReplicaHealthReportExpired");
 
-    /** Static value StatelessReplicaHealthReportCreated for FabricEventKind. */
-    public static final FabricEventKind STATELESS_REPLICA_HEALTH_REPORT_CREATED = fromString("StatelessReplicaHealthReportCreated");
+    /** Static value StatelessReplicaNewHealthReport for FabricEventKind. */
+    public static final FabricEventKind STATELESS_REPLICA_NEW_HEALTH_REPORT = fromString("StatelessReplicaNewHealthReport");
 
     /** Static value StatelessReplicaHealthReportExpired for FabricEventKind. */
     public static final FabricEventKind STATELESS_REPLICA_HEALTH_REPORT_EXPIRED = fromString("StatelessReplicaHealthReportExpired");
 
-    /** Static value ClusterHealthReportCreated for FabricEventKind. */
-    public static final FabricEventKind CLUSTER_HEALTH_REPORT_CREATED = fromString("ClusterHealthReportCreated");
+    /** Static value ClusterNewHealthReport for FabricEventKind. */
+    public static final FabricEventKind CLUSTER_NEW_HEALTH_REPORT = fromString("ClusterNewHealthReport");
 
     /** Static value ClusterHealthReportExpired for FabricEventKind. */
     public static final FabricEventKind CLUSTER_HEALTH_REPORT_EXPIRED = fromString("ClusterHealthReportExpired");
 
-    /** Static value ClusterUpgradeComplete for FabricEventKind. */
-    public static final FabricEventKind CLUSTER_UPGRADE_COMPLETE = fromString("ClusterUpgradeComplete");
+    /** Static value ClusterUpgradeCompleted for FabricEventKind. */
+    public static final FabricEventKind CLUSTER_UPGRADE_COMPLETED = fromString("ClusterUpgradeCompleted");
 
-    /** Static value ClusterUpgradeDomainComplete for FabricEventKind. */
-    public static final FabricEventKind CLUSTER_UPGRADE_DOMAIN_COMPLETE = fromString("ClusterUpgradeDomainComplete");
+    /** Static value ClusterUpgradeDomainCompleted for FabricEventKind. */
+    public static final FabricEventKind CLUSTER_UPGRADE_DOMAIN_COMPLETED = fromString("ClusterUpgradeDomainCompleted");
 
-    /** Static value ClusterUpgradeRollbackComplete for FabricEventKind. */
-    public static final FabricEventKind CLUSTER_UPGRADE_ROLLBACK_COMPLETE = fromString("ClusterUpgradeRollbackComplete");
+    /** Static value ClusterUpgradeRollbackCompleted for FabricEventKind. */
+    public static final FabricEventKind CLUSTER_UPGRADE_ROLLBACK_COMPLETED = fromString("ClusterUpgradeRollbackCompleted");
 
-    /** Static value ClusterUpgradeRollbackStart for FabricEventKind. */
-    public static final FabricEventKind CLUSTER_UPGRADE_ROLLBACK_START = fromString("ClusterUpgradeRollbackStart");
+    /** Static value ClusterUpgradeRollbackStarted for FabricEventKind. */
+    public static final FabricEventKind CLUSTER_UPGRADE_ROLLBACK_STARTED = fromString("ClusterUpgradeRollbackStarted");
 
-    /** Static value ClusterUpgradeStart for FabricEventKind. */
-    public static final FabricEventKind CLUSTER_UPGRADE_START = fromString("ClusterUpgradeStart");
+    /** Static value ClusterUpgradeStarted for FabricEventKind. */
+    public static final FabricEventKind CLUSTER_UPGRADE_STARTED = fromString("ClusterUpgradeStarted");
 
     /** Static value ChaosStopped for FabricEventKind. */
     public static final FabricEventKind CHAOS_STOPPED = fromString("ChaosStopped");
@@ -193,32 +184,23 @@ public final class FabricEventKind extends ExpandableStringEnum<FabricEventKind>
     /** Static value ChaosStarted for FabricEventKind. */
     public static final FabricEventKind CHAOS_STARTED = fromString("ChaosStarted");
 
-    /** Static value ChaosRestartNodeFaultCompleted for FabricEventKind. */
-    public static final FabricEventKind CHAOS_RESTART_NODE_FAULT_COMPLETED = fromString("ChaosRestartNodeFaultCompleted");
+    /** Static value ChaosCodePackageRestartScheduled for FabricEventKind. */
+    public static final FabricEventKind CHAOS_CODE_PACKAGE_RESTART_SCHEDULED = fromString("ChaosCodePackageRestartScheduled");
 
-    /** Static value ChaosRestartCodePackageFaultScheduled for FabricEventKind. */
-    public static final FabricEventKind CHAOS_RESTART_CODE_PACKAGE_FAULT_SCHEDULED = fromString("ChaosRestartCodePackageFaultScheduled");
+    /** Static value ChaosReplicaRemovalScheduled for FabricEventKind. */
+    public static final FabricEventKind CHAOS_REPLICA_REMOVAL_SCHEDULED = fromString("ChaosReplicaRemovalScheduled");
 
-    /** Static value ChaosRestartCodePackageFaultCompleted for FabricEventKind. */
-    public static final FabricEventKind CHAOS_RESTART_CODE_PACKAGE_FAULT_COMPLETED = fromString("ChaosRestartCodePackageFaultCompleted");
+    /** Static value ChaosPartitionSecondaryMoveScheduled for FabricEventKind. */
+    public static final FabricEventKind CHAOS_PARTITION_SECONDARY_MOVE_SCHEDULED = fromString("ChaosPartitionSecondaryMoveScheduled");
 
-    /** Static value ChaosRemoveReplicaFaultScheduled for FabricEventKind. */
-    public static final FabricEventKind CHAOS_REMOVE_REPLICA_FAULT_SCHEDULED = fromString("ChaosRemoveReplicaFaultScheduled");
+    /** Static value ChaosPartitionPrimaryMoveScheduled for FabricEventKind. */
+    public static final FabricEventKind CHAOS_PARTITION_PRIMARY_MOVE_SCHEDULED = fromString("ChaosPartitionPrimaryMoveScheduled");
 
-    /** Static value ChaosRemoveReplicaFaultCompleted for FabricEventKind. */
-    public static final FabricEventKind CHAOS_REMOVE_REPLICA_FAULT_COMPLETED = fromString("ChaosRemoveReplicaFaultCompleted");
+    /** Static value ChaosReplicaRestartScheduled for FabricEventKind. */
+    public static final FabricEventKind CHAOS_REPLICA_RESTART_SCHEDULED = fromString("ChaosReplicaRestartScheduled");
 
-    /** Static value ChaosMoveSecondaryFaultScheduled for FabricEventKind. */
-    public static final FabricEventKind CHAOS_MOVE_SECONDARY_FAULT_SCHEDULED = fromString("ChaosMoveSecondaryFaultScheduled");
-
-    /** Static value ChaosMovePrimaryFaultScheduled for FabricEventKind. */
-    public static final FabricEventKind CHAOS_MOVE_PRIMARY_FAULT_SCHEDULED = fromString("ChaosMovePrimaryFaultScheduled");
-
-    /** Static value ChaosRestartReplicaFaultScheduled for FabricEventKind. */
-    public static final FabricEventKind CHAOS_RESTART_REPLICA_FAULT_SCHEDULED = fromString("ChaosRestartReplicaFaultScheduled");
-
-    /** Static value ChaosRestartNodeFaultScheduled for FabricEventKind. */
-    public static final FabricEventKind CHAOS_RESTART_NODE_FAULT_SCHEDULED = fromString("ChaosRestartNodeFaultScheduled");
+    /** Static value ChaosNodeRestartScheduled for FabricEventKind. */
+    public static final FabricEventKind CHAOS_NODE_RESTART_SCHEDULED = fromString("ChaosNodeRestartScheduled");
 
     /**
      * Creates or finds a FabricEventKind from its string representation.

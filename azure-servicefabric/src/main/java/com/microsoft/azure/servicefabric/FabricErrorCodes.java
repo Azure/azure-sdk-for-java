@@ -265,6 +265,9 @@ public final class FabricErrorCodes extends ExpandableStringEnum<FabricErrorCode
     /** Static value SerializationError for FabricErrorCodes. */
     public static final FabricErrorCodes SERIALIZATION_ERROR = fromString("SerializationError");
 
+    /** Static value FABRIC_E_IMAGEBUILDER_RESERVED_DIRECTORY_ERROR for FabricErrorCodes. */
+    public static final FabricErrorCodes FABRIC_E_IMAGEBUILDER_RESERVED_DIRECTORY_ERROR = fromString("FABRIC_E_IMAGEBUILDER_RESERVED_DIRECTORY_ERROR");
+
     /**
      * Creates or finds a FabricErrorCodes from its string representation.
      * @param name a name to look for
