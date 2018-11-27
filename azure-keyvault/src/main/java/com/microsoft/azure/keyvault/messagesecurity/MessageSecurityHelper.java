@@ -104,7 +104,7 @@ class MessageSecurityHelper {
             return result;
         } catch (NoSuchAlgorithmException e) {
             // Unexpected. Should never be thrown.
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

@@ -39,6 +39,8 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String BEARER_TOKEP_REFIX = "Bearer ";
+    private static final String CLIENT_ENCRYPTION_KEY_TYPE = "RSA";
+    private static final int CLIENT_ENCRYPTION_KEY_SIZE = 2048;
     private List<String> supportedMethods = Arrays.asList("sign", "verify", "encrypt", "decrypt", "wrapkey",
             "unwrapkey");
 
@@ -105,18 +107,18 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
         Boolean supportsPop = supportsMessageProtection(originalRequest.url().toString(), challengeMap);
 
         // if the service supports pop and a clientEncryptionKey has not been generated yet, generate
-        // the key that will be used for encryption on this an all subsequent protected requests
+        // the key that will be used for encryption on this and all subsequent protected requests
         if (supportsPop && this.clientEncryptionKey == null)
         {
             try {
-                final KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+                final KeyPairGenerator generator = KeyPairGenerator.getInstance(CLIENT_ENCRYPTION_KEY_TYPE);
 
-                generator.initialize(2048);
+                generator.initialize(CLIENT_ENCRYPTION_KEY_SIZE);
                 
                 this.clientEncryptionKey = JsonWebKey.fromRSA(generator.generateKeyPair()).withKid(UUID.randomUUID().toString());   
                 
             } catch (NoSuchAlgorithmException e) {
-                // Unexpected. Should never be thrown. 
+                throw new RuntimeException(e);
             }
         }
 
