@@ -25,7 +25,7 @@ import java.security.KeyPairGenerator;
 /**
  * Implements helper methods for message security.
  */
-public class MessageSecurityHelper {
+class MessageSecurityHelper {
     /**
      * Convert base64Url string to bytes array.
      * 

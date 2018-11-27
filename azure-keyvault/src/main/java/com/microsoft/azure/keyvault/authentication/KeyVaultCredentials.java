@@ -11,11 +11,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 
-import com.microsoft.azure.keyvault.messagesecurity.MessageSecurityHelper;
-import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -39,12 +42,9 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
     private List<String> supportedMethods = Arrays.asList("sign", "verify", "encrypt", "decrypt", "wrapkey",
             "unwrapkey");
 
-    private final ChallengeCache cache = new ChallengeCache();
-    private JsonWebKey clientEncryptionKey;
+    private JsonWebKey clientEncryptionKey = null;
 
-    public KeyVaultCredentials() {
-        clientEncryptionKey = MessageSecurityHelper.generateJsonWebKey();
-    }
+    private final ChallengeCache cache = new ChallengeCache();
 
     @Override
     public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
@@ -103,6 +103,23 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
             Map<String, String> challengeMap) throws IOException {
 
         Boolean supportsPop = supportsMessageProtection(originalRequest.url().toString(), challengeMap);
+
+        // if the service supports pop and a clientEncryptionKey has not been generated yet, generate
+        // the key that will be used for encryption on this an all subsequent protected requests
+        if (supportsPop && this.clientEncryptionKey == null)
+        {
+            try {
+                final KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+
+                generator.initialize(2048);
+                
+                this.clientEncryptionKey = JsonWebKey.fromRSA(generator.generateKeyPair()).withKid(UUID.randomUUID().toString());   
+                
+            } catch (NoSuchAlgorithmException e) {
+                // Unexpected. Should never be thrown. 
+            }
+        }
+
         AuthenticationResult authResult = getAuthenticationCredentials(supportsPop, challengeMap);
 
         if (authResult == null) {

@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -62,10 +61,12 @@ public class HttpMessageSecurity {
      *             throws IOException
      */
     public HttpMessageSecurity(String clientSecurityToken, String clientSignatureKeyString,
-                               String serverEncryptionKeyString, String serverSignatureKeyString) throws IOException {
-        this(clientSecurityToken, clientSignatureKeyString, serverEncryptionKeyString, serverSignatureKeyString,
-                MessageSecurityHelper.generateJsonWebKey());
+            String serverEncryptionKeyString, String serverSignatureKeyString) throws IOException {
+        
+        this(clientSecurityToken, clientSignatureKeyString, serverEncryptionKeyString, serverSignatureKeyString, MessageSecurityHelper.generateJsonWebKey());
     }
+
+
     /**
      * Constructor.
      *
@@ -80,13 +81,15 @@ public class HttpMessageSecurity {
      * @param serverSignatureKeyString
      *            string with server signing key (public only) or null if not
      *            supported
+     * @param clientEncryptionKey
+     *            client encryption key (public + private parts) or null if
+     *            not supported
      * @throws IOException
      *             throws IOException
      */
     public HttpMessageSecurity(String clientSecurityToken, String clientSignatureKeyString,
-            String serverEncryptionKeyString, String serverSignatureKeyString, JsonWebKey clientEncryptionKey)
-            throws IOException {
-
+            String serverEncryptionKeyString, String serverSignatureKeyString, JsonWebKey clientEncryptionKey) throws IOException {
+        
         this.clientSecurityToken = clientSecurityToken;
 
         if (clientSignatureKeyString != null && !clientSignatureKeyString.equals("")) {
@@ -99,7 +102,7 @@ public class HttpMessageSecurity {
             this.serverEncryptionKey = MessageSecurityHelper.jsonWebKeyFromString(serverEncryptionKeyString);
         }
 
-        this.clientEncryptionKey = Objects.requireNonNull(clientEncryptionKey);
+        this.clientEncryptionKey = clientEncryptionKey;
     }
 
     /**
