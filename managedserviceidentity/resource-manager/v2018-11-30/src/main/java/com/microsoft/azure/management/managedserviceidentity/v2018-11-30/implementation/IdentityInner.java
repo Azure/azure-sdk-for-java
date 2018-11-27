@@ -40,8 +40,9 @@ public class IdentityInner extends Resource {
 
     /**
      * The ManagedServiceIdentity DataPlane URL that can be queried to obtain
-     * the identity credentials. If identity is user assigned, the
-     * clientSecretUrl is null, otherwise the clientSecretUrl is not null.
+     * the identity credentials. If identity is user assigned, then the
+     * clientSecretUrl will not be present in the response, otherwise it will
+     * be present.
      */
     @JsonProperty(value = "properties.clientSecretUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String clientSecretUrl;
@@ -74,7 +75,7 @@ public class IdentityInner extends Resource {
     }
 
     /**
-     * Get the ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials. If identity is user assigned, the clientSecretUrl is null, otherwise the clientSecretUrl is not null.
+     * Get the ManagedServiceIdentity DataPlane URL that can be queried to obtain the identity credentials. If identity is user assigned, then the clientSecretUrl will not be present in the response, otherwise it will be present.
      *
      * @return the clientSecretUrl value
      */
