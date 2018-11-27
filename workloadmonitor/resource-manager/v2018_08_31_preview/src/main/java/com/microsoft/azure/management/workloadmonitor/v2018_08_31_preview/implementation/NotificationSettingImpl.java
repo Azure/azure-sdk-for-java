@@ -9,20 +9,69 @@
 package com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation;
 
 import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.NotificationSetting;
-import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
+import rx.Observable;
 import java.util.List;
 
-class NotificationSettingImpl extends WrapperImpl<NotificationSettingInner> implements NotificationSetting {
+class NotificationSettingImpl extends CreatableUpdatableImpl<NotificationSetting, NotificationSettingInner, NotificationSettingImpl> implements NotificationSetting, NotificationSetting.Update {
     private final WorkloadMonitorManager manager;
-    NotificationSettingImpl(NotificationSettingInner inner, WorkloadMonitorManager manager) {
-        super(inner);
+    private String resourceGroupName;
+    private String resourceNamespace;
+    private String resourceType;
+    private String resourceName;
+    private String notificationSettingName;
+
+    NotificationSettingImpl(String name, WorkloadMonitorManager manager) {
+        super(name, new NotificationSettingInner());
         this.manager = manager;
+        // Set resource name
+        this.notificationSettingName = name;
+        //
+    }
+
+    NotificationSettingImpl(NotificationSettingInner inner, WorkloadMonitorManager manager) {
+        super(inner.name(), inner);
+        this.manager = manager;
+        // Set resource name
+        this.notificationSettingName = inner.name();
+        // set resource ancestor and positional variables
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.resourceNamespace = IdParsingUtils.getValueFromIdByName(inner.id(), "providers");
+        this.notificationSettingName = IdParsingUtils.getValueFromIdByName(inner.id(), "notificationSettings");
+        this.resourceType = IdParsingUtils.getValueFromIdByPosition(inner.id(), 6);
+        this.resourceName = IdParsingUtils.getValueFromIdByPosition(inner.id(), 7);
+        //
     }
 
     @Override
     public WorkloadMonitorManager manager() {
         return this.manager;
     }
+
+    @Override
+    public Observable<NotificationSetting> createResourceAsync() {
+        NotificationSettingsInner client = this.manager().inner().notificationSettings();
+        return null; // NOP createResourceAsync implementation as create is not supported
+    }
+
+    @Override
+    public Observable<NotificationSetting> updateResourceAsync() {
+        NotificationSettingsInner client = this.manager().inner().notificationSettings();
+        return client.updateAsync(this.resourceGroupName, this.resourceNamespace, this.resourceType, this.resourceName, this.notificationSettingName)
+            .map(innerToFluentMap(this));
+    }
+
+    @Override
+    protected Observable<NotificationSettingInner> getInnerAsync() {
+        NotificationSettingsInner client = this.manager().inner().notificationSettings();
+        return null; // NOP getInnerAsync implementation as get is not supported
+    }
+
+    @Override
+    public boolean isInCreateMode() {
+        return this.inner().id() == null;
+    }
+
 
     @Override
     public List<String> actionGroupResourceIds() {
