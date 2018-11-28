@@ -36,6 +36,14 @@ jobs:
       options: '-DskipTests=true'
       publishJUnitResults: false
 
+  - task: Maven@3
+    displayName: 'Sources'
+    inputs:
+      mavenPomFile: 'pom.client.build.xml'
+      goals: 'source:jar'
+      options: '-DskipTests=true'
+      publishJUnitResults: false
+
   - task: CopyFiles@2
     inputs:
       contents: '**/*.jar'
