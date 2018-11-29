@@ -13,7 +13,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * Customer subcription.
+ * Customer subscription.
  */
 @JsonFlatten
 public class CustomerSubscriptionInner extends ProxyResource {
@@ -24,7 +24,7 @@ public class CustomerSubscriptionInner extends ProxyResource {
     private String tenantId;
 
     /**
-     * The entity tag used for optimistic concurency when modifying the
+     * The entity tag used for optimistic concurrency when modifying the
      * resource.
      */
     @JsonProperty(value = "etag")
@@ -51,7 +51,7 @@ public class CustomerSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Get the entity tag used for optimistic concurency when modifying the resource.
+     * Get the entity tag used for optimistic concurrency when modifying the resource.
      *
      * @return the etag value
      */
@@ -60,7 +60,7 @@ public class CustomerSubscriptionInner extends ProxyResource {
     }
 
     /**
-     * Set the entity tag used for optimistic concurency when modifying the resource.
+     * Set the entity tag used for optimistic concurrency when modifying the resource.
      *
      * @param etag the etag value to set
      * @return the CustomerSubscriptionInner object itself.

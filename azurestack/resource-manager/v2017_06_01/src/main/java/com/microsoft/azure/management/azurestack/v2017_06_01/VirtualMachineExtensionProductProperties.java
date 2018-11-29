@@ -17,7 +17,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class VirtualMachineExtensionProductProperties {
     /**
-     * Specifies kind of compute role inclided in the package. Possible values
+     * Specifies kind of compute role included in the package. Possible values
      * include: 'None', 'IaaS', 'PaaS'.
      */
     @JsonProperty(value = "computeRole", access = JsonProperty.Access.WRITE_ONLY)
@@ -62,7 +62,7 @@ public class VirtualMachineExtensionProductProperties {
     private Boolean vmScaleSetEnabled;
 
     /**
-     * Get specifies kind of compute role inclided in the package. Possible values include: 'None', 'IaaS', 'PaaS'.
+     * Get specifies kind of compute role included in the package. Possible values include: 'None', 'IaaS', 'PaaS'.
      *
      * @return the computeRole value
      */

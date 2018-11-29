@@ -37,7 +37,7 @@ public class ExtendedProductInner {
     private String productKind;
 
     /**
-     * Specifies kind of compute role inclided in the package. Possible values
+     * Specifies kind of compute role included in the package. Possible values
      * include: 'None', 'IaaS', 'PaaS'.
      */
     @JsonProperty(value = "properties.computeRole", access = JsonProperty.Access.WRITE_ONLY)
@@ -112,7 +112,7 @@ public class ExtendedProductInner {
     }
 
     /**
-     * Get specifies kind of compute role inclided in the package. Possible values include: 'None', 'IaaS', 'PaaS'.
+     * Get specifies kind of compute role included in the package. Possible values include: 'None', 'IaaS', 'PaaS'.
      *
      * @return the computeRole value
      */
