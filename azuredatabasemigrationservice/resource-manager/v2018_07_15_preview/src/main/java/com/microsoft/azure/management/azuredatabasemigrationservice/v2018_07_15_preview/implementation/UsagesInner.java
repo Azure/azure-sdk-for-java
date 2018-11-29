@@ -162,10 +162,8 @@ public class UsagesInner {
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.subscriptionId(), location, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.list(this.client.subscriptionId(), location, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<QuotaInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<QuotaInner>>> call(Response<ResponseBody> response) {

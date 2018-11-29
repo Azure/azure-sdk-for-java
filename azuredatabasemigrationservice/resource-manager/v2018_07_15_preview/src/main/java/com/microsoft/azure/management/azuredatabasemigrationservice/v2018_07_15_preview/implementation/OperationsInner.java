@@ -150,10 +150,8 @@ public class OperationsInner {
      * @return the PagedList&lt;ServiceOperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ServiceOperationInner>>> listSinglePageAsync() {
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.list(apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServiceOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ServiceOperationInner>>> call(Response<ResponseBody> response) {
@@ -167,7 +165,7 @@ public class OperationsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<ServiceOperationInner>> listDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<ServiceOperationInner>> listDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ServiceOperationInner>, ApiErrorException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ServiceOperationInner>>() { }.getType())
                 .registerError(ApiErrorException.class)

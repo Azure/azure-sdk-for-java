@@ -16,6 +16,9 @@ import com.microsoft.rest.ExpandableStringEnum;
  * Defines values for MySqlTargetPlatformType.
  */
 public final class MySqlTargetPlatformType extends ExpandableStringEnum<MySqlTargetPlatformType> {
+    /** Static value SqlServer for MySqlTargetPlatformType. */
+    public static final MySqlTargetPlatformType SQL_SERVER = fromString("SqlServer");
+
     /** Static value AzureDbForMySQL for MySqlTargetPlatformType. */
     public static final MySqlTargetPlatformType AZURE_DB_FOR_MY_SQL = fromString("AzureDbForMySQL");
 

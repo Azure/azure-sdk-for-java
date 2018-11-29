@@ -28,18 +28,6 @@ public class DataMigrationServiceClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Version of the API. */
-    private String apiVersion;
-
-    /**
-     * Gets Version of the API.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
-    }
-
     /** Identifier of the subscription. */
     private String subscriptionId;
 
@@ -254,7 +242,6 @@ public class DataMigrationServiceClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2018-07-15-preview";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -275,6 +262,6 @@ public class DataMigrationServiceClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "DataMigrationServiceClient", "2018-07-15-preview");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "DataMigrationServiceClient", "2018-07-15-preiew");
     }
 }

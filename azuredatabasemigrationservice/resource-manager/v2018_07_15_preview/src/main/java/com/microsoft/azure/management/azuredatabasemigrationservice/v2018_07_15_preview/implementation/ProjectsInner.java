@@ -192,10 +192,8 @@ public class ProjectsInner {
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.subscriptionId(), groupName, serviceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.list(this.client.subscriptionId(), groupName, serviceName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProjectInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProjectInner>>> call(Response<ResponseBody> response) {
@@ -296,11 +294,9 @@ public class ProjectsInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.createOrUpdate(this.client.subscriptionId(), groupName, serviceName, projectName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.createOrUpdate(this.client.subscriptionId(), groupName, serviceName, projectName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectInner>> call(Response<ResponseBody> response) {
@@ -395,10 +391,8 @@ public class ProjectsInner {
         if (projectName == null) {
             throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(this.client.subscriptionId(), groupName, serviceName, projectName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.get(this.client.subscriptionId(), groupName, serviceName, projectName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectInner>> call(Response<ResponseBody> response) {
@@ -491,11 +485,9 @@ public class ProjectsInner {
         if (projectName == null) {
             throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2018-07-15-preview";
         final Boolean deleteRunningTasks = null;
-        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, deleteRunningTasks, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, deleteRunningTasks, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -585,10 +577,8 @@ public class ProjectsInner {
         if (projectName == null) {
             throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, deleteRunningTasks, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, deleteRunningTasks, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -690,11 +680,9 @@ public class ProjectsInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.update(this.client.subscriptionId(), groupName, serviceName, projectName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.update(this.client.subscriptionId(), groupName, serviceName, projectName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectInner>> call(Response<ResponseBody> response) {

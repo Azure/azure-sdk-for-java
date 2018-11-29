@@ -12,29 +12,15 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Output for command that completes sync migration for a database.
+ * Output for command that completes sync migration for a managed instance
+ * database.
  */
-public class MigrateSyncCompleteCommandOutput {
-    /**
-     * Result identifier.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
+public class MigrateMISyncCompleteCommandOutput {
     /**
      * List of errors that happened during the command execution.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "errors")
     private List<ReportableException> errors;
-
-    /**
-     * Get result identifier.
-     *
-     * @return the id value
-     */
-    public String id() {
-        return this.id;
-    }
 
     /**
      * Get list of errors that happened during the command execution.
@@ -43,6 +29,17 @@ public class MigrateSyncCompleteCommandOutput {
      */
     public List<ReportableException> errors() {
         return this.errors;
+    }
+
+    /**
+     * Set list of errors that happened during the command execution.
+     *
+     * @param errors the errors value to set
+     * @return the MigrateMISyncCompleteCommandOutput object itself.
+     */
+    public MigrateMISyncCompleteCommandOutput withErrors(List<ReportableException> errors) {
+        this.errors = errors;
+        return this;
     }
 
 }

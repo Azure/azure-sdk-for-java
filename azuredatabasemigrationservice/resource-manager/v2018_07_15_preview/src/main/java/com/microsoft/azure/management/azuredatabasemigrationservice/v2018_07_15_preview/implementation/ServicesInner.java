@@ -222,11 +222,9 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), groupName, serviceName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2018-07-15-preview";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), groupName, serviceName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<DataMigrationServiceInner>() { }.getType());
     }
 
@@ -303,11 +301,9 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.beginCreateOrUpdate(this.client.subscriptionId(), groupName, serviceName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.beginCreateOrUpdate(this.client.subscriptionId(), groupName, serviceName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DataMigrationServiceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DataMigrationServiceInner>> call(Response<ResponseBody> response) {
@@ -396,10 +392,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getByResourceGroup(this.client.subscriptionId(), groupName, serviceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.getByResourceGroup(this.client.subscriptionId(), groupName, serviceName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DataMigrationServiceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DataMigrationServiceInner>> call(Response<ResponseBody> response) {
@@ -485,11 +479,9 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2018-07-15-preview";
         final Boolean deleteRunningTasks = null;
-        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), groupName, serviceName, deleteRunningTasks, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), groupName, serviceName, deleteRunningTasks, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
     /**
@@ -561,10 +553,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), groupName, serviceName, deleteRunningTasks, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2018-07-15-preview";
+        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), groupName, serviceName, deleteRunningTasks, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
@@ -633,11 +623,9 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2018-07-15-preview";
         final Boolean deleteRunningTasks = null;
-        return service.beginDelete(this.client.subscriptionId(), groupName, serviceName, deleteRunningTasks, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginDelete(this.client.subscriptionId(), groupName, serviceName, deleteRunningTasks, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -720,10 +708,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(this.client.subscriptionId(), groupName, serviceName, deleteRunningTasks, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.beginDelete(this.client.subscriptionId(), groupName, serviceName, deleteRunningTasks, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -819,11 +805,9 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), groupName, serviceName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2018-07-15-preview";
+        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), groupName, serviceName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<DataMigrationServiceInner>() { }.getType());
     }
 
@@ -900,11 +884,9 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.beginUpdate(this.client.subscriptionId(), groupName, serviceName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.beginUpdate(this.client.subscriptionId(), groupName, serviceName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DataMigrationServiceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DataMigrationServiceInner>> call(Response<ResponseBody> response) {
@@ -992,10 +974,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.checkStatus(this.client.subscriptionId(), groupName, serviceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.checkStatus(this.client.subscriptionId(), groupName, serviceName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DataMigrationServiceStatusResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DataMigrationServiceStatusResponseInner>> call(Response<ResponseBody> response) {
@@ -1081,10 +1061,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.start(this.client.subscriptionId(), groupName, serviceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2018-07-15-preview";
+        Observable<Response<ResponseBody>> observable = service.start(this.client.subscriptionId(), groupName, serviceName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
@@ -1153,10 +1131,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginStart(this.client.subscriptionId(), groupName, serviceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.beginStart(this.client.subscriptionId(), groupName, serviceName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1243,10 +1219,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.stop(this.client.subscriptionId(), groupName, serviceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2018-07-15-preview";
+        Observable<Response<ResponseBody>> observable = service.stop(this.client.subscriptionId(), groupName, serviceName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
@@ -1315,10 +1289,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginStop(this.client.subscriptionId(), groupName, serviceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.beginStop(this.client.subscriptionId(), groupName, serviceName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -1444,10 +1416,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listSkus(this.client.subscriptionId(), groupName, serviceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.listSkus(this.client.subscriptionId(), groupName, serviceName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AvailableServiceSkuInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<AvailableServiceSkuInner>>> call(Response<ResponseBody> response) {
@@ -1538,14 +1508,12 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.checkChildrenNameAvailability(this.client.subscriptionId(), groupName, serviceName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.checkChildrenNameAvailability(this.client.subscriptionId(), groupName, serviceName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NameAvailabilityResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NameAvailabilityResponseInner>> call(Response<ResponseBody> response) {
@@ -1662,10 +1630,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (groupName == null) {
             throw new IllegalArgumentException("Parameter groupName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listByResourceGroup(this.client.subscriptionId(), groupName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.listByResourceGroup(this.client.subscriptionId(), groupName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataMigrationServiceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DataMigrationServiceInner>>> call(Response<ResponseBody> response) {
@@ -1774,10 +1740,8 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataMigrationServiceInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<DataMigrationServiceInner>>> call(Response<ResponseBody> response) {
@@ -1861,14 +1825,12 @@ public class ServicesInner implements InnerSupportsGet<DataMigrationServiceInner
         if (location == null) {
             throw new IllegalArgumentException("Parameter location is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.checkNameAvailability(this.client.subscriptionId(), location, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-07-15-preview";
+        return service.checkNameAvailability(this.client.subscriptionId(), location, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NameAvailabilityResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NameAvailabilityResponseInner>> call(Response<ResponseBody> response) {
