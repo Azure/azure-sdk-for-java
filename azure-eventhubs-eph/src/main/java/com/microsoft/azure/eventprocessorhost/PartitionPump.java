@@ -16,6 +16,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 class PartitionPump extends Closable implements PartitionReceiveHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionPump.class);
@@ -23,44 +24,40 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
     final private CompletableFuture<Void> shutdownTriggerFuture;
     final private CompletableFuture<Void> shutdownFinishedFuture;
     private final Object processingSynchronizer;
-    protected CompleteLease lease = null; // protected for testability
+    protected final CompleteLease lease; // protected for testability
+    private final Consumer<String> pumpManagerCallback;
     private EventHubClient eventHubClient = null;
     private PartitionReceiver partitionReceiver = null;
     private CloseReason shutdownReason;
-    private CompletableFuture<?> internalOperationFuture = null;
+    private volatile CompletableFuture<?> internalOperationFuture = null;
     private IEventProcessor processor = null;
     private PartitionContext partitionContext = null;
     private ScheduledFuture<?> leaseRenewerFuture = null;
 
-    PartitionPump(HostContext hostContext, CompleteLease lease, Closable parent) {
+    PartitionPump(HostContext hostContext, CompleteLease lease, Closable parent, Consumer<String> pumpManagerCallback) {
     	super(parent);
     	
         this.hostContext = hostContext;
         this.lease = lease;
+        this.pumpManagerCallback = pumpManagerCallback;
         this.processingSynchronizer = new Object();
 
+        this.partitionContext = new PartitionContext(this.hostContext, this.lease.getPartitionId());
+        this.partitionContext.setLease(this.lease);
+        
         // Set up the shutdown futures. The shutdown process can be triggered just by completing this.shutdownFuture.
         this.shutdownTriggerFuture = new CompletableFuture<Void>();
-        this.shutdownFinishedFuture = this.shutdownTriggerFuture.handleAsync((r, e) -> cancelPendingOperations(), this.hostContext.getExecutor())
+        this.shutdownFinishedFuture = this.shutdownTriggerFuture
+        		.handleAsync((r, e) -> { this.pumpManagerCallback.accept(this.lease.getPartitionId()); return cancelPendingOperations(); }, this.hostContext.getExecutor())
                 .thenComposeAsync((empty) -> cleanUpAll(this.shutdownReason), this.hostContext.getExecutor())
                 .thenComposeAsync((empty) -> releaseLeaseOnShutdown(), this.hostContext.getExecutor())
                 .whenCompleteAsync((empty, e) -> { setClosed(); }, this.hostContext.getExecutor());
-    }
-
-    void setLease(CompleteLease newLease) {
-        this.lease = newLease;
-        if (this.partitionContext != null) {
-            this.partitionContext.setLease(newLease);
-        }
     }
 
     // The CompletableFuture returned by startPump remains uncompleted as long as the pump is running.
     // If startup fails, or an error occurs while running, it will complete exceptionally.
     // If clean shutdown due to unregister call, it completes normally.
     CompletableFuture<Void> startPump() {
-        // Fast, non-blocking actions.
-        setupPartitionContext();
-
         // Do the slow startup stuff asynchronously.
         // Use whenComplete to trigger cleanup on exception.
         CompletableFuture.runAsync(() -> openProcessor(), this.hostContext.getExecutor())
@@ -75,11 +72,6 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                 }, this.hostContext.getExecutor());
 
         return shutdownFinishedFuture;
-    }
-
-    protected void setupPartitionContext() {
-        this.partitionContext = new PartitionContext(this.hostContext, this.lease.getPartitionId());
-        this.partitionContext.setLease(this.lease);
     }
 
     private void openProcessor() {
@@ -218,6 +210,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                     try {
                         receiverFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(),
                                 this.partitionContext.getPartitionId(), startAt, epoch, options);
+                        this.internalOperationFuture = receiverFuture;
                     } catch (EventHubException e) {
                         receiverFuture = new CompletableFuture<PartitionReceiver>();
                         receiverFuture.completeExceptionally(e);
@@ -245,12 +238,15 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                 // Stage 5: on success, set up the receiver
                 .thenApplyAsync((receiver) ->
                 {
-                    try {
-                        this.partitionReceiver.setPrefetchCount(this.hostContext.getEventProcessorOptions().getPrefetchCount());
-                    } catch (Exception e1) {
-                        TRACE_LOGGER.error(this.hostContext.withHostAndPartition(this.partitionContext, "PartitionReceiver failed setting prefetch count"), e1);
-                        throw new CompletionException(e1);
-                    }
+                	if (this.hostContext.getEventProcessorOptions().getPrefetchCount() > PartitionReceiver.DEFAULT_PREFETCH_COUNT)
+                	{
+	                    try {
+	                        this.partitionReceiver.setPrefetchCount(this.hostContext.getEventProcessorOptions().getPrefetchCount());
+	                    } catch (Exception e1) {
+	                        TRACE_LOGGER.error(this.hostContext.withHostAndPartition(this.partitionContext, "PartitionReceiver failed setting prefetch count"), e1);
+	                        throw new CompletionException(e1);
+	                    }
+                	}
                     this.partitionReceiver.setReceiveTimeout(this.hostContext.getEventProcessorOptions().getReceiveTimeOut());
 
                     TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionContext,
@@ -362,7 +358,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
 
         ScheduledFuture<?> capturedLeaseRenewer = this.leaseRenewerFuture;
         if (capturedLeaseRenewer != null) {
-            this.leaseRenewerFuture.cancel(true);
+            capturedLeaseRenewer.cancel(true);
         }
         return null;
     }

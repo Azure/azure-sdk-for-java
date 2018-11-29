@@ -10,9 +10,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 
-class PumpManager extends Closable {
+class PumpManager extends Closable implements Consumer<String> {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PumpManager.class);
     protected final HostContext hostContext;
     protected ConcurrentHashMap<String, PartitionPump> pumpStates; // protected for testability
@@ -32,27 +33,34 @@ class PumpManager extends Closable {
     	}
     	
         PartitionPump capturedPump = this.pumpStates.get(lease.getPartitionId()); // CONCURRENTHASHTABLE
-        if (capturedPump == null) {
-            // No existing pump, create a new one.
-            TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "creating new pump"));
-            PartitionPump newPartitionPump = createNewPump(lease);
-            this.pumpStates.put(lease.getPartitionId(), newPartitionPump);
-
-            final String capturedPartitionId = lease.getPartitionId();
-            // These are fast, non-blocking actions, so it is OK to run on the same thread that was running pump shutdown.
-            // Also, do not run async because otherwise there can be a race with executor being shut down.
-            newPartitionPump.startPump().whenComplete((r, e) -> this.pumpStates.remove(capturedPartitionId))
-                    .whenComplete((r, e) -> removingPumpTestHook(capturedPartitionId, e));
-        } else {
-            // There already is a pump. Shouldn't get here but do something sane if it happens -- just replace the lease.
-            TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "updating lease for pump"));
-            capturedPump.setLease(lease);
+        if (capturedPump != null) {
+            // There already is a pump. This should never happen and it's not harmless if it does. If we get here,
+        	// it implies that the existing pump is a zombie which is not renewing its lease. 
+            TRACE_LOGGER.error(this.hostContext.withHostAndPartition(lease, "throwing away zombie pump"));
+            // Shutdown should remove the pump from the hashmap, but we don't know what state this pump is in so
+            // remove it manually. ConcurrentHashMap specifies that removing an item that doesn't exist is a safe no-op.
+            this.pumpStates.remove(lease.getPartitionId());
+            // Call shutdown to try to clean up, but do not wait.
+            capturedPump.shutdown(CloseReason.Shutdown);
         }
+
+        TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "creating new pump"));
+        PartitionPump newPartitionPump = createNewPump(lease);
+        this.pumpStates.put(lease.getPartitionId(), newPartitionPump);
+        newPartitionPump.startPump();
     }
+
+    // Callback used by pumps during pump shutdown. 
+	@Override
+	public void accept(String partitionId) {
+		// These are fast, non-blocking actions.
+		this.pumpStates.remove(partitionId);
+		removingPumpTestHook(partitionId);
+	}
 
     // Separated out so that tests can override and substitute their own pump class.
     protected PartitionPump createNewPump(CompleteLease lease) {
-        return new PartitionPump(this.hostContext, lease, this);
+        return new PartitionPump(this.hostContext, lease, this, this);
     }
 
     public CompletableFuture<Void> removePump(String partitionId, final CloseReason reason) {
@@ -82,7 +90,7 @@ class PumpManager extends Closable {
         return CompletableFuture.allOf(futures).whenCompleteAsync((empty, e) -> { setClosed(); }, this.hostContext.getExecutor());
     }
 
-    protected void removingPumpTestHook(String partitionId, Throwable e) {
-        // For test use.
+    protected void removingPumpTestHook(String partitionId) {
+        // For test use. MUST BE FAST, NON-BLOCKING.
     }
 }

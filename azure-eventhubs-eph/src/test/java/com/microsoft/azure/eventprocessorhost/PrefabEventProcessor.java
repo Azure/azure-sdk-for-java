@@ -56,7 +56,7 @@ public class PrefabEventProcessor implements IEventProcessor {
                 }
                 */
                 if (this.logEveryEvent) {
-                	TestBase.logInfo("P" + context.getPartitionId() + " " + new String(event.getBytes()) + " @ " + event.getSystemProperties().getOffset());
+                	TestBase.logInfo("(" + context.getOwner() + ") P" + context.getPartitionId() + " " + new String(event.getBytes()) + " @ " + event.getSystemProperties().getOffset());
                 }
                 if (Arrays.equals(event.getBytes(), this.telltaleBytes)) {
                     this.factory.setTelltaleFound(context.getPartitionId());
@@ -75,7 +75,7 @@ public class PrefabEventProcessor implements IEventProcessor {
         }
         this.factory.addBatch(batchSize);
     	if (this.doMarker) {
-            TestBase.logInfo("P" + context.getPartitionId() + " total " + this.eventCount + "(" + (this.eventCount - baseline) + ")");
+            TestBase.logInfo("(" + context.getOwner() + ") P" + context.getPartitionId() + " total " + this.eventCount + "(" + (this.eventCount - baseline) + ")");
     	}
         switch (doCheckpoint) {
             case CKP_NONE:

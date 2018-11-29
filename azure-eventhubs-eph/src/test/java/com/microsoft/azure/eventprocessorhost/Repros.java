@@ -97,7 +97,7 @@ public class Repros extends TestBase {
         host.unregisterEventProcessor();
     }
 
-    //@Test
+    @Test
     public void infiniteReceive2Hosts() throws Exception {
         RealEventHubUtilities utils = new RealEventHubUtilities();
         utils.setup(true, RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
@@ -120,17 +120,70 @@ public class Repros extends TestBase {
         EventProcessorOptions options2 = EventProcessorOptions.getDefaultOptions();
         options2.setExceptionNotification(general2);
 
-        host1.registerEventProcessorFactory(factory1, options1);
-        host2.registerEventProcessorFactory(factory2, options2);
+        host1.registerEventProcessorFactory(factory1, options1).get();
+        host2.registerEventProcessorFactory(factory2, options2).get();
 
         int i = 0;
+        boolean upAndDown = true;
+        int upAndDownInterval = 25;
+        CompletableFuture<Void> upAndDownFuture = null;
         while (true) {
+            if (upAndDownFuture != null)
+            {
+            	if (upAndDownFuture.isDone())
+            	{
+            		upAndDownFuture.get();
+            		System.out.println("Reg/unreg completed");
+            		upAndDownFuture = null;
+            	}
+            }
+            
             utils.sendToAny("blah-" + i++, 10);
-            System.out.println("\n." + factory1.getEventsReceivedCount() + "." + factory2.getEventsReceivedCount() + ":" +
-                    ((ThreadPoolExecutor) host1.getHostContext().getExecutor()).getPoolSize() + "." +
-                    ((ThreadPoolExecutor) host2.getHostContext().getExecutor()).getPoolSize() + ":" +
-                    Thread.activeCount());
+            
+            StringBuilder blah = new StringBuilder();
+            blah.append("\n.");
+            blah.append(factory1.getEventsReceivedCount());
+            blah.append('.');
+            if (host2 != null)
+            {
+            	blah.append(factory2.getEventsReceivedCount());
+            }
+            blah.append(':');
+            blah.append(((ThreadPoolExecutor) host1.getHostContext().getExecutor()).getPoolSize());
+            blah.append('.');
+            if (host2 != null)
+            {
+                blah.append(((ThreadPoolExecutor) host2.getHostContext().getExecutor()).getPoolSize());
+            }
+            blah.append(':');
+            blah.append(Thread.activeCount());
+            blah.append(" i=");
+            blah.append(i);
+            System.out.println(blah.toString());
+            
             Thread.sleep(100);
+
+            if (upAndDown && ((i % upAndDownInterval) == 0))
+            {
+            	if (host2 != null)
+            	{
+            		upAndDownFuture = host2.unregisterEventProcessor();
+            		System.out.println("Unregister started");
+            		host2 = null;
+            	}
+            	else
+            	{
+                    factory2 = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
+                    host2 = new EventProcessorHost("infiniteReceive2Hosts-2", utils.getConnectionString(true).getEventHubName(),
+                            utils.getConsumerGroup(), utils.getConnectionString(true).toString(),
+                            TestUtilities.getStorageConnectionString(), storageName);
+                    options2 = EventProcessorOptions.getDefaultOptions();
+                    options2.setExceptionNotification(general2);
+
+            		System.out.println("Reregister started");
+                    upAndDownFuture = host2.registerEventProcessorFactory(factory2, options2);
+            	}
+            }
         }
     }
 
