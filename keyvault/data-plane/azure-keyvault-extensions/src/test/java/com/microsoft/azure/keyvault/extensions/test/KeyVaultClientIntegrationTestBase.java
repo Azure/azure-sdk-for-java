@@ -78,11 +78,11 @@ public class KeyVaultClientIntegrationTestBase {
 	}
 
 	private static String getLiveVaultUri1() {
-		return getenvOrDefault("keyvault.vaulturi", "https://javasdktestvault.vault.azure.net");
+		return getenvOrDefault("KEYVAULT_VAULTURI", "https://javasdktestvault.vault.azure.net");
 	}
 
 	private static String getLiveVaultUri2() {
-		return getenvOrDefault("keyvault.vaulturi.alt", "https://javasdktestvault2.vault.azure.net");
+		return getenvOrDefault("KEYVAULT_VAULTURI_ALT", "https://javasdktestvault2.vault.azure.net");
 	}
 
 	private static String getenvOrDefault(String varName, String defValue) {
