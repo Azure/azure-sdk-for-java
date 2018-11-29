@@ -65,7 +65,7 @@ public class ClusterInner extends Resource {
     private String clusterCodeVersion;
 
     /**
-     * This primay certificate will be used as cluster node to node security,
+     * This primary certificate will be used as cluster node to node security,
      * SSL certificate for cluster management endpoint and default admin
      * client.
      */
@@ -213,7 +213,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get this primay certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client.
+     * Get this primary certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client.
      *
      * @return the certificate value
      */
@@ -222,7 +222,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set this primay certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client.
+     * Set this primary certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client.
      *
      * @param certificate the certificate value to set
      * @return the ClusterInner object itself.

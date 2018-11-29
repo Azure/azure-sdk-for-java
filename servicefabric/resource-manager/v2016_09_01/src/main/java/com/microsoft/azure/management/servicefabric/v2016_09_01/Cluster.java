@@ -184,7 +184,7 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
         interface WithCertificate {
             /**
              * Specifies certificate.
-             * @param certificate This primay certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client
+             * @param certificate This primary certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client
              * @return the next definition stage
              */
             WithCreate withCertificate(CertificateDescription certificate);
@@ -334,7 +334,7 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
         interface WithCertificate {
             /**
              * Specifies certificate.
-             * @param certificate This primay certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client, the certificate should exist in the virtual machine scale sets or Azure key vault, before you add it. It will override original value
+             * @param certificate This primary certificate will be used as cluster node to node security, SSL certificate for cluster management endpoint and default admin client, the certificate should exist in the virtual machine scale sets or Azure key vault, before you add it. It will override original value
              * @return the next update stage
              */
             Update withCertificate(CertificateDescription certificate);

@@ -22,8 +22,8 @@ public class ClientCertificateCommonName {
     private boolean isAdmin;
 
     /**
-     * Certificate common name to be granted access; be carefull using wild
-     * card common names.
+     * Certificate common name to be granted access; be careful using wild card
+     * common names.
      */
     @JsonProperty(value = "certificateCommonName", required = true)
     private String certificateCommonName;
@@ -55,7 +55,7 @@ public class ClientCertificateCommonName {
     }
 
     /**
-     * Get certificate common name to be granted access; be carefull using wild card common names.
+     * Get certificate common name to be granted access; be careful using wild card common names.
      *
      * @return the certificateCommonName value
      */
@@ -64,7 +64,7 @@ public class ClientCertificateCommonName {
     }
 
     /**
-     * Set certificate common name to be granted access; be carefull using wild card common names.
+     * Set certificate common name to be granted access; be careful using wild card common names.
      *
      * @param certificateCommonName the certificateCommonName value to set
      * @return the ClientCertificateCommonName object itself.
