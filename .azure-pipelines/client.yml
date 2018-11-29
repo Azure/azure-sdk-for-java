@@ -2,54 +2,29 @@ trigger:
 - master
 
 jobs:
-- job: 'Publish'
+- job: 'Build'
 
   pool:
     vmImage: 'ubuntu-16.04'
 
   steps:
   - task: Maven@3
-    displayName: 'Checkstyle'
+    displayName: 'Build and Package'
     inputs:
-      mavenPomFile: 'pom.client.build.xml'
-      goals: 'checkstyle:check'
-      options: '--batch-mode'
-      mavenOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-      publishJUnitResults: false
-  - task: Maven@3
-    inputs:
-      mavenPomFile: 'pom.client.build.xml'
-      options: '--batch-mode'  #hides dependencies download progress from CI output
-      mavenOptions: '-Xmx3072m -Dmaven.test.skip=true -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+      mavenPomFile: $(pomFile)
+      goals: 'checkstyle:check javadoc:jar source:jar package'
+      options: '--batch-mode -Dmaven.test.skip=true'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.8'
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
-      goals: 'package'
-    displayName: 'Package'
 
-  - task: Maven@3
-    displayName: 'Javadoc'
-    inputs:
-      mavenPomFile: 'pom.client.build.xml'
-      goals: 'javadoc:jar'
-      options: '-DskipTests=true'
-      publishJUnitResults: false
-
-  - task: Maven@3
-    displayName: 'Sources'
-    inputs:
-      mavenPomFile: 'pom.client.build.xml'
-      goals: 'source:jar'
-      options: '-DskipTests=true'
-      publishJUnitResults: false
-
-  - task: CopyFiles@2
-    inputs:
-      contents: '**/*.jar'
-      targetFolder: $(Build.ArtifactStagingDirectory)
-      flattenFolders: true
-    displayName: 'Copy'
+  - powershell: |
+     # use sources files as a marker to find POM files so we can copy them to the output. The sources.jar file is generally
+     # in a target folder next to the pom.xml file so $_.Directory.Parent should get us the folder that contains the POM.
+     dir -r -i *-sources.jar | % { copy (Join-Path $_.Directory.Parent.FullName "pom.xml") (Join-Path $(Build.ArtifactStagingDirectory) $_.Name.Replace("-sources.jar",".pom")) }
+     dir -r -i *.jar | % { copy $_ $(Build.ArtifactStagingDirectory) }
+    displayName: 'Copy JAR and POM files to artifact staging'
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish'
