@@ -50,5 +50,10 @@ public enum DataType {
     /**
      * Represent a polygon data type.
      */
-    Polygon
+    Polygon,
+    
+    /**
+     * Represent a multi-polygon data type.
+     */
+    MultiPolygon
 }

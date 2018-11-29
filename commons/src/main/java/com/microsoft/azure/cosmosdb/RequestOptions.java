@@ -23,12 +23,15 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Encapsulates options that can be specified for a request issued to the Azure Cosmos DB database service.
  */
 public class RequestOptions {
+    private Map<String, String> customOptions;
     private List<String> preTriggerInclude;
     private List<String> postTriggerInclude;
     private AccessCondition accessCondition;
@@ -281,5 +284,27 @@ public class RequestOptions {
      */
     public void setPopulateQuotaInfo(boolean populateQuotaInfo) {
         this.populateQuotaInfo = populateQuotaInfo;
+    }
+
+    /**
+     * Sets the custom request option value by key
+     *
+     * @param name  a string representing the custom option's name
+     * @param value a String representing the custom option's value
+     */
+    public void setHeader(String name, String value) {
+        if (this.customOptions == null) {
+            this.customOptions = new HashMap<>();
+        }
+        this.customOptions.put(name, value);
+    }
+
+    /**
+     * Gets the custom request options
+     *
+     * @return Map of custom request options
+     */
+    public Map<String, String> getHeaders() {
+        return this.customOptions;
     }
 }
