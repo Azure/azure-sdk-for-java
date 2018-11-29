@@ -829,6 +829,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return headers;
         }
 
+        Map<String, String> customOptions = options.getHeaders();
+        if (customOptions != null) {
+            headers.putAll(customOptions);
+        }
+
         if (options.getAccessCondition() != null) {
             if (options.getAccessCondition().getType() == AccessConditionType.IfMatch) {
                 headers.put(HttpConstants.HttpHeaders.IF_MATCH, options.getAccessCondition().getCondition());

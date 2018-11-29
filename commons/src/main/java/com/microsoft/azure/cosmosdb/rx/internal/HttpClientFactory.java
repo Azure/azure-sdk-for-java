@@ -33,13 +33,13 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.ssl.SslProvider;
-import io.reactivex.netty.client.RxClient;
 import io.reactivex.netty.pipeline.PipelineConfigurator;
 import io.reactivex.netty.pipeline.PipelineConfiguratorComposite;
 import io.reactivex.netty.pipeline.ssl.SSLEngineFactory;
 import io.reactivex.netty.pipeline.ssl.SslCompletionHandler;
 import io.reactivex.netty.protocol.http.HttpObjectAggregationConfigurator;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClientBuilder;
+import io.reactivex.netty.protocol.http.client.HttpClient.HttpClientConfig;
 import io.reactivex.netty.protocol.http.client.HttpClientPipelineConfigurator;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
@@ -170,7 +170,7 @@ public class HttpClientFactory {
         .appendPipelineConfigurator(createClientPipelineConfigurator(configs));
 
         if (requestTimeoutInMillis != null) {
-            RxClient.ClientConfig.Builder clientConfigBuilder = new RxClient.ClientConfig.Builder();
+            HttpClientConfig.Builder clientConfigBuilder = new HttpClientConfig.Builder();
             clientConfigBuilder.readTimeout(requestTimeoutInMillis, TimeUnit.MILLISECONDS);
             return builder.config(clientConfigBuilder.build());
         }
