@@ -24,6 +24,17 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Cluster>, SupportsListingByResourceGroup<Cluster>, SupportsListing<Cluster>, HasInner<ClustersInner> {
     /**
+     * Rotate disk encryption key of the specified HDInsight cluster.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster.
+     * @param parameters The parameters for the disk encryption operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable rotateDiskEncryptionKeyAsync(String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters);
+
+    /**
      * Executes script actions on the specified HDInsight cluster.
      *
      * @param resourceGroupName The name of the resource group.

@@ -18,7 +18,7 @@ public class Status {
      * The progress made on the cleanup.
      */
     @JsonProperty(value = "cleanupProgress")
-    private double cleanupProgress;
+    private Double cleanupProgress;
 
     /**
      * The information about any failures that have occurred.
@@ -27,10 +27,11 @@ public class Status {
     private String failureInfo;
 
     /**
-     * The time at which the job completed.
+     * The time at which the job completed. It is an integer in milliseconds,
+     * as a Unix timestamp relative to 1/1/1970 00:00:00.
      */
     @JsonProperty(value = "finishTime")
-    private long finishTime;
+    private Long finishTime;
 
     /**
      * The history file of the job.
@@ -48,7 +49,7 @@ public class Status {
      * Whether or not the job has completed.
      */
     @JsonProperty(value = "jobComplete")
-    private boolean jobComplete;
+    private Boolean jobComplete;
 
     /**
      * The job configuration file.
@@ -84,25 +85,25 @@ public class Status {
      * The progress made on the maps.
      */
     @JsonProperty(value = "mapProgress")
-    private double mapProgress;
+    private Double mapProgress;
 
     /**
      * The amount of memory needed for the job.
      */
     @JsonProperty(value = "neededMem")
-    private long neededMem;
+    private Long neededMem;
 
     /**
      * The number of slots reserved.
      */
     @JsonProperty(value = "numReservedSlots")
-    private int numReservedSlots;
+    private Integer numReservedSlots;
 
     /**
      * The number of slots used for the job.
      */
     @JsonProperty(value = "numUsedSlots")
-    private int numUsedSlots;
+    private Integer numUsedSlots;
 
     /**
      * The priority of the job.
@@ -120,28 +121,28 @@ public class Status {
      * The progress made on the reduces.
      */
     @JsonProperty(value = "reduceProgress")
-    private double reduceProgress;
+    private Double reduceProgress;
 
     /**
      * The amount of memory reserved for the job.
      */
     @JsonProperty(value = "reservedMem")
-    private long reservedMem;
+    private Long reservedMem;
 
     /**
      * Whether or not the job has been retired.
      */
     @JsonProperty(value = "retired")
-    private boolean retired;
+    private Boolean retired;
 
     /**
      * The current state of the job.
      */
     @JsonProperty(value = "runState")
-    private int runState;
+    private Integer runState;
 
     /**
-     * The information about the scheduling of the.
+     * The information about the scheduling of the job.
      */
     @JsonProperty(value = "schedulingInfo")
     private String schedulingInfo;
@@ -150,13 +151,14 @@ public class Status {
      * The progress made on the setup.
      */
     @JsonProperty(value = "setupProgress")
-    private double setupProgress;
+    private Double setupProgress;
 
     /**
-     * The time at which the job started.
+     * The time at which the job started. It is an integer in milliseconds, as
+     * a Unix timestamp relative to 1/1/1970 00:00:00.
      */
     @JsonProperty(value = "startTime")
-    private long startTime;
+    private Long startTime;
 
     /**
      * The state of the job.
@@ -174,13 +176,13 @@ public class Status {
      * Whether job running in uber mode.
      */
     @JsonProperty(value = "uber")
-    private boolean uber;
+    private Boolean uber;
 
     /**
      * The amount of memory used by the job.
      */
     @JsonProperty(value = "usedMem")
-    private long usedMem;
+    private Long usedMem;
 
     /**
      * The userid of the person who submitted the job.
@@ -193,7 +195,7 @@ public class Status {
      *
      * @return the cleanupProgress value
      */
-    public double cleanupProgress() {
+    public Double cleanupProgress() {
         return this.cleanupProgress;
     }
 
@@ -203,7 +205,7 @@ public class Status {
      * @param cleanupProgress the cleanupProgress value to set
      * @return the Status object itself.
      */
-    public Status withCleanupProgress(double cleanupProgress) {
+    public Status withCleanupProgress(Double cleanupProgress) {
         this.cleanupProgress = cleanupProgress;
         return this;
     }
@@ -229,21 +231,21 @@ public class Status {
     }
 
     /**
-     * Get the time at which the job completed.
+     * Get the time at which the job completed. It is an integer in milliseconds, as a Unix timestamp relative to 1/1/1970 00:00:00.
      *
      * @return the finishTime value
      */
-    public long finishTime() {
+    public Long finishTime() {
         return this.finishTime;
     }
 
     /**
-     * Set the time at which the job completed.
+     * Set the time at which the job completed. It is an integer in milliseconds, as a Unix timestamp relative to 1/1/1970 00:00:00.
      *
      * @param finishTime the finishTime value to set
      * @return the Status object itself.
      */
-    public Status withFinishTime(long finishTime) {
+    public Status withFinishTime(Long finishTime) {
         this.finishTime = finishTime;
         return this;
     }
@@ -293,7 +295,7 @@ public class Status {
      *
      * @return the jobComplete value
      */
-    public boolean jobComplete() {
+    public Boolean jobComplete() {
         return this.jobComplete;
     }
 
@@ -303,7 +305,7 @@ public class Status {
      * @param jobComplete the jobComplete value to set
      * @return the Status object itself.
      */
-    public Status withJobComplete(boolean jobComplete) {
+    public Status withJobComplete(Boolean jobComplete) {
         this.jobComplete = jobComplete;
         return this;
     }
@@ -413,7 +415,7 @@ public class Status {
      *
      * @return the mapProgress value
      */
-    public double mapProgress() {
+    public Double mapProgress() {
         return this.mapProgress;
     }
 
@@ -423,7 +425,7 @@ public class Status {
      * @param mapProgress the mapProgress value to set
      * @return the Status object itself.
      */
-    public Status withMapProgress(double mapProgress) {
+    public Status withMapProgress(Double mapProgress) {
         this.mapProgress = mapProgress;
         return this;
     }
@@ -433,7 +435,7 @@ public class Status {
      *
      * @return the neededMem value
      */
-    public long neededMem() {
+    public Long neededMem() {
         return this.neededMem;
     }
 
@@ -443,7 +445,7 @@ public class Status {
      * @param neededMem the neededMem value to set
      * @return the Status object itself.
      */
-    public Status withNeededMem(long neededMem) {
+    public Status withNeededMem(Long neededMem) {
         this.neededMem = neededMem;
         return this;
     }
@@ -453,7 +455,7 @@ public class Status {
      *
      * @return the numReservedSlots value
      */
-    public int numReservedSlots() {
+    public Integer numReservedSlots() {
         return this.numReservedSlots;
     }
 
@@ -463,7 +465,7 @@ public class Status {
      * @param numReservedSlots the numReservedSlots value to set
      * @return the Status object itself.
      */
-    public Status withNumReservedSlots(int numReservedSlots) {
+    public Status withNumReservedSlots(Integer numReservedSlots) {
         this.numReservedSlots = numReservedSlots;
         return this;
     }
@@ -473,7 +475,7 @@ public class Status {
      *
      * @return the numUsedSlots value
      */
-    public int numUsedSlots() {
+    public Integer numUsedSlots() {
         return this.numUsedSlots;
     }
 
@@ -483,7 +485,7 @@ public class Status {
      * @param numUsedSlots the numUsedSlots value to set
      * @return the Status object itself.
      */
-    public Status withNumUsedSlots(int numUsedSlots) {
+    public Status withNumUsedSlots(Integer numUsedSlots) {
         this.numUsedSlots = numUsedSlots;
         return this;
     }
@@ -533,7 +535,7 @@ public class Status {
      *
      * @return the reduceProgress value
      */
-    public double reduceProgress() {
+    public Double reduceProgress() {
         return this.reduceProgress;
     }
 
@@ -543,7 +545,7 @@ public class Status {
      * @param reduceProgress the reduceProgress value to set
      * @return the Status object itself.
      */
-    public Status withReduceProgress(double reduceProgress) {
+    public Status withReduceProgress(Double reduceProgress) {
         this.reduceProgress = reduceProgress;
         return this;
     }
@@ -553,7 +555,7 @@ public class Status {
      *
      * @return the reservedMem value
      */
-    public long reservedMem() {
+    public Long reservedMem() {
         return this.reservedMem;
     }
 
@@ -563,7 +565,7 @@ public class Status {
      * @param reservedMem the reservedMem value to set
      * @return the Status object itself.
      */
-    public Status withReservedMem(long reservedMem) {
+    public Status withReservedMem(Long reservedMem) {
         this.reservedMem = reservedMem;
         return this;
     }
@@ -573,7 +575,7 @@ public class Status {
      *
      * @return the retired value
      */
-    public boolean retired() {
+    public Boolean retired() {
         return this.retired;
     }
 
@@ -583,7 +585,7 @@ public class Status {
      * @param retired the retired value to set
      * @return the Status object itself.
      */
-    public Status withRetired(boolean retired) {
+    public Status withRetired(Boolean retired) {
         this.retired = retired;
         return this;
     }
@@ -593,7 +595,7 @@ public class Status {
      *
      * @return the runState value
      */
-    public int runState() {
+    public Integer runState() {
         return this.runState;
     }
 
@@ -603,13 +605,13 @@ public class Status {
      * @param runState the runState value to set
      * @return the Status object itself.
      */
-    public Status withRunState(int runState) {
+    public Status withRunState(Integer runState) {
         this.runState = runState;
         return this;
     }
 
     /**
-     * Get the information about the scheduling of the.
+     * Get the information about the scheduling of the job.
      *
      * @return the schedulingInfo value
      */
@@ -618,7 +620,7 @@ public class Status {
     }
 
     /**
-     * Set the information about the scheduling of the.
+     * Set the information about the scheduling of the job.
      *
      * @param schedulingInfo the schedulingInfo value to set
      * @return the Status object itself.
@@ -633,7 +635,7 @@ public class Status {
      *
      * @return the setupProgress value
      */
-    public double setupProgress() {
+    public Double setupProgress() {
         return this.setupProgress;
     }
 
@@ -643,27 +645,27 @@ public class Status {
      * @param setupProgress the setupProgress value to set
      * @return the Status object itself.
      */
-    public Status withSetupProgress(double setupProgress) {
+    public Status withSetupProgress(Double setupProgress) {
         this.setupProgress = setupProgress;
         return this;
     }
 
     /**
-     * Get the time at which the job started.
+     * Get the time at which the job started. It is an integer in milliseconds, as a Unix timestamp relative to 1/1/1970 00:00:00.
      *
      * @return the startTime value
      */
-    public long startTime() {
+    public Long startTime() {
         return this.startTime;
     }
 
     /**
-     * Set the time at which the job started.
+     * Set the time at which the job started. It is an integer in milliseconds, as a Unix timestamp relative to 1/1/1970 00:00:00.
      *
      * @param startTime the startTime value to set
      * @return the Status object itself.
      */
-    public Status withStartTime(long startTime) {
+    public Status withStartTime(Long startTime) {
         this.startTime = startTime;
         return this;
     }
@@ -713,7 +715,7 @@ public class Status {
      *
      * @return the uber value
      */
-    public boolean uber() {
+    public Boolean uber() {
         return this.uber;
     }
 
@@ -723,7 +725,7 @@ public class Status {
      * @param uber the uber value to set
      * @return the Status object itself.
      */
-    public Status withUber(boolean uber) {
+    public Status withUber(Boolean uber) {
         this.uber = uber;
         return this;
     }
@@ -733,7 +735,7 @@ public class Status {
      *
      * @return the usedMem value
      */
-    public long usedMem() {
+    public Long usedMem() {
         return this.usedMem;
     }
 
@@ -743,7 +745,7 @@ public class Status {
      * @param usedMem the usedMem value to set
      * @return the Status object itself.
      */
-    public Status withUsedMem(long usedMem) {
+    public Status withUsedMem(Long usedMem) {
         this.usedMem = usedMem;
         return this;
     }

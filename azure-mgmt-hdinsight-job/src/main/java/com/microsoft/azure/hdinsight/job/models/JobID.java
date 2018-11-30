@@ -18,7 +18,7 @@ public class JobID {
      * The job number.
      */
     @JsonProperty(value = "id")
-    private long id;
+    private Long id;
 
     /**
      * The jobTracker identifier.
@@ -31,7 +31,7 @@ public class JobID {
      *
      * @return the id value
      */
-    public long id() {
+    public Long id() {
         return this.id;
     }
 
@@ -41,7 +41,7 @@ public class JobID {
      * @param id the id value to set
      * @return the JobID object itself.
      */
-    public JobID withId(long id) {
+    public JobID withId(Long id) {
         this.id = id;
         return this;
     }

@@ -15,28 +15,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AppState {
     /**
-     * The State of the application. Possible values are “NEW”, “NEW_SAVING”,
-     * “SUBMITTED”, “ACCEPTED”, “RUNNING”, “FINISHED”, “FAILED”, “KILLED”.
+     * The State of the application. Possible values include: 'NEW',
+     * 'NEW_SAVING', 'SUBMITTED', 'ACCEPTED', 'RUNNING', 'FINISHED', 'FAILED',
+     * 'KILLED'.
      */
     @JsonProperty(value = "state")
-    private String state;
+    private ApplicationState state;
 
     /**
-     * Get the State of the application. Possible values are “NEW”, “NEW_SAVING”, “SUBMITTED”, “ACCEPTED”, “RUNNING”, “FINISHED”, “FAILED”, “KILLED”.
+     * Get the State of the application. Possible values include: 'NEW', 'NEW_SAVING', 'SUBMITTED', 'ACCEPTED', 'RUNNING', 'FINISHED', 'FAILED', 'KILLED'.
      *
      * @return the state value
      */
-    public String state() {
+    public ApplicationState state() {
         return this.state;
     }
 
     /**
-     * Set the State of the application. Possible values are “NEW”, “NEW_SAVING”, “SUBMITTED”, “ACCEPTED”, “RUNNING”, “FINISHED”, “FAILED”, “KILLED”.
+     * Set the State of the application. Possible values include: 'NEW', 'NEW_SAVING', 'SUBMITTED', 'ACCEPTED', 'RUNNING', 'FINISHED', 'FAILED', 'KILLED'.
      *
      * @param state the state value to set
      * @return the AppState object itself.
      */
-    public AppState withState(String state) {
+    public AppState withState(ApplicationState state) {
         this.state = state;
         return this;
     }
