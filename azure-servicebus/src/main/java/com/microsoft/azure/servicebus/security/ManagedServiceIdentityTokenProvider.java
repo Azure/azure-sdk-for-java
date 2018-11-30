@@ -25,12 +25,11 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider
 {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ManagedServiceIdentityTokenProvider.class);
     
-    private static final String STATIC_LOCAL_REST_MSI_ENDPOINT_URL = "http://localhost:50342/oauth2/token";
-    private static final String APIVERSION = "api-version=2017-09-01";
+    private static final String STATIC_LOCAL_REST_MSI_ENDPOINT_URL = "http://169.254.169.254/metadata/identity/oauth2/token";
+    private static final String APIVERSION = "api-version=2018-02-01";
     private static final String MSI_ENDPOINT_ENV_VARIABLE = "MSI_ENDPOINT";
     private static final String MSI_SECRET_ENV_VARIABLE = "MSI_SECRET";
-    private static final String STATIC_MSI_URL_FORMAT = "%s?resource=%s";
-    private static final String DYNAMIC_MSI_URL_FORMAT = "%s?resource=%s&%s";
+    private static final String MSI_URL_FORMAT = "%s?resource=%s&%s";
     private static final String METADATA_HEADER_NAME = "Metadata";
     private static final String SECRET_HEADER_NAME = "Secret";
     
@@ -72,14 +71,15 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider
         HttpURLConnection httpConnection;
         if(useStaticHttpUrl)
         {
-            String localMSIURLForResouce = String.format(STATIC_MSI_URL_FORMAT, STATIC_LOCAL_REST_MSI_ENDPOINT_URL, audience);
+            String localMSIURLForResouce =
+                    String.format(MSI_URL_FORMAT, STATIC_LOCAL_REST_MSI_ENDPOINT_URL, audience, APIVERSION);
             URL msiURL = new URL(localMSIURLForResouce);
             httpConnection = (HttpURLConnection) msiURL.openConnection();
             httpConnection.setRequestProperty(METADATA_HEADER_NAME, "true");
         }
         else
         {
-            String localMSIURLForResouce = String.format(DYNAMIC_MSI_URL_FORMAT, localMsiEndPointURL, audience, APIVERSION);
+            String localMSIURLForResouce = String.format(MSI_URL_FORMAT, localMsiEndPointURL, audience, APIVERSION);
             URL msiURL = new URL(localMSIURLForResouce);
             httpConnection = (HttpURLConnection) msiURL.openConnection();
             httpConnection.setRequestProperty(SECRET_HEADER_NAME, msiSecret);
