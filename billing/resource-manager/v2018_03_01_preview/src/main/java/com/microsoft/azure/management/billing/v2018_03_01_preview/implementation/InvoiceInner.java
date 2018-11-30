@@ -40,7 +40,7 @@ public class InvoiceInner extends ProxyResource {
     private LocalDate invoicePeriodEndDate;
 
     /**
-     * Array of billing perdiod ids that the invoice is attributed to.
+     * Array of billing period ids that the invoice is attributed to.
      */
     @JsonProperty(value = "properties.billingPeriodIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> billingPeriodIds;
@@ -84,7 +84,7 @@ public class InvoiceInner extends ProxyResource {
     }
 
     /**
-     * Get array of billing perdiod ids that the invoice is attributed to.
+     * Get array of billing period ids that the invoice is attributed to.
      *
      * @return the billingPeriodIds value
      */
