@@ -17,7 +17,7 @@ import com.microsoft.azure.ProxyResource;
 
 /**
  * Friendly domain name mapping to the endpoint hostname that the customer
- * provides for branding purposes, e.g. www.consoto.com.
+ * provides for branding purposes, e.g. www.contoso.com.
  */
 @JsonFlatten
 public class CustomDomainInner extends ProxyResource {

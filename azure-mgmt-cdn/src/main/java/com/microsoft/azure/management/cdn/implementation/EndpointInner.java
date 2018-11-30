@@ -118,7 +118,7 @@ public class EndpointInner extends Resource {
 
     /**
      * The host name of the endpoint structured as {endpointName}.{DNSZone},
-     * e.g. consoto.azureedge.net.
+     * e.g. contoso.azureedge.net.
      */
     @JsonProperty(value = "properties.hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostName;
@@ -363,7 +363,7 @@ public class EndpointInner extends Resource {
     }
 
     /**
-     * Get the host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. consoto.azureedge.net.
+     * Get the host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net.
      *
      * @return the hostName value
      */

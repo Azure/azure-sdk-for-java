@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CidrIpAddress {
     /**
-     * Ip adress itself.
+     * Ip address itself.
      */
     @JsonProperty(value = "baseIpAddress")
     private String baseIpAddress;
@@ -27,7 +27,7 @@ public class CidrIpAddress {
     private Integer prefixLength;
 
     /**
-     * Get ip adress itself.
+     * Get ip address itself.
      *
      * @return the baseIpAddress value
      */
@@ -36,7 +36,7 @@ public class CidrIpAddress {
     }
 
     /**
-     * Set ip adress itself.
+     * Set ip address itself.
      *
      * @param baseIpAddress the baseIpAddress value to set
      * @return the CidrIpAddress object itself.
