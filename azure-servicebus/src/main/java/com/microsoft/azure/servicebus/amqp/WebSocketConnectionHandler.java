@@ -51,6 +51,6 @@ public class WebSocketConnectionHandler extends ConnectionHandler {
     {
         // This is the current limitation of https://github.com/Azure/qpid-proton-j-extensions
         // once, this library enables larger frames - this property can be removed.
-        return 4 * 1024;
+        return AmqpConstants.WEBSOCKET_MAX_FRAME_SIZE;
     }
 }
