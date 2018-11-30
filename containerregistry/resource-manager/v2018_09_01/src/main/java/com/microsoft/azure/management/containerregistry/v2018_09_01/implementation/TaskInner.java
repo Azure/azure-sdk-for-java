@@ -21,7 +21,7 @@ import com.microsoft.azure.Resource;
 
 /**
  * The task that has the ARM resource and task properties.
- * The  task will have all information to schedule a run against it.
+ * The task will have all information to schedule a run against it.
  */
 @JsonFlatten
 public class TaskInner extends Resource {
