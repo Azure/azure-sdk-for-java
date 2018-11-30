@@ -14,7 +14,7 @@ jobs:
       mavenPomFile: $(pomFile)
       goals: 'checkstyle:check javadoc:jar source:jar package'
       options: '--batch-mode -Dmaven.test.skip=true'
-      mavenOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+      mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.8'
       jdkArchitectureOption: 'x64'
