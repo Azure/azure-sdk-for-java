@@ -11,7 +11,7 @@ package com.microsoft.azure.management.deploymentmanager.v2018-09-01-preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Individial resource operation information.
+ * Individual resource operation information.
  */
 public class ResourceOperation {
     /**
