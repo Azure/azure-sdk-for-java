@@ -33,7 +33,7 @@ public class OperationDisplay {
     private String operation;
 
     /**
-     * Decription of operation.
+     * Description of operation.
      */
     @JsonProperty(value = "description")
     private String description;
@@ -99,7 +99,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get decription of operation.
+     * Get description of operation.
      *
      * @return the description value
      */
@@ -108,7 +108,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set decription of operation.
+     * Set description of operation.
      *
      * @param description the description value to set
      * @return the OperationDisplay object itself.

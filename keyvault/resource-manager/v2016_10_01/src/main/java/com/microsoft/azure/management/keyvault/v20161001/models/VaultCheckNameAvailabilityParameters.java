@@ -11,7 +11,7 @@ package com.microsoft.azure.management.keyvault.v2016_10_01.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The parameters used to check the availabity of the vault name.
+ * The parameters used to check the availability of the vault name.
  */
 public class VaultCheckNameAvailabilityParameters {
     /**
