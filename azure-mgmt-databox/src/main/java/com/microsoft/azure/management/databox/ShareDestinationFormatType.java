@@ -18,7 +18,7 @@ public enum ShareDestinationFormatType {
     /** Unknown format. */
     UNKNOWN_TYPE("UnknownType"),
 
-    /** Storsimple data format. */
+    /** StorSimple data format. */
     HCS("HCS"),
 
     /** Azure storage block blob format. */

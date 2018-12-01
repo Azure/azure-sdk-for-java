@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for SkuName.
  */
 public enum SkuName {
-    /** Databox. */
+    /** DataBox. */
     DATA_BOX("DataBox"),
 
-    /** DataboxDisk. */
+    /** DataBoxDisk. */
     DATA_BOX_DISK("DataBoxDisk"),
 
-    /** DataboxHeavy. */
+    /** DataBoxHeavy. */
     DATA_BOX_HEAVY("DataBoxHeavy");
 
     /** The actual serialized value for a SkuName instance. */

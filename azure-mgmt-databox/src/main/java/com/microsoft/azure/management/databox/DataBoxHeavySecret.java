@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The secrets related to a databox heavy.
+ * The secrets related to a DataBoxHeavy.
  */
 public class DataBoxHeavySecret {
     /**
