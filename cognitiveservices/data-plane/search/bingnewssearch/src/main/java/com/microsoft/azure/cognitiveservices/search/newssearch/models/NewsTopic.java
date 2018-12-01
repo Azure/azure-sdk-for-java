@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The NewsTopic model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = NewsTopic.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("News/Topic")
 public class NewsTopic extends Thing {
     /**
@@ -38,7 +38,7 @@ public class NewsTopic extends Thing {
     private String newsSearchUrl;
 
     /**
-     * Get the isBreakingNews value.
+     * Get a Boolean value that indicates whether the topic is considered breaking news. If the topic is considered breaking news, the value is true.
      *
      * @return the isBreakingNews value
      */
@@ -47,7 +47,7 @@ public class NewsTopic extends Thing {
     }
 
     /**
-     * Get the query value.
+     * Get a search query term that returns this trending topic.
      *
      * @return the query value
      */
@@ -56,7 +56,7 @@ public class NewsTopic extends Thing {
     }
 
     /**
-     * Get the newsSearchUrl value.
+     * Get the URL to the Bing News search results for the search query term.
      *
      * @return the newsSearchUrl value
      */
