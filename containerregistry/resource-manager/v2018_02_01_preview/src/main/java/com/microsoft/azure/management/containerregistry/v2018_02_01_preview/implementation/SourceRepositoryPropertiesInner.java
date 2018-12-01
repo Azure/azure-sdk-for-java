@@ -24,7 +24,7 @@ public class SourceRepositoryPropertiesInner {
     private SourceControlType sourceControlType;
 
     /**
-     * The full URL to the source code respository.
+     * The full URL to the source code repository.
      */
     @JsonProperty(value = "repositoryUrl", required = true)
     private String repositoryUrl;
@@ -63,7 +63,7 @@ public class SourceRepositoryPropertiesInner {
     }
 
     /**
-     * Get the full URL to the source code respository.
+     * Get the full URL to the source code repository.
      *
      * @return the repositoryUrl value
      */
@@ -72,7 +72,7 @@ public class SourceRepositoryPropertiesInner {
     }
 
     /**
-     * Set the full URL to the source code respository.
+     * Set the full URL to the source code repository.
      *
      * @param repositoryUrl the repositoryUrl value to set
      * @return the SourceRepositoryPropertiesInner object itself.
