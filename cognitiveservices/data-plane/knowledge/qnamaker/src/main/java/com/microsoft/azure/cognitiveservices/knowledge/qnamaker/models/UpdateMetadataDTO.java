@@ -22,7 +22,7 @@ public class UpdateMetadataDTO {
     private List<MetadataDTO> delete;
 
     /**
-     * List of Metadat associated with answer to be added.
+     * List of metadata associated with answer to be added.
      */
     @JsonProperty(value = "add")
     private List<MetadataDTO> add;
@@ -48,7 +48,7 @@ public class UpdateMetadataDTO {
     }
 
     /**
-     * Get list of Metadat associated with answer to be added.
+     * Get list of metadata associated with answer to be added.
      *
      * @return the add value
      */
@@ -57,7 +57,7 @@ public class UpdateMetadataDTO {
     }
 
     /**
-     * Set list of Metadat associated with answer to be added.
+     * Set list of metadata associated with answer to be added.
      *
      * @param add the add value to set
      * @return the UpdateMetadataDTO object itself.
