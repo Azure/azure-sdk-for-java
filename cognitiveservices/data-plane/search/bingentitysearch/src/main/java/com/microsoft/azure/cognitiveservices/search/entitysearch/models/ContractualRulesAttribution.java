@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The ContractualRulesAttribution model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ContractualRulesAttribution.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ContractualRules/Attribution")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ContractualRules/LicenseAttribution", value = ContractualRulesLicenseAttribution.class),
@@ -36,7 +36,7 @@ public class ContractualRulesAttribution extends ContractualRulesContractualRule
     private Boolean mustBeCloseToContent;
 
     /**
-     * Get the mustBeCloseToContent value.
+     * Get a Boolean value that determines whether the contents of the rule must be placed in close proximity to the field that the rule applies to. If true, the contents must be placed in close proximity. If false, or this field does not exist, the contents may be placed at the caller's discretion.
      *
      * @return the mustBeCloseToContent value
      */

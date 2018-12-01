@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a contractual rule for text attribution.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ContractualRulesTextAttribution.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ContractualRules/TextAttribution")
 public class ContractualRulesTextAttribution extends ContractualRulesAttribution {
     /**
@@ -35,7 +35,7 @@ public class ContractualRulesTextAttribution extends ContractualRulesAttribution
     private Boolean optionalForListDisplay;
 
     /**
-     * Get the text value.
+     * Get the attribution text. Text attribution applies to the entity as a whole and should be displayed immediately following the entity presentation. If there are multiple text or link attribution rules that do not specify a target, you should concatenate them and display them using a "Data from:" label.
      *
      * @return the text value
      */
@@ -44,7 +44,7 @@ public class ContractualRulesTextAttribution extends ContractualRulesAttribution
     }
 
     /**
-     * Set the text value.
+     * Set the attribution text. Text attribution applies to the entity as a whole and should be displayed immediately following the entity presentation. If there are multiple text or link attribution rules that do not specify a target, you should concatenate them and display them using a "Data from:" label.
      *
      * @param text the text value to set
      * @return the ContractualRulesTextAttribution object itself.
@@ -55,7 +55,7 @@ public class ContractualRulesTextAttribution extends ContractualRulesAttribution
     }
 
     /**
-     * Get the optionalForListDisplay value.
+     * Get indicates whether this provider's attribution is optional.
      *
      * @return the optionalForListDisplay value
      */

@@ -16,10 +16,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The SearchResultsAnswer model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SearchResultsAnswer.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("SearchResultsAnswer")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Entities", value = EntitiesModel.class),
+    @JsonSubTypes.Type(name = "Entities", value = Entities.class),
     @JsonSubTypes.Type(name = "Places", value = Places.class)
 })
 public class SearchResultsAnswer extends Answer {

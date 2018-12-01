@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a contractual rule for link attribution.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ContractualRulesLinkAttribution.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ContractualRules/LinkAttribution")
 public class ContractualRulesLinkAttribution extends ContractualRulesAttribution {
     /**
@@ -38,7 +38,7 @@ public class ContractualRulesLinkAttribution extends ContractualRulesAttribution
     private Boolean optionalForListDisplay;
 
     /**
-     * Get the text value.
+     * Get the attribution text.
      *
      * @return the text value
      */
@@ -47,7 +47,7 @@ public class ContractualRulesLinkAttribution extends ContractualRulesAttribution
     }
 
     /**
-     * Set the text value.
+     * Set the attribution text.
      *
      * @param text the text value to set
      * @return the ContractualRulesLinkAttribution object itself.
@@ -58,7 +58,7 @@ public class ContractualRulesLinkAttribution extends ContractualRulesAttribution
     }
 
     /**
-     * Get the url value.
+     * Get the URL to the provider's website. Use text and URL to create the hyperlink.
      *
      * @return the url value
      */
@@ -67,7 +67,7 @@ public class ContractualRulesLinkAttribution extends ContractualRulesAttribution
     }
 
     /**
-     * Set the url value.
+     * Set the URL to the provider's website. Use text and URL to create the hyperlink.
      *
      * @param url the url value to set
      * @return the ContractualRulesLinkAttribution object itself.
@@ -78,7 +78,7 @@ public class ContractualRulesLinkAttribution extends ContractualRulesAttribution
     }
 
     /**
-     * Get the optionalForListDisplay value.
+     * Get indicates whether this provider's attribution is optional.
      *
      * @return the optionalForListDisplay value
      */

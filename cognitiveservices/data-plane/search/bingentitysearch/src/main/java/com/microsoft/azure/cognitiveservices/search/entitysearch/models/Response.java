@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * Defines a response. All schemas that could be returned at the root of a
  * response should inherit from this.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Response.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Response")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Thing", value = Thing.class),
@@ -40,7 +40,7 @@ public class Response extends Identifiable {
     private String webSearchUrl;
 
     /**
-     * Get the contractualRules value.
+     * Get a list of rules that you must adhere to if you display the item.
      *
      * @return the contractualRules value
      */
@@ -49,7 +49,7 @@ public class Response extends Identifiable {
     }
 
     /**
-     * Get the webSearchUrl value.
+     * Get the URL To Bing's search result for this item.
      *
      * @return the webSearchUrl value
      */

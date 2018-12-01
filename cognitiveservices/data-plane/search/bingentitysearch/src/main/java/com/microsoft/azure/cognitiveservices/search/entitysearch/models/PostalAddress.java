@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a postal address.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = PostalAddress.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("PostalAddress")
 public class PostalAddress extends StructuredValue {
     /**
@@ -66,7 +66,7 @@ public class PostalAddress extends StructuredValue {
     private String addressCountry;
 
     /**
-     * The two letter ISO code of this countr. For example, US.
+     * The two letter ISO code of this country. For example, US.
      */
     @JsonProperty(value = "countryIso", access = JsonProperty.Access.WRITE_ONLY)
     private String countryIso;
@@ -101,7 +101,7 @@ public class PostalAddress extends StructuredValue {
     }
 
     /**
-     * Get the addressLocality value.
+     * Get the city where the street address is located. For example, Seattle.
      *
      * @return the addressLocality value
      */
@@ -119,7 +119,7 @@ public class PostalAddress extends StructuredValue {
     }
 
     /**
-     * Get the addressRegion value.
+     * Get the state or province code where the street address is located. This could be the two-letter code. For example, WA, or the full name , Washington.
      *
      * @return the addressRegion value
      */
@@ -128,7 +128,7 @@ public class PostalAddress extends StructuredValue {
     }
 
     /**
-     * Get the postalCode value.
+     * Get the zip code or postal code where the street address is located. For example, 98052.
      *
      * @return the postalCode value
      */
@@ -146,7 +146,7 @@ public class PostalAddress extends StructuredValue {
     }
 
     /**
-     * Get the addressCountry value.
+     * Get the country/region where the street address is located. This could be the two-letter ISO code. For example, US, or the full name, United States.
      *
      * @return the addressCountry value
      */
@@ -155,7 +155,7 @@ public class PostalAddress extends StructuredValue {
     }
 
     /**
-     * Get the countryIso value.
+     * Get the two letter ISO code of this country. For example, US.
      *
      * @return the countryIso value
      */
@@ -164,7 +164,7 @@ public class PostalAddress extends StructuredValue {
     }
 
     /**
-     * Get the neighborhood value.
+     * Get the neighborhood where the street address is located. For example, Westlake.
      *
      * @return the neighborhood value
      */
@@ -173,7 +173,7 @@ public class PostalAddress extends StructuredValue {
     }
 
     /**
-     * Get the addressRegionAbbreviation value.
+     * Get region Abbreviation. For example, WA.
      *
      * @return the addressRegionAbbreviation value
      */
@@ -182,7 +182,7 @@ public class PostalAddress extends StructuredValue {
     }
 
     /**
-     * Get the text value.
+     * Get the complete address. For example, 2100 Westlake Ave N, Bellevue, WA 98052.
      *
      * @return the text value
      */
