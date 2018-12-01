@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * A utility class that serves as the umbrella for a number of 'intangible'
  * things such as quantities, structured values, etc.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Intangible.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Intangible")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "StructuredValue", value = StructuredValue.class)

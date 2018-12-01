@@ -22,7 +22,7 @@ public class ImagesModule {
     private List<ImageObject> value;
 
     /**
-     * Get the value value.
+     * Get a list of images.
      *
      * @return the value value
      */

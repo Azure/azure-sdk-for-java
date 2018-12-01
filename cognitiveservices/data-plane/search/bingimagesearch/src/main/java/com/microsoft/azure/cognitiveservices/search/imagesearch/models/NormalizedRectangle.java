@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * are fractional values of the original image's width and height in the range
  * 0.0 through 1.0.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = NormalizedRectangle.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("NormalizedRectangle")
 public class NormalizedRectangle extends StructuredValue {
     /**
@@ -46,7 +46,7 @@ public class NormalizedRectangle extends StructuredValue {
     private double bottom;
 
     /**
-     * Get the left value.
+     * Get the left coordinate.
      *
      * @return the left value
      */
@@ -55,7 +55,7 @@ public class NormalizedRectangle extends StructuredValue {
     }
 
     /**
-     * Set the left value.
+     * Set the left coordinate.
      *
      * @param left the left value to set
      * @return the NormalizedRectangle object itself.
@@ -66,7 +66,7 @@ public class NormalizedRectangle extends StructuredValue {
     }
 
     /**
-     * Get the top value.
+     * Get the top coordinate.
      *
      * @return the top value
      */
@@ -75,7 +75,7 @@ public class NormalizedRectangle extends StructuredValue {
     }
 
     /**
-     * Set the top value.
+     * Set the top coordinate.
      *
      * @param top the top value to set
      * @return the NormalizedRectangle object itself.
@@ -86,7 +86,7 @@ public class NormalizedRectangle extends StructuredValue {
     }
 
     /**
-     * Get the right value.
+     * Get the right coordinate.
      *
      * @return the right value
      */
@@ -95,7 +95,7 @@ public class NormalizedRectangle extends StructuredValue {
     }
 
     /**
-     * Set the right value.
+     * Set the right coordinate.
      *
      * @param right the right value to set
      * @return the NormalizedRectangle object itself.
@@ -106,7 +106,7 @@ public class NormalizedRectangle extends StructuredValue {
     }
 
     /**
-     * Get the bottom value.
+     * Get the bottom coordinate.
      *
      * @return the bottom value
      */
@@ -115,7 +115,7 @@ public class NormalizedRectangle extends StructuredValue {
     }
 
     /**
-     * Set the bottom value.
+     * Set the bottom coordinate.
      *
      * @param bottom the bottom value to set
      * @return the NormalizedRectangle object itself.

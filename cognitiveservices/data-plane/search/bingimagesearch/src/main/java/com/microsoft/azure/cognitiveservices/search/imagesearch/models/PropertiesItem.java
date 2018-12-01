@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines an item.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = PropertiesItem.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Properties/Item")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Rating", value = Rating.class)
@@ -29,7 +29,7 @@ public class PropertiesItem {
     private String text;
 
     /**
-     * Get the text value.
+     * Get text representation of an item.
      *
      * @return the text value
      */

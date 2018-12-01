@@ -22,7 +22,7 @@ public class RelatedCollectionsModule {
     private List<ImageGallery> value;
 
     /**
-     * Get the value value.
+     * Get a list of webpages that contain related images.
      *
      * @return the value value
      */

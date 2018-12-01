@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a recognized entity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = RecognizedEntity.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("RecognizedEntity")
 public class RecognizedEntity extends Response {
     /**
@@ -34,7 +34,7 @@ public class RecognizedEntity extends Response {
     private Double matchConfidence;
 
     /**
-     * Get the entity value.
+     * Get the entity that was recognized. The following are the possible entity objects: Person.
      *
      * @return the entity value
      */
@@ -43,7 +43,7 @@ public class RecognizedEntity extends Response {
     }
 
     /**
-     * Get the matchConfidence value.
+     * Get the confidence that Bing has that the entity in the image matches this entity. The confidence ranges from 0.0 through 1.0 with 1.0 being very confident.
      *
      * @return the matchConfidence value
      */

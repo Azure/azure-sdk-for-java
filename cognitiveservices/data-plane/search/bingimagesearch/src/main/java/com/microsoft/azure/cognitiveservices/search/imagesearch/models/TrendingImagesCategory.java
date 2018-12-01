@@ -31,7 +31,7 @@ public class TrendingImagesCategory {
     private List<TrendingImagesTile> tiles;
 
     /**
-     * Get the title value.
+     * Get the name of the image category. For example, Popular People Searches.
      *
      * @return the title value
      */
@@ -40,7 +40,7 @@ public class TrendingImagesCategory {
     }
 
     /**
-     * Set the title value.
+     * Set the name of the image category. For example, Popular People Searches.
      *
      * @param title the title value to set
      * @return the TrendingImagesCategory object itself.
@@ -51,7 +51,7 @@ public class TrendingImagesCategory {
     }
 
     /**
-     * Get the tiles value.
+     * Get a list of images that are trending in the category. Each tile contains an image and a URL that returns more images of the subject. For example, if the category is Popular People Searches, the image is of a popular person and the URL would return more images of that person.
      *
      * @return the tiles value
      */
@@ -60,7 +60,7 @@ public class TrendingImagesCategory {
     }
 
     /**
-     * Set the tiles value.
+     * Set a list of images that are trending in the category. Each tile contains an image and a URL that returns more images of the subject. For example, if the category is Popular People Searches, the image is of a popular person and the URL would return more images of that person.
      *
      * @param tiles the tiles value to set
      * @return the TrendingImagesCategory object itself.

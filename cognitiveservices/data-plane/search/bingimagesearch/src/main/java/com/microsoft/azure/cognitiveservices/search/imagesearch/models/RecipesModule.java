@@ -22,7 +22,7 @@ public class RecipesModule {
     private List<Recipe> value;
 
     /**
-     * Get the value value.
+     * Get a list of recipes.
      *
      * @return the value value
      */

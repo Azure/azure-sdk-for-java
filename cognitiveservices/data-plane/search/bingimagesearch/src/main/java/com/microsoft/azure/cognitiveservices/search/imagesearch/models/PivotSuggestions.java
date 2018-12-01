@@ -28,7 +28,7 @@ public class PivotSuggestions {
     private List<Query> suggestions;
 
     /**
-     * Get the pivot value.
+     * Get the segment from the original query to pivot on.
      *
      * @return the pivot value
      */
@@ -37,7 +37,7 @@ public class PivotSuggestions {
     }
 
     /**
-     * Set the pivot value.
+     * Set the segment from the original query to pivot on.
      *
      * @param pivot the pivot value to set
      * @return the PivotSuggestions object itself.
@@ -48,7 +48,7 @@ public class PivotSuggestions {
     }
 
     /**
-     * Get the suggestions value.
+     * Get a list of suggested queries for the pivot.
      *
      * @return the suggestions value
      */
@@ -57,7 +57,7 @@ public class PivotSuggestions {
     }
 
     /**
-     * Set the suggestions value.
+     * Set a list of suggested queries for the pivot.
      *
      * @param suggestions the suggestions value to set
      * @return the PivotSuggestions object itself.

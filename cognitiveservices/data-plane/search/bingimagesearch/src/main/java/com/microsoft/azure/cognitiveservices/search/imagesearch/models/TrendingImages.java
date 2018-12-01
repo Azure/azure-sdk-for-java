@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * The top-level object that the response includes when a trending images
  * request succeeds.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = TrendingImages.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("TrendingImages")
 public class TrendingImages extends Response {
     /**
@@ -28,7 +28,7 @@ public class TrendingImages extends Response {
     private List<TrendingImagesCategory> categories;
 
     /**
-     * Get the categories value.
+     * Get a list that identifies categories of images and a list of trending images in that category.
      *
      * @return the categories value
      */
@@ -37,7 +37,7 @@ public class TrendingImages extends Response {
     }
 
     /**
-     * Set the categories value.
+     * Set a list that identifies categories of images and a list of trending images in that category.
      *
      * @param categories the categories value to set
      * @return the TrendingImages object itself.

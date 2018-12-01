@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines a thing.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Thing.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Thing")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Organization", value = Organization.class),
@@ -64,7 +64,7 @@ public class Thing extends Response {
     private String bingId;
 
     /**
-     * Get the name value.
+     * Get the name of the thing represented by this object.
      *
      * @return the name value
      */
@@ -73,7 +73,7 @@ public class Thing extends Response {
     }
 
     /**
-     * Get the url value.
+     * Get the URL to get more information about the thing represented by this object.
      *
      * @return the url value
      */
@@ -82,7 +82,7 @@ public class Thing extends Response {
     }
 
     /**
-     * Get the image value.
+     * Get an image of the item.
      *
      * @return the image value
      */
@@ -91,7 +91,7 @@ public class Thing extends Response {
     }
 
     /**
-     * Get the description value.
+     * Get a short description of the item.
      *
      * @return the description value
      */
@@ -100,7 +100,7 @@ public class Thing extends Response {
     }
 
     /**
-     * Get the alternateName value.
+     * Get an alias for the item.
      *
      * @return the alternateName value
      */
@@ -109,7 +109,7 @@ public class Thing extends Response {
     }
 
     /**
-     * Get the bingId value.
+     * Get an ID that uniquely identifies this item.
      *
      * @return the bingId value
      */
