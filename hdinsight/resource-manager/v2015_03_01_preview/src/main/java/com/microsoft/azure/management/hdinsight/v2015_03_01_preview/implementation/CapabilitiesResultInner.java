@@ -28,7 +28,7 @@ public class CapabilitiesResultInner {
     private Map<String, VersionsCapability> versions;
 
     /**
-     * The virtual machine size compatibilty features.
+     * The virtual machine size compatibility features.
      */
     @JsonProperty(value = "regions")
     private Map<String, RegionsCapability> regions;
@@ -40,13 +40,13 @@ public class CapabilitiesResultInner {
     private Map<String, VmSizesCapability> vmSizes;
 
     /**
-     * The virtual machine size compatibilty filters.
+     * The virtual machine size compatibility filters.
      */
     @JsonProperty(value = "vmSize_filters")
     private List<VmSizeCompatibilityFilter> vmSizeFilters;
 
     /**
-     * The capabilty features.
+     * The capability features.
      */
     @JsonProperty(value = "features")
     private List<String> features;
@@ -78,7 +78,7 @@ public class CapabilitiesResultInner {
     }
 
     /**
-     * Get the virtual machine size compatibilty features.
+     * Get the virtual machine size compatibility features.
      *
      * @return the regions value
      */
@@ -87,7 +87,7 @@ public class CapabilitiesResultInner {
     }
 
     /**
-     * Set the virtual machine size compatibilty features.
+     * Set the virtual machine size compatibility features.
      *
      * @param regions the regions value to set
      * @return the CapabilitiesResultInner object itself.
@@ -118,7 +118,7 @@ public class CapabilitiesResultInner {
     }
 
     /**
-     * Get the virtual machine size compatibilty filters.
+     * Get the virtual machine size compatibility filters.
      *
      * @return the vmSizeFilters value
      */
@@ -127,7 +127,7 @@ public class CapabilitiesResultInner {
     }
 
     /**
-     * Set the virtual machine size compatibilty filters.
+     * Set the virtual machine size compatibility filters.
      *
      * @param vmSizeFilters the vmSizeFilters value to set
      * @return the CapabilitiesResultInner object itself.
@@ -138,7 +138,7 @@ public class CapabilitiesResultInner {
     }
 
     /**
-     * Get the capabilty features.
+     * Get the capability features.
      *
      * @return the features value
      */
@@ -147,7 +147,7 @@ public class CapabilitiesResultInner {
     }
 
     /**
-     * Set the capabilty features.
+     * Set the capability features.
      *
      * @param features the features value to set
      * @return the CapabilitiesResultInner object itself.
