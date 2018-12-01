@@ -80,8 +80,8 @@ public class VirtualMachineScaleSetInner extends Resource {
     private Boolean singlePlacementGroup;
 
     /**
-     * Whether to force stictly even Virtual Machine distribution cross x-zones
-     * in case there is zone outage.
+     * Whether to force strictly even Virtual Machine distribution cross
+     * x-zones in case there is zone outage.
      */
     @JsonProperty(value = "properties.zoneBalance")
     private Boolean zoneBalance;
@@ -243,7 +243,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get whether to force stictly even Virtual Machine distribution cross x-zones in case there is zone outage.
+     * Get whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage.
      *
      * @return the zoneBalance value
      */
@@ -252,7 +252,7 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set whether to force stictly even Virtual Machine distribution cross x-zones in case there is zone outage.
+     * Set whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage.
      *
      * @param zoneBalance the zoneBalance value to set
      * @return the VirtualMachineScaleSetInner object itself.

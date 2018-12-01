@@ -22,7 +22,7 @@ import com.microsoft.azure.Resource;
  * set are allocated to different nodes to maximize availability. For more
  * information about availability sets, see [Manage the availability of virtual
  * machines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-manage-availability?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json).
- * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintainance, see
+ * &lt;br&gt;&lt;br&gt; For more information on Azure planned maintenance, see
  * [Planned maintenance for virtual machines in
  * Azure](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-planned-maintenance?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json)
  * &lt;br&gt;&lt;br&gt; Currently, a VM can only be added to availability set
