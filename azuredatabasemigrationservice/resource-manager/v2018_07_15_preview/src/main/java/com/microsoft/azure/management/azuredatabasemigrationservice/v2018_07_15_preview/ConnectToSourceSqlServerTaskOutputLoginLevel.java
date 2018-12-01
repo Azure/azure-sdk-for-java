@@ -46,7 +46,7 @@ public class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectToSourc
     private Boolean isEnabled;
 
     /**
-     * Information about eligiblity of login for migration.
+     * Information about eligibility of login for migration.
      */
     @JsonProperty(value = "migrationEligibility", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationEligibilityInfo migrationEligibility;
@@ -88,7 +88,7 @@ public class ConnectToSourceSqlServerTaskOutputLoginLevel extends ConnectToSourc
     }
 
     /**
-     * Get information about eligiblity of login for migration.
+     * Get information about eligibility of login for migration.
      *
      * @return the migrationEligibility value
      */
