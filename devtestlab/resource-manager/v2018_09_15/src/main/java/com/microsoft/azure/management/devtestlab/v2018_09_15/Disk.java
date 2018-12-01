@@ -147,7 +147,7 @@ public interface Disk extends HasInner<DiskInner>, Indexable, Refreshable<Disk>,
         interface WithDiskSizeGiB {
             /**
              * Specifies diskSizeGiB.
-             * @param diskSizeGiB The size of the disk in GibiBytes
+             * @param diskSizeGiB The size of the disk in Gibibytes
              * @return the next definition stage
              */
             WithCreate withDiskSizeGiB(Integer diskSizeGiB);
@@ -273,7 +273,7 @@ public interface Disk extends HasInner<DiskInner>, Indexable, Refreshable<Disk>,
         interface WithDiskSizeGiB {
             /**
              * Specifies diskSizeGiB.
-             * @param diskSizeGiB The size of the disk in GibiBytes
+             * @param diskSizeGiB The size of the disk in Gibibytes
              * @return the next update stage
              */
             Update withDiskSizeGiB(Integer diskSizeGiB);

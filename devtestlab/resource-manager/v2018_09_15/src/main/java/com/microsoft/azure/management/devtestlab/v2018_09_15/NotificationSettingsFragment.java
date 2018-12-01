@@ -35,7 +35,7 @@ public class NotificationSettingsFragment {
 
     /**
      * The email recipient to send notifications to (can be a list of
-     * semi-colon seperated email addresses).
+     * semi-colon separated email addresses).
      */
     @JsonProperty(value = "emailRecipient")
     private String emailRecipient;
@@ -108,7 +108,7 @@ public class NotificationSettingsFragment {
     }
 
     /**
-     * Get the email recipient to send notifications to (can be a list of semi-colon seperated email addresses).
+     * Get the email recipient to send notifications to (can be a list of semi-colon separated email addresses).
      *
      * @return the emailRecipient value
      */
@@ -117,7 +117,7 @@ public class NotificationSettingsFragment {
     }
 
     /**
-     * Set the email recipient to send notifications to (can be a list of semi-colon seperated email addresses).
+     * Set the email recipient to send notifications to (can be a list of semi-colon separated email addresses).
      *
      * @param emailRecipient the emailRecipient value to set
      * @return the NotificationSettingsFragment object itself.
