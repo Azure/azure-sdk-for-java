@@ -8,52 +8,64 @@
 
 package com.microsoft.azure.hdinsight.job.models;
 
-import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for ApplicationState.
  */
-public final class ApplicationState extends ExpandableStringEnum<ApplicationState> {
-    /** Static value NEW for ApplicationState. */
-    public static final ApplicationState NEW = fromString("NEW");
+public enum ApplicationState {
+    /** Enum value NEW. */
+    NEW("NEW"),
 
-    /** Static value NEW_SAVING for ApplicationState. */
-    public static final ApplicationState NEW_SAVING = fromString("NEW_SAVING");
+    /** Enum value NEW_SAVING. */
+    NEW_SAVING("NEW_SAVING"),
 
-    /** Static value SUBMITTED for ApplicationState. */
-    public static final ApplicationState SUBMITTED = fromString("SUBMITTED");
+    /** Enum value SUBMITTED. */
+    SUBMITTED("SUBMITTED"),
 
-    /** Static value ACCEPTED for ApplicationState. */
-    public static final ApplicationState ACCEPTED = fromString("ACCEPTED");
+    /** Enum value ACCEPTED. */
+    ACCEPTED("ACCEPTED"),
 
-    /** Static value RUNNING for ApplicationState. */
-    public static final ApplicationState RUNNING = fromString("RUNNING");
+    /** Enum value RUNNING. */
+    RUNNING("RUNNING"),
 
-    /** Static value FINISHED for ApplicationState. */
-    public static final ApplicationState FINISHED = fromString("FINISHED");
+    /** Enum value FINISHED. */
+    FINISHED("FINISHED"),
 
-    /** Static value FAILED for ApplicationState. */
-    public static final ApplicationState FAILED = fromString("FAILED");
+    /** Enum value FAILED. */
+    FAILED("FAILED"),
 
-    /** Static value KILLED for ApplicationState. */
-    public static final ApplicationState KILLED = fromString("KILLED");
+    /** Enum value KILLED. */
+    KILLED("KILLED");
 
-    /**
-     * Creates or finds a ApplicationState from its string representation.
-     * @param name a name to look for
-     * @return the corresponding ApplicationState
-     */
-    @JsonCreator
-    public static ApplicationState fromString(String name) {
-        return fromString(name, ApplicationState.class);
+    /** The actual serialized value for a ApplicationState instance. */
+    private String value;
+
+    ApplicationState(String value) {
+        this.value = value;
     }
 
     /**
-     * @return known ApplicationState values
+     * Parses a serialized value to a ApplicationState instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed ApplicationState object, or null if unable to parse.
      */
-    public static Collection<ApplicationState> values() {
-        return values(ApplicationState.class);
+    @JsonCreator
+    public static ApplicationState fromString(String value) {
+        ApplicationState[] items = ApplicationState.values();
+        for (ApplicationState item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return this.value;
     }
 }
