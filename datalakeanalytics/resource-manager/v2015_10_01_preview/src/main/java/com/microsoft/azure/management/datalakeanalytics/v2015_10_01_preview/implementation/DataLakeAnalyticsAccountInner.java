@@ -9,8 +9,6 @@
 package com.microsoft.azure.management.datalakeanalytics.v2015_10_01_preview.implementation;
 
 import java.util.Map;
-
-import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.datalakeanalytics.v2015_10_01_preview.DataLakeAnalyticsAccountProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -18,13 +16,121 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A Data Lake Analytics account object, containing all information associated
  * with the named Data Lake Analytics account.
  */
-public class DataLakeAnalyticsAccountInner extends Resource {
+public class DataLakeAnalyticsAccountInner {
+    /**
+     * the account regional location.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /**
+     * the account name.
+     */
+    @JsonProperty(value = "name")
+    private String name;
+
+    /**
+     * the namespace and type of the account.
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
+
+    /**
+     * the account subscription ID.
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
+
+    /**
+     * the value of custom properties.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
     /**
      * the properties defined by Data Lake Analytics all properties are
      * specific to each resource provider.
      */
     @JsonProperty(value = "properties")
     private DataLakeAnalyticsAccountProperties properties;
+
+    /**
+     * Get the account regional location.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the account regional location.
+     *
+     * @param location the location value to set
+     * @return the DataLakeAnalyticsAccountInner object itself.
+     */
+    public DataLakeAnalyticsAccountInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the account name.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the account name.
+     *
+     * @param name the name value to set
+     * @return the DataLakeAnalyticsAccountInner object itself.
+     */
+    public DataLakeAnalyticsAccountInner withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the namespace and type of the account.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the account subscription ID.
+     *
+     * @return the id value
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the value of custom properties.
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the value of custom properties.
+     *
+     * @param tags the tags value to set
+     * @return the DataLakeAnalyticsAccountInner object itself.
+     */
+    public DataLakeAnalyticsAccountInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
 
     /**
      * Get the properties defined by Data Lake Analytics all properties are specific to each resource provider.

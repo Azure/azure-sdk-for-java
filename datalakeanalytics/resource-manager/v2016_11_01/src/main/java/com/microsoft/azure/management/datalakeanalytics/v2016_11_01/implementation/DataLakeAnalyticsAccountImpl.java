@@ -226,7 +226,7 @@ class DataLakeAnalyticsAccountImpl extends GroupableResourceCoreImpl<DataLakeAna
     }
 
     @Override
-    public DataLakeAnalyticsAccountImpl withDataLakeStoreAccountsForCreate(List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
+    public DataLakeAnalyticsAccountImpl withDataLakeStoreAccounts(List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
         this.createParameter.withDataLakeStoreAccounts(dataLakeStoreAccounts);
         return this;
     }
@@ -238,43 +238,43 @@ class DataLakeAnalyticsAccountImpl extends GroupableResourceCoreImpl<DataLakeAna
     }
 
     @Override
-    public DataLakeAnalyticsAccountImpl withComputePoliciesForCreate(List<CreateComputePolicyWithAccountParameters> computePolicies) {
+    public DataLakeAnalyticsAccountImpl withComputePolicies(List<CreateComputePolicyWithAccountParameters> computePolicies) {
         this.createParameter.withComputePolicies(computePolicies);
         return this;
     }
 
     @Override
-    public DataLakeAnalyticsAccountImpl withFirewallRulesForCreate(List<CreateFirewallRuleWithAccountParameters> firewallRules) {
+    public DataLakeAnalyticsAccountImpl withFirewallRules(List<CreateFirewallRuleWithAccountParameters> firewallRules) {
         this.createParameter.withFirewallRules(firewallRules);
         return this;
     }
 
     @Override
-    public DataLakeAnalyticsAccountImpl withStorageAccountsForCreate(List<AddStorageAccountWithAccountParameters> storageAccounts) {
+    public DataLakeAnalyticsAccountImpl withStorageAccounts(List<AddStorageAccountWithAccountParameters> storageAccounts) {
         this.createParameter.withStorageAccounts(storageAccounts);
         return this;
     }
 
     @Override
-    public DataLakeAnalyticsAccountImpl withComputePoliciesForUpdate(List<UpdateComputePolicyWithAccountParameters> computePolicies) {
+    public DataLakeAnalyticsAccountImpl withComputePolicies(List<UpdateComputePolicyWithAccountParameters> computePolicies) {
         this.updateParameter.withComputePolicies(computePolicies);
         return this;
     }
 
     @Override
-    public DataLakeAnalyticsAccountImpl withDataLakeStoreAccountsForUpdate(List<UpdateDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
+    public DataLakeAnalyticsAccountImpl withDataLakeStoreAccounts(List<UpdateDataLakeStoreWithAccountParameters> dataLakeStoreAccounts) {
         this.updateParameter.withDataLakeStoreAccounts(dataLakeStoreAccounts);
         return this;
     }
 
     @Override
-    public DataLakeAnalyticsAccountImpl withFirewallRulesForUpdate(List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
+    public DataLakeAnalyticsAccountImpl withFirewallRules(List<UpdateFirewallRuleWithAccountParameters> firewallRules) {
         this.updateParameter.withFirewallRules(firewallRules);
         return this;
     }
 
     @Override
-    public DataLakeAnalyticsAccountImpl withStorageAccountsForUpdate(List<UpdateStorageAccountWithAccountParameters> storageAccounts) {
+    public DataLakeAnalyticsAccountImpl withStorageAccounts(List<UpdateStorageAccountWithAccountParameters> storageAccounts) {
         this.updateParameter.withStorageAccounts(storageAccounts);
         return this;
     }

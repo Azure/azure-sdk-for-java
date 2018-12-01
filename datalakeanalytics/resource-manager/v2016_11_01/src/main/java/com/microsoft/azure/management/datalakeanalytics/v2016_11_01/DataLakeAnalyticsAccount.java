@@ -168,7 +168,7 @@ public interface DataLakeAnalyticsAccount extends HasInner<DataLakeAnalyticsAcco
             * @param dataLakeStoreAccounts The list of Data Lake Store accounts associated with this account
             * @return the next definition stage
 */
-            WithDefaultDataLakeStoreAccount withDataLakeStoreAccountsForCreate(List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts);
+            WithDefaultDataLakeStoreAccount withDataLakeStoreAccounts(List<AddDataLakeStoreWithAccountParameters> dataLakeStoreAccounts);
         }
 
         /**
@@ -192,7 +192,7 @@ public interface DataLakeAnalyticsAccount extends HasInner<DataLakeAnalyticsAcco
              * @param computePolicies The list of compute policies associated with this account
              * @return the next definition stage
              */
-            WithCreate withComputePoliciesForCreate(List<CreateComputePolicyWithAccountParameters> computePolicies);
+            WithCreate withComputePolicies(List<CreateComputePolicyWithAccountParameters> computePolicies);
         }
 
         /**
@@ -216,7 +216,7 @@ public interface DataLakeAnalyticsAccount extends HasInner<DataLakeAnalyticsAcco
              * @param firewallRules The list of firewall rules associated with this account
              * @return the next definition stage
              */
-            WithCreate withFirewallRulesForCreate(List<CreateFirewallRuleWithAccountParameters> firewallRules);
+            WithCreate withFirewallRules(List<CreateFirewallRuleWithAccountParameters> firewallRules);
         }
 
         /**
@@ -312,7 +312,7 @@ public interface DataLakeAnalyticsAccount extends HasInner<DataLakeAnalyticsAcco
              * @param storageAccounts The list of Azure Blob Storage accounts associated with this account
              * @return the next definition stage
              */
-            WithCreate withStorageAccountsForCreate(List<AddStorageAccountWithAccountParameters> storageAccounts);
+            WithCreate withStorageAccounts(List<AddStorageAccountWithAccountParameters> storageAccounts);
         }
 
         /**
@@ -342,7 +342,7 @@ public interface DataLakeAnalyticsAccount extends HasInner<DataLakeAnalyticsAcco
              * @param computePolicies The list of compute policies associated with this account
              * @return the next update stage
              */
-            Update withComputePoliciesForUpdate(List<UpdateComputePolicyWithAccountParameters> computePolicies);
+            Update withComputePolicies(List<UpdateComputePolicyWithAccountParameters> computePolicies);
         }
 
         /**
@@ -354,7 +354,7 @@ public interface DataLakeAnalyticsAccount extends HasInner<DataLakeAnalyticsAcco
              * @param dataLakeStoreAccounts The list of Data Lake Store accounts associated with this account
              * @return the next update stage
              */
-            Update withDataLakeStoreAccountsForUpdate(List<UpdateDataLakeStoreWithAccountParameters> dataLakeStoreAccounts);
+            Update withDataLakeStoreAccounts(List<UpdateDataLakeStoreWithAccountParameters> dataLakeStoreAccounts);
         }
 
         /**
@@ -378,7 +378,7 @@ public interface DataLakeAnalyticsAccount extends HasInner<DataLakeAnalyticsAcco
              * @param firewallRules The list of firewall rules associated with this account
              * @return the next update stage
              */
-            Update withFirewallRulesForUpdate(List<UpdateFirewallRuleWithAccountParameters> firewallRules);
+            Update withFirewallRules(List<UpdateFirewallRuleWithAccountParameters> firewallRules);
         }
 
         /**
@@ -474,7 +474,7 @@ public interface DataLakeAnalyticsAccount extends HasInner<DataLakeAnalyticsAcco
              * @param storageAccounts The list of Azure Blob storage accounts associated with this account
              * @return the next update stage
              */
-            Update withStorageAccountsForUpdate(List<UpdateStorageAccountWithAccountParameters> storageAccounts);
+            Update withStorageAccounts(List<UpdateStorageAccountWithAccountParameters> storageAccounts);
         }
 
     }
