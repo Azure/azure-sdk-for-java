@@ -46,7 +46,7 @@ public class Evaluate {
     private Boolean isImageAdultClassified;
 
     /**
-     * The racy classication score.
+     * The racy classification score.
      */
     @JsonProperty(value = "RacyClassificationScore")
     private Double racyClassificationScore;
@@ -170,7 +170,7 @@ public class Evaluate {
     }
 
     /**
-     * Get the racy classication score.
+     * Get the racy classification score.
      *
      * @return the racyClassificationScore value
      */
@@ -179,7 +179,7 @@ public class Evaluate {
     }
 
     /**
-     * Set the racy classication score.
+     * Set the racy classification score.
      *
      * @param racyClassificationScore the racyClassificationScore value to set
      * @return the Evaluate object itself.
