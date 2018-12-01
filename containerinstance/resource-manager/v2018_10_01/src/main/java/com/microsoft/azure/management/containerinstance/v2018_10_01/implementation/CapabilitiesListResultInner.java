@@ -17,19 +17,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CapabilitiesListResultInner {
     /**
-     * The list of cached images.
+     * The list of capabilities.
      */
     @JsonProperty(value = "value")
     private List<Capabilities> value;
 
     /**
-     * The URI to fetch the next page of cached images.
+     * The URI to fetch the next page of capabilities.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the list of cached images.
+     * Get the list of capabilities.
      *
      * @return the value value
      */
@@ -38,7 +38,7 @@ public class CapabilitiesListResultInner {
     }
 
     /**
-     * Set the list of cached images.
+     * Set the list of capabilities.
      *
      * @param value the value value to set
      * @return the CapabilitiesListResultInner object itself.
@@ -49,7 +49,7 @@ public class CapabilitiesListResultInner {
     }
 
     /**
-     * Get the URI to fetch the next page of cached images.
+     * Get the URI to fetch the next page of capabilities.
      *
      * @return the nextLink value
      */
@@ -58,7 +58,7 @@ public class CapabilitiesListResultInner {
     }
 
     /**
-     * Set the URI to fetch the next page of cached images.
+     * Set the URI to fetch the next page of capabilities.
      *
      * @param nextLink the nextLink value to set
      * @return the CapabilitiesListResultInner object itself.

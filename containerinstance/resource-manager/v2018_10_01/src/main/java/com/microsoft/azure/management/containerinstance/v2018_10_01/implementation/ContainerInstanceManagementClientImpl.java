@@ -277,13 +277,13 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
      * used by Retrofit to perform actually REST calls.
      */
     interface ContainerInstanceManagementClientService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerInstanceManagementClient getCachedImages" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerInstanceManagementClient listCachedImages" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/cachedImages")
-        Observable<Response<ResponseBody>> getCachedImages(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listCachedImages(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerInstanceManagementClient getCapabilities" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerinstance.v2018_10_01.ContainerInstanceManagementClient listCapabilities" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/locations/{location}/capabilities")
-        Observable<Response<ResponseBody>> getCapabilities(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listCapabilities(@Path("subscriptionId") String subscriptionId, @Path("location") String location, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -297,8 +297,8 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CachedImagesListResultInner object if successful.
      */
-    public CachedImagesListResultInner getCachedImages(String location) {
-        return getCachedImagesWithServiceResponseAsync(location).toBlocking().single().body();
+    public CachedImagesListResultInner listCachedImages(String location) {
+        return listCachedImagesWithServiceResponseAsync(location).toBlocking().single().body();
     }
 
     /**
@@ -310,8 +310,8 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<CachedImagesListResultInner> getCachedImagesAsync(String location, final ServiceCallback<CachedImagesListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getCachedImagesWithServiceResponseAsync(location), serviceCallback);
+    public ServiceFuture<CachedImagesListResultInner> listCachedImagesAsync(String location, final ServiceCallback<CachedImagesListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listCachedImagesWithServiceResponseAsync(location), serviceCallback);
     }
 
     /**
@@ -322,8 +322,8 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CachedImagesListResultInner object
      */
-    public Observable<CachedImagesListResultInner> getCachedImagesAsync(String location) {
-        return getCachedImagesWithServiceResponseAsync(location).map(new Func1<ServiceResponse<CachedImagesListResultInner>, CachedImagesListResultInner>() {
+    public Observable<CachedImagesListResultInner> listCachedImagesAsync(String location) {
+        return listCachedImagesWithServiceResponseAsync(location).map(new Func1<ServiceResponse<CachedImagesListResultInner>, CachedImagesListResultInner>() {
             @Override
             public CachedImagesListResultInner call(ServiceResponse<CachedImagesListResultInner> response) {
                 return response.body();
@@ -339,7 +339,7 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CachedImagesListResultInner object
      */
-    public Observable<ServiceResponse<CachedImagesListResultInner>> getCachedImagesWithServiceResponseAsync(String location) {
+    public Observable<ServiceResponse<CachedImagesListResultInner>> listCachedImagesWithServiceResponseAsync(String location) {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
@@ -349,12 +349,12 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        return service.getCachedImages(this.subscriptionId(), location, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        return service.listCachedImages(this.subscriptionId(), location, this.apiVersion(), this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CachedImagesListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CachedImagesListResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<CachedImagesListResultInner> clientResponse = getCachedImagesDelegate(response);
+                        ServiceResponse<CachedImagesListResultInner> clientResponse = listCachedImagesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -363,7 +363,7 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
             });
     }
 
-    private ServiceResponse<CachedImagesListResultInner> getCachedImagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<CachedImagesListResultInner> listCachedImagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<CachedImagesListResultInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<CachedImagesListResultInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -380,8 +380,8 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CapabilitiesListResultInner object if successful.
      */
-    public CapabilitiesListResultInner getCapabilities(String location) {
-        return getCapabilitiesWithServiceResponseAsync(location).toBlocking().single().body();
+    public CapabilitiesListResultInner listCapabilities(String location) {
+        return listCapabilitiesWithServiceResponseAsync(location).toBlocking().single().body();
     }
 
     /**
@@ -393,8 +393,8 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<CapabilitiesListResultInner> getCapabilitiesAsync(String location, final ServiceCallback<CapabilitiesListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getCapabilitiesWithServiceResponseAsync(location), serviceCallback);
+    public ServiceFuture<CapabilitiesListResultInner> listCapabilitiesAsync(String location, final ServiceCallback<CapabilitiesListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listCapabilitiesWithServiceResponseAsync(location), serviceCallback);
     }
 
     /**
@@ -405,8 +405,8 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CapabilitiesListResultInner object
      */
-    public Observable<CapabilitiesListResultInner> getCapabilitiesAsync(String location) {
-        return getCapabilitiesWithServiceResponseAsync(location).map(new Func1<ServiceResponse<CapabilitiesListResultInner>, CapabilitiesListResultInner>() {
+    public Observable<CapabilitiesListResultInner> listCapabilitiesAsync(String location) {
+        return listCapabilitiesWithServiceResponseAsync(location).map(new Func1<ServiceResponse<CapabilitiesListResultInner>, CapabilitiesListResultInner>() {
             @Override
             public CapabilitiesListResultInner call(ServiceResponse<CapabilitiesListResultInner> response) {
                 return response.body();
@@ -422,7 +422,7 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CapabilitiesListResultInner object
      */
-    public Observable<ServiceResponse<CapabilitiesListResultInner>> getCapabilitiesWithServiceResponseAsync(String location) {
+    public Observable<ServiceResponse<CapabilitiesListResultInner>> listCapabilitiesWithServiceResponseAsync(String location) {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
@@ -432,12 +432,12 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
-        return service.getCapabilities(this.subscriptionId(), location, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+        return service.listCapabilities(this.subscriptionId(), location, this.apiVersion(), this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CapabilitiesListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CapabilitiesListResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<CapabilitiesListResultInner> clientResponse = getCapabilitiesDelegate(response);
+                        ServiceResponse<CapabilitiesListResultInner> clientResponse = listCapabilitiesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -446,7 +446,7 @@ public class ContainerInstanceManagementClientImpl extends AzureServiceClient {
             });
     }
 
-    private ServiceResponse<CapabilitiesListResultInner> getCapabilitiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<CapabilitiesListResultInner> listCapabilitiesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<CapabilitiesListResultInner, CloudException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<CapabilitiesListResultInner>() { }.getType())
                 .registerError(CloudException.class)
