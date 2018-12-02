@@ -75,6 +75,24 @@ public class ServerInner extends Resource {
     private StorageProfile storageProfile;
 
     /**
+     * The replication role of the server.
+     */
+    @JsonProperty(value = "properties.replicationRole")
+    private String replicationRole;
+
+    /**
+     * The master server id of a replica server.
+     */
+    @JsonProperty(value = "properties.masterServerId")
+    private String masterServerId;
+
+    /**
+     * The maximum number of replicas that a master server can have.
+     */
+    @JsonProperty(value = "properties.replicaCapacity")
+    private Integer replicaCapacity;
+
+    /**
      * Get the SKU (pricing tier) of the server.
      *
      * @return the sku value
@@ -231,6 +249,66 @@ public class ServerInner extends Resource {
      */
     public ServerInner withStorageProfile(StorageProfile storageProfile) {
         this.storageProfile = storageProfile;
+        return this;
+    }
+
+    /**
+     * Get the replication role of the server.
+     *
+     * @return the replicationRole value
+     */
+    public String replicationRole() {
+        return this.replicationRole;
+    }
+
+    /**
+     * Set the replication role of the server.
+     *
+     * @param replicationRole the replicationRole value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withReplicationRole(String replicationRole) {
+        this.replicationRole = replicationRole;
+        return this;
+    }
+
+    /**
+     * Get the master server id of a replica server.
+     *
+     * @return the masterServerId value
+     */
+    public String masterServerId() {
+        return this.masterServerId;
+    }
+
+    /**
+     * Set the master server id of a replica server.
+     *
+     * @param masterServerId the masterServerId value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withMasterServerId(String masterServerId) {
+        this.masterServerId = masterServerId;
+        return this;
+    }
+
+    /**
+     * Get the maximum number of replicas that a master server can have.
+     *
+     * @return the replicaCapacity value
+     */
+    public Integer replicaCapacity() {
+        return this.replicaCapacity;
+    }
+
+    /**
+     * Set the maximum number of replicas that a master server can have.
+     *
+     * @param replicaCapacity the replicaCapacity value to set
+     * @return the ServerInner object itself.
+     */
+    public ServerInner withReplicaCapacity(Integer replicaCapacity) {
+        this.replicaCapacity = replicaCapacity;
         return this;
     }
 

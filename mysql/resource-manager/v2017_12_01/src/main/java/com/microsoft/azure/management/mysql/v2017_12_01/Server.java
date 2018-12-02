@@ -41,6 +41,21 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
     String fullyQualifiedDomainName();
 
     /**
+     * @return the masterServerId value.
+     */
+    String masterServerId();
+
+    /**
+     * @return the replicaCapacity value.
+     */
+    Integer replicaCapacity();
+
+    /**
+     * @return the replicationRole value.
+     */
+    String replicationRole();
+
+    /**
      * @return the sku value.
      */
     Sku sku();
@@ -118,7 +133,7 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
     /**
      * The template for a Server update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Server>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithSku, UpdateStages.WithSslEnforcement, UpdateStages.WithStorageProfile, UpdateStages.WithVersion {
+    interface Update extends Appliable<Server>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithReplicationRole, UpdateStages.WithSku, UpdateStages.WithSslEnforcement, UpdateStages.WithStorageProfile, UpdateStages.WithVersion {
     }
 
     /**
@@ -133,6 +148,16 @@ public interface Server extends HasInner<ServerInner>, Resource, GroupableResour
              * Specifies administratorLoginPassword.
              */
             Update withAdministratorLoginPassword(String administratorLoginPassword);
+        }
+
+        /**
+         * The stage of the server {0} allowing to specify ReplicationRole.
+         */
+        interface WithReplicationRole {
+            /**
+             * Specifies replicationRole.
+             */
+            Update withReplicationRole(String replicationRole);
         }
 
         /**
