@@ -31,7 +31,7 @@ public class MetricDefinitionInner {
     private String resourceId;
 
     /**
-     * the namespace the metric blongs to.
+     * the namespace the metric belongs to.
      */
     @JsonProperty(value = "namespace")
     private String namespace;
@@ -126,7 +126,7 @@ public class MetricDefinitionInner {
     }
 
     /**
-     * Get the namespace the metric blongs to.
+     * Get the namespace the metric belongs to.
      *
      * @return the namespace value
      */
@@ -135,7 +135,7 @@ public class MetricDefinitionInner {
     }
 
     /**
-     * Set the namespace the metric blongs to.
+     * Set the namespace the metric belongs to.
      *
      * @param namespace the namespace value to set
      * @return the MetricDefinitionInner object itself.

@@ -170,7 +170,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Retrieve alert rule defintions in a resource group.
+     * Retrieve alert rule definitions in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList<MetricAlertResourceInner> object if successful.
@@ -188,7 +188,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Retrieve alert rule defintions in a resource group.
+     * Retrieve alert rule definitions in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -199,7 +199,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Retrieve alert rule defintions in a resource group.
+     * Retrieve alert rule definitions in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the List&lt;MetricAlertResourceInner&gt; object
@@ -216,7 +216,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Retrieve alert rule defintions in a resource group.
+     * Retrieve alert rule definitions in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the List&lt;MetricAlertResourceInner&gt; object
@@ -256,7 +256,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Retrieve an alert rule definiton.
+     * Retrieve an alert rule definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -270,7 +270,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Retrieve an alert rule definiton.
+     * Retrieve an alert rule definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -283,7 +283,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Retrieve an alert rule definiton.
+     * Retrieve an alert rule definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -300,7 +300,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Retrieve an alert rule definiton.
+     * Retrieve an alert rule definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -524,7 +524,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Delete an alert rule defitiniton.
+     * Delete an alert rule definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -537,7 +537,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Delete an alert rule defitiniton.
+     * Delete an alert rule definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -550,7 +550,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Delete an alert rule defitiniton.
+     * Delete an alert rule definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
@@ -567,7 +567,7 @@ public class MetricAlertsInner implements InnerSupportsGet<MetricAlertResourceIn
     }
 
     /**
-     * Delete an alert rule defitiniton.
+     * Delete an alert rule definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param ruleName The name of the rule.
