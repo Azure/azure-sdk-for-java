@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ManagementGroupRecursiveChildInfo {
     /**
-     * Managment Group Recursive Child Info.
+     * Management Group Recursive Child Info.
      * Possible values include: 'Enrollment', 'Department', 'Account',
      * 'Subscription'.
      */

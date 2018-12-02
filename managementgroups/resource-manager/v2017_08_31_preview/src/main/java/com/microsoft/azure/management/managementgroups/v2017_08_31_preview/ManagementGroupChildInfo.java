@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ManagementGroupChildInfo {
     /**
-     * Managment Group Child Info.
+     * Management Group Child Info.
      * Possible values include: 'Enrollment', 'Department', 'Account',
      * 'Subscription'.
      */
