@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The parameters to the list SAS requet.
+ * The parameters to the list SAS request.
  */
 public class ListContainerSasInput {
     /**

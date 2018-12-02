@@ -35,7 +35,7 @@ public class CommonEncryptionCbcs {
     private StreamingPolicyContentKeys contentKeys;
 
     /**
-     * Configuration of DRMs for current encryption scheme.
+     * Configuration of DRM for current encryption scheme.
      */
     @JsonProperty(value = "drm")
     private CbcsDrmConfiguration drm;
@@ -101,7 +101,7 @@ public class CommonEncryptionCbcs {
     }
 
     /**
-     * Get configuration of DRMs for current encryption scheme.
+     * Get configuration of DRM for current encryption scheme.
      *
      * @return the drm value
      */
@@ -110,7 +110,7 @@ public class CommonEncryptionCbcs {
     }
 
     /**
-     * Set configuration of DRMs for current encryption scheme.
+     * Set configuration of DRM for current encryption scheme.
      *
      * @param drm the drm value to set
      * @return the CommonEncryptionCbcs object itself.

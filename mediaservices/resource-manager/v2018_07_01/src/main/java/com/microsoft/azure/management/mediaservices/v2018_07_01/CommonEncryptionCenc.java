@@ -35,7 +35,7 @@ public class CommonEncryptionCenc {
     private StreamingPolicyContentKeys contentKeys;
 
     /**
-     * Configuration of DRMs for CommonEncryptionCenc encryption scheme.
+     * Configuration of DRM for CommonEncryptionCenc encryption scheme.
      */
     @JsonProperty(value = "drm")
     private CencDrmConfiguration drm;
@@ -101,7 +101,7 @@ public class CommonEncryptionCenc {
     }
 
     /**
-     * Get configuration of DRMs for CommonEncryptionCenc encryption scheme.
+     * Get configuration of DRM for CommonEncryptionCenc encryption scheme.
      *
      * @return the drm value
      */
@@ -110,7 +110,7 @@ public class CommonEncryptionCenc {
     }
 
     /**
-     * Set configuration of DRMs for CommonEncryptionCenc encryption scheme.
+     * Set configuration of DRM for CommonEncryptionCenc encryption scheme.
      *
      * @param drm the drm value to set
      * @return the CommonEncryptionCenc object itself.

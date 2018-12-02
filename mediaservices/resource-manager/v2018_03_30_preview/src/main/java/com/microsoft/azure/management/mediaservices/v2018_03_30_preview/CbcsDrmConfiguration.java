@@ -11,7 +11,7 @@ package com.microsoft.azure.management.mediaservices.v2018_03_30_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Class to specify drm configurations of CommonEncryptionCbcs scheme in
+ * Class to specify DRM configurations of CommonEncryptionCbcs scheme in
  * Streaming Policy.
  */
 public class CbcsDrmConfiguration {

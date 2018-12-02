@@ -18,16 +18,16 @@ public enum EncoderNamedPreset {
     /** Produces a set of GOP aligned MP4 files with H.264 video and stereo AAC audio. Auto-generates a bitrate ladder based on the input resolution and bitrate. The auto-generated preset will never exceed the input resolution and bitrate. For example, if the input is 720p at 3 Mbps, output will remain 720p at best, and will start at rates lower than 3 Mbps. The output will have video and audio in separate MP4 files, which is optimal for adaptive streaming. */
     ADAPTIVE_STREAMING("AdaptiveStreaming"),
 
-    /** Produces a single MP4 file containing only stereo audio encoded at 192 kbps. */
+    /** Produces a single MP4 file containing only stereo audio encoded at 192 Kbps. */
     AACGOOD_QUALITY_AUDIO("AACGoodQualityAudio"),
 
-    /** Produces a set of 8 GOP-aligned MP4 files, ranging from 6000 kbps to 400 kbps, and stereo AAC audio. Resolution starts at 1080p and goes down to 360p. */
+    /** Produces a set of 8 GOP-aligned MP4 files, ranging from 6000 Kbps to 400 Kbps, and stereo AAC audio. Resolution starts at 1080p and goes down to 360p. */
     H264MULTIPLE_BITRATE1080P("H264MultipleBitrate1080p"),
 
-    /** Produces a set of 6 GOP-aligned MP4 files, ranging from 3400 kbps to 400 kbps, and stereo AAC audio. Resolution starts at 720p and goes down to 360p. */
+    /** Produces a set of 6 GOP-aligned MP4 files, ranging from 3400 Kbps to 400 Kbps, and stereo AAC audio. Resolution starts at 720p and goes down to 360p. */
     H264MULTIPLE_BITRATE720P("H264MultipleBitrate720p"),
 
-    /** Produces a set of 5 GOP-aligned MP4 files, ranging from 1600kbps to 400 kbps, and stereo AAC audio. Resolution starts at 480p and goes down to 360p. */
+    /** Produces a set of 5 GOP-aligned MP4 files, ranging from 1600Kbps to 400 Kbps, and stereo AAC audio. Resolution starts at 480p and goes down to 360p. */
     H264MULTIPLE_BITRATE_SD("H264MultipleBitrateSD");
 
     /** The actual serialized value for a EncoderNamedPreset instance. */
