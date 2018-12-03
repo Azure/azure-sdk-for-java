@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for CopyStatus.
  */
 public enum CopyStatus {
-    /** Data copy hasnt started yet. */
+    /** Data copy hasn't started yet. */
     NOT_STARTED("NotStarted"),
 
     /** Data copy is in progress. */

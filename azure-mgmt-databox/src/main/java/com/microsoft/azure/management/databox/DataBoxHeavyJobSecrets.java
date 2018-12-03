@@ -14,19 +14,19 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The secrets related to a databox heavy job.
+ * The secrets related to a DataBoxHeavy job.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobSecretsType")
 @JsonTypeName("DataBoxHeavy")
 public class DataBoxHeavyJobSecrets extends JobSecrets {
     /**
-     * Contains the list of secret objects for a databox heavy job.
+     * Contains the list of secret objects for a DataBoxHeavy job.
      */
     @JsonProperty(value = "cabinetPodSecrets", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataBoxHeavySecret> cabinetPodSecrets;
 
     /**
-     * Get contains the list of secret objects for a databox heavy job.
+     * Get contains the list of secret objects for a DataBoxHeavy job.
      *
      * @return the cabinetPodSecrets value
      */

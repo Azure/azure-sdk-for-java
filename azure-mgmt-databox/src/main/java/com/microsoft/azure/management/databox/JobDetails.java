@@ -26,8 +26,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class JobDetails {
     /**
-     * The expected size of the data, which needs to be transfered in this job,
-     * in tera bytes.
+     * The expected size of the data, which needs to be transferred in this
+     * job, in terabytes.
      */
     @JsonProperty(value = "expectedDataSizeInTeraBytes")
     private Integer expectedDataSizeInTeraBytes;
@@ -99,7 +99,7 @@ public class JobDetails {
     private String chainOfCustodySasKey;
 
     /**
-     * Get the expected size of the data, which needs to be transfered in this job, in tera bytes.
+     * Get the expected size of the data, which needs to be transferred in this job, in terabytes.
      *
      * @return the expectedDataSizeInTeraBytes value
      */
@@ -108,7 +108,7 @@ public class JobDetails {
     }
 
     /**
-     * Set the expected size of the data, which needs to be transfered in this job, in tera bytes.
+     * Set the expected size of the data, which needs to be transferred in this job, in terabytes.
      *
      * @param expectedDataSizeInTeraBytes the expectedDataSizeInTeraBytes value to set
      * @return the JobDetails object itself.

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Copy log details for a storage account for Databox heavy.
+ * Copy log details for a storage account for DataBoxHeavy.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "copyLogDetailsType")
 @JsonTypeName("DataBoxHeavy")
