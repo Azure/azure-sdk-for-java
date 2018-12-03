@@ -58,7 +58,7 @@ public class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends ConnectToSo
     private List<ReportableException> validationErrors;
 
     /**
-     * Information about eligiblity of agent job for migration.
+     * Information about eligibility of agent job for migration.
      */
     @JsonProperty(value = "migrationEligibility", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationEligibilityInfo migrationEligibility;
@@ -118,7 +118,7 @@ public class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends ConnectToSo
     }
 
     /**
-     * Get information about eligiblity of agent job for migration.
+     * Get information about eligibility of agent job for migration.
      *
      * @return the migrationEligibility value
      */

@@ -12,8 +12,8 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Output for command that completes sync migration for a managed instance
- * database.
+ * Output for command that completes online migration for an Azure SQL Database
+ * Managed Instance.
  */
 public class MigrateMISyncCompleteCommandOutput {
     /**

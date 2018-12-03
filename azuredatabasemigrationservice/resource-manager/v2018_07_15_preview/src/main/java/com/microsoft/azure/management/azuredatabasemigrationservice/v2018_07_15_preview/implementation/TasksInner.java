@@ -209,9 +209,11 @@ public class TasksInner {
         if (projectName == null) {
             throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String taskType = null;
-        return service.list(this.client.subscriptionId(), groupName, serviceName, projectName, apiVersion, taskType, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), groupName, serviceName, projectName, this.client.apiVersion(), taskType, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProjectTaskInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProjectTaskInner>>> call(Response<ResponseBody> response) {
@@ -342,8 +344,10 @@ public class TasksInner {
         if (projectName == null) {
             throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
-        return service.list(this.client.subscriptionId(), groupName, serviceName, projectName, apiVersion, taskType, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.subscriptionId(), groupName, serviceName, projectName, this.client.apiVersion(), taskType, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProjectTaskInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProjectTaskInner>>> call(Response<ResponseBody> response) {
@@ -366,7 +370,7 @@ public class TasksInner {
 
     /**
      * Create or update task.
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an exising one.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an existing one.
      *
      * @param groupName Name of the resource group
      * @param serviceName Name of the service
@@ -384,7 +388,7 @@ public class TasksInner {
 
     /**
      * Create or update task.
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an exising one.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an existing one.
      *
      * @param groupName Name of the resource group
      * @param serviceName Name of the service
@@ -401,7 +405,7 @@ public class TasksInner {
 
     /**
      * Create or update task.
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an exising one.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an existing one.
      *
      * @param groupName Name of the resource group
      * @param serviceName Name of the service
@@ -422,7 +426,7 @@ public class TasksInner {
 
     /**
      * Create or update task.
-     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an exising one.
+     * The tasks resource is a nested, proxy-only resource representing work performed by a DMS instance. The PUT method creates a new task or updates an existing one, although since tasks have no mutable custom properties, there is little reason to update an existing one.
      *
      * @param groupName Name of the resource group
      * @param serviceName Name of the service
@@ -451,9 +455,11 @@ public class TasksInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(parameters);
-        final String apiVersion = "2018-07-15-preview";
-        return service.createOrUpdate(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectTaskInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectTaskInner>> call(Response<ResponseBody> response) {
@@ -555,9 +561,11 @@ public class TasksInner {
         if (taskName == null) {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final String expand = null;
-        return service.get(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectTaskInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectTaskInner>> call(Response<ResponseBody> response) {
@@ -655,8 +663,10 @@ public class TasksInner {
         if (taskName == null) {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
-        return service.get(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, expand, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectTaskInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectTaskInner>> call(Response<ResponseBody> response) {
@@ -756,9 +766,11 @@ public class TasksInner {
         if (taskName == null) {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         final Boolean deleteRunningTasks = null;
-        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, deleteRunningTasks, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, deleteRunningTasks, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -855,8 +867,10 @@ public class TasksInner {
         if (taskName == null) {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
-        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, deleteRunningTasks, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, deleteRunningTasks, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -965,9 +979,11 @@ public class TasksInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(parameters);
-        final String apiVersion = "2018-07-15-preview";
-        return service.update(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.update(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectTaskInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectTaskInner>> call(Response<ResponseBody> response) {
@@ -1068,8 +1084,10 @@ public class TasksInner {
         if (taskName == null) {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
-        return service.cancel(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.cancel(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectTaskInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectTaskInner>> call(Response<ResponseBody> response) {
@@ -1174,12 +1192,14 @@ public class TasksInner {
         if (taskName == null) {
             throw new IllegalArgumentException("Parameter taskName is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2018-07-15-preview";
-        return service.command(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.command(this.client.subscriptionId(), groupName, serviceName, projectName, taskName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CommandPropertiesInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CommandPropertiesInner>> call(Response<ResponseBody> response) {

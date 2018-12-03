@@ -11,7 +11,7 @@ package com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Info for ertificate to be exported for TDE enabled databases.
+ * Info for certificate to be exported for TDE enabled databases.
  */
 public class SelectedCertificateInput {
     /**

@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Properties for the task that validates connection to Azure Db For PostgreSql
- * server and target server requirements for online migration.
+ * Properties for the task that validates connection to Azure Database For
+ * PostgreSQL server and target server requirements for online migration.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "taskType")
 @JsonTypeName("ConnectToTarget.AzureDbForPostgreSql.Sync")

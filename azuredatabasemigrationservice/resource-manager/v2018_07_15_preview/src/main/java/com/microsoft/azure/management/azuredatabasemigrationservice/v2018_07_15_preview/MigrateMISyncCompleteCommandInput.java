@@ -11,8 +11,8 @@ package com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Input for command that completes sync migration for a managed instance
- * database.
+ * Input for command that completes online migration for an Azure SQL Database
+ * Managed Instance.
  */
 public class MigrateMISyncCompleteCommandInput {
     /**

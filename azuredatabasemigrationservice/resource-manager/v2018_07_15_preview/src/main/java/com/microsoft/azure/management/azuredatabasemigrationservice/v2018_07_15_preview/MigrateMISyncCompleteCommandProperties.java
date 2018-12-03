@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.microsoft.azure.management.azuredatabasemigrationservice.v2018_07_15_preview.implementation.CommandPropertiesInner;
 
 /**
- * Properties for the command that completes sync migration for a managed
- * instance database.
+ * Properties for the command that completes online migration for an Azure SQL
+ * Database Managed Instance.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "commandType")
 @JsonTypeName("Migrate.SqlServer.AzureDbSqlMi.Complete")

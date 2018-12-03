@@ -209,8 +209,10 @@ public class FilesInner {
         if (projectName == null) {
             throw new IllegalArgumentException("Parameter projectName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
-        return service.list(this.client.subscriptionId(), groupName, serviceName, projectName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(this.client.subscriptionId(), groupName, serviceName, projectName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProjectFileInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProjectFileInner>>> call(Response<ResponseBody> response) {
@@ -311,8 +313,10 @@ public class FilesInner {
         if (fileName == null) {
             throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
-        return service.get(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectFileInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectFileInner>> call(Response<ResponseBody> response) {
@@ -420,9 +424,11 @@ public class FilesInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(parameters);
-        final String apiVersion = "2018-07-15-preview";
-        return service.createOrUpdate(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectFileInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectFileInner>> call(Response<ResponseBody> response) {
@@ -523,8 +529,10 @@ public class FilesInner {
         if (fileName == null) {
             throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
-        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.delete(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -633,9 +641,11 @@ public class FilesInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
         Validator.validate(parameters);
-        final String apiVersion = "2018-07-15-preview";
-        return service.update(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.update(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProjectFileInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProjectFileInner>> call(Response<ResponseBody> response) {
@@ -736,8 +746,10 @@ public class FilesInner {
         if (fileName == null) {
             throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
-        return service.read(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.read(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FileStorageInfoInner>>>() {
                 @Override
                 public Observable<ServiceResponse<FileStorageInfoInner>> call(Response<ResponseBody> response) {
@@ -838,8 +850,10 @@ public class FilesInner {
         if (fileName == null) {
             throw new IllegalArgumentException("Parameter fileName is required and cannot be null.");
         }
-        final String apiVersion = "2018-07-15-preview";
-        return service.readWrite(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.readWrite(this.client.subscriptionId(), groupName, serviceName, projectName, fileName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FileStorageInfoInner>>>() {
                 @Override
                 public Observable<ServiceResponse<FileStorageInfoInner>> call(Response<ResponseBody> response) {
