@@ -172,6 +172,19 @@ public class DataFactoryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The IntegrationRuntimeObjectMetadatasInner object to access its operations.
+     */
+    private IntegrationRuntimeObjectMetadatasInner integrationRuntimeObjectMetadatas;
+
+    /**
+     * Gets the IntegrationRuntimeObjectMetadatasInner object to access its operations.
+     * @return the IntegrationRuntimeObjectMetadatasInner object.
+     */
+    public IntegrationRuntimeObjectMetadatasInner integrationRuntimeObjectMetadatas() {
+        return this.integrationRuntimeObjectMetadatas;
+    }
+
+    /**
      * The IntegrationRuntimeNodesInner object to access its operations.
      */
     private IntegrationRuntimeNodesInner integrationRuntimeNodes;
@@ -326,6 +339,7 @@ public class DataFactoryManagementClientImpl extends AzureServiceClient {
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.factories = new FactoriesInner(restClient().retrofit(), this);
         this.integrationRuntimes = new IntegrationRuntimesInner(restClient().retrofit(), this);
+        this.integrationRuntimeObjectMetadatas = new IntegrationRuntimeObjectMetadatasInner(restClient().retrofit(), this);
         this.integrationRuntimeNodes = new IntegrationRuntimeNodesInner(restClient().retrofit(), this);
         this.linkedServices = new LinkedServicesInner(restClient().retrofit(), this);
         this.datasets = new DatasetsInner(restClient().retrofit(), this);
