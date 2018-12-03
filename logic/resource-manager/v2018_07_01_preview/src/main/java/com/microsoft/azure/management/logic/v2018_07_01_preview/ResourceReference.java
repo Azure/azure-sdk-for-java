@@ -17,7 +17,7 @@ public class ResourceReference {
     /**
      * The resource id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private String id;
 
     /**
@@ -39,6 +39,17 @@ public class ResourceReference {
      */
     public String id() {
         return this.id;
+    }
+
+    /**
+     * Set the resource id.
+     *
+     * @param id the id value to set
+     * @return the ResourceReference object itself.
+     */
+    public ResourceReference withId(String id) {
+        this.id = id;
+        return this;
     }
 
     /**
