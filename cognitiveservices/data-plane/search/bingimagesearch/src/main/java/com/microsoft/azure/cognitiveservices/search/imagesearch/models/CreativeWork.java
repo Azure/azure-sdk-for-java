@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * The most generic kind of creative work, including books, movies,
  * photographs, software programs, etc.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = CreativeWork.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("CreativeWork")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "MediaObject", value = MediaObject.class),
@@ -51,7 +51,7 @@ public class CreativeWork extends Thing {
     private String text;
 
     /**
-     * Get the thumbnailUrl value.
+     * Get the URL to a thumbnail of the item.
      *
      * @return the thumbnailUrl value
      */
@@ -60,7 +60,7 @@ public class CreativeWork extends Thing {
     }
 
     /**
-     * Get the provider value.
+     * Get the source of the creative work.
      *
      * @return the provider value
      */
@@ -69,7 +69,7 @@ public class CreativeWork extends Thing {
     }
 
     /**
-     * Get the datePublished value.
+     * Get the date on which the CreativeWork was published.
      *
      * @return the datePublished value
      */
@@ -78,7 +78,7 @@ public class CreativeWork extends Thing {
     }
 
     /**
-     * Get the text value.
+     * Get text content of this creative work.
      *
      * @return the text value
      */

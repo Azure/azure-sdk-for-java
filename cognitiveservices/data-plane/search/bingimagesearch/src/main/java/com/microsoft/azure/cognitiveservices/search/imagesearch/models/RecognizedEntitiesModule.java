@@ -22,7 +22,7 @@ public class RecognizedEntitiesModule {
     private List<RecognizedEntityGroup> value;
 
     /**
-     * Get the value value.
+     * Get a list of recognized entities.
      *
      * @return the value value
      */

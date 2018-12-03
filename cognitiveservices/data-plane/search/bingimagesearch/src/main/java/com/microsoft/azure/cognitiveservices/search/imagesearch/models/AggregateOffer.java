@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a list of offers from merchants that are related to the image.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = AggregateOffer.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("AggregateOffer")
 public class AggregateOffer extends Offer {
     /**
@@ -27,7 +27,7 @@ public class AggregateOffer extends Offer {
     private List<Offer> offers;
 
     /**
-     * Get the offers value.
+     * Get a list of offers from merchants that have offerings related to the image.
      *
      * @return the offers value
      */

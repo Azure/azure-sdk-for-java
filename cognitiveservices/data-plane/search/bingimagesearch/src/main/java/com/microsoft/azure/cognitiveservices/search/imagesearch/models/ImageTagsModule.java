@@ -25,7 +25,7 @@ public class ImageTagsModule {
     private List<InsightsTag> value;
 
     /**
-     * Get the value value.
+     * Get a list of tags that describe the characteristics of the content found in the image. For example, if the image is of a musical artist, the list might include Female, Dress, and Music to indicate the person is female music artist that's wearing a dress.
      *
      * @return the value value
      */
@@ -34,7 +34,7 @@ public class ImageTagsModule {
     }
 
     /**
-     * Set the value value.
+     * Set a list of tags that describe the characteristics of the content found in the image. For example, if the image is of a musical artist, the list might include Female, Dress, and Music to indicate the person is female music artist that's wearing a dress.
      *
      * @param value the value value to set
      * @return the ImageTagsModule object itself.

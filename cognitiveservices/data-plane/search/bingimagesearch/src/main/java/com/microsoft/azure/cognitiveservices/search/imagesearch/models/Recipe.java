@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a cooking recipe.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Recipe.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Recipe")
 public class Recipe extends CreativeWork {
     /**
@@ -43,7 +43,7 @@ public class Recipe extends CreativeWork {
     private String totalTime;
 
     /**
-     * Get the cookTime value.
+     * Get the amount of time the food takes to cook. For example, PT25M. For information about the time format, see http://en.wikipedia.org/wiki/ISO_8601#Durations.
      *
      * @return the cookTime value
      */
@@ -52,7 +52,7 @@ public class Recipe extends CreativeWork {
     }
 
     /**
-     * Get the prepTime value.
+     * Get the amount of time required to prepare the ingredients. For example, PT15M. For information about the time format, see http://en.wikipedia.org/wiki/ISO_8601#Durations.
      *
      * @return the prepTime value
      */
@@ -61,7 +61,7 @@ public class Recipe extends CreativeWork {
     }
 
     /**
-     * Get the totalTime value.
+     * Get the total amount of time it takes to prepare and cook the recipe. For example, PT45M. For information about the time format, see http://en.wikipedia.org/wiki/ISO_8601#Durations.
      *
      * @return the totalTime value
      */

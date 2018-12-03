@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a link to a webpage that contains a collection of related images.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageGallery.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageGallery")
 public class ImageGallery extends CollectionPage {
     /**
@@ -38,7 +38,7 @@ public class ImageGallery extends CollectionPage {
     private Long followersCount;
 
     /**
-     * Get the source value.
+     * Get the publisher or social network where the images were found. You must attribute the publisher as the source where the collection was found.
      *
      * @return the source value
      */
@@ -47,7 +47,7 @@ public class ImageGallery extends CollectionPage {
     }
 
     /**
-     * Get the imagesCount value.
+     * Get the number of related images found in the collection.
      *
      * @return the imagesCount value
      */
@@ -56,7 +56,7 @@ public class ImageGallery extends CollectionPage {
     }
 
     /**
-     * Get the followersCount value.
+     * Get the number of users on the social network that follow the creator.
      *
      * @return the followersCount value
      */

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines a merchant's offer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Offer.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Offer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AggregateOffer", value = AggregateOffer.class)
@@ -81,7 +81,7 @@ public class Offer extends Thing {
     private String lastUpdated;
 
     /**
-     * Get the seller value.
+     * Get seller for this offer.
      *
      * @return the seller value
      */
@@ -90,7 +90,7 @@ public class Offer extends Thing {
     }
 
     /**
-     * Get the price value.
+     * Get the item's price.
      *
      * @return the price value
      */
@@ -99,7 +99,7 @@ public class Offer extends Thing {
     }
 
     /**
-     * Get the priceCurrency value.
+     * Get the monetary currency. For example, USD. Possible values include: 'USD', 'CAD', 'GBP', 'EUR', 'COP', 'JPY', 'CNY', 'AUD', 'INR', 'AED', 'AFN', 'ALL', 'AMD', 'ANG', 'AOA', 'ARS', 'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BOV', 'BRL', 'BSD', 'BTN', 'BWP', 'BYR', 'BZD', 'CDF', 'CHE', 'CHF', 'CHW', 'CLF', 'CLP', 'COU', 'CRC', 'CUC', 'CUP', 'CVE', 'CZK', 'DJF', 'DKK', 'DOP', 'DZD', 'EGP', 'ERN', 'ETB', 'FJD', 'FKP', 'GEL', 'GHS', 'GIP', 'GMD', 'GNF', 'GTQ', 'GYD', 'HKD', 'HNL', 'HRK', 'HTG', 'HUF', 'IDR', 'ILS', 'IQD', 'IRR', 'ISK', 'JMD', 'JOD', 'KES', 'KGS', 'KHR', 'KMF', 'KPW', 'KRW', 'KWD', 'KYD', 'KZT', 'LAK', 'LBP', 'LKR', 'LRD', 'LSL', 'LYD', 'MAD', 'MDL', 'MGA', 'MKD', 'MMK', 'MNT', 'MOP', 'MRO', 'MUR', 'MVR', 'MWK', 'MXN', 'MXV', 'MYR', 'MZN', 'NAD', 'NGN', 'NIO', 'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR', 'RON', 'RSD', 'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG', 'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'SSP', 'STD', 'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'UYU', 'UZS', 'VEF', 'VND', 'VUV', 'WST', 'XAF', 'XCD', 'XOF', 'XPF', 'YER', 'ZAR', 'ZMW'.
      *
      * @return the priceCurrency value
      */
@@ -108,7 +108,7 @@ public class Offer extends Thing {
     }
 
     /**
-     * Get the availability value.
+     * Get the item's availability. The following are the possible values: Discontinued, InStock, InStoreOnly, LimitedAvailability, OnlineOnly, OutOfStock, PreOrder, SoldOut. Possible values include: 'Discontinued', 'InStock', 'InStoreOnly', 'LimitedAvailability', 'OnlineOnly', 'OutOfStock', 'PreOrder', 'SoldOut'.
      *
      * @return the availability value
      */
@@ -117,7 +117,7 @@ public class Offer extends Thing {
     }
 
     /**
-     * Get the aggregateRating value.
+     * Get an aggregated rating that indicates how well the product has been rated by others.
      *
      * @return the aggregateRating value
      */
@@ -126,7 +126,7 @@ public class Offer extends Thing {
     }
 
     /**
-     * Get the lastUpdated value.
+     * Get the last date that the offer was updated. The date is in the form YYYY-MM-DD.
      *
      * @return the lastUpdated value
      */

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines a rating.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Rating.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Rating")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AggregateRating", value = AggregateRating.class)
@@ -35,7 +35,7 @@ public class Rating extends PropertiesItem {
     private Double bestRating;
 
     /**
-     * Get the ratingValue value.
+     * Get the mean (average) rating. The possible values are 1.0 through 5.0.
      *
      * @return the ratingValue value
      */
@@ -44,7 +44,7 @@ public class Rating extends PropertiesItem {
     }
 
     /**
-     * Set the ratingValue value.
+     * Set the mean (average) rating. The possible values are 1.0 through 5.0.
      *
      * @param ratingValue the ratingValue value to set
      * @return the Rating object itself.
@@ -55,7 +55,7 @@ public class Rating extends PropertiesItem {
     }
 
     /**
-     * Get the bestRating value.
+     * Get the highest rated review. The possible values are 1.0 through 5.0.
      *
      * @return the bestRating value
      */

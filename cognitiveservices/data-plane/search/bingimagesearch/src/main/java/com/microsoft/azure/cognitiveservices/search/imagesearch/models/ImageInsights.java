@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * [modules](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#modulesrequested)
  * to only Caption, then this object includes only the imageCaption field.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageInsights.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("ImageInsights")
 public class ImageInsights extends Response {
     /**
@@ -120,7 +120,7 @@ public class ImageInsights extends Response {
     private ImageTagsModule imageTags;
 
     /**
-     * Get the imageInsightsToken value.
+     * Get a token that you use in a subsequent call to the Image Search API to get more information about the image. For information about using this token, see the insightsToken query parameter. This token has the same usage as the token in the Image object.
      *
      * @return the imageInsightsToken value
      */
@@ -129,7 +129,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the bestRepresentativeQuery value.
+     * Get the query term that best represents the image. Clicking the link in the Query object, takes the user to a webpage with more pictures of the image.
      *
      * @return the bestRepresentativeQuery value
      */
@@ -138,7 +138,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the imageCaption value.
+     * Get the caption to use for the image.
      *
      * @return the imageCaption value
      */
@@ -147,7 +147,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the relatedCollections value.
+     * Get a list of links to webpages that contain related images.
      *
      * @return the relatedCollections value
      */
@@ -156,7 +156,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the pagesIncluding value.
+     * Get a list of webpages that contain the image. To access the webpage, use the URL in the image's hostPageUrl field.
      *
      * @return the pagesIncluding value
      */
@@ -165,7 +165,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the shoppingSources value.
+     * Get a list of merchants that offer items related to the image. For example, if the image is of an apple pie, the list contains merchants that are selling apple pies.
      *
      * @return the shoppingSources value
      */
@@ -174,7 +174,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the relatedSearches value.
+     * Get a list of related queries made by others.
      *
      * @return the relatedSearches value
      */
@@ -183,7 +183,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the recipes value.
+     * Get a list of recipes related to the image. For example, if the image is of an apple pie, the list contains recipes for making an apple pie.
      *
      * @return the recipes value
      */
@@ -192,7 +192,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the visuallySimilarImages value.
+     * Get a list of images that are visually similar to the original image. For example, if the specified image is of a sunset over a body of water, the list of similar images are of a sunset over a body of water. If the specified image is of a person, similar images might be of the same person or they might be of persons dressed similarly or in a similar setting. The criteria for similarity continues to evolve.
      *
      * @return the visuallySimilarImages value
      */
@@ -201,7 +201,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the visuallySimilarProducts value.
+     * Get a list of images that contain products that are visually similar to products found in the original image. For example, if the specified image contains a dress, the list of similar images contain a dress. The image provides summary information about offers that Bing found online for the product.
      *
      * @return the visuallySimilarProducts value
      */
@@ -210,7 +210,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the recognizedEntityGroups value.
+     * Get a list of groups that contain images of entities that match the entity found in the specified image. For example, the response might include images from the general celebrity group if the entity was recognized in that group.
      *
      * @return the recognizedEntityGroups value
      */
@@ -219,7 +219,7 @@ public class ImageInsights extends Response {
     }
 
     /**
-     * Get the imageTags value.
+     * Get a list of characteristics of the content found in the image. For example, if the image is of a person, the tags might indicate the person's gender and the type of clothes they're wearing.
      *
      * @return the imageTags value
      */

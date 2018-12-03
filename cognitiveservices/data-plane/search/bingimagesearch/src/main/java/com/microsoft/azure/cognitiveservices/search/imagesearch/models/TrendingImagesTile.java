@@ -30,7 +30,7 @@ public class TrendingImagesTile {
     private ImageObject image;
 
     /**
-     * Get the query value.
+     * Get a query that returns a Bing search results page with more images of the subject. For example, if the category is Popular People Searches, then the thumbnail is of a popular person. The query would return a Bing search results page with more images of that person.
      *
      * @return the query value
      */
@@ -39,7 +39,7 @@ public class TrendingImagesTile {
     }
 
     /**
-     * Set the query value.
+     * Set a query that returns a Bing search results page with more images of the subject. For example, if the category is Popular People Searches, then the thumbnail is of a popular person. The query would return a Bing search results page with more images of that person.
      *
      * @param query the query value to set
      * @return the TrendingImagesTile object itself.
@@ -50,7 +50,7 @@ public class TrendingImagesTile {
     }
 
     /**
-     * Get the image value.
+     * Get the image's thumbnail.
      *
      * @return the image value
      */
@@ -59,7 +59,7 @@ public class TrendingImagesTile {
     }
 
     /**
-     * Set the image value.
+     * Set the image's thumbnail.
      *
      * @param image the image value to set
      * @return the TrendingImagesTile object itself.

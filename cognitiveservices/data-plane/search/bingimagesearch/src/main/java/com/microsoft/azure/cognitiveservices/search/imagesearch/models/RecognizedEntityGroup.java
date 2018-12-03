@@ -32,7 +32,7 @@ public class RecognizedEntityGroup {
     private String name;
 
     /**
-     * Get the recognizedEntityRegions value.
+     * Get the regions of the image that contain entities.
      *
      * @return the recognizedEntityRegions value
      */
@@ -41,7 +41,7 @@ public class RecognizedEntityGroup {
     }
 
     /**
-     * Set the recognizedEntityRegions value.
+     * Set the regions of the image that contain entities.
      *
      * @param recognizedEntityRegions the recognizedEntityRegions value to set
      * @return the RecognizedEntityGroup object itself.
@@ -52,7 +52,7 @@ public class RecognizedEntityGroup {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the group where images of the entity were also found. The following are possible groups. CelebRecognitionAnnotations: Similar to CelebrityAnnotations but provides a higher probability of an accurate match. CelebrityAnnotations: Contains celebrities such as actors, politicians, athletes, and historical figures.
      *
      * @return the name value
      */
@@ -61,7 +61,7 @@ public class RecognizedEntityGroup {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the group where images of the entity were also found. The following are possible groups. CelebRecognitionAnnotations: Similar to CelebrityAnnotations but provides a higher probability of an accurate match. CelebrityAnnotations: Contains celebrities such as actors, politicians, athletes, and historical figures.
      *
      * @param name the name value to set
      * @return the RecognizedEntityGroup object itself.

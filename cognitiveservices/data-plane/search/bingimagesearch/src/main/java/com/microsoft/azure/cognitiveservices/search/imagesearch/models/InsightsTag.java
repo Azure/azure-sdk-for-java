@@ -21,7 +21,7 @@ public class InsightsTag {
     private String name;
 
     /**
-     * Get the name value.
+     * Get the name of the characteristic. For example, cat, kitty, calico cat.
      *
      * @return the name value
      */

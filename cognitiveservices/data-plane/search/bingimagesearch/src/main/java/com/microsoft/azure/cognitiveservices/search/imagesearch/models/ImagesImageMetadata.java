@@ -39,7 +39,7 @@ public class ImagesImageMetadata {
     private AggregateOffer aggregateOffer;
 
     /**
-     * Get the shoppingSourcesCount value.
+     * Get the number of websites that offer goods of the products seen in the image.
      *
      * @return the shoppingSourcesCount value
      */
@@ -48,7 +48,7 @@ public class ImagesImageMetadata {
     }
 
     /**
-     * Get the recipeSourcesCount value.
+     * Get the number of websites that offer recipes of the food seen in the image.
      *
      * @return the recipeSourcesCount value
      */
@@ -57,7 +57,7 @@ public class ImagesImageMetadata {
     }
 
     /**
-     * Get the aggregateOffer value.
+     * Get a summary of the online offers of products found in the image. For example, if the image is of a dress, the offer might identify the lowest price and the number of offers found. Only visually similar products insights include this field. The offer includes the following fields: Name, AggregateRating, OfferCount, and LowPrice.
      *
      * @return the aggregateOffer value
      */

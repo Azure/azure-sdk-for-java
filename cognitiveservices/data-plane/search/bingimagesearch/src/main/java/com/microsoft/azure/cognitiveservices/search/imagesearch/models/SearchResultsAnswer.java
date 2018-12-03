@@ -16,10 +16,10 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines a search result answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = SearchResultsAnswer.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("SearchResultsAnswer")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Images", value = ImagesModel.class)
+    @JsonSubTypes.Type(name = "Images", value = Images.class)
 })
 public class SearchResultsAnswer extends Answer {
     /**
@@ -31,7 +31,7 @@ public class SearchResultsAnswer extends Answer {
     private Long totalEstimatedMatches;
 
     /**
-     * Get the totalEstimatedMatches value.
+     * Get the estimated number of webpages that are relevant to the query. Use this number along with the count and offset query parameters to page the results.
      *
      * @return the totalEstimatedMatches value
      */

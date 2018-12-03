@@ -22,7 +22,7 @@ public class RelatedSearchesModule {
     private List<Query> value;
 
     /**
-     * Get the value value.
+     * Get a list of related searches.
      *
      * @return the value value
      */

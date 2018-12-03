@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a person.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Person.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Person")
 public class Person extends Thing {
     /**
@@ -31,7 +31,7 @@ public class Person extends Thing {
     private String twitterProfile;
 
     /**
-     * Get the jobTitle value.
+     * Get the person's job title.
      *
      * @return the jobTitle value
      */
@@ -40,7 +40,7 @@ public class Person extends Thing {
     }
 
     /**
-     * Get the twitterProfile value.
+     * Get the URL of the person's twitter profile.
      *
      * @return the twitterProfile value
      */

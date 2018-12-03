@@ -54,7 +54,7 @@ public class Query {
     private ImageObject thumbnail;
 
     /**
-     * Get the text value.
+     * Get the query string. Use this string as the query term in a new search request.
      *
      * @return the text value
      */
@@ -63,7 +63,7 @@ public class Query {
     }
 
     /**
-     * Set the text value.
+     * Set the query string. Use this string as the query term in a new search request.
      *
      * @param text the text value to set
      * @return the Query object itself.
@@ -74,7 +74,7 @@ public class Query {
     }
 
     /**
-     * Get the displayText value.
+     * Get the display version of the query term. This version of the query term may contain special characters that highlight the search term found in the query string. The string contains the highlighting characters only if the query enabled hit highlighting.
      *
      * @return the displayText value
      */
@@ -83,7 +83,7 @@ public class Query {
     }
 
     /**
-     * Get the webSearchUrl value.
+     * Get the URL that takes the user to the Bing search results page for the query.Only related search results include this field.
      *
      * @return the webSearchUrl value
      */
@@ -92,7 +92,7 @@ public class Query {
     }
 
     /**
-     * Get the searchLink value.
+     * Get the URL that you use to get the results of the related search. Before using the URL, you must append query parameters as appropriate and include the Ocp-Apim-Subscription-Key header. Use this URL if you're displaying the results in your own user interface. Otherwise, use the webSearchUrl URL.
      *
      * @return the searchLink value
      */
@@ -101,7 +101,7 @@ public class Query {
     }
 
     /**
-     * Get the thumbnail value.
+     * Get the URL to a thumbnail of a related image.
      *
      * @return the thumbnail value
      */
