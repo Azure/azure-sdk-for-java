@@ -24,7 +24,7 @@ public class DiskFragment extends UpdateResource {
     private StorageType diskType;
 
     /**
-     * The size of the disk in GibiBytes.
+     * The size of the disk in Gibibytes.
      */
     @JsonProperty(value = "properties.diskSizeGiB")
     private Integer diskSizeGiB;
@@ -81,7 +81,7 @@ public class DiskFragment extends UpdateResource {
     }
 
     /**
-     * Get the size of the disk in GibiBytes.
+     * Get the size of the disk in Gibibytes.
      *
      * @return the diskSizeGiB value
      */
@@ -90,7 +90,7 @@ public class DiskFragment extends UpdateResource {
     }
 
     /**
-     * Set the size of the disk in GibiBytes.
+     * Set the size of the disk in Gibibytes.
      *
      * @param diskSizeGiB the diskSizeGiB value to set
      * @return the DiskFragment object itself.

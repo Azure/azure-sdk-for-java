@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AttachNewDataDiskOptionsFragment {
     /**
-     * Size of the disk to be attached in GibiBytes.
+     * Size of the disk to be attached in Gibibytes.
      */
     @JsonProperty(value = "diskSizeGiB")
     private Integer diskSizeGiB;
@@ -34,7 +34,7 @@ public class AttachNewDataDiskOptionsFragment {
     private StorageType diskType;
 
     /**
-     * Get size of the disk to be attached in GibiBytes.
+     * Get size of the disk to be attached in Gibibytes.
      *
      * @return the diskSizeGiB value
      */
@@ -43,7 +43,7 @@ public class AttachNewDataDiskOptionsFragment {
     }
 
     /**
-     * Set size of the disk to be attached in GibiBytes.
+     * Set size of the disk to be attached in Gibibytes.
      *
      * @param diskSizeGiB the diskSizeGiB value to set
      * @return the AttachNewDataDiskOptionsFragment object itself.
