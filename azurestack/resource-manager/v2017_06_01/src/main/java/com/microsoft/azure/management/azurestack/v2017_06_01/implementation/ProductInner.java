@@ -124,7 +124,7 @@ public class ProductInner extends ProxyResource {
     private ProductProperties productProperties;
 
     /**
-     * The entity tag used for optimistic concurency when modifying the
+     * The entity tag used for optimistic concurrency when modifying the
      * resource.
      */
     @JsonProperty(value = "etag")
@@ -471,7 +471,7 @@ public class ProductInner extends ProxyResource {
     }
 
     /**
-     * Get the entity tag used for optimistic concurency when modifying the resource.
+     * Get the entity tag used for optimistic concurrency when modifying the resource.
      *
      * @return the etag value
      */
@@ -480,7 +480,7 @@ public class ProductInner extends ProxyResource {
     }
 
     /**
-     * Set the entity tag used for optimistic concurency when modifying the resource.
+     * Set the entity tag used for optimistic concurrency when modifying the resource.
      *
      * @param etag the etag value to set
      * @return the ProductInner object itself.
