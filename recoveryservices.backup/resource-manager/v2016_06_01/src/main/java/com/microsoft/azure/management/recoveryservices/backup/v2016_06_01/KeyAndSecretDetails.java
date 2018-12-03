@@ -30,7 +30,7 @@ public class KeyAndSecretDetails {
     private KEKDetails kekDetails;
 
     /**
-     * BEK is Bitlocker Encrpytion Key.
+     * BEK is Bitlocker Encryption Key.
      */
     @JsonProperty(value = "bekDetails")
     private BEKDetails bekDetails;
@@ -56,7 +56,7 @@ public class KeyAndSecretDetails {
     }
 
     /**
-     * Get bEK is Bitlocker Encrpytion Key.
+     * Get bEK is Bitlocker Encryption Key.
      *
      * @return the bekDetails value
      */
@@ -65,7 +65,7 @@ public class KeyAndSecretDetails {
     }
 
     /**
-     * Set bEK is Bitlocker Encrpytion Key.
+     * Set bEK is Bitlocker Encryption Key.
      *
      * @param bekDetails the bekDetails value to set
      * @return the KeyAndSecretDetails object itself.

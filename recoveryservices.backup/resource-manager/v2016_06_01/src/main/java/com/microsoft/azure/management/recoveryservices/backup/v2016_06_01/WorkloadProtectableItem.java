@@ -26,7 +26,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class WorkloadProtectableItem {
     /**
-     * The backup managemenent type.
+     * The backup management type.
      */
     @JsonProperty(value = "backupManagementType")
     private String backupManagementType;
@@ -45,7 +45,7 @@ public class WorkloadProtectableItem {
     private ProtectionStatus protectionState;
 
     /**
-     * Get the backup managemenent type.
+     * Get the backup management type.
      *
      * @return the backupManagementType value
      */
@@ -54,7 +54,7 @@ public class WorkloadProtectableItem {
     }
 
     /**
-     * Set the backup managemenent type.
+     * Set the backup management type.
      *
      * @param backupManagementType the backupManagementType value to set
      * @return the WorkloadProtectableItem object itself.

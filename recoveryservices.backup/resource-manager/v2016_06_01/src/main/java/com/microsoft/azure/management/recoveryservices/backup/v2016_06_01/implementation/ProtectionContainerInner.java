@@ -35,7 +35,7 @@ public class ProtectionContainerInner {
     private String friendlyName;
 
     /**
-     * The backup managemenent type for the container. Possible values include:
+     * The backup management type for the container. Possible values include:
      * 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
      */
     @JsonProperty(value = "backupManagementType")
@@ -55,7 +55,7 @@ public class ProtectionContainerInner {
 
     /**
      * The type assigned to the container. The values to use for each of these
-     * propertes are:&lt;br/&gt; 1. Compute Azure VM is
+     * properties are:&lt;br/&gt; 1. Compute Azure VM is
      * Microsoft.Compute/virtualMachines&lt;br/&gt; 2. Classic Compute Azure VM
      * is Microsoft.ClassicCompute/virtualMachines&lt;br/&gt; 3. Windows
      * machines (like Azure Backup Server and DPM) is Windows&lt;br/&gt; 4.
@@ -85,7 +85,7 @@ public class ProtectionContainerInner {
     }
 
     /**
-     * Get the backup managemenent type for the container. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
+     * Get the backup management type for the container. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
      *
      * @return the backupManagementType value
      */
@@ -94,7 +94,7 @@ public class ProtectionContainerInner {
     }
 
     /**
-     * Set the backup managemenent type for the container. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
+     * Set the backup management type for the container. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
      *
      * @param backupManagementType the backupManagementType value to set
      * @return the ProtectionContainerInner object itself.
@@ -145,7 +145,7 @@ public class ProtectionContainerInner {
     }
 
     /**
-     * Get the type assigned to the container. The values to use for each of these propertes are:&lt;br/&gt; 1. Compute Azure VM is Microsoft.Compute/virtualMachines&lt;br/&gt; 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines&lt;br/&gt; 3. Windows machines (like Azure Backup Server and DPM) is Windows&lt;br/&gt; 4. Azure SQL instance is AzureSqlContainer.
+     * Get the type assigned to the container. The values to use for each of these properties are:&lt;br/&gt; 1. Compute Azure VM is Microsoft.Compute/virtualMachines&lt;br/&gt; 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines&lt;br/&gt; 3. Windows machines (like Azure Backup Server and DPM) is Windows&lt;br/&gt; 4. Azure SQL instance is AzureSqlContainer.
      *
      * @return the containerType value
      */
