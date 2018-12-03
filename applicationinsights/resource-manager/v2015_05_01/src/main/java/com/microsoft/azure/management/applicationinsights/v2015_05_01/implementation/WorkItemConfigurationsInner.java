@@ -348,7 +348,7 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
@@ -363,7 +363,7 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
@@ -377,7 +377,7 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
@@ -395,7 +395,7 @@ public class WorkItemConfigurationsInner {
     }
 
     /**
-     * Delete an workitem configuration of an Application Insights component.
+     * Delete a work item configuration of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the Application Insights component resource.
