@@ -2315,7 +2315,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Retrieves metric defintions for the given database account.
+     * Retrieves metric definitions for the given database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -2329,7 +2329,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Retrieves metric defintions for the given database account.
+     * Retrieves metric definitions for the given database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -2342,7 +2342,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Retrieves metric defintions for the given database account.
+     * Retrieves metric definitions for the given database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
@@ -2359,7 +2359,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
     }
 
     /**
-     * Retrieves metric defintions for the given database account.
+     * Retrieves metric definitions for the given database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.

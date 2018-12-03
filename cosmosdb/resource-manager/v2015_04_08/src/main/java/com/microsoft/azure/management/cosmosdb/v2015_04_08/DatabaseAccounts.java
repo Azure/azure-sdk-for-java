@@ -142,7 +142,7 @@ public interface DatabaseAccounts extends SupportsCreating<DatabaseAccount.Defin
     Observable<DatabaseAccountUsage> listUsagesAsync(String resourceGroupName, String accountName);
 
     /**
-     * Retrieves metric defintions for the given database account.
+     * Retrieves metric definitions for the given database account.
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
