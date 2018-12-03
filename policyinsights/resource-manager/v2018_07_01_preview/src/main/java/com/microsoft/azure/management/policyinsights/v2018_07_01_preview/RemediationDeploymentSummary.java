@@ -11,7 +11,7 @@ package com.microsoft.azure.management.policyinsights.v2018_07_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The deployment status summary for all deplyoments created by the
+ * The deployment status summary for all deployments created by the
  * remediation.
  */
 public class RemediationDeploymentSummary {

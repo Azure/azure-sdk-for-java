@@ -60,7 +60,7 @@ public class RemediationInner extends ProxyResource {
     private RemediationFilters filters;
 
     /**
-     * The deployment status summary for all deplyoments created by the
+     * The deployment status summary for all deployments created by the
      * remediation.
      */
     @JsonProperty(value = "properties.deploymentStatus")
@@ -154,7 +154,7 @@ public class RemediationInner extends ProxyResource {
     }
 
     /**
-     * Get the deployment status summary for all deplyoments created by the remediation.
+     * Get the deployment status summary for all deployments created by the remediation.
      *
      * @return the deploymentStatus value
      */
@@ -163,7 +163,7 @@ public class RemediationInner extends ProxyResource {
     }
 
     /**
-     * Set the deployment status summary for all deplyoments created by the remediation.
+     * Set the deployment status summary for all deployments created by the remediation.
      *
      * @param deploymentStatus the deploymentStatus value to set
      * @return the RemediationInner object itself.
