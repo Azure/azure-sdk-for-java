@@ -203,7 +203,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 			int failureCount = 0;
 			for (;;) {
 				try {
-					SecretBundle secret = keyVaultClient.setSecret(
+					SecretBundle secret = alternativeKeyVaultClient.setSecret(
 							new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME + i, SECRET_VALUE).build());
 					SecretIdentifier id = new SecretIdentifier(secret.id());
 					secrets.add(id.baseIdentifier());
@@ -220,7 +220,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 			}
 		}
 
-		PagedList<SecretItem> listResult = keyVaultClient.listSecrets(getVaultUri(), PAGELIST_MAX_SECRETS);
+		PagedList<SecretItem> listResult = alternativeKeyVaultClient.listSecrets(getVaultUri(), PAGELIST_MAX_SECRETS);
 		Assert.assertTrue(PAGELIST_MAX_SECRETS >= listResult.currentPage().items().size());
 
 		HashSet<String> toDelete = new HashSet<String>();
@@ -239,10 +239,10 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 			try {
 				System.out.println("Deleting next secret:" + secretName);
 
-				keyVaultClient.deleteSecret(getVaultUri(), secretName);
+				alternativeKeyVaultClient.deleteSecret(getVaultUri(), secretName);
 				DeletedSecretBundle deletedSecretBundle = pollOnSecretDeletion(getVaultUri(), secretName);
 				Assert.assertNotNull(deletedSecretBundle);
-				keyVaultClient.purgeDeletedSecret(getVaultUri(), secretName);
+				alternativeKeyVaultClient.purgeDeletedSecret(getVaultUri(), secretName);
 				SdkContext.sleep(20000);
 			} catch (KeyVaultErrorException e) {
 				// Ignore forbidden exception for certificate secrets that cannot be deleted
