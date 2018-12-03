@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The CivicStructure model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = CivicStructure.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("CivicStructure")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Airport", value = Airport.class)

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines information about a local entity, such as a restaurant or hotel.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Place.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Place")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CivicStructure", value = CivicStructure.class),
@@ -37,7 +37,7 @@ public class Place extends Thing {
     private String telephone;
 
     /**
-     * Get the address value.
+     * Get the postal address of where the entity is located.
      *
      * @return the address value
      */
@@ -46,7 +46,7 @@ public class Place extends Thing {
     }
 
     /**
-     * Get the telephone value.
+     * Get the entity's telephone number.
      *
      * @return the telephone value
      */

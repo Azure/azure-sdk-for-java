@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The Hotel model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Hotel.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Hotel")
 public class Hotel extends LodgingBusiness {
     /**

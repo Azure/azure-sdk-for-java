@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a local entity answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Places.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Places")
 public class Places extends SearchResultsAnswer {
     /**
@@ -26,7 +26,7 @@ public class Places extends SearchResultsAnswer {
     private List<Thing> value;
 
     /**
-     * Get the value value.
+     * Get a list of local entities, such as restaurants or hotels.
      *
      * @return the value value
      */
@@ -35,7 +35,7 @@ public class Places extends SearchResultsAnswer {
     }
 
     /**
-     * Set the value value.
+     * Set a list of local entities, such as restaurants or hotels.
      *
      * @param value the value value to set
      * @return the Places object itself.

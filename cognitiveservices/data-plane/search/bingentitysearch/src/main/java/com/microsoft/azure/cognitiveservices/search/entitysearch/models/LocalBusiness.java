@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The LocalBusiness model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = LocalBusiness.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("LocalBusiness")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "EntertainmentBusiness", value = EntertainmentBusiness.class),
@@ -50,7 +50,7 @@ public class LocalBusiness extends Place {
     private String tagLine;
 
     /**
-     * Get the priceRange value.
+     * Get $$.
      *
      * @return the priceRange value
      */

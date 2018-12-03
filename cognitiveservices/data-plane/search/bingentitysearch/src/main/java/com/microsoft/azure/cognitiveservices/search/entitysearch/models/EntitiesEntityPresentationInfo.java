@@ -39,7 +39,7 @@ public class EntitiesEntityPresentationInfo {
     private String entityTypeDisplayHint;
 
     /**
-     * Get the entityScenario value.
+     * Get the supported scenario. Possible values include: 'DominantEntity', 'DisambiguationItem', 'ListItem'.
      *
      * @return the entityScenario value
      */
@@ -48,7 +48,7 @@ public class EntitiesEntityPresentationInfo {
     }
 
     /**
-     * Set the entityScenario value.
+     * Set the supported scenario. Possible values include: 'DominantEntity', 'DisambiguationItem', 'ListItem'.
      *
      * @param entityScenario the entityScenario value to set
      * @return the EntitiesEntityPresentationInfo object itself.
@@ -59,7 +59,7 @@ public class EntitiesEntityPresentationInfo {
     }
 
     /**
-     * Get the entityTypeHints value.
+     * Get a list of hints that indicate the entity's type. The list could contain a single hint such as Movie or a list of hints such as Place, LocalBusiness, Restaurant. Each successive hint in the array narrows the entity's type.
      *
      * @return the entityTypeHints value
      */
@@ -68,7 +68,7 @@ public class EntitiesEntityPresentationInfo {
     }
 
     /**
-     * Get the entityTypeDisplayHint value.
+     * Get a display version of the entity hint. For example, if entityTypeHints is Artist, this field may be set to American Singer.
      *
      * @return the entityTypeDisplayHint value
      */
