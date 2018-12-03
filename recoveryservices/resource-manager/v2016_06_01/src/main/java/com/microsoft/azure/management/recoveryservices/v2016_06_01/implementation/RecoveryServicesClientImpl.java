@@ -275,6 +275,6 @@ public class RecoveryServicesClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "RecoveryServicesClient", "2016-06-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "RecoveryServicesClient", "2016-06-01");
     }
 }
