@@ -24,7 +24,7 @@ public class ResponseInner {
 
     /**
      * The timespan for which the data was retrieved. Its value consists of two
-     * datatimes concatenated, separated by '/'.  This may be adjusted in the
+     * datetimes concatenated, separated by '/'.  This may be adjusted in the
      * future and returned back from what was originally requested.
      */
     @JsonProperty(value = "timespan", required = true)
@@ -78,7 +78,7 @@ public class ResponseInner {
     }
 
     /**
-     * Get the timespan for which the data was retrieved. Its value consists of two datatimes concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally requested.
+     * Get the timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally requested.
      *
      * @return the timespan value
      */
@@ -87,7 +87,7 @@ public class ResponseInner {
     }
 
     /**
-     * Set the timespan for which the data was retrieved. Its value consists of two datatimes concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally requested.
+     * Set the timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by '/'.  This may be adjusted in the future and returned back from what was originally requested.
      *
      * @param timespan the timespan value to set
      * @return the ResponseInner object itself.

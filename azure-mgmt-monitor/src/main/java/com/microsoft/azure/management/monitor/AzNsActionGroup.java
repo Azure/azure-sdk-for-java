@@ -28,7 +28,7 @@ public class AzNsActionGroup {
     private String emailSubject;
 
     /**
-     * Custom payload to be sent for all webook URI in Azure action group.
+     * Custom payload to be sent for all webhook URI in Azure action group.
      */
     @JsonProperty(value = "customWebhookPayload")
     private String customWebhookPayload;
@@ -74,7 +74,7 @@ public class AzNsActionGroup {
     }
 
     /**
-     * Get custom payload to be sent for all webook URI in Azure action group.
+     * Get custom payload to be sent for all webhook URI in Azure action group.
      *
      * @return the customWebhookPayload value
      */
@@ -83,7 +83,7 @@ public class AzNsActionGroup {
     }
 
     /**
-     * Set custom payload to be sent for all webook URI in Azure action group.
+     * Set custom payload to be sent for all webhook URI in Azure action group.
      *
      * @param customWebhookPayload the customWebhookPayload value to set
      * @return the AzNsActionGroup object itself.

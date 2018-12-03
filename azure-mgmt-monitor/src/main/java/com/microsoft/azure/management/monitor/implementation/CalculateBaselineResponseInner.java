@@ -14,7 +14,7 @@ import com.microsoft.azure.management.monitor.Baseline;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The response to a calcualte baseline call.
+ * The response to a calculate baseline call.
  */
 public class CalculateBaselineResponseInner {
     /**
