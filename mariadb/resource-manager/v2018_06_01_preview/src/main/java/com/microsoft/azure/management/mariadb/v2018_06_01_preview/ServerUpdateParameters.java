@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Parameters allowd to update for a server.
+ * Parameters allowed to update for a server.
  */
 @JsonFlatten
 public class ServerUpdateParameters {
