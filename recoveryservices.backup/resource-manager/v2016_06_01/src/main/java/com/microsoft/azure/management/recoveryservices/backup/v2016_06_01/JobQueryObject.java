@@ -26,7 +26,7 @@ public class JobQueryObject {
     private JobStatus status;
 
     /**
-     * Type of backup managmenent for the job. Possible values include:
+     * Type of backup management for the job. Possible values include:
      * 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
      */
     @JsonProperty(value = "backupManagementType")
@@ -79,7 +79,7 @@ public class JobQueryObject {
     }
 
     /**
-     * Get type of backup managmenent for the job. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
+     * Get type of backup management for the job. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
      *
      * @return the backupManagementType value
      */
@@ -88,7 +88,7 @@ public class JobQueryObject {
     }
 
     /**
-     * Set type of backup managmenent for the job. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
+     * Set type of backup management for the job. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
      *
      * @param backupManagementType the backupManagementType value to set
      * @return the JobQueryObject object itself.

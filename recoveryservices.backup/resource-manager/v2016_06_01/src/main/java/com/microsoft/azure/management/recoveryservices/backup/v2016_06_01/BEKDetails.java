@@ -13,7 +13,7 @@ package com.microsoft.azure.management.recoveryservices.backup.v2016_06_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * BEK is Bitlocker Encrpytion Key.
+ * BEK is Bitlocker Encryption Key.
  */
 public class BEKDetails {
     /**

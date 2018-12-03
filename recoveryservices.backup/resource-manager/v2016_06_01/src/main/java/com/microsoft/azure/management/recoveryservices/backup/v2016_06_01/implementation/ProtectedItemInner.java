@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class ProtectedItemInner {
     /**
-     * The backup managemenent type associated with the backup item. Possible
+     * The backup management type associated with the backup item. Possible
      * values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM',
      * 'AzureBackupServer', 'AzureSql'.
      */
@@ -65,7 +65,7 @@ public class ProtectedItemInner {
     private DateTime lastRecoveryPoint;
 
     /**
-     * Get the backup managemenent type associated with the backup item. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
+     * Get the backup management type associated with the backup item. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
      *
      * @return the backupManagementType value
      */
@@ -74,7 +74,7 @@ public class ProtectedItemInner {
     }
 
     /**
-     * Set the backup managemenent type associated with the backup item. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
+     * Set the backup management type associated with the backup item. Possible values include: 'Invalid', 'AzureIaasVM', 'MAB', 'DPM', 'AzureBackupServer', 'AzureSql'.
      *
      * @param backupManagementType the backupManagementType value to set
      * @return the ProtectedItemInner object itself.

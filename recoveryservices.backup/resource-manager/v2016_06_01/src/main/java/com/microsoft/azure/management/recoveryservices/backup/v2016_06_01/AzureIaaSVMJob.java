@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.microsoft.azure.management.recoveryservices.backup.v2016_06_01.implementation.JobInner;
 
 /**
- * The Azure IaaS VM workload-specifc job object.
+ * The Azure IaaS VM workload-specific job object.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
 @JsonTypeName("AzureIaaSVMJob")
