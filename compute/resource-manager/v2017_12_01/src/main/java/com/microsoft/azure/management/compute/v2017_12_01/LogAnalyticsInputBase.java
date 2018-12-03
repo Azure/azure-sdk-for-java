@@ -41,7 +41,7 @@ public class LogAnalyticsInputBase {
     private Boolean groupByThrottlePolicy;
 
     /**
-     * Group query result by  by Operation Name.
+     * Group query result by Operation Name.
      */
     @JsonProperty(value = "groupByOperationName")
     private Boolean groupByOperationName;
@@ -133,7 +133,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Get group query result by  by Operation Name.
+     * Get group query result by Operation Name.
      *
      * @return the groupByOperationName value
      */
@@ -142,7 +142,7 @@ public class LogAnalyticsInputBase {
     }
 
     /**
-     * Set group query result by  by Operation Name.
+     * Set group query result by Operation Name.
      *
      * @param groupByOperationName the groupByOperationName value to set
      * @return the LogAnalyticsInputBase object itself.

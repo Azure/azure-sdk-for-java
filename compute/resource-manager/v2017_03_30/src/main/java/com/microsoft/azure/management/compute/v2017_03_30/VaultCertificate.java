@@ -36,7 +36,7 @@ public class VaultCertificate {
      * store is implicitly in the LocalMachine account. &lt;br&gt;&lt;br&gt;For
      * Linux VMs, the certificate file is placed under the /var/lib/waagent
      * directory, with the file name &lt;UppercaseThumbprint&gt;.crt for the
-     * X509 certificate file and &lt;UppercaseThumbpring&gt;.prv for private
+     * X509 certificate file and &lt;UppercaseThumbprint&gt;.prv for private
      * key. Both of these files are .pem formatted.
      */
     @JsonProperty(value = "certificateStore")
@@ -63,7 +63,7 @@ public class VaultCertificate {
     }
 
     /**
-     * Get for Windows VMs, specifies the certificate store on the Virtual Machine to which the certificate should be added. The specified certificate store is implicitly in the LocalMachine account. &lt;br&gt;&lt;br&gt;For Linux VMs, the certificate file is placed under the /var/lib/waagent directory, with the file name &lt;UppercaseThumbprint&gt;.crt for the X509 certificate file and &lt;UppercaseThumbpring&gt;.prv for private key. Both of these files are .pem formatted.
+     * Get for Windows VMs, specifies the certificate store on the Virtual Machine to which the certificate should be added. The specified certificate store is implicitly in the LocalMachine account. &lt;br&gt;&lt;br&gt;For Linux VMs, the certificate file is placed under the /var/lib/waagent directory, with the file name &lt;UppercaseThumbprint&gt;.crt for the X509 certificate file and &lt;UppercaseThumbprint&gt;.prv for private key. Both of these files are .pem formatted.
      *
      * @return the certificateStore value
      */
@@ -72,7 +72,7 @@ public class VaultCertificate {
     }
 
     /**
-     * Set for Windows VMs, specifies the certificate store on the Virtual Machine to which the certificate should be added. The specified certificate store is implicitly in the LocalMachine account. &lt;br&gt;&lt;br&gt;For Linux VMs, the certificate file is placed under the /var/lib/waagent directory, with the file name &lt;UppercaseThumbprint&gt;.crt for the X509 certificate file and &lt;UppercaseThumbpring&gt;.prv for private key. Both of these files are .pem formatted.
+     * Set for Windows VMs, specifies the certificate store on the Virtual Machine to which the certificate should be added. The specified certificate store is implicitly in the LocalMachine account. &lt;br&gt;&lt;br&gt;For Linux VMs, the certificate file is placed under the /var/lib/waagent directory, with the file name &lt;UppercaseThumbprint&gt;.crt for the X509 certificate file and &lt;UppercaseThumbprint&gt;.prv for private key. Both of these files are .pem formatted.
      *
      * @param certificateStore the certificateStore value to set
      * @return the VaultCertificate object itself.

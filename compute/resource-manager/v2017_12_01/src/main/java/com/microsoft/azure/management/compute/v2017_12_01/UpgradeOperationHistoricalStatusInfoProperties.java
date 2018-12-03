@@ -21,7 +21,7 @@ public class UpgradeOperationHistoricalStatusInfoProperties {
     private UpgradeOperationHistoryStatus runningStatus;
 
     /**
-     * Counts of the VM's in each state.
+     * Counts of the VMs in each state.
      */
     @JsonProperty(value = "progress", access = JsonProperty.Access.WRITE_ONLY)
     private RollingUpgradeProgressInfo progress;
@@ -61,7 +61,7 @@ public class UpgradeOperationHistoricalStatusInfoProperties {
     }
 
     /**
-     * Get counts of the VM's in each state.
+     * Get counts of the VMs in each state.
      *
      * @return the progress value
      */

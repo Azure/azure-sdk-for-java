@@ -11,7 +11,7 @@ package com.microsoft.azure.management.compute.v2017_03_30;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Describes The SKU capabilites object.
+ * Describes The SKU capabilities object.
  */
 public class ResourceSkuCapabilities {
     /**
