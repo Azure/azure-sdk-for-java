@@ -275,7 +275,7 @@ public class OAuth2sInner {
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
-     * @param body The relevant app Service Principal Object Id and the Service Principal Objecit Id you want to grant.
+     * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -288,7 +288,7 @@ public class OAuth2sInner {
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
-     * @param body The relevant app Service Principal Object Id and the Service Principal Objecit Id you want to grant.
+     * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -300,7 +300,7 @@ public class OAuth2sInner {
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
-     * @param body The relevant app Service Principal Object Id and the Service Principal Objecit Id you want to grant.
+     * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PermissionsInner object
      */
@@ -316,7 +316,7 @@ public class OAuth2sInner {
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
-     * @param body The relevant app Service Principal Object Id and the Service Principal Objecit Id you want to grant.
+     * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PermissionsInner object
      */

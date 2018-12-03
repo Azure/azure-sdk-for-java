@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * OAuth 2.0 permission scopes may be requested by client applications (through
  * the requiredResourceAccess collection) when calling a resource application.
  * The requiredResourceAccess property of the Application entity is a
- * collection of ReqiredResourceAccess.
+ * collection of RequiredResourceAccess.
  */
 public class RequiredResourceAccess {
     /**
