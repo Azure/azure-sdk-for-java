@@ -37,7 +37,7 @@ public class IotHubProperties {
     private String provisioningState;
 
     /**
-     * Thehub state state.
+     * The hub state.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
@@ -162,7 +162,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get thehub state state.
+     * Get the hub state.
      *
      * @return the state value
      */
