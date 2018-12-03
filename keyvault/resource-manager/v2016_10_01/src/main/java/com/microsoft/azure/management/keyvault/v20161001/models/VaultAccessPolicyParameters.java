@@ -16,7 +16,7 @@ import com.microsoft.azure.ProxyResource;
  */
 public class VaultAccessPolicyParameters extends ProxyResource {
     /**
-     * The resource type of the the access policy.
+     * The resource type of the access policy.
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
@@ -28,7 +28,7 @@ public class VaultAccessPolicyParameters extends ProxyResource {
     private VaultAccessPolicyProperties properties;
 
     /**
-     * Get the resource type of the the access policy.
+     * Get the resource type of the access policy.
      *
      * @return the location value
      */
