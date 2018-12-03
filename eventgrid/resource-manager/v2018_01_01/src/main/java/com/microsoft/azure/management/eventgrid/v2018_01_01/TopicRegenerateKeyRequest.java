@@ -11,7 +11,7 @@ package com.microsoft.azure.management.eventgrid.v2018_01_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Topic regenerate share access key key request.
+ * Topic regenerate share access key request.
  */
 public class TopicRegenerateKeyRequest {
     /**

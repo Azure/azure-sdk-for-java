@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * This is used to express the source of an input schema mapping for a single
  * target field in the Event Grid Event schema. This is currently used in the
- * mappings for the 'id','topic' and 'eventtime' properties. This represents a
+ * mappings for the 'id','topic' and 'eventTime' properties. This represents a
  * field in the input event schema.
  */
 public class JsonField {

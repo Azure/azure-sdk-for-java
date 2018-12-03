@@ -21,6 +21,7 @@ class DomainTopicImpl extends IndexableRefreshableWrapperImpl<DomainTopic, Domai
     DomainTopicImpl(DomainTopicInner inner,  EventGridManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.domainName = IdParsingUtils.getValueFromIdByName(inner.id(), "domains");
         this.topicName = IdParsingUtils.getValueFromIdByName(inner.id(), "topics");

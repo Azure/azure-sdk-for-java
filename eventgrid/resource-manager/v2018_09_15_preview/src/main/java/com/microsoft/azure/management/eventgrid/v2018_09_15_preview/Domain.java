@@ -67,21 +67,25 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
         }
 
         /**
-         * The stage of the domain update allowing to specify InputSchema.
+         * The stage of the domain definition allowing to specify InputSchema.
          */
         interface WithInputSchema {
             /**
              * Specifies inputSchema.
+             * @param inputSchema This determines the format that Event Grid should expect for incoming events published to the domain. Possible values include: 'EventGridSchema', 'CustomEventSchema', 'CloudEventV01Schema'
+             * @return the next definition stage
              */
             WithCreate withInputSchema(InputSchema inputSchema);
         }
 
         /**
-         * The stage of the domain update allowing to specify InputSchemaMapping.
+         * The stage of the domain definition allowing to specify InputSchemaMapping.
          */
         interface WithInputSchemaMapping {
             /**
              * Specifies inputSchemaMapping.
+             * @param inputSchemaMapping Information about the InputSchemaMapping which specified the info about mapping event payload
+             * @return the next definition stage
              */
             WithCreate withInputSchemaMapping(InputSchemaMapping inputSchemaMapping);
         }
@@ -105,21 +109,25 @@ public interface Domain extends HasInner<DomainInner>, Resource, GroupableResour
      */
     interface UpdateStages {
         /**
-         * The stage of the domain {0} allowing to specify InputSchema.
+         * The stage of the domain update allowing to specify InputSchema.
          */
         interface WithInputSchema {
             /**
              * Specifies inputSchema.
+             * @param inputSchema This determines the format that Event Grid should expect for incoming events published to the domain. Possible values include: 'EventGridSchema', 'CustomEventSchema', 'CloudEventV01Schema'
+             * @return the next update stage
              */
             Update withInputSchema(InputSchema inputSchema);
         }
 
         /**
-         * The stage of the domain {0} allowing to specify InputSchemaMapping.
+         * The stage of the domain update allowing to specify InputSchemaMapping.
          */
         interface WithInputSchemaMapping {
             /**
              * Specifies inputSchemaMapping.
+             * @param inputSchemaMapping Information about the InputSchemaMapping which specified the info about mapping event payload
+             * @return the next update stage
              */
             Update withInputSchemaMapping(InputSchemaMapping inputSchemaMapping);
         }

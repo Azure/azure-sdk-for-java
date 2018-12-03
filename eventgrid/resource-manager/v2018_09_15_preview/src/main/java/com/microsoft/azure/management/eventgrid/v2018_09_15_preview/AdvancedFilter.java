@@ -35,14 +35,14 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class AdvancedFilter {
     /**
-     * The filter key. Represents an event property with upto two levels of
+     * The filter key. Represents an event property with up to two levels of
      * nesting.
      */
     @JsonProperty(value = "key")
     private String key;
 
     /**
-     * Get the filter key. Represents an event property with upto two levels of nesting.
+     * Get the filter key. Represents an event property with up to two levels of nesting.
      *
      * @return the key value
      */
@@ -51,7 +51,7 @@ public class AdvancedFilter {
     }
 
     /**
-     * Set the filter key. Represents an event property with upto two levels of nesting.
+     * Set the filter key. Represents an event property with up to two levels of nesting.
      *
      * @param key the key value to set
      * @return the AdvancedFilter object itself.
