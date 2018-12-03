@@ -66,6 +66,11 @@ public interface NamespaceResource extends HasInner<NamespaceResourceInner>, Res
     String provisioningState();
 
     /**
+     * @return the region value.
+     */
+    String region();
+
+    /**
      * @return the scaleUnit value.
      */
     String scaleUnit();
@@ -202,6 +207,18 @@ public interface NamespaceResource extends HasInner<NamespaceResourceInner>, Res
         }
 
         /**
+         * The stage of the namespaceresource definition allowing to specify Region.
+         */
+        interface WithRegion {
+            /**
+             * Specifies region.
+             * @param region Specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia EastAustralia SoutheastCentral USEast USEast US 2West USNorth Central USSouth Central USEast AsiaSoutheast AsiaBrazil SouthJapan EastJapan WestNorth EuropeWest Europe
+             * @return the next definition stage
+             */
+            WithCreate withRegion(String region);
+        }
+
+        /**
          * The stage of the namespaceresource definition allowing to specify ScaleUnit.
          */
         interface WithScaleUnit {
@@ -278,7 +295,7 @@ public interface NamespaceResource extends HasInner<NamespaceResourceInner>, Res
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<NamespaceResource>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithCreatedAt, DefinitionStages.WithCritical, DefinitionStages.WithDataCenter, DefinitionStages.WithEnabled, DefinitionStages.WithNamespaceCreateOrUpdateParametersName, DefinitionStages.WithNamespaceType, DefinitionStages.WithProvisioningState, DefinitionStages.WithScaleUnit, DefinitionStages.WithServiceBusEndpoint, DefinitionStages.WithSku, DefinitionStages.WithStatus, DefinitionStages.WithSubscriptionId, DefinitionStages.WithUpdatedAt {
+        interface WithCreate extends Creatable<NamespaceResource>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithCreatedAt, DefinitionStages.WithCritical, DefinitionStages.WithDataCenter, DefinitionStages.WithEnabled, DefinitionStages.WithNamespaceCreateOrUpdateParametersName, DefinitionStages.WithNamespaceType, DefinitionStages.WithProvisioningState, DefinitionStages.WithRegion, DefinitionStages.WithScaleUnit, DefinitionStages.WithServiceBusEndpoint, DefinitionStages.WithSku, DefinitionStages.WithStatus, DefinitionStages.WithSubscriptionId, DefinitionStages.WithUpdatedAt {
         }
     }
     /**

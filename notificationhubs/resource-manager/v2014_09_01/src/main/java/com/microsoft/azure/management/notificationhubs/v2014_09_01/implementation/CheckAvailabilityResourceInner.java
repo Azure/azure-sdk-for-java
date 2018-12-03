@@ -12,7 +12,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Description of a CheckAvailibility resource.
+ * Description of a CheckAvailability resource.
  */
 public class CheckAvailabilityResourceInner {
     /**

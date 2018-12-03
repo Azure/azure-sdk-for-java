@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.Resource;
 
 /**
- * Description of a CheckAvailibility resource.
+ * Description of a CheckAvailability resource.
  */
 public class CheckAvailabilityResultInner extends Resource {
     /**
