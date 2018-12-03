@@ -36,7 +36,7 @@ public class ProjectFileProperties {
     private DateTime lastModified;
 
     /**
-     * File content type. This propery can be modified to reflect the file
+     * File content type. This property can be modified to reflect the file
      * content type.
      */
     @JsonProperty(value = "mediaType")
@@ -98,7 +98,7 @@ public class ProjectFileProperties {
     }
 
     /**
-     * Get file content type. This propery can be modified to reflect the file content type.
+     * Get file content type. This property can be modified to reflect the file content type.
      *
      * @return the mediaType value
      */
@@ -107,7 +107,7 @@ public class ProjectFileProperties {
     }
 
     /**
-     * Set file content type. This propery can be modified to reflect the file content type.
+     * Set file content type. This property can be modified to reflect the file content type.
      *
      * @param mediaType the mediaType value to set
      * @return the ProjectFileProperties object itself.
