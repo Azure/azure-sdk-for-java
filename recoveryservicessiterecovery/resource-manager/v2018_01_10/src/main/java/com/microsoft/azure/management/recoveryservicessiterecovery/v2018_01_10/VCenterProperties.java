@@ -28,7 +28,7 @@ public class VCenterProperties {
     private String internalId;
 
     /**
-     * The time when the last heartbeat was reveived by vCenter.
+     * The time when the last heartbeat was received by vCenter.
      */
     @JsonProperty(value = "lastHeartbeat")
     private DateTime lastHeartbeat;
@@ -116,7 +116,7 @@ public class VCenterProperties {
     }
 
     /**
-     * Get the time when the last heartbeat was reveived by vCenter.
+     * Get the time when the last heartbeat was received by vCenter.
      *
      * @return the lastHeartbeat value
      */
@@ -125,7 +125,7 @@ public class VCenterProperties {
     }
 
     /**
-     * Set the time when the last heartbeat was reveived by vCenter.
+     * Set the time when the last heartbeat was received by vCenter.
      *
      * @param lastHeartbeat the lastHeartbeat value to set
      * @return the VCenterProperties object itself.

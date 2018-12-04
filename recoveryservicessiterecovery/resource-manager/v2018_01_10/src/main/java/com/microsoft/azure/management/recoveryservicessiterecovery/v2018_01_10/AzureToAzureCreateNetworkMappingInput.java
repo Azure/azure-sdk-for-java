@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Create network mappings input properties/behaviour specific to Azure to
- * Azure Network mapping.
+ * Create network mappings input properties/behavior specific to Azure to Azure
+ * Network mapping.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("AzureToAzure")

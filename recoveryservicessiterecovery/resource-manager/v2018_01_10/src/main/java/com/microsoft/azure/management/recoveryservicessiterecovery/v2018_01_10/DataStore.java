@@ -11,7 +11,7 @@ package com.microsoft.azure.management.recoveryservicessiterecovery.v2018_01_10;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The datastore details of the MT.
+ * The data store details of the MT.
  */
 public class DataStore {
     /**

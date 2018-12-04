@@ -49,7 +49,7 @@ public class EventProperties {
     private String severity;
 
     /**
-     * The time of occurence of the event.
+     * The time of occurrence of the event.
      */
     @JsonProperty(value = "timeOfOccurrence")
     private DateTime timeOfOccurrence;
@@ -180,7 +180,7 @@ public class EventProperties {
     }
 
     /**
-     * Get the time of occurence of the event.
+     * Get the time of occurrence of the event.
      *
      * @return the timeOfOccurrence value
      */
@@ -189,7 +189,7 @@ public class EventProperties {
     }
 
     /**
-     * Set the time of occurence of the event.
+     * Set the time of occurrence of the event.
      *
      * @param timeOfOccurrence the timeOfOccurrence value to set
      * @return the EventProperties object itself.

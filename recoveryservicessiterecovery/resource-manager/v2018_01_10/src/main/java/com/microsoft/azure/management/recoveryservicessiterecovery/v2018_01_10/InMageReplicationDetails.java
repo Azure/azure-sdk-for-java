@@ -212,8 +212,8 @@ public class InMageReplicationDetails extends ReplicationProviderSpecificSetting
     private String azureStorageAccountId;
 
     /**
-     * The datastores of the on-premise machine Value can be list of strings
-     * that contain datastore names.
+     * The data stores of the on-premise machine Value can be list of strings
+     * that contain data store names.
      */
     @JsonProperty(value = "datastores")
     private List<String> datastores;
@@ -870,7 +870,7 @@ public class InMageReplicationDetails extends ReplicationProviderSpecificSetting
     }
 
     /**
-     * Get the datastores of the on-premise machine Value can be list of strings that contain datastore names.
+     * Get the data stores of the on-premise machine Value can be list of strings that contain data store names.
      *
      * @return the datastores value
      */
@@ -879,7 +879,7 @@ public class InMageReplicationDetails extends ReplicationProviderSpecificSetting
     }
 
     /**
-     * Set the datastores of the on-premise machine Value can be list of strings that contain datastore names.
+     * Set the data stores of the on-premise machine Value can be list of strings that contain data store names.
      *
      * @param datastores the datastores value to set
      * @return the InMageReplicationDetails object itself.

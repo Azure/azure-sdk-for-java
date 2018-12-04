@@ -62,7 +62,7 @@ public class InMageEnableProtectionInput extends EnableProtectionProviderSpecifi
     private String multiVmGroupName;
 
     /**
-     * The target datastore name.
+     * The target data store name.
      */
     @JsonProperty(value = "datastoreName")
     private String datastoreName;
@@ -220,7 +220,7 @@ public class InMageEnableProtectionInput extends EnableProtectionProviderSpecifi
     }
 
     /**
-     * Get the target datastore name.
+     * Get the target data store name.
      *
      * @return the datastoreName value
      */
@@ -229,7 +229,7 @@ public class InMageEnableProtectionInput extends EnableProtectionProviderSpecifi
     }
 
     /**
-     * Set the target datastore name.
+     * Set the target data store name.
      *
      * @param datastoreName the datastoreName value to set
      * @return the InMageEnableProtectionInput object itself.

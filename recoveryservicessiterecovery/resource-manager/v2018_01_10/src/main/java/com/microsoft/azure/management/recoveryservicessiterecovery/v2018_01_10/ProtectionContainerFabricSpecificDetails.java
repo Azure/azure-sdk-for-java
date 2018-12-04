@@ -15,13 +15,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ProtectionContainerFabricSpecificDetails {
     /**
-     * Gets the class type. Overriden in derived classes.
+     * Gets the class type. Overridden in derived classes.
      */
     @JsonProperty(value = "instanceType", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceType;
 
     /**
-     * Get gets the class type. Overriden in derived classes.
+     * Get gets the class type. Overridden in derived classes.
      *
      * @return the instanceType value
      */

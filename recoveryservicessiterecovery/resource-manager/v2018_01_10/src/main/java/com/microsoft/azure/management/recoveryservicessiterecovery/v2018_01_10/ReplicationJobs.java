@@ -40,7 +40,7 @@ public interface ReplicationJobs extends HasInner<ReplicationJobsInner> {
      * Cancels the specified job.
      * The operation to cancel an Azure Site Recovery job.
      *
-     * @param jobName Job indentifier.
+     * @param jobName Job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

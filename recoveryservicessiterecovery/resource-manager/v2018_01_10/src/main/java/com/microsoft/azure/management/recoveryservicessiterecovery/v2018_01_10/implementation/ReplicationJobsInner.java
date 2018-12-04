@@ -610,7 +610,7 @@ public class ReplicationJobsInner {
      * Cancels the specified job.
      * The operation to cancel an Azure Site Recovery job.
      *
-     * @param jobName Job indentifier.
+     * @param jobName Job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -624,7 +624,7 @@ public class ReplicationJobsInner {
      * Cancels the specified job.
      * The operation to cancel an Azure Site Recovery job.
      *
-     * @param jobName Job indentifier.
+     * @param jobName Job identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -637,7 +637,7 @@ public class ReplicationJobsInner {
      * Cancels the specified job.
      * The operation to cancel an Azure Site Recovery job.
      *
-     * @param jobName Job indentifier.
+     * @param jobName Job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -654,7 +654,7 @@ public class ReplicationJobsInner {
      * Cancels the specified job.
      * The operation to cancel an Azure Site Recovery job.
      *
-     * @param jobName Job indentifier.
+     * @param jobName Job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -682,7 +682,7 @@ public class ReplicationJobsInner {
      * Cancels the specified job.
      * The operation to cancel an Azure Site Recovery job.
      *
-     * @param jobName Job indentifier.
+     * @param jobName Job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -696,7 +696,7 @@ public class ReplicationJobsInner {
      * Cancels the specified job.
      * The operation to cancel an Azure Site Recovery job.
      *
-     * @param jobName Job indentifier.
+     * @param jobName Job identifier.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -709,7 +709,7 @@ public class ReplicationJobsInner {
      * Cancels the specified job.
      * The operation to cancel an Azure Site Recovery job.
      *
-     * @param jobName Job indentifier.
+     * @param jobName Job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobInner object
      */
@@ -726,7 +726,7 @@ public class ReplicationJobsInner {
      * Cancels the specified job.
      * The operation to cancel an Azure Site Recovery job.
      *
-     * @param jobName Job indentifier.
+     * @param jobName Job identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobInner object
      */

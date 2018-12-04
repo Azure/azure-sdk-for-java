@@ -788,7 +788,7 @@ public class ReplicationStorageClassificationMappingsInner {
      * Lists the storage classification mappings for the fabric.
      *
      * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classfication name.
+     * @param storageClassificationName Storage classification name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -809,7 +809,7 @@ public class ReplicationStorageClassificationMappingsInner {
      * Lists the storage classification mappings for the fabric.
      *
      * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classfication name.
+     * @param storageClassificationName Storage classification name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -831,7 +831,7 @@ public class ReplicationStorageClassificationMappingsInner {
      * Lists the storage classification mappings for the fabric.
      *
      * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classfication name.
+     * @param storageClassificationName Storage classification name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;StorageClassificationMappingInner&gt; object
      */
@@ -850,7 +850,7 @@ public class ReplicationStorageClassificationMappingsInner {
      * Lists the storage classification mappings for the fabric.
      *
      * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classfication name.
+     * @param storageClassificationName Storage classification name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;StorageClassificationMappingInner&gt; object
      */
@@ -873,7 +873,7 @@ public class ReplicationStorageClassificationMappingsInner {
      * Lists the storage classification mappings for the fabric.
      *
     ServiceResponse<PageImpl<StorageClassificationMappingInner>> * @param fabricName Fabric name.
-    ServiceResponse<PageImpl<StorageClassificationMappingInner>> * @param storageClassificationName Storage classfication name.
+    ServiceResponse<PageImpl<StorageClassificationMappingInner>> * @param storageClassificationName Storage classification name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;StorageClassificationMappingInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

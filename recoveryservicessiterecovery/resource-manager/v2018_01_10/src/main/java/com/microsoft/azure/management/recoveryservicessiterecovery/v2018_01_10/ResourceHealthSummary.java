@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ResourceHealthSummary {
     /**
-     * The count of total resources umder the container.
+     * The count of total resources under the container.
      */
     @JsonProperty(value = "resourceCount")
     private Integer resourceCount;
@@ -30,7 +30,7 @@ public class ResourceHealthSummary {
     private List<HealthErrorSummary> issues;
 
     /**
-     * Get the count of total resources umder the container.
+     * Get the count of total resources under the container.
      *
      * @return the resourceCount value
      */
@@ -39,7 +39,7 @@ public class ResourceHealthSummary {
     }
 
     /**
-     * Set the count of total resources umder the container.
+     * Set the count of total resources under the container.
      *
      * @param resourceCount the resourceCount value to set
      * @return the ResourceHealthSummary object itself.

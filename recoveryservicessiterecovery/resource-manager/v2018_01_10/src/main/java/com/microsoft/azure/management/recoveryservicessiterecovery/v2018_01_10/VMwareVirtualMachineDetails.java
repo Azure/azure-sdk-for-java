@@ -63,7 +63,7 @@ public class VMwareVirtualMachineDetails extends ConfigurationSettings {
     private String vCenterInfrastructureId;
 
     /**
-     * A value inidicating the discovery type of the machine. Value can be
+     * A value indicating the discovery type of the machine. Value can be
      * vCenter or physical.
      */
     @JsonProperty(value = "discoveryType")
@@ -222,7 +222,7 @@ public class VMwareVirtualMachineDetails extends ConfigurationSettings {
     }
 
     /**
-     * Get a value inidicating the discovery type of the machine. Value can be vCenter or physical.
+     * Get a value indicating the discovery type of the machine. Value can be vCenter or physical.
      *
      * @return the discoveryType value
      */
@@ -231,7 +231,7 @@ public class VMwareVirtualMachineDetails extends ConfigurationSettings {
     }
 
     /**
-     * Set a value inidicating the discovery type of the machine. Value can be vCenter or physical.
+     * Set a value indicating the discovery type of the machine. Value can be vCenter or physical.
      *
      * @param discoveryType the discoveryType value to set
      * @return the VMwareVirtualMachineDetails object itself.

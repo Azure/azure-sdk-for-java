@@ -18,7 +18,7 @@ import com.microsoft.azure.ProxyResource;
  * in structure or method signature. Since there were no base Models for
  * certain fields and methods viz NetworkMappingProperties and Load with
  * required return type, the class has been introduced in its entirety with
- * references to base models to facilitate exensions in subsequent versions.
+ * references to base models to facilitate extensions in subsequent versions.
  */
 public class NetworkMappingInner extends ProxyResource {
     /**

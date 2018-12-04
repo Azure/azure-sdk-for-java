@@ -1380,7 +1380,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1394,7 +1394,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1407,7 +1407,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1424,7 +1424,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1454,7 +1454,7 @@ public class ReplicationFabricsInner {
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<FabricInner>() { }.getType());
     }
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1469,7 +1469,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1483,7 +1483,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1501,7 +1501,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1533,7 +1533,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1547,7 +1547,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1560,7 +1560,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1577,7 +1577,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1618,7 +1618,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1633,7 +1633,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1647,7 +1647,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.
@@ -1665,7 +1665,7 @@ public class ReplicationFabricsInner {
     }
 
     /**
-     * Creates an Azure Site Recoery fabric.
+     * Creates an Azure Site Recovery fabric.
      * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
      *
      * @param fabricName Name of the ASR fabric.

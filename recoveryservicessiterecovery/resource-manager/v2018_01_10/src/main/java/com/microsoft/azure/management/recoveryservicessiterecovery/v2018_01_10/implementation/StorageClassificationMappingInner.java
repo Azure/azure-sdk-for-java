@@ -17,7 +17,7 @@ import com.microsoft.azure.ProxyResource;
  */
 public class StorageClassificationMappingInner extends ProxyResource {
     /**
-     * Proprties of the storage mappping object.
+     * Properties of the storage mapping object.
      */
     @JsonProperty(value = "properties")
     private StorageClassificationMappingProperties properties;
@@ -29,7 +29,7 @@ public class StorageClassificationMappingInner extends ProxyResource {
     private String location;
 
     /**
-     * Get proprties of the storage mappping object.
+     * Get properties of the storage mapping object.
      *
      * @return the properties value
      */
@@ -38,7 +38,7 @@ public class StorageClassificationMappingInner extends ProxyResource {
     }
 
     /**
-     * Set proprties of the storage mappping object.
+     * Set properties of the storage mapping object.
      *
      * @param properties the properties value to set
      * @return the StorageClassificationMappingInner object itself.

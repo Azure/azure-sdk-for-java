@@ -39,7 +39,7 @@ public class UpdateVCenterRequestProperties {
     private String port;
 
     /**
-     * The CS account Id which has priviliges to update the vCenter.
+     * The CS account Id which has privileges to update the vCenter.
      */
     @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
@@ -125,7 +125,7 @@ public class UpdateVCenterRequestProperties {
     }
 
     /**
-     * Get the CS account Id which has priviliges to update the vCenter.
+     * Get the CS account Id which has privileges to update the vCenter.
      *
      * @return the runAsAccountId value
      */
@@ -134,7 +134,7 @@ public class UpdateVCenterRequestProperties {
     }
 
     /**
-     * Set the CS account Id which has priviliges to update the vCenter.
+     * Set the CS account Id which has privileges to update the vCenter.
      *
      * @param runAsAccountId the runAsAccountId value to set
      * @return the UpdateVCenterRequestProperties object itself.

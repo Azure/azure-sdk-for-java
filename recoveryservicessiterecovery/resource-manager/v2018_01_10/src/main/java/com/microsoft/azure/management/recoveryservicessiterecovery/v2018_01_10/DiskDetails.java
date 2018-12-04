@@ -11,7 +11,7 @@ package com.microsoft.azure.management.recoveryservicessiterecovery.v2018_01_10;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Onprem disk details data.
+ * On-prem disk details data.
  */
 public class DiskDetails {
     /**
