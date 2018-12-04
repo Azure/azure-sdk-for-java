@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a news article.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = NewsArticle.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("NewsArticle")
 public class NewsArticle extends Article {
     /**
@@ -43,7 +43,7 @@ public class NewsArticle extends Article {
     private List<NewsArticle> clusteredArticles;
 
     /**
-     * Get the category value.
+     * Get the news category that the article belongs to. For example, Sports. If the news category cannot be determined, the article does not include this field.
      *
      * @return the category value
      */
@@ -52,7 +52,7 @@ public class NewsArticle extends Article {
     }
 
     /**
-     * Get the headline value.
+     * Get a Boolean value that indicates whether the news article is a headline. If true, the article is a headline. The article includes this field only for news categories requests that do not specify the category query parameter.
      *
      * @return the headline value
      */
@@ -61,7 +61,7 @@ public class NewsArticle extends Article {
     }
 
     /**
-     * Get the clusteredArticles value.
+     * Get a list of related news articles.
      *
      * @return the clusteredArticles value
      */

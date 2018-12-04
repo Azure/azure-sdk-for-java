@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines a media object.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = MediaObject.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("MediaObject")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ImageObject", value = ImageObject.class),
@@ -43,7 +43,7 @@ public class MediaObject extends CreativeWork {
     private Integer height;
 
     /**
-     * Get the contentUrl value.
+     * Get original URL to retrieve the source (file) for the media object (e.g the source URL for the image).
      *
      * @return the contentUrl value
      */
@@ -52,7 +52,7 @@ public class MediaObject extends CreativeWork {
     }
 
     /**
-     * Get the width value.
+     * Get the width of the source media object, in pixels.
      *
      * @return the width value
      */
@@ -61,7 +61,7 @@ public class MediaObject extends CreativeWork {
     }
 
     /**
-     * Get the height value.
+     * Get the height of the source media object, in pixels.
      *
      * @return the height value
      */

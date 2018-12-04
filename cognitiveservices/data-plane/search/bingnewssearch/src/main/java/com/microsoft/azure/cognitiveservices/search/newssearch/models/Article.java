@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The Article model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Article.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("Article")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "NewsArticle", value = NewsArticle.class)
@@ -29,7 +29,7 @@ public class Article extends CreativeWork {
     private Integer wordCount;
 
     /**
-     * Get the wordCount value.
+     * Get the number of words in the text of the Article.
      *
      * @return the wordCount value
      */

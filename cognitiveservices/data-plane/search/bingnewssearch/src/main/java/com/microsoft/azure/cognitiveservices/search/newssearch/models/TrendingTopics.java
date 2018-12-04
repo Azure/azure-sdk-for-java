@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The TrendingTopics model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = TrendingTopics.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
 @JsonTypeName("TrendingTopics")
 public class TrendingTopics extends Answer {
     /**
@@ -26,7 +26,7 @@ public class TrendingTopics extends Answer {
     private List<NewsTopic> value;
 
     /**
-     * Get the value value.
+     * Get a list of trending news topics on Bing.
      *
      * @return the value value
      */
@@ -35,7 +35,7 @@ public class TrendingTopics extends Answer {
     }
 
     /**
-     * Set the value value.
+     * Set a list of trending news topics on Bing.
      *
      * @param value the value value to set
      * @return the TrendingTopics object itself.
