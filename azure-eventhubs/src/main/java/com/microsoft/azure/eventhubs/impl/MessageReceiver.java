@@ -24,12 +24,14 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -40,7 +42,10 @@ import java.util.function.Consumer;
 public final class MessageReceiver extends ClientEntity implements AmqpReceiver, ErrorContextProvider {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageReceiver.class);
     private static final int MIN_TIMEOUT_DURATION_MILLIS = 20;
-
+    private static final int MAX_OPERATION_TIMEOUT_SCHEDULED = 2;
+    // TestHooks for code injection
+    private static volatile Consumer<MessageReceiver> onOpenRetry = null;
+    private final AtomicInteger operationTimeoutScheduled = new AtomicInteger(0);
     private final ConcurrentLinkedQueue<ReceiveWorkItem> pendingReceives;
     private final MessagingFactory underlyingFactory;
     private final String receivePath;
@@ -57,7 +62,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private final CreateAndReceive createAndReceive;
     private final Object errorConditionLock;
     private final Timer timer;
-
     private volatile int nextCreditToFlow;
     private volatile Receiver receiveLink;
     private volatile Duration receiveTimeout;
@@ -65,12 +69,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private volatile boolean creatingLink;
     private volatile CompletableFuture<?> openTimer;
     private volatile CompletableFuture<?> closeTimer;
-
     private int prefetchCount;
     private Exception lastKnownLinkError;
-
-    // TestHooks for code injection
-    private static volatile Consumer<MessageReceiver> onOpenRetry = null;
 
     private MessageReceiver(final MessagingFactory factory,
                             final String name,
@@ -98,16 +98,34 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         // onOperationTimeout delegate - per receive call
         this.onOperationTimedout = new Runnable() {
             public void run() {
+                MessageReceiver.this.operationTimeoutTimerFired();
+
                 WorkItem<Collection<Message>> topWorkItem = null;
                 while ((topWorkItem = MessageReceiver.this.pendingReceives.peek()) != null) {
                     if (topWorkItem.getTimeoutTracker().remaining().toMillis() <= MessageReceiver.MIN_TIMEOUT_DURATION_MILLIS) {
                         WorkItem<Collection<Message>> dequedWorkItem = MessageReceiver.this.pendingReceives.poll();
                         if (dequedWorkItem != null && dequedWorkItem.getWork() != null && !dequedWorkItem.getWork().isDone()) {
                             dequedWorkItem.getWork().complete(null);
-                        } else
+                        } else {
                             break;
+                        }
                     } else {
-                        MessageReceiver.this.scheduleOperationTimer(topWorkItem.getTimeoutTracker());
+                        if (MessageReceiver.this.shouldScheduleOperationTimeoutTimer()) {
+                            TimeoutTracker timeoutTracker = topWorkItem.getTimeoutTracker();
+
+                            if (TRACE_LOGGER.isInfoEnabled()) {
+                                TRACE_LOGGER.info(
+                                        String.format(Locale.US,
+                                                "path[%s], linkName[%s] - Reschedule operation timer, current: [%s], remaining: [%s] secs",
+                                                receivePath,
+                                                receiveLink.getName(),
+                                                Instant.now(),
+                                                timeoutTracker.remaining().getSeconds()));
+                            }
+
+                            MessageReceiver.this.scheduleOperationTimer(timeoutTracker);
+                        }
+
                         break;
                     }
                 }
@@ -261,7 +279,17 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             return onReceive;
         }
 
-        if (this.pendingReceives.isEmpty()) {
+        if (this.shouldScheduleOperationTimeoutTimer()) {
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info(
+                        String.format(Locale.US,
+                                "path[%s], linkName[%s] - schedule operation timer, current: [%s], remaining: [%s] secs",
+                                receivePath,
+                                receiveLink.getName(),
+                                Instant.now(),
+                                this.receiveTimeout.getSeconds()));
+            }
+
             timer.schedule(this.onOperationTimedout, this.receiveTimeout);
         }
 
@@ -421,7 +449,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 }
             }
 
-            if (nextRetryInterval == null || !recreateScheduled){
+            if (nextRetryInterval == null || !recreateScheduled) {
                 this.drainPendingReceives(completionException);
             }
         }
@@ -653,6 +681,19 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 }, this.executor);
     }
 
+    private boolean shouldScheduleOperationTimeoutTimer() {
+        boolean scheduleTimer = this.operationTimeoutScheduled.getAndIncrement() < MAX_OPERATION_TIMEOUT_SCHEDULED;
+        if (!scheduleTimer) {
+            this.operationTimeoutScheduled.decrementAndGet();
+        }
+
+        return scheduleTimer;
+    }
+
+    private void operationTimeoutTimerFired() {
+        MessageReceiver.this.operationTimeoutScheduled.decrementAndGet();
+    }
+
     @Override
     public void onClose(ErrorCondition condition) {
         final Exception completionException = (condition != null && condition.getCondition() != null) ? ExceptionUtil.toException(condition) : null;
@@ -732,9 +773,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
 
             ReceiveWorkItem pendingReceive;
             while (!prefetchedMessages.isEmpty() && (pendingReceive = pendingReceives.poll()) != null) {
-
                 if (pendingReceive.getWork() != null && !pendingReceive.getWork().isDone()) {
-
                     Collection<Message> receivedMessages = receiveCore(pendingReceive.maxMessageCount);
                     pendingReceive.getWork().complete(receivedMessages);
                 }

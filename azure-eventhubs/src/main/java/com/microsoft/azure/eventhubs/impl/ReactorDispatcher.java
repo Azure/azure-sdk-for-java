@@ -10,6 +10,8 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.Selectable;
 import org.apache.qpid.proton.reactor.Selectable.Callback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -28,6 +30,7 @@ import java.util.concurrent.RejectedExecutionException;
  * Each {@link ReactorDispatcher} should be initialized Synchronously - as it calls API in {@link Reactor} which is not thread-safe.
  */
 public final class ReactorDispatcher {
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReactorDispatcher.class);
     private final Reactor reactor;
     private final Pipe ioSignal;
     private final ConcurrentLinkedQueue<BaseHandler> workQueue;
@@ -87,6 +90,7 @@ public final class ReactorDispatcher {
             while (this.ioSignal.sink().write(ByteBuffer.allocate(1)) == 0) {
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
+            TRACE_LOGGER.info("signalWorkQueue failed with an error", ignorePipeClosedDuringReactorShutdown);
         }
     }
 
@@ -111,9 +115,13 @@ public final class ReactorDispatcher {
         @Override
         public void run(Selectable selectable) {
             try {
-                ioSignal.source().read(ByteBuffer.allocate(1024));
+                while (ioSignal.source().read(ByteBuffer.allocate(1024)) > 0) {
+                    // read until the end of the stream
+                }
             } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
+                TRACE_LOGGER.info("ScheduleHandler.run() failed with an error", ignorePipeClosedDuringReactorShutdown);
             } catch (IOException ioException) {
+                TRACE_LOGGER.info("ScheduleHandler.run() failed with an error", ioException);
                 throw new RuntimeException(ioException);
             }
 
@@ -129,13 +137,15 @@ public final class ReactorDispatcher {
         public void run(Selectable selectable) {
             try {
                 selectable.getChannel().close();
-            } catch (IOException ignore) {
+            } catch (IOException ioException) {
+                TRACE_LOGGER.info("CloseHandler.run() failed with an error", ioException);
             }
 
             try {
                 if (ioSignal.sink().isOpen())
                     ioSignal.sink().close();
-            } catch (IOException ignore) {
+            } catch (IOException ioException) {
+                TRACE_LOGGER.info("CloseHandler.run() failed with an error", ioException);
             }
 
             workScheduler.run(null);
@@ -143,7 +153,8 @@ public final class ReactorDispatcher {
             try {
                 if (ioSignal.source().isOpen())
                     ioSignal.source().close();
-            } catch (IOException ignore) {
+            } catch (IOException ioException) {
+                TRACE_LOGGER.info("CloseHandler.run() failed with an error", ioException);
             }
         }
     }

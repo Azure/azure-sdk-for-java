@@ -21,20 +21,6 @@ import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import com.microsoft.azure.eventhubs.BatchOptions;
-import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventDataBatch;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.EventHubException;
-import com.microsoft.azure.eventhubs.EventPosition;
-import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
-import com.microsoft.azure.eventhubs.PartitionRuntimeInformation;
-import com.microsoft.azure.eventhubs.PartitionSender;
-import com.microsoft.azure.eventhubs.ReceiverOptions;
-import com.microsoft.azure.eventhubs.RetryPolicy;
-
 public final class EventHubClientImpl extends ClientEntity implements EventHubClient {
 
     /**
@@ -399,8 +385,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                                 new OperationCancelledException(
                                         "OperationCancelled as the underlying client instance was closed.",
                                         lastException));
-                    }
-                    else {
+                    } else {
                         final Duration waitTime = ManagementRetry.this.mf.getRetryPolicy().getNextRetryInterval(
                                 ManagementRetry.this.mf.getClientId(), lastException, this.timeoutTracker.remaining());
                         if (waitTime == null) {

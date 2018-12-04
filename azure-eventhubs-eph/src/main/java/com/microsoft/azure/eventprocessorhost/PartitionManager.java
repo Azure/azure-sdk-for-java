@@ -287,7 +287,7 @@ class PartitionManager extends Closable {
     // Return Void so it can be called from a lambda.
     // throwOnFailure is true
     private Void scan(boolean isFirst) {
-        TRACE_LOGGER.debug(this.hostContext.withHost("Starting lease scan"));
+        TRACE_LOGGER.info(this.hostContext.withHost("Starting lease scan"));
         long start = System.currentTimeMillis();
 
         (new PartitionScanner(this.hostContext, (lease) -> this.pumpManager.addPump(lease), this)).scan(isFirst)
