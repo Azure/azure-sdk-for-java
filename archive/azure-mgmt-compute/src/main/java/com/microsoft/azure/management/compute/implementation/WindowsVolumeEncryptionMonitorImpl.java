@@ -95,7 +95,7 @@ class WindowsVolumeEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor 
             return EncryptionStatus.NOT_ENCRYPTED;
         }
         HashMap<String, Object> publicSettings = new LinkedHashMap<>();
-        if (encryptionExtension.settings() == null) {
+        if (encryptionExtension.settings() != null) {
             publicSettings = (LinkedHashMap<String, Object>) encryptionExtension.settings();
         }
         if (!publicSettings.containsKey("VolumeType")
