@@ -34,7 +34,7 @@ public class CopyActivity extends ExecutionActivity {
     private CopySink sink;
 
     /**
-     * Copy activity translator. If not specified, tabular translator is used.
+     * Copy activity translator. If not specificed, tabular translator is used.
      */
     @JsonProperty(value = "typeProperties.translator")
     private CopyTranslator translator;
@@ -135,7 +135,7 @@ public class CopyActivity extends ExecutionActivity {
     }
 
     /**
-     * Get copy activity translator. If not specified, tabular translator is used.
+     * Get copy activity translator. If not specificed, tabular translator is used.
      *
      * @return the translator value
      */
@@ -144,7 +144,7 @@ public class CopyActivity extends ExecutionActivity {
     }
 
     /**
-     * Set copy activity translator. If not specified, tabular translator is used.
+     * Set copy activity translator. If not specificed, tabular translator is used.
      *
      * @param translator the translator value to set
      * @return the CopyActivity object itself.

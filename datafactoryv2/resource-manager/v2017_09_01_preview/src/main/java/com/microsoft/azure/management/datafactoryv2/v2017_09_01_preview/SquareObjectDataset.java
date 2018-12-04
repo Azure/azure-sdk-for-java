@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.microsoft.azure.management.datafactoryv2.v2017_09_01_preview.implementation.DatasetInner;
 
 /**
- * Square Service dataset.
+ * Square Serivce dataset.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SquareObject")

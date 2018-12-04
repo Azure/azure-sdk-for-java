@@ -784,7 +784,7 @@ public class PipelinesInner {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
+     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the the specified run will be used to create a new run.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -801,7 +801,7 @@ public class PipelinesInner {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
+     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the the specified run will be used to create a new run.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not specified.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -817,7 +817,7 @@ public class PipelinesInner {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
+     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the the specified run will be used to create a new run.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CreateRunResponseInner object
@@ -837,7 +837,7 @@ public class PipelinesInner {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
-     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
+     * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the the specified run will be used to create a new run.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CreateRunResponseInner object

@@ -15,20 +15,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class UserProperty {
     /**
-     * User property name.
+     * User proprety name.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
-     * User property value. Type: string (or Expression with resultType
+     * User proprety value. Type: string (or Expression with resultType
      * string).
      */
     @JsonProperty(value = "value", required = true)
     private Object value;
 
     /**
-     * Get user property name.
+     * Get user proprety name.
      *
      * @return the name value
      */
@@ -37,7 +37,7 @@ public class UserProperty {
     }
 
     /**
-     * Set user property name.
+     * Set user proprety name.
      *
      * @param name the name value to set
      * @return the UserProperty object itself.
@@ -48,7 +48,7 @@ public class UserProperty {
     }
 
     /**
-     * Get user property value. Type: string (or Expression with resultType string).
+     * Get user proprety value. Type: string (or Expression with resultType string).
      *
      * @return the value value
      */
@@ -57,7 +57,7 @@ public class UserProperty {
     }
 
     /**
-     * Set user property value. Type: string (or Expression with resultType string).
+     * Set user proprety value. Type: string (or Expression with resultType string).
      *
      * @param value the value value to set
      * @return the UserProperty object itself.

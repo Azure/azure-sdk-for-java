@@ -19,7 +19,6 @@ import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.FactoryRepoUpdate;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.FactoryUpdateParameters;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.GitHubAccessTokenRequest;
-import com.microsoft.azure.management.datafactoryv2.v2018_06_01.UserAccessPolicy;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -101,10 +100,6 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories getGitHubAccessToken" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getGitHubAccessToken")
         Observable<Response<ResponseBody>> getGitHubAccessToken(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body GitHubAccessTokenRequest gitHubAccessTokenRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories getDataPlaneAccess" })
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getDataPlaneAccess")
-        Observable<Response<ResponseBody>> getDataPlaneAccess(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body UserAccessPolicy policy, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories listNext" })
         @GET
@@ -1052,100 +1047,6 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
     private ServiceResponse<GitHubAccessTokenResponseInner> getGitHubAccessTokenDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<GitHubAccessTokenResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<GitHubAccessTokenResponseInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Get Data Plane access.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param policy Data Plane user access policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the AccessPolicyResponseInner object if successful.
-     */
-    public AccessPolicyResponseInner getDataPlaneAccess(String resourceGroupName, String factoryName, UserAccessPolicy policy) {
-        return getDataPlaneAccessWithServiceResponseAsync(resourceGroupName, factoryName, policy).toBlocking().single().body();
-    }
-
-    /**
-     * Get Data Plane access.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param policy Data Plane user access policy definition.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<AccessPolicyResponseInner> getDataPlaneAccessAsync(String resourceGroupName, String factoryName, UserAccessPolicy policy, final ServiceCallback<AccessPolicyResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getDataPlaneAccessWithServiceResponseAsync(resourceGroupName, factoryName, policy), serviceCallback);
-    }
-
-    /**
-     * Get Data Plane access.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param policy Data Plane user access policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AccessPolicyResponseInner object
-     */
-    public Observable<AccessPolicyResponseInner> getDataPlaneAccessAsync(String resourceGroupName, String factoryName, UserAccessPolicy policy) {
-        return getDataPlaneAccessWithServiceResponseAsync(resourceGroupName, factoryName, policy).map(new Func1<ServiceResponse<AccessPolicyResponseInner>, AccessPolicyResponseInner>() {
-            @Override
-            public AccessPolicyResponseInner call(ServiceResponse<AccessPolicyResponseInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get Data Plane access.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param policy Data Plane user access policy definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the AccessPolicyResponseInner object
-     */
-    public Observable<ServiceResponse<AccessPolicyResponseInner>> getDataPlaneAccessWithServiceResponseAsync(String resourceGroupName, String factoryName, UserAccessPolicy policy) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (factoryName == null) {
-            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (policy == null) {
-            throw new IllegalArgumentException("Parameter policy is required and cannot be null.");
-        }
-        Validator.validate(policy);
-        return service.getDataPlaneAccess(this.client.subscriptionId(), resourceGroupName, factoryName, this.client.apiVersion(), policy, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AccessPolicyResponseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AccessPolicyResponseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AccessPolicyResponseInner> clientResponse = getDataPlaneAccessDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<AccessPolicyResponseInner> getDataPlaneAccessDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<AccessPolicyResponseInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<AccessPolicyResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

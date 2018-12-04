@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Trigger that runs every time the selected Blob container changes.
+ * Trigger that runs everytime the selected Blob container changes.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("BlobTrigger")

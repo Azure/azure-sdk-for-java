@@ -12,7 +12,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The recurrence schedule occurrence.
+ * The recurrence schedule occurence.
  */
 public class RecurrenceScheduleOccurrence {
     /**

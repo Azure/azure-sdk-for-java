@@ -28,12 +28,6 @@ public class PostgreSqlLinkedService extends LinkedServiceInner {
     private SecretBase connectionString;
 
     /**
-     * The Azure key vault secret reference of password in connection string.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private AzureKeyVaultSecretReference password;
-
-    /**
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -58,26 +52,6 @@ public class PostgreSqlLinkedService extends LinkedServiceInner {
      */
     public PostgreSqlLinkedService withConnectionString(SecretBase connectionString) {
         this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the Azure key vault secret reference of password in connection string.
-     *
-     * @return the password value
-     */
-    public AzureKeyVaultSecretReference password() {
-        return this.password;
-    }
-
-    /**
-     * Set the Azure key vault secret reference of password in connection string.
-     *
-     * @param password the password value to set
-     * @return the PostgreSqlLinkedService object itself.
-     */
-    public PostgreSqlLinkedService withPassword(AzureKeyVaultSecretReference password) {
-        this.password = password;
         return this;
     }
 

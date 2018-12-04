@@ -15,7 +15,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.LinkedServiceInner;
 
 /**
- * Hubspot Service linked service.
+ * Hubspot Serivce linked service.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Hubspot")

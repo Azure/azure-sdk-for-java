@@ -28,8 +28,8 @@ public class AmazonMWSLinkedService extends LinkedServiceInner {
     private Object endpoint;
 
     /**
-     * The Amazon Marketplace ID you want to retrieve data from. To retrieve
-     * data from multiple Marketplace IDs, separate them with a comma (,).
+     * The Amazon Marketplace ID you want to retrieve data from. To retrive
+     * data from multiple Marketplace IDs, seperate them with a comma (,).
      * (i.e. A2EUQ1WTGCTBG2).
      */
     @JsonProperty(value = "typeProperties.marketplaceID", required = true)
@@ -110,7 +110,7 @@ public class AmazonMWSLinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Get the Amazon Marketplace ID you want to retrieve data from. To retrieve data from multiple Marketplace IDs, separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2).
+     * Get the Amazon Marketplace ID you want to retrieve data from. To retrive data from multiple Marketplace IDs, seperate them with a comma (,). (i.e. A2EUQ1WTGCTBG2).
      *
      * @return the marketplaceID value
      */
@@ -119,7 +119,7 @@ public class AmazonMWSLinkedService extends LinkedServiceInner {
     }
 
     /**
-     * Set the Amazon Marketplace ID you want to retrieve data from. To retrieve data from multiple Marketplace IDs, separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2).
+     * Set the Amazon Marketplace ID you want to retrieve data from. To retrive data from multiple Marketplace IDs, seperate them with a comma (,). (i.e. A2EUQ1WTGCTBG2).
      *
      * @param marketplaceID the marketplaceID value to set
      * @return the AmazonMWSLinkedService object itself.

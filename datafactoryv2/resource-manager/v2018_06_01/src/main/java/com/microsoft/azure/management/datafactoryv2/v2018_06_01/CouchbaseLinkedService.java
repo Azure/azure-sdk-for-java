@@ -29,12 +29,6 @@ public class CouchbaseLinkedService extends LinkedServiceInner {
     private Object connectionString;
 
     /**
-     * The Azure key vault secret reference of credString in connection string.
-     */
-    @JsonProperty(value = "typeProperties.credString")
-    private AzureKeyVaultSecretReference credString;
-
-    /**
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -59,26 +53,6 @@ public class CouchbaseLinkedService extends LinkedServiceInner {
      */
     public CouchbaseLinkedService withConnectionString(Object connectionString) {
         this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the Azure key vault secret reference of credString in connection string.
-     *
-     * @return the credString value
-     */
-    public AzureKeyVaultSecretReference credString() {
-        return this.credString;
-    }
-
-    /**
-     * Set the Azure key vault secret reference of credString in connection string.
-     *
-     * @param credString the credString value to set
-     * @return the CouchbaseLinkedService object itself.
-     */
-    public CouchbaseLinkedService withCredString(AzureKeyVaultSecretReference credString) {
-        this.credString = credString;
         return this;
     }
 

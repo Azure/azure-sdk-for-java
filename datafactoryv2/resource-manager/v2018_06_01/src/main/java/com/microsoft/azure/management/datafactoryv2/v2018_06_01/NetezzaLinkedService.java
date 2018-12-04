@@ -29,12 +29,6 @@ public class NetezzaLinkedService extends LinkedServiceInner {
     private Object connectionString;
 
     /**
-     * The Azure key vault secret reference of password in connection string.
-     */
-    @JsonProperty(value = "typeProperties.pwd")
-    private AzureKeyVaultSecretReference pwd;
-
-    /**
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -59,26 +53,6 @@ public class NetezzaLinkedService extends LinkedServiceInner {
      */
     public NetezzaLinkedService withConnectionString(Object connectionString) {
         this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the Azure key vault secret reference of password in connection string.
-     *
-     * @return the pwd value
-     */
-    public AzureKeyVaultSecretReference pwd() {
-        return this.pwd;
-    }
-
-    /**
-     * Set the Azure key vault secret reference of password in connection string.
-     *
-     * @param pwd the pwd value to set
-     * @return the NetezzaLinkedService object itself.
-     */
-    public NetezzaLinkedService withPwd(AzureKeyVaultSecretReference pwd) {
-        this.pwd = pwd;
         return this;
     }
 

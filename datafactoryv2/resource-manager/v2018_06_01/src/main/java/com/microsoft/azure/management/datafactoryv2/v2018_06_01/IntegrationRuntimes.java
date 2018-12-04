@@ -107,7 +107,7 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
     Observable<IntegrationRuntimeMonitoringData> getMonitoringDataAsync(String resourceGroupName, String factoryName, String integrationRuntimeName);
 
     /**
-     * Upgrade self-hosted integration runtime to latest version if availability.
+     * Upgrade self-hosted integration runtime to latest version if availably.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.

@@ -29,12 +29,6 @@ public class CosmosDbLinkedService extends LinkedServiceInner {
     private Object connectionString;
 
     /**
-     * The Azure key vault secret reference of accountKey in connection string.
-     */
-    @JsonProperty(value = "typeProperties.accountKey")
-    private AzureKeyVaultSecretReference accountKey;
-
-    /**
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -59,26 +53,6 @@ public class CosmosDbLinkedService extends LinkedServiceInner {
      */
     public CosmosDbLinkedService withConnectionString(Object connectionString) {
         this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the Azure key vault secret reference of accountKey in connection string.
-     *
-     * @return the accountKey value
-     */
-    public AzureKeyVaultSecretReference accountKey() {
-        return this.accountKey;
-    }
-
-    /**
-     * Set the Azure key vault secret reference of accountKey in connection string.
-     *
-     * @param accountKey the accountKey value to set
-     * @return the CosmosDbLinkedService object itself.
-     */
-    public CosmosDbLinkedService withAccountKey(AzureKeyVaultSecretReference accountKey) {
-        this.accountKey = accountKey;
         return this;
     }
 

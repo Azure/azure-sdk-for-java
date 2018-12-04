@@ -29,12 +29,6 @@ public class OracleLinkedService extends LinkedServiceInner {
     private Object connectionString;
 
     /**
-     * The Azure key vault secret reference of password in connection string.
-     */
-    @JsonProperty(value = "typeProperties.password")
-    private AzureKeyVaultSecretReference password;
-
-    /**
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -59,26 +53,6 @@ public class OracleLinkedService extends LinkedServiceInner {
      */
     public OracleLinkedService withConnectionString(Object connectionString) {
         this.connectionString = connectionString;
-        return this;
-    }
-
-    /**
-     * Get the Azure key vault secret reference of password in connection string.
-     *
-     * @return the password value
-     */
-    public AzureKeyVaultSecretReference password() {
-        return this.password;
-    }
-
-    /**
-     * Set the Azure key vault secret reference of password in connection string.
-     *
-     * @param password the password value to set
-     * @return the OracleLinkedService object itself.
-     */
-    public OracleLinkedService withPassword(AzureKeyVaultSecretReference password) {
-        this.password = password;
         return this;
     }
 

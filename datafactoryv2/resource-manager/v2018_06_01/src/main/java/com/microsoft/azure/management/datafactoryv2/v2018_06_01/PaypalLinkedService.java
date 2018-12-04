@@ -15,7 +15,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.LinkedServiceInner;
 
 /**
- * Paypal Service linked service.
+ * Paypal Serivce linked service.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Paypal")
