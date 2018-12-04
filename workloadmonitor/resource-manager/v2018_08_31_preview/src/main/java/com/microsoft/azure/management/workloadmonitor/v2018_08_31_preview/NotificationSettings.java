@@ -9,11 +9,13 @@
 package com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview;
 
 import rx.Observable;
+import com.microsoft.azure.management.workloadmonitor.v2018_08_31_preview.implementation.NotificationSettingsInner;
+import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing NotificationSettings.
  */
-public interface NotificationSettings {
+public interface NotificationSettings extends HasInner<NotificationSettingsInner> {
     /**
      * Get list of notification settings for a resource.
      *
@@ -25,5 +27,17 @@ public interface NotificationSettings {
      * @return the observable for the request
      */
     Observable<NotificationSetting> listByResourceAsync(final String resourceGroupName, final String resourceNamespace, final String resourceType, final String resourceName);
+
+    /**
+     * Get a of notification setting for a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceNamespace The Namespace of the resource.
+     * @param resourceType The type of the resource.
+     * @param resourceName Name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NotificationSetting> getAsync(String resourceGroupName, String resourceNamespace, String resourceType, String resourceName);
 
 }
