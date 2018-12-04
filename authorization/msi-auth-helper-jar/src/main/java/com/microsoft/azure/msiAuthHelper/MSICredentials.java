@@ -8,11 +8,9 @@ package com.microsoft.azure.msiAuthHelper;
 
 import rx.Single;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
@@ -187,9 +185,11 @@ public final class MSICredentials{
             String result = reader.readLine();
 
             return getMsiTokenFromResult(result, HostType.APP_SERVICE).accessToken();
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+        } catch (SocketException se){
+            //If no MSI assigned to the app, then the error is "Permission denied: connect"
+            if (se.getMessage().contains("Permission denied: connect")) {
+                throw new FileNotFoundException("Service identity not found");
+            } else throw se;
         } finally {
             if (connection != null) {
                 connection.disconnect();
