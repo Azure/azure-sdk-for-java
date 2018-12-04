@@ -50,14 +50,14 @@ public class EdifactValidationSettings {
     /**
      * The value indicating whether to Whether to validate EDI types.
      */
-    @JsonProperty(value = "validateEdiTypes", required = true)
-    private boolean validateEdiTypes;
+    @JsonProperty(value = "validateEDITypes", required = true)
+    private boolean validateEDITypes;
 
     /**
      * The value indicating whether to Whether to validate XSD types.
      */
-    @JsonProperty(value = "validateXsdTypes", required = true)
-    private boolean validateXsdTypes;
+    @JsonProperty(value = "validateXSDTypes", required = true)
+    private boolean validateXSDTypes;
 
     /**
      * The value indicating whether to allow leading and trailing spaces and
@@ -183,40 +183,40 @@ public class EdifactValidationSettings {
     /**
      * Get the value indicating whether to Whether to validate EDI types.
      *
-     * @return the validateEdiTypes value
+     * @return the validateEDITypes value
      */
-    public boolean validateEdiTypes() {
-        return this.validateEdiTypes;
+    public boolean validateEDITypes() {
+        return this.validateEDITypes;
     }
 
     /**
      * Set the value indicating whether to Whether to validate EDI types.
      *
-     * @param validateEdiTypes the validateEdiTypes value to set
+     * @param validateEDITypes the validateEDITypes value to set
      * @return the EdifactValidationSettings object itself.
      */
-    public EdifactValidationSettings withValidateEdiTypes(boolean validateEdiTypes) {
-        this.validateEdiTypes = validateEdiTypes;
+    public EdifactValidationSettings withValidateEDITypes(boolean validateEDITypes) {
+        this.validateEDITypes = validateEDITypes;
         return this;
     }
 
     /**
      * Get the value indicating whether to Whether to validate XSD types.
      *
-     * @return the validateXsdTypes value
+     * @return the validateXSDTypes value
      */
-    public boolean validateXsdTypes() {
-        return this.validateXsdTypes;
+    public boolean validateXSDTypes() {
+        return this.validateXSDTypes;
     }
 
     /**
      * Set the value indicating whether to Whether to validate XSD types.
      *
-     * @param validateXsdTypes the validateXsdTypes value to set
+     * @param validateXSDTypes the validateXSDTypes value to set
      * @return the EdifactValidationSettings object itself.
      */
-    public EdifactValidationSettings withValidateXsdTypes(boolean validateXsdTypes) {
-        this.validateXsdTypes = validateXsdTypes;
+    public EdifactValidationSettings withValidateXSDTypes(boolean validateXSDTypes) {
+        this.validateXSDTypes = validateXSDTypes;
         return this;
     }
 
