@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Parameters allowd to update for a server.
+ * Parameters allowed to update for a server.
  */
 @JsonFlatten
 public class ServerUpdateParameters {
@@ -47,6 +47,12 @@ public class ServerUpdateParameters {
      */
     @JsonProperty(value = "properties.sslEnforcement")
     private SslEnforcementEnum sslEnforcement;
+
+    /**
+     * The replication role of the server.
+     */
+    @JsonProperty(value = "properties.replicationRole")
+    private String replicationRole;
 
     /**
      * Application-specific metadata in the form of key-value pairs.
@@ -151,6 +157,26 @@ public class ServerUpdateParameters {
      */
     public ServerUpdateParameters withSslEnforcement(SslEnforcementEnum sslEnforcement) {
         this.sslEnforcement = sslEnforcement;
+        return this;
+    }
+
+    /**
+     * Get the replication role of the server.
+     *
+     * @return the replicationRole value
+     */
+    public String replicationRole() {
+        return this.replicationRole;
+    }
+
+    /**
+     * Set the replication role of the server.
+     *
+     * @param replicationRole the replicationRole value to set
+     * @return the ServerUpdateParameters object itself.
+     */
+    public ServerUpdateParameters withReplicationRole(String replicationRole) {
+        this.replicationRole = replicationRole;
         return this;
     }
 

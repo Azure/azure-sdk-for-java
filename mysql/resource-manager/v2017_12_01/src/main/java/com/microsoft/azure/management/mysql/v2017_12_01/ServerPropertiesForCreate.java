@@ -21,7 +21,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Default", value = ServerPropertiesForDefaultCreate.class),
     @JsonSubTypes.Type(name = "PointInTimeRestore", value = ServerPropertiesForRestore.class),
-    @JsonSubTypes.Type(name = "GeoRestore", value = ServerPropertiesForGeoRestore.class)
+    @JsonSubTypes.Type(name = "GeoRestore", value = ServerPropertiesForGeoRestore.class),
+    @JsonSubTypes.Type(name = "Replica", value = ServerPropertiesForReplica.class)
 })
 public class ServerPropertiesForCreate {
     /**
