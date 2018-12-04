@@ -64,7 +64,7 @@ public class RedisUpdateParameters {
     private Map<String, String> tags;
 
     /**
-     * Get the redisConfiguration value.
+     * Get all Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
      *
      * @return the redisConfiguration value
      */
@@ -73,7 +73,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Set the redisConfiguration value.
+     * Set all Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value etc.
      *
      * @param redisConfiguration the redisConfiguration value to set
      * @return the RedisUpdateParameters object itself.
@@ -84,7 +84,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Get the enableNonSslPort value.
+     * Get specifies whether the non-ssl Redis server port (6379) is enabled.
      *
      * @return the enableNonSslPort value
      */
@@ -93,7 +93,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Set the enableNonSslPort value.
+     * Set specifies whether the non-ssl Redis server port (6379) is enabled.
      *
      * @param enableNonSslPort the enableNonSslPort value to set
      * @return the RedisUpdateParameters object itself.
@@ -104,7 +104,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Get the tenantSettings value.
+     * Get a dictionary of tenant settings.
      *
      * @return the tenantSettings value
      */
@@ -113,7 +113,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Set the tenantSettings value.
+     * Set a dictionary of tenant settings.
      *
      * @param tenantSettings the tenantSettings value to set
      * @return the RedisUpdateParameters object itself.
@@ -124,7 +124,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Get the shardCount value.
+     * Get the number of shards to be created on a Premium Cluster Cache.
      *
      * @return the shardCount value
      */
@@ -133,7 +133,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Set the shardCount value.
+     * Set the number of shards to be created on a Premium Cluster Cache.
      *
      * @param shardCount the shardCount value to set
      * @return the RedisUpdateParameters object itself.
@@ -144,7 +144,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Get the minimumTlsVersion value.
+     * Get optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2'). Possible values include: '1.0', '1.1', '1.2'.
      *
      * @return the minimumTlsVersion value
      */
@@ -153,7 +153,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Set the minimumTlsVersion value.
+     * Set optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2'). Possible values include: '1.0', '1.1', '1.2'.
      *
      * @param minimumTlsVersion the minimumTlsVersion value to set
      * @return the RedisUpdateParameters object itself.
@@ -164,7 +164,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Get the sku value.
+     * Get the SKU of the Redis cache to deploy.
      *
      * @return the sku value
      */
@@ -173,7 +173,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU of the Redis cache to deploy.
      *
      * @param sku the sku value to set
      * @return the RedisUpdateParameters object itself.
@@ -184,7 +184,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Get the tags value.
+     * Get resource tags.
      *
      * @return the tags value
      */
@@ -193,7 +193,7 @@ public class RedisUpdateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set resource tags.
      *
      * @param tags the tags value to set
      * @return the RedisUpdateParameters object itself.

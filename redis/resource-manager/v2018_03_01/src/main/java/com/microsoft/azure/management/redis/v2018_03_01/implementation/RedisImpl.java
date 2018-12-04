@@ -31,8 +31,8 @@ import com.microsoft.azure.management.redis.v2018_03_01.ExportRDBParameters;
 import com.microsoft.azure.management.redis.v2018_03_01.CheckNameAvailabilityParameters;
 import com.microsoft.azure.management.redis.v2018_03_01.NotificationListResponse;
 
-class RedisImpl extends GroupableResourcesCoreImpl<RedisResource, RedisResourceImpl, RedisResourceInner, RedisInner, RedisManager>  implements Redis {
-    protected RedisImpl(RedisManager manager) {
+class RedisImpl extends GroupableResourcesCoreImpl<RedisResource, RedisResourceImpl, RedisResourceInner, RedisInner, CacheManager>  implements Redis {
+    protected RedisImpl(CacheManager manager) {
         super(manager.inner().redis(), manager);
     }
 
@@ -86,41 +86,22 @@ class RedisImpl extends GroupableResourcesCoreImpl<RedisResource, RedisResourceI
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<RedisResourceInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RedisInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<RedisResourceInner>, Observable<Page<RedisResourceInner>>>() {
-            @Override
-            public Observable<Page<RedisResourceInner>> call(Page<RedisResourceInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RedisResource> listByResourceGroupAsync(String resourceGroupName) {
         RedisInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<RedisResourceInner>, Observable<Page<RedisResourceInner>>>() {
-            @Override
-            public Observable<Page<RedisResourceInner>> call(Page<RedisResourceInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RedisResourceInner>, Iterable<RedisResourceInner>>() {
             @Override
             public Iterable<RedisResourceInner> call(Page<RedisResourceInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<RedisResourceInner, RedisResource>() {
             @Override
             public RedisResource call(RedisResourceInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -129,41 +110,22 @@ class RedisImpl extends GroupableResourcesCoreImpl<RedisResource, RedisResourceI
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<RedisResourceInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RedisInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<RedisResourceInner>, Observable<Page<RedisResourceInner>>>() {
-            @Override
-            public Observable<Page<RedisResourceInner>> call(Page<RedisResourceInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RedisResource> listAsync() {
         RedisInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<RedisResourceInner>, Observable<Page<RedisResourceInner>>>() {
-            @Override
-            public Observable<Page<RedisResourceInner>> call(Page<RedisResourceInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RedisResourceInner>, Iterable<RedisResourceInner>>() {
             @Override
             public Iterable<RedisResourceInner> call(Page<RedisResourceInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<RedisResourceInner, RedisResource>() {
             @Override
             public RedisResource call(RedisResourceInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
