@@ -86,7 +86,7 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithLocation {
            /**
             * Specifies location.
-            * @param location The location of the resource group. It cannot be changed after the resource group has been created. It muct be one of the supported Azure locations
+            * @param location The location of the resource group. It cannot be changed after the resource group has been created. It must be one of the supported Azure locations
             * @return the next definition stage
             */
             WithCreate withLocation(String location);
