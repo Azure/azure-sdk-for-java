@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Recovery plan updation properties.
+ * Recovery plan update properties.
  */
 public class UpdateRecoveryPlanInputProperties {
     /**

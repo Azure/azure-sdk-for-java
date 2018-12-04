@@ -22,7 +22,7 @@ public class JobQueryParameter {
     private String startTime;
 
     /**
-     * Date time to get jobs upto.
+     * Date time to get jobs up to.
      */
     @JsonProperty(value = "endTime")
     private String endTime;
@@ -66,7 +66,7 @@ public class JobQueryParameter {
     }
 
     /**
-     * Get date time to get jobs upto.
+     * Get date time to get jobs up to.
      *
      * @return the endTime value
      */
@@ -75,7 +75,7 @@ public class JobQueryParameter {
     }
 
     /**
-     * Set date time to get jobs upto.
+     * Set date time to get jobs up to.
      *
      * @param endTime the endTime value to set
      * @return the JobQueryParameter object itself.

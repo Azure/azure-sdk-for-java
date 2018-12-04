@@ -44,7 +44,7 @@ public interface ReplicationStorageClassificationMappings extends SupportsCreati
      * Lists the storage classification mappings for the fabric.
      *
      * @param fabricName Fabric name.
-     * @param storageClassificationName Storage classfication name.
+     * @param storageClassificationName Storage classification name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

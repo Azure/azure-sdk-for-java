@@ -751,7 +751,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -766,7 +766,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -780,7 +780,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -798,7 +798,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -832,7 +832,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @param properties The update VCenter Request Properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -848,7 +848,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @param properties The update VCenter Request Properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -863,7 +863,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @param properties The update VCenter Request Properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -882,7 +882,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @param properties The update VCenter Request Properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -918,7 +918,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -933,7 +933,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -947,7 +947,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VCenterInner object
      */
@@ -965,7 +965,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VCenterInner object
      */
@@ -1010,7 +1010,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @param properties The update VCenter Request Properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1026,7 +1026,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @param properties The update VCenter Request Properties.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1041,7 +1041,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @param properties The update VCenter Request Properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VCenterInner object
@@ -1060,7 +1060,7 @@ public class ReplicationvCentersInner implements InnerSupportsDelete<Void> {
      * The operation to update a registered vCenter.
      *
      * @param fabricName Fabric name.
-     * @param vCenterName vCeneter name
+     * @param vCenterName vCenter name
      * @param properties The update VCenter Request Properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VCenterInner object

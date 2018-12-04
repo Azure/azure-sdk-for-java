@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The proprties of an alert.
+ * The properties of an alert.
  */
 public class AlertProperties {
     /**
