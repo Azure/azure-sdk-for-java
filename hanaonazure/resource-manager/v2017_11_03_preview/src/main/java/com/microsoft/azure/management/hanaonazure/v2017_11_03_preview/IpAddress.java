@@ -11,7 +11,7 @@ package com.microsoft.azure.management.hanaonazure.v2017_11_03_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the IP address of the network interaface.
+ * Specifies the IP address of the network interface.
  */
 public class IpAddress {
     /**
