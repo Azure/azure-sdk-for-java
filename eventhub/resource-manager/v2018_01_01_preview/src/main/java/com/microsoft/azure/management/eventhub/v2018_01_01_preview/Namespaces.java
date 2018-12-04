@@ -15,6 +15,7 @@ import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGro
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
+import com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation.NetworkRuleSetInner;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation.NamespacesInner;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.IpFilterRule;
@@ -38,6 +39,27 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
      * @return the first stage of the new Virtualnetworkrule definition.
      */
     VirtualNetworkRule.DefinitionStages.Blank defineVirtualnetworkrule(String name);
+
+    /**
+     * Gets NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param namespaceName The Namespace name
+     * @param parameters The Namespace IpFilterRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkRuleSet> createNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters);
+
+    /**
+     * Gets NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param namespaceName The Namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName);
 
     /**
      * Gets an IpFilterRule for a Namespace by rule name.

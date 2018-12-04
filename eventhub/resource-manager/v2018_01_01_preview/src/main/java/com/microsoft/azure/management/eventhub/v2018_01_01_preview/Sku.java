@@ -28,7 +28,7 @@ public class Sku {
     private SkuTier tier;
 
     /**
-     * The Event Hubs throughput units, value should be 0 to 20 throughput
+     * The Event Hubs throughput units, vaule should be 0 to 20 throughput
      * units.
      */
     @JsonProperty(value = "capacity")
@@ -75,7 +75,7 @@ public class Sku {
     }
 
     /**
-     * Get the Event Hubs throughput units, value should be 0 to 20 throughput units.
+     * Get the Event Hubs throughput units, vaule should be 0 to 20 throughput units.
      *
      * @return the capacity value
      */
@@ -84,7 +84,7 @@ public class Sku {
     }
 
     /**
-     * Set the Event Hubs throughput units, value should be 0 to 20 throughput units.
+     * Set the Event Hubs throughput units, vaule should be 0 to 20 throughput units.
      *
      * @param capacity the capacity value to set
      * @return the Sku object itself.
