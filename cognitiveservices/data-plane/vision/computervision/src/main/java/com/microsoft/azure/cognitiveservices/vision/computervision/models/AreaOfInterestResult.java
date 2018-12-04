@@ -8,18 +8,17 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Result of domain-specific classifications for the domain of landmarks.
+ * Result of AreaOfInterest operation.
  */
-public class LandmarkResults {
+public class AreaOfInterestResult {
     /**
-     * List of landmarks recognized in the image.
+     * A bounding box for an area of interest inside an image.
      */
-    @JsonProperty(value = "landmarks")
-    private List<LandmarksModel> landmarks;
+    @JsonProperty(value = "areaOfInterest", access = JsonProperty.Access.WRITE_ONLY)
+    private BoundingRect areaOfInterest;
 
     /**
      * Id of the REST API request.
@@ -34,23 +33,12 @@ public class LandmarkResults {
     private ImageMetadata metadata;
 
     /**
-     * Get list of landmarks recognized in the image.
+     * Get a bounding box for an area of interest inside an image.
      *
-     * @return the landmarks value
+     * @return the areaOfInterest value
      */
-    public List<LandmarksModel> landmarks() {
-        return this.landmarks;
-    }
-
-    /**
-     * Set list of landmarks recognized in the image.
-     *
-     * @param landmarks the landmarks value to set
-     * @return the LandmarkResults object itself.
-     */
-    public LandmarkResults withLandmarks(List<LandmarksModel> landmarks) {
-        this.landmarks = landmarks;
-        return this;
+    public BoundingRect areaOfInterest() {
+        return this.areaOfInterest;
     }
 
     /**
@@ -66,9 +54,9 @@ public class LandmarkResults {
      * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
-     * @return the LandmarkResults object itself.
+     * @return the AreaOfInterestResult object itself.
      */
-    public LandmarkResults withRequestId(String requestId) {
+    public AreaOfInterestResult withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -86,9 +74,9 @@ public class LandmarkResults {
      * Set the metadata value.
      *
      * @param metadata the metadata value to set
-     * @return the LandmarkResults object itself.
+     * @return the AreaOfInterestResult object itself.
      */
-    public LandmarkResults withMetadata(ImageMetadata metadata) {
+    public AreaOfInterestResult withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }

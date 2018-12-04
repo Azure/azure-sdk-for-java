@@ -11,18 +11,14 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ComputerVisionError model.
+ * Details about the API request error.
  */
 public class ComputerVisionError {
     /**
-     * The error code. Possible values include: 'InvalidImageUrl',
-     * 'InvalidImageFormat', 'InvalidImageSize', 'NotSupportedVisualFeature',
-     * 'NotSupportedImage', 'InvalidDetails', 'NotSupportedLanguage',
-     * 'BadArgument', 'FailedToProcess', 'Timeout', 'InternalServerError',
-     * 'Unspecified', 'StorageException'.
+     * The error code.
      */
     @JsonProperty(value = "code", required = true)
-    private ComputerVisionErrorCodes code;
+    private Object code;
 
     /**
      * A message explaining the error reported by the service.
@@ -37,21 +33,21 @@ public class ComputerVisionError {
     private String requestId;
 
     /**
-     * Get the error code. Possible values include: 'InvalidImageUrl', 'InvalidImageFormat', 'InvalidImageSize', 'NotSupportedVisualFeature', 'NotSupportedImage', 'InvalidDetails', 'NotSupportedLanguage', 'BadArgument', 'FailedToProcess', 'Timeout', 'InternalServerError', 'Unspecified', 'StorageException'.
+     * Get the error code.
      *
      * @return the code value
      */
-    public ComputerVisionErrorCodes code() {
+    public Object code() {
         return this.code;
     }
 
     /**
-     * Set the error code. Possible values include: 'InvalidImageUrl', 'InvalidImageFormat', 'InvalidImageSize', 'NotSupportedVisualFeature', 'NotSupportedImage', 'InvalidDetails', 'NotSupportedLanguage', 'BadArgument', 'FailedToProcess', 'Timeout', 'InternalServerError', 'Unspecified', 'StorageException'.
+     * Set the error code.
      *
      * @param code the code value to set
      * @return the ComputerVisionError object itself.
      */
-    public ComputerVisionError withCode(ComputerVisionErrorCodes code) {
+    public ComputerVisionError withCode(Object code) {
         this.code = code;
         return this;
     }
