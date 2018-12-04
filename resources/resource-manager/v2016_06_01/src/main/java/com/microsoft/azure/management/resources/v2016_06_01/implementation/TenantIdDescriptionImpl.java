@@ -12,14 +12,14 @@ import com.microsoft.azure.management.resources.v2016_06_01.TenantIdDescription;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class TenantIdDescriptionImpl extends WrapperImpl<TenantIdDescriptionInner> implements TenantIdDescription {
-    private final Manager manager;
-    TenantIdDescriptionImpl(TenantIdDescriptionInner inner, Manager manager) {
+    private final ResourcesManager manager;
+    TenantIdDescriptionImpl(TenantIdDescriptionInner inner, ResourcesManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public Manager manager() {
+    public ResourcesManager manager() {
         return this.manager;
     }
 
