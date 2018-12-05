@@ -34,6 +34,7 @@ import io.reactivex.FlowableSubscriber;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.exceptions.Exceptions;
 import io.reactivex.internal.fuseable.SimplePlainQueue;
 import io.reactivex.internal.queue.SpscLinkedArrayQueue;
 import io.reactivex.internal.subscriptions.SubscriptionHelper;
@@ -41,6 +42,7 @@ import io.reactivex.internal.util.BackpressureHelper;
 import io.reactivex.plugins.RxJavaPlugins;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
@@ -61,6 +63,8 @@ import static com.microsoft.rest.v2.util.FlowableUtil.ensureLength;
 public final class NettyClient extends HttpClient {
     private final NettyAdapter adapter;
     private final HttpClientConfiguration configuration;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NettyClient.class);
 
     /**
      * Creates NettyClient.
@@ -246,6 +250,7 @@ public final class NettyClient extends HttpClient {
                 int s = state.get();
                 if (s == ACQUIRING_DISPOSED) {
                     if (transition(ACQUIRING_DISPOSED, CHANNEL_RELEASED)) {
+                        LOGGER.debug("Channel disposed on acquisition");
                         channelPool.closeAndRelease(channel);
                         return;
                     }
@@ -370,6 +375,7 @@ public final class NettyClient extends HttpClient {
             public void operationComplete(Future<Void> future) throws Exception {
                 if (!future.isSuccess()) {
                     subscription.cancel();
+                    done = true;
                     emitError(future.cause());
                 }
             }
@@ -384,13 +390,13 @@ public final class NettyClient extends HttpClient {
 
         private void writeRequest(final DefaultHttpRequest raw) {
             channel.eventLoop().execute(() ->
-                channel //
-                        .write(raw) //
-                        .addListener((Future<Void> future) -> {
-                            if (!future.isSuccess()) {
-                                emitError(future.cause());
-                            }
-                        })
+                    channel //
+                            .write(raw) //
+                            .addListener((Future<Void> future) -> {
+                                if (!future.isSuccess()) {
+                                    emitError(future.cause());
+                                }
+                            })
             );
         }
 
@@ -415,24 +421,45 @@ public final class NettyClient extends HttpClient {
 
         void emitError(Throwable throwable) {
             while (true) {
+                LOGGER.warn("Error emitted on channel {}. Message: {}", channel.id(), throwable.getMessage());
+                LOGGER.debug("Stack trace: ", new Exception());
+                channelPool.dump();
                 int s = state.get();
                 if (s == ACQUIRING_NOT_DISPOSED) {
                     if (transition(ACQUIRING_NOT_DISPOSED, ACQUIRING_DISPOSED)) {
+                        LOGGER.debug("Channel disposed before response is subscribed");
                         responseEmitter.onError(throwable);
                         break;
                     }
                 } else if (s == ACQUIRED_CONTENT_SUBSCRIBED) {
-                    if (transition(ACQUIRED_CONTENT_SUBSCRIBED, ACQUIRED_DISPOSED_CONTENT_SUBSCRIBED)) {
+                    if (transition(ACQUIRED_CONTENT_SUBSCRIBED, CHANNEL_RELEASED)) {
+                        LOGGER.debug("Channel disposed after content is subscribed");
+                        closeAndReleaseChannel();
                         content.onError(throwable);
                         break;
                     }
                 } else if (s == ACQUIRED_CONTENT_NOT_SUBSCRIBED) {
                     if (transition(ACQUIRED_CONTENT_NOT_SUBSCRIBED, CHANNEL_RELEASED)) {
+                        LOGGER.debug("Channel disposed before content is subscribed");
                         closeAndReleaseChannel();
                         responseEmitter.onError(throwable);
                         break;
                     }
+                } else if (s == ACQUIRED_DISPOSED_CONTENT_SUBSCRIBED) {
+                    if (transition(ACQUIRED_DISPOSED_CONTENT_SUBSCRIBED, CHANNEL_RELEASED)) {
+                        LOGGER.debug("Channel disposed after content is subscribed with response emitter disposed");
+                        closeAndReleaseChannel();
+                        content.onError(throwable);
+                        break;
+                    }
+                } else if (s == ACQUIRED_DISPOSED_CONTENT_NOT_SUBSCRIBED) {
+                    if (transition(ACQUIRED_DISPOSED_CONTENT_NOT_SUBSCRIBED, CHANNEL_RELEASED)) {
+                        LOGGER.debug("Channel disposed before content is subscribed with response emitter disposed");
+                        closeAndReleaseChannel();
+                        throw Exceptions.propagate(throwable);
+                    }
                 } else {
+                    LOGGER.debug("Channel disposed at state {}", s);
                     break;
                 }
             }
@@ -467,8 +494,12 @@ public final class NettyClient extends HttpClient {
 
         private void releaseChannel(boolean cancelled) {
             if (!cancelled && finishedWritingRequestBody) {
-                channelPool.release(channel);
+                Future<?> release = channelPool.release(channel);
+                if (!release.isSuccess()) {
+                    emitError(release.cause());
+                }
             } else {
+                LOGGER.debug("Channel disposed on cancellation or request body reading interrupted");
                 closeAndReleaseChannel();
             }
         }
@@ -508,17 +539,36 @@ public final class NettyClient extends HttpClient {
                     }
                 } else if (s == ACQUIRING_DISPOSED) {
                     if (transition(ACQUIRING_DISPOSED, CHANNEL_RELEASED)) {
+                        // error emitted during channel acquisition, channel may
+                        // or may not be available
+                        LOGGER.debug("Channel disposed on ACQUIRING_DISPOSED");
                         closeAndReleaseChannel();
                         return;
                     }
                 } else if (s == ACQUIRED_CONTENT_NOT_SUBSCRIBED) {
                     if (transition(ACQUIRED_CONTENT_NOT_SUBSCRIBED, ACQUIRED_DISPOSED_CONTENT_NOT_SUBSCRIBED)) {
+                        // response emitted but before content is subscribed.
+                        // likely a Flowable<ByteBuffer> response that's not yet
+                        // been subscribed
                         return;
                     }
                 } else if (s == ACQUIRED_CONTENT_SUBSCRIBED) {
                     if (transition(ACQUIRED_CONTENT_SUBSCRIBED, ACQUIRED_DISPOSED_CONTENT_SUBSCRIBED)) {
+                        // response emitted and content is already subscribed
                         return;
                     }
+//                } else if (s == ACQUIRED_DISPOSED_CONTENT_NOT_SUBSCRIBED) {
+//                    if (transition(ACQUIRED_DISPOSED_CONTENT_NOT_SUBSCRIBED, CHANNEL_RELEASED)) {
+//                        LOGGER.debug("Channel disposed on ACQUIRED_DISPOSED_CONTENT_NOT_SUBSCRIBED");
+//                        closeAndReleaseChannel();
+//                        return;
+//                    }
+//                } else if (s == ACQUIRED_DISPOSED_CONTENT_SUBSCRIBED) {
+//                    if (transition(ACQUIRED_DISPOSED_CONTENT_SUBSCRIBED, CHANNEL_RELEASED)) {
+//                        LOGGER.debug("Channel disposed on ACQUIRED_DISPOSED_CONTENT_SUBSCRIBED");
+//                        closeAndReleaseChannel();
+//                        return;
+//                    }
                 } else {
                     return;
                 }
@@ -533,7 +583,7 @@ public final class NettyClient extends HttpClient {
 
         @Override
         public boolean isDisposed() {
-            return state.get() == CHANNEL_RELEASED;
+            return state.get() >= 4;
         }
 
         public void channelWritable(boolean writable) {
@@ -884,6 +934,13 @@ public final class NettyClient extends HttpClient {
             super.channelInactive(ctx);
         }
 
+    }
+
+    /**
+     * Dump the channel pool.
+     */
+    public void dumpChannelPool() {
+        adapter.channelPool.dump();
     }
 
     /**
