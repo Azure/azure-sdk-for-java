@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SignalRUsageName {
     /**
-     * The indentifier of the usage.
+     * The identifier of the usage.
      */
     @JsonProperty(value = "value")
     private String value;
@@ -27,7 +27,7 @@ public class SignalRUsageName {
     private String localizedValue;
 
     /**
-     * Get the indentifier of the usage.
+     * Get the identifier of the usage.
      *
      * @return the value value
      */
@@ -36,7 +36,7 @@ public class SignalRUsageName {
     }
 
     /**
-     * Set the indentifier of the usage.
+     * Set the identifier of the usage.
      *
      * @param value the value value to set
      * @return the SignalRUsageName object itself.
