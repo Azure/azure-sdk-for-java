@@ -21,7 +21,7 @@ public class WorkItemCreateConfiguration {
     private String connectorId;
 
     /**
-     * Serialized JSON object for detaile d properties.
+     * Serialized JSON object for detailed properties.
      */
     @JsonProperty(value = "ConnectorDataConfiguration")
     private String connectorDataConfiguration;
@@ -59,7 +59,7 @@ public class WorkItemCreateConfiguration {
     }
 
     /**
-     * Get serialized JSON object for detaile d properties.
+     * Get serialized JSON object for detailed properties.
      *
      * @return the connectorDataConfiguration value
      */
@@ -68,7 +68,7 @@ public class WorkItemCreateConfiguration {
     }
 
     /**
-     * Set serialized JSON object for detaile d properties.
+     * Set serialized JSON object for detailed properties.
      *
      * @param connectorDataConfiguration the connectorDataConfiguration value to set
      * @return the WorkItemCreateConfiguration object itself.
