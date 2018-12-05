@@ -73,10 +73,10 @@ public class MigrateSqlServerSqlMITaskOutputMigrationLevel extends MigrateSqlSer
     private Map<String, StartMigrationScenarioServerRoleResult> serverRoleResults;
 
     /**
-     * Map of users to database name of orphaned users.
+     * List of orphaned users.
      */
     @JsonProperty(value = "orphanedUsers", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, String> orphanedUsers;
+    private List<OrphanedUserInfo> orphanedUsers;
 
     /**
      * Selected databases as a map from database name to database id.
@@ -187,11 +187,11 @@ public class MigrateSqlServerSqlMITaskOutputMigrationLevel extends MigrateSqlSer
     }
 
     /**
-     * Get map of users to database name of orphaned users.
+     * Get list of orphaned users.
      *
      * @return the orphanedUsers value
      */
-    public Map<String, String> orphanedUsers() {
+    public List<OrphanedUserInfo> orphanedUsers() {
         return this.orphanedUsers;
     }
 
