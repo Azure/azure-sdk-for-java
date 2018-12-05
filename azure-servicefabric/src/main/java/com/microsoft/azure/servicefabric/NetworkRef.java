@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.servicefabric;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -19,6 +20,12 @@ public class NetworkRef {
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /**
+     * A list of endpoints that are exposed on this network.
+     */
+    @JsonProperty(value = "endpointRefs")
+    private List<EndpointRef> endpointRefs;
 
     /**
      * Get name of the network.
@@ -37,6 +44,26 @@ public class NetworkRef {
      */
     public NetworkRef withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get a list of endpoints that are exposed on this network.
+     *
+     * @return the endpointRefs value
+     */
+    public List<EndpointRef> endpointRefs() {
+        return this.endpointRefs;
+    }
+
+    /**
+     * Set a list of endpoints that are exposed on this network.
+     *
+     * @param endpointRefs the endpointRefs value to set
+     * @return the NetworkRef object itself.
+     */
+    public NetworkRef withEndpointRefs(List<EndpointRef> endpointRefs) {
+        this.endpointRefs = endpointRefs;
         return this;
     }
 

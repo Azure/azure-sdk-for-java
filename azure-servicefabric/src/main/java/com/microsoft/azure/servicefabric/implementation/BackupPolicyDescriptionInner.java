@@ -10,6 +10,7 @@ package com.microsoft.azure.servicefabric.implementation;
 
 import com.microsoft.azure.servicefabric.BackupScheduleDescription;
 import com.microsoft.azure.servicefabric.BackupStorageDescription;
+import com.microsoft.azure.servicefabric.RetentionPolicyDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -53,6 +54,12 @@ public class BackupPolicyDescriptionInner {
      */
     @JsonProperty(value = "Storage", required = true)
     private BackupStorageDescription storage;
+
+    /**
+     * Describes the policy to retain backups in storage.
+     */
+    @JsonProperty(value = "RetentionPolicy")
+    private RetentionPolicyDescription retentionPolicy;
 
     /**
      * Get the unique name identifying this backup policy.
@@ -157,6 +164,26 @@ public class BackupPolicyDescriptionInner {
      */
     public BackupPolicyDescriptionInner withStorage(BackupStorageDescription storage) {
         this.storage = storage;
+        return this;
+    }
+
+    /**
+     * Get describes the policy to retain backups in storage.
+     *
+     * @return the retentionPolicy value
+     */
+    public RetentionPolicyDescription retentionPolicy() {
+        return this.retentionPolicy;
+    }
+
+    /**
+     * Set describes the policy to retain backups in storage.
+     *
+     * @param retentionPolicy the retentionPolicy value to set
+     * @return the BackupPolicyDescriptionInner object itself.
+     */
+    public BackupPolicyDescriptionInner withRetentionPolicy(RetentionPolicyDescription retentionPolicy) {
+        this.retentionPolicy = retentionPolicy;
         return this;
     }
 

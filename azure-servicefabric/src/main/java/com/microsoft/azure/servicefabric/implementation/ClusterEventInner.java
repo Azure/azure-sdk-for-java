@@ -18,13 +18,13 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "Kind")
 @JsonTypeName("ClusterEvent")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "ClusterHealthReportCreated", value = ClusterHealthReportCreatedEvent.class),
+    @JsonSubTypes.Type(name = "ClusterNewHealthReport", value = ClusterNewHealthReportEvent.class),
     @JsonSubTypes.Type(name = "ClusterHealthReportExpired", value = ClusterHealthReportExpiredEvent.class),
-    @JsonSubTypes.Type(name = "ClusterUpgradeComplete", value = ClusterUpgradeCompleteEvent.class),
-    @JsonSubTypes.Type(name = "ClusterUpgradeDomainComplete", value = ClusterUpgradeDomainCompleteEvent.class),
-    @JsonSubTypes.Type(name = "ClusterUpgradeRollbackComplete", value = ClusterUpgradeRollbackCompleteEvent.class),
-    @JsonSubTypes.Type(name = "ClusterUpgradeRollbackStart", value = ClusterUpgradeRollbackStartEvent.class),
-    @JsonSubTypes.Type(name = "ClusterUpgradeStart", value = ClusterUpgradeStartEvent.class),
+    @JsonSubTypes.Type(name = "ClusterUpgradeCompleted", value = ClusterUpgradeCompletedEvent.class),
+    @JsonSubTypes.Type(name = "ClusterUpgradeDomainCompleted", value = ClusterUpgradeDomainCompletedEvent.class),
+    @JsonSubTypes.Type(name = "ClusterUpgradeRollbackCompleted", value = ClusterUpgradeRollbackCompletedEvent.class),
+    @JsonSubTypes.Type(name = "ClusterUpgradeRollbackStarted", value = ClusterUpgradeRollbackStartedEvent.class),
+    @JsonSubTypes.Type(name = "ClusterUpgradeStarted", value = ClusterUpgradeStartedEvent.class),
     @JsonSubTypes.Type(name = "ChaosStopped", value = ChaosStoppedEvent.class),
     @JsonSubTypes.Type(name = "ChaosStarted", value = ChaosStartedEvent.class)
 })

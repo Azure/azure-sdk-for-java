@@ -9,17 +9,23 @@
 package com.microsoft.azure.servicefabric.implementation;
 
 import java.util.List;
-import com.microsoft.azure.servicefabric.HealthState;
-import com.microsoft.azure.servicefabric.ApplicationResourceStatus;
 import com.microsoft.azure.servicefabric.DiagnosticsDescription;
+import com.microsoft.azure.servicefabric.ResourceStatus;
+import com.microsoft.azure.servicefabric.HealthState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Describes a service fabric application resource.
+ * This type describes a application resource.
  */
 @JsonFlatten
 public class ApplicationResourceDescriptionInner {
+    /**
+     * Name of the Application resource.
+     */
+    @JsonProperty(value = "name", required = true)
+    private String name;
+
     /**
      * User readable description of the application.
      */
@@ -27,16 +33,47 @@ public class ApplicationResourceDescriptionInner {
     private String description;
 
     /**
-     * Internal use.
+     * Describes the services in the application. This property is used to
+     * create or modify services of the application. On get only the name of
+     * the service is returned. The service description can be obtained by
+     * querying for the service resource.
+     */
+    @JsonProperty(value = "properties.services")
+    private List<ServiceResourceDescriptionInner> services;
+
+    /**
+     * Describes the diagnostics definition and usage for an application
+     * resource.
+     */
+    @JsonProperty(value = "properties.diagnostics")
+    private DiagnosticsDescription diagnostics;
+
+    /**
+     * Internal - used by Visual Studio to setup the debugging session on the
+     * local development environment.
      */
     @JsonProperty(value = "properties.debugParams")
     private String debugParams;
 
     /**
-     * describes the services in the application.
+     * Names of the services in the application.
      */
-    @JsonProperty(value = "properties.services")
-    private List<ServiceResourceDescriptionInner> services;
+    @JsonProperty(value = "properties.serviceNames", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> serviceNames;
+
+    /**
+     * Status of the application. Possible values include: 'Unknown', 'Ready',
+     * 'Upgrading', 'Creating', 'Deleting', 'Failed'.
+     */
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
+    private ResourceStatus status;
+
+    /**
+     * Gives additional information about the current status of the
+     * application.
+     */
+    @JsonProperty(value = "properties.statusDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private String statusDetails;
 
     /**
      * Describes the health state of an application resource. Possible values
@@ -54,37 +91,24 @@ public class ApplicationResourceDescriptionInner {
     private String unhealthyEvaluation;
 
     /**
-     * Status of the application resource. Possible values include: 'Invalid',
-     * 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'.
+     * Get name of the Application resource.
+     *
+     * @return the name value
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private ApplicationResourceStatus status;
+    public String name() {
+        return this.name;
+    }
 
     /**
-     * Gives additional information about the current status of the application
-     * deployment.
+     * Set name of the Application resource.
+     *
+     * @param name the name value to set
+     * @return the ApplicationResourceDescriptionInner object itself.
      */
-    @JsonProperty(value = "properties.statusDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private String statusDetails;
-
-    /**
-     * Names of the services in the application.
-     */
-    @JsonProperty(value = "properties.serviceNames", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> serviceNames;
-
-    /**
-     * Describes the diagnostics definition and usage for an application
-     * resource.
-     */
-    @JsonProperty(value = "properties.diagnostics")
-    private DiagnosticsDescription diagnostics;
-
-    /**
-     * Application resource name.
-     */
-    @JsonProperty(value = "name", required = true)
-    private String name;
+    public ApplicationResourceDescriptionInner withName(String name) {
+        this.name = name;
+        return this;
+    }
 
     /**
      * Get user readable description of the application.
@@ -107,27 +131,7 @@ public class ApplicationResourceDescriptionInner {
     }
 
     /**
-     * Get internal use.
-     *
-     * @return the debugParams value
-     */
-    public String debugParams() {
-        return this.debugParams;
-    }
-
-    /**
-     * Set internal use.
-     *
-     * @param debugParams the debugParams value to set
-     * @return the ApplicationResourceDescriptionInner object itself.
-     */
-    public ApplicationResourceDescriptionInner withDebugParams(String debugParams) {
-        this.debugParams = debugParams;
-        return this;
-    }
-
-    /**
-     * Get describes the services in the application.
+     * Get describes the services in the application. This property is used to create or modify services of the application. On get only the name of the service is returned. The service description can be obtained by querying for the service resource.
      *
      * @return the services value
      */
@@ -136,7 +140,7 @@ public class ApplicationResourceDescriptionInner {
     }
 
     /**
-     * Set describes the services in the application.
+     * Set describes the services in the application. This property is used to create or modify services of the application. On get only the name of the service is returned. The service description can be obtained by querying for the service resource.
      *
      * @param services the services value to set
      * @return the ApplicationResourceDescriptionInner object itself.
@@ -144,51 +148,6 @@ public class ApplicationResourceDescriptionInner {
     public ApplicationResourceDescriptionInner withServices(List<ServiceResourceDescriptionInner> services) {
         this.services = services;
         return this;
-    }
-
-    /**
-     * Get describes the health state of an application resource. Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
-     *
-     * @return the healthState value
-     */
-    public HealthState healthState() {
-        return this.healthState;
-    }
-
-    /**
-     * Get when the application's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the application is marked unhealthy.
-     *
-     * @return the unhealthyEvaluation value
-     */
-    public String unhealthyEvaluation() {
-        return this.unhealthyEvaluation;
-    }
-
-    /**
-     * Get status of the application resource. Possible values include: 'Invalid', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'.
-     *
-     * @return the status value
-     */
-    public ApplicationResourceStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get gives additional information about the current status of the application deployment.
-     *
-     * @return the statusDetails value
-     */
-    public String statusDetails() {
-        return this.statusDetails;
-    }
-
-    /**
-     * Get names of the services in the application.
-     *
-     * @return the serviceNames value
-     */
-    public List<String> serviceNames() {
-        return this.serviceNames;
     }
 
     /**
@@ -212,23 +171,68 @@ public class ApplicationResourceDescriptionInner {
     }
 
     /**
-     * Get application resource name.
+     * Get internal - used by Visual Studio to setup the debugging session on the local development environment.
      *
-     * @return the name value
+     * @return the debugParams value
      */
-    public String name() {
-        return this.name;
+    public String debugParams() {
+        return this.debugParams;
     }
 
     /**
-     * Set application resource name.
+     * Set internal - used by Visual Studio to setup the debugging session on the local development environment.
      *
-     * @param name the name value to set
+     * @param debugParams the debugParams value to set
      * @return the ApplicationResourceDescriptionInner object itself.
      */
-    public ApplicationResourceDescriptionInner withName(String name) {
-        this.name = name;
+    public ApplicationResourceDescriptionInner withDebugParams(String debugParams) {
+        this.debugParams = debugParams;
         return this;
+    }
+
+    /**
+     * Get names of the services in the application.
+     *
+     * @return the serviceNames value
+     */
+    public List<String> serviceNames() {
+        return this.serviceNames;
+    }
+
+    /**
+     * Get status of the application. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'.
+     *
+     * @return the status value
+     */
+    public ResourceStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get gives additional information about the current status of the application.
+     *
+     * @return the statusDetails value
+     */
+    public String statusDetails() {
+        return this.statusDetails;
+    }
+
+    /**
+     * Get describes the health state of an application resource. Possible values include: 'Invalid', 'Ok', 'Warning', 'Error', 'Unknown'.
+     *
+     * @return the healthState value
+     */
+    public HealthState healthState() {
+        return this.healthState;
+    }
+
+    /**
+     * Get when the application's health state is not 'Ok', this additional details from service fabric Health Manager for the user to know why the application is marked unhealthy.
+     *
+     * @return the unhealthyEvaluation value
+     */
+    public String unhealthyEvaluation() {
+        return this.unhealthyEvaluation;
     }
 
 }

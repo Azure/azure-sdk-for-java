@@ -21,21 +21,20 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ApplicationCreated", value = ApplicationCreatedEvent.class),
     @JsonSubTypes.Type(name = "ApplicationDeleted", value = ApplicationDeletedEvent.class),
-    @JsonSubTypes.Type(name = "ApplicationHealthReportCreated", value = ApplicationHealthReportCreatedEvent.class),
+    @JsonSubTypes.Type(name = "ApplicationNewHealthReport", value = ApplicationNewHealthReportEvent.class),
     @JsonSubTypes.Type(name = "ApplicationHealthReportExpired", value = ApplicationHealthReportExpiredEvent.class),
-    @JsonSubTypes.Type(name = "ApplicationUpgradeComplete", value = ApplicationUpgradeCompleteEvent.class),
-    @JsonSubTypes.Type(name = "ApplicationUpgradeDomainComplete", value = ApplicationUpgradeDomainCompleteEvent.class),
-    @JsonSubTypes.Type(name = "ApplicationUpgradeRollbackComplete", value = ApplicationUpgradeRollbackCompleteEvent.class),
-    @JsonSubTypes.Type(name = "ApplicationUpgradeRollbackStart", value = ApplicationUpgradeRollbackStartEvent.class),
-    @JsonSubTypes.Type(name = "ApplicationUpgradeStart", value = ApplicationUpgradeStartEvent.class),
-    @JsonSubTypes.Type(name = "DeployedApplicationHealthReportCreated", value = DeployedApplicationHealthReportCreatedEvent.class),
+    @JsonSubTypes.Type(name = "ApplicationUpgradeCompleted", value = ApplicationUpgradeCompletedEvent.class),
+    @JsonSubTypes.Type(name = "ApplicationUpgradeDomainCompleted", value = ApplicationUpgradeDomainCompletedEvent.class),
+    @JsonSubTypes.Type(name = "ApplicationUpgradeRollbackCompleted", value = ApplicationUpgradeRollbackCompletedEvent.class),
+    @JsonSubTypes.Type(name = "ApplicationUpgradeRollbackStarted", value = ApplicationUpgradeRollbackStartedEvent.class),
+    @JsonSubTypes.Type(name = "ApplicationUpgradeStarted", value = ApplicationUpgradeStartedEvent.class),
+    @JsonSubTypes.Type(name = "DeployedApplicationNewHealthReport", value = DeployedApplicationNewHealthReportEvent.class),
     @JsonSubTypes.Type(name = "DeployedApplicationHealthReportExpired", value = DeployedApplicationHealthReportExpiredEvent.class),
-    @JsonSubTypes.Type(name = "ProcessDeactivated", value = ProcessDeactivatedEvent.class),
-    @JsonSubTypes.Type(name = "ContainerDeactivated", value = ContainerDeactivatedEvent.class),
-    @JsonSubTypes.Type(name = "DeployedServiceHealthReportCreated", value = DeployedServiceHealthReportCreatedEvent.class),
-    @JsonSubTypes.Type(name = "DeployedServiceHealthReportExpired", value = DeployedServiceHealthReportExpiredEvent.class),
-    @JsonSubTypes.Type(name = "ChaosRestartCodePackageFaultScheduled", value = ChaosRestartCodePackageFaultScheduledEvent.class),
-    @JsonSubTypes.Type(name = "ChaosRestartCodePackageFaultCompleted", value = ChaosRestartCodePackageFaultCompletedEvent.class)
+    @JsonSubTypes.Type(name = "ApplicationProcessExited", value = ApplicationProcessExitedEvent.class),
+    @JsonSubTypes.Type(name = "ApplicationContainerInstanceExited", value = ApplicationContainerInstanceExitedEvent.class),
+    @JsonSubTypes.Type(name = "DeployedServicePackageNewHealthReport", value = DeployedServicePackageNewHealthReportEvent.class),
+    @JsonSubTypes.Type(name = "DeployedServicePackageHealthReportExpired", value = DeployedServicePackageHealthReportExpiredEvent.class),
+    @JsonSubTypes.Type(name = "ChaosCodePackageRestartScheduled", value = ChaosCodePackageRestartScheduledEvent.class)
 })
 public class ApplicationEventInner extends FabricEventInner {
     /**

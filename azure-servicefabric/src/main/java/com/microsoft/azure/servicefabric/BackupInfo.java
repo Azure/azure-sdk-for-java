@@ -65,7 +65,7 @@ public class BackupInfo {
      * Epoch of the last record in this backup.
      */
     @JsonProperty(value = "EpochOfLastBackupRecord")
-    private BackupEpoch epochOfLastBackupRecord;
+    private Epoch epochOfLastBackupRecord;
 
     /**
      * LSN of the last record in this backup.
@@ -78,6 +78,12 @@ public class BackupInfo {
      */
     @JsonProperty(value = "CreationTimeUtc")
     private DateTime creationTimeUtc;
+
+    /**
+     * Manifest Version of the service this partition backup belongs to.
+     */
+    @JsonProperty(value = "ServiceManifestVersion")
+    private String serviceManifestVersion;
 
     /**
      * Denotes the failure encountered in getting backup point information.
@@ -230,7 +236,7 @@ public class BackupInfo {
      *
      * @return the epochOfLastBackupRecord value
      */
-    public BackupEpoch epochOfLastBackupRecord() {
+    public Epoch epochOfLastBackupRecord() {
         return this.epochOfLastBackupRecord;
     }
 
@@ -240,7 +246,7 @@ public class BackupInfo {
      * @param epochOfLastBackupRecord the epochOfLastBackupRecord value to set
      * @return the BackupInfo object itself.
      */
-    public BackupInfo withEpochOfLastBackupRecord(BackupEpoch epochOfLastBackupRecord) {
+    public BackupInfo withEpochOfLastBackupRecord(Epoch epochOfLastBackupRecord) {
         this.epochOfLastBackupRecord = epochOfLastBackupRecord;
         return this;
     }
@@ -282,6 +288,26 @@ public class BackupInfo {
      */
     public BackupInfo withCreationTimeUtc(DateTime creationTimeUtc) {
         this.creationTimeUtc = creationTimeUtc;
+        return this;
+    }
+
+    /**
+     * Get manifest Version of the service this partition backup belongs to.
+     *
+     * @return the serviceManifestVersion value
+     */
+    public String serviceManifestVersion() {
+        return this.serviceManifestVersion;
+    }
+
+    /**
+     * Set manifest Version of the service this partition backup belongs to.
+     *
+     * @param serviceManifestVersion the serviceManifestVersion value to set
+     * @return the BackupInfo object itself.
+     */
+    public BackupInfo withServiceManifestVersion(String serviceManifestVersion) {
+        this.serviceManifestVersion = serviceManifestVersion;
         return this;
     }
 

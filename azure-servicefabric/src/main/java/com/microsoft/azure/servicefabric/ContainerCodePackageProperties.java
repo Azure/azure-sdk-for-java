@@ -73,29 +73,43 @@ public class ContainerCodePackageProperties {
     private List<EndpointProperties> endpoints;
 
     /**
-     * This type describes the resource requirements for a container or a
-     * service.
+     * The resources required by this container.
      */
     @JsonProperty(value = "resources", required = true)
     private ResourceRequirements resources;
 
     /**
-     * The volumes to be attached to the container.
+     * Volumes to be attached to the container. The lifetime of these volumes
+     * is independent of the application's lifetime.
      */
     @JsonProperty(value = "volumeRefs")
-    private List<ContainerVolume> volumeRefs;
+    private List<VolumeReference> volumeRefs;
 
     /**
-     * Runtime information of a container instance.
+     * Volumes to be attached to the container. The lifetime of these volumes
+     * is scoped to the application's lifetime.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
-    private ContainerInstanceView instanceView;
+    @JsonProperty(value = "volumes")
+    private List<ApplicationScopedVolume> volumes;
 
     /**
      * Reference to sinks in DiagnosticsDescription.
      */
     @JsonProperty(value = "diagnostics")
     private DiagnosticsRef diagnostics;
+
+    /**
+     * A list of ReliableCollection resources used by this particular code
+     * package. Please refer to ReliablecollectionsRef for more details.
+     */
+    @JsonProperty(value = "reliableCollectionsRefs")
+    private List<ReliableCollectionsRef> reliableCollectionsRefs;
+
+    /**
+     * Runtime information of a container instance.
+     */
+    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
+    private ContainerInstanceView instanceView;
 
     /**
      * Get the name of the code package.
@@ -278,7 +292,7 @@ public class ContainerCodePackageProperties {
     }
 
     /**
-     * Get this type describes the resource requirements for a container or a service.
+     * Get the resources required by this container.
      *
      * @return the resources value
      */
@@ -287,7 +301,7 @@ public class ContainerCodePackageProperties {
     }
 
     /**
-     * Set this type describes the resource requirements for a container or a service.
+     * Set the resources required by this container.
      *
      * @param resources the resources value to set
      * @return the ContainerCodePackageProperties object itself.
@@ -298,32 +312,43 @@ public class ContainerCodePackageProperties {
     }
 
     /**
-     * Get the volumes to be attached to the container.
+     * Get volumes to be attached to the container. The lifetime of these volumes is independent of the application's lifetime.
      *
      * @return the volumeRefs value
      */
-    public List<ContainerVolume> volumeRefs() {
+    public List<VolumeReference> volumeRefs() {
         return this.volumeRefs;
     }
 
     /**
-     * Set the volumes to be attached to the container.
+     * Set volumes to be attached to the container. The lifetime of these volumes is independent of the application's lifetime.
      *
      * @param volumeRefs the volumeRefs value to set
      * @return the ContainerCodePackageProperties object itself.
      */
-    public ContainerCodePackageProperties withVolumeRefs(List<ContainerVolume> volumeRefs) {
+    public ContainerCodePackageProperties withVolumeRefs(List<VolumeReference> volumeRefs) {
         this.volumeRefs = volumeRefs;
         return this;
     }
 
     /**
-     * Get runtime information of a container instance.
+     * Get volumes to be attached to the container. The lifetime of these volumes is scoped to the application's lifetime.
      *
-     * @return the instanceView value
+     * @return the volumes value
      */
-    public ContainerInstanceView instanceView() {
-        return this.instanceView;
+    public List<ApplicationScopedVolume> volumes() {
+        return this.volumes;
+    }
+
+    /**
+     * Set volumes to be attached to the container. The lifetime of these volumes is scoped to the application's lifetime.
+     *
+     * @param volumes the volumes value to set
+     * @return the ContainerCodePackageProperties object itself.
+     */
+    public ContainerCodePackageProperties withVolumes(List<ApplicationScopedVolume> volumes) {
+        this.volumes = volumes;
+        return this;
     }
 
     /**
@@ -344,6 +369,35 @@ public class ContainerCodePackageProperties {
     public ContainerCodePackageProperties withDiagnostics(DiagnosticsRef diagnostics) {
         this.diagnostics = diagnostics;
         return this;
+    }
+
+    /**
+     * Get a list of ReliableCollection resources used by this particular code package. Please refer to ReliablecollectionsRef for more details.
+     *
+     * @return the reliableCollectionsRefs value
+     */
+    public List<ReliableCollectionsRef> reliableCollectionsRefs() {
+        return this.reliableCollectionsRefs;
+    }
+
+    /**
+     * Set a list of ReliableCollection resources used by this particular code package. Please refer to ReliablecollectionsRef for more details.
+     *
+     * @param reliableCollectionsRefs the reliableCollectionsRefs value to set
+     * @return the ContainerCodePackageProperties object itself.
+     */
+    public ContainerCodePackageProperties withReliableCollectionsRefs(List<ReliableCollectionsRef> reliableCollectionsRefs) {
+        this.reliableCollectionsRefs = reliableCollectionsRefs;
+        return this;
+    }
+
+    /**
+     * Get runtime information of a container instance.
+     *
+     * @return the instanceView value
+     */
+    public ContainerInstanceView instanceView() {
+        return this.instanceView;
     }
 
 }

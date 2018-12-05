@@ -20,13 +20,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "Kind")
 @JsonTypeName("ReplicaEvent")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "StatefulReplicaHealthReportCreated", value = StatefulReplicaHealthReportCreatedEvent.class),
+    @JsonSubTypes.Type(name = "StatefulReplicaNewHealthReport", value = StatefulReplicaNewHealthReportEvent.class),
     @JsonSubTypes.Type(name = "StatefulReplicaHealthReportExpired", value = StatefulReplicaHealthReportExpiredEvent.class),
-    @JsonSubTypes.Type(name = "StatelessReplicaHealthReportCreated", value = StatelessReplicaHealthReportCreatedEvent.class),
+    @JsonSubTypes.Type(name = "StatelessReplicaNewHealthReport", value = StatelessReplicaNewHealthReportEvent.class),
     @JsonSubTypes.Type(name = "StatelessReplicaHealthReportExpired", value = StatelessReplicaHealthReportExpiredEvent.class),
-    @JsonSubTypes.Type(name = "ChaosRemoveReplicaFaultScheduled", value = ChaosRemoveReplicaFaultScheduledEvent.class),
-    @JsonSubTypes.Type(name = "ChaosRemoveReplicaFaultCompleted", value = ChaosRemoveReplicaFaultCompletedEvent.class),
-    @JsonSubTypes.Type(name = "ChaosRestartReplicaFaultScheduled", value = ChaosRestartReplicaFaultScheduledEvent.class)
+    @JsonSubTypes.Type(name = "ChaosReplicaRemovalScheduled", value = ChaosReplicaRemovalScheduledEvent.class),
+    @JsonSubTypes.Type(name = "ChaosReplicaRestartScheduled", value = ChaosReplicaRestartScheduledEvent.class)
 })
 public class ReplicaEventInner extends FabricEventInner {
     /**
