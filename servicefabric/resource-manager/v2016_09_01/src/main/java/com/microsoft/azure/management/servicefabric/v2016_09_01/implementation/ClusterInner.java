@@ -119,7 +119,7 @@ public class ClusterInner extends Resource {
     private String managementEndpoint;
 
     /**
-     * The list of nodetypes that make up the cluster.
+     * The list of node types that make up the cluster.
      */
     @JsonProperty(value = "properties.nodeTypes", required = true)
     private List<NodeTypeDescription> nodeTypes;
@@ -373,7 +373,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Get the list of nodetypes that make up the cluster.
+     * Get the list of node types that make up the cluster.
      *
      * @return the nodeTypes value
      */
@@ -382,7 +382,7 @@ public class ClusterInner extends Resource {
     }
 
     /**
-     * Set the list of nodetypes that make up the cluster.
+     * Set the list of node types that make up the cluster.
      *
      * @param nodeTypes the nodeTypes value to set
      * @return the ClusterInner object itself.

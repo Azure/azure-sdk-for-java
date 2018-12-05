@@ -79,7 +79,7 @@ public class ClusterUpdateParameters {
     private CertificateDescription reverseProxyCertificate;
 
     /**
-     * The list of nodetypes that make up the cluster, it will override.
+     * The list of node types that make up the cluster, it will override.
      */
     @JsonProperty(value = "properties.nodeTypes")
     private List<NodeTypeDescription> nodeTypes;
@@ -257,7 +257,7 @@ public class ClusterUpdateParameters {
     }
 
     /**
-     * Get the list of nodetypes that make up the cluster, it will override.
+     * Get the list of node types that make up the cluster, it will override.
      *
      * @return the nodeTypes value
      */
@@ -266,7 +266,7 @@ public class ClusterUpdateParameters {
     }
 
     /**
-     * Set the list of nodetypes that make up the cluster, it will override.
+     * Set the list of node types that make up the cluster, it will override.
      *
      * @param nodeTypes the nodeTypes value to set
      * @return the ClusterUpdateParameters object itself.

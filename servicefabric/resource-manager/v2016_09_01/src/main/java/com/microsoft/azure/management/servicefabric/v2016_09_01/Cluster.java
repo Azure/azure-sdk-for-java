@@ -160,7 +160,7 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
         interface WithNodeTypes {
            /**
             * Specifies nodeTypes.
-            * @param nodeTypes The list of nodetypes that make up the cluster
+            * @param nodeTypes The list of node types that make up the cluster
             * @return the next definition stage
 */
             WithCreate withNodeTypes(List<NodeTypeDescription> nodeTypes);
@@ -394,7 +394,7 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
         interface WithNodeTypes {
             /**
              * Specifies nodeTypes.
-             * @param nodeTypes The list of nodetypes that make up the cluster, it will override
+             * @param nodeTypes The list of node types that make up the cluster, it will override
              * @return the next update stage
              */
             Update withNodeTypes(List<NodeTypeDescription> nodeTypes);

@@ -50,7 +50,7 @@ public class NodeTypeDescription {
     private int httpGatewayEndpointPort;
 
     /**
-     * Nodetype durability Level. Possible values include: 'Bronze', 'Silver',
+     * Node type durability Level. Possible values include: 'Bronze', 'Silver',
      * 'Gold'.
      */
     @JsonProperty(value = "durabilityLevel")
@@ -187,7 +187,7 @@ public class NodeTypeDescription {
     }
 
     /**
-     * Get nodetype durability Level. Possible values include: 'Bronze', 'Silver', 'Gold'.
+     * Get node type durability Level. Possible values include: 'Bronze', 'Silver', 'Gold'.
      *
      * @return the durabilityLevel value
      */
@@ -196,7 +196,7 @@ public class NodeTypeDescription {
     }
 
     /**
-     * Set nodetype durability Level. Possible values include: 'Bronze', 'Silver', 'Gold'.
+     * Set node type durability Level. Possible values include: 'Bronze', 'Silver', 'Gold'.
      *
      * @param durabilityLevel the durabilityLevel value to set
      * @return the NodeTypeDescription object itself.
