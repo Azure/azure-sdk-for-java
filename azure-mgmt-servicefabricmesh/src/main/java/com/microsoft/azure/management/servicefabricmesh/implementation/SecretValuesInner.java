@@ -382,7 +382,7 @@ public class SecretValuesInner {
     }
 
     /**
-     * List names of all values of the the specified secret resource.
+     * List names of all values of the specified secret resource.
      * Gets information about all secret value resources of the specified secret resource. The information includes the names of the secret value resources, but not the actual values.
      *
      * @param resourceGroupName Azure resource group name
@@ -403,7 +403,7 @@ public class SecretValuesInner {
     }
 
     /**
-     * List names of all values of the the specified secret resource.
+     * List names of all values of the specified secret resource.
      * Gets information about all secret value resources of the specified secret resource. The information includes the names of the secret value resources, but not the actual values.
      *
      * @param resourceGroupName Azure resource group name
@@ -425,7 +425,7 @@ public class SecretValuesInner {
     }
 
     /**
-     * List names of all values of the the specified secret resource.
+     * List names of all values of the specified secret resource.
      * Gets information about all secret value resources of the specified secret resource. The information includes the names of the secret value resources, but not the actual values.
      *
      * @param resourceGroupName Azure resource group name
@@ -444,7 +444,7 @@ public class SecretValuesInner {
     }
 
     /**
-     * List names of all values of the the specified secret resource.
+     * List names of all values of the specified secret resource.
      * Gets information about all secret value resources of the specified secret resource. The information includes the names of the secret value resources, but not the actual values.
      *
      * @param resourceGroupName Azure resource group name
@@ -467,7 +467,7 @@ public class SecretValuesInner {
     }
 
     /**
-     * List names of all values of the the specified secret resource.
+     * List names of all values of the specified secret resource.
      * Gets information about all secret value resources of the specified secret resource. The information includes the names of the secret value resources, but not the actual values.
      *
     ServiceResponse<PageImpl<SecretValueResourceDescriptionInner>> * @param resourceGroupName Azure resource group name
@@ -601,7 +601,7 @@ public class SecretValuesInner {
     }
 
     /**
-     * List names of all values of the the specified secret resource.
+     * List names of all values of the specified secret resource.
      * Gets information about all secret value resources of the specified secret resource. The information includes the names of the secret value resources, but not the actual values.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -621,7 +621,7 @@ public class SecretValuesInner {
     }
 
     /**
-     * List names of all values of the the specified secret resource.
+     * List names of all values of the specified secret resource.
      * Gets information about all secret value resources of the specified secret resource. The information includes the names of the secret value resources, but not the actual values.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -643,7 +643,7 @@ public class SecretValuesInner {
     }
 
     /**
-     * List names of all values of the the specified secret resource.
+     * List names of all values of the specified secret resource.
      * Gets information about all secret value resources of the specified secret resource. The information includes the names of the secret value resources, but not the actual values.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -661,7 +661,7 @@ public class SecretValuesInner {
     }
 
     /**
-     * List names of all values of the the specified secret resource.
+     * List names of all values of the specified secret resource.
      * Gets information about all secret value resources of the specified secret resource. The information includes the names of the secret value resources, but not the actual values.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -683,7 +683,7 @@ public class SecretValuesInner {
     }
 
     /**
-     * List names of all values of the the specified secret resource.
+     * List names of all values of the specified secret resource.
      * Gets information about all secret value resources of the specified secret resource. The information includes the names of the secret value resources, but not the actual values.
      *
     ServiceResponse<PageImpl<SecretValueResourceDescriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
