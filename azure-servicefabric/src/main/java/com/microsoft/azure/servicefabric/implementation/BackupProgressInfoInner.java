@@ -11,7 +11,7 @@ package com.microsoft.azure.servicefabric.implementation;
 import com.microsoft.azure.servicefabric.BackupState;
 import org.joda.time.DateTime;
 import java.util.UUID;
-import com.microsoft.azure.servicefabric.BackupEpoch;
+import com.microsoft.azure.servicefabric.Epoch;
 import com.microsoft.azure.servicefabric.FabricErrorError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -49,7 +49,7 @@ public class BackupProgressInfoInner {
      * Specifies the epoch of the last record included in backup.
      */
     @JsonProperty(value = "EpochOfLastBackupRecord")
-    private BackupEpoch epochOfLastBackupRecord;
+    private Epoch epochOfLastBackupRecord;
 
     /**
      * The LSN of last record included in backup.
@@ -148,7 +148,7 @@ public class BackupProgressInfoInner {
      *
      * @return the epochOfLastBackupRecord value
      */
-    public BackupEpoch epochOfLastBackupRecord() {
+    public Epoch epochOfLastBackupRecord() {
         return this.epochOfLastBackupRecord;
     }
 
@@ -158,7 +158,7 @@ public class BackupProgressInfoInner {
      * @param epochOfLastBackupRecord the epochOfLastBackupRecord value to set
      * @return the BackupProgressInfoInner object itself.
      */
-    public BackupProgressInfoInner withEpochOfLastBackupRecord(BackupEpoch epochOfLastBackupRecord) {
+    public BackupProgressInfoInner withEpochOfLastBackupRecord(Epoch epochOfLastBackupRecord) {
         this.epochOfLastBackupRecord = epochOfLastBackupRecord;
         return this;
     }

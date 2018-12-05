@@ -12,10 +12,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The list of service resources in the cluster. The list is paged when all of
- * the results cannot fit in a single message. The next set of results can be
- * obtained by executing the same query with the continuation token provided in
- * this list.
+ * The list of service resources. The list is paged when all of the results
+ * cannot fit in a single message. The next set of results can be obtained by
+ * executing the same query with the continuation token provided in this list.
  */
 public class PagedServiceResourceDescriptionListInner {
     /**
@@ -30,7 +29,7 @@ public class PagedServiceResourceDescriptionListInner {
     private String continuationToken;
 
     /**
-     * List of service resource description.
+     * One page of the list.
      */
     @JsonProperty(value = "Items")
     private List<ServiceResourceDescriptionInner> items;
@@ -56,7 +55,7 @@ public class PagedServiceResourceDescriptionListInner {
     }
 
     /**
-     * Get list of service resource description.
+     * Get one page of the list.
      *
      * @return the items value
      */
@@ -65,7 +64,7 @@ public class PagedServiceResourceDescriptionListInner {
     }
 
     /**
-     * Set list of service resource description.
+     * Set one page of the list.
      *
      * @param items the items value to set
      * @return the PagedServiceResourceDescriptionListInner object itself.

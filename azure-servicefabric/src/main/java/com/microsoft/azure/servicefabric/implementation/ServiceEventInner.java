@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ServiceCreated", value = ServiceCreatedEvent.class),
     @JsonSubTypes.Type(name = "ServiceDeleted", value = ServiceDeletedEvent.class),
-    @JsonSubTypes.Type(name = "ServiceHealthReportCreated", value = ServiceHealthReportCreatedEvent.class),
+    @JsonSubTypes.Type(name = "ServiceNewHealthReport", value = ServiceNewHealthReportEvent.class),
     @JsonSubTypes.Type(name = "ServiceHealthReportExpired", value = ServiceHealthReportExpiredEvent.class)
 })
 public class ServiceEventInner extends FabricEventInner {

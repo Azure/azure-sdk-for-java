@@ -8,20 +8,40 @@
 
 package com.microsoft.azure.servicefabric.implementation;
 
+import com.microsoft.azure.servicefabric.ResourceStatus;
 import com.microsoft.azure.servicefabric.VolumeProviderParametersAzureFile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Describes a service fabric volume resource.
+ * This type describes a volume resource.
  */
 @JsonFlatten
 public class VolumeResourceDescriptionInner {
+    /**
+     * Name of the Volume resource.
+     */
+    @JsonProperty(value = "name", required = true)
+    private String name;
+
     /**
      * User readable description of the volume.
      */
     @JsonProperty(value = "properties.description")
     private String description;
+
+    /**
+     * Status of the volume. Possible values include: 'Unknown', 'Ready',
+     * 'Upgrading', 'Creating', 'Deleting', 'Failed'.
+     */
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
+    private ResourceStatus status;
+
+    /**
+     * Gives additional information about the current status of the volume.
+     */
+    @JsonProperty(value = "properties.statusDetails", access = JsonProperty.Access.WRITE_ONLY)
+    private String statusDetails;
 
     /**
      * Provider of the volume.
@@ -36,17 +56,31 @@ public class VolumeResourceDescriptionInner {
     private VolumeProviderParametersAzureFile azureFileParameters;
 
     /**
-     * Volume resource name.
-     */
-    @JsonProperty(value = "name", required = true)
-    private String name;
-
-    /**
      * Creates an instance of VolumeResourceDescriptionInner class.
-     * @param name volume resource name.
+     * @param name name of the Volume resource.
      */
     public VolumeResourceDescriptionInner() {
         provider = "SFAzureFile";
+    }
+
+    /**
+     * Get name of the Volume resource.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set name of the Volume resource.
+     *
+     * @param name the name value to set
+     * @return the VolumeResourceDescriptionInner object itself.
+     */
+    public VolumeResourceDescriptionInner withName(String name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -67,6 +101,24 @@ public class VolumeResourceDescriptionInner {
     public VolumeResourceDescriptionInner withDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    /**
+     * Get status of the volume. Possible values include: 'Unknown', 'Ready', 'Upgrading', 'Creating', 'Deleting', 'Failed'.
+     *
+     * @return the status value
+     */
+    public ResourceStatus status() {
+        return this.status;
+    }
+
+    /**
+     * Get gives additional information about the current status of the volume.
+     *
+     * @return the statusDetails value
+     */
+    public String statusDetails() {
+        return this.statusDetails;
     }
 
     /**
@@ -106,26 +158,6 @@ public class VolumeResourceDescriptionInner {
      */
     public VolumeResourceDescriptionInner withAzureFileParameters(VolumeProviderParametersAzureFile azureFileParameters) {
         this.azureFileParameters = azureFileParameters;
-        return this;
-    }
-
-    /**
-     * Get volume resource name.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set volume resource name.
-     *
-     * @param name the name value to set
-     * @return the VolumeResourceDescriptionInner object itself.
-     */
-    public VolumeResourceDescriptionInner withName(String name) {
-        this.name = name;
         return this;
     }
 

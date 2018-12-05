@@ -48,8 +48,8 @@ public class StatefulServicePartitionInfo extends ServicePartitionInfoInner {
      * Primary replica are said to be a new Epoch from the ones which were sent
      * by the old Primary replica.
      */
-    @JsonProperty(value = "CurrentConfigurationEpoch")
-    private Epoch currentConfigurationEpoch;
+    @JsonProperty(value = "PrimaryEpoch")
+    private Epoch primaryEpoch;
 
     /**
      * Get the target replica set size as a number.
@@ -114,20 +114,20 @@ public class StatefulServicePartitionInfo extends ServicePartitionInfoInner {
     /**
      * Get an Epoch is a configuration number for the partition as a whole. When the configuration of the replica set changes, for example when the Primary replica changes, the operations that are replicated from the new Primary replica are said to be a new Epoch from the ones which were sent by the old Primary replica.
      *
-     * @return the currentConfigurationEpoch value
+     * @return the primaryEpoch value
      */
-    public Epoch currentConfigurationEpoch() {
-        return this.currentConfigurationEpoch;
+    public Epoch primaryEpoch() {
+        return this.primaryEpoch;
     }
 
     /**
      * Set an Epoch is a configuration number for the partition as a whole. When the configuration of the replica set changes, for example when the Primary replica changes, the operations that are replicated from the new Primary replica are said to be a new Epoch from the ones which were sent by the old Primary replica.
      *
-     * @param currentConfigurationEpoch the currentConfigurationEpoch value to set
+     * @param primaryEpoch the primaryEpoch value to set
      * @return the StatefulServicePartitionInfo object itself.
      */
-    public StatefulServicePartitionInfo withCurrentConfigurationEpoch(Epoch currentConfigurationEpoch) {
-        this.currentConfigurationEpoch = currentConfigurationEpoch;
+    public StatefulServicePartitionInfo withPrimaryEpoch(Epoch primaryEpoch) {
+        this.primaryEpoch = primaryEpoch;
         return this;
     }
 

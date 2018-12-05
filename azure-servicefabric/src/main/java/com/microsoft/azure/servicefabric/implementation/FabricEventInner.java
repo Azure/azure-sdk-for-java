@@ -37,6 +37,12 @@ public class FabricEventInner {
     private UUID eventInstanceId;
 
     /**
+     * The category of event.
+     */
+    @JsonProperty(value = "Category")
+    private String category;
+
+    /**
      * The time event was logged.
      */
     @JsonProperty(value = "TimeStamp", required = true)
@@ -65,6 +71,26 @@ public class FabricEventInner {
      */
     public FabricEventInner withEventInstanceId(UUID eventInstanceId) {
         this.eventInstanceId = eventInstanceId;
+        return this;
+    }
+
+    /**
+     * Get the category of event.
+     *
+     * @return the category value
+     */
+    public String category() {
+        return this.category;
+    }
+
+    /**
+     * Set the category of event.
+     *
+     * @param category the category value to set
+     * @return the FabricEventInner object itself.
+     */
+    public FabricEventInner withCategory(String category) {
+        this.category = category;
         return this;
     }
 

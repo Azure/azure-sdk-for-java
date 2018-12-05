@@ -21,11 +21,11 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("PartitionEvent")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "PartitionAnalysisEvent", value = PartitionAnalysisEvent.class),
-    @JsonSubTypes.Type(name = "PartitionHealthReportCreated", value = PartitionHealthReportCreatedEvent.class),
+    @JsonSubTypes.Type(name = "PartitionNewHealthReport", value = PartitionNewHealthReportEvent.class),
     @JsonSubTypes.Type(name = "PartitionHealthReportExpired", value = PartitionHealthReportExpiredEvent.class),
-    @JsonSubTypes.Type(name = "PartitionReconfigurationCompleted", value = PartitionReconfigurationCompletedEvent.class),
-    @JsonSubTypes.Type(name = "ChaosMoveSecondaryFaultScheduled", value = ChaosMoveSecondaryFaultScheduledEvent.class),
-    @JsonSubTypes.Type(name = "ChaosMovePrimaryFaultScheduled", value = ChaosMovePrimaryFaultScheduledEvent.class)
+    @JsonSubTypes.Type(name = "PartitionReconfigured", value = PartitionReconfiguredEvent.class),
+    @JsonSubTypes.Type(name = "ChaosPartitionSecondaryMoveScheduled", value = ChaosPartitionSecondaryMoveScheduledEvent.class),
+    @JsonSubTypes.Type(name = "ChaosPartitionPrimaryMoveScheduled", value = ChaosPartitionPrimaryMoveScheduledEvent.class)
 })
 public class PartitionEventInner extends FabricEventInner {
     /**

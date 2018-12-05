@@ -11,12 +11,16 @@ package com.microsoft.azure.servicefabric;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Properties of a DiagnosticsSink.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("DiagnosticsSinkProperties")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzureInternalMonitoringPipeline", value = AzureInternalMonitoringPipelineSinkDescription.class)
+})
 public class DiagnosticsSinkProperties {
     /**
      * Name of the sink. This value is referenced by
