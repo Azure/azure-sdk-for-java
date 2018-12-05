@@ -52,11 +52,11 @@ public interface GlobalUsers extends HasInner<GlobalUsersInner> {
      * Get personal preferences for a user.
      *
      * @param userName The name of the user.
-     * @param personalPerferencesOperationsPayload Represents payload for any Environment operations like get, start, stop, connect
+     * @param personalPreferencesOperationsPayload Represents payload for any Environment operations like get, start, stop, connect
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<GetPersonalPreferencesResponse> getPersonalPreferencesAsync(String userName, PersonalPerferencesOperationsPayload personalPerferencesOperationsPayload);
+    Observable<GetPersonalPreferencesResponse> getPersonalPreferencesAsync(String userName, PersonalPreferencesOperationsPayload personalPreferencesOperationsPayload);
 
     /**
      * List Environments for the user.

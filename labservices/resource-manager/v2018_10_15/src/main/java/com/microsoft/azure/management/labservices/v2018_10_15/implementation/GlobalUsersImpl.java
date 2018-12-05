@@ -21,7 +21,7 @@ import com.microsoft.azure.management.labservices.v2018_10_15.GetPersonalPrefere
 import com.microsoft.azure.management.labservices.v2018_10_15.ListEnvironmentsResponse;
 import com.microsoft.azure.management.labservices.v2018_10_15.ListLabsResponse;
 import java.util.List;
-import com.microsoft.azure.management.labservices.v2018_10_15.PersonalPerferencesOperationsPayload;
+import com.microsoft.azure.management.labservices.v2018_10_15.PersonalPreferencesOperationsPayload;
 import com.microsoft.azure.management.labservices.v2018_10_15.ResetPasswordPayload;
 
 class GlobalUsersImpl extends WrapperImpl<GlobalUsersInner> implements GlobalUsers {
@@ -73,9 +73,9 @@ class GlobalUsersImpl extends WrapperImpl<GlobalUsersInner> implements GlobalUse
     }
 
     @Override
-    public Observable<GetPersonalPreferencesResponse> getPersonalPreferencesAsync(String userName, PersonalPerferencesOperationsPayload personalPerferencesOperationsPayload) {
+    public Observable<GetPersonalPreferencesResponse> getPersonalPreferencesAsync(String userName, PersonalPreferencesOperationsPayload personalPreferencesOperationsPayload) {
         GlobalUsersInner client = this.inner();
-        return client.getPersonalPreferencesAsync(userName, personalPerferencesOperationsPayload)
+        return client.getPersonalPreferencesAsync(userName, personalPreferencesOperationsPayload)
         .map(new Func1<GetPersonalPreferencesResponseInner, GetPersonalPreferencesResponse>() {
             @Override
             public GetPersonalPreferencesResponse call(GetPersonalPreferencesResponseInner inner) {
