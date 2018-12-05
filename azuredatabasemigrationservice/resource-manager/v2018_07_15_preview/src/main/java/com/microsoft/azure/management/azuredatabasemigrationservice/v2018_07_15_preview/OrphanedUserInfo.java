@@ -21,7 +21,7 @@ public class OrphanedUserInfo {
     private String name;
 
     /**
-     * Parent DB of the user.
+     * Parent database of the user.
      */
     @JsonProperty(value = "databaseName")
     private String databaseName;
@@ -47,7 +47,7 @@ public class OrphanedUserInfo {
     }
 
     /**
-     * Get parent DB of the user.
+     * Get parent database of the user.
      *
      * @return the databaseName value
      */
@@ -56,7 +56,7 @@ public class OrphanedUserInfo {
     }
 
     /**
-     * Set parent DB of the user.
+     * Set parent database of the user.
      *
      * @param databaseName the databaseName value to set
      * @return the OrphanedUserInfo object itself.
