@@ -37,6 +37,9 @@ public final class HanaInstanceSizeNamesEnum extends ExpandableStringEnum<HanaIn
     /** Static value S192xm for HanaInstanceSizeNamesEnum. */
     public static final HanaInstanceSizeNamesEnum S192XM = fromString("S192xm");
 
+    /** Static value S96 for HanaInstanceSizeNamesEnum. */
+    public static final HanaInstanceSizeNamesEnum S96 = fromString("S96");
+
     /** Static value S384 for HanaInstanceSizeNamesEnum. */
     public static final HanaInstanceSizeNamesEnum S384 = fromString("S384");
 
