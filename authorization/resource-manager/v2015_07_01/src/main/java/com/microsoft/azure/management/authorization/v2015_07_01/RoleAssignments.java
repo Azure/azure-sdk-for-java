@@ -39,7 +39,7 @@ public interface RoleAssignments extends SupportsCreating<RoleAssignment.Definit
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String scope, String roleAssignmentName);
+    Observable<RoleAssignment> deleteAsync(String scope, String roleAssignmentName);
 
     /**
      * Get the specified role assignment.
@@ -58,16 +58,17 @@ public interface RoleAssignments extends SupportsCreating<RoleAssignment.Definit
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByIdAsync(String roleAssignmentId);
+    Observable<RoleAssignment> deleteByIdAsync(String roleAssignmentId);
 
     /**
      * Creates a role assignment by ID.
      *
      * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and resource type. Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
+     * @param properties Role assignment properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RoleAssignment> createByIdAsync(String roleAssignmentId);
+    Observable<RoleAssignment> createByIdAsync(String roleAssignmentId, RoleAssignmentProperties properties);
 
     /**
      * Gets a role assignment by ID.

@@ -35,7 +35,7 @@ class ContentKeyPolicyImpl extends CreatableUpdatableImpl<ContentKeyPolicy, Cont
         this.manager = manager;
         // Set resource name
         this.contentKeyPolicyName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "mediaServices");
         this.contentKeyPolicyName = IdParsingUtils.getValueFromIdByName(inner.id(), "contentKeyPolicies");

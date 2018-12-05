@@ -39,7 +39,7 @@ class ConnectionMonitorResultImpl extends CreatableUpdatableImpl<ConnectionMonit
         this.manager = manager;
         // Set resource name
         this.connectionMonitorName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.networkWatcherName = IdParsingUtils.getValueFromIdByName(inner.id(), "networkWatchers");
         this.connectionMonitorName = IdParsingUtils.getValueFromIdByName(inner.id(), "connectionMonitors");

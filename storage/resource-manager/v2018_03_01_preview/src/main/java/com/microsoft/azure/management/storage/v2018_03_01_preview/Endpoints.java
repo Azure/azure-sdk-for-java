@@ -11,8 +11,8 @@ package com.microsoft.azure.management.storage.v2018_03_01_preview;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The URIs that are used to perform a retrieval of a public blob, queue, or
- * table object.
+ * The URIs that are used to perform a retrieval of a public blob, queue,
+ * table, web or dfs object.
  */
 public class Endpoints {
     /**
@@ -40,7 +40,19 @@ public class Endpoints {
     private String file;
 
     /**
-     * Get the blob value.
+     * Gets the web endpoint.
+     */
+    @JsonProperty(value = "web", access = JsonProperty.Access.WRITE_ONLY)
+    private String web;
+
+    /**
+     * Gets the dfs endpoint.
+     */
+    @JsonProperty(value = "dfs", access = JsonProperty.Access.WRITE_ONLY)
+    private String dfs;
+
+    /**
+     * Get gets the blob endpoint.
      *
      * @return the blob value
      */
@@ -49,7 +61,7 @@ public class Endpoints {
     }
 
     /**
-     * Get the queue value.
+     * Get gets the queue endpoint.
      *
      * @return the queue value
      */
@@ -58,7 +70,7 @@ public class Endpoints {
     }
 
     /**
-     * Get the table value.
+     * Get gets the table endpoint.
      *
      * @return the table value
      */
@@ -67,12 +79,30 @@ public class Endpoints {
     }
 
     /**
-     * Get the file value.
+     * Get gets the file endpoint.
      *
      * @return the file value
      */
     public String file() {
         return this.file;
+    }
+
+    /**
+     * Get gets the web endpoint.
+     *
+     * @return the web value
+     */
+    public String web() {
+        return this.web;
+    }
+
+    /**
+     * Get gets the dfs endpoint.
+     *
+     * @return the dfs value
+     */
+    public String dfs() {
+        return this.dfs;
     }
 
 }

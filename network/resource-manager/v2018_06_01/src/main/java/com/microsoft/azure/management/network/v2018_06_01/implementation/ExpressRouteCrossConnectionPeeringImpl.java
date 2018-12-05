@@ -35,7 +35,7 @@ class ExpressRouteCrossConnectionPeeringImpl extends CreatableUpdatableImpl<Expr
         this.manager = manager;
         // Set resource name
         this.peeringName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.crossConnectionName = IdParsingUtils.getValueFromIdByName(inner.id(), "expressRouteCrossConnections");
         this.peeringName = IdParsingUtils.getValueFromIdByName(inner.id(), "peerings");

@@ -50,6 +50,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Upda
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateExplicitListItemOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Models;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AvailablePrebuiltEntityModel;
@@ -143,427 +144,427 @@ public class ModelsImpl implements Models {
     interface ModelsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addIntent" })
         @POST("apps/{appId}/versions/{versionId}/intents")
-        Observable<Response<ResponseBody>> addIntent(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body ModelCreateObject intentCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addIntent(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body ModelCreateObject intentCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listIntents" })
         @GET("apps/{appId}/versions/{versionId}/intents")
-        Observable<Response<ResponseBody>> listIntents(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listIntents(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addEntity" })
         @POST("apps/{appId}/versions/{versionId}/entities")
-        Observable<Response<ResponseBody>> addEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body ModelCreateObject modelCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body ModelCreateObject modelCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listEntities" })
         @GET("apps/{appId}/versions/{versionId}/entities")
-        Observable<Response<ResponseBody>> listEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addHierarchicalEntity" })
         @POST("apps/{appId}/versions/{versionId}/hierarchicalentities")
-        Observable<Response<ResponseBody>> addHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body HierarchicalEntityModel hierarchicalModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body HierarchicalEntityModel hierarchicalModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listHierarchicalEntities" })
         @GET("apps/{appId}/versions/{versionId}/hierarchicalentities")
-        Observable<Response<ResponseBody>> listHierarchicalEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listHierarchicalEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addCompositeEntity" })
         @POST("apps/{appId}/versions/{versionId}/compositeentities")
-        Observable<Response<ResponseBody>> addCompositeEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body CompositeEntityModel compositeModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addCompositeEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body CompositeEntityModel compositeModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listCompositeEntities" })
         @GET("apps/{appId}/versions/{versionId}/compositeentities")
-        Observable<Response<ResponseBody>> listCompositeEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listCompositeEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listClosedLists" })
         @GET("apps/{appId}/versions/{versionId}/closedlists")
-        Observable<Response<ResponseBody>> listClosedLists(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listClosedLists(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addClosedList" })
         @POST("apps/{appId}/versions/{versionId}/closedlists")
-        Observable<Response<ResponseBody>> addClosedList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body ClosedListModelCreateObject closedListModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addClosedList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body ClosedListModelCreateObject closedListModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addPrebuilt" })
         @POST("apps/{appId}/versions/{versionId}/prebuilts")
-        Observable<Response<ResponseBody>> addPrebuilt(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<String> prebuiltExtractorNames, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addPrebuilt(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body List<String> prebuiltExtractorNames, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listPrebuilts" })
         @GET("apps/{appId}/versions/{versionId}/prebuilts")
-        Observable<Response<ResponseBody>> listPrebuilts(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPrebuilts(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listPrebuiltEntities" })
         @GET("apps/{appId}/versions/{versionId}/listprebuilts")
-        Observable<Response<ResponseBody>> listPrebuiltEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPrebuiltEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listModels" })
         @GET("apps/{appId}/versions/{versionId}/models")
-        Observable<Response<ResponseBody>> listModels(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listModels(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models examplesMethod" })
         @GET("apps/{appId}/versions/{versionId}/models/{modelId}/examples")
-        Observable<Response<ResponseBody>> examplesMethod(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("modelId") String modelId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> examplesMethod(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("modelId") String modelId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getIntent" })
         @GET("apps/{appId}/versions/{versionId}/intents/{intentId}")
-        Observable<Response<ResponseBody>> getIntent(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getIntent(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateIntent" })
         @PUT("apps/{appId}/versions/{versionId}/intents/{intentId}")
-        Observable<Response<ResponseBody>> updateIntent(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Header("accept-language") String acceptLanguage, @Body ModelUpdateObject modelUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateIntent(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Header("accept-language") String acceptLanguage, @Body ModelUpdateObject modelUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteIntent" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/intents/{intentId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteIntent(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("deleteUtterances") Boolean deleteUtterances, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteIntent(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("deleteUtterances") Boolean deleteUtterances, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getEntity" })
         @GET("apps/{appId}/versions/{versionId}/entities/{entityId}")
-        Observable<Response<ResponseBody>> getEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateEntity" })
         @PUT("apps/{appId}/versions/{versionId}/entities/{entityId}")
-        Observable<Response<ResponseBody>> updateEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body ModelUpdateObject modelUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body ModelUpdateObject modelUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteEntity" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/entities/{entityId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getHierarchicalEntity" })
         @GET("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}")
-        Observable<Response<ResponseBody>> getHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateHierarchicalEntity" })
         @PUT("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}")
-        Observable<Response<ResponseBody>> updateHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Body HierarchicalEntityModel hierarchicalModelUpdateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Body HierarchicalEntityModel hierarchicalModelUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteHierarchicalEntity" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getCompositeEntity" })
         @GET("apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}")
-        Observable<Response<ResponseBody>> getCompositeEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCompositeEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateCompositeEntity" })
         @PUT("apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}")
-        Observable<Response<ResponseBody>> updateCompositeEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Body CompositeEntityModel compositeModelUpdateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateCompositeEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Body CompositeEntityModel compositeModelUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteCompositeEntity" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteCompositeEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteCompositeEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getClosedList" })
         @GET("apps/{appId}/versions/{versionId}/closedlists/{clEntityId}")
-        Observable<Response<ResponseBody>> getClosedList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getClosedList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateClosedList" })
         @PUT("apps/{appId}/versions/{versionId}/closedlists/{clEntityId}")
-        Observable<Response<ResponseBody>> updateClosedList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Body ClosedListModelUpdateObject closedListModelUpdateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateClosedList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Body ClosedListModelUpdateObject closedListModelUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models patchClosedList" })
         @PATCH("apps/{appId}/versions/{versionId}/closedlists/{clEntityId}")
-        Observable<Response<ResponseBody>> patchClosedList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Header("accept-language") String acceptLanguage, @Body ClosedListModelPatchObject closedListModelPatchObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> patchClosedList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Header("accept-language") String acceptLanguage, @Body ClosedListModelPatchObject closedListModelPatchObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteClosedList" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/closedlists/{clEntityId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteClosedList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteClosedList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getPrebuilt" })
         @GET("apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}")
-        Observable<Response<ResponseBody>> getPrebuilt(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("prebuiltId") UUID prebuiltId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPrebuilt(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("prebuiltId") UUID prebuiltId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deletePrebuilt" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/prebuilts/{prebuiltId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePrebuilt(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("prebuiltId") UUID prebuiltId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deletePrebuilt(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("prebuiltId") UUID prebuiltId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteSubList" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteSubList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Path("subListId") int subListId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteSubList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Path("subListId") int subListId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateSubList" })
         @PUT("apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}")
-        Observable<Response<ResponseBody>> updateSubList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Path("subListId") int subListId, @Body WordListBaseUpdateObject wordListBaseUpdateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateSubList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Path("subListId") int subListId, @Body WordListBaseUpdateObject wordListBaseUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getIntentSuggestions" })
         @GET("apps/{appId}/versions/{versionId}/intents/{intentId}/suggest")
-        Observable<Response<ResponseBody>> getIntentSuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getIntentSuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getEntitySuggestions" })
         @GET("apps/{appId}/versions/{versionId}/entities/{entityId}/suggest")
-        Observable<Response<ResponseBody>> getEntitySuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getEntitySuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addSubList" })
         @POST("apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists")
-        Observable<Response<ResponseBody>> addSubList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Body WordListObject wordListCreateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addSubList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Body WordListObject wordListCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addCustomPrebuiltDomain" })
         @POST("apps/{appId}/versions/{versionId}/customprebuiltdomains")
-        Observable<Response<ResponseBody>> addCustomPrebuiltDomain(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body PrebuiltDomainCreateBaseObject prebuiltDomainObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addCustomPrebuiltDomain(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body PrebuiltDomainCreateBaseObject prebuiltDomainObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addCustomPrebuiltIntent" })
         @POST("apps/{appId}/versions/{versionId}/customprebuiltintents")
-        Observable<Response<ResponseBody>> addCustomPrebuiltIntent(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addCustomPrebuiltIntent(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listCustomPrebuiltIntents" })
         @GET("apps/{appId}/versions/{versionId}/customprebuiltintents")
-        Observable<Response<ResponseBody>> listCustomPrebuiltIntents(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listCustomPrebuiltIntents(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addCustomPrebuiltEntity" })
         @POST("apps/{appId}/versions/{versionId}/customprebuiltentities")
-        Observable<Response<ResponseBody>> addCustomPrebuiltEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addCustomPrebuiltEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listCustomPrebuiltEntities" })
         @GET("apps/{appId}/versions/{versionId}/customprebuiltentities")
-        Observable<Response<ResponseBody>> listCustomPrebuiltEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listCustomPrebuiltEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listCustomPrebuiltModels" })
         @GET("apps/{appId}/versions/{versionId}/customprebuiltmodels")
-        Observable<Response<ResponseBody>> listCustomPrebuiltModels(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listCustomPrebuiltModels(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteCustomPrebuiltDomain" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/customprebuiltdomains/{domainName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteCustomPrebuiltDomain(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("domainName") String domainName, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteCustomPrebuiltDomain(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("domainName") String domainName, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getHierarchicalEntityChild" })
         @GET("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}")
-        Observable<Response<ResponseBody>> getHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("hChildId") UUID hChildId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("hChildId") UUID hChildId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateHierarchicalEntityChild" })
         @PUT("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}")
-        Observable<Response<ResponseBody>> updateHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("hChildId") UUID hChildId, @Header("accept-language") String acceptLanguage, @Body HierarchicalChildModelUpdateObject hierarchicalChildModelUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("hChildId") UUID hChildId, @Header("accept-language") String acceptLanguage, @Body HierarchicalChildModelUpdateObject hierarchicalChildModelUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteHierarchicalEntityChild" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("hChildId") UUID hChildId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("hChildId") UUID hChildId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addHierarchicalEntityChild" })
         @POST("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children")
-        Observable<Response<ResponseBody>> addHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Body HierarchicalChildModelCreateObject hierarchicalChildModelCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Body HierarchicalChildModelCreateObject hierarchicalChildModelCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addCompositeEntityChild" })
         @POST("apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children")
-        Observable<Response<ResponseBody>> addCompositeEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Body CompositeChildModelCreateObject compositeChildModelCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addCompositeEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Body CompositeChildModelCreateObject compositeChildModelCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteCompositeEntityChild" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children/{cChildId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteCompositeEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Path("cChildId") UUID cChildId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteCompositeEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Path("cChildId") UUID cChildId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getRegexEntityInfos" })
         @GET("apps/{appId}/versions/{versionId}/regexentities")
-        Observable<Response<ResponseBody>> getRegexEntityInfos(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getRegexEntityInfos(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createRegexEntityModel" })
         @POST("apps/{appId}/versions/{versionId}/regexentities")
-        Observable<Response<ResponseBody>> createRegexEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body RegexModelCreateObject regexEntityExtractorCreateObj, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createRegexEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body RegexModelCreateObject regexEntityExtractorCreateObj, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getPatternAnyEntityInfos" })
         @GET("apps/{appId}/versions/{versionId}/patternanyentities")
-        Observable<Response<ResponseBody>> getPatternAnyEntityInfos(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPatternAnyEntityInfos(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createPatternAnyEntityModel" })
         @POST("apps/{appId}/versions/{versionId}/patternanyentities")
-        Observable<Response<ResponseBody>> createPatternAnyEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PatternAnyModelCreateObject extractorCreateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createPatternAnyEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PatternAnyModelCreateObject extractorCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/entities/{entityId}/roles")
-        Observable<Response<ResponseBody>> getEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/entities/{entityId}/roles")
-        Observable<Response<ResponseBody>> createEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getPrebuiltEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles")
-        Observable<Response<ResponseBody>> getPrebuiltEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPrebuiltEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createPrebuiltEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles")
-        Observable<Response<ResponseBody>> createPrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createPrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getClosedListEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles")
-        Observable<Response<ResponseBody>> getClosedListEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getClosedListEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createClosedListEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles")
-        Observable<Response<ResponseBody>> createClosedListEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createClosedListEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getRegexEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles")
-        Observable<Response<ResponseBody>> getRegexEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getRegexEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createRegexEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles")
-        Observable<Response<ResponseBody>> createRegexEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createRegexEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getCompositeEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles")
-        Observable<Response<ResponseBody>> getCompositeEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCompositeEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createCompositeEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles")
-        Observable<Response<ResponseBody>> createCompositeEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createCompositeEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getPatternAnyEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles")
-        Observable<Response<ResponseBody>> getPatternAnyEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPatternAnyEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createPatternAnyEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles")
-        Observable<Response<ResponseBody>> createPatternAnyEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createPatternAnyEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getHierarchicalEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles")
-        Observable<Response<ResponseBody>> getHierarchicalEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHierarchicalEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createHierarchicalEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles")
-        Observable<Response<ResponseBody>> createHierarchicalEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createHierarchicalEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getCustomPrebuiltEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles")
-        Observable<Response<ResponseBody>> getCustomPrebuiltEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCustomPrebuiltEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createCustomPrebuiltEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles")
-        Observable<Response<ResponseBody>> createCustomPrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createCustomPrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getExplicitList" })
         @GET("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist")
-        Observable<Response<ResponseBody>> getExplicitList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getExplicitList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addExplicitListItem" })
         @POST("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist")
-        Observable<Response<ResponseBody>> addExplicitListItem(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body ExplicitListItemCreateObject item, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addExplicitListItem(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body ExplicitListItemCreateObject item, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getRegexEntityEntityInfo" })
         @GET("apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}")
-        Observable<Response<ResponseBody>> getRegexEntityEntityInfo(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("regexEntityId") UUID regexEntityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getRegexEntityEntityInfo(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("regexEntityId") UUID regexEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateRegexEntityModel" })
         @PUT("apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}")
-        Observable<Response<ResponseBody>> updateRegexEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("regexEntityId") UUID regexEntityId, @Body RegexModelUpdateObject regexEntityUpdateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateRegexEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("regexEntityId") UUID regexEntityId, @Body RegexModelUpdateObject regexEntityUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteRegexEntityModel" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/regexentities/{regexEntityId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteRegexEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("regexEntityId") UUID regexEntityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteRegexEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("regexEntityId") UUID regexEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getPatternAnyEntityInfo" })
         @GET("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}")
-        Observable<Response<ResponseBody>> getPatternAnyEntityInfo(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPatternAnyEntityInfo(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updatePatternAnyEntityModel" })
         @PUT("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}")
-        Observable<Response<ResponseBody>> updatePatternAnyEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Body PatternAnyModelUpdateObject patternAnyUpdateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updatePatternAnyEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Body PatternAnyModelUpdateObject patternAnyUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deletePatternAnyEntityModel" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/patternanyentities/{entityId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePatternAnyEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deletePatternAnyEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getEntityRole" })
         @GET("apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> getEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateEntityRole" })
         @PUT("apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> updateEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteEntityRole" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/entities/{entityId}/roles/{roleId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getPrebuiltEntityRole" })
         @GET("apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> getPrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updatePrebuiltEntityRole" })
         @PUT("apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> updatePrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updatePrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deletePrebuiltEntityRole" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles/{roleId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deletePrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getClosedListEntityRole" })
         @GET("apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> getClosedListEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getClosedListEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateClosedListEntityRole" })
         @PUT("apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> updateClosedListEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateClosedListEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteClosedListEntityRole" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles/{roleId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteClosedListEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteClosedListEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getRegexEntityRole" })
         @GET("apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> getRegexEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getRegexEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateRegexEntityRole" })
         @PUT("apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> updateRegexEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateRegexEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteRegexEntityRole" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles/{roleId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteRegexEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteRegexEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getCompositeEntityRole" })
         @GET("apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> getCompositeEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCompositeEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateCompositeEntityRole" })
         @PUT("apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> updateCompositeEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateCompositeEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteCompositeEntityRole" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles/{roleId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteCompositeEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteCompositeEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getPatternAnyEntityRole" })
         @GET("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> getPatternAnyEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPatternAnyEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updatePatternAnyEntityRole" })
         @PUT("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> updatePatternAnyEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updatePatternAnyEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deletePatternAnyEntityRole" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles/{roleId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deletePatternAnyEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deletePatternAnyEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getHierarchicalEntityRole" })
         @GET("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> getHierarchicalEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getHierarchicalEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateHierarchicalEntityRole" })
         @PUT("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> updateHierarchicalEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateHierarchicalEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteHierarchicalEntityRole" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles/{roleId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteHierarchicalEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteHierarchicalEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getCustomEntityRole" })
         @GET("apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> getCustomEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getCustomEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateCustomPrebuiltEntityRole" })
         @PUT("apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}")
-        Observable<Response<ResponseBody>> updateCustomPrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateCustomPrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Body EntityRoleUpdateObject entityRoleUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteCustomEntityRole" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles/{roleId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteCustomEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteCustomEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("roleId") UUID roleId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getExplicitListItem" })
         @GET("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}")
-        Observable<Response<ResponseBody>> getExplicitListItem(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("itemId") long itemId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getExplicitListItem(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("itemId") long itemId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateExplicitListItem" })
         @PUT("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}")
-        Observable<Response<ResponseBody>> updateExplicitListItem(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("itemId") long itemId, @Header("accept-language") String acceptLanguage, @Body ExplicitListItemUpdateObject item, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateExplicitListItem(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("itemId") long itemId, @Header("accept-language") String acceptLanguage, @Body ExplicitListItemUpdateObject item, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteExplicitListItem" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/explicitlist/{itemId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteExplicitListItem(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("itemId") long itemId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteExplicitListItem(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Path("itemId") long itemId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -625,6 +626,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addIntentWithServiceResponseAsync(UUID appId, String versionId, AddIntentOptionalParameter addIntentOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -646,6 +650,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addIntentWithServiceResponseAsync(UUID appId, String versionId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -654,7 +661,8 @@ public class ModelsImpl implements Models {
         }
         ModelCreateObject intentCreateObject = new ModelCreateObject();
         intentCreateObject.withName(name);
-        return service.addIntent(appId, versionId, this.client.acceptLanguage(), intentCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addIntent(appId, versionId, this.client.acceptLanguage(), intentCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -789,6 +797,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;IntentClassifier&gt; object
      */
     public Observable<ServiceResponse<List<IntentClassifier>>> listIntentsWithServiceResponseAsync(UUID appId, String versionId, ListIntentsOptionalParameter listIntentsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -812,13 +823,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;IntentClassifier&gt; object
      */
     public Observable<ServiceResponse<List<IntentClassifier>>> listIntentsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listIntents(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listIntents(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IntentClassifier>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<IntentClassifier>>> call(Response<ResponseBody> response) {
@@ -960,6 +975,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addEntityWithServiceResponseAsync(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -981,6 +999,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addEntityWithServiceResponseAsync(UUID appId, String versionId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -989,7 +1010,8 @@ public class ModelsImpl implements Models {
         }
         ModelCreateObject modelCreateObject = new ModelCreateObject();
         modelCreateObject.withName(name);
-        return service.addEntity(appId, versionId, this.client.acceptLanguage(), modelCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addEntity(appId, versionId, this.client.acceptLanguage(), modelCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -1124,6 +1146,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<EntityExtractor>>> listEntitiesWithServiceResponseAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1147,13 +1172,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<EntityExtractor>>> listEntitiesWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listEntities(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listEntities(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityExtractor>>> call(Response<ResponseBody> response) {
@@ -1294,6 +1323,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, HierarchicalEntityModel hierarchicalModelCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1304,7 +1336,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter hierarchicalModelCreateObject is required and cannot be null.");
         }
         Validator.validate(hierarchicalModelCreateObject);
-        return service.addHierarchicalEntity(appId, versionId, hierarchicalModelCreateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addHierarchicalEntity(appId, versionId, hierarchicalModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -1383,6 +1416,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;HierarchicalEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<HierarchicalEntityExtractor>>> listHierarchicalEntitiesWithServiceResponseAsync(UUID appId, String versionId, ListHierarchicalEntitiesOptionalParameter listHierarchicalEntitiesOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1406,13 +1442,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;HierarchicalEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<HierarchicalEntityExtractor>>> listHierarchicalEntitiesWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listHierarchicalEntities(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listHierarchicalEntities(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<HierarchicalEntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<HierarchicalEntityExtractor>>> call(Response<ResponseBody> response) {
@@ -1553,6 +1593,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCompositeEntityWithServiceResponseAsync(UUID appId, String versionId, CompositeEntityModel compositeModelCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1563,7 +1606,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter compositeModelCreateObject is required and cannot be null.");
         }
         Validator.validate(compositeModelCreateObject);
-        return service.addCompositeEntity(appId, versionId, compositeModelCreateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addCompositeEntity(appId, versionId, compositeModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -1642,6 +1686,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;CompositeEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<CompositeEntityExtractor>>> listCompositeEntitiesWithServiceResponseAsync(UUID appId, String versionId, ListCompositeEntitiesOptionalParameter listCompositeEntitiesOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1665,13 +1712,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;CompositeEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<CompositeEntityExtractor>>> listCompositeEntitiesWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listCompositeEntities(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listCompositeEntities(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<CompositeEntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<CompositeEntityExtractor>>> call(Response<ResponseBody> response) {
@@ -1813,6 +1864,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;ClosedListEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<ClosedListEntityExtractor>>> listClosedListsWithServiceResponseAsync(UUID appId, String versionId, ListClosedListsOptionalParameter listClosedListsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1836,13 +1890,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;ClosedListEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<ClosedListEntityExtractor>>> listClosedListsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listClosedLists(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listClosedLists(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ClosedListEntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ClosedListEntityExtractor>>> call(Response<ResponseBody> response) {
@@ -1983,6 +2041,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addClosedListWithServiceResponseAsync(UUID appId, String versionId, ClosedListModelCreateObject closedListModelCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1993,7 +2054,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter closedListModelCreateObject is required and cannot be null.");
         }
         Validator.validate(closedListModelCreateObject);
-        return service.addClosedList(appId, versionId, closedListModelCreateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addClosedList(appId, versionId, closedListModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -2071,6 +2133,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<PrebuiltEntityExtractor>>> addPrebuiltWithServiceResponseAsync(UUID appId, String versionId, List<String> prebuiltExtractorNames) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -2081,7 +2146,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter prebuiltExtractorNames is required and cannot be null.");
         }
         Validator.validate(prebuiltExtractorNames);
-        return service.addPrebuilt(appId, versionId, prebuiltExtractorNames, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addPrebuilt(appId, versionId, prebuiltExtractorNames, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PrebuiltEntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PrebuiltEntityExtractor>>> call(Response<ResponseBody> response) {
@@ -2160,6 +2226,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<PrebuiltEntityExtractor>>> listPrebuiltsWithServiceResponseAsync(UUID appId, String versionId, ListPrebuiltsOptionalParameter listPrebuiltsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -2183,13 +2252,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<PrebuiltEntityExtractor>>> listPrebuiltsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listPrebuilts(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listPrebuilts(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PrebuiltEntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PrebuiltEntityExtractor>>> call(Response<ResponseBody> response) {
@@ -2326,13 +2399,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;AvailablePrebuiltEntityModel&gt; object
      */
     public Observable<ServiceResponse<List<AvailablePrebuiltEntityModel>>> listPrebuiltEntitiesWithServiceResponseAsync(UUID appId, String versionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listPrebuiltEntities(appId, versionId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listPrebuiltEntities(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AvailablePrebuiltEntityModel>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<AvailablePrebuiltEntityModel>>> call(Response<ResponseBody> response) {
@@ -2411,6 +2488,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;ModelInfoResponse&gt; object
      */
     public Observable<ServiceResponse<List<ModelInfoResponse>>> listModelsWithServiceResponseAsync(UUID appId, String versionId, ListModelsOptionalParameter listModelsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -2434,13 +2514,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;ModelInfoResponse&gt; object
      */
     public Observable<ServiceResponse<List<ModelInfoResponse>>> listModelsWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listModels(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listModels(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ModelInfoResponse>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ModelInfoResponse>>> call(Response<ResponseBody> response) {
@@ -2586,6 +2670,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;LabelTextObject&gt; object
      */
     public Observable<ServiceResponse<List<LabelTextObject>>> examplesMethodWithServiceResponseAsync(UUID appId, String versionId, String modelId, ExamplesMethodOptionalParameter examplesMethodOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -2613,6 +2700,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;LabelTextObject&gt; object
      */
     public Observable<ServiceResponse<List<LabelTextObject>>> examplesMethodWithServiceResponseAsync(UUID appId, String versionId, String modelId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -2622,7 +2712,8 @@ public class ModelsImpl implements Models {
         if (modelId == null) {
             throw new IllegalArgumentException("Parameter modelId is required and cannot be null.");
         }
-        return service.examplesMethod(appId, versionId, modelId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.examplesMethod(appId, versionId, modelId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LabelTextObject>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<LabelTextObject>>> call(Response<ResponseBody> response) {
@@ -2770,6 +2861,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the IntentClassifier object
      */
     public Observable<ServiceResponse<IntentClassifier>> getIntentWithServiceResponseAsync(UUID appId, String versionId, UUID intentId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -2779,7 +2873,8 @@ public class ModelsImpl implements Models {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        return service.getIntent(appId, versionId, intentId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getIntent(appId, versionId, intentId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IntentClassifier>>>() {
                 @Override
                 public Observable<ServiceResponse<IntentClassifier>> call(Response<ResponseBody> response) {
@@ -2862,6 +2957,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateIntentWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, UpdateIntentOptionalParameter updateIntentOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -2887,6 +2985,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateIntentWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -2898,7 +2999,8 @@ public class ModelsImpl implements Models {
         }
         ModelUpdateObject modelUpdateObject = new ModelUpdateObject();
         modelUpdateObject.withName(name);
-        return service.updateIntent(appId, versionId, intentId, this.client.acceptLanguage(), modelUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateIntent(appId, versionId, intentId, this.client.acceptLanguage(), modelUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -3044,6 +3146,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteIntentWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, DeleteIntentOptionalParameter deleteIntentOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3069,6 +3174,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteIntentWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Boolean deleteUtterances) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3078,7 +3186,8 @@ public class ModelsImpl implements Models {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        return service.deleteIntent(appId, versionId, intentId, deleteUtterances, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteIntent(appId, versionId, intentId, deleteUtterances, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -3219,6 +3328,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityExtractor object
      */
     public Observable<ServiceResponse<EntityExtractor>> getEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3228,7 +3340,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getEntity(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getEntity(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityExtractor>>>() {
                 @Override
                 public Observable<ServiceResponse<EntityExtractor>> call(Response<ResponseBody> response) {
@@ -3311,6 +3424,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3336,6 +3452,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3347,7 +3466,8 @@ public class ModelsImpl implements Models {
         }
         ModelUpdateObject modelUpdateObject = new ModelUpdateObject();
         modelUpdateObject.withName(name);
-        return service.updateEntity(appId, versionId, entityId, this.client.acceptLanguage(), modelUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateEntity(appId, versionId, entityId, this.client.acceptLanguage(), modelUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -3488,6 +3608,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3497,7 +3620,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.deleteEntity(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteEntity(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -3575,6 +3699,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the HierarchicalEntityExtractor object
      */
     public Observable<ServiceResponse<HierarchicalEntityExtractor>> getHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3584,7 +3711,8 @@ public class ModelsImpl implements Models {
         if (hEntityId == null) {
             throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
         }
-        return service.getHierarchicalEntity(appId, versionId, hEntityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getHierarchicalEntity(appId, versionId, hEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HierarchicalEntityExtractor>>>() {
                 @Override
                 public Observable<ServiceResponse<HierarchicalEntityExtractor>> call(Response<ResponseBody> response) {
@@ -3666,6 +3794,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, HierarchicalEntityModel hierarchicalModelUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3679,7 +3810,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter hierarchicalModelUpdateObject is required and cannot be null.");
         }
         Validator.validate(hierarchicalModelUpdateObject);
-        return service.updateHierarchicalEntity(appId, versionId, hEntityId, hierarchicalModelUpdateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateHierarchicalEntity(appId, versionId, hEntityId, hierarchicalModelUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -3757,6 +3889,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3766,7 +3901,8 @@ public class ModelsImpl implements Models {
         if (hEntityId == null) {
             throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
         }
-        return service.deleteHierarchicalEntity(appId, versionId, hEntityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteHierarchicalEntity(appId, versionId, hEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -3844,6 +3980,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the CompositeEntityExtractor object
      */
     public Observable<ServiceResponse<CompositeEntityExtractor>> getCompositeEntityWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3853,7 +3992,8 @@ public class ModelsImpl implements Models {
         if (cEntityId == null) {
             throw new IllegalArgumentException("Parameter cEntityId is required and cannot be null.");
         }
-        return service.getCompositeEntity(appId, versionId, cEntityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getCompositeEntity(appId, versionId, cEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CompositeEntityExtractor>>>() {
                 @Override
                 public Observable<ServiceResponse<CompositeEntityExtractor>> call(Response<ResponseBody> response) {
@@ -3935,6 +4075,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateCompositeEntityWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, CompositeEntityModel compositeModelUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -3948,7 +4091,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter compositeModelUpdateObject is required and cannot be null.");
         }
         Validator.validate(compositeModelUpdateObject);
-        return service.updateCompositeEntity(appId, versionId, cEntityId, compositeModelUpdateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateCompositeEntity(appId, versionId, cEntityId, compositeModelUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -4026,6 +4170,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteCompositeEntityWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4035,7 +4182,8 @@ public class ModelsImpl implements Models {
         if (cEntityId == null) {
             throw new IllegalArgumentException("Parameter cEntityId is required and cannot be null.");
         }
-        return service.deleteCompositeEntity(appId, versionId, cEntityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteCompositeEntity(appId, versionId, cEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -4113,6 +4261,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the ClosedListEntityExtractor object
      */
     public Observable<ServiceResponse<ClosedListEntityExtractor>> getClosedListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4122,7 +4273,8 @@ public class ModelsImpl implements Models {
         if (clEntityId == null) {
             throw new IllegalArgumentException("Parameter clEntityId is required and cannot be null.");
         }
-        return service.getClosedList(appId, versionId, clEntityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getClosedList(appId, versionId, clEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClosedListEntityExtractor>>>() {
                 @Override
                 public Observable<ServiceResponse<ClosedListEntityExtractor>> call(Response<ResponseBody> response) {
@@ -4204,6 +4356,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateClosedListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, ClosedListModelUpdateObject closedListModelUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4217,7 +4372,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter closedListModelUpdateObject is required and cannot be null.");
         }
         Validator.validate(closedListModelUpdateObject);
-        return service.updateClosedList(appId, versionId, clEntityId, closedListModelUpdateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateClosedList(appId, versionId, clEntityId, closedListModelUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -4300,6 +4456,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> patchClosedListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, PatchClosedListOptionalParameter patchClosedListOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4325,6 +4484,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> patchClosedListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, List<WordListObject> subLists) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4337,7 +4499,8 @@ public class ModelsImpl implements Models {
         Validator.validate(subLists);
         ClosedListModelPatchObject closedListModelPatchObject = new ClosedListModelPatchObject();
         closedListModelPatchObject.withSubLists(subLists);
-        return service.patchClosedList(appId, versionId, clEntityId, this.client.acceptLanguage(), closedListModelPatchObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.patchClosedList(appId, versionId, clEntityId, this.client.acceptLanguage(), closedListModelPatchObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -4478,6 +4641,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteClosedListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4487,7 +4653,8 @@ public class ModelsImpl implements Models {
         if (clEntityId == null) {
             throw new IllegalArgumentException("Parameter clEntityId is required and cannot be null.");
         }
-        return service.deleteClosedList(appId, versionId, clEntityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteClosedList(appId, versionId, clEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -4565,6 +4732,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the PrebuiltEntityExtractor object
      */
     public Observable<ServiceResponse<PrebuiltEntityExtractor>> getPrebuiltWithServiceResponseAsync(UUID appId, String versionId, UUID prebuiltId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4574,7 +4744,8 @@ public class ModelsImpl implements Models {
         if (prebuiltId == null) {
             throw new IllegalArgumentException("Parameter prebuiltId is required and cannot be null.");
         }
-        return service.getPrebuilt(appId, versionId, prebuiltId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getPrebuilt(appId, versionId, prebuiltId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrebuiltEntityExtractor>>>() {
                 @Override
                 public Observable<ServiceResponse<PrebuiltEntityExtractor>> call(Response<ResponseBody> response) {
@@ -4652,6 +4823,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePrebuiltWithServiceResponseAsync(UUID appId, String versionId, UUID prebuiltId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4661,7 +4835,8 @@ public class ModelsImpl implements Models {
         if (prebuiltId == null) {
             throw new IllegalArgumentException("Parameter prebuiltId is required and cannot be null.");
         }
-        return service.deletePrebuilt(appId, versionId, prebuiltId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deletePrebuilt(appId, versionId, prebuiltId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -4743,6 +4918,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, int subListId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4752,7 +4930,8 @@ public class ModelsImpl implements Models {
         if (clEntityId == null) {
             throw new IllegalArgumentException("Parameter clEntityId is required and cannot be null.");
         }
-        return service.deleteSubList(appId, versionId, clEntityId, subListId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteSubList(appId, versionId, clEntityId, subListId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -4838,6 +5017,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, int subListId, WordListBaseUpdateObject wordListBaseUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4851,7 +5033,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter wordListBaseUpdateObject is required and cannot be null.");
         }
         Validator.validate(wordListBaseUpdateObject);
-        return service.updateSubList(appId, versionId, clEntityId, subListId, wordListBaseUpdateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateSubList(appId, versionId, clEntityId, subListId, wordListBaseUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -4934,6 +5117,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
     public Observable<ServiceResponse<List<IntentsSuggestionExample>>> getIntentSuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4959,6 +5145,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
     public Observable<ServiceResponse<List<IntentsSuggestionExample>>> getIntentSuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -4968,7 +5157,8 @@ public class ModelsImpl implements Models {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        return service.getIntentSuggestions(appId, versionId, intentId, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getIntentSuggestions(appId, versionId, intentId, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IntentsSuggestionExample>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<IntentsSuggestionExample>>> call(Response<ResponseBody> response) {
@@ -5114,6 +5304,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
     public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> getEntitySuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -5139,6 +5332,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
     public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> getEntitySuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -5148,7 +5344,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getEntitySuggestions(appId, versionId, entityId, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getEntitySuggestions(appId, versionId, entityId, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntitiesSuggestionExample>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> call(Response<ResponseBody> response) {
@@ -5293,6 +5490,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the Integer object
      */
     public Observable<ServiceResponse<Integer>> addSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -5306,7 +5506,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter wordListCreateObject is required and cannot be null.");
         }
         Validator.validate(wordListCreateObject);
-        return service.addSubList(appId, versionId, clEntityId, wordListCreateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addSubList(appId, versionId, clEntityId, wordListCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
                 @Override
                 public Observable<ServiceResponse<Integer>> call(Response<ResponseBody> response) {
@@ -5385,6 +5586,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;UUID&gt; object
      */
     public Observable<ServiceResponse<List<UUID>>> addCustomPrebuiltDomainWithServiceResponseAsync(UUID appId, String versionId, AddCustomPrebuiltDomainModelsOptionalParameter addCustomPrebuiltDomainOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -5406,6 +5610,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;UUID&gt; object
      */
     public Observable<ServiceResponse<List<UUID>>> addCustomPrebuiltDomainWithServiceResponseAsync(UUID appId, String versionId, String domainName) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -5414,7 +5621,8 @@ public class ModelsImpl implements Models {
         }
         PrebuiltDomainCreateBaseObject prebuiltDomainObject = new PrebuiltDomainCreateBaseObject();
         prebuiltDomainObject.withDomainName(domainName);
-        return service.addCustomPrebuiltDomain(appId, versionId, this.client.acceptLanguage(), prebuiltDomainObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addCustomPrebuiltDomain(appId, versionId, this.client.acceptLanguage(), prebuiltDomainObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<UUID>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<UUID>>> call(Response<ResponseBody> response) {
@@ -5548,6 +5756,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCustomPrebuiltIntentWithServiceResponseAsync(UUID appId, String versionId, PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -5558,7 +5769,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter prebuiltDomainModelCreateObject is required and cannot be null.");
         }
         Validator.validate(prebuiltDomainModelCreateObject);
-        return service.addCustomPrebuiltIntent(appId, versionId, prebuiltDomainModelCreateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addCustomPrebuiltIntent(appId, versionId, prebuiltDomainModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -5632,13 +5844,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;IntentClassifier&gt; object
      */
     public Observable<ServiceResponse<List<IntentClassifier>>> listCustomPrebuiltIntentsWithServiceResponseAsync(UUID appId, String versionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listCustomPrebuiltIntents(appId, versionId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listCustomPrebuiltIntents(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IntentClassifier>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<IntentClassifier>>> call(Response<ResponseBody> response) {
@@ -5716,6 +5932,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCustomPrebuiltEntityWithServiceResponseAsync(UUID appId, String versionId, PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -5726,7 +5945,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter prebuiltDomainModelCreateObject is required and cannot be null.");
         }
         Validator.validate(prebuiltDomainModelCreateObject);
-        return service.addCustomPrebuiltEntity(appId, versionId, prebuiltDomainModelCreateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addCustomPrebuiltEntity(appId, versionId, prebuiltDomainModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -5800,13 +6020,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<EntityExtractor>>> listCustomPrebuiltEntitiesWithServiceResponseAsync(UUID appId, String versionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listCustomPrebuiltEntities(appId, versionId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listCustomPrebuiltEntities(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityExtractor>>> call(Response<ResponseBody> response) {
@@ -5880,13 +6104,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;CustomPrebuiltModel&gt; object
      */
     public Observable<ServiceResponse<List<CustomPrebuiltModel>>> listCustomPrebuiltModelsWithServiceResponseAsync(UUID appId, String versionId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.listCustomPrebuiltModels(appId, versionId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listCustomPrebuiltModels(appId, versionId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<CustomPrebuiltModel>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<CustomPrebuiltModel>>> call(Response<ResponseBody> response) {
@@ -5964,6 +6192,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteCustomPrebuiltDomainWithServiceResponseAsync(UUID appId, String versionId, String domainName) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -5973,7 +6204,8 @@ public class ModelsImpl implements Models {
         if (domainName == null) {
             throw new IllegalArgumentException("Parameter domainName is required and cannot be null.");
         }
-        return service.deleteCustomPrebuiltDomain(appId, versionId, domainName, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteCustomPrebuiltDomain(appId, versionId, domainName, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -6055,6 +6287,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the HierarchicalChildEntity object
      */
     public Observable<ServiceResponse<HierarchicalChildEntity>> getHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -6067,7 +6302,8 @@ public class ModelsImpl implements Models {
         if (hChildId == null) {
             throw new IllegalArgumentException("Parameter hChildId is required and cannot be null.");
         }
-        return service.getHierarchicalEntityChild(appId, versionId, hEntityId, hChildId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getHierarchicalEntityChild(appId, versionId, hEntityId, hChildId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HierarchicalChildEntity>>>() {
                 @Override
                 public Observable<ServiceResponse<HierarchicalChildEntity>> call(Response<ResponseBody> response) {
@@ -6154,6 +6390,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId, UpdateHierarchicalEntityChildOptionalParameter updateHierarchicalEntityChildOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -6183,6 +6422,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -6197,7 +6439,8 @@ public class ModelsImpl implements Models {
         }
         HierarchicalChildModelUpdateObject hierarchicalChildModelUpdateObject = new HierarchicalChildModelUpdateObject();
         hierarchicalChildModelUpdateObject.withName(name);
-        return service.updateHierarchicalEntityChild(appId, versionId, hEntityId, hChildId, this.client.acceptLanguage(), hierarchicalChildModelUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateHierarchicalEntityChild(appId, versionId, hEntityId, hChildId, this.client.acceptLanguage(), hierarchicalChildModelUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -6349,6 +6592,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -6361,7 +6607,8 @@ public class ModelsImpl implements Models {
         if (hChildId == null) {
             throw new IllegalArgumentException("Parameter hChildId is required and cannot be null.");
         }
-        return service.deleteHierarchicalEntityChild(appId, versionId, hEntityId, hChildId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteHierarchicalEntityChild(appId, versionId, hEntityId, hChildId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -6444,6 +6691,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -6469,6 +6719,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -6480,7 +6733,8 @@ public class ModelsImpl implements Models {
         }
         HierarchicalChildModelCreateObject hierarchicalChildModelCreateObject = new HierarchicalChildModelCreateObject();
         hierarchicalChildModelCreateObject.withName(name);
-        return service.addHierarchicalEntityChild(appId, versionId, hEntityId, this.client.acceptLanguage(), hierarchicalChildModelCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addHierarchicalEntityChild(appId, versionId, hEntityId, this.client.acceptLanguage(), hierarchicalChildModelCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -6626,6 +6880,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCompositeEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, AddCompositeEntityChildOptionalParameter addCompositeEntityChildOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -6651,6 +6908,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCompositeEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -6662,7 +6922,8 @@ public class ModelsImpl implements Models {
         }
         CompositeChildModelCreateObject compositeChildModelCreateObject = new CompositeChildModelCreateObject();
         compositeChildModelCreateObject.withName(name);
-        return service.addCompositeEntityChild(appId, versionId, cEntityId, this.client.acceptLanguage(), compositeChildModelCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addCompositeEntityChild(appId, versionId, cEntityId, this.client.acceptLanguage(), compositeChildModelCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -6807,6 +7068,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteCompositeEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, UUID cChildId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -6819,7 +7083,8 @@ public class ModelsImpl implements Models {
         if (cChildId == null) {
             throw new IllegalArgumentException("Parameter cChildId is required and cannot be null.");
         }
-        return service.deleteCompositeEntityChild(appId, versionId, cEntityId, cChildId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteCompositeEntityChild(appId, versionId, cEntityId, cChildId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -6898,6 +7163,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;RegexEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<RegexEntityExtractor>>> getRegexEntityInfosWithServiceResponseAsync(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -6921,13 +7189,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;RegexEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<RegexEntityExtractor>>> getRegexEntityInfosWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.getRegexEntityInfos(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getRegexEntityInfos(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RegexEntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RegexEntityExtractor>>> call(Response<ResponseBody> response) {
@@ -7068,6 +7340,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createRegexEntityModelWithServiceResponseAsync(UUID appId, String versionId, RegexModelCreateObject regexEntityExtractorCreateObj) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -7078,7 +7353,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter regexEntityExtractorCreateObj is required and cannot be null.");
         }
         Validator.validate(regexEntityExtractorCreateObj);
-        return service.createRegexEntityModel(appId, versionId, regexEntityExtractorCreateObj, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createRegexEntityModel(appId, versionId, regexEntityExtractorCreateObj, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -7157,6 +7433,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<PatternAnyEntityExtractor>>> getPatternAnyEntityInfosWithServiceResponseAsync(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -7180,13 +7459,17 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
      */
     public Observable<ServiceResponse<List<PatternAnyEntityExtractor>>> getPatternAnyEntityInfosWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        return service.getPatternAnyEntityInfos(appId, versionId, skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getPatternAnyEntityInfos(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternAnyEntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PatternAnyEntityExtractor>>> call(Response<ResponseBody> response) {
@@ -7327,6 +7610,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createPatternAnyEntityModelWithServiceResponseAsync(UUID appId, String versionId, PatternAnyModelCreateObject extractorCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -7337,7 +7623,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter extractorCreateObject is required and cannot be null.");
         }
         Validator.validate(extractorCreateObject);
-        return service.createPatternAnyEntityModel(appId, versionId, extractorCreateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createPatternAnyEntityModel(appId, versionId, extractorCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -7415,6 +7702,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -7424,7 +7714,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
@@ -7507,6 +7798,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreateEntityRoleOptionalParameter createEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -7532,6 +7826,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -7543,7 +7840,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        return service.createEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -7684,6 +7982,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getPrebuiltEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -7693,7 +7994,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getPrebuiltEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getPrebuiltEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
@@ -7776,6 +8078,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreatePrebuiltEntityRoleOptionalParameter createPrebuiltEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -7801,6 +8106,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -7812,7 +8120,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        return service.createPrebuiltEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createPrebuiltEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -7953,6 +8262,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getClosedListEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -7962,7 +8274,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getClosedListEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getClosedListEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
@@ -8045,6 +8358,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreateClosedListEntityRoleOptionalParameter createClosedListEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8070,6 +8386,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8081,7 +8400,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        return service.createClosedListEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createClosedListEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -8222,6 +8542,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getRegexEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8231,7 +8554,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getRegexEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getRegexEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
@@ -8314,6 +8638,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreateRegexEntityRoleOptionalParameter createRegexEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8339,6 +8666,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8350,7 +8680,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        return service.createRegexEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createRegexEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -8491,6 +8822,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getCompositeEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8500,7 +8834,8 @@ public class ModelsImpl implements Models {
         if (cEntityId == null) {
             throw new IllegalArgumentException("Parameter cEntityId is required and cannot be null.");
         }
-        return service.getCompositeEntityRoles(appId, versionId, cEntityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getCompositeEntityRoles(appId, versionId, cEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
@@ -8583,6 +8918,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, CreateCompositeEntityRoleOptionalParameter createCompositeEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8608,6 +8946,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8619,7 +8960,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        return service.createCompositeEntityRole(appId, versionId, cEntityId, this.client.acceptLanguage(), entityRoleCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createCompositeEntityRole(appId, versionId, cEntityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -8760,6 +9102,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getPatternAnyEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8769,7 +9114,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getPatternAnyEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getPatternAnyEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
@@ -8852,6 +9198,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createPatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreatePatternAnyEntityRoleOptionalParameter createPatternAnyEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8877,6 +9226,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createPatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -8888,7 +9240,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        return service.createPatternAnyEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createPatternAnyEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -9029,6 +9382,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getHierarchicalEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9038,7 +9394,8 @@ public class ModelsImpl implements Models {
         if (hEntityId == null) {
             throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
         }
-        return service.getHierarchicalEntityRoles(appId, versionId, hEntityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getHierarchicalEntityRoles(appId, versionId, hEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
@@ -9121,6 +9478,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, CreateHierarchicalEntityRoleOptionalParameter createHierarchicalEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9146,6 +9506,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9157,7 +9520,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        return service.createHierarchicalEntityRole(appId, versionId, hEntityId, this.client.acceptLanguage(), entityRoleCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createHierarchicalEntityRole(appId, versionId, hEntityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -9298,6 +9662,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;EntityRole&gt; object
      */
     public Observable<ServiceResponse<List<EntityRole>>> getCustomPrebuiltEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9307,7 +9674,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getCustomPrebuiltEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getCustomPrebuiltEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
@@ -9390,6 +9758,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createCustomPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, CreateCustomPrebuiltEntityRoleOptionalParameter createCustomPrebuiltEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9415,6 +9786,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> createCustomPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9426,7 +9800,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleCreateObject entityRoleCreateObject = new EntityRoleCreateObject();
         entityRoleCreateObject.withName(name);
-        return service.createCustomPrebuiltEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.createCustomPrebuiltEntityRole(appId, versionId, entityId, this.client.acceptLanguage(), entityRoleCreateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -9567,6 +9942,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the List&lt;ExplicitListItem&gt; object
      */
     public Observable<ServiceResponse<List<ExplicitListItem>>> getExplicitListWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9576,7 +9954,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getExplicitList(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getExplicitList(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ExplicitListItem>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ExplicitListItem>>> call(Response<ResponseBody> response) {
@@ -9659,6 +10038,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the Integer object
      */
     public Observable<ServiceResponse<Integer>> addExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, AddExplicitListItemOptionalParameter addExplicitListItemOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9684,6 +10066,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the Integer object
      */
     public Observable<ServiceResponse<Integer>> addExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String explicitListItem) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9695,7 +10080,8 @@ public class ModelsImpl implements Models {
         }
         ExplicitListItemCreateObject item = new ExplicitListItemCreateObject();
         item.withExplicitListItem(explicitListItem);
-        return service.addExplicitListItem(appId, versionId, entityId, this.client.acceptLanguage(), item, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addExplicitListItem(appId, versionId, entityId, this.client.acceptLanguage(), item, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
                 @Override
                 public Observable<ServiceResponse<Integer>> call(Response<ResponseBody> response) {
@@ -9836,6 +10222,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the RegexEntityExtractor object
      */
     public Observable<ServiceResponse<RegexEntityExtractor>> getRegexEntityEntityInfoWithServiceResponseAsync(UUID appId, String versionId, UUID regexEntityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9845,7 +10234,8 @@ public class ModelsImpl implements Models {
         if (regexEntityId == null) {
             throw new IllegalArgumentException("Parameter regexEntityId is required and cannot be null.");
         }
-        return service.getRegexEntityEntityInfo(appId, versionId, regexEntityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getRegexEntityEntityInfo(appId, versionId, regexEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegexEntityExtractor>>>() {
                 @Override
                 public Observable<ServiceResponse<RegexEntityExtractor>> call(Response<ResponseBody> response) {
@@ -9927,6 +10317,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateRegexEntityModelWithServiceResponseAsync(UUID appId, String versionId, UUID regexEntityId, RegexModelUpdateObject regexEntityUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -9940,7 +10333,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter regexEntityUpdateObject is required and cannot be null.");
         }
         Validator.validate(regexEntityUpdateObject);
-        return service.updateRegexEntityModel(appId, versionId, regexEntityId, regexEntityUpdateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateRegexEntityModel(appId, versionId, regexEntityId, regexEntityUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -10018,6 +10412,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteRegexEntityModelWithServiceResponseAsync(UUID appId, String versionId, UUID regexEntityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10027,7 +10424,8 @@ public class ModelsImpl implements Models {
         if (regexEntityId == null) {
             throw new IllegalArgumentException("Parameter regexEntityId is required and cannot be null.");
         }
-        return service.deleteRegexEntityModel(appId, versionId, regexEntityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteRegexEntityModel(appId, versionId, regexEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -10105,6 +10503,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the PatternAnyEntityExtractor object
      */
     public Observable<ServiceResponse<PatternAnyEntityExtractor>> getPatternAnyEntityInfoWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10114,7 +10515,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getPatternAnyEntityInfo(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getPatternAnyEntityInfo(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PatternAnyEntityExtractor>>>() {
                 @Override
                 public Observable<ServiceResponse<PatternAnyEntityExtractor>> call(Response<ResponseBody> response) {
@@ -10196,6 +10598,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePatternAnyEntityModelWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, PatternAnyModelUpdateObject patternAnyUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10209,7 +10614,8 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter patternAnyUpdateObject is required and cannot be null.");
         }
         Validator.validate(patternAnyUpdateObject);
-        return service.updatePatternAnyEntityModel(appId, versionId, entityId, patternAnyUpdateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updatePatternAnyEntityModel(appId, versionId, entityId, patternAnyUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -10287,6 +10693,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePatternAnyEntityModelWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10296,7 +10705,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.deletePatternAnyEntityModel(appId, versionId, entityId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deletePatternAnyEntityModel(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -10378,6 +10788,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10390,7 +10803,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.getEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
                 public Observable<ServiceResponse<EntityRole>> call(Response<ResponseBody> response) {
@@ -10477,6 +10891,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateEntityRoleOptionalParameter updateEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10506,6 +10923,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10520,7 +10940,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        return service.updateEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -10672,6 +11093,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10684,7 +11108,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.deleteEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -10766,6 +11191,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10778,7 +11206,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.getPrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getPrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
                 public Observable<ServiceResponse<EntityRole>> call(Response<ResponseBody> response) {
@@ -10865,6 +11294,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePrebuiltEntityRoleOptionalParameter updatePrebuiltEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10894,6 +11326,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -10908,7 +11343,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        return service.updatePrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updatePrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -11060,6 +11496,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -11072,7 +11511,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.deletePrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deletePrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -11154,6 +11594,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -11166,7 +11609,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.getClosedListEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getClosedListEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
                 public Observable<ServiceResponse<EntityRole>> call(Response<ResponseBody> response) {
@@ -11253,6 +11697,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateClosedListEntityRoleOptionalParameter updateClosedListEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -11282,6 +11729,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -11296,7 +11746,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        return service.updateClosedListEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateClosedListEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -11448,6 +11899,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteClosedListEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -11460,7 +11914,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.deleteClosedListEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteClosedListEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -11542,6 +11997,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -11554,7 +12012,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.getRegexEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getRegexEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
                 public Observable<ServiceResponse<EntityRole>> call(Response<ResponseBody> response) {
@@ -11641,6 +12100,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateRegexEntityRoleOptionalParameter updateRegexEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -11670,6 +12132,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -11684,7 +12149,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        return service.updateRegexEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateRegexEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -11836,6 +12302,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteRegexEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -11848,7 +12317,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.deleteRegexEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteRegexEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -11930,6 +12400,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -11942,7 +12415,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.getCompositeEntityRole(appId, versionId, cEntityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getCompositeEntityRole(appId, versionId, cEntityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
                 public Observable<ServiceResponse<EntityRole>> call(Response<ResponseBody> response) {
@@ -12029,6 +12503,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId, UpdateCompositeEntityRoleOptionalParameter updateCompositeEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -12058,6 +12535,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -12072,7 +12552,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        return service.updateCompositeEntityRole(appId, versionId, cEntityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateCompositeEntityRole(appId, versionId, cEntityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -12224,6 +12705,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteCompositeEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -12236,7 +12720,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.deleteCompositeEntityRole(appId, versionId, cEntityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteCompositeEntityRole(appId, versionId, cEntityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -12318,6 +12803,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getPatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -12330,7 +12818,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.getPatternAnyEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getPatternAnyEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
                 public Observable<ServiceResponse<EntityRole>> call(Response<ResponseBody> response) {
@@ -12417,6 +12906,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePatternAnyEntityRoleOptionalParameter updatePatternAnyEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -12446,6 +12938,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -12460,7 +12955,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        return service.updatePatternAnyEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updatePatternAnyEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -12612,6 +13108,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deletePatternAnyEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -12624,7 +13123,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.deletePatternAnyEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deletePatternAnyEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -12706,6 +13206,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -12718,7 +13221,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.getHierarchicalEntityRole(appId, versionId, hEntityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getHierarchicalEntityRole(appId, versionId, hEntityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
                 public Observable<ServiceResponse<EntityRole>> call(Response<ResponseBody> response) {
@@ -12805,6 +13309,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId, UpdateHierarchicalEntityRoleOptionalParameter updateHierarchicalEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -12834,6 +13341,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -12848,7 +13358,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        return service.updateHierarchicalEntityRole(appId, versionId, hEntityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateHierarchicalEntityRole(appId, versionId, hEntityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -13000,6 +13511,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteHierarchicalEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -13012,7 +13526,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.deleteHierarchicalEntityRole(appId, versionId, hEntityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteHierarchicalEntityRole(appId, versionId, hEntityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -13094,6 +13609,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the EntityRole object
      */
     public Observable<ServiceResponse<EntityRole>> getCustomEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -13106,7 +13624,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.getCustomEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getCustomEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityRole>>>() {
                 @Override
                 public Observable<ServiceResponse<EntityRole>> call(Response<ResponseBody> response) {
@@ -13193,6 +13712,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateCustomPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateCustomPrebuiltEntityRoleOptionalParameter updateCustomPrebuiltEntityRoleOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -13222,6 +13744,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateCustomPrebuiltEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -13236,7 +13761,8 @@ public class ModelsImpl implements Models {
         }
         EntityRoleUpdateObject entityRoleUpdateObject = new EntityRoleUpdateObject();
         entityRoleUpdateObject.withName(name);
-        return service.updateCustomPrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateCustomPrebuiltEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), entityRoleUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -13388,6 +13914,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteCustomEntityRoleWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UUID roleId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -13400,7 +13929,8 @@ public class ModelsImpl implements Models {
         if (roleId == null) {
             throw new IllegalArgumentException("Parameter roleId is required and cannot be null.");
         }
-        return service.deleteCustomEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteCustomEntityRole(appId, versionId, entityId, roleId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -13482,6 +14012,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the ExplicitListItem object
      */
     public Observable<ServiceResponse<ExplicitListItem>> getExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, long itemId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -13491,7 +14024,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.getExplicitListItem(appId, versionId, entityId, itemId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getExplicitListItem(appId, versionId, entityId, itemId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExplicitListItem>>>() {
                 @Override
                 public Observable<ServiceResponse<ExplicitListItem>> call(Response<ResponseBody> response) {
@@ -13578,6 +14112,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, long itemId, UpdateExplicitListItemOptionalParameter updateExplicitListItemOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -13604,6 +14141,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, long itemId, String explicitListItem) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -13615,7 +14155,8 @@ public class ModelsImpl implements Models {
         }
         ExplicitListItemUpdateObject item = new ExplicitListItemUpdateObject();
         item.withExplicitListItem(explicitListItem);
-        return service.updateExplicitListItem(appId, versionId, entityId, itemId, this.client.acceptLanguage(), item, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateExplicitListItem(appId, versionId, entityId, itemId, this.client.acceptLanguage(), item, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -13767,6 +14308,9 @@ public class ModelsImpl implements Models {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteExplicitListItemWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, long itemId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -13776,7 +14320,8 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        return service.deleteExplicitListItem(appId, versionId, entityId, itemId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteExplicitListItem(appId, versionId, entityId, itemId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {

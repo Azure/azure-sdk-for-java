@@ -35,7 +35,7 @@ public class ImmutabilityPolicyInner extends AzureEntityResource {
     private ImmutabilityPolicyState state;
 
     /**
-     * Get the immutabilityPeriodSinceCreationInDays value.
+     * Get the immutability period for the blobs in the container since the policy creation, in days.
      *
      * @return the immutabilityPeriodSinceCreationInDays value
      */
@@ -44,7 +44,7 @@ public class ImmutabilityPolicyInner extends AzureEntityResource {
     }
 
     /**
-     * Set the immutabilityPeriodSinceCreationInDays value.
+     * Set the immutability period for the blobs in the container since the policy creation, in days.
      *
      * @param immutabilityPeriodSinceCreationInDays the immutabilityPeriodSinceCreationInDays value to set
      * @return the ImmutabilityPolicyInner object itself.
@@ -55,7 +55,7 @@ public class ImmutabilityPolicyInner extends AzureEntityResource {
     }
 
     /**
-     * Get the state value.
+     * Get the ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked. Possible values include: 'Locked', 'Unlocked'.
      *
      * @return the state value
      */

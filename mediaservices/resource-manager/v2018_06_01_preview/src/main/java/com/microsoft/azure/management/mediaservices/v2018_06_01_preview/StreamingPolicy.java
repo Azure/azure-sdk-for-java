@@ -90,6 +90,9 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithMediaservice {
            /**
             * Specifies resourceGroupName, accountName.
+            * @param resourceGroupName The name of the resource group within the Azure subscription
+            * @param accountName The Media Services account name
+            * @return the next definition stage
             */
             WithCreate withExistingMediaservice(String resourceGroupName, String accountName);
         }
@@ -100,6 +103,8 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithCommonEncryptionCbcs {
             /**
              * Specifies commonEncryptionCbcs.
+             * @param commonEncryptionCbcs Configuration of CommonEncryptionCbcs
+             * @return the next definition stage
              */
             WithCreate withCommonEncryptionCbcs(CommonEncryptionCbcs commonEncryptionCbcs);
         }
@@ -110,6 +115,8 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithCommonEncryptionCenc {
             /**
              * Specifies commonEncryptionCenc.
+             * @param commonEncryptionCenc Configuration of CommonEncryptionCenc
+             * @return the next definition stage
              */
             WithCreate withCommonEncryptionCenc(CommonEncryptionCenc commonEncryptionCenc);
         }
@@ -120,6 +127,8 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithDefaultContentKeyPolicyName {
             /**
              * Specifies defaultContentKeyPolicyName.
+             * @param defaultContentKeyPolicyName Default ContentKey used by current Streaming Policy
+             * @return the next definition stage
              */
             WithCreate withDefaultContentKeyPolicyName(String defaultContentKeyPolicyName);
         }
@@ -130,6 +139,8 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithEnvelopeEncryption {
             /**
              * Specifies envelopeEncryption.
+             * @param envelopeEncryption Configuration of EnvelopeEncryption
+             * @return the next definition stage
              */
             WithCreate withEnvelopeEncryption(EnvelopeEncryption envelopeEncryption);
         }
@@ -140,6 +151,8 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithNoEncryption {
             /**
              * Specifies noEncryption.
+             * @param noEncryption Configurations of NoEncryption
+             * @return the next definition stage
              */
             WithCreate withNoEncryption(NoEncryption noEncryption);
         }
@@ -168,6 +181,8 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithCommonEncryptionCbcs {
             /**
              * Specifies commonEncryptionCbcs.
+             * @param commonEncryptionCbcs Configuration of CommonEncryptionCbcs
+             * @return the next update stage
              */
             Update withCommonEncryptionCbcs(CommonEncryptionCbcs commonEncryptionCbcs);
         }
@@ -178,6 +193,8 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithCommonEncryptionCenc {
             /**
              * Specifies commonEncryptionCenc.
+             * @param commonEncryptionCenc Configuration of CommonEncryptionCenc
+             * @return the next update stage
              */
             Update withCommonEncryptionCenc(CommonEncryptionCenc commonEncryptionCenc);
         }
@@ -188,6 +205,8 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithDefaultContentKeyPolicyName {
             /**
              * Specifies defaultContentKeyPolicyName.
+             * @param defaultContentKeyPolicyName Default ContentKey used by current Streaming Policy
+             * @return the next update stage
              */
             Update withDefaultContentKeyPolicyName(String defaultContentKeyPolicyName);
         }
@@ -198,6 +217,8 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithEnvelopeEncryption {
             /**
              * Specifies envelopeEncryption.
+             * @param envelopeEncryption Configuration of EnvelopeEncryption
+             * @return the next update stage
              */
             Update withEnvelopeEncryption(EnvelopeEncryption envelopeEncryption);
         }
@@ -208,6 +229,8 @@ public interface StreamingPolicy extends HasInner<StreamingPolicyInner>, Indexab
         interface WithNoEncryption {
             /**
              * Specifies noEncryption.
+             * @param noEncryption Configurations of NoEncryption
+             * @return the next update stage
              */
             Update withNoEncryption(NoEncryption noEncryption);
         }

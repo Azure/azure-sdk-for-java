@@ -13,6 +13,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Impo
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateSettingsOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ApplicationCreateObject;
@@ -83,84 +84,84 @@ public class AppsImpl implements Apps {
     interface AppsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps add" })
         @POST("apps/")
-        Observable<Response<ResponseBody>> add(@Body ApplicationCreateObject applicationCreateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> add(@Body ApplicationCreateObject applicationCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps list" })
         @GET("apps/")
-        Observable<Response<ResponseBody>> list(@Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps importMethod" })
         @POST("apps/import")
-        Observable<Response<ResponseBody>> importMethod(@Query("appName") String appName, @Body LuisApp luisApp, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> importMethod(@Query("appName") String appName, @Body LuisApp luisApp, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps listCortanaEndpoints" })
         @GET("apps/assistants")
-        Observable<Response<ResponseBody>> listCortanaEndpoints(@Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listCortanaEndpoints(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps listDomains" })
         @GET("apps/domains")
-        Observable<Response<ResponseBody>> listDomains(@Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listDomains(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps listUsageScenarios" })
         @GET("apps/usagescenarios")
-        Observable<Response<ResponseBody>> listUsageScenarios(@Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listUsageScenarios(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps listSupportedCultures" })
         @GET("apps/cultures")
-        Observable<Response<ResponseBody>> listSupportedCultures(@Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listSupportedCultures(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps downloadQueryLogs" })
         @GET("apps/{appId}/querylogs")
         @Streaming
-        Observable<Response<ResponseBody>> downloadQueryLogs(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> downloadQueryLogs(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps get" })
         @GET("apps/{appId}")
-        Observable<Response<ResponseBody>> get(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps update" })
         @PUT("apps/{appId}")
-        Observable<Response<ResponseBody>> update(@Path("appId") UUID appId, @Body ApplicationUpdateObject applicationUpdateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("appId") UUID appId, @Body ApplicationUpdateObject applicationUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps delete" })
         @HTTP(path = "apps/{appId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps publish" })
         @POST("apps/{appId}/publish")
-        Observable<Response<ResponseBody>> publish(@Path("appId") UUID appId, @Body ApplicationPublishObject applicationPublishObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> publish(@Path("appId") UUID appId, @Body ApplicationPublishObject applicationPublishObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps getSettings" })
         @GET("apps/{appId}/settings")
-        Observable<Response<ResponseBody>> getSettings(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getSettings(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps updateSettings" })
         @PUT("apps/{appId}/settings")
-        Observable<Response<ResponseBody>> updateSettings(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body ApplicationSettingUpdateObject applicationSettingUpdateObject, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateSettings(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Body ApplicationSettingUpdateObject applicationSettingUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps getPublishSettings" })
         @GET("apps/{appId}/publishsettings")
-        Observable<Response<ResponseBody>> getPublishSettings(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPublishSettings(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps updatePublishSettings" })
         @PUT("apps/{appId}/publishsettings")
-        Observable<Response<ResponseBody>> updatePublishSettings(@Path("appId") UUID appId, @Body PublishSettingUpdateObject publishSettingUpdateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updatePublishSettings(@Path("appId") UUID appId, @Body PublishSettingUpdateObject publishSettingUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps listEndpoints" })
         @GET("apps/{appId}/endpoints")
-        Observable<Response<ResponseBody>> listEndpoints(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listEndpoints(@Path("appId") UUID appId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps listAvailableCustomPrebuiltDomains" })
         @GET("apps/customprebuiltdomains")
-        Observable<Response<ResponseBody>> listAvailableCustomPrebuiltDomains(@Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listAvailableCustomPrebuiltDomains(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps addCustomPrebuiltDomain" })
         @POST("apps/customprebuiltdomains")
-        Observable<Response<ResponseBody>> addCustomPrebuiltDomain(@Body PrebuiltDomainCreateObject prebuiltDomainCreateObject, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addCustomPrebuiltDomain(@Body PrebuiltDomainCreateObject prebuiltDomainCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps listAvailableCustomPrebuiltDomainsForCulture" })
         @GET("apps/customprebuiltdomains/{culture}")
-        Observable<Response<ResponseBody>> listAvailableCustomPrebuiltDomainsForCulture(@Path("culture") String culture, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listAvailableCustomPrebuiltDomainsForCulture(@Path("culture") String culture, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -213,11 +214,15 @@ public class AppsImpl implements Apps {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addWithServiceResponseAsync(ApplicationCreateObject applicationCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (applicationCreateObject == null) {
             throw new IllegalArgumentException("Parameter applicationCreateObject is required and cannot be null.");
         }
         Validator.validate(applicationCreateObject);
-        return service.add(applicationCreateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.add(applicationCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -288,6 +293,9 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;ApplicationInfoResponse&gt; object
      */
     public Observable<ServiceResponse<List<ApplicationInfoResponse>>> listWithServiceResponseAsync(ListAppsOptionalParameter listOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         final Integer skip = listOptionalParameter != null ? listOptionalParameter.skip() : null;
         final Integer take = listOptionalParameter != null ? listOptionalParameter.take() : null;
 
@@ -303,7 +311,11 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;ApplicationInfoResponse&gt; object
      */
     public Observable<ServiceResponse<List<ApplicationInfoResponse>>> listWithServiceResponseAsync(Integer skip, Integer take) {
-        return service.list(skip, take, this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.list(skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ApplicationInfoResponse>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ApplicationInfoResponse>>> call(Response<ResponseBody> response) {
@@ -317,7 +329,7 @@ public class AppsImpl implements Apps {
             });
     }
 
-    private ServiceResponse<List<ApplicationInfoResponse>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException {
+    private ServiceResponse<List<ApplicationInfoResponse>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<ApplicationInfoResponse>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<ApplicationInfoResponse>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -427,6 +439,9 @@ public class AppsImpl implements Apps {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> importMethodWithServiceResponseAsync(LuisApp luisApp, ImportMethodAppsOptionalParameter importMethodOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (luisApp == null) {
             throw new IllegalArgumentException("Parameter luisApp is required and cannot be null.");
         }
@@ -445,11 +460,15 @@ public class AppsImpl implements Apps {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> importMethodWithServiceResponseAsync(LuisApp luisApp, String appName) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (luisApp == null) {
             throw new IllegalArgumentException("Parameter luisApp is required and cannot be null.");
         }
         Validator.validate(luisApp);
-        return service.importMethod(appName, luisApp, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.importMethod(appName, luisApp, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -564,7 +583,11 @@ public class AppsImpl implements Apps {
      * @return the observable to the PersonalAssistantsResponse object
      */
     public Observable<ServiceResponse<PersonalAssistantsResponse>> listCortanaEndpointsWithServiceResponseAsync() {
-        return service.listCortanaEndpoints(this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listCortanaEndpoints(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersonalAssistantsResponse>>>() {
                 @Override
                 public Observable<ServiceResponse<PersonalAssistantsResponse>> call(Response<ResponseBody> response) {
@@ -578,7 +601,7 @@ public class AppsImpl implements Apps {
             });
     }
 
-    private ServiceResponse<PersonalAssistantsResponse> listCortanaEndpointsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException {
+    private ServiceResponse<PersonalAssistantsResponse> listCortanaEndpointsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PersonalAssistantsResponse, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PersonalAssistantsResponse>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -630,7 +653,11 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<ServiceResponse<List<String>>> listDomainsWithServiceResponseAsync() {
-        return service.listDomains(this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listDomains(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<String>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
@@ -644,7 +671,7 @@ public class AppsImpl implements Apps {
             });
     }
 
-    private ServiceResponse<List<String>> listDomainsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException {
+    private ServiceResponse<List<String>> listDomainsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<String>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<String>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -696,7 +723,11 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;String&gt; object
      */
     public Observable<ServiceResponse<List<String>>> listUsageScenariosWithServiceResponseAsync() {
-        return service.listUsageScenarios(this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listUsageScenarios(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<String>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
@@ -710,7 +741,7 @@ public class AppsImpl implements Apps {
             });
     }
 
-    private ServiceResponse<List<String>> listUsageScenariosDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException {
+    private ServiceResponse<List<String>> listUsageScenariosDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<String>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<String>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -762,7 +793,11 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;AvailableCulture&gt; object
      */
     public Observable<ServiceResponse<List<AvailableCulture>>> listSupportedCulturesWithServiceResponseAsync() {
-        return service.listSupportedCultures(this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listSupportedCultures(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AvailableCulture>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<AvailableCulture>>> call(Response<ResponseBody> response) {
@@ -776,7 +811,7 @@ public class AppsImpl implements Apps {
             });
     }
 
-    private ServiceResponse<List<AvailableCulture>> listSupportedCulturesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException {
+    private ServiceResponse<List<AvailableCulture>> listSupportedCulturesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<AvailableCulture>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<AvailableCulture>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -832,10 +867,14 @@ public class AppsImpl implements Apps {
      * @return the observable to the InputStream object
      */
     public Observable<ServiceResponse<InputStream>> downloadQueryLogsWithServiceResponseAsync(UUID appId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        return service.downloadQueryLogs(appId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.downloadQueryLogs(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InputStream>>>() {
                 @Override
                 public Observable<ServiceResponse<InputStream>> call(Response<ResponseBody> response) {
@@ -905,10 +944,14 @@ public class AppsImpl implements Apps {
      * @return the observable to the ApplicationInfoResponse object
      */
     public Observable<ServiceResponse<ApplicationInfoResponse>> getWithServiceResponseAsync(UUID appId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        return service.get(appId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.get(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationInfoResponse>>>() {
                 @Override
                 public Observable<ServiceResponse<ApplicationInfoResponse>> call(Response<ResponseBody> response) {
@@ -982,6 +1025,9 @@ public class AppsImpl implements Apps {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateWithServiceResponseAsync(UUID appId, ApplicationUpdateObject applicationUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -989,7 +1035,8 @@ public class AppsImpl implements Apps {
             throw new IllegalArgumentException("Parameter applicationUpdateObject is required and cannot be null.");
         }
         Validator.validate(applicationUpdateObject);
-        return service.update(appId, applicationUpdateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.update(appId, applicationUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -1059,10 +1106,14 @@ public class AppsImpl implements Apps {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> deleteWithServiceResponseAsync(UUID appId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        return service.delete(appId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.delete(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -1136,6 +1187,9 @@ public class AppsImpl implements Apps {
      * @return the observable to the ProductionOrStagingEndpointInfo object
      */
     public Observable<ServiceResponse<ProductionOrStagingEndpointInfo>> publishWithServiceResponseAsync(UUID appId, ApplicationPublishObject applicationPublishObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1143,7 +1197,8 @@ public class AppsImpl implements Apps {
             throw new IllegalArgumentException("Parameter applicationPublishObject is required and cannot be null.");
         }
         Validator.validate(applicationPublishObject);
-        return service.publish(appId, applicationPublishObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.publish(appId, applicationPublishObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProductionOrStagingEndpointInfo>>>() {
                 @Override
                 public Observable<ServiceResponse<ProductionOrStagingEndpointInfo>> call(Response<ResponseBody> response) {
@@ -1213,10 +1268,14 @@ public class AppsImpl implements Apps {
      * @return the observable to the ApplicationSettings object
      */
     public Observable<ServiceResponse<ApplicationSettings>> getSettingsWithServiceResponseAsync(UUID appId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        return service.getSettings(appId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getSettings(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationSettings>>>() {
                 @Override
                 public Observable<ServiceResponse<ApplicationSettings>> call(Response<ResponseBody> response) {
@@ -1291,6 +1350,9 @@ public class AppsImpl implements Apps {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateSettingsWithServiceResponseAsync(UUID appId, UpdateSettingsOptionalParameter updateSettingsOptionalParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1308,12 +1370,16 @@ public class AppsImpl implements Apps {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updateSettingsWithServiceResponseAsync(UUID appId, boolean publicParameter) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
         ApplicationSettingUpdateObject applicationSettingUpdateObject = new ApplicationSettingUpdateObject();
         applicationSettingUpdateObject.withPublicProperty(publicParameter);
-        return service.updateSettings(appId, this.client.acceptLanguage(), applicationSettingUpdateObject, this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateSettings(appId, this.client.acceptLanguage(), applicationSettingUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -1432,10 +1498,14 @@ public class AppsImpl implements Apps {
      * @return the observable to the PublishSettings object
      */
     public Observable<ServiceResponse<PublishSettings>> getPublishSettingsWithServiceResponseAsync(UUID appId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        return service.getPublishSettings(appId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getPublishSettings(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublishSettings>>>() {
                 @Override
                 public Observable<ServiceResponse<PublishSettings>> call(Response<ResponseBody> response) {
@@ -1509,6 +1579,9 @@ public class AppsImpl implements Apps {
      * @return the observable to the OperationStatus object
      */
     public Observable<ServiceResponse<OperationStatus>> updatePublishSettingsWithServiceResponseAsync(UUID appId, PublishSettingUpdateObject publishSettingUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
@@ -1516,7 +1589,8 @@ public class AppsImpl implements Apps {
             throw new IllegalArgumentException("Parameter publishSettingUpdateObject is required and cannot be null.");
         }
         Validator.validate(publishSettingUpdateObject);
-        return service.updatePublishSettings(appId, publishSettingUpdateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updatePublishSettings(appId, publishSettingUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -1586,10 +1660,14 @@ public class AppsImpl implements Apps {
      * @return the observable to the Map&lt;String, String&gt; object
      */
     public Observable<ServiceResponse<Map<String, String>>> listEndpointsWithServiceResponseAsync(UUID appId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (appId == null) {
             throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
         }
-        return service.listEndpoints(appId, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listEndpoints(appId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Map<String, String>>>>() {
                 @Override
                 public Observable<ServiceResponse<Map<String, String>>> call(Response<ResponseBody> response) {
@@ -1655,7 +1733,11 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;PrebuiltDomain&gt; object
      */
     public Observable<ServiceResponse<List<PrebuiltDomain>>> listAvailableCustomPrebuiltDomainsWithServiceResponseAsync() {
-        return service.listAvailableCustomPrebuiltDomains(this.client.acceptLanguage(), this.client.userAgent())
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listAvailableCustomPrebuiltDomains(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PrebuiltDomain>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PrebuiltDomain>>> call(Response<ResponseBody> response) {
@@ -1669,7 +1751,7 @@ public class AppsImpl implements Apps {
             });
     }
 
-    private ServiceResponse<List<PrebuiltDomain>> listAvailableCustomPrebuiltDomainsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException {
+    private ServiceResponse<List<PrebuiltDomain>> listAvailableCustomPrebuiltDomainsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<PrebuiltDomain>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<PrebuiltDomain>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -1725,11 +1807,15 @@ public class AppsImpl implements Apps {
      * @return the observable to the UUID object
      */
     public Observable<ServiceResponse<UUID>> addCustomPrebuiltDomainWithServiceResponseAsync(PrebuiltDomainCreateObject prebuiltDomainCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (prebuiltDomainCreateObject == null) {
             throw new IllegalArgumentException("Parameter prebuiltDomainCreateObject is required and cannot be null.");
         }
         Validator.validate(prebuiltDomainCreateObject);
-        return service.addCustomPrebuiltDomain(prebuiltDomainCreateObject, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addCustomPrebuiltDomain(prebuiltDomainCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -1799,10 +1885,14 @@ public class AppsImpl implements Apps {
      * @return the observable to the List&lt;PrebuiltDomain&gt; object
      */
     public Observable<ServiceResponse<List<PrebuiltDomain>>> listAvailableCustomPrebuiltDomainsForCultureWithServiceResponseAsync(String culture) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
         if (culture == null) {
             throw new IllegalArgumentException("Parameter culture is required and cannot be null.");
         }
-        return service.listAvailableCustomPrebuiltDomainsForCulture(culture, this.client.acceptLanguage(), this.client.userAgent())
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.listAvailableCustomPrebuiltDomainsForCulture(culture, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PrebuiltDomain>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PrebuiltDomain>>> call(Response<ResponseBody> response) {

@@ -31,6 +31,7 @@ class NetworkInterfaceNetworkInterfaceIPConfigurationImpl extends IndexableRefre
     NetworkInterfaceNetworkInterfaceIPConfigurationImpl(NetworkInterfaceIPConfigurationInner inner,  NetworkManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.networkInterfaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "networkInterfaces");
         this.ipConfigurationName = IdParsingUtils.getValueFromIdByName(inner.id(), "ipConfigurations");

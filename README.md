@@ -1,8 +1,11 @@
-[![Build Status](https://travis-ci.org/Azure/azure-libraries-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-libraries-for-java)
-
 > :warning: *NOTE: The **Azure Libraries for Java** project (resource management APIs with fluent interface design pattern) has moved to http://github.com/azure/azure-libraries-for-java, so please log issues for that project in that new repository. This repository is now dedicated to other, auto-generated, non-management Azure SDKs only.*
 
 # Azure SDKs for Java
+
+| Component | Build Status |
+| --------- | ------------ |
+| Management Libraries | [![Build Status](https://travis-ci.org/Azure/azure-sdk-for-java.svg?branch=master)](https://travis-ci.org/Azure/azure-sdk-for-java) |
+| Client Libraries | [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-java.client)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=17) |
 
 :+1: [Try Azure for FREE](http://go.microsoft.com/fwlink/?LinkId=330212)
 

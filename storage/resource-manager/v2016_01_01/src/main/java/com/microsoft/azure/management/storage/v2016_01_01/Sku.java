@@ -31,7 +31,7 @@ public class Sku {
     private SkuTier tier;
 
     /**
-     * Get the name value.
+     * Get gets or sets the sku name. Required for account creation; optional for update. Note that in older versions, sku name was called accountType. Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS'.
      *
      * @return the name value
      */
@@ -40,7 +40,7 @@ public class Sku {
     }
 
     /**
-     * Set the name value.
+     * Set gets or sets the sku name. Required for account creation; optional for update. Note that in older versions, sku name was called accountType. Possible values include: 'Standard_LRS', 'Standard_GRS', 'Standard_RAGRS', 'Standard_ZRS', 'Premium_LRS'.
      *
      * @param name the name value to set
      * @return the Sku object itself.
@@ -51,7 +51,7 @@ public class Sku {
     }
 
     /**
-     * Get the tier value.
+     * Get gets the sku tier. This is based on the SKU name. Possible values include: 'Standard', 'Premium'.
      *
      * @return the tier value
      */

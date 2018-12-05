@@ -205,6 +205,6 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ContainerRegistryManagementClient", "2017-03-01");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "ContainerRegistryManagementClient", "2017-03-01");
     }
 }
