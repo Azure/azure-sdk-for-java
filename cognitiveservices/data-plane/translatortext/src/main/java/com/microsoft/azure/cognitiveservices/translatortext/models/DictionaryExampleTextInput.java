@@ -11,7 +11,7 @@ package com.microsoft.azure.cognitiveservices.translatortext.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Text needed for a dictionary example rquest.
+ * Text needed for a dictionary example request.
  */
 public class DictionaryExampleTextInput {
     /**

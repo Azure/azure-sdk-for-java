@@ -46,7 +46,7 @@ public interface Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -95,7 +95,7 @@ public interface Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -143,7 +143,7 @@ public interface Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -190,7 +190,7 @@ public interface Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -236,7 +236,7 @@ public interface Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -287,7 +287,7 @@ public interface Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -337,7 +337,7 @@ public interface Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -386,7 +386,7 @@ public interface Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |

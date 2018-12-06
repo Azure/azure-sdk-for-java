@@ -86,7 +86,7 @@ public class DictionarysImpl implements Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -137,7 +137,7 @@ public class DictionarysImpl implements Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -187,7 +187,7 @@ public class DictionarysImpl implements Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -241,7 +241,7 @@ public class DictionarysImpl implements Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -320,7 +320,7 @@ public class DictionarysImpl implements Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -373,7 +373,7 @@ public class DictionarysImpl implements Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -425,7 +425,7 @@ public class DictionarysImpl implements Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |
@@ -481,7 +481,7 @@ public class DictionarysImpl implements Dictionarys {
        | --------- | ----------------  |
        | ADJ       | Adjectives        |
        | ADV       | Adverbs           |
-       | CONJ      | Conjuctions       |
+       | CONJ      | Conjunctions       |
        | DET       | Determiners       |
        | MODAL     | Verbs             |
        | NOUN      | Nouns             |

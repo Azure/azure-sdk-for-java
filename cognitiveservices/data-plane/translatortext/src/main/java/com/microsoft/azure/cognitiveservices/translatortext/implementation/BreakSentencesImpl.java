@@ -58,7 +58,7 @@ public class BreakSentencesImpl implements BreakSentences {
      */
     interface BreakSentencesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.translatortext.BreakSentences breakSentencePost" })
-        @POST("Breaksentence")
+        @POST("BreakSentence")
         Observable<Response<ResponseBody>> breakSentencePost(@Query("api-version") String apiVersion, @Query("Language") String language, @Query("Script") String script, @Header("Ocp-Apim-Subscription-Key") String ocpApimSubscriptionKey, @Header("ClientTraceId") String clientTraceId, @Body List<BreakSentenceTextInput> text, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
