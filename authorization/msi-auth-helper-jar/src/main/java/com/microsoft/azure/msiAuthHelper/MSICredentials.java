@@ -63,10 +63,10 @@ public final class MSICredentials{
      * @return MSICredentials
      */
     public static MSICredentials getMSICredentials(String managementEndpoint) {
-        String msiEndpoint = System.getenv("MSI_ENDPOINT");
-        String msiSecret = System.getenv("MSI_SECRET");
+        //check if we are running in a web app
+        String websiteName = System.getenv("WEBSITE_SITE_NAME");
 
-        if (((msiEndpoint != null) && !msiEndpoint.isEmpty()) && ((msiSecret != null) && !msiSecret.isEmpty())) {
+        if (websiteName != null && !websiteName.isEmpty()) {
             // We are in a web app...
             MSIConfigurationForAppService config = new MSIConfigurationForAppService(managementEndpoint);
             return forAppService(config);
@@ -160,6 +160,11 @@ public final class MSICredentials{
     private String getTokenForAppService(String tokenAudience) throws IOException, ParseException {
         String urlString = null;
 
+        if (this.configForAppService.msiEndpoint() == null || this.configForAppService.msiEndpoint().isEmpty()) {
+            //the web app does not have MSI set, return file not found
+            throw new FileNotFoundException("Service identity not found");
+        }
+
         if (this.configForAppService.msiClientId() != null && !this.configForAppService.msiClientId().isEmpty()) {
             urlString = String.format("%s?resource=%s&?clientid=%s&api-version=2017-09-01", this.configForAppService.msiEndpoint(),
                     tokenAudience == null ? this.configForAppService.resource() : tokenAudience,
@@ -185,11 +190,10 @@ public final class MSICredentials{
             String result = reader.readLine();
 
             return getMsiTokenFromResult(result, HostType.APP_SERVICE).accessToken();
-        } catch (SocketException se){
-            //If no MSI assigned to the app, then the error is "Permission denied: connect"
-            if (se.getMessage().contains("Permission denied: connect")) {
+        } catch (Exception e){
+            if (e.getCause()!= null && e.getCause() instanceof SocketException && e.getCause().getMessage().contains("Permission denied: connect")) {
                 throw new FileNotFoundException("Service identity not found");
-            } else throw se;
+            } else throw e;
         } finally {
             if (connection != null) {
                 connection.disconnect();
