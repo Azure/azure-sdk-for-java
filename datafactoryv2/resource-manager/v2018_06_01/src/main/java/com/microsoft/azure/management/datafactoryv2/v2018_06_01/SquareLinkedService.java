@@ -15,7 +15,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.LinkedServiceInner;
 
 /**
- * Square Serivce linked service.
+ * Square Service linked service.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Square")

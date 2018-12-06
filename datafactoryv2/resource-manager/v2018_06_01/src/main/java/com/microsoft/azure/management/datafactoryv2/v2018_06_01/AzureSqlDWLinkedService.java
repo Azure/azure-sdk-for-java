@@ -30,6 +30,12 @@ public class AzureSqlDWLinkedService extends LinkedServiceInner {
     private Object connectionString;
 
     /**
+     * The Azure key vault secret reference of password in connection string.
+     */
+    @JsonProperty(value = "typeProperties.password")
+    private AzureKeyVaultSecretReference password;
+
+    /**
      * The ID of the service principal used to authenticate against Azure SQL
      * Data Warehouse. Type: string (or Expression with resultType string).
      */
@@ -75,6 +81,26 @@ public class AzureSqlDWLinkedService extends LinkedServiceInner {
      */
     public AzureSqlDWLinkedService withConnectionString(Object connectionString) {
         this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
+     * Get the Azure key vault secret reference of password in connection string.
+     *
+     * @return the password value
+     */
+    public AzureKeyVaultSecretReference password() {
+        return this.password;
+    }
+
+    /**
+     * Set the Azure key vault secret reference of password in connection string.
+     *
+     * @param password the password value to set
+     * @return the AzureSqlDWLinkedService object itself.
+     */
+    public AzureSqlDWLinkedService withPassword(AzureKeyVaultSecretReference password) {
+        this.password = password;
         return this;
     }
 

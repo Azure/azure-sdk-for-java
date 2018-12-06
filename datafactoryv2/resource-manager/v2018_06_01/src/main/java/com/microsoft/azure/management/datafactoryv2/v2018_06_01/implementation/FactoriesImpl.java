@@ -23,7 +23,9 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.GitHubAccessTokenResponse;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.AccessPolicyResponse;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.GitHubAccessTokenRequest;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.UserAccessPolicy;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.FactoryRepoUpdate;
 
 class FactoriesImpl extends GroupableResourcesCoreImpl<Factory, FactoryImpl, FactoryInner, FactoriesInner, DataFactoryManager>  implements Factories {
@@ -136,6 +138,18 @@ class FactoriesImpl extends GroupableResourcesCoreImpl<Factory, FactoryImpl, Fac
             @Override
             public GitHubAccessTokenResponse call(GitHubAccessTokenResponseInner inner) {
                 return new GitHubAccessTokenResponseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<AccessPolicyResponse> getDataPlaneAccessAsync(String resourceGroupName, String factoryName, UserAccessPolicy policy) {
+        FactoriesInner client = this.inner();
+        return client.getDataPlaneAccessAsync(resourceGroupName, factoryName, policy)
+        .map(new Func1<AccessPolicyResponseInner, AccessPolicyResponse>() {
+            @Override
+            public AccessPolicyResponse call(AccessPolicyResponseInner inner) {
+                return new AccessPolicyResponseImpl(inner, manager());
             }
         });
     }

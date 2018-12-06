@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Trigger that runs everytime a Blob event occurs.
+ * Trigger that runs every time a Blob event occurs.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("BlobEventsTrigger")

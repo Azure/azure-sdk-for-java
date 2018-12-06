@@ -1847,7 +1847,7 @@ public class IntegrationRuntimesInner {
     }
 
     /**
-     * Upgrade self-hosted integration runtime to latest version if availably.
+     * Upgrade self-hosted integration runtime to latest version if availability.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -1861,7 +1861,7 @@ public class IntegrationRuntimesInner {
     }
 
     /**
-     * Upgrade self-hosted integration runtime to latest version if availably.
+     * Upgrade self-hosted integration runtime to latest version if availability.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -1875,7 +1875,7 @@ public class IntegrationRuntimesInner {
     }
 
     /**
-     * Upgrade self-hosted integration runtime to latest version if availably.
+     * Upgrade self-hosted integration runtime to latest version if availability.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -1893,7 +1893,7 @@ public class IntegrationRuntimesInner {
     }
 
     /**
-     * Upgrade self-hosted integration runtime to latest version if availably.
+     * Upgrade self-hosted integration runtime to latest version if availability.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
