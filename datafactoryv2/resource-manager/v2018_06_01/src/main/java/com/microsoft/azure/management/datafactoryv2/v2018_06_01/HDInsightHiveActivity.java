@@ -59,6 +59,19 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     private Map<String, Object> defines;
 
     /**
+     * User specified arguments under hivevar namespace.
+     */
+    @JsonProperty(value = "typeProperties.variables")
+    private List<Object> variables;
+
+    /**
+     * Query timeout value (in minutes).  Effective when the HDInsight culster
+     * is with ESP (Enterprise Security Package).
+     */
+    @JsonProperty(value = "typeProperties.queryTimeout")
+    private Integer queryTimeout;
+
+    /**
      * Get storage linked service references.
      *
      * @return the storageLinkedServices value
@@ -175,6 +188,46 @@ public class HDInsightHiveActivity extends ExecutionActivity {
      */
     public HDInsightHiveActivity withDefines(Map<String, Object> defines) {
         this.defines = defines;
+        return this;
+    }
+
+    /**
+     * Get user specified arguments under hivevar namespace.
+     *
+     * @return the variables value
+     */
+    public List<Object> variables() {
+        return this.variables;
+    }
+
+    /**
+     * Set user specified arguments under hivevar namespace.
+     *
+     * @param variables the variables value to set
+     * @return the HDInsightHiveActivity object itself.
+     */
+    public HDInsightHiveActivity withVariables(List<Object> variables) {
+        this.variables = variables;
+        return this;
+    }
+
+    /**
+     * Get query timeout value (in minutes).  Effective when the HDInsight culster is with ESP (Enterprise Security Package).
+     *
+     * @return the queryTimeout value
+     */
+    public Integer queryTimeout() {
+        return this.queryTimeout;
+    }
+
+    /**
+     * Set query timeout value (in minutes).  Effective when the HDInsight culster is with ESP (Enterprise Security Package).
+     *
+     * @param queryTimeout the queryTimeout value to set
+     * @return the HDInsightHiveActivity object itself.
+     */
+    public HDInsightHiveActivity withQueryTimeout(Integer queryTimeout) {
+        this.queryTimeout = queryTimeout;
         return this;
     }
 
