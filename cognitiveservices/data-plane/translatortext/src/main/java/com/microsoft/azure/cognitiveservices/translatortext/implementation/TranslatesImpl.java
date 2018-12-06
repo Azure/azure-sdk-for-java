@@ -14,7 +14,6 @@ import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.translatortext.models.ErrorMessageException;
 import com.microsoft.azure.cognitiveservices.translatortext.models.TranslateSuccessItem;
-import com.microsoft.azure.cognitiveservices.translatortext.models.TranslateTextInput;
 import com.microsoft.rest.CollectionFormat;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -60,7 +59,7 @@ public class TranslatesImpl implements Translates {
     interface TranslatesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.translatortext.Translates translatePost" })
         @POST("translate")
-        Observable<Response<ResponseBody>> translatePost(@Query("api-version") String apiVersion, @Query("from") String from, @Query("to") String to, @Query("textType") String textType, @Query("category") String category, @Query("profanityAction") String profanityAction, @Query("profanityMarker") String profanityMarker, @Query("includeAlignment") String includeAlignment, @Query("includeSentenceLength") String includeSentenceLength, @Query("suggestedFrom") String suggestedFrom, @Query("fromScript") String fromScript, @Query("toScript") String toScript, @Header("Ocp-Apim-Subscription-Key") String ocpApimSubscriptionKey, @Header("X-ClientTraceId") String xClientTraceId, @Body List<TranslateTextInput> text, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> translatePost(@Query("api-version") String apiVersion, @Query("from") String from, @Query("to") String to, @Query("textType") String textType, @Query("category") String category, @Query("profanityAction") String profanityAction, @Query("profanityMarker") String profanityMarker, @Query("includeAlignment") String includeAlignment, @Query("includeSentenceLength") String includeSentenceLength, @Query("suggestedFrom") String suggestedFrom, @Query("fromScript") String fromScript, @Query("toScript") String toScript, @Header("Ocp-Apim-Subscription-Key") String ocpApimSubscriptionKey, @Header("X-ClientTraceId") String xClientTraceId, @Body List<String> text, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -100,7 +99,7 @@ public class TranslatesImpl implements Translates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;TranslateSuccessItem&gt; object if successful.
      */
-    public List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<TranslateTextInput> text) {
+    public List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<String> text) {
         return translatePostWithServiceResponseAsync(apiVersion, to, text).toBlocking().single().body();
     }
 
@@ -139,7 +138,7 @@ public class TranslatesImpl implements Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<TranslateTextInput> text, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback) {
+    public ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback) {
         return ServiceFuture.fromResponse(translatePostWithServiceResponseAsync(apiVersion, to, text), serviceCallback);
     }
 
@@ -177,7 +176,7 @@ public class TranslatesImpl implements Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    public Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<TranslateTextInput> text) {
+    public Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text) {
         return translatePostWithServiceResponseAsync(apiVersion, to, text).map(new Func1<ServiceResponse<List<TranslateSuccessItem>>, List<TranslateSuccessItem>>() {
             @Override
             public List<TranslateSuccessItem> call(ServiceResponse<List<TranslateSuccessItem>> response) {
@@ -220,7 +219,7 @@ public class TranslatesImpl implements Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    public Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<TranslateTextInput> text) {
+    public Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<String> text) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -330,7 +329,7 @@ public class TranslatesImpl implements Translates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;TranslateSuccessItem&gt; object if successful.
      */
-    public List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<TranslateTextInput> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId) {
+    public List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId) {
         return translatePostWithServiceResponseAsync(apiVersion, to, text, from, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScript, ocpApimSubscriptionKey, xClientTraceId).toBlocking().single().body();
     }
 
@@ -400,7 +399,7 @@ public class TranslatesImpl implements Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<TranslateTextInput> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback) {
+    public ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback) {
         return ServiceFuture.fromResponse(translatePostWithServiceResponseAsync(apiVersion, to, text, from, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScript, ocpApimSubscriptionKey, xClientTraceId), serviceCallback);
     }
 
@@ -469,7 +468,7 @@ public class TranslatesImpl implements Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    public Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<TranslateTextInput> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId) {
+    public Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId) {
         return translatePostWithServiceResponseAsync(apiVersion, to, text, from, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScript, ocpApimSubscriptionKey, xClientTraceId).map(new Func1<ServiceResponse<List<TranslateSuccessItem>>, List<TranslateSuccessItem>>() {
             @Override
             public List<TranslateSuccessItem> call(ServiceResponse<List<TranslateSuccessItem>> response) {
@@ -543,7 +542,7 @@ public class TranslatesImpl implements Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    public Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<TranslateTextInput> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId) {
+    public Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }

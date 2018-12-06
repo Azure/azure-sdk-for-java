@@ -10,7 +10,6 @@ package com.microsoft.azure.cognitiveservices.translatortext;
 
 import com.microsoft.azure.cognitiveservices.translatortext.models.ErrorMessageException;
 import com.microsoft.azure.cognitiveservices.translatortext.models.TranslateSuccessItem;
-import com.microsoft.azure.cognitiveservices.translatortext.models.TranslateTextInput;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -59,7 +58,7 @@ public interface Translates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;TranslateSuccessItem&gt; object if successful.
      */
-    List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<TranslateTextInput> text);
+    List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<String> text);
 
     /**
      * Translates text into one or more languages.
@@ -96,7 +95,7 @@ public interface Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<TranslateTextInput> text, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback);
+    ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback);
 
     /**
      * Translates text into one or more languages.
@@ -132,7 +131,7 @@ public interface Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<TranslateTextInput> text);
+    Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text);
 
     /**
      * Translates text into one or more languages.
@@ -168,7 +167,7 @@ public interface Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<TranslateTextInput> text);
+    Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<String> text);
     /**
      * Translates text into one or more languages.
      *
@@ -236,7 +235,7 @@ public interface Translates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;TranslateSuccessItem&gt; object if successful.
      */
-    List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<TranslateTextInput> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId);
+    List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId);
 
     /**
      * Translates text into one or more languages.
@@ -304,7 +303,7 @@ public interface Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<TranslateTextInput> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback);
+    ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback);
 
     /**
      * Translates text into one or more languages.
@@ -371,7 +370,7 @@ public interface Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<TranslateTextInput> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId);
+    Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId);
 
     /**
      * Translates text into one or more languages.
@@ -438,6 +437,6 @@ public interface Translates {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<TranslateTextInput> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId);
+    Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId);
 
 }
