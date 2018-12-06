@@ -21,11 +21,32 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class DeleteActivity extends ExecutionActivity {
     /**
-     * If true, files under the folder path will be deleted recursively.
-     * Default is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files or sub-folders under current folder path will be deleted
+     * recursively. Default is false. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "typeProperties.recursive")
     private Object recursive;
+
+    /**
+     * The max concurrent connections to connect data source at the same time.
+     */
+    @JsonProperty(value = "typeProperties.maxConcurrentConnections")
+    private Integer maxConcurrentConnections;
+
+    /**
+     * Whether to record detailed logs of delete-activity execution. Default
+     * value is false. Type: boolean (or Expression with resultType boolean).
+     */
+    @JsonProperty(value = "typeProperties.enableLogging")
+    private Object enableLogging;
+
+    /**
+     * Log storage settings customer need to provide when enableLogging is
+     * true.
+     */
+    @JsonProperty(value = "typeProperties.logStorageSettings")
+    private LogStorageSettings logStorageSettings;
 
     /**
      * Delete activity dataset reference.
@@ -34,7 +55,7 @@ public class DeleteActivity extends ExecutionActivity {
     private DatasetReference dataset;
 
     /**
-     * Get if true, files under the folder path will be deleted recursively. Default is true. Type: boolean (or Expression with resultType boolean).
+     * Get if true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type: boolean (or Expression with resultType boolean).
      *
      * @return the recursive value
      */
@@ -43,13 +64,73 @@ public class DeleteActivity extends ExecutionActivity {
     }
 
     /**
-     * Set if true, files under the folder path will be deleted recursively. Default is true. Type: boolean (or Expression with resultType boolean).
+     * Set if true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type: boolean (or Expression with resultType boolean).
      *
      * @param recursive the recursive value to set
      * @return the DeleteActivity object itself.
      */
     public DeleteActivity withRecursive(Object recursive) {
         this.recursive = recursive;
+        return this;
+    }
+
+    /**
+     * Get the max concurrent connections to connect data source at the same time.
+     *
+     * @return the maxConcurrentConnections value
+     */
+    public Integer maxConcurrentConnections() {
+        return this.maxConcurrentConnections;
+    }
+
+    /**
+     * Set the max concurrent connections to connect data source at the same time.
+     *
+     * @param maxConcurrentConnections the maxConcurrentConnections value to set
+     * @return the DeleteActivity object itself.
+     */
+    public DeleteActivity withMaxConcurrentConnections(Integer maxConcurrentConnections) {
+        this.maxConcurrentConnections = maxConcurrentConnections;
+        return this;
+    }
+
+    /**
+     * Get whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the enableLogging value
+     */
+    public Object enableLogging() {
+        return this.enableLogging;
+    }
+
+    /**
+     * Set whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param enableLogging the enableLogging value to set
+     * @return the DeleteActivity object itself.
+     */
+    public DeleteActivity withEnableLogging(Object enableLogging) {
+        this.enableLogging = enableLogging;
+        return this;
+    }
+
+    /**
+     * Get log storage settings customer need to provide when enableLogging is true.
+     *
+     * @return the logStorageSettings value
+     */
+    public LogStorageSettings logStorageSettings() {
+        return this.logStorageSettings;
+    }
+
+    /**
+     * Set log storage settings customer need to provide when enableLogging is true.
+     *
+     * @param logStorageSettings the logStorageSettings value to set
+     * @return the DeleteActivity object itself.
+     */
+    public DeleteActivity withLogStorageSettings(LogStorageSettings logStorageSettings) {
+        this.logStorageSettings = logStorageSettings;
         return this;
     }
 
