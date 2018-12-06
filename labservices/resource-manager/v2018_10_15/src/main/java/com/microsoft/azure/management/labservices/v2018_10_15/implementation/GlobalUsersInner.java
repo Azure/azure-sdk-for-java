@@ -15,7 +15,7 @@ import com.microsoft.azure.management.labservices.v2018_10_15.EnvironmentOperati
 import com.microsoft.azure.management.labservices.v2018_10_15.ListEnvironmentsPayload;
 import com.microsoft.azure.management.labservices.v2018_10_15.OperationBatchStatusPayload;
 import com.microsoft.azure.management.labservices.v2018_10_15.OperationStatusPayload;
-import com.microsoft.azure.management.labservices.v2018_10_15.PersonalPerferencesOperationsPayload;
+import com.microsoft.azure.management.labservices.v2018_10_15.PersonalPreferencesOperationsPayload;
 import com.microsoft.azure.management.labservices.v2018_10_15.RegisterPayload;
 import com.microsoft.azure.management.labservices.v2018_10_15.ResetPasswordPayload;
 import com.microsoft.rest.ServiceCallback;
@@ -75,7 +75,7 @@ public class GlobalUsersInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.labservices.v2018_10_15.GlobalUsers getPersonalPreferences" })
         @POST("providers/Microsoft.LabServices/users/{userName}/getPersonalPreferences")
-        Observable<Response<ResponseBody>> getPersonalPreferences(@Path("userName") String userName, @Body PersonalPerferencesOperationsPayload personalPerferencesOperationsPayload, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPersonalPreferences(@Path("userName") String userName, @Body PersonalPreferencesOperationsPayload personalPreferencesOperationsPayload, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.labservices.v2018_10_15.GlobalUsers listEnvironments" })
         @POST("providers/Microsoft.LabServices/users/{userName}/listEnvironments")
@@ -458,39 +458,39 @@ public class GlobalUsersInner {
      * Get personal preferences for a user.
      *
      * @param userName The name of the user.
-     * @param personalPerferencesOperationsPayload Represents payload for any Environment operations like get, start, stop, connect
+     * @param personalPreferencesOperationsPayload Represents payload for any Environment operations like get, start, stop, connect
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the GetPersonalPreferencesResponseInner object if successful.
      */
-    public GetPersonalPreferencesResponseInner getPersonalPreferences(String userName, PersonalPerferencesOperationsPayload personalPerferencesOperationsPayload) {
-        return getPersonalPreferencesWithServiceResponseAsync(userName, personalPerferencesOperationsPayload).toBlocking().single().body();
+    public GetPersonalPreferencesResponseInner getPersonalPreferences(String userName, PersonalPreferencesOperationsPayload personalPreferencesOperationsPayload) {
+        return getPersonalPreferencesWithServiceResponseAsync(userName, personalPreferencesOperationsPayload).toBlocking().single().body();
     }
 
     /**
      * Get personal preferences for a user.
      *
      * @param userName The name of the user.
-     * @param personalPerferencesOperationsPayload Represents payload for any Environment operations like get, start, stop, connect
+     * @param personalPreferencesOperationsPayload Represents payload for any Environment operations like get, start, stop, connect
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<GetPersonalPreferencesResponseInner> getPersonalPreferencesAsync(String userName, PersonalPerferencesOperationsPayload personalPerferencesOperationsPayload, final ServiceCallback<GetPersonalPreferencesResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getPersonalPreferencesWithServiceResponseAsync(userName, personalPerferencesOperationsPayload), serviceCallback);
+    public ServiceFuture<GetPersonalPreferencesResponseInner> getPersonalPreferencesAsync(String userName, PersonalPreferencesOperationsPayload personalPreferencesOperationsPayload, final ServiceCallback<GetPersonalPreferencesResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getPersonalPreferencesWithServiceResponseAsync(userName, personalPreferencesOperationsPayload), serviceCallback);
     }
 
     /**
      * Get personal preferences for a user.
      *
      * @param userName The name of the user.
-     * @param personalPerferencesOperationsPayload Represents payload for any Environment operations like get, start, stop, connect
+     * @param personalPreferencesOperationsPayload Represents payload for any Environment operations like get, start, stop, connect
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GetPersonalPreferencesResponseInner object
      */
-    public Observable<GetPersonalPreferencesResponseInner> getPersonalPreferencesAsync(String userName, PersonalPerferencesOperationsPayload personalPerferencesOperationsPayload) {
-        return getPersonalPreferencesWithServiceResponseAsync(userName, personalPerferencesOperationsPayload).map(new Func1<ServiceResponse<GetPersonalPreferencesResponseInner>, GetPersonalPreferencesResponseInner>() {
+    public Observable<GetPersonalPreferencesResponseInner> getPersonalPreferencesAsync(String userName, PersonalPreferencesOperationsPayload personalPreferencesOperationsPayload) {
+        return getPersonalPreferencesWithServiceResponseAsync(userName, personalPreferencesOperationsPayload).map(new Func1<ServiceResponse<GetPersonalPreferencesResponseInner>, GetPersonalPreferencesResponseInner>() {
             @Override
             public GetPersonalPreferencesResponseInner call(ServiceResponse<GetPersonalPreferencesResponseInner> response) {
                 return response.body();
@@ -502,22 +502,22 @@ public class GlobalUsersInner {
      * Get personal preferences for a user.
      *
      * @param userName The name of the user.
-     * @param personalPerferencesOperationsPayload Represents payload for any Environment operations like get, start, stop, connect
+     * @param personalPreferencesOperationsPayload Represents payload for any Environment operations like get, start, stop, connect
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GetPersonalPreferencesResponseInner object
      */
-    public Observable<ServiceResponse<GetPersonalPreferencesResponseInner>> getPersonalPreferencesWithServiceResponseAsync(String userName, PersonalPerferencesOperationsPayload personalPerferencesOperationsPayload) {
+    public Observable<ServiceResponse<GetPersonalPreferencesResponseInner>> getPersonalPreferencesWithServiceResponseAsync(String userName, PersonalPreferencesOperationsPayload personalPreferencesOperationsPayload) {
         if (userName == null) {
             throw new IllegalArgumentException("Parameter userName is required and cannot be null.");
         }
-        if (personalPerferencesOperationsPayload == null) {
-            throw new IllegalArgumentException("Parameter personalPerferencesOperationsPayload is required and cannot be null.");
+        if (personalPreferencesOperationsPayload == null) {
+            throw new IllegalArgumentException("Parameter personalPreferencesOperationsPayload is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(personalPerferencesOperationsPayload);
-        return service.getPersonalPreferences(userName, personalPerferencesOperationsPayload, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Validator.validate(personalPreferencesOperationsPayload);
+        return service.getPersonalPreferences(userName, personalPreferencesOperationsPayload, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GetPersonalPreferencesResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<GetPersonalPreferencesResponseInner>> call(Response<ResponseBody> response) {
