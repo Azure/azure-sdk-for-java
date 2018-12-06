@@ -162,11 +162,11 @@ public final class MSICredentials{
 
         if (this.configForAppService.msiEndpoint() == null || this.configForAppService.msiEndpoint().isEmpty()) {
             //the web app does not have MSI set, return file not found
-            throw new FileNotFoundException("Service identity not found");
+            throw new FileNotFoundException("Managed identity not found/configured");
         }
 
         if (this.configForAppService.msiClientId() != null && !this.configForAppService.msiClientId().isEmpty()) {
-            urlString = String.format("%s?resource=%s&?clientid=%s&api-version=2017-09-01", this.configForAppService.msiEndpoint(),
+            urlString = String.format("%s?resource=%s&clientid=%s&api-version=2017-09-01", this.configForAppService.msiEndpoint(),
                     tokenAudience == null ? this.configForAppService.resource() : tokenAudience,
                     this.configForAppService.msiClientId());
         } else {
@@ -190,9 +190,13 @@ public final class MSICredentials{
             String result = reader.readLine();
 
             return getMsiTokenFromResult(result, HostType.APP_SERVICE).accessToken();
+        } catch (IOException ioEx){
+            if  (ioEx.getMessage().contains("Server returned HTTP response code: 400 for URL")) {
+                throw new FileNotFoundException("Managed identity not found/configured");
+            } else throw ioEx;
         } catch (Exception e){
             if (e.getCause()!= null && e.getCause() instanceof SocketException && e.getCause().getMessage().contains("Permission denied: connect")) {
-                throw new FileNotFoundException("Service identity not found");
+                throw new FileNotFoundException("Managed identity not found/configured");
             } else throw e;
         } finally {
             if (connection != null) {
