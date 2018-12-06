@@ -12,7 +12,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.DomainType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Domain availablility check result.
+ * Domain availability check result.
  */
 public class DomainAvailablilityCheckResultInner {
     /**
