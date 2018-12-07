@@ -83,7 +83,8 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-complete</artifactId>
-    <version>1.1.2</version>
+    <version>1.2.0</version>
+    <type>pom</type>
 </dependency>
 ```
 
@@ -114,6 +115,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version | Comments |
 | :-------: | :-------- |
+| [1.1.2](https://github.com/Azure/azure-keyvault-java/tree/1.1.2)   | Version 1.1.2 release |
 | [1.1.1](https://github.com/Azure/azure-keyvault-java/tree/1.1.1)   | Version 1.1.1 release |
 | [1.1](https://github.com/Azure/azure-keyvault-java/tree/1.1)   | Version 1.1 release |
 | [1.1-beta-1](https://github.com/Azure/azure-keyvault-java/tree/1.1-beta-1)   | Version 1.1.0 **beta** release |
