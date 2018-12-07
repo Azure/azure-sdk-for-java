@@ -106,7 +106,7 @@ public class MonitorInner extends ProxyResource {
 
     /**
      * Collection of MonitorCriteria. For PATCH calls, instead of partial list,
-     * complete list of expected criteria should be passed for proper updation.
+     * complete list of expected criteria should be passed for proper updating.
      */
     @JsonProperty(value = "properties.criteria", access = JsonProperty.Access.WRITE_ONLY)
     private List<MonitorCriteria> criteria;
@@ -266,7 +266,7 @@ public class MonitorInner extends ProxyResource {
     }
 
     /**
-     * Get collection of MonitorCriteria. For PATCH calls, instead of partial list, complete list of expected criteria should be passed for proper updation.
+     * Get collection of MonitorCriteria. For PATCH calls, instead of partial list, complete list of expected criteria should be passed for proper updating.
      *
      * @return the criteria value
      */

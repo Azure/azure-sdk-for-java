@@ -22,13 +22,13 @@ public class MonitorCriteria {
     private HealthState healthState;
 
     /**
-     * Treshold value for this criteria.
+     * Threshold value for this criteria.
      */
     @JsonProperty(value = "threshold", access = JsonProperty.Access.WRITE_ONLY)
     private Double threshold;
 
     /**
-     * Comparison enum on theshold of this criteria. Possible values include:
+     * Comparison enum on threshold of this criteria. Possible values include:
      * 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan',
      * 'LessThanOrEqual', 'NotEquals'.
      */
@@ -45,7 +45,7 @@ public class MonitorCriteria {
     }
 
     /**
-     * Get treshold value for this criteria.
+     * Get threshold value for this criteria.
      *
      * @return the threshold value
      */
@@ -54,7 +54,7 @@ public class MonitorCriteria {
     }
 
     /**
-     * Get comparison enum on theshold of this criteria. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'NotEquals'.
+     * Get comparison enum on threshold of this criteria. Possible values include: 'Equals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual', 'NotEquals'.
      *
      * @return the comparisonOperator value
      */
