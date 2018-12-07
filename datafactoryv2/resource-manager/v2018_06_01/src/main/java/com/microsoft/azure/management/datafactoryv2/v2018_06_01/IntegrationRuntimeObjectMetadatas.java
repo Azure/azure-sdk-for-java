@@ -18,7 +18,7 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface IntegrationRuntimeObjectMetadatas extends HasInner<IntegrationRuntimeObjectMetadatasInner> {
     /**
-     * Refresh a ssis integration runtime object metadata.
+     * Refresh a SSIS integration runtime object metadata.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -29,7 +29,7 @@ public interface IntegrationRuntimeObjectMetadatas extends HasInner<IntegrationR
     Completable refreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName);
 
     /**
-     * Get a ssis integration runtime object metadata by specified path. The return is pageable metadata list.
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.

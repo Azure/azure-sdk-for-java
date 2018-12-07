@@ -13,11 +13,11 @@ import com.microsoft.azure.management.datafactoryv2.v2018_06_01.SsisObjectMetada
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A list of Ssis object metadata.
+ * A list of SSIS object metadata.
  */
 public class SsisObjectMetadataListResponseInner {
     /**
-     * List of Ssis object metadata.
+     * List of SSIS object metadata.
      */
     @JsonProperty(value = "value")
     private List<SsisObjectMetadata> value;
@@ -29,7 +29,7 @@ public class SsisObjectMetadataListResponseInner {
     private String nextLink;
 
     /**
-     * Get list of Ssis object metadata.
+     * Get list of SSIS object metadata.
      *
      * @return the value value
      */
@@ -38,7 +38,7 @@ public class SsisObjectMetadataListResponseInner {
     }
 
     /**
-     * Set list of Ssis object metadata.
+     * Set list of SSIS object metadata.
      *
      * @param value the value value to set
      * @return the SsisObjectMetadataListResponseInner object itself.

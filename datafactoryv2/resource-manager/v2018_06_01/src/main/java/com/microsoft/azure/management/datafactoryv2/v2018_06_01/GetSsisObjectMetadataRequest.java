@@ -11,7 +11,7 @@ package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The request payload of get ssis object metadata.
+ * The request payload of get SSIS object metadata.
  */
 public class GetSsisObjectMetadataRequest {
     /**

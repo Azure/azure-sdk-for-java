@@ -63,6 +63,13 @@ public class HDInsightLinkedService extends LinkedServiceInner {
     private Object encryptedCredential;
 
     /**
+     * Specify if the HDInsight is created with ESP (Enterprise Security
+     * Package). Type: Boolean.
+     */
+    @JsonProperty(value = "typeProperties.isEspEnabled")
+    private Object isEspEnabled;
+
+    /**
      * Get hDInsight cluster URI. Type: string (or Expression with resultType string).
      *
      * @return the clusterUri value
@@ -179,6 +186,26 @@ public class HDInsightLinkedService extends LinkedServiceInner {
      */
     public HDInsightLinkedService withEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /**
+     * Get specify if the HDInsight is created with ESP (Enterprise Security Package). Type: Boolean.
+     *
+     * @return the isEspEnabled value
+     */
+    public Object isEspEnabled() {
+        return this.isEspEnabled;
+    }
+
+    /**
+     * Set specify if the HDInsight is created with ESP (Enterprise Security Package). Type: Boolean.
+     *
+     * @param isEspEnabled the isEspEnabled value to set
+     * @return the HDInsightLinkedService object itself.
+     */
+    public HDInsightLinkedService withIsEspEnabled(Object isEspEnabled) {
+        this.isEspEnabled = isEspEnabled;
         return this;
     }
 

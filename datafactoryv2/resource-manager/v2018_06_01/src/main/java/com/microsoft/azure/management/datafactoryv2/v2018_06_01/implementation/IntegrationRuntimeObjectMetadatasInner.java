@@ -68,7 +68,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Refresh a ssis integration runtime object metadata.
+     * Refresh a SSIS integration runtime object metadata.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -82,7 +82,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Refresh a ssis integration runtime object metadata.
+     * Refresh a SSIS integration runtime object metadata.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -96,7 +96,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Refresh a ssis integration runtime object metadata.
+     * Refresh a SSIS integration runtime object metadata.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -114,7 +114,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Refresh a ssis integration runtime object metadata.
+     * Refresh a SSIS integration runtime object metadata.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -143,7 +143,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Refresh a ssis integration runtime object metadata.
+     * Refresh a SSIS integration runtime object metadata.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -157,7 +157,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Refresh a ssis integration runtime object metadata.
+     * Refresh a SSIS integration runtime object metadata.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -171,7 +171,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Refresh a ssis integration runtime object metadata.
+     * Refresh a SSIS integration runtime object metadata.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -189,7 +189,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Refresh a ssis integration runtime object metadata.
+     * Refresh a SSIS integration runtime object metadata.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -236,7 +236,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Get a ssis integration runtime object metadata by specified path. The return is pageable metadata list.
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -251,7 +251,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Get a ssis integration runtime object metadata by specified path. The return is pageable metadata list.
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -265,7 +265,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Get a ssis integration runtime object metadata by specified path. The return is pageable metadata list.
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -283,7 +283,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Get a ssis integration runtime object metadata by specified path. The return is pageable metadata list.
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -325,12 +325,12 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Get a ssis integration runtime object metadata by specified path. The return is pageable metadata list.
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param metadataPath Metadata path
+     * @param metadataPath Metadata path.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -341,12 +341,12 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Get a ssis integration runtime object metadata by specified path. The return is pageable metadata list.
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param metadataPath Metadata path
+     * @param metadataPath Metadata path.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -356,12 +356,12 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Get a ssis integration runtime object metadata by specified path. The return is pageable metadata list.
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param metadataPath Metadata path
+     * @param metadataPath Metadata path.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SsisObjectMetadataListResponseInner object
      */
@@ -375,12 +375,12 @@ public class IntegrationRuntimeObjectMetadatasInner {
     }
 
     /**
-     * Get a ssis integration runtime object metadata by specified path. The return is pageable metadata list.
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param metadataPath Metadata path
+     * @param metadataPath Metadata path.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SsisObjectMetadataListResponseInner object
      */
