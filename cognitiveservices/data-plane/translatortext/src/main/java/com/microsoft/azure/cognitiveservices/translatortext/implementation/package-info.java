@@ -38,7 +38,7 @@
  ```
  Authorization: Bearer <Base64-access_token>
  ```
- An authentication token is valid for 10 minutes. The token should be re-used when making multiple calls to the Translator APIs. If you make requests to the Translator API over an extended period of time,  you  must request a new access token at regular intervals beforethe token expires, for instance every 9 minutes.
+ An authentication token is valid for 10 minutes. The token should be re-used when making multiple calls to the Translator APIs. If you make requests to the Translator API over an extended period of time,  you  must request a new access token at regular intervals before the token expires, for instance every 9 minutes.
  To summarize, a client request to the Translator API will include one authorization header taken from the following table:
  | Headers       | Description  |
  | ----------    | ----------   |
