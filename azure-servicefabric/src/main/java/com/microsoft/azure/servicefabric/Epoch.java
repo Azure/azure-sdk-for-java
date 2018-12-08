@@ -27,10 +27,10 @@ public class Epoch {
     private String configurationVersion;
 
     /**
-     * The current dataloss number of this Epoch. The data loss number property
-     * is an increasing value which is updated whenever data loss is suspected,
-     * as when loss of a quorum of replicas in the replica set that includes
-     * the Primary replica.
+     * The current data loss number of this Epoch. The data loss number
+     * property is an increasing value which is updated whenever data loss is
+     * suspected, as when loss of a quorum of replicas in the replica set that
+     * includes the Primary replica.
      */
     @JsonProperty(value = "DataLossVersion")
     private String dataLossVersion;
@@ -56,7 +56,7 @@ public class Epoch {
     }
 
     /**
-     * Get the current dataloss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
+     * Get the current data loss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
      *
      * @return the dataLossVersion value
      */
@@ -65,7 +65,7 @@ public class Epoch {
     }
 
     /**
-     * Set the current dataloss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
+     * Set the current data loss number of this Epoch. The data loss number property is an increasing value which is updated whenever data loss is suspected, as when loss of a quorum of replicas in the replica set that includes the Primary replica.
      *
      * @param dataLossVersion the dataLossVersion value to set
      * @return the Epoch object itself.
