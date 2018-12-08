@@ -100,7 +100,7 @@ public class ContainerCodePackageProperties {
 
     /**
      * A list of ReliableCollection resources used by this particular code
-     * package. Please refer to ReliablecollectionsRef for more details.
+     * package. Please refer to ReliableCollectionsRef for more details.
      */
     @JsonProperty(value = "reliableCollectionsRefs")
     private List<ReliableCollectionsRef> reliableCollectionsRefs;
@@ -372,7 +372,7 @@ public class ContainerCodePackageProperties {
     }
 
     /**
-     * Get a list of ReliableCollection resources used by this particular code package. Please refer to ReliablecollectionsRef for more details.
+     * Get a list of ReliableCollection resources used by this particular code package. Please refer to ReliableCollectionsRef for more details.
      *
      * @return the reliableCollectionsRefs value
      */
@@ -381,7 +381,7 @@ public class ContainerCodePackageProperties {
     }
 
     /**
-     * Set a list of ReliableCollection resources used by this particular code package. Please refer to ReliablecollectionsRef for more details.
+     * Set a list of ReliableCollection resources used by this particular code package. Please refer to ReliableCollectionsRef for more details.
      *
      * @param reliableCollectionsRefs the reliableCollectionsRefs value to set
      * @return the ContainerCodePackageProperties object itself.
