@@ -11,9 +11,9 @@ package com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeObjectMetadatas;
-import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.SsisObjectMetadataStatusResponse;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.SsisObjectMetadataListResponse;
 
 class IntegrationRuntimeObjectMetadatasImpl extends WrapperImpl<IntegrationRuntimeObjectMetadatasInner> implements IntegrationRuntimeObjectMetadatas {
@@ -29,9 +29,15 @@ class IntegrationRuntimeObjectMetadatasImpl extends WrapperImpl<IntegrationRunti
     }
 
     @Override
-    public Completable refreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+    public Observable<SsisObjectMetadataStatusResponse> refreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         IntegrationRuntimeObjectMetadatasInner client = this.inner();
-        return client.refreshAsync(resourceGroupName, factoryName, integrationRuntimeName).toCompletable();
+        return client.refreshAsync(resourceGroupName, factoryName, integrationRuntimeName)
+        .map(new Func1<SsisObjectMetadataStatusResponseInner, SsisObjectMetadataStatusResponse>() {
+            @Override
+            public SsisObjectMetadataStatusResponse call(SsisObjectMetadataStatusResponseInner inner) {
+                return new SsisObjectMetadataStatusResponseImpl(inner, manager());
+            }
+        });
     }
 
     @Override

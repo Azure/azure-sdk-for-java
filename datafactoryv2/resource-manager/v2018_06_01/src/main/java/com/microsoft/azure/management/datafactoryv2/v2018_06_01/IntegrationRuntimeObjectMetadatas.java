@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 
-import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.IntegrationRuntimeObjectMetadatasInner;
 import com.microsoft.azure.arm.model.HasInner;
@@ -26,7 +25,7 @@ public interface IntegrationRuntimeObjectMetadatas extends HasInner<IntegrationR
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable refreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName);
+    Observable<SsisObjectMetadataStatusResponse> refreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName);
 
     /**
      * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.

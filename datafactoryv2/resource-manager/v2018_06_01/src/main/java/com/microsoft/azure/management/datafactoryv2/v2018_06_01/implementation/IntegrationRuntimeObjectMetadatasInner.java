@@ -76,9 +76,10 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SsisObjectMetadataStatusResponseInner object if successful.
      */
-    public void refresh(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        refreshWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).toBlocking().last().body();
+    public SsisObjectMetadataStatusResponseInner refresh(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return refreshWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).toBlocking().last().body();
     }
 
     /**
@@ -91,7 +92,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> refreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<SsisObjectMetadataStatusResponseInner> refreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, final ServiceCallback<SsisObjectMetadataStatusResponseInner> serviceCallback) {
         return ServiceFuture.fromResponse(refreshWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName), serviceCallback);
     }
 
@@ -104,10 +105,10 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> refreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return refreshWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<SsisObjectMetadataStatusResponseInner> refreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return refreshWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).map(new Func1<ServiceResponse<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public SsisObjectMetadataStatusResponseInner call(ServiceResponse<SsisObjectMetadataStatusResponseInner> response) {
                 return response.body();
             }
         });
@@ -122,7 +123,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<Void>> refreshWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+    public Observable<ServiceResponse<SsisObjectMetadataStatusResponseInner>> refreshWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -139,7 +140,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Observable<Response<ResponseBody>> observable = service.refresh(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<SsisObjectMetadataStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -151,9 +152,10 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SsisObjectMetadataStatusResponseInner object if successful.
      */
-    public void beginRefresh(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        beginRefreshWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).toBlocking().single().body();
+    public SsisObjectMetadataStatusResponseInner beginRefresh(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return beginRefreshWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).toBlocking().single().body();
     }
 
     /**
@@ -166,7 +168,7 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> beginRefreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<SsisObjectMetadataStatusResponseInner> beginRefreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, final ServiceCallback<SsisObjectMetadataStatusResponseInner> serviceCallback) {
         return ServiceFuture.fromResponse(beginRefreshWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName), serviceCallback);
     }
 
@@ -177,12 +179,12 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the SsisObjectMetadataStatusResponseInner object
      */
-    public Observable<Void> beginRefreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        return beginRefreshWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<SsisObjectMetadataStatusResponseInner> beginRefreshAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return beginRefreshWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).map(new Func1<ServiceResponse<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>() {
             @Override
-            public Void call(ServiceResponse<Void> response) {
+            public SsisObjectMetadataStatusResponseInner call(ServiceResponse<SsisObjectMetadataStatusResponseInner> response) {
                 return response.body();
             }
         });
@@ -195,9 +197,9 @@ public class IntegrationRuntimeObjectMetadatasInner {
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable to the SsisObjectMetadataStatusResponseInner object
      */
-    public Observable<ServiceResponse<Void>> beginRefreshWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+    public Observable<ServiceResponse<SsisObjectMetadataStatusResponseInner>> beginRefreshWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -214,11 +216,11 @@ public class IntegrationRuntimeObjectMetadatasInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.beginRefresh(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SsisObjectMetadataStatusResponseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SsisObjectMetadataStatusResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = beginRefreshDelegate(response);
+                        ServiceResponse<SsisObjectMetadataStatusResponseInner> clientResponse = beginRefreshDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -227,9 +229,9 @@ public class IntegrationRuntimeObjectMetadatasInner {
             });
     }
 
-    private ServiceResponse<Void> beginRefreshDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
+    private ServiceResponse<SsisObjectMetadataStatusResponseInner> beginRefreshDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SsisObjectMetadataStatusResponseInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SsisObjectMetadataStatusResponseInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
