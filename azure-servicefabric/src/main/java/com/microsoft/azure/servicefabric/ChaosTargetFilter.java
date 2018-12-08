@@ -51,7 +51,7 @@ public class ChaosTargetFilter {
     private List<String> nodeTypeInclusionList;
 
     /**
-     * A list of application URI's to include in Chaos faults.
+     * A list of application URIs to include in Chaos faults.
      * All replicas belonging to services of these applications are amenable to
      * replica faults (restart replica, remove replica, move primary, and move
      * secondary) by Chaos.
@@ -102,7 +102,7 @@ public class ChaosTargetFilter {
     }
 
     /**
-     * Get a list of application URI's to include in Chaos faults.
+     * Get a list of application URIs to include in Chaos faults.
      All replicas belonging to services of these applications are amenable to replica faults (restart replica, remove replica, move primary, and move secondary) by Chaos.
      Chaos may restart a code package only if the code package hosts replicas of these applications only.
      If an application does not appear in this list, it can still be faulted in some Chaos iteration if the application ends up on a node of a node type that is included in NodeTypeInclusionList.
@@ -116,7 +116,7 @@ public class ChaosTargetFilter {
     }
 
     /**
-     * Set a list of application URI's to include in Chaos faults.
+     * Set a list of application URIs to include in Chaos faults.
      All replicas belonging to services of these applications are amenable to replica faults (restart replica, remove replica, move primary, and move secondary) by Chaos.
      Chaos may restart a code package only if the code package hosts replicas of these applications only.
      If an application does not appear in this list, it can still be faulted in some Chaos iteration if the application ends up on a node of a node type that is included in NodeTypeInclusionList.
