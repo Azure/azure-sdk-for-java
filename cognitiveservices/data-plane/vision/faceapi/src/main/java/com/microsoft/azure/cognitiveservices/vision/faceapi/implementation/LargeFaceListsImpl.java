@@ -824,7 +824,7 @@ public class LargeFaceListsImpl implements LargeFaceLists {
     }
 
     /**
-     * Delete an existing face from a large face list (given by a persisitedFaceId and a largeFaceListId). Persisted image related to the face will also be deleted.
+     * Delete an existing face from a large face list (given by a persistedFaceId and a largeFaceListId). Persisted image related to the face will also be deleted.
      *
      * @param largeFaceListId Id referencing a particular large face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -837,7 +837,7 @@ public class LargeFaceListsImpl implements LargeFaceLists {
     }
 
     /**
-     * Delete an existing face from a large face list (given by a persisitedFaceId and a largeFaceListId). Persisted image related to the face will also be deleted.
+     * Delete an existing face from a large face list (given by a persistedFaceId and a largeFaceListId). Persisted image related to the face will also be deleted.
      *
      * @param largeFaceListId Id referencing a particular large face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -850,7 +850,7 @@ public class LargeFaceListsImpl implements LargeFaceLists {
     }
 
     /**
-     * Delete an existing face from a large face list (given by a persisitedFaceId and a largeFaceListId). Persisted image related to the face will also be deleted.
+     * Delete an existing face from a large face list (given by a persistedFaceId and a largeFaceListId). Persisted image related to the face will also be deleted.
      *
      * @param largeFaceListId Id referencing a particular large face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -867,7 +867,7 @@ public class LargeFaceListsImpl implements LargeFaceLists {
     }
 
     /**
-     * Delete an existing face from a large face list (given by a persisitedFaceId and a largeFaceListId). Persisted image related to the face will also be deleted.
+     * Delete an existing face from a large face list (given by a persistedFaceId and a largeFaceListId). Persisted image related to the face will also be deleted.
      *
      * @param largeFaceListId Id referencing a particular large face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.

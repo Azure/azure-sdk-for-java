@@ -649,7 +649,7 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * Delete an existing face from a face list (given by a persistedFaceId and a faceListId). Persisted image related to the face will also be deleted.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -662,7 +662,7 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * Delete an existing face from a face list (given by a persistedFaceId and a faceListId). Persisted image related to the face will also be deleted.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -675,7 +675,7 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * Delete an existing face from a face list (given by a persistedFaceId and a faceListId). Persisted image related to the face will also be deleted.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
@@ -692,7 +692,7 @@ public class FaceListsImpl implements FaceLists {
     }
 
     /**
-     * Delete an existing face from a face list (given by a persisitedFaceId and a faceListId). Persisted image related to the face will also be deleted.
+     * Delete an existing face from a face list (given by a persistedFaceId and a faceListId). Persisted image related to the face will also be deleted.
      *
      * @param faceListId Id referencing a particular face list.
      * @param persistedFaceId Id referencing a particular persistedFaceId of an existing face.
