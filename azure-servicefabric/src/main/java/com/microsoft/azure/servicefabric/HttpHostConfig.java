@@ -24,7 +24,7 @@ public class HttpHostConfig {
     /**
      * Route information to use for routing. Routes are processed in the order
      * they are specified. Specify routes that are more specific before routes
-     * that can hamdle general cases.
+     * that can handle general cases.
      */
     @JsonProperty(value = "routes", required = true)
     private List<HttpRouteConfig> routes;
@@ -50,7 +50,7 @@ public class HttpHostConfig {
     }
 
     /**
-     * Get route information to use for routing. Routes are processed in the order they are specified. Specify routes that are more specific before routes that can hamdle general cases.
+     * Get route information to use for routing. Routes are processed in the order they are specified. Specify routes that are more specific before routes that can handle general cases.
      *
      * @return the routes value
      */
@@ -59,7 +59,7 @@ public class HttpHostConfig {
     }
 
     /**
-     * Set route information to use for routing. Routes are processed in the order they are specified. Specify routes that are more specific before routes that can hamdle general cases.
+     * Set route information to use for routing. Routes are processed in the order they are specified. Specify routes that are more specific before routes that can handle general cases.
      *
      * @param routes the routes value to set
      * @return the HttpHostConfig object itself.

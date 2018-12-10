@@ -26,7 +26,7 @@ public class PartitionBackupEntity extends BackupEntity {
     private String serviceName;
 
     /**
-     * The partition ID indentifying the partition.
+     * The partition ID identifying the partition.
      */
     @JsonProperty(value = "PartitionId")
     private UUID partitionId;
@@ -52,7 +52,7 @@ public class PartitionBackupEntity extends BackupEntity {
     }
 
     /**
-     * Get the partition ID indentifying the partition.
+     * Get the partition ID identifying the partition.
      *
      * @return the partitionId value
      */
@@ -61,7 +61,7 @@ public class PartitionBackupEntity extends BackupEntity {
     }
 
     /**
-     * Set the partition ID indentifying the partition.
+     * Set the partition ID identifying the partition.
      *
      * @param partitionId the partitionId value to set
      * @return the PartitionBackupEntity object itself.
