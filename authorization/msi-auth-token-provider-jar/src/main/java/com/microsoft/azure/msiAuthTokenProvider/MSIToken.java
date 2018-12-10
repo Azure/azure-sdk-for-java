@@ -34,6 +34,10 @@ public class MSIToken {
         return tokenType;
     }
 
+    public Date expiresOn() {
+        return expiresOn;
+    }
+
     public boolean isExpired() {
         //get time now
         Calendar today = Calendar.getInstance();
