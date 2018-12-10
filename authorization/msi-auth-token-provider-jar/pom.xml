@@ -5,14 +5,14 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.microsoft.azure.msi_auth_helper</groupId>
+  <groupId>com.microsoft.azure.msi_auth_token_provider</groupId>
 
-  <artifactId>azure-authentication-msi-helper</artifactId>
+  <artifactId>azure-authentication-msi-token-provider</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0-beta</version>
 
-  <name>Azure Java Client MSI Authorization Helper Library</name>
-  <description>This package contains the MSI helper classes for Azure.</description>
+  <name>Azure Java Client MSI Authorization Token Provoider Library</name>
+  <description>This package contains the MSI token provider classes for Azure.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>

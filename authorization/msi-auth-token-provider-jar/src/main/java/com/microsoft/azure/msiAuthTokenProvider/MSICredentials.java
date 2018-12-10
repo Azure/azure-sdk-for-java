@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.msiAuthHelper;
+package com.microsoft.azure.msiAuthTokenProvider;
 
 import rx.Single;
 
@@ -17,9 +17,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Managed Service Identity token based credentials for use with a REST Service Client.

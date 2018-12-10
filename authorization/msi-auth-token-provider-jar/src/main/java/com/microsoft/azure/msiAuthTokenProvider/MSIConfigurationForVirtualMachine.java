@@ -3,7 +3,7 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
-package com.microsoft.azure.msiAuthHelper;
+package com.microsoft.azure.msiAuthTokenProvider;
 
 /**
  * Defines the configuration to be used for retrieving access token from

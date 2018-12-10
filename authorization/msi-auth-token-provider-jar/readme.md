@@ -1,6 +1,6 @@
 ## What is this?
 
-The "msi-auth-helper" jar is a library that enables :
+The "msi-auth-token-provider" jar is a library that enables :
 * Azure VMs and container instances and
 * Web Apps (funcitons included)
 Retrieve authentication tokens for syatem/user assigned [managed identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview).
@@ -13,8 +13,8 @@ Take a dependency on the jar in you pom file like follows
 ```xml
   <dependencies>
       <dependency>
-          <groupId>com.microsoft.azure.msi_auth_helper</groupId>
-          <artifactId>azure-authentication-msi-helper</artifactId>
+          <groupId>com.microsoft.azure.msi_auth_token_provider</groupId>
+          <artifactId>azure-authentication-msi-token-provider</artifactId>
           <version>1.0.0-beta</version>
       </dependency>
   </dependencies>
@@ -25,7 +25,7 @@ Take a dependency on the jar in you pom file like follows
 Add the folowing import statement to get in all the classes in the jar
 
 ```java
-import com.microsoft.azure.msiAuthHelper.*;
+import com.microsoft.azure.msiAuthTokenProvider.*;
 ```
 
 #### Getting a token for system assigned identity

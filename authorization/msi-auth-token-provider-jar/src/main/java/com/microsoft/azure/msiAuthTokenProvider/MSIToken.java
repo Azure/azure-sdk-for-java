@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.msiAuthHelper;
+package com.microsoft.azure.msiAuthTokenProvider;
 
 
 import java.util.Calendar;
