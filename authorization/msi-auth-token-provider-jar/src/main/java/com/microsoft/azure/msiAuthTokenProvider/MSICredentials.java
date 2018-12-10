@@ -143,7 +143,7 @@ public final class MSICredentials{
         }
     }
 
-    public Single<String> getToken(String tokenAudience) {
+    public Single<MSIToken> getToken(String tokenAudience) {
         switch (hostType) {
             case VIRTUAL_MACHINE:
                     return Single.fromCallable(() -> this.getTokenForVirtualMachineFromIMDSEndpoint(tokenAudience == null ? this.configForVM.resource() : tokenAudience));
@@ -154,7 +154,7 @@ public final class MSICredentials{
         }
     }
 
-    private String getTokenForAppService(String tokenAudience) throws IOException, ParseException {
+    private MSIToken getTokenForAppService(String tokenAudience) throws IOException, ParseException {
         String urlString = null;
 
         if (this.configForAppService.msiEndpoint() == null || this.configForAppService.msiEndpoint().isEmpty()) {
@@ -186,7 +186,7 @@ public final class MSICredentials{
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 100);
             String result = reader.readLine();
 
-            return getMsiTokenFromResult(result, HostType.APP_SERVICE).accessToken();
+            return getMsiTokenFromResult(result, HostType.APP_SERVICE);
         } catch (IOException ioEx){
             if  (ioEx.getMessage().contains("Server returned HTTP response code: 400 for URL")) {
                 throw new FileNotFoundException("Managed identity not found/configured");
@@ -202,7 +202,7 @@ public final class MSICredentials{
         }
     }
 
-    private String getTokenForVirtualMachineFromIMDSEndpoint(String tokenAudience) {
+    private MSIToken getTokenForVirtualMachineFromIMDSEndpoint(String tokenAudience) {
         MSIToken token = null;
 
             try {
@@ -210,7 +210,7 @@ public final class MSICredentials{
             } catch (IOException exception) {
                 throw new RuntimeException(exception);
             }
-            return token.accessToken();
+            return token;
     }
 
     private MSIToken retrieveTokenFromIDMSWithRetry(String tokenAudience) throws IOException {

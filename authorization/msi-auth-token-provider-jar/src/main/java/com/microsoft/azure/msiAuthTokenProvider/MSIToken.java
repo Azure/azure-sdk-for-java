@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * Type representing response from the local MSI token provider.
  */
-class MSIToken {
+public class MSIToken {
     private String tokenType;
 
     private String accessToken;
@@ -26,15 +26,15 @@ class MSIToken {
         this.expiresOn = expiresOn;
     }
 
-    String accessToken() {
+    public String accessToken() {
         return accessToken;
     }
 
-    String tokenType() {
+    public String tokenType() {
         return tokenType;
     }
 
-    boolean isExpired() {
+    public boolean isExpired() {
         //get time now
         Calendar today = Calendar.getInstance();
         today.set(Calendar.HOUR_OF_DAY, 0);
