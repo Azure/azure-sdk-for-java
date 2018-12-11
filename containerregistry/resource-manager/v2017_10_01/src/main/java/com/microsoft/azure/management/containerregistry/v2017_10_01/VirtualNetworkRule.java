@@ -11,15 +11,41 @@ package com.microsoft.azure.management.containerregistry.v2017_10_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The virtual network rule for a container registry.
+ * Virtual network rule.
  */
 public class VirtualNetworkRule {
+    /**
+     * The action of virtual network rule. Possible values include: 'Allow'.
+     */
+    @JsonProperty(value = "action")
+    private Action action;
+
     /**
      * Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
+
+    /**
+     * Get the action of virtual network rule. Possible values include: 'Allow'.
+     *
+     * @return the action value
+     */
+    public Action action() {
+        return this.action;
+    }
+
+    /**
+     * Set the action of virtual network rule. Possible values include: 'Allow'.
+     *
+     * @param action the action value to set
+     * @return the VirtualNetworkRule object itself.
+     */
+    public VirtualNetworkRule withAction(Action action) {
+        this.action = action;
+        return this;
+    }
 
     /**
      * Get resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
