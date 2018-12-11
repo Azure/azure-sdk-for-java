@@ -22,7 +22,7 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.eventhub.v2018_01_01_preview.NetworkRuleSet;
+import com.microsoft.azure.management.eventhub.v2018_01_01_preview.NetworkRuleSets;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.IpFilterRule;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.VirtualNetworkRule;
 
@@ -129,25 +129,25 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<EHNamespace, EHNamespace
     }
 
     @Override
-    public Observable<NetworkRuleSet> createNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters) {
+    public Observable<NetworkRuleSets> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetsInner parameters) {
         NamespacesInner client = this.inner();
-        return client.createNetworkRuleSetAsync(resourceGroupName, namespaceName, parameters)
-        .map(new Func1<NetworkRuleSetInner, NetworkRuleSet>() {
+        return client.createOrUpdateNetworkRuleSetAsync(resourceGroupName, namespaceName, parameters)
+        .map(new Func1<NetworkRuleSetsInner, NetworkRuleSets>() {
             @Override
-            public NetworkRuleSet call(NetworkRuleSetInner inner) {
-                return new NetworkRuleSetImpl(inner, manager());
+            public NetworkRuleSets call(NetworkRuleSetsInner inner) {
+                return new NetworkRuleSetsImpl(inner, manager());
             }
         });
     }
 
     @Override
-    public Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName) {
+    public Observable<NetworkRuleSets> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName) {
         NamespacesInner client = this.inner();
         return client.getNetworkRuleSetAsync(resourceGroupName, namespaceName)
-        .map(new Func1<NetworkRuleSetInner, NetworkRuleSet>() {
+        .map(new Func1<NetworkRuleSetsInner, NetworkRuleSets>() {
             @Override
-            public NetworkRuleSet call(NetworkRuleSetInner inner) {
-                return new NetworkRuleSetImpl(inner, manager());
+            public NetworkRuleSets call(NetworkRuleSetsInner inner) {
+                return new NetworkRuleSetsImpl(inner, manager());
             }
         });
     }

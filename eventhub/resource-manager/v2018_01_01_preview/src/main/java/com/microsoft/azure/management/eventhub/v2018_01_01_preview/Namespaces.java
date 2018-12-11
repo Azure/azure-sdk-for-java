@@ -15,7 +15,7 @@ import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGro
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
-import com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation.NetworkRuleSetInner;
+import com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation.NetworkRuleSetsInner;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation.NamespacesInner;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.IpFilterRule;
@@ -41,7 +41,7 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
     VirtualNetworkRule.DefinitionStages.Blank defineVirtualnetworkrule(String name);
 
     /**
-     * Gets NetworkRuleSet for a Namespace.
+     * Create or update NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param namespaceName The Namespace name
@@ -49,7 +49,7 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NetworkRuleSet> createNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters);
+    Observable<NetworkRuleSets> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetsInner parameters);
 
     /**
      * Gets NetworkRuleSet for a Namespace.
@@ -59,7 +59,7 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName);
+    Observable<NetworkRuleSets> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName);
 
     /**
      * Gets an IpFilterRule for a Namespace by rule name.

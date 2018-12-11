@@ -129,9 +129,9 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/virtualnetworkrules/{virtualNetworkRuleName}")
         Observable<Response<ResponseBody>> getVirtualNetworkRule(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("virtualNetworkRuleName") String virtualNetworkRuleName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Namespaces createNetworkRuleSet" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Namespaces createOrUpdateNetworkRuleSet" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkruleset/default")
-        Observable<Response<ResponseBody>> createNetworkRuleSet(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body NetworkRuleSetInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateNetworkRuleSet(@Path("resourceGroupName") String resourceGroupName, @Path("namespaceName") String namespaceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body NetworkRuleSetsInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.eventhub.v2018_01_01_preview.Namespaces getNetworkRuleSet" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/networkruleset/default")
@@ -1796,7 +1796,7 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
     }
 
     /**
-     * Gets NetworkRuleSet for a Namespace.
+     * Create or update NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param namespaceName The Namespace name
@@ -1804,14 +1804,14 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the NetworkRuleSetInner object if successful.
+     * @return the NetworkRuleSetsInner object if successful.
      */
-    public NetworkRuleSetInner createNetworkRuleSet(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters) {
-        return createNetworkRuleSetWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).toBlocking().single().body();
+    public NetworkRuleSetsInner createOrUpdateNetworkRuleSet(String resourceGroupName, String namespaceName, NetworkRuleSetsInner parameters) {
+        return createOrUpdateNetworkRuleSetWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).toBlocking().single().body();
     }
 
     /**
-     * Gets NetworkRuleSet for a Namespace.
+     * Create or update NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param namespaceName The Namespace name
@@ -1820,38 +1820,38 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NetworkRuleSetInner> createNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters, final ServiceCallback<NetworkRuleSetInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createNetworkRuleSetWithServiceResponseAsync(resourceGroupName, namespaceName, parameters), serviceCallback);
+    public ServiceFuture<NetworkRuleSetsInner> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetsInner parameters, final ServiceCallback<NetworkRuleSetsInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateNetworkRuleSetWithServiceResponseAsync(resourceGroupName, namespaceName, parameters), serviceCallback);
     }
 
     /**
-     * Gets NetworkRuleSet for a Namespace.
+     * Create or update NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param namespaceName The Namespace name
      * @param parameters The Namespace IpFilterRule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the NetworkRuleSetInner object
+     * @return the observable to the NetworkRuleSetsInner object
      */
-    public Observable<NetworkRuleSetInner> createNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters) {
-        return createNetworkRuleSetWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).map(new Func1<ServiceResponse<NetworkRuleSetInner>, NetworkRuleSetInner>() {
+    public Observable<NetworkRuleSetsInner> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetsInner parameters) {
+        return createOrUpdateNetworkRuleSetWithServiceResponseAsync(resourceGroupName, namespaceName, parameters).map(new Func1<ServiceResponse<NetworkRuleSetsInner>, NetworkRuleSetsInner>() {
             @Override
-            public NetworkRuleSetInner call(ServiceResponse<NetworkRuleSetInner> response) {
+            public NetworkRuleSetsInner call(ServiceResponse<NetworkRuleSetsInner> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Gets NetworkRuleSet for a Namespace.
+     * Create or update NetworkRuleSet for a Namespace.
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param namespaceName The Namespace name
      * @param parameters The Namespace IpFilterRule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the NetworkRuleSetInner object
+     * @return the observable to the NetworkRuleSetsInner object
      */
-    public Observable<ServiceResponse<NetworkRuleSetInner>> createNetworkRuleSetWithServiceResponseAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters) {
+    public Observable<ServiceResponse<NetworkRuleSetsInner>> createOrUpdateNetworkRuleSetWithServiceResponseAsync(String resourceGroupName, String namespaceName, NetworkRuleSetsInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1868,12 +1868,12 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createNetworkRuleSet(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkRuleSetInner>>>() {
+        return service.createOrUpdateNetworkRuleSet(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkRuleSetsInner>>>() {
                 @Override
-                public Observable<ServiceResponse<NetworkRuleSetInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<NetworkRuleSetsInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<NetworkRuleSetInner> clientResponse = createNetworkRuleSetDelegate(response);
+                        ServiceResponse<NetworkRuleSetsInner> clientResponse = createOrUpdateNetworkRuleSetDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1882,9 +1882,9 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
             });
     }
 
-    private ServiceResponse<NetworkRuleSetInner> createNetworkRuleSetDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NetworkRuleSetInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<NetworkRuleSetInner>() { }.getType())
+    private ServiceResponse<NetworkRuleSetsInner> createOrUpdateNetworkRuleSetDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NetworkRuleSetsInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<NetworkRuleSetsInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -1897,9 +1897,9 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the NetworkRuleSetInner object if successful.
+     * @return the NetworkRuleSetsInner object if successful.
      */
-    public NetworkRuleSetInner getNetworkRuleSet(String resourceGroupName, String namespaceName) {
+    public NetworkRuleSetsInner getNetworkRuleSet(String resourceGroupName, String namespaceName) {
         return getNetworkRuleSetWithServiceResponseAsync(resourceGroupName, namespaceName).toBlocking().single().body();
     }
 
@@ -1912,7 +1912,7 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<NetworkRuleSetInner> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName, final ServiceCallback<NetworkRuleSetInner> serviceCallback) {
+    public ServiceFuture<NetworkRuleSetsInner> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName, final ServiceCallback<NetworkRuleSetsInner> serviceCallback) {
         return ServiceFuture.fromResponse(getNetworkRuleSetWithServiceResponseAsync(resourceGroupName, namespaceName), serviceCallback);
     }
 
@@ -1922,12 +1922,12 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param namespaceName The Namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the NetworkRuleSetInner object
+     * @return the observable to the NetworkRuleSetsInner object
      */
-    public Observable<NetworkRuleSetInner> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName) {
-        return getNetworkRuleSetWithServiceResponseAsync(resourceGroupName, namespaceName).map(new Func1<ServiceResponse<NetworkRuleSetInner>, NetworkRuleSetInner>() {
+    public Observable<NetworkRuleSetsInner> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName) {
+        return getNetworkRuleSetWithServiceResponseAsync(resourceGroupName, namespaceName).map(new Func1<ServiceResponse<NetworkRuleSetsInner>, NetworkRuleSetsInner>() {
             @Override
-            public NetworkRuleSetInner call(ServiceResponse<NetworkRuleSetInner> response) {
+            public NetworkRuleSetsInner call(ServiceResponse<NetworkRuleSetsInner> response) {
                 return response.body();
             }
         });
@@ -1939,9 +1939,9 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param namespaceName The Namespace name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the NetworkRuleSetInner object
+     * @return the observable to the NetworkRuleSetsInner object
      */
-    public Observable<ServiceResponse<NetworkRuleSetInner>> getNetworkRuleSetWithServiceResponseAsync(String resourceGroupName, String namespaceName) {
+    public Observable<ServiceResponse<NetworkRuleSetsInner>> getNetworkRuleSetWithServiceResponseAsync(String resourceGroupName, String namespaceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1955,11 +1955,11 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getNetworkRuleSet(resourceGroupName, namespaceName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkRuleSetInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkRuleSetsInner>>>() {
                 @Override
-                public Observable<ServiceResponse<NetworkRuleSetInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<NetworkRuleSetsInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<NetworkRuleSetInner> clientResponse = getNetworkRuleSetDelegate(response);
+                        ServiceResponse<NetworkRuleSetsInner> clientResponse = getNetworkRuleSetDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1968,9 +1968,9 @@ public class NamespacesInner implements InnerSupportsGet<EHNamespaceInner>, Inne
             });
     }
 
-    private ServiceResponse<NetworkRuleSetInner> getNetworkRuleSetDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<NetworkRuleSetInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<NetworkRuleSetInner>() { }.getType())
+    private ServiceResponse<NetworkRuleSetsInner> getNetworkRuleSetDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NetworkRuleSetsInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<NetworkRuleSetsInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
