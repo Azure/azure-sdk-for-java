@@ -19,6 +19,7 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Operations;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimes;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeObjectMetadatas;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeNodes;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.LinkedServices;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Datasets;
@@ -38,6 +39,7 @@ public final class DataFactoryManager extends ManagerCore<DataFactoryManager, Da
     private Operations operations;
     private Factories factories;
     private IntegrationRuntimes integrationRuntimes;
+    private IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas;
     private IntegrationRuntimeNodes integrationRuntimeNodes;
     private LinkedServices linkedServices;
     private Datasets datasets;
@@ -122,6 +124,16 @@ public final class DataFactoryManager extends ManagerCore<DataFactoryManager, Da
             this.integrationRuntimes = new IntegrationRuntimesImpl(this);
         }
         return this.integrationRuntimes;
+    }
+
+    /**
+     * @return Entry point to manage IntegrationRuntimeObjectMetadatas.
+     */
+    public IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas() {
+        if (this.integrationRuntimeObjectMetadatas == null) {
+            this.integrationRuntimeObjectMetadatas = new IntegrationRuntimeObjectMetadatasImpl(this);
+        }
+        return this.integrationRuntimeObjectMetadatas;
     }
 
     /**
