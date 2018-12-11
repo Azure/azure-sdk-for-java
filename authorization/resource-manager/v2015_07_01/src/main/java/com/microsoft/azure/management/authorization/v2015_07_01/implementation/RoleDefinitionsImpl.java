@@ -11,7 +11,6 @@ package com.microsoft.azure.management.authorization.v2015_07_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinitions;
-import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
 import com.microsoft.azure.Page;
@@ -43,9 +42,15 @@ class RoleDefinitionsImpl extends WrapperImpl<RoleDefinitionsInner> implements R
     }
 
     @Override
-    public Completable deleteAsync(String scope, String roleDefinitionId) {
+    public Observable<RoleDefinition> deleteAsync(String scope, String roleDefinitionId) {
         RoleDefinitionsInner client = this.inner();
-        return client.deleteAsync(scope, roleDefinitionId).toCompletable();
+        return client.deleteAsync(scope, roleDefinitionId)
+        .map(new Func1<RoleDefinitionInner, RoleDefinition>() {
+            @Override
+            public RoleDefinition call(RoleDefinitionInner inner) {
+                return new RoleDefinitionImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -81,7 +86,8 @@ class RoleDefinitionsImpl extends WrapperImpl<RoleDefinitionsInner> implements R
             public Iterable<RoleDefinitionInner> call(Page<RoleDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<RoleDefinitionInner, RoleDefinition>() {
+        })
+        .map(new Func1<RoleDefinitionInner, RoleDefinition>() {
             @Override
             public RoleDefinition call(RoleDefinitionInner inner) {
                 return new RoleDefinitionImpl(inner, manager());
