@@ -63,7 +63,7 @@ public class RoleAssignmentInner {
     private PrincipalType principalType;
 
     /**
-     * The Delegation flag for the roleassignment.
+     * The Delegation flag for the role assignment.
      */
     @JsonProperty(value = "properties.canDelegate")
     private Boolean canDelegate;
@@ -176,7 +176,7 @@ public class RoleAssignmentInner {
     }
 
     /**
-     * Get the Delegation flag for the roleassignment.
+     * Get the Delegation flag for the role assignment.
      *
      * @return the canDelegate value
      */
@@ -185,7 +185,7 @@ public class RoleAssignmentInner {
     }
 
     /**
-     * Set the Delegation flag for the roleassignment.
+     * Set the Delegation flag for the role assignment.
      *
      * @param canDelegate the canDelegate value to set
      * @return the RoleAssignmentInner object itself.

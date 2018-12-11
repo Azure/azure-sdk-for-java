@@ -130,7 +130,7 @@ public interface RoleAssignment extends HasInner<RoleAssignmentInner>, Indexable
         interface WithCanDelegate {
             /**
              * Specifies canDelegate.
-             * @param canDelegate The delgation flag used for creating a role assignment
+             * @param canDelegate The delegation flag used for creating a role assignment
              * @return the next definition stage
              */
             WithCreate withCanDelegate(Boolean canDelegate);
@@ -172,7 +172,7 @@ public interface RoleAssignment extends HasInner<RoleAssignmentInner>, Indexable
         interface WithCanDelegate {
             /**
              * Specifies canDelegate.
-             * @param canDelegate The delgation flag used for creating a role assignment
+             * @param canDelegate The delegation flag used for creating a role assignment
              * @return the next update stage
              */
             Update withCanDelegate(Boolean canDelegate);

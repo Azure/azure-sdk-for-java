@@ -40,7 +40,7 @@ public class RoleAssignmentCreateParameters {
     private PrincipalType principalType;
 
     /**
-     * The delgation flag used for creating a role assignment.
+     * The delegation flag used for creating a role assignment.
      */
     @JsonProperty(value = "properties.canDelegate")
     private Boolean canDelegate;
@@ -106,7 +106,7 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Get the delgation flag used for creating a role assignment.
+     * Get the delegation flag used for creating a role assignment.
      *
      * @return the canDelegate value
      */
@@ -115,7 +115,7 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the delgation flag used for creating a role assignment.
+     * Set the delegation flag used for creating a role assignment.
      *
      * @param canDelegate the canDelegate value to set
      * @return the RoleAssignmentCreateParameters object itself.
