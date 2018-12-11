@@ -22,19 +22,20 @@ public class ImageAnalysis {
     private List<Category> categories;
 
     /**
-     * The adult property.
+     * An object describing whether the image contains adult-oriented content
+     * and/or is racy.
      */
     @JsonProperty(value = "adult")
     private AdultInfo adult;
 
     /**
-     * The color property.
+     * An object providing additional metadata describing color attributes.
      */
     @JsonProperty(value = "color")
     private ColorInfo color;
 
     /**
-     * The imageType property.
+     * An object providing possible image types and matching confidence levels.
      */
     @JsonProperty(value = "imageType")
     private ImageType imageType;
@@ -46,7 +47,8 @@ public class ImageAnalysis {
     private List<ImageTag> tags;
 
     /**
-     * The description property.
+     * A collection of content tags, along with a list of captions sorted by
+     * confidence level, and image metadata.
      */
     @JsonProperty(value = "description")
     private ImageDescriptionDetails description;
@@ -58,7 +60,13 @@ public class ImageAnalysis {
     private List<FaceDescription> faces;
 
     /**
-     * Id of the request for tracking purposes.
+     * Array of objects describing what was detected in the image.
+     */
+    @JsonProperty(value = "objects")
+    private List<DetectedObject> objects;
+
+    /**
+     * Id of the REST API request.
      */
     @JsonProperty(value = "requestId")
     private String requestId;
@@ -90,7 +98,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the adult value.
+     * Get an object describing whether the image contains adult-oriented content and/or is racy.
      *
      * @return the adult value
      */
@@ -99,7 +107,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the adult value.
+     * Set an object describing whether the image contains adult-oriented content and/or is racy.
      *
      * @param adult the adult value to set
      * @return the ImageAnalysis object itself.
@@ -110,7 +118,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the color value.
+     * Get an object providing additional metadata describing color attributes.
      *
      * @return the color value
      */
@@ -119,7 +127,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the color value.
+     * Set an object providing additional metadata describing color attributes.
      *
      * @param color the color value to set
      * @return the ImageAnalysis object itself.
@@ -130,7 +138,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the imageType value.
+     * Get an object providing possible image types and matching confidence levels.
      *
      * @return the imageType value
      */
@@ -139,7 +147,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the imageType value.
+     * Set an object providing possible image types and matching confidence levels.
      *
      * @param imageType the imageType value to set
      * @return the ImageAnalysis object itself.
@@ -170,7 +178,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the description value.
+     * Get a collection of content tags, along with a list of captions sorted by confidence level, and image metadata.
      *
      * @return the description value
      */
@@ -179,7 +187,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the description value.
+     * Set a collection of content tags, along with a list of captions sorted by confidence level, and image metadata.
      *
      * @param description the description value to set
      * @return the ImageAnalysis object itself.
@@ -210,7 +218,27 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get id of the request for tracking purposes.
+     * Get array of objects describing what was detected in the image.
+     *
+     * @return the objects value
+     */
+    public List<DetectedObject> objects() {
+        return this.objects;
+    }
+
+    /**
+     * Set array of objects describing what was detected in the image.
+     *
+     * @param objects the objects value to set
+     * @return the ImageAnalysis object itself.
+     */
+    public ImageAnalysis withObjects(List<DetectedObject> objects) {
+        this.objects = objects;
+        return this;
+    }
+
+    /**
+     * Get id of the REST API request.
      *
      * @return the requestId value
      */
@@ -219,7 +247,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set id of the request for tracking purposes.
+     * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
      * @return the ImageAnalysis object itself.

@@ -22,14 +22,14 @@ public class AdultInfo {
     private boolean isAdultContent;
 
     /**
-     * A value indicating if the image is race.
+     * A value indicating if the image is racy.
      */
     @JsonProperty(value = "isRacyContent")
     private boolean isRacyContent;
 
     /**
-     * Score from 0 to 1 that indicates how much of adult content is within the
-     * image.
+     * Score from 0 to 1 that indicates how much the content is considered
+     * adult-oriented within the image.
      */
     @JsonProperty(value = "adultScore")
     private double adultScore;
@@ -61,7 +61,7 @@ public class AdultInfo {
     }
 
     /**
-     * Get a value indicating if the image is race.
+     * Get a value indicating if the image is racy.
      *
      * @return the isRacyContent value
      */
@@ -70,7 +70,7 @@ public class AdultInfo {
     }
 
     /**
-     * Set a value indicating if the image is race.
+     * Set a value indicating if the image is racy.
      *
      * @param isRacyContent the isRacyContent value to set
      * @return the AdultInfo object itself.
@@ -81,7 +81,7 @@ public class AdultInfo {
     }
 
     /**
-     * Get score from 0 to 1 that indicates how much of adult content is within the image.
+     * Get score from 0 to 1 that indicates how much the content is considered adult-oriented within the image.
      *
      * @return the adultScore value
      */
@@ -90,7 +90,7 @@ public class AdultInfo {
     }
 
     /**
-     * Set score from 0 to 1 that indicates how much of adult content is within the image.
+     * Set score from 0 to 1 that indicates how much the content is considered adult-oriented within the image.
      *
      * @param adultScore the adultScore value to set
      * @return the AdultInfo object itself.

@@ -21,13 +21,14 @@ public class CelebritiesModel {
     private String name;
 
     /**
-     * Level of confidence ranging from 0 to 1.
+     * Confidence level for the celebrity recognition as a value ranging from 0
+     * to 1.
      */
     @JsonProperty(value = "confidence")
     private double confidence;
 
     /**
-     * The faceRectangle property.
+     * Location of the identified face in the image.
      */
     @JsonProperty(value = "faceRectangle")
     private FaceRectangle faceRectangle;
@@ -53,7 +54,7 @@ public class CelebritiesModel {
     }
 
     /**
-     * Get level of confidence ranging from 0 to 1.
+     * Get confidence level for the celebrity recognition as a value ranging from 0 to 1.
      *
      * @return the confidence value
      */
@@ -62,7 +63,7 @@ public class CelebritiesModel {
     }
 
     /**
-     * Set level of confidence ranging from 0 to 1.
+     * Set confidence level for the celebrity recognition as a value ranging from 0 to 1.
      *
      * @param confidence the confidence value to set
      * @return the CelebritiesModel object itself.
@@ -73,7 +74,7 @@ public class CelebritiesModel {
     }
 
     /**
-     * Get the faceRectangle value.
+     * Get location of the identified face in the image.
      *
      * @return the faceRectangle value
      */
@@ -82,7 +83,7 @@ public class CelebritiesModel {
     }
 
     /**
-     * Set the faceRectangle value.
+     * Set location of the identified face in the image.
      *
      * @param faceRectangle the faceRectangle value to set
      * @return the CelebritiesModel object itself.

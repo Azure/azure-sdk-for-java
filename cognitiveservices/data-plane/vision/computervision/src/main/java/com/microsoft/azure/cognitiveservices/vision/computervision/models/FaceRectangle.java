@@ -15,31 +15,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FaceRectangle {
     /**
-     * X-coordinate of the top left point of the face.
+     * X-coordinate of the top left point of the face, in pixels.
      */
     @JsonProperty(value = "left")
     private int left;
 
     /**
-     * Y-coordinate of the top left point of the face.
+     * Y-coordinate of the top left point of the face, in pixels.
      */
     @JsonProperty(value = "top")
     private int top;
 
     /**
-     * Width measured from the top-left point of the face.
+     * Width measured from the top-left point of the face, in pixels.
      */
     @JsonProperty(value = "width")
     private int width;
 
     /**
-     * Height measured from the top-left point of the face.
+     * Height measured from the top-left point of the face, in pixels.
      */
     @JsonProperty(value = "height")
     private int height;
 
     /**
-     * Get x-coordinate of the top left point of the face.
+     * Get x-coordinate of the top left point of the face, in pixels.
      *
      * @return the left value
      */
@@ -48,7 +48,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Set x-coordinate of the top left point of the face.
+     * Set x-coordinate of the top left point of the face, in pixels.
      *
      * @param left the left value to set
      * @return the FaceRectangle object itself.
@@ -59,7 +59,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Get y-coordinate of the top left point of the face.
+     * Get y-coordinate of the top left point of the face, in pixels.
      *
      * @return the top value
      */
@@ -68,7 +68,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Set y-coordinate of the top left point of the face.
+     * Set y-coordinate of the top left point of the face, in pixels.
      *
      * @param top the top value to set
      * @return the FaceRectangle object itself.
@@ -79,7 +79,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Get width measured from the top-left point of the face.
+     * Get width measured from the top-left point of the face, in pixels.
      *
      * @return the width value
      */
@@ -88,7 +88,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Set width measured from the top-left point of the face.
+     * Set width measured from the top-left point of the face, in pixels.
      *
      * @param width the width value to set
      * @return the FaceRectangle object itself.
@@ -99,7 +99,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Get height measured from the top-left point of the face.
+     * Get height measured from the top-left point of the face, in pixels.
      *
      * @return the height value
      */
@@ -108,7 +108,7 @@ public class FaceRectangle {
     }
 
     /**
-     * Set height measured from the top-left point of the face.
+     * Set height measured from the top-left point of the face, in pixels.
      *
      * @param height the height value to set
      * @return the FaceRectangle object itself.

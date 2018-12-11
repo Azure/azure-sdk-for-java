@@ -12,14 +12,14 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Result of domain-specific classifications for the domain of landmarks.
+ * Result of a DetectImage call.
  */
-public class LandmarkResults {
+public class DetectResult {
     /**
-     * List of landmarks recognized in the image.
+     * An array of detected objects.
      */
-    @JsonProperty(value = "landmarks")
-    private List<LandmarksModel> landmarks;
+    @JsonProperty(value = "objects", access = JsonProperty.Access.WRITE_ONLY)
+    private List<DetectedObject> objects;
 
     /**
      * Id of the REST API request.
@@ -34,23 +34,12 @@ public class LandmarkResults {
     private ImageMetadata metadata;
 
     /**
-     * Get list of landmarks recognized in the image.
+     * Get an array of detected objects.
      *
-     * @return the landmarks value
+     * @return the objects value
      */
-    public List<LandmarksModel> landmarks() {
-        return this.landmarks;
-    }
-
-    /**
-     * Set list of landmarks recognized in the image.
-     *
-     * @param landmarks the landmarks value to set
-     * @return the LandmarkResults object itself.
-     */
-    public LandmarkResults withLandmarks(List<LandmarksModel> landmarks) {
-        this.landmarks = landmarks;
-        return this;
+    public List<DetectedObject> objects() {
+        return this.objects;
     }
 
     /**
@@ -66,9 +55,9 @@ public class LandmarkResults {
      * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
-     * @return the LandmarkResults object itself.
+     * @return the DetectResult object itself.
      */
-    public LandmarkResults withRequestId(String requestId) {
+    public DetectResult withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -86,9 +75,9 @@ public class LandmarkResults {
      * Set the metadata value.
      *
      * @param metadata the metadata value to set
-     * @return the LandmarkResults object itself.
+     * @return the DetectResult object itself.
      */
-    public LandmarkResults withMetadata(ImageMetadata metadata) {
+    public DetectResult withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }

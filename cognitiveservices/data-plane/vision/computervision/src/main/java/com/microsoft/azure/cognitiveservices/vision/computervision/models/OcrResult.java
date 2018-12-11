@@ -37,10 +37,10 @@ public class OcrResult {
     private double textAngle;
 
     /**
-     * Orientation of the text recognized in the image. The value
-     * (up,down,left, or right) refers to the direction that the top of the
-     * recognized text is facing, after the image has been rotated around its
-     * center according to the detected text angle (see textAngle property).
+     * Orientation of the text recognized in the image. The value (up, down,
+     * left, or right) refers to the direction that the top of the recognized
+     * text is facing, after the image has been rotated around its center
+     * according to the detected text angle (see textAngle property).
      */
     @JsonProperty(value = "orientation")
     private String orientation;
@@ -93,7 +93,7 @@ public class OcrResult {
     }
 
     /**
-     * Get orientation of the text recognized in the image. The value (up,down,left, or right) refers to the direction that the top of the recognized text is facing, after the image has been rotated around its center according to the detected text angle (see textAngle property).
+     * Get orientation of the text recognized in the image. The value (up, down, left, or right) refers to the direction that the top of the recognized text is facing, after the image has been rotated around its center according to the detected text angle (see textAngle property).
      *
      * @return the orientation value
      */
@@ -102,7 +102,7 @@ public class OcrResult {
     }
 
     /**
-     * Set orientation of the text recognized in the image. The value (up,down,left, or right) refers to the direction that the top of the recognized text is facing, after the image has been rotated around its center according to the detected text angle (see textAngle property).
+     * Set orientation of the text recognized in the image. The value (up, down, left, or right) refers to the direction that the top of the recognized text is facing, after the image has been rotated around its center according to the detected text angle (see textAngle property).
      *
      * @param orientation the orientation value to set
      * @return the OcrResult object itself.

@@ -10,8 +10,10 @@ package com.microsoft.azure.cognitiveservices.vision.computervision;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AreaOfInterestResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.Details;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DetectResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DomainModelResults;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageAnalysis;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageDescription;
@@ -59,14 +61,14 @@ public interface ComputerVisionClient {
     String userAgent();
 
     /**
-     * Gets Supported Cognitive Services endpoints.
+     * Gets Supported Cognitive Services endpoints..
      *
      * @return the endpoint value.
      */
     String endpoint();
 
     /**
-     * Sets Supported Cognitive Services endpoints.
+     * Sets Supported Cognitive Services endpoints..
      *
      * @param endpoint the endpoint value.
      * @return the service client itself
@@ -119,44 +121,11 @@ public interface ComputerVisionClient {
     ComputerVisionClient withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
-     * This operation returns the list of domain-specific models that are supported by the Computer Vision API.  Currently, the API only supports one domain-specific model: a celebrity recognizer. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ListModelsResult object if successful.
-     */
-    ListModelsResult listModels();
-
-    /**
-     * This operation returns the list of domain-specific models that are supported by the Computer Vision API.  Currently, the API only supports one domain-specific model: a celebrity recognizer. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<ListModelsResult> listModelsAsync(final ServiceCallback<ListModelsResult> serviceCallback);
-
-    /**
-     * This operation returns the list of domain-specific models that are supported by the Computer Vision API.  Currently, the API only supports one domain-specific model: a celebrity recognizer. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ListModelsResult object
-     */
-    Observable<ListModelsResult> listModelsAsync();
-
-    /**
-     * This operation returns the list of domain-specific models that are supported by the Computer Vision API.  Currently, the API only supports one domain-specific model: a celebrity recognizer. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ListModelsResult object
-     */
-    Observable<ServiceResponse<ListModelsResult>> listModelsWithServiceResponseAsync();
-
-    /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
-     *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -165,9 +134,11 @@ public interface ComputerVisionClient {
     ImageAnalysis analyzeImage(String url);
 
     /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
+     * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -175,28 +146,34 @@ public interface ComputerVisionClient {
     ServiceFuture<ImageAnalysis> analyzeImageAsync(String url, final ServiceCallback<ImageAnalysis> serviceCallback);
 
     /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
+     * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
     Observable<ImageAnalysis> analyzeImageAsync(String url);
 
     /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
+     * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
      */
     Observable<ServiceResponse<ImageAnalysis>> analyzeImageWithServiceResponseAsync(String url);
     /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
+     * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
-     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
-     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
+     * @param url Publicly reachable URL of an image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
@@ -206,11 +183,13 @@ public interface ComputerVisionClient {
     ImageAnalysis analyzeImage(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
 
     /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
+     * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
-     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
-     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
+     * @param url Publicly reachable URL of an image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -219,11 +198,13 @@ public interface ComputerVisionClient {
     ServiceFuture<ImageAnalysis> analyzeImageAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language, final ServiceCallback<ImageAnalysis> serviceCallback);
 
     /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
+     * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
-     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
-     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
+     * @param url Publicly reachable URL of an image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
@@ -231,11 +212,13 @@ public interface ComputerVisionClient {
     Observable<ImageAnalysis> analyzeImageAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
 
     /**
-     * This operation extracts a rich set of visual features based on the image content. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.  Within your request, there is an optional parameter to allow you to choose which features to return.  By default, image categories are returned in the response.
+     * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
-     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
-     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
+     * @param url Publicly reachable URL of an image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
@@ -243,195 +226,11 @@ public interface ComputerVisionClient {
     Observable<ServiceResponse<ImageAnalysis>> analyzeImageWithServiceResponseAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
 
     /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url Publicly reachable URL of an image
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
-     */
-    InputStream generateThumbnail(int width, int height, String url);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url Publicly reachable URL of an image
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<InputStream> generateThumbnailAsync(int width, int height, String url, final ServiceCallback<InputStream> serviceCallback);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url Publicly reachable URL of an image
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<InputStream> generateThumbnailAsync(int width, int height, String url);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url Publicly reachable URL of an image
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<ServiceResponse<InputStream>> generateThumbnailWithServiceResponseAsync(int width, int height, String url);
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url Publicly reachable URL of an image
-     * @param smartCropping Boolean flag for enabling smart cropping.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
-     */
-    InputStream generateThumbnail(int width, int height, String url, Boolean smartCropping);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url Publicly reachable URL of an image
-     * @param smartCropping Boolean flag for enabling smart cropping.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<InputStream> generateThumbnailAsync(int width, int height, String url, Boolean smartCropping, final ServiceCallback<InputStream> serviceCallback);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url Publicly reachable URL of an image
-     * @param smartCropping Boolean flag for enabling smart cropping.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<InputStream> generateThumbnailAsync(int width, int height, String url, Boolean smartCropping);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param url Publicly reachable URL of an image
-     * @param smartCropping Boolean flag for enabling smart cropping.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<ServiceResponse<InputStream>> generateThumbnailWithServiceResponseAsync(int width, int height, String url, Boolean smartCropping);
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url Publicly reachable URL of an image
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OcrResult object if successful.
-     */
-    OcrResult recognizePrintedText(boolean detectOrientation, String url);
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url Publicly reachable URL of an image
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, final ServiceCallback<OcrResult> serviceCallback);
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url Publicly reachable URL of an image
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
-     */
-    Observable<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url);
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url Publicly reachable URL of an image
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
-     */
-    Observable<ServiceResponse<OcrResult>> recognizePrintedTextWithServiceResponseAsync(boolean detectOrientation, String url);
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url Publicly reachable URL of an image
-     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OcrResult object if successful.
-     */
-    OcrResult recognizePrintedText(boolean detectOrientation, String url, OcrLanguages language);
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url Publicly reachable URL of an image
-     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, OcrLanguages language, final ServiceCallback<OcrResult> serviceCallback);
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url Publicly reachable URL of an image
-     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
-     */
-    Observable<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, OcrLanguages language);
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param url Publicly reachable URL of an image
-     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
-     */
-    Observable<ServiceResponse<OcrResult>> recognizePrintedTextWithServiceResponseAsync(boolean detectOrientation, String url, OcrLanguages language);
-
-    /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
-     *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -440,9 +239,11 @@ public interface ComputerVisionClient {
     ImageDescription describeImage(String url);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -450,26 +251,32 @@ public interface ComputerVisionClient {
     ServiceFuture<ImageDescription> describeImageAsync(String url, final ServiceCallback<ImageDescription> serviceCallback);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
     Observable<ImageDescription> describeImageAsync(String url);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageDescription object
      */
     Observable<ServiceResponse<ImageDescription>> describeImageWithServiceResponseAsync(String url);
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -480,9 +287,11 @@ public interface ComputerVisionClient {
     ImageDescription describeImage(String url, Integer maxCandidates, String language);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -492,9 +301,11 @@ public interface ComputerVisionClient {
     ServiceFuture<ImageDescription> describeImageAsync(String url, Integer maxCandidates, String language, final ServiceCallback<ImageDescription> serviceCallback);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -503,9 +314,11 @@ public interface ComputerVisionClient {
     Observable<ImageDescription> describeImageAsync(String url, Integer maxCandidates, String language);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -514,91 +327,99 @@ public interface ComputerVisionClient {
     Observable<ServiceResponse<ImageDescription>> describeImageWithServiceResponseAsync(String url, Integer maxCandidates, String language);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * Performs object detection on the specified image.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TagResult object if successful.
+     * @return the DetectResult object if successful.
      */
-    TagResult tagImage(String url);
+    DetectResult detectObjects(String url);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * Performs object detection on the specified image.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<TagResult> tagImageAsync(String url, final ServiceCallback<TagResult> serviceCallback);
+    ServiceFuture<DetectResult> detectObjectsAsync(String url, final ServiceCallback<DetectResult> serviceCallback);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * Performs object detection on the specified image.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the DetectResult object
      */
-    Observable<TagResult> tagImageAsync(String url);
+    Observable<DetectResult> detectObjectsAsync(String url);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * Performs object detection on the specified image.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the DetectResult object
      */
-    Observable<ServiceResponse<TagResult>> tagImageWithServiceResponseAsync(String url);
+    Observable<ServiceResponse<DetectResult>> detectObjectsWithServiceResponseAsync(String url);
+
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * This operation returns the list of domain-specific models that are supported by the Computer Vision API. Currently, the API supports following domain-specific models: celebrity recognizer, landmark recognizer.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TagResult object if successful.
+     * @return the ListModelsResult object if successful.
      */
-    TagResult tagImage(String url, String language);
+    ListModelsResult listModels();
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * This operation returns the list of domain-specific models that are supported by the Computer Vision API. Currently, the API supports following domain-specific models: celebrity recognizer, landmark recognizer.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<TagResult> tagImageAsync(String url, String language, final ServiceCallback<TagResult> serviceCallback);
+    ServiceFuture<ListModelsResult> listModelsAsync(final ServiceCallback<ListModelsResult> serviceCallback);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * This operation returns the list of domain-specific models that are supported by the Computer Vision API. Currently, the API supports following domain-specific models: celebrity recognizer, landmark recognizer.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the ListModelsResult object
      */
-    Observable<TagResult> tagImageAsync(String url, String language);
+    Observable<ListModelsResult> listModelsAsync();
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * This operation returns the list of domain-specific models that are supported by the Computer Vision API. Currently, the API supports following domain-specific models: celebrity recognizer, landmark recognizer.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
-     * @param url Publicly reachable URL of an image
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the ListModelsResult object
      */
-    Observable<ServiceResponse<TagResult>> tagImageWithServiceResponseAsync(String url, String language);
+    Observable<ServiceResponse<ListModelsResult>> listModelsWithServiceResponseAsync();
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -607,10 +428,13 @@ public interface ComputerVisionClient {
     DomainModelResults analyzeImageByDomain(String model, String url);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -618,29 +442,38 @@ public interface ComputerVisionClient {
     ServiceFuture<DomainModelResults> analyzeImageByDomainAsync(String model, String url, final ServiceCallback<DomainModelResults> serviceCallback);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
     Observable<DomainModelResults> analyzeImageByDomainAsync(String model, String url);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
      */
     Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainWithServiceResponseAsync(String model, String url);
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
@@ -650,10 +483,13 @@ public interface ComputerVisionClient {
     DomainModelResults analyzeImageByDomain(String model, String url, String language);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -662,10 +498,13 @@ public interface ComputerVisionClient {
     ServiceFuture<DomainModelResults> analyzeImageByDomainAsync(String model, String url, String language, final ServiceCallback<DomainModelResults> serviceCallback);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
@@ -673,10 +512,13 @@ public interface ComputerVisionClient {
     Observable<DomainModelResults> analyzeImageByDomainAsync(String model, String url, String language);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DomainModelResults object
@@ -684,10 +526,372 @@ public interface ComputerVisionClient {
     Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainWithServiceResponseAsync(String model, String url, String language);
 
     /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OcrResult object if successful.
+     */
+    OcrResult recognizePrintedText(boolean detectOrientation, String url);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, final ServiceCallback<OcrResult> serviceCallback);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OcrResult object
+     */
+    Observable<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OcrResult object
+     */
+    Observable<ServiceResponse<OcrResult>> recognizePrintedTextWithServiceResponseAsync(boolean detectOrientation, String url);
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OcrResult object if successful.
+     */
+    OcrResult recognizePrintedText(boolean detectOrientation, String url, OcrLanguages language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, OcrLanguages language, final ServiceCallback<OcrResult> serviceCallback);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OcrResult object
+     */
+    Observable<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, OcrLanguages language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param url Publicly reachable URL of an image.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OcrResult object
+     */
+    Observable<ServiceResponse<OcrResult>> recognizePrintedTextWithServiceResponseAsync(boolean detectOrientation, String url, OcrLanguages language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TagResult object if successful.
+     */
+    TagResult tagImage(String url);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<TagResult> tagImageAsync(String url, final ServiceCallback<TagResult> serviceCallback);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TagResult object
+     */
+    Observable<TagResult> tagImageAsync(String url);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TagResult object
+     */
+    Observable<ServiceResponse<TagResult>> tagImageWithServiceResponseAsync(String url);
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TagResult object if successful.
+     */
+    TagResult tagImage(String url, String language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<TagResult> tagImageAsync(String url, String language, final ServiceCallback<TagResult> serviceCallback);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TagResult object
+     */
+    Observable<TagResult> tagImageAsync(String url, String language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TagResult object
+     */
+    Observable<ServiceResponse<TagResult>> tagImageWithServiceResponseAsync(String url, String language);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the InputStream object if successful.
+     */
+    InputStream generateThumbnail(int width, int height, String url);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<InputStream> generateThumbnailAsync(int width, int height, String url, final ServiceCallback<InputStream> serviceCallback);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    Observable<InputStream> generateThumbnailAsync(int width, int height, String url);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    Observable<ServiceResponse<InputStream>> generateThumbnailWithServiceResponseAsync(int width, int height, String url);
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the InputStream object if successful.
+     */
+    InputStream generateThumbnail(int width, int height, String url, Boolean smartCropping);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<InputStream> generateThumbnailAsync(int width, int height, String url, Boolean smartCropping, final ServiceCallback<InputStream> serviceCallback);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    Observable<InputStream> generateThumbnailAsync(int width, int height, String url, Boolean smartCropping);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param url Publicly reachable URL of an image.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    Observable<ServiceResponse<InputStream>> generateThumbnailWithServiceResponseAsync(int width, int height, String url, Boolean smartCropping);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+     A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the AreaOfInterestResult object if successful.
+     */
+    AreaOfInterestResult getAreaOfInterest(String url);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+     A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<AreaOfInterestResult> getAreaOfInterestAsync(String url, final ServiceCallback<AreaOfInterestResult> serviceCallback);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+     A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AreaOfInterestResult object
+     */
+    Observable<AreaOfInterestResult> getAreaOfInterestAsync(String url);
+
+    /**
+     * This operation returns a bounding box around the most important area of the image.
+     A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the AreaOfInterestResult object
+     */
+    Observable<ServiceResponse<AreaOfInterestResult>> getAreaOfInterestWithServiceResponseAsync(String url);
+
+    /**
      * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -698,7 +902,7 @@ public interface ComputerVisionClient {
      * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -709,7 +913,7 @@ public interface ComputerVisionClient {
      * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
@@ -719,7 +923,7 @@ public interface ComputerVisionClient {
      * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
      *
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
-     * @param url Publicly reachable URL of an image
+     * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
@@ -766,6 +970,8 @@ public interface ComputerVisionClient {
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -777,6 +983,8 @@ public interface ComputerVisionClient {
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -787,6 +995,8 @@ public interface ComputerVisionClient {
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -796,6 +1006,8 @@ public interface ComputerVisionClient {
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -804,10 +1016,12 @@ public interface ComputerVisionClient {
     Observable<ServiceResponse<ImageAnalysis>> analyzeImageInStreamWithServiceResponseAsync(byte[] image);
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
-     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
-     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
@@ -818,10 +1032,12 @@ public interface ComputerVisionClient {
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
-     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
-     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -831,10 +1047,12 @@ public interface ComputerVisionClient {
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
-     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
-     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
@@ -843,10 +1061,12 @@ public interface ComputerVisionClient {
 
     /**
      * This operation extracts a rich set of visual features based on the image content.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. Within your request, there is an optional parameter to allow you to choose which features to return. By default, image categories are returned in the response.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
-     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
-     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
+     * @param visualFeatures A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include: Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white. Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected. Objects - detects various objects within an image, including the approximate location. The Objects argument is only available in English.
+     * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include: Celebrities - identifies celebrities if detected in the image, Landmarks - identifies notable landmarks in the image.
      * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageAnalysis object
@@ -854,193 +1074,56 @@ public interface ComputerVisionClient {
     Observable<ServiceResponse<ImageAnalysis>> analyzeImageInStreamWithServiceResponseAsync(byte[] image, List<VisualFeatureTypes> visualFeatures, List<Details> details, String language);
 
     /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     * This operation returns a bounding box around the most important area of the image.
+     A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
      *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param image An image stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
-     */
-    InputStream generateThumbnailInStream(int width, int height, byte[] image);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param image An image stream.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image, final ServiceCallback<InputStream> serviceCallback);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param image An image stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param image An image stream.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<ServiceResponse<InputStream>> generateThumbnailInStreamWithServiceResponseAsync(int width, int height, byte[] image);
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param image An image stream.
-     * @param smartCropping Boolean flag for enabling smart cropping.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
-     */
-    InputStream generateThumbnailInStream(int width, int height, byte[] image, Boolean smartCropping);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param image An image stream.
-     * @param smartCropping Boolean flag for enabling smart cropping.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image, Boolean smartCropping, final ServiceCallback<InputStream> serviceCallback);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param image An image stream.
-     * @param smartCropping Boolean flag for enabling smart cropping.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image, Boolean smartCropping);
-
-    /**
-     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image. A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
-     *
-     * @param width Width of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param height Height of the thumbnail. It must be between 1 and 1024. Recommended minimum of 50.
-     * @param image An image stream.
-     * @param smartCropping Boolean flag for enabling smart cropping.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<ServiceResponse<InputStream>> generateThumbnailInStreamWithServiceResponseAsync(int width, int height, byte[] image, Boolean smartCropping);
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OcrResult object if successful.
+     * @return the AreaOfInterestResult object if successful.
      */
-    OcrResult recognizePrintedTextInStream(boolean detectOrientation, byte[] image);
+    AreaOfInterestResult getAreaOfInterestInStream(byte[] image);
 
     /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
+     * This operation returns a bounding box around the most important area of the image.
+     A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
      *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
      * @param image An image stream.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, final ServiceCallback<OcrResult> serviceCallback);
+    ServiceFuture<AreaOfInterestResult> getAreaOfInterestInStreamAsync(byte[] image, final ServiceCallback<AreaOfInterestResult> serviceCallback);
 
     /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
+     * This operation returns a bounding box around the most important area of the image.
+     A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
      *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
+     * @return the observable to the AreaOfInterestResult object
      */
-    Observable<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image);
+    Observable<AreaOfInterestResult> getAreaOfInterestInStreamAsync(byte[] image);
 
     /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
+     * This operation returns a bounding box around the most important area of the image.
+     A successful response will be returned in JSON. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
      *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
+     * @return the observable to the AreaOfInterestResult object
      */
-    Observable<ServiceResponse<OcrResult>> recognizePrintedTextInStreamWithServiceResponseAsync(boolean detectOrientation, byte[] image);
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param image An image stream.
-     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OcrResult object if successful.
-     */
-    OcrResult recognizePrintedTextInStream(boolean detectOrientation, byte[] image, OcrLanguages language);
+    Observable<ServiceResponse<AreaOfInterestResult>> getAreaOfInterestInStreamWithServiceResponseAsync(byte[] image);
 
     /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param image An image stream.
-     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, OcrLanguages language, final ServiceCallback<OcrResult> serviceCallback);
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param image An image stream.
-     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
-     */
-    Observable<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, OcrLanguages language);
-
-    /**
-     * Optical Character Recognition (OCR) detects printed text in an image and extracts the recognized characters into a machine-usable character stream.   Upon success, the OCR results will be returned. Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage,  NotSupportedLanguage, or InternalServerError.
-     *
-     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
-     * @param image An image stream.
-     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
-     */
-    Observable<ServiceResponse<OcrResult>> recognizePrintedTextInStreamWithServiceResponseAsync(boolean detectOrientation, byte[] image, OcrLanguages language);
-
-    /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1051,7 +1134,9 @@ public interface ComputerVisionClient {
     ImageDescription describeImageInStream(byte[] image);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1061,7 +1146,9 @@ public interface ComputerVisionClient {
     ServiceFuture<ImageDescription> describeImageInStreamAsync(byte[] image, final ServiceCallback<ImageDescription> serviceCallback);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1070,7 +1157,9 @@ public interface ComputerVisionClient {
     Observable<ImageDescription> describeImageInStreamAsync(byte[] image);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1078,7 +1167,9 @@ public interface ComputerVisionClient {
      */
     Observable<ServiceResponse<ImageDescription>> describeImageInStreamWithServiceResponseAsync(byte[] image);
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
@@ -1091,7 +1182,9 @@ public interface ComputerVisionClient {
     ImageDescription describeImageInStream(byte[] image, Integer maxCandidates, String language);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
@@ -1103,7 +1196,9 @@ public interface ComputerVisionClient {
     ServiceFuture<ImageDescription> describeImageInStreamAsync(byte[] image, Integer maxCandidates, String language, final ServiceCallback<ImageDescription> serviceCallback);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
@@ -1114,7 +1209,9 @@ public interface ComputerVisionClient {
     Observable<ImageDescription> describeImageInStreamAsync(byte[] image, Integer maxCandidates, String language);
 
     /**
-     * This operation generates a description of an image in human readable language with complete sentences.  The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image.  Descriptions are ordered by their confidence score. All descriptions are in English. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a description of an image in human readable language with complete sentences. The description is based on a collection of content tags, which are also returned by the operation. More than one description can be generated for each image. Descriptions are ordered by their confidence score. All descriptions are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
@@ -1125,88 +1222,170 @@ public interface ComputerVisionClient {
     Observable<ServiceResponse<ImageDescription>> describeImageInStreamWithServiceResponseAsync(byte[] image, Integer maxCandidates, String language);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * Performs object detection on the specified image.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TagResult object if successful.
+     * @return the DetectResult object if successful.
      */
-    TagResult tagImageInStream(byte[] image);
+    DetectResult detectObjectsInStream(byte[] image);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * Performs object detection on the specified image.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<TagResult> tagImageInStreamAsync(byte[] image, final ServiceCallback<TagResult> serviceCallback);
+    ServiceFuture<DetectResult> detectObjectsInStreamAsync(byte[] image, final ServiceCallback<DetectResult> serviceCallback);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * Performs object detection on the specified image.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the DetectResult object
      */
-    Observable<TagResult> tagImageInStreamAsync(byte[] image);
+    Observable<DetectResult> detectObjectsInStreamAsync(byte[] image);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * Performs object detection on the specified image.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the DetectResult object
      */
-    Observable<ServiceResponse<TagResult>> tagImageInStreamWithServiceResponseAsync(byte[] image);
+    Observable<ServiceResponse<DetectResult>> detectObjectsInStreamWithServiceResponseAsync(byte[] image);
+
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
      *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
      * @param image An image stream.
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TagResult object if successful.
+     * @return the InputStream object if successful.
      */
-    TagResult tagImageInStream(byte[] image, String language);
+    InputStream generateThumbnailInStream(int width, int height, byte[] image);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
      *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
      * @param image An image stream.
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<TagResult> tagImageInStreamAsync(byte[] image, String language, final ServiceCallback<TagResult> serviceCallback);
+    ServiceFuture<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image, final ServiceCallback<InputStream> serviceCallback);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
      *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
      * @param image An image stream.
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the InputStream object
      */
-    Observable<TagResult> tagImageInStreamAsync(byte[] image, String language);
+    Observable<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image);
 
     /**
-     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag 'cello' may be accompanied by the hint 'musical instrument'. All tags are in English.
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
      *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
      * @param image An image stream.
-     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the InputStream object
      */
-    Observable<ServiceResponse<TagResult>> tagImageInStreamWithServiceResponseAsync(byte[] image, String language);
+    Observable<ServiceResponse<InputStream>> generateThumbnailInStreamWithServiceResponseAsync(int width, int height, byte[] image);
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param image An image stream.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the InputStream object if successful.
+     */
+    InputStream generateThumbnailInStream(int width, int height, byte[] image, Boolean smartCropping);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param image An image stream.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image, Boolean smartCropping, final ServiceCallback<InputStream> serviceCallback);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param image An image stream.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    Observable<InputStream> generateThumbnailInStreamAsync(int width, int height, byte[] image, Boolean smartCropping);
+
+    /**
+     * This operation generates a thumbnail image with the user-specified width and height. By default, the service analyzes the image, identifies the region of interest (ROI), and generates smart cropping coordinates based on the ROI. Smart cropping helps when you specify an aspect ratio that differs from that of the input image.
+     A successful response contains the thumbnail image binary. If the request failed, the response contains an error code and a message to help determine what went wrong.
+     Upon failure, the error code and an error message are returned. The error code could be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, InvalidThumbnailSize, NotSupportedImage, FailedToProcess, Timeout, or InternalServerError.
+     *
+     * @param width Width of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param height Height of the thumbnail, in pixels. It must be between 1 and 1024. Recommended minimum of 50.
+     * @param image An image stream.
+     * @param smartCropping Boolean flag for enabling smart cropping.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the InputStream object
+     */
+    Observable<ServiceResponse<InputStream>> generateThumbnailInStreamWithServiceResponseAsync(int width, int height, byte[] image, Boolean smartCropping);
+
+    /**
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
@@ -1218,7 +1397,10 @@ public interface ComputerVisionClient {
     DomainModelResults analyzeImageByDomainInStream(String model, byte[] image);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
@@ -1229,7 +1411,10 @@ public interface ComputerVisionClient {
     ServiceFuture<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, final ServiceCallback<DomainModelResults> serviceCallback);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
@@ -1239,7 +1424,10 @@ public interface ComputerVisionClient {
     Observable<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
@@ -1248,7 +1436,10 @@ public interface ComputerVisionClient {
      */
     Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainInStreamWithServiceResponseAsync(String model, byte[] image);
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
@@ -1261,7 +1452,10 @@ public interface ComputerVisionClient {
     DomainModelResults analyzeImageByDomainInStream(String model, byte[] image, String language);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
@@ -1273,7 +1467,10 @@ public interface ComputerVisionClient {
     ServiceFuture<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, String language, final ServiceCallback<DomainModelResults> serviceCallback);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
@@ -1284,7 +1481,10 @@ public interface ComputerVisionClient {
     Observable<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, String language);
 
     /**
-     * This operation recognizes content within an image by applying a domain-specific model.  The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request.  Currently, the API only provides a single domain-specific model: celebrities. Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     * This operation recognizes content within an image by applying a domain-specific model. The list of domain-specific models that are supported by the Computer Vision API can be retrieved using the /models GET request. Currently, the API provides following domain-specific models: celebrities, landmarks.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON.
+     If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
@@ -1293,6 +1493,208 @@ public interface ComputerVisionClient {
      * @return the observable to the DomainModelResults object
      */
     Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainInStreamWithServiceResponseAsync(String model, byte[] image, String language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OcrResult object if successful.
+     */
+    OcrResult recognizePrintedTextInStream(boolean detectOrientation, byte[] image);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param image An image stream.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, final ServiceCallback<OcrResult> serviceCallback);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OcrResult object
+     */
+    Observable<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OcrResult object
+     */
+    Observable<ServiceResponse<OcrResult>> recognizePrintedTextInStreamWithServiceResponseAsync(boolean detectOrientation, byte[] image);
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param image An image stream.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OcrResult object if successful.
+     */
+    OcrResult recognizePrintedTextInStream(boolean detectOrientation, byte[] image, OcrLanguages language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param image An image stream.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, OcrLanguages language, final ServiceCallback<OcrResult> serviceCallback);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param image An image stream.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OcrResult object
+     */
+    Observable<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, OcrLanguages language);
+
+    /**
+     * Optical Character Recognition (OCR) detects text in an image and extracts the recognized characters into a machine-usable character stream.
+     Upon success, the OCR results will be returned.
+     Upon failure, the error code together with an error message will be returned. The error code can be one of InvalidImageUrl, InvalidImageFormat, InvalidImageSize, NotSupportedImage, NotSupportedLanguage, or InternalServerError.
+     *
+     * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
+     * @param image An image stream.
+     * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OcrResult object
+     */
+    Observable<ServiceResponse<OcrResult>> recognizePrintedTextInStreamWithServiceResponseAsync(boolean detectOrientation, byte[] image, OcrLanguages language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TagResult object if successful.
+     */
+    TagResult tagImageInStream(byte[] image);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<TagResult> tagImageInStreamAsync(byte[] image, final ServiceCallback<TagResult> serviceCallback);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TagResult object
+     */
+    Observable<TagResult> tagImageInStreamAsync(byte[] image);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TagResult object
+     */
+    Observable<ServiceResponse<TagResult>> tagImageInStreamWithServiceResponseAsync(byte[] image);
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TagResult object if successful.
+     */
+    TagResult tagImageInStream(byte[] image, String language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<TagResult> tagImageInStreamAsync(byte[] image, String language, final ServiceCallback<TagResult> serviceCallback);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TagResult object
+     */
+    Observable<TagResult> tagImageInStreamAsync(byte[] image, String language);
+
+    /**
+     * This operation generates a list of words, or tags, that are relevant to the content of the supplied image. The Computer Vision API can return tags based on objects, living beings, scenery or actions found in images. Unlike categories, tags are not organized according to a hierarchical classification system, but correspond to image content. Tags may contain hints to avoid ambiguity or provide context, for example the tag "cello" may be accompanied by the hint "musical instrument". All tags are in English.
+     Two input methods are supported -- (1) Uploading an image or (2) specifying an image URL.
+     A successful response will be returned in JSON. If the request failed, the response will contain an error code and a message to help understand what went wrong.
+     *
+     * @param image An image stream.
+     * @param language The desired language for output generation. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default. es - Spanish, ja - Japanese, pt - Portuguese, zh - Simplified Chinese. Possible values include: 'en', 'es', 'ja', 'pt', 'zh'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TagResult object
+     */
+    Observable<ServiceResponse<TagResult>> tagImageInStreamWithServiceResponseAsync(byte[] image, String language);
 
     /**
      * Recognize Text operation. When you use the Recognize Text interface, the response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for your Get Recognize Text Operation Result operation.
