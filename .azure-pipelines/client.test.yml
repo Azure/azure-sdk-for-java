@@ -4,11 +4,16 @@ parameters:
 
 jobs:
 - job: ${{ format('Test_{0}', parameters.name) }}
-
+  dependsOn:
+  - 'Publish'
   pool:
     vmImage: ${{ parameters.vmImage }}
 
   steps:
+  - script: |
+      mvn jetty:run-forked -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --batch-mode -f pom.client.xml
+    displayName: 'Start Jetty'
+
   - task: Maven@3
     displayName: 'Run tests'
     inputs:

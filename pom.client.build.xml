@@ -16,7 +16,25 @@
   <description>This package bundles all the SDKs in a multi-module for build/CI purposes.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.2.22.v20170606</version>
+        <configuration>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <stopPort>11079</stopPort>
+          <stopKey>STOP</stopKey>
+          <waitForChild>false</waitForChild>
+          <jettyXml>./jetty.xml</jettyXml>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <modules>
     <module>./template/client</module>
+    <module>./keyvault/data-plane</module>
   </modules>
 </project>

@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -83,9 +84,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 		keyVaultClient.deleteKeyAsync(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name(), null).get();
 		pollOnKeyDeletion(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
 		keyVaultClient.purgeDeletedKey(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
-		if (isRecordMode()) {
-			Thread.sleep(20000);
-		}
+		SdkContext.sleep(20000);
 
 		KeyBundle restoreResult = keyVaultClient.restoreKeyAsync(vault, backupResult.value(), null).get();
 		Assert.assertNotNull(restoreResult);
@@ -124,9 +123,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 		Assert.assertNotNull(keyBundle);
 		pollOnKeyDeletion(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
 		keyVaultClient.purgeDeletedKey(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
-		if (isRecordMode()) {
-			Thread.sleep(20000);
-		}
+		SdkContext.sleep(20000);
 		// Get the unavailable key to throw exception -> it gets stuck
 
 		try {
@@ -147,7 +144,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 	public void secretAsyncForAsyncOperationsTest() throws Exception {
 
 		String vault = getVaultUri();
-		String secretname = "mySecret";
+		String secretname = "mySecret2";
 		String password = "password";
 
 		SetSecretRequest setSecretRequest = new SetSecretRequest.Builder(vault, secretname, password).build();
@@ -183,14 +180,14 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 		}
 		pollOnSecretDeletion(vault, secretname);
 		keyVaultClient.purgeDeletedSecretAsync(vault, secretname, null).get();
-		Thread.sleep(20000);
+		SdkContext.sleep(20000);
 	}
 
 	@Test
 	public void certificateAsyncForAsyncOperationsTest() throws Exception {
 
 		String vault = getVaultUri();
-		String certificateName = "myCertificate";
+		String certificateName = "myCertificate2";
 
 		CreateCertificateRequest createCertificateRequest = new CreateCertificateRequest.Builder(vault, certificateName)
 				.withPolicy(new CertificatePolicy()
@@ -259,7 +256,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 		}
 
 		keyVaultClient.purgeDeletedCertificate(vault, certificateName);
-		Thread.sleep(20000);
+		SdkContext.sleep(20000);
 	}
 
 	@Test

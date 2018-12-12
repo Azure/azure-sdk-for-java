@@ -208,14 +208,6 @@ the MIT License. See License.txt in the project root for license information. --
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.2.22.v20170606</version>
-				<configuration>
-					<jettyXml>../jetty.xml,../jetty-http.xml</jettyXml>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.0.2</version>

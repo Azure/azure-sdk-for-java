@@ -81,11 +81,11 @@ public class KeyVaultClientIntegrationTestBase {
 	}
 
 	private static String getLiveVaultUri1() {
-		return getenvOrDefault("keyvault.vaulturi", "https://javasdktestvault.vault.azure.net");
+		return getenvOrDefault("KEYVAULT_VAULTURI", "https://javasdktestvault.vault.azure.net");
 	}
 
 	private static String getLiveVaultUri2() {
-		return getenvOrDefault("keyvault.vaulturi.alt", "https://javasdktestvault2.vault.azure.net");
+		return getenvOrDefault("KEYVAULT_VAULTURI_ALT", "https://javasdktestvault2.vault.azure.net");
 	}
 
 	private static String getenvOrDefault(String varName, String defValue) {
@@ -103,13 +103,13 @@ public class KeyVaultClientIntegrationTestBase {
 
 	private static AuthenticationResult getAccessToken(String authorization, String resource) throws Exception {
 
-		String clientId = System.getenv("arm.clientid");
+		String clientId = System.getenv("ARM_CLIENTID");
 
 		if (clientId == null) {
-			throw new Exception("Please inform arm.clientid in the environment settings.");
+			throw new Exception("Please provide ARM_CLIENTID in the environment settings.");
 		}
 
-		String clientKey = System.getenv("arm.clientkey");
+		String clientKey = System.getenv("ARM_CLIENTKEY");
 		String username = System.getenv("arm.username");
 		String password = System.getenv("arm.password");
 
@@ -305,9 +305,7 @@ public class KeyVaultClientIntegrationTestBase {
 			DeletedCertificateBundle certificateBundle = keyVaultClient.getDeletedCertificate(vaultBaseUrl,
 					certificateName);
 			if (certificateBundle == null) {
-				if (isRecordMode()) {
-					Thread.sleep(10000);
-				}
+				SdkContext.sleep(10000);
 				pendingPollCount += 1;
 				continue;
 			} else {
@@ -322,9 +320,7 @@ public class KeyVaultClientIntegrationTestBase {
 		while (pendingPollCount < 21) {
 			DeletedKeyBundle deletedKeyBundle = keyVaultClient.getDeletedKey(vaultBaseUrl, certificateName);
 			if (deletedKeyBundle == null) {
-				if (isRecordMode()) {
-					Thread.sleep(10000);
-				}
+			    SdkContext.sleep(10000);
 				pendingPollCount += 1;
 				continue;
 			} else {
@@ -339,9 +335,7 @@ public class KeyVaultClientIntegrationTestBase {
 		while (pendingPollCount < 50) {
 			DeletedSecretBundle deletedSecretBundle = keyVaultClient.getDeletedSecret(vaultBaseUrl, secretName);
 			if (deletedSecretBundle == null) {
-				if (isRecordMode()) {
-					Thread.sleep(10000);
-				}
+				SdkContext.sleep(10000);
 				pendingPollCount += 1;
 				continue;
 			} else {
