@@ -25,7 +25,7 @@ public class IPRule {
      * allowed.
      */
     @JsonProperty(value = "value", required = true)
-    private String value;
+    private String iPAddressOrRange;
 
     /**
      * Get the action of IP ACL rule. Possible values include: 'Allow'.
@@ -50,20 +50,20 @@ public class IPRule {
     /**
      * Get specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      *
-     * @return the value value
+     * @return the iPAddressOrRange value
      */
-    public String value() {
-        return this.value;
+    public String iPAddressOrRange() {
+        return this.iPAddressOrRange;
     }
 
     /**
      * Set specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      *
-     * @param value the value value to set
+     * @param iPAddressOrRange the iPAddressOrRange value to set
      * @return the IPRule object itself.
      */
-    public IPRule withValue(String value) {
-        this.value = value;
+    public IPRule withIPAddressOrRange(String iPAddressOrRange) {
+        this.iPAddressOrRange = iPAddressOrRange;
         return this;
     }
 

@@ -25,7 +25,7 @@ public class VirtualNetworkRule {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      */
     @JsonProperty(value = "id", required = true)
-    private String id;
+    private String virtualNetworkResourceId;
 
     /**
      * Get the action of virtual network rule. Possible values include: 'Allow'.
@@ -50,20 +50,20 @@ public class VirtualNetworkRule {
     /**
      * Get resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      *
-     * @return the id value
+     * @return the virtualNetworkResourceId value
      */
-    public String id() {
-        return this.id;
+    public String virtualNetworkResourceId() {
+        return this.virtualNetworkResourceId;
     }
 
     /**
      * Set resource ID of a subnet, for example: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
      *
-     * @param id the id value to set
+     * @param virtualNetworkResourceId the virtualNetworkResourceId value to set
      * @return the VirtualNetworkRule object itself.
      */
-    public VirtualNetworkRule withId(String id) {
-        this.id = id;
+    public VirtualNetworkRule withVirtualNetworkResourceId(String virtualNetworkResourceId) {
+        this.virtualNetworkResourceId = virtualNetworkResourceId;
         return this;
     }
 
