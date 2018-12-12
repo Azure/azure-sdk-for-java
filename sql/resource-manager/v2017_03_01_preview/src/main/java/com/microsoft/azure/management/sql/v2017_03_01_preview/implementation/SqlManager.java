@@ -24,6 +24,7 @@ import com.microsoft.azure.management.sql.v2017_03_01_preview.DatabaseOperations
 import com.microsoft.azure.management.sql.v2017_03_01_preview.Databases;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.DatabaseVulnerabilityAssessmentRuleBaselines;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.DatabaseVulnerabilityAssessments;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.DataWarehouseUserActivities;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.JobAgents;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.JobCredentials;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.JobExecutions;
@@ -56,6 +57,7 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private Databases databases;
     private DatabaseVulnerabilityAssessmentRuleBaselines databaseVulnerabilityAssessmentRuleBaselines;
     private DatabaseVulnerabilityAssessments databaseVulnerabilityAssessments;
+    private DataWarehouseUserActivities dataWarehouseUserActivities;
     private JobAgents jobAgents;
     private JobCredentials jobCredentials;
     private JobExecutions jobExecutions;
@@ -198,6 +200,16 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.databaseVulnerabilityAssessments = new DatabaseVulnerabilityAssessmentsImpl(this);
         }
         return this.databaseVulnerabilityAssessments;
+    }
+
+    /**
+     * @return Entry point to manage DataWarehouseUserActivities.
+     */
+    public DataWarehouseUserActivities dataWarehouseUserActivities() {
+        if (this.dataWarehouseUserActivities == null) {
+            this.dataWarehouseUserActivities = new DataWarehouseUserActivitiesImpl(this);
+        }
+        return this.dataWarehouseUserActivities;
     }
 
     /**

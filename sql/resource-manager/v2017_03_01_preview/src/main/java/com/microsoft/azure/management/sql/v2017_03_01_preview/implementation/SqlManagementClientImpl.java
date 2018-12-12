@@ -237,6 +237,19 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The DataWarehouseUserActivitiesInner object to access its operations.
+     */
+    private DataWarehouseUserActivitiesInner dataWarehouseUserActivities;
+
+    /**
+     * Gets the DataWarehouseUserActivitiesInner object to access its operations.
+     * @return the DataWarehouseUserActivitiesInner object.
+     */
+    public DataWarehouseUserActivitiesInner dataWarehouseUserActivities() {
+        return this.dataWarehouseUserActivities;
+    }
+
+    /**
      * The JobAgentsInner object to access its operations.
      */
     private JobAgentsInner jobAgents;
@@ -500,6 +513,7 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.databases = new DatabasesInner(restClient().retrofit(), this);
         this.databaseVulnerabilityAssessmentRuleBaselines = new DatabaseVulnerabilityAssessmentRuleBaselinesInner(restClient().retrofit(), this);
         this.databaseVulnerabilityAssessments = new DatabaseVulnerabilityAssessmentsInner(restClient().retrofit(), this);
+        this.dataWarehouseUserActivities = new DataWarehouseUserActivitiesInner(restClient().retrofit(), this);
         this.jobAgents = new JobAgentsInner(restClient().retrofit(), this);
         this.jobCredentials = new JobCredentialsInner(restClient().retrofit(), this);
         this.jobExecutions = new JobExecutionsInner(restClient().retrofit(), this);
