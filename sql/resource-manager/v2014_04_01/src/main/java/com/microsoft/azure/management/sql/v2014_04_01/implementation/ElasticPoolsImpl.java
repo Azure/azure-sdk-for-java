@@ -16,6 +16,8 @@ import rx.Observable;
 import rx.functions.Func1;
 import java.util.List;
 import com.microsoft.azure.management.sql.v2014_04_01.ElasticPool;
+import com.microsoft.azure.management.sql.v2014_04_01.ElasticPoolServerMetric;
+import com.microsoft.azure.management.sql.v2014_04_01.ElasticPoolServerMetricDefinition;
 
 class ElasticPoolsImpl extends WrapperImpl<ElasticPoolsInner> implements ElasticPools {
     private final SqlManager manager;
@@ -76,6 +78,50 @@ class ElasticPoolsImpl extends WrapperImpl<ElasticPoolsInner> implements Elastic
     public Completable deleteAsync(String resourceGroupName, String serverName, String elasticPoolName) {
         ElasticPoolsInner client = this.inner();
         return client.deleteAsync(resourceGroupName, serverName, elasticPoolName).toCompletable();
+    }
+
+    private ElasticPoolServerMetricImpl wrapElasticPoolServerMetricModel(MetricInner inner) {
+        return  new ElasticPoolServerMetricImpl(inner, manager());
+    }
+
+    private ElasticPoolServerMetricDefinitionImpl wrapElasticPoolServerMetricDefinitionModel(MetricDefinitionInner inner) {
+        return  new ElasticPoolServerMetricDefinitionImpl(inner, manager());
+    }
+
+    @Override
+    public Observable<ElasticPoolServerMetric> listMetricsAsync(String resourceGroupName, String serverName, String elasticPoolName, String filter) {
+        ElasticPoolsInner client = this.inner();
+        return client.listMetricsAsync(resourceGroupName, serverName, elasticPoolName, filter)
+        .flatMap(new Func1<List<MetricInner>, Observable<MetricInner>>() {
+            @Override
+            public Observable<MetricInner> call(List<MetricInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<MetricInner, ElasticPoolServerMetric>() {
+            @Override
+            public ElasticPoolServerMetric call(MetricInner inner) {
+                return wrapElasticPoolServerMetricModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Observable<ElasticPoolServerMetricDefinition> listMetricDefinitionsAsync(String resourceGroupName, String serverName, String elasticPoolName) {
+        ElasticPoolsInner client = this.inner();
+        return client.listMetricDefinitionsAsync(resourceGroupName, serverName, elasticPoolName)
+        .flatMap(new Func1<List<MetricDefinitionInner>, Observable<MetricDefinitionInner>>() {
+            @Override
+            public Observable<MetricDefinitionInner> call(List<MetricDefinitionInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<MetricDefinitionInner, ElasticPoolServerMetricDefinition>() {
+            @Override
+            public ElasticPoolServerMetricDefinition call(MetricDefinitionInner inner) {
+                return wrapElasticPoolServerMetricDefinitionModel(inner);
+            }
+        });
     }
 
 }
