@@ -29,7 +29,7 @@ class RequestHistoryImpl extends WrapperImpl<RequestHistoryInner> implements Req
 
     @Override
     public DateTime endTime() {
-        return this.inner().endTime();
+        return this.inner().properties().endTime();
     }
 
     @Override
@@ -49,17 +49,17 @@ class RequestHistoryImpl extends WrapperImpl<RequestHistoryInner> implements Req
 
     @Override
     public Request request() {
-        return this.inner().request();
+        return this.inner().properties().request();
     }
 
     @Override
     public Response response() {
-        return this.inner().response();
+        return this.inner().properties().response();
     }
 
     @Override
     public DateTime startTime() {
-        return this.inner().startTime();
+        return this.inner().properties().startTime();
     }
 
     @Override
