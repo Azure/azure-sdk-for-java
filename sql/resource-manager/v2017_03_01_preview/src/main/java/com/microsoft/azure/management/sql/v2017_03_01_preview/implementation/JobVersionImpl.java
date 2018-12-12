@@ -27,7 +27,7 @@ class JobVersionImpl extends IndexableRefreshableWrapperImpl<JobVersion, JobVers
         this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
         this.jobAgentName = IdParsingUtils.getValueFromIdByName(inner.id(), "jobAgents");
         this.jobName = IdParsingUtils.getValueFromIdByName(inner.id(), "jobs");
-        this.jobVersion = IdParsingUtils.getValueFromIdByName(inner.id(), "versions");
+        this.jobVersion = Integer.parseInt(IdParsingUtils.getValueFromIdByName(inner.id(), "versions"));
     }
 
     @Override

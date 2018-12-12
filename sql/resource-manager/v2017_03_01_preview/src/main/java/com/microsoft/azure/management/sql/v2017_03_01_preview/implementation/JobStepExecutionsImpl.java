@@ -16,6 +16,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ExecutionJobJobAgentServerJobExecution;
 import com.microsoft.azure.Page;
 
+import java.util.UUID;
+
 class JobStepExecutionsImpl extends WrapperImpl<JobStepExecutionsInner> implements JobStepExecutions {
     private final SqlManager manager;
 
@@ -40,7 +42,7 @@ class JobStepExecutionsImpl extends WrapperImpl<JobStepExecutionsInner> implemen
         String jobExecutionId = IdParsingUtils.getValueFromIdByName(id, "executions");
         String stepName = IdParsingUtils.getValueFromIdByName(id, "steps");
         JobStepExecutionsInner client = this.inner();
-        return client.getAsync(resourceGroupName, serverName, jobAgentName, jobName, jobExecutionId, stepName);
+        return client.getAsync(resourceGroupName, serverName, jobAgentName, jobName, UUID.fromString(jobExecutionId), stepName);
     }
 
     @Override

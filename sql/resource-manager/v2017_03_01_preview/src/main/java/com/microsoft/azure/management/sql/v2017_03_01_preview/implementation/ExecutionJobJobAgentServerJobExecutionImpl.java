@@ -33,7 +33,7 @@ class ExecutionJobJobAgentServerJobExecutionImpl extends IndexableRefreshableWra
         this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
         this.jobAgentName = IdParsingUtils.getValueFromIdByName(inner.id(), "jobAgents");
         this.jobName = IdParsingUtils.getValueFromIdByName(inner.id(), "jobs");
-        this.jobExecutionId = IdParsingUtils.getValueFromIdByName(inner.id(), "executions");
+        this.jobExecutionId = UUID.fromString(IdParsingUtils.getValueFromIdByName(inner.id(), "executions"));
         this.stepName = IdParsingUtils.getValueFromIdByName(inner.id(), "steps");
     }
 
