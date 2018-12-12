@@ -172,6 +172,19 @@ public class RecoveryServicesClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The CheckResourceNameAvailabilitysInner object to access its operations.
+     */
+    private CheckResourceNameAvailabilitysInner checkResourceNameAvailabilitys;
+
+    /**
+     * Gets the CheckResourceNameAvailabilitysInner object to access its operations.
+     * @return the CheckResourceNameAvailabilitysInner object.
+     */
+    public CheckResourceNameAvailabilitysInner checkResourceNameAvailabilitys() {
+        return this.checkResourceNameAvailabilitys;
+    }
+
+    /**
      * The VaultsInner object to access its operations.
      */
     private VaultsInner vaults;
@@ -261,6 +274,7 @@ public class RecoveryServicesClientImpl extends AzureServiceClient {
         this.vaultCertificates = new VaultCertificatesInner(restClient().retrofit(), this);
         this.registeredIdentities = new RegisteredIdentitiesInner(restClient().retrofit(), this);
         this.replicationUsages = new ReplicationUsagesInner(restClient().retrofit(), this);
+        this.checkResourceNameAvailabilitys = new CheckResourceNameAvailabilitysInner(restClient().retrofit(), this);
         this.vaults = new VaultsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.vaultExtendedInfos = new VaultExtendedInfosInner(restClient().retrofit(), this);
