@@ -29,6 +29,12 @@ public class NetworkRuleSet {
     private List<VirtualNetworkRule> virtualNetworkRules;
 
     /**
+     * The IP ACL rules.
+     */
+    @JsonProperty(value = "ipRules")
+    private List<IPRule> ipRules;
+
+    /**
      * Get the default action of allow or deny when no other rules match. Possible values include: 'Allow', 'Deny'.
      *
      * @return the defaultAction value
@@ -65,6 +71,26 @@ public class NetworkRuleSet {
      */
     public NetworkRuleSet withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
         this.virtualNetworkRules = virtualNetworkRules;
+        return this;
+    }
+
+    /**
+     * Get the IP ACL rules.
+     *
+     * @return the ipRules value
+     */
+    public List<IPRule> ipRules() {
+        return this.ipRules;
+    }
+
+    /**
+     * Set the IP ACL rules.
+     *
+     * @param ipRules the ipRules value to set
+     * @return the NetworkRuleSet object itself.
+     */
+    public NetworkRuleSet withIpRules(List<IPRule> ipRules) {
+        this.ipRules = ipRules;
         return this;
     }
 
