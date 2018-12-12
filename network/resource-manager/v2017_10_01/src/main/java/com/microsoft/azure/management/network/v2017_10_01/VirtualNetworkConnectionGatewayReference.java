@@ -21,7 +21,7 @@ public class VirtualNetworkConnectionGatewayReference {
     private String id;
 
     /**
-     * Get the id value.
+     * Get the ID of VirtualNetworkGateway or LocalNetworkGateway resource.
      *
      * @return the id value
      */
@@ -30,7 +30,7 @@ public class VirtualNetworkConnectionGatewayReference {
     }
 
     /**
-     * Set the id value.
+     * Set the ID of VirtualNetworkGateway or LocalNetworkGateway resource.
      *
      * @param id the id value to set
      * @return the VirtualNetworkConnectionGatewayReference object itself.

@@ -45,7 +45,7 @@ public class ConnectivityIssue {
     private List<Map<String, String>> context;
 
     /**
-     * Get the origin value.
+     * Get the origin of the issue. Possible values include: 'Local', 'Inbound', 'Outbound'.
      *
      * @return the origin value
      */
@@ -54,7 +54,7 @@ public class ConnectivityIssue {
     }
 
     /**
-     * Get the severity value.
+     * Get the severity of the issue. Possible values include: 'Error', 'Warning'.
      *
      * @return the severity value
      */
@@ -63,7 +63,7 @@ public class ConnectivityIssue {
     }
 
     /**
-     * Get the type value.
+     * Get the type of issue. Possible values include: 'Unknown', 'AgentStopped', 'GuestFirewall', 'DnsResolution', 'SocketBind', 'NetworkSecurityRule', 'UserDefinedRoute', 'PortThrottled', 'Platform'.
      *
      * @return the type value
      */
@@ -72,7 +72,7 @@ public class ConnectivityIssue {
     }
 
     /**
-     * Get the context value.
+     * Get provides additional context on the issue.
      *
      * @return the context value
      */

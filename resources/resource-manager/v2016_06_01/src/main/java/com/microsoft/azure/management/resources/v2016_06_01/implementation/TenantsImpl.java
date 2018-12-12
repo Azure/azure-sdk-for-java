@@ -37,7 +37,8 @@ class TenantsImpl extends WrapperImpl<TenantsInner> implements Tenants {
             public Iterable<TenantIdDescriptionInner> call(Page<TenantIdDescriptionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<TenantIdDescriptionInner, TenantIdDescription>() {
+        })
+        .map(new Func1<TenantIdDescriptionInner, TenantIdDescription>() {
             @Override
             public TenantIdDescription call(TenantIdDescriptionInner inner) {
                 return new TenantIdDescriptionImpl(inner, manager());

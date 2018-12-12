@@ -21,7 +21,7 @@ public class ConnectionSharedKeyInner {
     private String value;
 
     /**
-     * Get the value value.
+     * Get the virtual network connection shared key value.
      *
      * @return the value value
      */
@@ -30,7 +30,7 @@ public class ConnectionSharedKeyInner {
     }
 
     /**
-     * Set the value value.
+     * Set the virtual network connection shared key value.
      *
      * @param value the value value to set
      * @return the ConnectionSharedKeyInner object itself.

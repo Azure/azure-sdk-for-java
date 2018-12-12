@@ -36,7 +36,7 @@ public class AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionPara
     private UdfType udfType;
 
     /**
-     * Get the executeEndpoint value.
+     * Get the Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs.
      *
      * @return the executeEndpoint value
      */
@@ -45,7 +45,7 @@ public class AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionPara
     }
 
     /**
-     * Set the executeEndpoint value.
+     * Set the Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs.
      *
      * @param executeEndpoint the executeEndpoint value to set
      * @return the AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters object itself.
@@ -56,7 +56,7 @@ public class AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionPara
     }
 
     /**
-     * Get the udfType value.
+     * Get the function type. Possible values include: 'Scalar'.
      *
      * @return the udfType value
      */
@@ -65,7 +65,7 @@ public class AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionPara
     }
 
     /**
-     * Set the udfType value.
+     * Set the function type. Possible values include: 'Scalar'.
      *
      * @param udfType the udfType value to set
      * @return the AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters object itself.

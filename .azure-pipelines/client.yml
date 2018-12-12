@@ -1,0 +1,46 @@
+trigger:
+- master
+
+jobs:
+- job: 'Build'
+
+  pool:
+    vmImage: 'ubuntu-16.04'
+
+  steps:
+  - task: Maven@3
+    displayName: 'Build and Package'
+    inputs:
+      mavenPomFile: $(pomFile)
+      goals: 'checkstyle:check javadoc:jar source:jar package'
+      options: '--batch-mode -Dmaven.test.skip=true'
+      mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+
+  - powershell: |
+     # use sources files as a marker to find POM files so we can copy them to the output. The sources.jar file is generally
+     # in a target folder next to the pom.xml file so $_.Directory.Parent should get us the folder that contains the POM.
+     dir -r -i *-sources.jar | % { copy (Join-Path $_.Directory.Parent.FullName "pom.xml") (Join-Path $(Build.ArtifactStagingDirectory) $_.Name.Replace("-sources.jar",".pom")) }
+     dir -r -i *.jar | % { copy $_ $(Build.ArtifactStagingDirectory) }
+    displayName: 'Copy JAR and POM files to artifact staging'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish'
+
+- template: client.test.yml
+  parameters:
+    name: Linux
+    vmImage: 'ubuntu-16.04'
+
+- template: client.test.yml
+  parameters:
+    name: macOS
+    vmImage: 'macOS-10.13'
+
+- template: client.test.yml
+  parameters:
+    name: Windows
+    vmImage: 'vs2017-win2016'

@@ -55,7 +55,7 @@ public class VpnClientConfiguration {
     private String radiusServerSecret;
 
     /**
-     * Get the vpnClientAddressPool value.
+     * Get the reference of the address space resource which represents Address space for P2S VpnClient.
      *
      * @return the vpnClientAddressPool value
      */
@@ -64,7 +64,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientAddressPool value.
+     * Set the reference of the address space resource which represents Address space for P2S VpnClient.
      *
      * @param vpnClientAddressPool the vpnClientAddressPool value to set
      * @return the VpnClientConfiguration object itself.
@@ -75,7 +75,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Get the vpnClientRootCertificates value.
+     * Get vpnClientRootCertificate for virtual network gateway.
      *
      * @return the vpnClientRootCertificates value
      */
@@ -84,7 +84,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientRootCertificates value.
+     * Set vpnClientRootCertificate for virtual network gateway.
      *
      * @param vpnClientRootCertificates the vpnClientRootCertificates value to set
      * @return the VpnClientConfiguration object itself.
@@ -95,7 +95,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Get the vpnClientRevokedCertificates value.
+     * Get vpnClientRevokedCertificate for Virtual network gateway.
      *
      * @return the vpnClientRevokedCertificates value
      */
@@ -104,7 +104,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientRevokedCertificates value.
+     * Set vpnClientRevokedCertificate for Virtual network gateway.
      *
      * @param vpnClientRevokedCertificates the vpnClientRevokedCertificates value to set
      * @return the VpnClientConfiguration object itself.
@@ -115,7 +115,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Get the vpnClientProtocols value.
+     * Get vpnClientProtocols for Virtual network gateway.
      *
      * @return the vpnClientProtocols value
      */
@@ -124,7 +124,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientProtocols value.
+     * Set vpnClientProtocols for Virtual network gateway.
      *
      * @param vpnClientProtocols the vpnClientProtocols value to set
      * @return the VpnClientConfiguration object itself.
@@ -135,7 +135,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Get the radiusServerAddress value.
+     * Get the radius server address property of the VirtualNetworkGateway resource for vpn client connection.
      *
      * @return the radiusServerAddress value
      */
@@ -144,7 +144,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Set the radiusServerAddress value.
+     * Set the radius server address property of the VirtualNetworkGateway resource for vpn client connection.
      *
      * @param radiusServerAddress the radiusServerAddress value to set
      * @return the VpnClientConfiguration object itself.
@@ -155,7 +155,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Get the radiusServerSecret value.
+     * Get the radius secret property of the VirtualNetworkGateway resource for vpn client connection.
      *
      * @return the radiusServerSecret value
      */
@@ -164,7 +164,7 @@ public class VpnClientConfiguration {
     }
 
     /**
-     * Set the radiusServerSecret value.
+     * Set the radius secret property of the VirtualNetworkGateway resource for vpn client connection.
      *
      * @param radiusServerSecret the radiusServerSecret value to set
      * @return the VpnClientConfiguration object itself.

@@ -28,7 +28,7 @@ public class CsmSlotEntity {
     private boolean preserveVnet;
 
     /**
-     * Get the targetSlot value.
+     * Get destination deployment slot during swap operation.
      *
      * @return the targetSlot value
      */
@@ -37,7 +37,7 @@ public class CsmSlotEntity {
     }
 
     /**
-     * Set the targetSlot value.
+     * Set destination deployment slot during swap operation.
      *
      * @param targetSlot the targetSlot value to set
      * @return the CsmSlotEntity object itself.
@@ -48,7 +48,7 @@ public class CsmSlotEntity {
     }
 
     /**
-     * Get the preserveVnet value.
+     * Get &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot during swap; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the preserveVnet value
      */
@@ -57,7 +57,7 @@ public class CsmSlotEntity {
     }
 
     /**
-     * Set the preserveVnet value.
+     * Set &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot during swap; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param preserveVnet the preserveVnet value to set
      * @return the CsmSlotEntity object itself.

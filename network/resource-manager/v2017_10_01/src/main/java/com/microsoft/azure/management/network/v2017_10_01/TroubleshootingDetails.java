@@ -46,7 +46,7 @@ public class TroubleshootingDetails {
     private List<TroubleshootingRecommendedActions> recommendedActions;
 
     /**
-     * Get the id value.
+     * Get the id of the get troubleshoot operation.
      *
      * @return the id value
      */
@@ -55,7 +55,7 @@ public class TroubleshootingDetails {
     }
 
     /**
-     * Set the id value.
+     * Set the id of the get troubleshoot operation.
      *
      * @param id the id value to set
      * @return the TroubleshootingDetails object itself.
@@ -66,7 +66,7 @@ public class TroubleshootingDetails {
     }
 
     /**
-     * Get the reasonType value.
+     * Get reason type of failure.
      *
      * @return the reasonType value
      */
@@ -75,7 +75,7 @@ public class TroubleshootingDetails {
     }
 
     /**
-     * Set the reasonType value.
+     * Set reason type of failure.
      *
      * @param reasonType the reasonType value to set
      * @return the TroubleshootingDetails object itself.
@@ -86,7 +86,7 @@ public class TroubleshootingDetails {
     }
 
     /**
-     * Get the summary value.
+     * Get a summary of troubleshooting.
      *
      * @return the summary value
      */
@@ -95,7 +95,7 @@ public class TroubleshootingDetails {
     }
 
     /**
-     * Set the summary value.
+     * Set a summary of troubleshooting.
      *
      * @param summary the summary value to set
      * @return the TroubleshootingDetails object itself.
@@ -106,7 +106,7 @@ public class TroubleshootingDetails {
     }
 
     /**
-     * Get the detail value.
+     * Get details on troubleshooting results.
      *
      * @return the detail value
      */
@@ -115,7 +115,7 @@ public class TroubleshootingDetails {
     }
 
     /**
-     * Set the detail value.
+     * Set details on troubleshooting results.
      *
      * @param detail the detail value to set
      * @return the TroubleshootingDetails object itself.
@@ -126,7 +126,7 @@ public class TroubleshootingDetails {
     }
 
     /**
-     * Get the recommendedActions value.
+     * Get list of recommended actions.
      *
      * @return the recommendedActions value
      */
@@ -135,7 +135,7 @@ public class TroubleshootingDetails {
     }
 
     /**
-     * Set the recommendedActions value.
+     * Set list of recommended actions.
      *
      * @param recommendedActions the recommendedActions value to set
      * @return the TroubleshootingDetails object itself.

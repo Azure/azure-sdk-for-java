@@ -34,7 +34,7 @@ public class AzureReachabilityReportItem {
     private List<AzureReachabilityReportLatencyInfo> latencies;
 
     /**
-     * Get the provider value.
+     * Get the Internet service provider.
      *
      * @return the provider value
      */
@@ -43,7 +43,7 @@ public class AzureReachabilityReportItem {
     }
 
     /**
-     * Set the provider value.
+     * Set the Internet service provider.
      *
      * @param provider the provider value to set
      * @return the AzureReachabilityReportItem object itself.
@@ -54,7 +54,7 @@ public class AzureReachabilityReportItem {
     }
 
     /**
-     * Get the azureLocation value.
+     * Get the Azure region.
      *
      * @return the azureLocation value
      */
@@ -63,7 +63,7 @@ public class AzureReachabilityReportItem {
     }
 
     /**
-     * Set the azureLocation value.
+     * Set the Azure region.
      *
      * @param azureLocation the azureLocation value to set
      * @return the AzureReachabilityReportItem object itself.
@@ -74,7 +74,7 @@ public class AzureReachabilityReportItem {
     }
 
     /**
-     * Get the latencies value.
+     * Get list of latency details for each of the time series.
      *
      * @return the latencies value
      */
@@ -83,7 +83,7 @@ public class AzureReachabilityReportItem {
     }
 
     /**
-     * Set the latencies value.
+     * Set list of latency details for each of the time series.
      *
      * @param latencies the latencies value to set
      * @return the AzureReachabilityReportItem object itself.

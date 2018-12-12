@@ -72,7 +72,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     private ResponseMetaData responseMetaData;
 
     /**
-     * Get the startTime value.
+     * Get start time of the period.
      *
      * @return the startTime value
      */
@@ -81,7 +81,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the startTime value.
+     * Set start time of the period.
      *
      * @param startTime the startTime value to set
      * @return the DiagnosticDetectorResponseInner object itself.
@@ -92,7 +92,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the endTime value.
+     * Get end time of the period.
      *
      * @return the endTime value
      */
@@ -101,7 +101,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the endTime value.
+     * Set end time of the period.
      *
      * @param endTime the endTime value to set
      * @return the DiagnosticDetectorResponseInner object itself.
@@ -112,7 +112,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the issueDetected value.
+     * Get flag representing Issue was detected.
      *
      * @return the issueDetected value
      */
@@ -121,7 +121,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the issueDetected value.
+     * Set flag representing Issue was detected.
      *
      * @param issueDetected the issueDetected value to set
      * @return the DiagnosticDetectorResponseInner object itself.
@@ -132,7 +132,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the detectorDefinition value.
+     * Get detector's definition.
      *
      * @return the detectorDefinition value
      */
@@ -141,7 +141,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the detectorDefinition value.
+     * Set detector's definition.
      *
      * @param detectorDefinition the detectorDefinition value to set
      * @return the DiagnosticDetectorResponseInner object itself.
@@ -152,7 +152,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the metrics value.
+     * Get metrics provided by the detector.
      *
      * @return the metrics value
      */
@@ -161,7 +161,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the metrics value.
+     * Set metrics provided by the detector.
      *
      * @param metrics the metrics value to set
      * @return the DiagnosticDetectorResponseInner object itself.
@@ -172,7 +172,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the abnormalTimePeriods value.
+     * Get list of Correlated events found by the detector.
      *
      * @return the abnormalTimePeriods value
      */
@@ -181,7 +181,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the abnormalTimePeriods value.
+     * Set list of Correlated events found by the detector.
      *
      * @param abnormalTimePeriods the abnormalTimePeriods value to set
      * @return the DiagnosticDetectorResponseInner object itself.
@@ -192,7 +192,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the data value.
+     * Get additional Data that detector wants to send.
      *
      * @return the data value
      */
@@ -201,7 +201,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the data value.
+     * Set additional Data that detector wants to send.
      *
      * @param data the data value to set
      * @return the DiagnosticDetectorResponseInner object itself.
@@ -212,7 +212,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the responseMetaData value.
+     * Get meta Data.
      *
      * @return the responseMetaData value
      */
@@ -221,7 +221,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the responseMetaData value.
+     * Set meta Data.
      *
      * @param responseMetaData the responseMetaData value to set
      * @return the DiagnosticDetectorResponseInner object itself.

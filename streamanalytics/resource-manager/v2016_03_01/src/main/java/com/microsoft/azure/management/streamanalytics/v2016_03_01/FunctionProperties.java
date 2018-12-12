@@ -32,7 +32,7 @@ public class FunctionProperties {
     private String etag;
 
     /**
-     * Get the etag value.
+     * Get the current entity tag for the function. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
      *
      * @return the etag value
      */

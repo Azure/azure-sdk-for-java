@@ -46,7 +46,7 @@ public class TunnelConnectionHealth {
     private String lastConnectionEstablishedUtcTime;
 
     /**
-     * Get the tunnel value.
+     * Get tunnel name.
      *
      * @return the tunnel value
      */
@@ -55,7 +55,7 @@ public class TunnelConnectionHealth {
     }
 
     /**
-     * Get the connectionStatus value.
+     * Get virtual network Gateway connection status. Possible values include: 'Unknown', 'Connecting', 'Connected', 'NotConnected'.
      *
      * @return the connectionStatus value
      */
@@ -64,7 +64,7 @@ public class TunnelConnectionHealth {
     }
 
     /**
-     * Get the ingressBytesTransferred value.
+     * Get the Ingress Bytes Transferred in this connection.
      *
      * @return the ingressBytesTransferred value
      */
@@ -73,7 +73,7 @@ public class TunnelConnectionHealth {
     }
 
     /**
-     * Get the egressBytesTransferred value.
+     * Get the Egress Bytes Transferred in this connection.
      *
      * @return the egressBytesTransferred value
      */
@@ -82,7 +82,7 @@ public class TunnelConnectionHealth {
     }
 
     /**
-     * Get the lastConnectionEstablishedUtcTime value.
+     * Get the time at which connection was established in Utc format.
      *
      * @return the lastConnectionEstablishedUtcTime value
      */

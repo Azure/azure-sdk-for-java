@@ -322,9 +322,9 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     private Observable<DeploymentInner> getDeploymentInnerUsingWebAppsInnerAsync(String id) {
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String name = IdParsingUtils.getValueFromIdByName(id, "sites");
-        String deployment = IdParsingUtils.getValueFromIdByName(id, "deployments");
+        String idParameter = IdParsingUtils.getValueFromIdByName(id, "deployments");
         WebAppsInner client = this.inner();
-        return client.getDeploymentAsync(resourceGroupName, name, deployment);
+        return client.getDeploymentAsync(resourceGroupName, name, id);
     }
 
     private Observable<IdentifierInner> getIdentifierInnerUsingWebAppsInnerAsync(String id) {
@@ -556,7 +556,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<SiteConfigResourceInner> call(Page<SiteConfigResourceInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SiteConfigResourceInner, SiteConfigResource>() {
+        })
+        .map(new Func1<SiteConfigResourceInner, SiteConfigResource>() {
             @Override
             public SiteConfigResource call(SiteConfigResourceInner inner) {
                 return new SiteConfigResourceImpl(inner, manager());
@@ -837,7 +838,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<SlotDifferenceInner> call(Page<SlotDifferenceInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SlotDifferenceInner, SlotDifference>() {
+        })
+        .map(new Func1<SlotDifferenceInner, SlotDifference>() {
             @Override
             public SlotDifference call(SlotDifferenceInner inner) {
                 return new SlotDifferenceImpl(inner, manager());
@@ -956,7 +958,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<BackupItemInner> call(Page<BackupItemInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<BackupItemInner, BackupItem>() {
+        })
+        .map(new Func1<BackupItemInner, BackupItem>() {
             @Override
             public BackupItem call(BackupItemInner inner) {
                 return new BackupItemImpl(inner, manager());
@@ -1333,7 +1336,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<SiteConfigurationSnapshotInfoInner> call(Page<SiteConfigurationSnapshotInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SiteConfigurationSnapshotInfoInner, SiteConfigurationSnapshotInfo>() {
+        })
+        .map(new Func1<SiteConfigurationSnapshotInfoInner, SiteConfigurationSnapshotInfo>() {
             @Override
             public SiteConfigurationSnapshotInfo call(SiteConfigurationSnapshotInfoInner inner) {
                 return new SiteConfigurationSnapshotInfoImpl(inner, manager());
@@ -1368,7 +1372,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<SiteConfigurationSnapshotInfoInner> call(Page<SiteConfigurationSnapshotInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SiteConfigurationSnapshotInfoInner, SiteConfigurationSnapshotInfo>() {
+        })
+        .map(new Func1<SiteConfigurationSnapshotInfoInner, SiteConfigurationSnapshotInfo>() {
             @Override
             public SiteConfigurationSnapshotInfo call(SiteConfigurationSnapshotInfoInner inner) {
                 return new SiteConfigurationSnapshotInfoImpl(inner, manager());
@@ -1403,7 +1408,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<SnapshotInner> call(Page<SnapshotInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SnapshotInner, Snapshot>() {
+        })
+        .map(new Func1<SnapshotInner, Snapshot>() {
             @Override
             public Snapshot call(SnapshotInner inner) {
                 return new SnapshotImpl(inner, manager());
@@ -1480,7 +1486,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ContinuousWebJobInner> call(Page<ContinuousWebJobInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ContinuousWebJobInner, ContinuousWebJob>() {
+        })
+        .map(new Func1<ContinuousWebJobInner, ContinuousWebJob>() {
             @Override
             public ContinuousWebJob call(ContinuousWebJobInner inner) {
                 return new ContinuousWebJobImpl(inner, manager());
@@ -1575,7 +1582,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<DeploymentInner> call(Page<DeploymentInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DeploymentInner, Deployment>() {
+        })
+        .map(new Func1<DeploymentInner, Deployment>() {
             @Override
             public Deployment call(DeploymentInner inner) {
                 return new DeploymentImpl(inner, manager());
@@ -1670,7 +1678,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<IdentifierInner> call(Page<IdentifierInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<IdentifierInner, Identifier>() {
+        })
+        .map(new Func1<IdentifierInner, Identifier>() {
             @Override
             public Identifier call(IdentifierInner inner) {
                 return new IdentifierImpl(inner, manager());
@@ -1921,7 +1930,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<FunctionEnvelopeInner> call(Page<FunctionEnvelopeInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<FunctionEnvelopeInner, FunctionEnvelope>() {
+        })
+        .map(new Func1<FunctionEnvelopeInner, FunctionEnvelope>() {
             @Override
             public FunctionEnvelope call(FunctionEnvelopeInner inner) {
                 return new FunctionEnvelopeImpl(inner, manager());
@@ -2016,7 +2026,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<HostNameBindingInner> call(Page<HostNameBindingInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<HostNameBindingInner, HostNameBinding>() {
+        })
+        .map(new Func1<HostNameBindingInner, HostNameBinding>() {
             @Override
             public HostNameBinding call(HostNameBindingInner inner) {
                 return new HostNameBindingImpl(inner, manager());
@@ -2195,7 +2206,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<SiteInstanceInner> call(Page<SiteInstanceInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SiteInstanceInner, SiteInstance>() {
+        })
+        .map(new Func1<SiteInstanceInner, SiteInstance>() {
             @Override
             public SiteInstance call(SiteInstanceInner inner) {
                 return new SiteInstanceImpl(inner, manager());
@@ -2254,7 +2266,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ProcessInfoInner> call(Page<ProcessInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ProcessInfoInner, ProcessInfo>() {
+        })
+        .map(new Func1<ProcessInfoInner, ProcessInfo>() {
             @Override
             public ProcessInfo call(ProcessInfoInner inner) {
                 return new ProcessInfoImpl(inner, manager());
@@ -2289,7 +2302,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ProcessInfoInner> call(Page<ProcessInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ProcessInfoInner, ProcessInfo>() {
+        })
+        .map(new Func1<ProcessInfoInner, ProcessInfo>() {
             @Override
             public ProcessInfo call(ProcessInfoInner inner) {
                 return new ProcessInfoImpl(inner, manager());
@@ -2324,7 +2338,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ProcessInfoInner> call(Page<ProcessInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ProcessInfoInner, ProcessInfo>() {
+        })
+        .map(new Func1<ProcessInfoInner, ProcessInfo>() {
             @Override
             public ProcessInfo call(ProcessInfoInner inner) {
                 return new ProcessInfoImpl(inner, manager());
@@ -2389,7 +2404,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ProcessModuleInfoInner> call(Page<ProcessModuleInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ProcessModuleInfoInner, ProcessModuleInfo>() {
+        })
+        .map(new Func1<ProcessModuleInfoInner, ProcessModuleInfo>() {
             @Override
             public ProcessModuleInfo call(ProcessModuleInfoInner inner) {
                 return new ProcessModuleInfoImpl(inner, manager());
@@ -2418,7 +2434,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ProcessModuleInfoInner> call(Page<ProcessModuleInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ProcessModuleInfoInner, ProcessModuleInfo>() {
+        })
+        .map(new Func1<ProcessModuleInfoInner, ProcessModuleInfo>() {
             @Override
             public ProcessModuleInfo call(ProcessModuleInfoInner inner) {
                 return new ProcessModuleInfoImpl(inner, manager());
@@ -2447,7 +2464,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ProcessModuleInfoInner> call(Page<ProcessModuleInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ProcessModuleInfoInner, ProcessModuleInfo>() {
+        })
+        .map(new Func1<ProcessModuleInfoInner, ProcessModuleInfo>() {
             @Override
             public ProcessModuleInfo call(ProcessModuleInfoInner inner) {
                 return new ProcessModuleInfoImpl(inner, manager());
@@ -2506,7 +2524,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ProcessThreadInfoInner> call(Page<ProcessThreadInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ProcessThreadInfoInner, ProcessThreadInfo>() {
+        })
+        .map(new Func1<ProcessThreadInfoInner, ProcessThreadInfo>() {
             @Override
             public ProcessThreadInfo call(ProcessThreadInfoInner inner) {
                 return new ProcessThreadInfoImpl(inner, manager());
@@ -2535,7 +2554,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ProcessThreadInfoInner> call(Page<ProcessThreadInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ProcessThreadInfoInner, ProcessThreadInfo>() {
+        })
+        .map(new Func1<ProcessThreadInfoInner, ProcessThreadInfo>() {
             @Override
             public ProcessThreadInfo call(ProcessThreadInfoInner inner) {
                 return new ProcessThreadInfoImpl(inner, manager());
@@ -2564,7 +2584,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ProcessThreadInfoInner> call(Page<ProcessThreadInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ProcessThreadInfoInner, ProcessThreadInfo>() {
+        })
+        .map(new Func1<ProcessThreadInfoInner, ProcessThreadInfo>() {
             @Override
             public ProcessThreadInfo call(ProcessThreadInfoInner inner) {
                 return new ProcessThreadInfoImpl(inner, manager());
@@ -2611,7 +2632,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ResourceMetricDefinitionInner> call(Page<ResourceMetricDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceMetricDefinitionInner, ResourceMetricDefinition>() {
+        })
+        .map(new Func1<ResourceMetricDefinitionInner, ResourceMetricDefinition>() {
             @Override
             public ResourceMetricDefinition call(ResourceMetricDefinitionInner inner) {
                 return new ResourceMetricDefinitionImpl(inner, manager());
@@ -2646,7 +2668,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<ResourceMetricInner> call(Page<ResourceMetricInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceMetricInner, ResourceMetric>() {
+        })
+        .map(new Func1<ResourceMetricInner, ResourceMetric>() {
             @Override
             public ResourceMetric call(ResourceMetricInner inner) {
                 return new ResourceMetricImpl(inner, manager());
@@ -2729,7 +2752,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<PerfMonResponseInner> call(Page<PerfMonResponseInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<PerfMonResponseInner, PerfMonResponse>() {
+        })
+        .map(new Func1<PerfMonResponseInner, PerfMonResponse>() {
             @Override
             public PerfMonResponse call(PerfMonResponseInner inner) {
                 return new PerfMonResponseImpl(inner, manager());
@@ -2854,7 +2878,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<PublicCertificateInner> call(Page<PublicCertificateInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<PublicCertificateInner, PublicCertificate>() {
+        })
+        .map(new Func1<PublicCertificateInner, PublicCertificate>() {
             @Override
             public PublicCertificate call(PublicCertificateInner inner) {
                 return new PublicCertificateImpl(inner, manager());
@@ -2937,7 +2962,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<SiteExtensionInfoInner> call(Page<SiteExtensionInfoInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SiteExtensionInfoInner, SiteExtensionInfo>() {
+        })
+        .map(new Func1<SiteExtensionInfoInner, SiteExtensionInfo>() {
             @Override
             public SiteExtensionInfo call(SiteExtensionInfoInner inner) {
                 return new SiteExtensionInfoImpl(inner, manager());
@@ -3050,7 +3076,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<SiteConfigResourceInner> call(Page<SiteConfigResourceInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SiteConfigResourceInner, SiteConfigResource>() {
+        })
+        .map(new Func1<SiteConfigResourceInner, SiteConfigResource>() {
             @Override
             public SiteConfigResource call(SiteConfigResourceInner inner) {
                 return new SiteConfigResourceImpl(inner, manager());
@@ -3307,7 +3334,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<SlotDifferenceInner> call(Page<SlotDifferenceInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<SlotDifferenceInner, SlotDifference>() {
+        })
+        .map(new Func1<SlotDifferenceInner, SlotDifference>() {
             @Override
             public SlotDifference call(SlotDifferenceInner inner) {
                 return new SlotDifferenceImpl(inner, manager());
@@ -3474,7 +3502,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<TriggeredJobHistoryInner> call(Page<TriggeredJobHistoryInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<TriggeredJobHistoryInner, TriggeredJobHistory>() {
+        })
+        .map(new Func1<TriggeredJobHistoryInner, TriggeredJobHistory>() {
             @Override
             public TriggeredJobHistory call(TriggeredJobHistoryInner inner) {
                 return new TriggeredJobHistoryImpl(inner, manager());
@@ -3509,7 +3538,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<TriggeredWebJobInner> call(Page<TriggeredWebJobInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<TriggeredWebJobInner, TriggeredWebJob>() {
+        })
+        .map(new Func1<TriggeredWebJobInner, TriggeredWebJob>() {
             @Override
             public TriggeredWebJob call(TriggeredWebJobInner inner) {
                 return new TriggeredWebJobImpl(inner, manager());
@@ -3544,7 +3574,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<TriggeredJobHistoryInner> call(Page<TriggeredJobHistoryInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<TriggeredJobHistoryInner, TriggeredJobHistory>() {
+        })
+        .map(new Func1<TriggeredJobHistoryInner, TriggeredJobHistory>() {
             @Override
             public TriggeredJobHistory call(TriggeredJobHistoryInner inner) {
                 return new TriggeredJobHistoryImpl(inner, manager());
@@ -3597,7 +3628,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<CsmUsageQuotaInner> call(Page<CsmUsageQuotaInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<CsmUsageQuotaInner, CsmUsageQuota>() {
+        })
+        .map(new Func1<CsmUsageQuotaInner, CsmUsageQuota>() {
             @Override
             public CsmUsageQuota call(CsmUsageQuotaInner inner) {
                 return new CsmUsageQuotaImpl(inner, manager());
@@ -3650,7 +3682,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Observable<VnetInfoInner> call(List<VnetInfoInner> innerList) {
                 return Observable.from(innerList);
             }
-        })    .map(new Func1<VnetInfoInner, VnetInfo>() {
+        })
+        .map(new Func1<VnetInfoInner, VnetInfo>() {
             @Override
             public VnetInfo call(VnetInfoInner inner) {
                 return new VnetInfoImpl(inner, manager());
@@ -3787,7 +3820,8 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
             public Iterable<WebJobInner> call(Page<WebJobInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<WebJobInner, WebJob>() {
+        })
+        .map(new Func1<WebJobInner, WebJob>() {
             @Override
             public WebJob call(WebJobInner inner) {
                 return new WebJobImpl(inner, manager());

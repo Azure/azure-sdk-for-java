@@ -29,7 +29,7 @@ public class IPAddressAvailabilityResultInner {
     private List<String> availableIPAddresses;
 
     /**
-     * Get the available value.
+     * Get private IP address availability.
      *
      * @return the available value
      */
@@ -38,7 +38,7 @@ public class IPAddressAvailabilityResultInner {
     }
 
     /**
-     * Set the available value.
+     * Set private IP address availability.
      *
      * @param available the available value to set
      * @return the IPAddressAvailabilityResultInner object itself.
@@ -49,7 +49,7 @@ public class IPAddressAvailabilityResultInner {
     }
 
     /**
-     * Get the availableIPAddresses value.
+     * Get contains other available private IP addresses if the asked for address is taken.
      *
      * @return the availableIPAddresses value
      */
@@ -58,7 +58,7 @@ public class IPAddressAvailabilityResultInner {
     }
 
     /**
-     * Set the availableIPAddresses value.
+     * Set contains other available private IP addresses if the asked for address is taken.
      *
      * @param availableIPAddresses the availableIPAddresses value to set
      * @return the IPAddressAvailabilityResultInner object itself.

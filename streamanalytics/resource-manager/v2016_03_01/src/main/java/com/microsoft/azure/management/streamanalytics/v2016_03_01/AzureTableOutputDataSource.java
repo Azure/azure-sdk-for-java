@@ -71,7 +71,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     private Integer batchSize;
 
     /**
-     * Get the accountName value.
+     * Get the name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      *
      * @return the accountName value
      */
@@ -80,7 +80,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the accountName value.
+     * Set the name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      *
      * @param accountName the accountName value to set
      * @return the AzureTableOutputDataSource object itself.
@@ -91,7 +91,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the accountKey value.
+     * Get the account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      *
      * @return the accountKey value
      */
@@ -100,7 +100,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the accountKey value.
+     * Set the account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests.
      *
      * @param accountKey the accountKey value to set
      * @return the AzureTableOutputDataSource object itself.
@@ -111,7 +111,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the table value.
+     * Get the name of the Azure Table. Required on PUT (CreateOrReplace) requests.
      *
      * @return the table value
      */
@@ -120,7 +120,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the table value.
+     * Set the name of the Azure Table. Required on PUT (CreateOrReplace) requests.
      *
      * @param table the table value to set
      * @return the AzureTableOutputDataSource object itself.
@@ -131,7 +131,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the partitionKey value.
+     * Get this element indicates the name of a column from the SELECT statement in the query that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
      *
      * @return the partitionKey value
      */
@@ -140,7 +140,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the partitionKey value.
+     * Set this element indicates the name of a column from the SELECT statement in the query that will be used as the partition key for the Azure Table. Required on PUT (CreateOrReplace) requests.
      *
      * @param partitionKey the partitionKey value to set
      * @return the AzureTableOutputDataSource object itself.
@@ -151,7 +151,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the rowKey value.
+     * Get this element indicates the name of a column from the SELECT statement in the query that will be used as the row key for the Azure Table. Required on PUT (CreateOrReplace) requests.
      *
      * @return the rowKey value
      */
@@ -160,7 +160,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the rowKey value.
+     * Set this element indicates the name of a column from the SELECT statement in the query that will be used as the row key for the Azure Table. Required on PUT (CreateOrReplace) requests.
      *
      * @param rowKey the rowKey value to set
      * @return the AzureTableOutputDataSource object itself.
@@ -171,7 +171,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the columnsToRemove value.
+     * Get if specified, each item in the array is the name of a column to remove (if present) from output event entities.
      *
      * @return the columnsToRemove value
      */
@@ -180,7 +180,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the columnsToRemove value.
+     * Set if specified, each item in the array is the name of a column to remove (if present) from output event entities.
      *
      * @param columnsToRemove the columnsToRemove value to set
      * @return the AzureTableOutputDataSource object itself.
@@ -191,7 +191,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the batchSize value.
+     * Get the number of rows to write to the Azure Table at a time.
      *
      * @return the batchSize value
      */
@@ -200,7 +200,7 @@ public class AzureTableOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the batchSize value.
+     * Set the number of rows to write to the Azure Table at a time.
      *
      * @param batchSize the batchSize value to set
      * @return the AzureTableOutputDataSource object itself.

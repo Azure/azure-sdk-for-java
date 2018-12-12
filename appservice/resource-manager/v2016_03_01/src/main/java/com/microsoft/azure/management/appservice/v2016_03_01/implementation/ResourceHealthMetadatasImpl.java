@@ -37,7 +37,8 @@ class ResourceHealthMetadatasImpl extends WrapperImpl<ResourceHealthMetadatasInn
             public Iterable<ResourceHealthMetadataInner> call(Page<ResourceHealthMetadataInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
+        })
+        .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
             @Override
             public ResourceHealthMetadata call(ResourceHealthMetadataInner inner) {
                 return new ResourceHealthMetadataImpl(inner, manager());
@@ -66,7 +67,8 @@ class ResourceHealthMetadatasImpl extends WrapperImpl<ResourceHealthMetadatasInn
             public Iterable<ResourceHealthMetadataInner> call(Page<ResourceHealthMetadataInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
+        })
+        .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
             @Override
             public ResourceHealthMetadata call(ResourceHealthMetadataInner inner) {
                 return new ResourceHealthMetadataImpl(inner, manager());
@@ -83,7 +85,8 @@ class ResourceHealthMetadatasImpl extends WrapperImpl<ResourceHealthMetadatasInn
             public Iterable<ResourceHealthMetadataInner> call(Page<ResourceHealthMetadataInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
+        })
+        .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
             @Override
             public ResourceHealthMetadata call(ResourceHealthMetadataInner inner) {
                 return new ResourceHealthMetadataImpl(inner, manager());
@@ -100,7 +103,8 @@ class ResourceHealthMetadatasImpl extends WrapperImpl<ResourceHealthMetadatasInn
             public Iterable<ResourceHealthMetadataInner> call(Page<ResourceHealthMetadataInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
+        })
+        .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
             @Override
             public ResourceHealthMetadata call(ResourceHealthMetadataInner inner) {
                 return new ResourceHealthMetadataImpl(inner, manager());

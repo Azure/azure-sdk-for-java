@@ -59,7 +59,7 @@ public class Solution {
     private List<List<NameValuePair>> metadata;
 
     /**
-     * Get the id value.
+     * Get solution Id.
      *
      * @return the id value
      */
@@ -68,7 +68,7 @@ public class Solution {
     }
 
     /**
-     * Set the id value.
+     * Set solution Id.
      *
      * @param id the id value to set
      * @return the Solution object itself.
@@ -79,7 +79,7 @@ public class Solution {
     }
 
     /**
-     * Get the displayName value.
+     * Get display Name of the solution.
      *
      * @return the displayName value
      */
@@ -88,7 +88,7 @@ public class Solution {
     }
 
     /**
-     * Set the displayName value.
+     * Set display Name of the solution.
      *
      * @param displayName the displayName value to set
      * @return the Solution object itself.
@@ -99,7 +99,7 @@ public class Solution {
     }
 
     /**
-     * Get the order value.
+     * Get order of the solution.
      *
      * @return the order value
      */
@@ -108,7 +108,7 @@ public class Solution {
     }
 
     /**
-     * Set the order value.
+     * Set order of the solution.
      *
      * @param order the order value to set
      * @return the Solution object itself.
@@ -119,7 +119,7 @@ public class Solution {
     }
 
     /**
-     * Get the description value.
+     * Get description of the solution.
      *
      * @return the description value
      */
@@ -128,7 +128,7 @@ public class Solution {
     }
 
     /**
-     * Set the description value.
+     * Set description of the solution.
      *
      * @param description the description value to set
      * @return the Solution object itself.
@@ -139,7 +139,7 @@ public class Solution {
     }
 
     /**
-     * Get the type value.
+     * Get type of Solution. Possible values include: 'QuickSolution', 'DeepInvestigation', 'BestPractices'.
      *
      * @return the type value
      */
@@ -148,7 +148,7 @@ public class Solution {
     }
 
     /**
-     * Set the type value.
+     * Set type of Solution. Possible values include: 'QuickSolution', 'DeepInvestigation', 'BestPractices'.
      *
      * @param type the type value to set
      * @return the Solution object itself.
@@ -159,7 +159,7 @@ public class Solution {
     }
 
     /**
-     * Get the data value.
+     * Get solution Data.
      *
      * @return the data value
      */
@@ -168,7 +168,7 @@ public class Solution {
     }
 
     /**
-     * Set the data value.
+     * Set solution Data.
      *
      * @param data the data value to set
      * @return the Solution object itself.
@@ -179,7 +179,7 @@ public class Solution {
     }
 
     /**
-     * Get the metadata value.
+     * Get solution Metadata.
      *
      * @return the metadata value
      */
@@ -188,7 +188,7 @@ public class Solution {
     }
 
     /**
-     * Set the metadata value.
+     * Set solution Metadata.
      *
      * @param metadata the metadata value to set
      * @return the Solution object itself.

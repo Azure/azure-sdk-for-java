@@ -61,7 +61,7 @@ public class ConnectivityInformationInner {
     private Integer probesFailed;
 
     /**
-     * Get the hops value.
+     * Get list of hops between the source and the destination.
      *
      * @return the hops value
      */
@@ -70,7 +70,7 @@ public class ConnectivityInformationInner {
     }
 
     /**
-     * Get the connectionStatus value.
+     * Get the connection status. Possible values include: 'Unknown', 'Connected', 'Disconnected', 'Degraded'.
      *
      * @return the connectionStatus value
      */
@@ -79,7 +79,7 @@ public class ConnectivityInformationInner {
     }
 
     /**
-     * Get the avgLatencyInMs value.
+     * Get average latency in milliseconds.
      *
      * @return the avgLatencyInMs value
      */
@@ -88,7 +88,7 @@ public class ConnectivityInformationInner {
     }
 
     /**
-     * Get the minLatencyInMs value.
+     * Get minimum latency in milliseconds.
      *
      * @return the minLatencyInMs value
      */
@@ -97,7 +97,7 @@ public class ConnectivityInformationInner {
     }
 
     /**
-     * Get the maxLatencyInMs value.
+     * Get maximum latency in milliseconds.
      *
      * @return the maxLatencyInMs value
      */
@@ -106,7 +106,7 @@ public class ConnectivityInformationInner {
     }
 
     /**
-     * Get the probesSent value.
+     * Get total number of probes sent.
      *
      * @return the probesSent value
      */
@@ -115,7 +115,7 @@ public class ConnectivityInformationInner {
     }
 
     /**
-     * Get the probesFailed value.
+     * Get number of failed probes.
      *
      * @return the probesFailed value
      */

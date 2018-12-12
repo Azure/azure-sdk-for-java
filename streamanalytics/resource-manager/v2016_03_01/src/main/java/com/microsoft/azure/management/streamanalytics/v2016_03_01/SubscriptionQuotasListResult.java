@@ -12,7 +12,6 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.streamanalytics.v2016_03_01.implementation.StreamAnalyticsManager;
 import com.microsoft.azure.management.streamanalytics.v2016_03_01.implementation.SubscriptionQuotasListResultInner;
-import com.microsoft.azure.management.streamanalytics.v2016_03_01.implementation.SubscriptionQuotaInner;
 import java.util.List;
 
 /**
@@ -22,6 +21,6 @@ public interface SubscriptionQuotasListResult extends HasInner<SubscriptionQuota
     /**
      * @return the value value.
      */
-    List<SubscriptionQuotaInner> value();
+    List<SubscriptionQuota> value();
 
 }

@@ -24,7 +24,7 @@ public class DomainOwnershipIdentifierInner extends ProxyOnlyResource {
     private String ownershipId;
 
     /**
-     * Get the ownershipId value.
+     * Get ownership Id.
      *
      * @return the ownershipId value
      */
@@ -33,7 +33,7 @@ public class DomainOwnershipIdentifierInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the ownershipId value.
+     * Set ownership Id.
      *
      * @param ownershipId the ownershipId value to set
      * @return the DomainOwnershipIdentifierInner object itself.

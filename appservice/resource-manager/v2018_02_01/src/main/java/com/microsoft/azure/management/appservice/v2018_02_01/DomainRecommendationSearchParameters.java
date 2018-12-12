@@ -27,7 +27,7 @@ public class DomainRecommendationSearchParameters {
     private Integer maxDomainRecommendations;
 
     /**
-     * Get the keywords value.
+     * Get keywords to be used for generating domain recommendations.
      *
      * @return the keywords value
      */
@@ -36,7 +36,7 @@ public class DomainRecommendationSearchParameters {
     }
 
     /**
-     * Set the keywords value.
+     * Set keywords to be used for generating domain recommendations.
      *
      * @param keywords the keywords value to set
      * @return the DomainRecommendationSearchParameters object itself.
@@ -47,7 +47,7 @@ public class DomainRecommendationSearchParameters {
     }
 
     /**
-     * Get the maxDomainRecommendations value.
+     * Get maximum number of recommendations.
      *
      * @return the maxDomainRecommendations value
      */
@@ -56,7 +56,7 @@ public class DomainRecommendationSearchParameters {
     }
 
     /**
-     * Set the maxDomainRecommendations value.
+     * Set maximum number of recommendations.
      *
      * @param maxDomainRecommendations the maxDomainRecommendations value to set
      * @return the DomainRecommendationSearchParameters object itself.

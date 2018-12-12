@@ -142,7 +142,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     private String comment;
 
     /**
-     * Get the siteExtensionInfoId value.
+     * Get site extension ID.
      *
      * @return the siteExtensionInfoId value
      */
@@ -151,7 +151,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the siteExtensionInfoId value.
+     * Set site extension ID.
      *
      * @param siteExtensionInfoId the siteExtensionInfoId value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -162,7 +162,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the title value.
+     * Get site extension title.
      *
      * @return the title value
      */
@@ -171,7 +171,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the title value.
+     * Set site extension title.
      *
      * @param title the title value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -182,7 +182,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the siteExtensionInfoType value.
+     * Get site extension type. Possible values include: 'Gallery', 'WebRoot'.
      *
      * @return the siteExtensionInfoType value
      */
@@ -191,7 +191,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the siteExtensionInfoType value.
+     * Set site extension type. Possible values include: 'Gallery', 'WebRoot'.
      *
      * @param siteExtensionInfoType the siteExtensionInfoType value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -202,7 +202,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the summary value.
+     * Get summary description.
      *
      * @return the summary value
      */
@@ -211,7 +211,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the summary value.
+     * Set summary description.
      *
      * @param summary the summary value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -222,7 +222,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the description value.
+     * Get detailed description.
      *
      * @return the description value
      */
@@ -231,7 +231,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the description value.
+     * Set detailed description.
      *
      * @param description the description value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -242,7 +242,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the version value.
+     * Get version information.
      *
      * @return the version value
      */
@@ -251,7 +251,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the version value.
+     * Set version information.
      *
      * @param version the version value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -262,7 +262,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the extensionUrl value.
+     * Get extension URL.
      *
      * @return the extensionUrl value
      */
@@ -271,7 +271,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the extensionUrl value.
+     * Set extension URL.
      *
      * @param extensionUrl the extensionUrl value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -282,7 +282,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the projectUrl value.
+     * Get project URL.
      *
      * @return the projectUrl value
      */
@@ -291,7 +291,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the projectUrl value.
+     * Set project URL.
      *
      * @param projectUrl the projectUrl value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -302,7 +302,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the iconUrl value.
+     * Get icon URL.
      *
      * @return the iconUrl value
      */
@@ -311,7 +311,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the iconUrl value.
+     * Set icon URL.
      *
      * @param iconUrl the iconUrl value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -322,7 +322,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the licenseUrl value.
+     * Get license URL.
      *
      * @return the licenseUrl value
      */
@@ -331,7 +331,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the licenseUrl value.
+     * Set license URL.
      *
      * @param licenseUrl the licenseUrl value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -342,7 +342,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the feedUrl value.
+     * Get feed URL.
      *
      * @return the feedUrl value
      */
@@ -351,7 +351,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the feedUrl value.
+     * Set feed URL.
      *
      * @param feedUrl the feedUrl value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -362,7 +362,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the authors value.
+     * Get list of authors.
      *
      * @return the authors value
      */
@@ -371,7 +371,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the authors value.
+     * Set list of authors.
      *
      * @param authors the authors value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -382,7 +382,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the installationArgs value.
+     * Get installer command line parameters.
      *
      * @return the installationArgs value
      */
@@ -391,7 +391,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the installationArgs value.
+     * Set installer command line parameters.
      *
      * @param installationArgs the installationArgs value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -402,7 +402,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the publishedDateTime value.
+     * Get published timestamp.
      *
      * @return the publishedDateTime value
      */
@@ -411,7 +411,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the publishedDateTime value.
+     * Set published timestamp.
      *
      * @param publishedDateTime the publishedDateTime value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -422,7 +422,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the downloadCount value.
+     * Get count of downloads.
      *
      * @return the downloadCount value
      */
@@ -431,7 +431,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the downloadCount value.
+     * Set count of downloads.
      *
      * @param downloadCount the downloadCount value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -442,7 +442,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the localIsLatestVersion value.
+     * Get &lt;code&gt;true&lt;/code&gt; if the local version is the latest version; &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @return the localIsLatestVersion value
      */
@@ -451,7 +451,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the localIsLatestVersion value.
+     * Set &lt;code&gt;true&lt;/code&gt; if the local version is the latest version; &lt;code&gt;false&lt;/code&gt; otherwise.
      *
      * @param localIsLatestVersion the localIsLatestVersion value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -462,7 +462,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the localPath value.
+     * Get local path.
      *
      * @return the localPath value
      */
@@ -471,7 +471,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the localPath value.
+     * Set local path.
      *
      * @param localPath the localPath value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -482,7 +482,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the installedDateTime value.
+     * Get installed timestamp.
      *
      * @return the installedDateTime value
      */
@@ -491,7 +491,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the installedDateTime value.
+     * Set installed timestamp.
      *
      * @param installedDateTime the installedDateTime value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -502,7 +502,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state.
      *
      * @return the provisioningState value
      */
@@ -511,7 +511,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set provisioning state.
      *
      * @param provisioningState the provisioningState value to set
      * @return the SiteExtensionInfoInner object itself.
@@ -522,7 +522,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the comment value.
+     * Get site Extension comment.
      *
      * @return the comment value
      */
@@ -531,7 +531,7 @@ public class SiteExtensionInfoInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the comment value.
+     * Set site Extension comment.
      *
      * @param comment the comment value to set
      * @return the SiteExtensionInfoInner object itself.

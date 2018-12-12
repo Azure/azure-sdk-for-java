@@ -21,7 +21,7 @@ public class ManagementLockOwner {
     private String applicationId;
 
     /**
-     * Get the applicationId value.
+     * Get the application ID of the lock owner.
      *
      * @return the applicationId value
      */
@@ -30,7 +30,7 @@ public class ManagementLockOwner {
     }
 
     /**
-     * Set the applicationId value.
+     * Set the application ID of the lock owner.
      *
      * @param applicationId the applicationId value to set
      * @return the ManagementLockOwner object itself.

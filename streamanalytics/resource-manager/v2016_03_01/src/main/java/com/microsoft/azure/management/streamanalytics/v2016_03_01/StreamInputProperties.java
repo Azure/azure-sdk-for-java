@@ -26,7 +26,7 @@ public class StreamInputProperties extends InputProperties {
     private StreamInputDataSource datasource;
 
     /**
-     * Get the datasource value.
+     * Get describes an input data source that contains stream data. Required on PUT (CreateOrReplace) requests.
      *
      * @return the datasource value
      */
@@ -35,7 +35,7 @@ public class StreamInputProperties extends InputProperties {
     }
 
     /**
-     * Set the datasource value.
+     * Set describes an input data source that contains stream data. Required on PUT (CreateOrReplace) requests.
      *
      * @param datasource the datasource value to set
      * @return the StreamInputProperties object itself.

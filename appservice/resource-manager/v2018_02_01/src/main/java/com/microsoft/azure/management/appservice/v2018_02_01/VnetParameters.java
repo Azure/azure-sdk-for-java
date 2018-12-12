@@ -35,7 +35,7 @@ public class VnetParameters extends ProxyOnlyResource {
     private String vnetSubnetName;
 
     /**
-     * Get the vnetResourceGroup value.
+     * Get the Resource Group of the VNET to be validated.
      *
      * @return the vnetResourceGroup value
      */
@@ -44,7 +44,7 @@ public class VnetParameters extends ProxyOnlyResource {
     }
 
     /**
-     * Set the vnetResourceGroup value.
+     * Set the Resource Group of the VNET to be validated.
      *
      * @param vnetResourceGroup the vnetResourceGroup value to set
      * @return the VnetParameters object itself.
@@ -55,7 +55,7 @@ public class VnetParameters extends ProxyOnlyResource {
     }
 
     /**
-     * Get the vnetName value.
+     * Get the name of the VNET to be validated.
      *
      * @return the vnetName value
      */
@@ -64,7 +64,7 @@ public class VnetParameters extends ProxyOnlyResource {
     }
 
     /**
-     * Set the vnetName value.
+     * Set the name of the VNET to be validated.
      *
      * @param vnetName the vnetName value to set
      * @return the VnetParameters object itself.
@@ -75,7 +75,7 @@ public class VnetParameters extends ProxyOnlyResource {
     }
 
     /**
-     * Get the vnetSubnetName value.
+     * Get the subnet name to be validated.
      *
      * @return the vnetSubnetName value
      */
@@ -84,7 +84,7 @@ public class VnetParameters extends ProxyOnlyResource {
     }
 
     /**
-     * Set the vnetSubnetName value.
+     * Set the subnet name to be validated.
      *
      * @param vnetSubnetName the vnetSubnetName value to set
      * @return the VnetParameters object itself.

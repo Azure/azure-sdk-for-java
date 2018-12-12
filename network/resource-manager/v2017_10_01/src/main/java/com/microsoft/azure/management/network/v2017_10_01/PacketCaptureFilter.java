@@ -59,7 +59,7 @@ public class PacketCaptureFilter {
     private String remotePort;
 
     /**
-     * Get the protocol value.
+     * Get protocol to be filtered on. Possible values include: 'TCP', 'UDP', 'Any'.
      *
      * @return the protocol value
      */
@@ -68,7 +68,7 @@ public class PacketCaptureFilter {
     }
 
     /**
-     * Set the protocol value.
+     * Set protocol to be filtered on. Possible values include: 'TCP', 'UDP', 'Any'.
      *
      * @param protocol the protocol value to set
      * @return the PacketCaptureFilter object itself.
@@ -79,7 +79,7 @@ public class PacketCaptureFilter {
     }
 
     /**
-     * Get the localIPAddress value.
+     * Get local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
      * @return the localIPAddress value
      */
@@ -88,7 +88,7 @@ public class PacketCaptureFilter {
     }
 
     /**
-     * Set the localIPAddress value.
+     * Set local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
      * @param localIPAddress the localIPAddress value to set
      * @return the PacketCaptureFilter object itself.
@@ -99,7 +99,7 @@ public class PacketCaptureFilter {
     }
 
     /**
-     * Get the remoteIPAddress value.
+     * Get local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
      * @return the remoteIPAddress value
      */
@@ -108,7 +108,7 @@ public class PacketCaptureFilter {
     }
 
     /**
-     * Set the remoteIPAddress value.
+     * Set local IP Address to be filtered on. Notation: "127.0.0.1" for single address entry. "127.0.0.1-127.0.0.255" for range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
      * @param remoteIPAddress the remoteIPAddress value to set
      * @return the PacketCaptureFilter object itself.
@@ -119,7 +119,7 @@ public class PacketCaptureFilter {
     }
 
     /**
-     * Get the localPort value.
+     * Get local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
      * @return the localPort value
      */
@@ -128,7 +128,7 @@ public class PacketCaptureFilter {
     }
 
     /**
-     * Set the localPort value.
+     * Set local port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
      * @param localPort the localPort value to set
      * @return the PacketCaptureFilter object itself.
@@ -139,7 +139,7 @@ public class PacketCaptureFilter {
     }
 
     /**
-     * Get the remotePort value.
+     * Get remote port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
      * @return the remotePort value
      */
@@ -148,7 +148,7 @@ public class PacketCaptureFilter {
     }
 
     /**
-     * Set the remotePort value.
+     * Set remote port to be filtered on. Notation: "80" for single port entry."80-85" for range. "80;443;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported. Default = null.
      *
      * @param remotePort the remotePort value to set
      * @return the PacketCaptureFilter object itself.

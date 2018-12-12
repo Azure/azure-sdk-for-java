@@ -733,85 +733,6 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      *
      * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For example, use '/subscriptions/{subscription-id}/' for a subscription, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}' for a resource.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the RoleAssignmentInner object if successful.
-     */
-    public RoleAssignmentInner create(String scope, String roleAssignmentName) {
-        return createWithServiceResponseAsync(scope, roleAssignmentName).toBlocking().single().body();
-    }
-
-    /**
-     * Creates a role assignment.
-     *
-     * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For example, use '/subscriptions/{subscription-id}/' for a subscription, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}' for a resource.
-     * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<RoleAssignmentInner> createAsync(String scope, String roleAssignmentName, final ServiceCallback<RoleAssignmentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(scope, roleAssignmentName), serviceCallback);
-    }
-
-    /**
-     * Creates a role assignment.
-     *
-     * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For example, use '/subscriptions/{subscription-id}/' for a subscription, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}' for a resource.
-     * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RoleAssignmentInner object
-     */
-    public Observable<RoleAssignmentInner> createAsync(String scope, String roleAssignmentName) {
-        return createWithServiceResponseAsync(scope, roleAssignmentName).map(new Func1<ServiceResponse<RoleAssignmentInner>, RoleAssignmentInner>() {
-            @Override
-            public RoleAssignmentInner call(ServiceResponse<RoleAssignmentInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a role assignment.
-     *
-     * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For example, use '/subscriptions/{subscription-id}/' for a subscription, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}' for a resource.
-     * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RoleAssignmentInner object
-     */
-    public Observable<ServiceResponse<RoleAssignmentInner>> createWithServiceResponseAsync(String scope, String roleAssignmentName) {
-        if (scope == null) {
-            throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
-        }
-        if (roleAssignmentName == null) {
-            throw new IllegalArgumentException("Parameter roleAssignmentName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final RoleAssignmentProperties properties = null;
-        RoleAssignmentCreateParameters parameters = new RoleAssignmentCreateParameters();
-        parameters.withProperties(null);
-        return service.create(scope, roleAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RoleAssignmentInner>>>() {
-                @Override
-                public Observable<ServiceResponse<RoleAssignmentInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<RoleAssignmentInner> clientResponse = createDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Creates a role assignment.
-     *
-     * @param scope The scope of the role assignment to create. The scope can be any REST resource instance. For example, use '/subscriptions/{subscription-id}/' for a subscription, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}' for a resource.
-     * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
      * @param properties Role assignment properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -872,6 +793,9 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (properties == null) {
+            throw new IllegalArgumentException("Parameter properties is required and cannot be null.");
         }
         Validator.validate(properties);
         RoleAssignmentCreateParameters parameters = new RoleAssignmentCreateParameters();
@@ -1060,78 +984,6 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * Creates a role assignment by ID.
      *
      * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and resource type. Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the RoleAssignmentInner object if successful.
-     */
-    public RoleAssignmentInner createById(String roleAssignmentId) {
-        return createByIdWithServiceResponseAsync(roleAssignmentId).toBlocking().single().body();
-    }
-
-    /**
-     * Creates a role assignment by ID.
-     *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and resource type. Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<RoleAssignmentInner> createByIdAsync(String roleAssignmentId, final ServiceCallback<RoleAssignmentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createByIdWithServiceResponseAsync(roleAssignmentId), serviceCallback);
-    }
-
-    /**
-     * Creates a role assignment by ID.
-     *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and resource type. Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RoleAssignmentInner object
-     */
-    public Observable<RoleAssignmentInner> createByIdAsync(String roleAssignmentId) {
-        return createByIdWithServiceResponseAsync(roleAssignmentId).map(new Func1<ServiceResponse<RoleAssignmentInner>, RoleAssignmentInner>() {
-            @Override
-            public RoleAssignmentInner call(ServiceResponse<RoleAssignmentInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a role assignment by ID.
-     *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and resource type. Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RoleAssignmentInner object
-     */
-    public Observable<ServiceResponse<RoleAssignmentInner>> createByIdWithServiceResponseAsync(String roleAssignmentId) {
-        if (roleAssignmentId == null) {
-            throw new IllegalArgumentException("Parameter roleAssignmentId is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        final RoleAssignmentProperties properties = null;
-        RoleAssignmentCreateParameters parameters = new RoleAssignmentCreateParameters();
-        parameters.withProperties(null);
-        return service.createById(roleAssignmentId, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RoleAssignmentInner>>>() {
-                @Override
-                public Observable<ServiceResponse<RoleAssignmentInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<RoleAssignmentInner> clientResponse = createByIdDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Creates a role assignment by ID.
-     *
-     * @param roleAssignmentId The fully qualified ID of the role assignment, including the scope, resource name and resource type. Use the format, /{scope}/providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}. Example: /subscriptions/{subId}/resourcegroups/{rgname}//providers/Microsoft.Authorization/roleAssignments/{roleAssignmentName}.
      * @param properties Role assignment properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1186,6 +1038,9 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (properties == null) {
+            throw new IllegalArgumentException("Parameter properties is required and cannot be null.");
         }
         Validator.validate(properties);
         RoleAssignmentCreateParameters parameters = new RoleAssignmentCreateParameters();

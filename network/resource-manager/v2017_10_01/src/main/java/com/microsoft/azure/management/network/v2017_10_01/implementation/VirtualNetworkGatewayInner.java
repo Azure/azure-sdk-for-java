@@ -115,7 +115,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     private String id;
 
     /**
-     * Get the ipConfigurations value.
+     * Get iP configurations for virtual network gateway.
      *
      * @return the ipConfigurations value
      */
@@ -124,7 +124,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the ipConfigurations value.
+     * Set iP configurations for virtual network gateway.
      *
      * @param ipConfigurations the ipConfigurations value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -135,7 +135,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the gatewayType value.
+     * Get the type of this virtual network gateway. Possible values are: 'Vpn' and 'ExpressRoute'. Possible values include: 'Vpn', 'ExpressRoute'.
      *
      * @return the gatewayType value
      */
@@ -144,7 +144,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the gatewayType value.
+     * Set the type of this virtual network gateway. Possible values are: 'Vpn' and 'ExpressRoute'. Possible values include: 'Vpn', 'ExpressRoute'.
      *
      * @param gatewayType the gatewayType value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -155,7 +155,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the vpnType value.
+     * Get the type of this virtual network gateway. Possible values are: 'PolicyBased' and 'RouteBased'. Possible values include: 'PolicyBased', 'RouteBased'.
      *
      * @return the vpnType value
      */
@@ -164,7 +164,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the vpnType value.
+     * Set the type of this virtual network gateway. Possible values are: 'PolicyBased' and 'RouteBased'. Possible values include: 'PolicyBased', 'RouteBased'.
      *
      * @param vpnType the vpnType value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -175,7 +175,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the enableBgp value.
+     * Get whether BGP is enabled for this virtual network gateway or not.
      *
      * @return the enableBgp value
      */
@@ -184,7 +184,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the enableBgp value.
+     * Set whether BGP is enabled for this virtual network gateway or not.
      *
      * @param enableBgp the enableBgp value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -195,7 +195,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the activeActive value.
+     * Get activeActive flag.
      *
      * @return the activeActive value
      */
@@ -204,7 +204,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the activeActive value.
+     * Set activeActive flag.
      *
      * @param activeActive the activeActive value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -215,7 +215,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the gatewayDefaultSite value.
+     * Get the reference of the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting.
      *
      * @return the gatewayDefaultSite value
      */
@@ -224,7 +224,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the gatewayDefaultSite value.
+     * Set the reference of the LocalNetworkGateway resource which represents local network site having default routes. Assign Null value in case of removing existing default site setting.
      *
      * @param gatewayDefaultSite the gatewayDefaultSite value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -235,7 +235,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the sku value.
+     * Get the reference of the VirtualNetworkGatewaySku resource which represents the SKU selected for Virtual network gateway.
      *
      * @return the sku value
      */
@@ -244,7 +244,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set the reference of the VirtualNetworkGatewaySku resource which represents the SKU selected for Virtual network gateway.
      *
      * @param sku the sku value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -255,7 +255,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the vpnClientConfiguration value.
+     * Get the reference of the VpnClientConfiguration resource which represents the P2S VpnClient configurations.
      *
      * @return the vpnClientConfiguration value
      */
@@ -264,7 +264,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the vpnClientConfiguration value.
+     * Set the reference of the VpnClientConfiguration resource which represents the P2S VpnClient configurations.
      *
      * @param vpnClientConfiguration the vpnClientConfiguration value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -275,7 +275,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the bgpSettings value.
+     * Get virtual network gateway's BGP speaker settings.
      *
      * @return the bgpSettings value
      */
@@ -284,7 +284,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the bgpSettings value.
+     * Set virtual network gateway's BGP speaker settings.
      *
      * @param bgpSettings the bgpSettings value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -295,7 +295,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid value.
+     * Get the resource GUID property of the VirtualNetworkGateway resource.
      *
      * @return the resourceGuid value
      */
@@ -304,7 +304,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the resourceGuid value.
+     * Set the resource GUID property of the VirtualNetworkGateway resource.
      *
      * @param resourceGuid the resourceGuid value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -315,7 +315,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the VirtualNetworkGateway resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -324,7 +324,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the etag value.
+     * Get gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -333,7 +333,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the etag value.
+     * Set gets a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the VirtualNetworkGatewayInner object itself.
@@ -344,7 +344,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the id value.
+     * Get resource ID.
      *
      * @return the id value
      */
@@ -353,7 +353,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the id value.
+     * Set resource ID.
      *
      * @param id the id value to set
      * @return the VirtualNetworkGatewayInner object itself.

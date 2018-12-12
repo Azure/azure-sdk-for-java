@@ -105,7 +105,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     private String forwardLink;
 
     /**
-     * Get the recommendationRuleName value.
+     * Get unique name of the rule.
      *
      * @return the recommendationRuleName value
      */
@@ -114,7 +114,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the recommendationRuleName value.
+     * Set unique name of the rule.
      *
      * @param recommendationRuleName the recommendationRuleName value to set
      * @return the RecommendationRuleInner object itself.
@@ -125,7 +125,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the displayName value.
+     * Get uI friendly name of the rule.
      *
      * @return the displayName value
      */
@@ -134,7 +134,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the displayName value.
+     * Set uI friendly name of the rule.
      *
      * @param displayName the displayName value to set
      * @return the RecommendationRuleInner object itself.
@@ -145,7 +145,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the message value.
+     * Get localized name of the rule (Good for UI).
      *
      * @return the message value
      */
@@ -154,7 +154,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the message value.
+     * Set localized name of the rule (Good for UI).
      *
      * @param message the message value to set
      * @return the RecommendationRuleInner object itself.
@@ -165,7 +165,8 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the recommendationId value.
+     * Get recommendation ID of an associated recommendation object tied to the rule, if exists.
+     If such an object doesn't exist, it is set to null.
      *
      * @return the recommendationId value
      */
@@ -174,7 +175,8 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the recommendationId value.
+     * Set recommendation ID of an associated recommendation object tied to the rule, if exists.
+     If such an object doesn't exist, it is set to null.
      *
      * @param recommendationId the recommendationId value to set
      * @return the RecommendationRuleInner object itself.
@@ -185,7 +187,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the description value.
+     * Get localized detailed description of the rule.
      *
      * @return the description value
      */
@@ -194,7 +196,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the description value.
+     * Set localized detailed description of the rule.
      *
      * @param description the description value to set
      * @return the RecommendationRuleInner object itself.
@@ -205,7 +207,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the actionName value.
+     * Get name of action that is recommended by this rule in string.
      *
      * @return the actionName value
      */
@@ -214,7 +216,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the actionName value.
+     * Set name of action that is recommended by this rule in string.
      *
      * @param actionName the actionName value to set
      * @return the RecommendationRuleInner object itself.
@@ -225,7 +227,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the level value.
+     * Get level of impact indicating how critical this rule is. Possible values include: 'Critical', 'Warning', 'Information', 'NonUrgentSuggestion'.
      *
      * @return the level value
      */
@@ -234,7 +236,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the level value.
+     * Set level of impact indicating how critical this rule is. Possible values include: 'Critical', 'Warning', 'Information', 'NonUrgentSuggestion'.
      *
      * @param level the level value to set
      * @return the RecommendationRuleInner object itself.
@@ -245,7 +247,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the channels value.
+     * Get list of available channels that this rule applies. Possible values include: 'Notification', 'Api', 'Email', 'Webhook', 'All'.
      *
      * @return the channels value
      */
@@ -254,7 +256,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the channels value.
+     * Set list of available channels that this rule applies. Possible values include: 'Notification', 'Api', 'Email', 'Webhook', 'All'.
      *
      * @param channels the channels value to set
      * @return the RecommendationRuleInner object itself.
@@ -265,7 +267,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the tags value.
+     * Get an array of category tags that the rule contains.
      *
      * @return the tags value
      */
@@ -274,7 +276,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the tags value.
+     * Set an array of category tags that the rule contains.
      *
      * @param tags the tags value to set
      * @return the RecommendationRuleInner object itself.
@@ -285,7 +287,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isDynamic value.
+     * Get true if this is associated with a dynamically added rule.
      *
      * @return the isDynamic value
      */
@@ -294,7 +296,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the isDynamic value.
+     * Set true if this is associated with a dynamically added rule.
      *
      * @param isDynamic the isDynamic value to set
      * @return the RecommendationRuleInner object itself.
@@ -305,7 +307,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the extensionName value.
+     * Get extension name of the portal if exists. Applicable to dynamic rule only.
      *
      * @return the extensionName value
      */
@@ -314,7 +316,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the extensionName value.
+     * Set extension name of the portal if exists. Applicable to dynamic rule only.
      *
      * @param extensionName the extensionName value to set
      * @return the RecommendationRuleInner object itself.
@@ -325,7 +327,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the bladeName value.
+     * Get deep link to a blade on the portal. Applicable to dynamic rule only.
      *
      * @return the bladeName value
      */
@@ -334,7 +336,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the bladeName value.
+     * Set deep link to a blade on the portal. Applicable to dynamic rule only.
      *
      * @param bladeName the bladeName value to set
      * @return the RecommendationRuleInner object itself.
@@ -345,7 +347,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the forwardLink value.
+     * Get forward link to an external document associated with the rule. Applicable to dynamic rule only.
      *
      * @return the forwardLink value
      */
@@ -354,7 +356,7 @@ public class RecommendationRuleInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the forwardLink value.
+     * Set forward link to an external document associated with the rule. Applicable to dynamic rule only.
      *
      * @param forwardLink the forwardLink value to set
      * @return the RecommendationRuleInner object itself.

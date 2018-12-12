@@ -57,7 +57,7 @@ public class GatewayRoute {
     private Integer weight;
 
     /**
-     * Get the localAddress value.
+     * Get the gateway's local address.
      *
      * @return the localAddress value
      */
@@ -66,7 +66,7 @@ public class GatewayRoute {
     }
 
     /**
-     * Get the network value.
+     * Get the route's network prefix.
      *
      * @return the network value
      */
@@ -75,7 +75,7 @@ public class GatewayRoute {
     }
 
     /**
-     * Get the nextHop value.
+     * Get the route's next hop.
      *
      * @return the nextHop value
      */
@@ -84,7 +84,7 @@ public class GatewayRoute {
     }
 
     /**
-     * Get the sourcePeer value.
+     * Get the peer this route was learned from.
      *
      * @return the sourcePeer value
      */
@@ -93,7 +93,7 @@ public class GatewayRoute {
     }
 
     /**
-     * Get the origin value.
+     * Get the source this route was learned from.
      *
      * @return the origin value
      */
@@ -102,7 +102,7 @@ public class GatewayRoute {
     }
 
     /**
-     * Get the asPath value.
+     * Get the route's AS path sequence.
      *
      * @return the asPath value
      */
@@ -111,7 +111,7 @@ public class GatewayRoute {
     }
 
     /**
-     * Get the weight value.
+     * Get the route's weight.
      *
      * @return the weight value
      */

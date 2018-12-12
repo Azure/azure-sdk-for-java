@@ -67,41 +67,22 @@ class FunctionsImpl extends WrapperImpl<FunctionsInner> implements Functions {
         });
     }
 
-    private Observable<Page<FunctionInner>> listByStreamingJobNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        FunctionsInner client = this.inner();
-        return client.listByStreamingJobNextAsync(nextLink)
-        .flatMap(new Func1<Page<FunctionInner>, Observable<Page<FunctionInner>>>() {
-            @Override
-            public Observable<Page<FunctionInner>> call(Page<FunctionInner> page) {
-                return Observable.just(page).concatWith(listByStreamingJobNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Function> listByStreamingJobAsync(final String resourceGroupName, final String jobName) {
         FunctionsInner client = this.inner();
         return client.listByStreamingJobAsync(resourceGroupName, jobName)
-        .flatMap(new Func1<Page<FunctionInner>, Observable<Page<FunctionInner>>>() {
-            @Override
-            public Observable<Page<FunctionInner>> call(Page<FunctionInner> page) {
-                return listByStreamingJobNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<FunctionInner>, Iterable<FunctionInner>>() {
             @Override
             public Iterable<FunctionInner> call(Page<FunctionInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<FunctionInner, Function>() {
             @Override
             public Function call(FunctionInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

@@ -64,7 +64,8 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
             public Iterable<RecommendationInner> call(Page<RecommendationInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<RecommendationInner, Recommendation>() {
+        })
+        .map(new Func1<RecommendationInner, Recommendation>() {
             @Override
             public Recommendation call(RecommendationInner inner) {
                 return new RecommendationImpl(inner, manager());
@@ -135,7 +136,8 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
             public Iterable<RecommendationInner> call(Page<RecommendationInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<RecommendationInner, Recommendation>() {
+        })
+        .map(new Func1<RecommendationInner, Recommendation>() {
             @Override
             public Recommendation call(RecommendationInner inner) {
                 return new RecommendationImpl(inner, manager());

@@ -45,7 +45,7 @@ public class StatusCodesBasedTrigger {
     private String timeInterval;
 
     /**
-     * Get the status value.
+     * Get hTTP status code.
      *
      * @return the status value
      */
@@ -54,7 +54,7 @@ public class StatusCodesBasedTrigger {
     }
 
     /**
-     * Set the status value.
+     * Set hTTP status code.
      *
      * @param status the status value to set
      * @return the StatusCodesBasedTrigger object itself.
@@ -65,7 +65,7 @@ public class StatusCodesBasedTrigger {
     }
 
     /**
-     * Get the subStatus value.
+     * Get request Sub Status.
      *
      * @return the subStatus value
      */
@@ -74,7 +74,7 @@ public class StatusCodesBasedTrigger {
     }
 
     /**
-     * Set the subStatus value.
+     * Set request Sub Status.
      *
      * @param subStatus the subStatus value to set
      * @return the StatusCodesBasedTrigger object itself.
@@ -85,7 +85,7 @@ public class StatusCodesBasedTrigger {
     }
 
     /**
-     * Get the win32Status value.
+     * Get win32 error code.
      *
      * @return the win32Status value
      */
@@ -94,7 +94,7 @@ public class StatusCodesBasedTrigger {
     }
 
     /**
-     * Set the win32Status value.
+     * Set win32 error code.
      *
      * @param win32Status the win32Status value to set
      * @return the StatusCodesBasedTrigger object itself.
@@ -105,7 +105,7 @@ public class StatusCodesBasedTrigger {
     }
 
     /**
-     * Get the count value.
+     * Get request Count.
      *
      * @return the count value
      */
@@ -114,7 +114,7 @@ public class StatusCodesBasedTrigger {
     }
 
     /**
-     * Set the count value.
+     * Set request Count.
      *
      * @param count the count value to set
      * @return the StatusCodesBasedTrigger object itself.
@@ -125,7 +125,7 @@ public class StatusCodesBasedTrigger {
     }
 
     /**
-     * Get the timeInterval value.
+     * Get time interval.
      *
      * @return the timeInterval value
      */
@@ -134,7 +134,7 @@ public class StatusCodesBasedTrigger {
     }
 
     /**
-     * Set the timeInterval value.
+     * Set time interval.
      *
      * @param timeInterval the timeInterval value to set
      * @return the StatusCodesBasedTrigger object itself.

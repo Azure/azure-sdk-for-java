@@ -56,7 +56,7 @@ public class EventHubOutputDataSource extends OutputDataSource {
     private String partitionKey;
 
     /**
-     * Get the serviceBusNamespace value.
+     * Get the namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @return the serviceBusNamespace value
      */
@@ -65,7 +65,7 @@ public class EventHubOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the serviceBusNamespace value.
+     * Set the namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @param serviceBusNamespace the serviceBusNamespace value to set
      * @return the EventHubOutputDataSource object itself.
@@ -76,7 +76,7 @@ public class EventHubOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the sharedAccessPolicyName value.
+     * Get the shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @return the sharedAccessPolicyName value
      */
@@ -85,7 +85,7 @@ public class EventHubOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the sharedAccessPolicyName value.
+     * Set the shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
      *
      * @param sharedAccessPolicyName the sharedAccessPolicyName value to set
      * @return the EventHubOutputDataSource object itself.
@@ -96,7 +96,7 @@ public class EventHubOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the sharedAccessPolicyKey value.
+     * Get the shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
      *
      * @return the sharedAccessPolicyKey value
      */
@@ -105,7 +105,7 @@ public class EventHubOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the sharedAccessPolicyKey value.
+     * Set the shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
      *
      * @param sharedAccessPolicyKey the sharedAccessPolicyKey value to set
      * @return the EventHubOutputDataSource object itself.
@@ -116,7 +116,7 @@ public class EventHubOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the eventHubName value.
+     * Get the name of the Event Hub. Required on PUT (CreateOrReplace) requests.
      *
      * @return the eventHubName value
      */
@@ -125,7 +125,7 @@ public class EventHubOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the eventHubName value.
+     * Set the name of the Event Hub. Required on PUT (CreateOrReplace) requests.
      *
      * @param eventHubName the eventHubName value to set
      * @return the EventHubOutputDataSource object itself.
@@ -136,7 +136,7 @@ public class EventHubOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the partitionKey value.
+     * Get the key/column that is used to determine to which partition to send event data.
      *
      * @return the partitionKey value
      */
@@ -145,7 +145,7 @@ public class EventHubOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the partitionKey value.
+     * Set the key/column that is used to determine to which partition to send event data.
      *
      * @param partitionKey the partitionKey value to set
      * @return the EventHubOutputDataSource object itself.

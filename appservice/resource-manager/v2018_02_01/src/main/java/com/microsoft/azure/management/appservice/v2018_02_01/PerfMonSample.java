@@ -34,7 +34,7 @@ public class PerfMonSample {
     private Double value;
 
     /**
-     * Get the time value.
+     * Get point in time for which counter was measured.
      *
      * @return the time value
      */
@@ -43,7 +43,7 @@ public class PerfMonSample {
     }
 
     /**
-     * Set the time value.
+     * Set point in time for which counter was measured.
      *
      * @param time the time value to set
      * @return the PerfMonSample object itself.
@@ -54,7 +54,7 @@ public class PerfMonSample {
     }
 
     /**
-     * Get the instanceName value.
+     * Get name of the server on which the measurement is made.
      *
      * @return the instanceName value
      */
@@ -63,7 +63,7 @@ public class PerfMonSample {
     }
 
     /**
-     * Set the instanceName value.
+     * Set name of the server on which the measurement is made.
      *
      * @param instanceName the instanceName value to set
      * @return the PerfMonSample object itself.
@@ -74,7 +74,7 @@ public class PerfMonSample {
     }
 
     /**
-     * Get the value value.
+     * Get value of counter at a certain time.
      *
      * @return the value value
      */
@@ -83,7 +83,7 @@ public class PerfMonSample {
     }
 
     /**
-     * Set the value value.
+     * Set value of counter at a certain time.
      *
      * @param value the value value to set
      * @return the PerfMonSample object itself.

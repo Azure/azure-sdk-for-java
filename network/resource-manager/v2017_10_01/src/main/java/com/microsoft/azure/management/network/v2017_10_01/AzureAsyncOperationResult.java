@@ -36,7 +36,7 @@ public class AzureAsyncOperationResult {
     private Error error;
 
     /**
-     * Get the status value.
+     * Get status of the Azure async operation. Possible values are: 'InProgress', 'Succeeded', and 'Failed'. Possible values include: 'InProgress', 'Succeeded', 'Failed'.
      *
      * @return the status value
      */
@@ -45,7 +45,7 @@ public class AzureAsyncOperationResult {
     }
 
     /**
-     * Set the status value.
+     * Set status of the Azure async operation. Possible values are: 'InProgress', 'Succeeded', and 'Failed'. Possible values include: 'InProgress', 'Succeeded', 'Failed'.
      *
      * @param status the status value to set
      * @return the AzureAsyncOperationResult object itself.

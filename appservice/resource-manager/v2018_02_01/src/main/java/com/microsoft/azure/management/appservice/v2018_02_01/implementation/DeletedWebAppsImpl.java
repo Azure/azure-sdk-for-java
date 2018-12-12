@@ -37,7 +37,8 @@ class DeletedWebAppsImpl extends WrapperImpl<DeletedWebAppsInner> implements Del
             public Iterable<DeletedSiteInner> call(Page<DeletedSiteInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<DeletedSiteInner, DeletedSite>() {
+        })
+        .map(new Func1<DeletedSiteInner, DeletedSite>() {
             @Override
             public DeletedSite call(DeletedSiteInner inner) {
                 return new DeletedSiteImpl(inner, manager());

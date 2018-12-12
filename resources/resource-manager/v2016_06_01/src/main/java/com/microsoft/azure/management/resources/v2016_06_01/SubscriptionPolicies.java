@@ -37,7 +37,7 @@ public class SubscriptionPolicies {
     private SpendingLimit spendingLimit;
 
     /**
-     * Get the locationPlacementId value.
+     * Get the subscription location placement ID. The ID indicates which regions are visible for a subscription. For example, a subscription with a location placement Id of Public_2014-09-01 has access to Azure public regions.
      *
      * @return the locationPlacementId value
      */
@@ -46,7 +46,7 @@ public class SubscriptionPolicies {
     }
 
     /**
-     * Get the quotaId value.
+     * Get the subscription quota ID.
      *
      * @return the quotaId value
      */
@@ -55,7 +55,7 @@ public class SubscriptionPolicies {
     }
 
     /**
-     * Get the spendingLimit value.
+     * Get the subscription spending limit. Possible values include: 'On', 'Off', 'CurrentPeriodOff'.
      *
      * @return the spendingLimit value
      */

@@ -24,7 +24,7 @@ public class DhcpOptions {
     private List<String> dnsServers;
 
     /**
-     * Get the dnsServers value.
+     * Get the list of DNS servers IP addresses.
      *
      * @return the dnsServers value
      */
@@ -33,7 +33,7 @@ public class DhcpOptions {
     }
 
     /**
-     * Set the dnsServers value.
+     * Set the list of DNS servers IP addresses.
      *
      * @param dnsServers the dnsServers value to set
      * @return the DhcpOptions object itself.

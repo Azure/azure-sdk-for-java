@@ -25,7 +25,7 @@ public class RestoreResponseInner extends ProxyOnlyResource {
     private String operationId;
 
     /**
-     * Get the operationId value.
+     * Get when server starts the restore process, it will return an operation ID identifying that particular restore operation.
      *
      * @return the operationId value
      */

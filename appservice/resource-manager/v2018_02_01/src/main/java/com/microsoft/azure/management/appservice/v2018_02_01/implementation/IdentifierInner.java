@@ -24,7 +24,7 @@ public class IdentifierInner extends ProxyOnlyResource {
     private String identifierId;
 
     /**
-     * Get the identifierId value.
+     * Get string representation of the identity.
      *
      * @return the identifierId value
      */
@@ -33,7 +33,7 @@ public class IdentifierInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the identifierId value.
+     * Set string representation of the identity.
      *
      * @param identifierId the identifierId value to set
      * @return the IdentifierInner object itself.

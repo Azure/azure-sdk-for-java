@@ -53,7 +53,7 @@ public class BGPCommunity {
     private String serviceGroup;
 
     /**
-     * Get the serviceSupportedRegion value.
+     * Get the region which the service support. e.g. For O365, region is Global.
      *
      * @return the serviceSupportedRegion value
      */
@@ -62,7 +62,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Set the serviceSupportedRegion value.
+     * Set the region which the service support. e.g. For O365, region is Global.
      *
      * @param serviceSupportedRegion the serviceSupportedRegion value to set
      * @return the BGPCommunity object itself.
@@ -73,7 +73,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Get the communityName value.
+     * Get the name of the bgp community. e.g. Skype.
      *
      * @return the communityName value
      */
@@ -82,7 +82,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Set the communityName value.
+     * Set the name of the bgp community. e.g. Skype.
      *
      * @param communityName the communityName value to set
      * @return the BGPCommunity object itself.
@@ -93,7 +93,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Get the communityValue value.
+     * Get the value of the bgp community. For more information: https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
      *
      * @return the communityValue value
      */
@@ -102,7 +102,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Set the communityValue value.
+     * Set the value of the bgp community. For more information: https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
      *
      * @param communityValue the communityValue value to set
      * @return the BGPCommunity object itself.
@@ -113,7 +113,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Get the communityPrefixes value.
+     * Get the prefixes that the bgp community contains.
      *
      * @return the communityPrefixes value
      */
@@ -122,7 +122,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Set the communityPrefixes value.
+     * Set the prefixes that the bgp community contains.
      *
      * @param communityPrefixes the communityPrefixes value to set
      * @return the BGPCommunity object itself.
@@ -133,7 +133,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Get the isAuthorizedToUse value.
+     * Get customer is authorized to use bgp community or not.
      *
      * @return the isAuthorizedToUse value
      */
@@ -142,7 +142,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Set the isAuthorizedToUse value.
+     * Set customer is authorized to use bgp community or not.
      *
      * @param isAuthorizedToUse the isAuthorizedToUse value to set
      * @return the BGPCommunity object itself.
@@ -153,7 +153,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Get the serviceGroup value.
+     * Get the service group of the bgp community contains.
      *
      * @return the serviceGroup value
      */
@@ -162,7 +162,7 @@ public class BGPCommunity {
     }
 
     /**
-     * Set the serviceGroup value.
+     * Set the service group of the bgp community contains.
      *
      * @param serviceGroup the serviceGroup value to set
      * @return the BGPCommunity object itself.

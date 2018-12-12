@@ -36,7 +36,7 @@ public class AzureMachineLearningWebServiceInputColumn {
     private Integer mapTo;
 
     /**
-     * Get the name value.
+     * Get the name of the input column.
      *
      * @return the name value
      */
@@ -45,7 +45,7 @@ public class AzureMachineLearningWebServiceInputColumn {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the input column.
      *
      * @param name the name value to set
      * @return the AzureMachineLearningWebServiceInputColumn object itself.
@@ -56,7 +56,7 @@ public class AzureMachineLearningWebServiceInputColumn {
     }
 
     /**
-     * Get the dataType value.
+     * Get the (Azure Machine Learning supported) data type of the input column. A list of valid  Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
      *
      * @return the dataType value
      */
@@ -65,7 +65,7 @@ public class AzureMachineLearningWebServiceInputColumn {
     }
 
     /**
-     * Set the dataType value.
+     * Set the (Azure Machine Learning supported) data type of the input column. A list of valid  Azure Machine Learning data types are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
      *
      * @param dataType the dataType value to set
      * @return the AzureMachineLearningWebServiceInputColumn object itself.
@@ -76,7 +76,7 @@ public class AzureMachineLearningWebServiceInputColumn {
     }
 
     /**
-     * Get the mapTo value.
+     * Get the zero based index of the function parameter this input maps to.
      *
      * @return the mapTo value
      */
@@ -85,7 +85,7 @@ public class AzureMachineLearningWebServiceInputColumn {
     }
 
     /**
-     * Set the mapTo value.
+     * Set the zero based index of the function parameter this input maps to.
      *
      * @param mapTo the mapTo value to set
      * @return the AzureMachineLearningWebServiceInputColumn object itself.

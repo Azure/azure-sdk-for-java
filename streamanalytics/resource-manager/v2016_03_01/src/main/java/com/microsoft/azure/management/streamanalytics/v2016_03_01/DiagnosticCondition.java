@@ -36,7 +36,7 @@ public class DiagnosticCondition {
     private String message;
 
     /**
-     * Get the since value.
+     * Get the UTC timestamp of when the condition started. Customers should be able to find a corresponding event in the ops log around this time.
      *
      * @return the since value
      */
@@ -45,7 +45,7 @@ public class DiagnosticCondition {
     }
 
     /**
-     * Get the code value.
+     * Get the opaque diagnostic code.
      *
      * @return the code value
      */
@@ -54,7 +54,7 @@ public class DiagnosticCondition {
     }
 
     /**
-     * Get the message value.
+     * Get the human-readable message describing the condition in detail. Localized in the Accept-Language of the client request.
      *
      * @return the message value
      */

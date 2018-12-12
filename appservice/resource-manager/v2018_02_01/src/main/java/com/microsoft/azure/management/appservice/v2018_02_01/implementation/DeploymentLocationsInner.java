@@ -37,7 +37,7 @@ public class DeploymentLocationsInner {
     private List<HostingEnvironmentDeploymentInfo> hostingEnvironmentDeploymentInfos;
 
     /**
-     * Get the locations value.
+     * Get available regions.
      *
      * @return the locations value
      */
@@ -46,7 +46,7 @@ public class DeploymentLocationsInner {
     }
 
     /**
-     * Set the locations value.
+     * Set available regions.
      *
      * @param locations the locations value to set
      * @return the DeploymentLocationsInner object itself.
@@ -57,7 +57,7 @@ public class DeploymentLocationsInner {
     }
 
     /**
-     * Get the hostingEnvironments value.
+     * Get available App Service Environments with full descriptions of the environments.
      *
      * @return the hostingEnvironments value
      */
@@ -66,7 +66,7 @@ public class DeploymentLocationsInner {
     }
 
     /**
-     * Set the hostingEnvironments value.
+     * Set available App Service Environments with full descriptions of the environments.
      *
      * @param hostingEnvironments the hostingEnvironments value to set
      * @return the DeploymentLocationsInner object itself.
@@ -77,7 +77,7 @@ public class DeploymentLocationsInner {
     }
 
     /**
-     * Get the hostingEnvironmentDeploymentInfos value.
+     * Get available App Service Environments with basic information.
      *
      * @return the hostingEnvironmentDeploymentInfos value
      */
@@ -86,7 +86,7 @@ public class DeploymentLocationsInner {
     }
 
     /**
-     * Set the hostingEnvironmentDeploymentInfos value.
+     * Set available App Service Environments with basic information.
      *
      * @param hostingEnvironmentDeploymentInfos the hostingEnvironmentDeploymentInfos value to set
      * @return the DeploymentLocationsInner object itself.

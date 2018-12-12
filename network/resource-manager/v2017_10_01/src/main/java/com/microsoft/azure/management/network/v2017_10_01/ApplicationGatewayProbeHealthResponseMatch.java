@@ -30,7 +30,7 @@ public class ApplicationGatewayProbeHealthResponseMatch {
     private List<String> statusCodes;
 
     /**
-     * Get the body value.
+     * Get body that must be contained in the health response. Default value is empty.
      *
      * @return the body value
      */
@@ -39,7 +39,7 @@ public class ApplicationGatewayProbeHealthResponseMatch {
     }
 
     /**
-     * Set the body value.
+     * Set body that must be contained in the health response. Default value is empty.
      *
      * @param body the body value to set
      * @return the ApplicationGatewayProbeHealthResponseMatch object itself.
@@ -50,7 +50,7 @@ public class ApplicationGatewayProbeHealthResponseMatch {
     }
 
     /**
-     * Get the statusCodes value.
+     * Get allowed ranges of healthy status codes. Default range of healthy status codes is 200-399.
      *
      * @return the statusCodes value
      */
@@ -59,7 +59,7 @@ public class ApplicationGatewayProbeHealthResponseMatch {
     }
 
     /**
-     * Set the statusCodes value.
+     * Set allowed ranges of healthy status codes. Default range of healthy status codes is 200-399.
      *
      * @param statusCodes the statusCodes value to set
      * @return the ApplicationGatewayProbeHealthResponseMatch object itself.

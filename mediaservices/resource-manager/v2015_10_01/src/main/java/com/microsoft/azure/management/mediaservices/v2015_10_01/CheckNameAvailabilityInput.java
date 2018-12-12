@@ -28,13 +28,14 @@ public class CheckNameAvailabilityInput {
 
     /**
      * Creates an instance of CheckNameAvailabilityInput class.
+     * @param name the name of the resource. A name must be globally unique.
      */
     public CheckNameAvailabilityInput() {
         type = "mediaservices";
     }
 
     /**
-     * Get the name value.
+     * Get the name of the resource. A name must be globally unique.
      *
      * @return the name value
      */
@@ -43,7 +44,7 @@ public class CheckNameAvailabilityInput {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource. A name must be globally unique.
      *
      * @param name the name value to set
      * @return the CheckNameAvailabilityInput object itself.
@@ -54,7 +55,7 @@ public class CheckNameAvailabilityInput {
     }
 
     /**
-     * Get the type value.
+     * Get the type of the resource - mediaservices.
      *
      * @return the type value
      */
@@ -63,7 +64,7 @@ public class CheckNameAvailabilityInput {
     }
 
     /**
-     * Set the type value.
+     * Set the type of the resource - mediaservices.
      *
      * @param type the type value to set
      * @return the CheckNameAvailabilityInput object itself.

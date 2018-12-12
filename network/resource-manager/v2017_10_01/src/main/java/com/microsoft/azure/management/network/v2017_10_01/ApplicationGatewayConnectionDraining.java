@@ -30,7 +30,7 @@ public class ApplicationGatewayConnectionDraining {
     private int drainTimeoutInSec;
 
     /**
-     * Get the enabled value.
+     * Get whether connection draining is enabled or not.
      *
      * @return the enabled value
      */
@@ -39,7 +39,7 @@ public class ApplicationGatewayConnectionDraining {
     }
 
     /**
-     * Set the enabled value.
+     * Set whether connection draining is enabled or not.
      *
      * @param enabled the enabled value to set
      * @return the ApplicationGatewayConnectionDraining object itself.
@@ -50,7 +50,7 @@ public class ApplicationGatewayConnectionDraining {
     }
 
     /**
-     * Get the drainTimeoutInSec value.
+     * Get the number of seconds connection draining is active. Acceptable values are from 1 second to 3600 seconds.
      *
      * @return the drainTimeoutInSec value
      */
@@ -59,7 +59,7 @@ public class ApplicationGatewayConnectionDraining {
     }
 
     /**
-     * Set the drainTimeoutInSec value.
+     * Set the number of seconds connection draining is active. Acceptable values are from 1 second to 3600 seconds.
      *
      * @param drainTimeoutInSec the drainTimeoutInSec value to set
      * @return the ApplicationGatewayConnectionDraining object itself.

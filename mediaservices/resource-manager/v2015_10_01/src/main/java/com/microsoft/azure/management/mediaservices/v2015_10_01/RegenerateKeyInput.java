@@ -22,7 +22,7 @@ public class RegenerateKeyInput {
     private KeyType keyType;
 
     /**
-     * Get the keyType value.
+     * Get the keyType indicating which key you want to regenerate, Primary or Secondary. Possible values include: 'Primary', 'Secondary'.
      *
      * @return the keyType value
      */
@@ -31,7 +31,7 @@ public class RegenerateKeyInput {
     }
 
     /**
-     * Set the keyType value.
+     * Set the keyType indicating which key you want to regenerate, Primary or Secondary. Possible values include: 'Primary', 'Secondary'.
      *
      * @param keyType the keyType value to set
      * @return the RegenerateKeyInput object itself.

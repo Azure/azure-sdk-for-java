@@ -45,7 +45,7 @@ public class ServiceKeysInner {
     private String scope;
 
     /**
-     * Get the primaryAuthEndpoint value.
+     * Get the primary authorization endpoint.
      *
      * @return the primaryAuthEndpoint value
      */
@@ -54,7 +54,7 @@ public class ServiceKeysInner {
     }
 
     /**
-     * Set the primaryAuthEndpoint value.
+     * Set the primary authorization endpoint.
      *
      * @param primaryAuthEndpoint the primaryAuthEndpoint value to set
      * @return the ServiceKeysInner object itself.
@@ -65,7 +65,7 @@ public class ServiceKeysInner {
     }
 
     /**
-     * Get the secondaryAuthEndpoint value.
+     * Get the secondary authorization endpoint.
      *
      * @return the secondaryAuthEndpoint value
      */
@@ -74,7 +74,7 @@ public class ServiceKeysInner {
     }
 
     /**
-     * Set the secondaryAuthEndpoint value.
+     * Set the secondary authorization endpoint.
      *
      * @param secondaryAuthEndpoint the secondaryAuthEndpoint value to set
      * @return the ServiceKeysInner object itself.
@@ -85,7 +85,7 @@ public class ServiceKeysInner {
     }
 
     /**
-     * Get the primaryKey value.
+     * Get the primary key for the Media Service resource.
      *
      * @return the primaryKey value
      */
@@ -94,7 +94,7 @@ public class ServiceKeysInner {
     }
 
     /**
-     * Set the primaryKey value.
+     * Set the primary key for the Media Service resource.
      *
      * @param primaryKey the primaryKey value to set
      * @return the ServiceKeysInner object itself.
@@ -105,7 +105,7 @@ public class ServiceKeysInner {
     }
 
     /**
-     * Get the secondaryKey value.
+     * Get the secondary key for the Media Service resource.
      *
      * @return the secondaryKey value
      */
@@ -114,7 +114,7 @@ public class ServiceKeysInner {
     }
 
     /**
-     * Set the secondaryKey value.
+     * Set the secondary key for the Media Service resource.
      *
      * @param secondaryKey the secondaryKey value to set
      * @return the ServiceKeysInner object itself.
@@ -125,7 +125,7 @@ public class ServiceKeysInner {
     }
 
     /**
-     * Get the scope value.
+     * Get the authorization scope.
      *
      * @return the scope value
      */
@@ -134,7 +134,7 @@ public class ServiceKeysInner {
     }
 
     /**
-     * Set the scope value.
+     * Set the authorization scope.
      *
      * @param scope the scope value to set
      * @return the ServiceKeysInner object itself.

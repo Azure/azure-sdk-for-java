@@ -42,7 +42,7 @@ public class PrivateAccessVirtualNetwork {
     private List<PrivateAccessSubnet> subnets;
 
     /**
-     * Get the name value.
+     * Get the name of the Virtual Network.
      *
      * @return the name value
      */
@@ -51,7 +51,7 @@ public class PrivateAccessVirtualNetwork {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the Virtual Network.
      *
      * @param name the name value to set
      * @return the PrivateAccessVirtualNetwork object itself.
@@ -62,7 +62,7 @@ public class PrivateAccessVirtualNetwork {
     }
 
     /**
-     * Get the key value.
+     * Get the key (ID) of the Virtual Network.
      *
      * @return the key value
      */
@@ -71,7 +71,7 @@ public class PrivateAccessVirtualNetwork {
     }
 
     /**
-     * Set the key value.
+     * Set the key (ID) of the Virtual Network.
      *
      * @param key the key value to set
      * @return the PrivateAccessVirtualNetwork object itself.
@@ -82,7 +82,7 @@ public class PrivateAccessVirtualNetwork {
     }
 
     /**
-     * Get the resourceId value.
+     * Get the ARM uri of the Virtual Network.
      *
      * @return the resourceId value
      */
@@ -91,7 +91,7 @@ public class PrivateAccessVirtualNetwork {
     }
 
     /**
-     * Set the resourceId value.
+     * Set the ARM uri of the Virtual Network.
      *
      * @param resourceId the resourceId value to set
      * @return the PrivateAccessVirtualNetwork object itself.
@@ -102,7 +102,7 @@ public class PrivateAccessVirtualNetwork {
     }
 
     /**
-     * Get the subnets value.
+     * Get a List of subnets that access is allowed to on this Virtual Network. An empty array (but not null) is interpreted to mean that all subnets are allowed within this Virtual Network.
      *
      * @return the subnets value
      */
@@ -111,7 +111,7 @@ public class PrivateAccessVirtualNetwork {
     }
 
     /**
-     * Set the subnets value.
+     * Set a List of subnets that access is allowed to on this Virtual Network. An empty array (but not null) is interpreted to mean that all subnets are allowed within this Virtual Network.
      *
      * @param subnets the subnets value to set
      * @return the PrivateAccessVirtualNetwork object itself.

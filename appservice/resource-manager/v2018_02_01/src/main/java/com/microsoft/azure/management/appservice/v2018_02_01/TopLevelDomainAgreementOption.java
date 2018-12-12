@@ -31,7 +31,7 @@ public class TopLevelDomainAgreementOption {
     private Boolean forTransfer;
 
     /**
-     * Get the includePrivacy value.
+     * Get if &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the includePrivacy value
      */
@@ -40,7 +40,7 @@ public class TopLevelDomainAgreementOption {
     }
 
     /**
-     * Set the includePrivacy value.
+     * Set if &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param includePrivacy the includePrivacy value to set
      * @return the TopLevelDomainAgreementOption object itself.
@@ -51,7 +51,7 @@ public class TopLevelDomainAgreementOption {
     }
 
     /**
-     * Get the forTransfer value.
+     * Get if &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain transfer as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the forTransfer value
      */
@@ -60,7 +60,7 @@ public class TopLevelDomainAgreementOption {
     }
 
     /**
-     * Set the forTransfer value.
+     * Set if &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain transfer as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param forTransfer the forTransfer value to set
      * @return the TopLevelDomainAgreementOption object itself.

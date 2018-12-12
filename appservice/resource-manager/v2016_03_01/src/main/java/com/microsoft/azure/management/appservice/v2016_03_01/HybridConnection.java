@@ -69,7 +69,7 @@ public class HybridConnection extends ProxyOnlyResource {
     private String serviceBusSuffix;
 
     /**
-     * Get the serviceBusNamespace value.
+     * Get the name of the Service Bus namespace.
      *
      * @return the serviceBusNamespace value
      */
@@ -78,7 +78,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Set the serviceBusNamespace value.
+     * Set the name of the Service Bus namespace.
      *
      * @param serviceBusNamespace the serviceBusNamespace value to set
      * @return the HybridConnection object itself.
@@ -89,7 +89,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Get the relayName value.
+     * Get the name of the Service Bus relay.
      *
      * @return the relayName value
      */
@@ -98,7 +98,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Set the relayName value.
+     * Set the name of the Service Bus relay.
      *
      * @param relayName the relayName value to set
      * @return the HybridConnection object itself.
@@ -109,7 +109,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Get the relayArmUri value.
+     * Get the ARM URI to the Service Bus relay.
      *
      * @return the relayArmUri value
      */
@@ -118,7 +118,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Set the relayArmUri value.
+     * Set the ARM URI to the Service Bus relay.
      *
      * @param relayArmUri the relayArmUri value to set
      * @return the HybridConnection object itself.
@@ -129,7 +129,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostname value.
+     * Get the hostname of the endpoint.
      *
      * @return the hostname value
      */
@@ -138,7 +138,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Set the hostname value.
+     * Set the hostname of the endpoint.
      *
      * @param hostname the hostname value to set
      * @return the HybridConnection object itself.
@@ -149,7 +149,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Get the port value.
+     * Get the port of the endpoint.
      *
      * @return the port value
      */
@@ -158,7 +158,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Set the port value.
+     * Set the port of the endpoint.
      *
      * @param port the port value to set
      * @return the HybridConnection object itself.
@@ -169,7 +169,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Get the sendKeyName value.
+     * Get the name of the Service Bus key which has Send permissions. This is used to authenticate to Service Bus.
      *
      * @return the sendKeyName value
      */
@@ -178,7 +178,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Set the sendKeyName value.
+     * Set the name of the Service Bus key which has Send permissions. This is used to authenticate to Service Bus.
      *
      * @param sendKeyName the sendKeyName value to set
      * @return the HybridConnection object itself.
@@ -189,7 +189,8 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Get the sendKeyValue value.
+     * Get the value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be returned
+     normally, use the POST /listKeys API instead.
      *
      * @return the sendKeyValue value
      */
@@ -198,7 +199,8 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Set the sendKeyValue value.
+     * Set the value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be returned
+     normally, use the POST /listKeys API instead.
      *
      * @param sendKeyValue the sendKeyValue value to set
      * @return the HybridConnection object itself.
@@ -209,7 +211,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Get the serviceBusSuffix value.
+     * Get the suffix for the service bus endpoint. By default this is .servicebus.windows.net.
      *
      * @return the serviceBusSuffix value
      */
@@ -218,7 +220,7 @@ public class HybridConnection extends ProxyOnlyResource {
     }
 
     /**
-     * Set the serviceBusSuffix value.
+     * Set the suffix for the service bus endpoint. By default this is .servicebus.windows.net.
      *
      * @param serviceBusSuffix the serviceBusSuffix value to set
      * @return the HybridConnection object itself.

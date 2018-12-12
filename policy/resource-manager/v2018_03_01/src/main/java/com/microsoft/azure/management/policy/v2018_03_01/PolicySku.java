@@ -11,7 +11,7 @@ package com.microsoft.azure.management.policy.v2018_03_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The policy sku.
+ * The policy sku. This property is optional, obsolete, and will be ignored.
  */
 public class PolicySku {
     /**
@@ -27,7 +27,7 @@ public class PolicySku {
     private String tier;
 
     /**
-     * Get the name value.
+     * Get the name of the policy sku. Possible values are A0 and A1.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class PolicySku {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the policy sku. Possible values are A0 and A1.
      *
      * @param name the name value to set
      * @return the PolicySku object itself.
@@ -47,7 +47,7 @@ public class PolicySku {
     }
 
     /**
-     * Get the tier value.
+     * Get the policy sku tier. Possible values are Free and Standard.
      *
      * @return the tier value
      */
@@ -56,7 +56,7 @@ public class PolicySku {
     }
 
     /**
-     * Set the tier value.
+     * Set the policy sku tier. Possible values are Free and Standard.
      *
      * @param tier the tier value to set
      * @return the PolicySku object itself.

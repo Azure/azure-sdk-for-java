@@ -24,7 +24,7 @@ public class DiagnosticCategoryInner extends ProxyOnlyResource {
     private String description;
 
     /**
-     * Get the description value.
+     * Get description of the diagnostic category.
      *
      * @return the description value
      */

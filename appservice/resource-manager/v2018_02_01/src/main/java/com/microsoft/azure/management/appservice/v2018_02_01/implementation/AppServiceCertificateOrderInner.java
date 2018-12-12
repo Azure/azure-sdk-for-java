@@ -153,7 +153,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     private String kind;
 
     /**
-     * Get the certificates value.
+     * Get state of the Key Vault secret.
      *
      * @return the certificates value
      */
@@ -162,7 +162,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the certificates value.
+     * Set state of the Key Vault secret.
      *
      * @param certificates the certificates value to set
      * @return the AppServiceCertificateOrderInner object itself.
@@ -173,7 +173,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the distinguishedName value.
+     * Get certificate distinguished name.
      *
      * @return the distinguishedName value
      */
@@ -182,7 +182,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the distinguishedName value.
+     * Set certificate distinguished name.
      *
      * @param distinguishedName the distinguishedName value to set
      * @return the AppServiceCertificateOrderInner object itself.
@@ -193,7 +193,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the domainVerificationToken value.
+     * Get domain verification token.
      *
      * @return the domainVerificationToken value
      */
@@ -202,7 +202,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the validityInYears value.
+     * Get duration in years (must be between 1 and 3).
      *
      * @return the validityInYears value
      */
@@ -211,7 +211,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the validityInYears value.
+     * Set duration in years (must be between 1 and 3).
      *
      * @param validityInYears the validityInYears value to set
      * @return the AppServiceCertificateOrderInner object itself.
@@ -222,7 +222,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the keySize value.
+     * Get certificate key size.
      *
      * @return the keySize value
      */
@@ -231,7 +231,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the keySize value.
+     * Set certificate key size.
      *
      * @param keySize the keySize value to set
      * @return the AppServiceCertificateOrderInner object itself.
@@ -242,7 +242,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the productType value.
+     * Get certificate product type. Possible values include: 'StandardDomainValidatedSsl', 'StandardDomainValidatedWildCardSsl'.
      *
      * @return the productType value
      */
@@ -251,7 +251,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the productType value.
+     * Set certificate product type. Possible values include: 'StandardDomainValidatedSsl', 'StandardDomainValidatedWildCardSsl'.
      *
      * @param productType the productType value to set
      * @return the AppServiceCertificateOrderInner object itself.
@@ -262,7 +262,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the autoRenew value.
+     * Get &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the autoRenew value
      */
@@ -271,7 +271,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the autoRenew value.
+     * Set &lt;code&gt;true&lt;/code&gt; if the certificate should be automatically renewed when it expires; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param autoRenew the autoRenew value to set
      * @return the AppServiceCertificateOrderInner object itself.
@@ -282,7 +282,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get status of certificate order. Possible values include: 'Succeeded', 'Failed', 'Canceled', 'InProgress', 'Deleting'.
      *
      * @return the provisioningState value
      */
@@ -291,7 +291,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the status value.
+     * Get current order status. Possible values include: 'Pendingissuance', 'Issued', 'Revoked', 'Canceled', 'Denied', 'Pendingrevocation', 'PendingRekey', 'Unused', 'Expired', 'NotSubmitted'.
      *
      * @return the status value
      */
@@ -300,7 +300,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the signedCertificate value.
+     * Get signed certificate.
      *
      * @return the signedCertificate value
      */
@@ -309,7 +309,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the csr value.
+     * Get last CSR that was created for this order.
      *
      * @return the csr value
      */
@@ -318,7 +318,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the csr value.
+     * Set last CSR that was created for this order.
      *
      * @param csr the csr value to set
      * @return the AppServiceCertificateOrderInner object itself.
@@ -329,7 +329,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the intermediate value.
+     * Get intermediate certificate.
      *
      * @return the intermediate value
      */
@@ -338,7 +338,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the root value.
+     * Get root certificate.
      *
      * @return the root value
      */
@@ -347,7 +347,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the serialNumber value.
+     * Get current serial number of the certificate.
      *
      * @return the serialNumber value
      */
@@ -356,7 +356,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the lastCertificateIssuanceTime value.
+     * Get certificate last issuance time.
      *
      * @return the lastCertificateIssuanceTime value
      */
@@ -365,7 +365,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the expirationTime value.
+     * Get certificate expiration time.
      *
      * @return the expirationTime value
      */
@@ -374,7 +374,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the isPrivateKeyExternal value.
+     * Get &lt;code&gt;true&lt;/code&gt; if private key is external; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the isPrivateKeyExternal value
      */
@@ -383,7 +383,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the appServiceCertificateNotRenewableReasons value.
+     * Get reasons why App Service Certificate is not renewable at the current moment.
      *
      * @return the appServiceCertificateNotRenewableReasons value
      */
@@ -392,7 +392,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the nextAutoRenewalTimeStamp value.
+     * Get time stamp when the certificate would be auto renewed next.
      *
      * @return the nextAutoRenewalTimeStamp value
      */
@@ -401,7 +401,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Get the kind value.
+     * Get kind of resource.
      *
      * @return the kind value
      */
@@ -410,7 +410,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the kind value.
+     * Set kind of resource.
      *
      * @param kind the kind value to set
      * @return the AppServiceCertificateOrderInner object itself.

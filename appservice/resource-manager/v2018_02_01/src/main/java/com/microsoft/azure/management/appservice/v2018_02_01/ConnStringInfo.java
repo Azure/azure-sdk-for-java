@@ -35,7 +35,7 @@ public class ConnStringInfo {
     private ConnectionStringType type;
 
     /**
-     * Get the name value.
+     * Get name of connection string.
      *
      * @return the name value
      */
@@ -44,7 +44,7 @@ public class ConnStringInfo {
     }
 
     /**
-     * Set the name value.
+     * Set name of connection string.
      *
      * @param name the name value to set
      * @return the ConnStringInfo object itself.
@@ -55,7 +55,7 @@ public class ConnStringInfo {
     }
 
     /**
-     * Get the connectionString value.
+     * Get connection string value.
      *
      * @return the connectionString value
      */
@@ -64,7 +64,7 @@ public class ConnStringInfo {
     }
 
     /**
-     * Set the connectionString value.
+     * Set connection string value.
      *
      * @param connectionString the connectionString value to set
      * @return the ConnStringInfo object itself.
@@ -75,7 +75,7 @@ public class ConnStringInfo {
     }
 
     /**
-     * Get the type value.
+     * Get type of database. Possible values include: 'MySql', 'SQLServer', 'SQLAzure', 'Custom', 'NotificationHub', 'ServiceBus', 'EventHub', 'ApiHub', 'DocDb', 'RedisCache', 'PostgreSQL'.
      *
      * @return the type value
      */
@@ -84,7 +84,7 @@ public class ConnStringInfo {
     }
 
     /**
-     * Set the type value.
+     * Set type of database. Possible values include: 'MySql', 'SQLServer', 'SQLAzure', 'Custom', 'NotificationHub', 'ServiceBus', 'EventHub', 'ApiHub', 'DocDb', 'RedisCache', 'PostgreSQL'.
      *
      * @param type the type value to set
      * @return the ConnStringInfo object itself.

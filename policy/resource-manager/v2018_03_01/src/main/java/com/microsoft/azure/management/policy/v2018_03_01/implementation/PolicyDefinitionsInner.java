@@ -943,7 +943,8 @@ public class PolicyDefinitionsInner {
     }
 
     /**
-     * Gets all the policy definitions in a management group.
+     * Retrieve policy definitions in a management group.
+     * This operation retrieves a list of all the policy definitions in a given management group.
      *
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -962,7 +963,8 @@ public class PolicyDefinitionsInner {
     }
 
     /**
-     * Gets all the policy definitions in a management group.
+     * Retrieve policy definitions in a management group.
+     * This operation retrieves a list of all the policy definitions in a given management group.
      *
      * @param managementGroupId The ID of the management group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -982,7 +984,8 @@ public class PolicyDefinitionsInner {
     }
 
     /**
-     * Gets all the policy definitions in a management group.
+     * Retrieve policy definitions in a management group.
+     * This operation retrieves a list of all the policy definitions in a given management group.
      *
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -999,7 +1002,8 @@ public class PolicyDefinitionsInner {
     }
 
     /**
-     * Gets all the policy definitions in a management group.
+     * Retrieve policy definitions in a management group.
+     * This operation retrieves a list of all the policy definitions in a given management group.
      *
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1020,7 +1024,8 @@ public class PolicyDefinitionsInner {
     }
 
     /**
-     * Gets all the policy definitions in a management group.
+     * Retrieve policy definitions in a management group.
+     * This operation retrieves a list of all the policy definitions in a given management group.
      *
     ServiceResponse<PageImpl<PolicyDefinitionInner>> * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1287,7 +1292,8 @@ public class PolicyDefinitionsInner {
     }
 
     /**
-     * Gets all the policy definitions in a management group.
+     * Retrieve policy definitions in a management group.
+     * This operation retrieves a list of all the policy definitions in a given management group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1306,7 +1312,8 @@ public class PolicyDefinitionsInner {
     }
 
     /**
-     * Gets all the policy definitions in a management group.
+     * Retrieve policy definitions in a management group.
+     * This operation retrieves a list of all the policy definitions in a given management group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -1327,7 +1334,8 @@ public class PolicyDefinitionsInner {
     }
 
     /**
-     * Gets all the policy definitions in a management group.
+     * Retrieve policy definitions in a management group.
+     * This operation retrieves a list of all the policy definitions in a given management group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1344,7 +1352,8 @@ public class PolicyDefinitionsInner {
     }
 
     /**
-     * Gets all the policy definitions in a management group.
+     * Retrieve policy definitions in a management group.
+     * This operation retrieves a list of all the policy definitions in a given management group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1365,7 +1374,8 @@ public class PolicyDefinitionsInner {
     }
 
     /**
-     * Gets all the policy definitions in a management group.
+     * Retrieve policy definitions in a management group.
+     * This operation retrieves a list of all the policy definitions in a given management group.
      *
     ServiceResponse<PageImpl<PolicyDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation

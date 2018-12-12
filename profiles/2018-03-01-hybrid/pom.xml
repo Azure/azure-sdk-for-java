@@ -9,7 +9,7 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-arm-parent</artifactId>
-    <version>0.0.2-beta</version>
+    <version>0.0.3-beta</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
   <artifactId>azure-profile-parent</artifactId>
@@ -110,6 +110,7 @@
     <!-- roll up pakcages -->
     <module>./azure</module>
     <!-- multi api -->
+    <module>../../resources/resource-manager/v2016_06_01</module>
     <module>../../resources/resource-manager/v2018_02_01</module>
     <module>../../authorization/resource-manager/v2015_07_01</module>
     <module>../../policy/resource-manager/v2016_12_01</module>

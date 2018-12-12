@@ -51,7 +51,7 @@ public class AppPatch {
     private String template;
 
     /**
-     * Get the tags value.
+     * Get instance tags.
      *
      * @return the tags value
      */
@@ -60,7 +60,7 @@ public class AppPatch {
     }
 
     /**
-     * Set the tags value.
+     * Set instance tags.
      *
      * @param tags the tags value to set
      * @return the AppPatch object itself.
@@ -71,7 +71,7 @@ public class AppPatch {
     }
 
     /**
-     * Get the applicationId value.
+     * Get the ID of the application.
      *
      * @return the applicationId value
      */
@@ -80,7 +80,7 @@ public class AppPatch {
     }
 
     /**
-     * Get the displayName value.
+     * Get the display name of the application.
      *
      * @return the displayName value
      */
@@ -89,7 +89,7 @@ public class AppPatch {
     }
 
     /**
-     * Set the displayName value.
+     * Set the display name of the application.
      *
      * @param displayName the displayName value to set
      * @return the AppPatch object itself.
@@ -100,7 +100,7 @@ public class AppPatch {
     }
 
     /**
-     * Get the subdomain value.
+     * Get the subdomain of the application.
      *
      * @return the subdomain value
      */
@@ -109,7 +109,7 @@ public class AppPatch {
     }
 
     /**
-     * Set the subdomain value.
+     * Set the subdomain of the application.
      *
      * @param subdomain the subdomain value to set
      * @return the AppPatch object itself.
@@ -120,7 +120,7 @@ public class AppPatch {
     }
 
     /**
-     * Get the template value.
+     * Get the ID of the application template, which is a blueprint that defines the characteristics and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and allows the application to be defined from scratch.
      *
      * @return the template value
      */
@@ -129,7 +129,7 @@ public class AppPatch {
     }
 
     /**
-     * Set the template value.
+     * Set the ID of the application template, which is a blueprint that defines the characteristics and behaviors of an application. Optional; if not specified, defaults to a blank blueprint and allows the application to be defined from scratch.
      *
      * @param template the template value to set
      * @return the AppPatch object itself.

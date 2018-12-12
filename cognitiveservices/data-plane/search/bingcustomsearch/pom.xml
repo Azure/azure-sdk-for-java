@@ -8,15 +8,15 @@
     <parent>
       <groupId>com.microsoft.azure.cognitiveservices</groupId>
       <artifactId>azure-cognitiveservices-parent</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
       <relativePath>../../pom.xml</relativePath>
     </parent>
     <artifactId>azure-cognitiveservices-customsearch</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Custom Search</name>
     <description>This package contains Microsoft Cognitive Service Custom Search SDK.</description>
-    <url>https://github.com/Azure/azure-sdk-for-java/azure-cognitiveservices/search/bingcustomsearch</url>
+    <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/search/bingcustomsearch</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>

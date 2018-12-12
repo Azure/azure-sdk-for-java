@@ -28,7 +28,7 @@ public class JavaScriptFunctionBinding extends FunctionBinding {
     private String script;
 
     /**
-     * Get the script value.
+     * Get the JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'.
      *
      * @return the script value
      */
@@ -37,7 +37,7 @@ public class JavaScriptFunctionBinding extends FunctionBinding {
     }
 
     /**
-     * Set the script value.
+     * Set the JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'.
      *
      * @param script the script value to set
      * @return the JavaScriptFunctionBinding object itself.

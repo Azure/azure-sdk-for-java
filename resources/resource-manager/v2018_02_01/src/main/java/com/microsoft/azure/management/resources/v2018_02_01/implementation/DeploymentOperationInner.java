@@ -34,7 +34,7 @@ public class DeploymentOperationInner {
     private DeploymentOperationProperties properties;
 
     /**
-     * Get the id value.
+     * Get full deployment operation ID.
      *
      * @return the id value
      */
@@ -43,7 +43,7 @@ public class DeploymentOperationInner {
     }
 
     /**
-     * Get the operationId value.
+     * Get deployment operation ID.
      *
      * @return the operationId value
      */
@@ -52,7 +52,7 @@ public class DeploymentOperationInner {
     }
 
     /**
-     * Get the properties value.
+     * Get deployment properties.
      *
      * @return the properties value
      */
@@ -61,7 +61,7 @@ public class DeploymentOperationInner {
     }
 
     /**
-     * Set the properties value.
+     * Set deployment properties.
      *
      * @param properties the properties value to set
      * @return the DeploymentOperationInner object itself.

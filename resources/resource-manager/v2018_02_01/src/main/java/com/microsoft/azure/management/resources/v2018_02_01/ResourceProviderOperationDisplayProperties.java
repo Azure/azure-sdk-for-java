@@ -45,7 +45,7 @@ public class ResourceProviderOperationDisplayProperties {
     private String description;
 
     /**
-     * Get the publisher value.
+     * Get operation description.
      *
      * @return the publisher value
      */
@@ -54,7 +54,7 @@ public class ResourceProviderOperationDisplayProperties {
     }
 
     /**
-     * Set the publisher value.
+     * Set operation description.
      *
      * @param publisher the publisher value to set
      * @return the ResourceProviderOperationDisplayProperties object itself.
@@ -65,7 +65,7 @@ public class ResourceProviderOperationDisplayProperties {
     }
 
     /**
-     * Get the provider value.
+     * Get operation provider.
      *
      * @return the provider value
      */
@@ -74,7 +74,7 @@ public class ResourceProviderOperationDisplayProperties {
     }
 
     /**
-     * Set the provider value.
+     * Set operation provider.
      *
      * @param provider the provider value to set
      * @return the ResourceProviderOperationDisplayProperties object itself.
@@ -85,7 +85,7 @@ public class ResourceProviderOperationDisplayProperties {
     }
 
     /**
-     * Get the resource value.
+     * Get operation resource.
      *
      * @return the resource value
      */
@@ -94,7 +94,7 @@ public class ResourceProviderOperationDisplayProperties {
     }
 
     /**
-     * Set the resource value.
+     * Set operation resource.
      *
      * @param resource the resource value to set
      * @return the ResourceProviderOperationDisplayProperties object itself.
@@ -105,7 +105,7 @@ public class ResourceProviderOperationDisplayProperties {
     }
 
     /**
-     * Get the operation value.
+     * Get operation.
      *
      * @return the operation value
      */
@@ -114,7 +114,7 @@ public class ResourceProviderOperationDisplayProperties {
     }
 
     /**
-     * Set the operation value.
+     * Set operation.
      *
      * @param operation the operation value to set
      * @return the ResourceProviderOperationDisplayProperties object itself.
@@ -125,7 +125,7 @@ public class ResourceProviderOperationDisplayProperties {
     }
 
     /**
-     * Get the description value.
+     * Get operation description.
      *
      * @return the description value
      */
@@ -134,7 +134,7 @@ public class ResourceProviderOperationDisplayProperties {
     }
 
     /**
-     * Set the description value.
+     * Set operation description.
      *
      * @param description the description value to set
      * @return the ResourceProviderOperationDisplayProperties object itself.

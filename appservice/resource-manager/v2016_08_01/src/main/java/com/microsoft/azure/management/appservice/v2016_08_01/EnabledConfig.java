@@ -22,7 +22,7 @@ public class EnabledConfig {
     private Boolean enabled;
 
     /**
-     * Get the enabled value.
+     * Get true if configuration is enabled, false if it is disabled and null if configuration is not set.
      *
      * @return the enabled value
      */
@@ -31,7 +31,7 @@ public class EnabledConfig {
     }
 
     /**
-     * Set the enabled value.
+     * Set true if configuration is enabled, false if it is disabled and null if configuration is not set.
      *
      * @param enabled the enabled value to set
      * @return the EnabledConfig object itself.

@@ -93,7 +93,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     private String etag;
 
     /**
-     * Get the allowVirtualNetworkAccess value.
+     * Get whether the VMs in the linked virtual network space would be able to access all the VMs in local Virtual network space.
      *
      * @return the allowVirtualNetworkAccess value
      */
@@ -102,7 +102,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the allowVirtualNetworkAccess value.
+     * Set whether the VMs in the linked virtual network space would be able to access all the VMs in local Virtual network space.
      *
      * @param allowVirtualNetworkAccess the allowVirtualNetworkAccess value to set
      * @return the VirtualNetworkPeeringInner object itself.
@@ -113,7 +113,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the allowForwardedTraffic value.
+     * Get whether the forwarded traffic from the VMs in the remote virtual network will be allowed/disallowed.
      *
      * @return the allowForwardedTraffic value
      */
@@ -122,7 +122,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the allowForwardedTraffic value.
+     * Set whether the forwarded traffic from the VMs in the remote virtual network will be allowed/disallowed.
      *
      * @param allowForwardedTraffic the allowForwardedTraffic value to set
      * @return the VirtualNetworkPeeringInner object itself.
@@ -133,7 +133,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the allowGatewayTransit value.
+     * Get if gateway links can be used in remote virtual networking to link to this virtual network.
      *
      * @return the allowGatewayTransit value
      */
@@ -142,7 +142,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the allowGatewayTransit value.
+     * Set if gateway links can be used in remote virtual networking to link to this virtual network.
      *
      * @param allowGatewayTransit the allowGatewayTransit value to set
      * @return the VirtualNetworkPeeringInner object itself.
@@ -153,7 +153,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the useRemoteGateways value.
+     * Get if remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway.
      *
      * @return the useRemoteGateways value
      */
@@ -162,7 +162,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the useRemoteGateways value.
+     * Set if remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway.
      *
      * @param useRemoteGateways the useRemoteGateways value to set
      * @return the VirtualNetworkPeeringInner object itself.
@@ -173,7 +173,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the remoteVirtualNetwork value.
+     * Get the reference of the remote virtual network. The remote virtual network can be in the same or different region (preview). See here to register for the preview and learn more (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
      *
      * @return the remoteVirtualNetwork value
      */
@@ -182,7 +182,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the remoteVirtualNetwork value.
+     * Set the reference of the remote virtual network. The remote virtual network can be in the same or different region (preview). See here to register for the preview and learn more (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
      *
      * @param remoteVirtualNetwork the remoteVirtualNetwork value to set
      * @return the VirtualNetworkPeeringInner object itself.
@@ -193,7 +193,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the remoteAddressSpace value.
+     * Get the reference of the remote virtual network address space.
      *
      * @return the remoteAddressSpace value
      */
@@ -202,7 +202,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the remoteAddressSpace value.
+     * Set the reference of the remote virtual network address space.
      *
      * @param remoteAddressSpace the remoteAddressSpace value to set
      * @return the VirtualNetworkPeeringInner object itself.
@@ -213,7 +213,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the peeringState value.
+     * Get the status of the virtual network peering. Possible values are 'Initiated', 'Connected', and 'Disconnected'. Possible values include: 'Initiated', 'Connected', 'Disconnected'.
      *
      * @return the peeringState value
      */
@@ -222,7 +222,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the peeringState value.
+     * Set the status of the virtual network peering. Possible values are 'Initiated', 'Connected', and 'Disconnected'. Possible values include: 'Initiated', 'Connected', 'Disconnected'.
      *
      * @param peeringState the peeringState value to set
      * @return the VirtualNetworkPeeringInner object itself.
@@ -233,7 +233,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the resource.
      *
      * @return the provisioningState value
      */
@@ -242,7 +242,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the provisioning state of the resource.
      *
      * @param provisioningState the provisioningState value to set
      * @return the VirtualNetworkPeeringInner object itself.
@@ -253,7 +253,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -262,7 +262,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the VirtualNetworkPeeringInner object itself.
@@ -273,7 +273,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -282,7 +282,7 @@ public class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the VirtualNetworkPeeringInner object itself.

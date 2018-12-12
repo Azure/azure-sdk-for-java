@@ -28,7 +28,7 @@ public class WebAppCollection {
     private String nextLink;
 
     /**
-     * Get the value value.
+     * Get collection of resources.
      *
      * @return the value value
      */
@@ -37,7 +37,7 @@ public class WebAppCollection {
     }
 
     /**
-     * Set the value value.
+     * Set collection of resources.
      *
      * @param value the value value to set
      * @return the WebAppCollection object itself.
@@ -48,7 +48,7 @@ public class WebAppCollection {
     }
 
     /**
-     * Get the nextLink value.
+     * Get link to next page of resources.
      *
      * @return the nextLink value
      */

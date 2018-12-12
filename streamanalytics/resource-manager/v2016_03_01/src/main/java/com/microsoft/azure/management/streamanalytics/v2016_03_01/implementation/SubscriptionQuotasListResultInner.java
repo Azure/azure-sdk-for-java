@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.streamanalytics.v2016_03_01.implementation;
 
 import java.util.List;
+import com.microsoft.azure.management.streamanalytics.v2016_03_01.SubscriptionQuota;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -20,14 +21,14 @@ public class SubscriptionQuotasListResultInner {
      * List of quotas for the subscription in a particular region.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SubscriptionQuotaInner> value;
+    private List<SubscriptionQuota> value;
 
     /**
-     * Get the value value.
+     * Get list of quotas for the subscription in a particular region.
      *
      * @return the value value
      */
-    public List<SubscriptionQuotaInner> value() {
+    public List<SubscriptionQuota> value() {
         return this.value;
     }
 

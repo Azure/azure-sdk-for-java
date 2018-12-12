@@ -32,7 +32,7 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     private List<VnetValidationTestFailure> failedTests;
 
     /**
-     * Get the failed value.
+     * Get a flag describing whether or not validation failed.
      *
      * @return the failed value
      */
@@ -41,7 +41,7 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the failed value.
+     * Set a flag describing whether or not validation failed.
      *
      * @param failed the failed value to set
      * @return the VnetValidationFailureDetailsInner object itself.
@@ -52,7 +52,7 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the failedTests value.
+     * Get a list of tests that failed in the validation.
      *
      * @return the failedTests value
      */
@@ -61,7 +61,7 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the failedTests value.
+     * Set a list of tests that failed in the validation.
      *
      * @param failedTests the failedTests value to set
      * @return the VnetValidationFailureDetailsInner object itself.

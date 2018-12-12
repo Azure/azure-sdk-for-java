@@ -47,7 +47,7 @@ public class ApplicationStackInner {
     private List<ApplicationStackInner> frameworks;
 
     /**
-     * Get the name value.
+     * Get application stack name.
      *
      * @return the name value
      */
@@ -56,7 +56,7 @@ public class ApplicationStackInner {
     }
 
     /**
-     * Set the name value.
+     * Set application stack name.
      *
      * @param name the name value to set
      * @return the ApplicationStackInner object itself.
@@ -67,7 +67,7 @@ public class ApplicationStackInner {
     }
 
     /**
-     * Get the display value.
+     * Get application stack display name.
      *
      * @return the display value
      */
@@ -76,7 +76,7 @@ public class ApplicationStackInner {
     }
 
     /**
-     * Set the display value.
+     * Set application stack display name.
      *
      * @param display the display value to set
      * @return the ApplicationStackInner object itself.
@@ -87,7 +87,7 @@ public class ApplicationStackInner {
     }
 
     /**
-     * Get the dependency value.
+     * Get application stack dependency.
      *
      * @return the dependency value
      */
@@ -96,7 +96,7 @@ public class ApplicationStackInner {
     }
 
     /**
-     * Set the dependency value.
+     * Set application stack dependency.
      *
      * @param dependency the dependency value to set
      * @return the ApplicationStackInner object itself.
@@ -107,7 +107,7 @@ public class ApplicationStackInner {
     }
 
     /**
-     * Get the majorVersions value.
+     * Get list of major versions available.
      *
      * @return the majorVersions value
      */
@@ -116,7 +116,7 @@ public class ApplicationStackInner {
     }
 
     /**
-     * Set the majorVersions value.
+     * Set list of major versions available.
      *
      * @param majorVersions the majorVersions value to set
      * @return the ApplicationStackInner object itself.
@@ -127,7 +127,7 @@ public class ApplicationStackInner {
     }
 
     /**
-     * Get the frameworks value.
+     * Get list of frameworks associated with application stack.
      *
      * @return the frameworks value
      */
@@ -136,7 +136,7 @@ public class ApplicationStackInner {
     }
 
     /**
-     * Set the frameworks value.
+     * Set list of frameworks associated with application stack.
      *
      * @param frameworks the frameworks value to set
      * @return the ApplicationStackInner object itself.

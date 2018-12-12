@@ -36,7 +36,7 @@ public class ApplicationGatewaySku {
     private Integer capacity;
 
     /**
-     * Get the name value.
+     * Get name of an application gateway SKU. Possible values include: 'Standard_Small', 'Standard_Medium', 'Standard_Large', 'WAF_Medium', 'WAF_Large'.
      *
      * @return the name value
      */
@@ -45,7 +45,7 @@ public class ApplicationGatewaySku {
     }
 
     /**
-     * Set the name value.
+     * Set name of an application gateway SKU. Possible values include: 'Standard_Small', 'Standard_Medium', 'Standard_Large', 'WAF_Medium', 'WAF_Large'.
      *
      * @param name the name value to set
      * @return the ApplicationGatewaySku object itself.
@@ -56,7 +56,7 @@ public class ApplicationGatewaySku {
     }
 
     /**
-     * Get the tier value.
+     * Get tier of an application gateway. Possible values include: 'Standard', 'WAF'.
      *
      * @return the tier value
      */
@@ -65,7 +65,7 @@ public class ApplicationGatewaySku {
     }
 
     /**
-     * Set the tier value.
+     * Set tier of an application gateway. Possible values include: 'Standard', 'WAF'.
      *
      * @param tier the tier value to set
      * @return the ApplicationGatewaySku object itself.
@@ -76,7 +76,7 @@ public class ApplicationGatewaySku {
     }
 
     /**
-     * Get the capacity value.
+     * Get capacity (instance count) of an application gateway.
      *
      * @return the capacity value
      */
@@ -85,7 +85,7 @@ public class ApplicationGatewaySku {
     }
 
     /**
-     * Set the capacity value.
+     * Set capacity (instance count) of an application gateway.
      *
      * @param capacity the capacity value to set
      * @return the ApplicationGatewaySku object itself.

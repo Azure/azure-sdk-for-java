@@ -28,7 +28,7 @@ public class TenantIdDescriptionInner {
     private String tenantId;
 
     /**
-     * Get the id value.
+     * Get the fully qualified ID of the tenant. For example, /tenants/00000000-0000-0000-0000-000000000000.
      *
      * @return the id value
      */
@@ -37,7 +37,7 @@ public class TenantIdDescriptionInner {
     }
 
     /**
-     * Get the tenantId value.
+     * Get the tenant ID. For example, 00000000-0000-0000-0000-000000000000.
      *
      * @return the tenantId value
      */

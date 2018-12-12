@@ -42,7 +42,7 @@ public class CsvSerialization extends Serialization {
     private Encoding encoding;
 
     /**
-     * Get the fieldDelimiter value.
+     * Get specifies the delimiter that will be used to separate comma-separated value (CSV) records. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values. Required on PUT (CreateOrReplace) requests.
      *
      * @return the fieldDelimiter value
      */
@@ -51,7 +51,7 @@ public class CsvSerialization extends Serialization {
     }
 
     /**
-     * Set the fieldDelimiter value.
+     * Set specifies the delimiter that will be used to separate comma-separated value (CSV) records. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values. Required on PUT (CreateOrReplace) requests.
      *
      * @param fieldDelimiter the fieldDelimiter value to set
      * @return the CsvSerialization object itself.
@@ -62,7 +62,7 @@ public class CsvSerialization extends Serialization {
     }
 
     /**
-     * Get the encoding value.
+     * Get specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output. Required on PUT (CreateOrReplace) requests. Possible values include: 'UTF8'.
      *
      * @return the encoding value
      */
@@ -71,7 +71,7 @@ public class CsvSerialization extends Serialization {
     }
 
     /**
-     * Set the encoding value.
+     * Set specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output. Required on PUT (CreateOrReplace) requests. Possible values include: 'UTF8'.
      *
      * @param encoding the encoding value to set
      * @return the CsvSerialization object itself.

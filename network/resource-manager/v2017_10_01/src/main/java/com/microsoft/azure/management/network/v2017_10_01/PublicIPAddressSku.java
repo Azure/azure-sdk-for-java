@@ -22,7 +22,7 @@ public class PublicIPAddressSku {
     private PublicIPAddressSkuName name;
 
     /**
-     * Get the name value.
+     * Get name of a public IP address SKU. Possible values include: 'Basic', 'Standard'.
      *
      * @return the name value
      */
@@ -31,7 +31,7 @@ public class PublicIPAddressSku {
     }
 
     /**
-     * Set the name value.
+     * Set name of a public IP address SKU. Possible values include: 'Basic', 'Standard'.
      *
      * @param name the name value to set
      * @return the PublicIPAddressSku object itself.

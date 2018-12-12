@@ -64,7 +64,8 @@ class TopLevelDomainsImpl extends WrapperImpl<TopLevelDomainsInner> implements T
             public Iterable<TldLegalAgreementInner> call(Page<TldLegalAgreementInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<TldLegalAgreementInner, TldLegalAgreement>() {
+        })
+        .map(new Func1<TldLegalAgreementInner, TldLegalAgreement>() {
             @Override
             public TldLegalAgreement call(TldLegalAgreementInner inner) {
                 return new TldLegalAgreementImpl(inner, manager());

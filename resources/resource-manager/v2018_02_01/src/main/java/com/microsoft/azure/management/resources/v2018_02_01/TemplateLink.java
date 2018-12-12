@@ -27,7 +27,7 @@ public class TemplateLink {
     private String contentVersion;
 
     /**
-     * Get the uri value.
+     * Get the URI of the template to deploy.
      *
      * @return the uri value
      */
@@ -36,7 +36,7 @@ public class TemplateLink {
     }
 
     /**
-     * Set the uri value.
+     * Set the URI of the template to deploy.
      *
      * @param uri the uri value to set
      * @return the TemplateLink object itself.
@@ -47,7 +47,7 @@ public class TemplateLink {
     }
 
     /**
-     * Get the contentVersion value.
+     * Get if included, must match the ContentVersion in the template.
      *
      * @return the contentVersion value
      */
@@ -56,7 +56,7 @@ public class TemplateLink {
     }
 
     /**
-     * Set the contentVersion value.
+     * Set if included, must match the ContentVersion in the template.
      *
      * @param contentVersion the contentVersion value to set
      * @return the TemplateLink object itself.

@@ -50,7 +50,7 @@ public class ApplicationGatewaySslPolicy {
     private ApplicationGatewaySslProtocol minProtocolVersion;
 
     /**
-     * Get the disabledSslProtocols value.
+     * Get ssl protocols to be disabled on application gateway.
      *
      * @return the disabledSslProtocols value
      */
@@ -59,7 +59,7 @@ public class ApplicationGatewaySslPolicy {
     }
 
     /**
-     * Set the disabledSslProtocols value.
+     * Set ssl protocols to be disabled on application gateway.
      *
      * @param disabledSslProtocols the disabledSslProtocols value to set
      * @return the ApplicationGatewaySslPolicy object itself.
@@ -70,7 +70,7 @@ public class ApplicationGatewaySslPolicy {
     }
 
     /**
-     * Get the policyType value.
+     * Get type of Ssl Policy. Possible values include: 'Predefined', 'Custom'.
      *
      * @return the policyType value
      */
@@ -79,7 +79,7 @@ public class ApplicationGatewaySslPolicy {
     }
 
     /**
-     * Set the policyType value.
+     * Set type of Ssl Policy. Possible values include: 'Predefined', 'Custom'.
      *
      * @param policyType the policyType value to set
      * @return the ApplicationGatewaySslPolicy object itself.
@@ -90,7 +90,7 @@ public class ApplicationGatewaySslPolicy {
     }
 
     /**
-     * Get the policyName value.
+     * Get name of Ssl predefined policy. Possible values include: 'AppGwSslPolicy20150501', 'AppGwSslPolicy20170401', 'AppGwSslPolicy20170401S'.
      *
      * @return the policyName value
      */
@@ -99,7 +99,7 @@ public class ApplicationGatewaySslPolicy {
     }
 
     /**
-     * Set the policyName value.
+     * Set name of Ssl predefined policy. Possible values include: 'AppGwSslPolicy20150501', 'AppGwSslPolicy20170401', 'AppGwSslPolicy20170401S'.
      *
      * @param policyName the policyName value to set
      * @return the ApplicationGatewaySslPolicy object itself.
@@ -110,7 +110,7 @@ public class ApplicationGatewaySslPolicy {
     }
 
     /**
-     * Get the cipherSuites value.
+     * Get ssl cipher suites to be enabled in the specified order to application gateway.
      *
      * @return the cipherSuites value
      */
@@ -119,7 +119,7 @@ public class ApplicationGatewaySslPolicy {
     }
 
     /**
-     * Set the cipherSuites value.
+     * Set ssl cipher suites to be enabled in the specified order to application gateway.
      *
      * @param cipherSuites the cipherSuites value to set
      * @return the ApplicationGatewaySslPolicy object itself.
@@ -130,7 +130,7 @@ public class ApplicationGatewaySslPolicy {
     }
 
     /**
-     * Get the minProtocolVersion value.
+     * Get minimum version of Ssl protocol to be supported on application gateway. Possible values include: 'TLSv1_0', 'TLSv1_1', 'TLSv1_2'.
      *
      * @return the minProtocolVersion value
      */
@@ -139,7 +139,7 @@ public class ApplicationGatewaySslPolicy {
     }
 
     /**
-     * Set the minProtocolVersion value.
+     * Set minimum version of Ssl protocol to be supported on application gateway. Possible values include: 'TLSv1_0', 'TLSv1_1', 'TLSv1_2'.
      *
      * @param minProtocolVersion the minProtocolVersion value to set
      * @return the ApplicationGatewaySslPolicy object itself.

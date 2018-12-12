@@ -196,7 +196,8 @@ class ApplicationGatewaysImpl extends GroupableResourcesCoreImpl<ApplicationGate
             public Iterable<ApplicationGatewaySslPredefinedPolicyInner> call(Page<ApplicationGatewaySslPredefinedPolicyInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<ApplicationGatewaySslPredefinedPolicyInner, ApplicationGatewaySslPredefinedPolicy>() {
+        })
+        .map(new Func1<ApplicationGatewaySslPredefinedPolicyInner, ApplicationGatewaySslPredefinedPolicy>() {
             @Override
             public ApplicationGatewaySslPredefinedPolicy call(ApplicationGatewaySslPredefinedPolicyInner inner) {
                 return new ApplicationGatewaySslPredefinedPolicyImpl(inner, manager());

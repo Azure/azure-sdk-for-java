@@ -51,7 +51,7 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     private String id;
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the web application firewall rule set.
      *
      * @return the provisioningState value
      */
@@ -60,7 +60,7 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the provisioning state of the web application firewall rule set.
      *
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewayFirewallRuleSet object itself.
@@ -71,7 +71,7 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
-     * Get the ruleSetType value.
+     * Get the type of the web application firewall rule set.
      *
      * @return the ruleSetType value
      */
@@ -80,7 +80,7 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
-     * Set the ruleSetType value.
+     * Set the type of the web application firewall rule set.
      *
      * @param ruleSetType the ruleSetType value to set
      * @return the ApplicationGatewayFirewallRuleSet object itself.
@@ -91,7 +91,7 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
-     * Get the ruleSetVersion value.
+     * Get the version of the web application firewall rule set type.
      *
      * @return the ruleSetVersion value
      */
@@ -100,7 +100,7 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
-     * Set the ruleSetVersion value.
+     * Set the version of the web application firewall rule set type.
      *
      * @param ruleSetVersion the ruleSetVersion value to set
      * @return the ApplicationGatewayFirewallRuleSet object itself.
@@ -111,7 +111,7 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
-     * Get the ruleGroups value.
+     * Get the rule groups of the web application firewall rule set.
      *
      * @return the ruleGroups value
      */
@@ -120,7 +120,7 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
-     * Set the ruleGroups value.
+     * Set the rule groups of the web application firewall rule set.
      *
      * @param ruleGroups the ruleGroups value to set
      * @return the ApplicationGatewayFirewallRuleSet object itself.
@@ -131,7 +131,7 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
-     * Get the id value.
+     * Get resource ID.
      *
      * @return the id value
      */
@@ -140,7 +140,7 @@ public class ApplicationGatewayFirewallRuleSet extends Resource {
     }
 
     /**
-     * Set the id value.
+     * Set resource ID.
      *
      * @param id the id value to set
      * @return the ApplicationGatewayFirewallRuleSet object itself.

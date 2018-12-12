@@ -21,7 +21,7 @@ public class HttpMessage {
     private Object content;
 
     /**
-     * Get the content value.
+     * Get hTTP message content.
      *
      * @return the content value
      */
@@ -30,7 +30,7 @@ public class HttpMessage {
     }
 
     /**
-     * Set the content value.
+     * Set hTTP message content.
      *
      * @param content the content value to set
      * @return the HttpMessage object itself.

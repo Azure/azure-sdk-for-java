@@ -33,7 +33,7 @@ public class CapabilityInner {
     private String reason;
 
     /**
-     * Get the name value.
+     * Get name of the SKU capability.
      *
      * @return the name value
      */
@@ -42,7 +42,7 @@ public class CapabilityInner {
     }
 
     /**
-     * Set the name value.
+     * Set name of the SKU capability.
      *
      * @param name the name value to set
      * @return the CapabilityInner object itself.
@@ -53,7 +53,7 @@ public class CapabilityInner {
     }
 
     /**
-     * Get the value value.
+     * Get value of the SKU capability.
      *
      * @return the value value
      */
@@ -62,7 +62,7 @@ public class CapabilityInner {
     }
 
     /**
-     * Set the value value.
+     * Set value of the SKU capability.
      *
      * @param value the value value to set
      * @return the CapabilityInner object itself.
@@ -73,7 +73,7 @@ public class CapabilityInner {
     }
 
     /**
-     * Get the reason value.
+     * Get reason of the SKU capability.
      *
      * @return the reason value
      */
@@ -82,7 +82,7 @@ public class CapabilityInner {
     }
 
     /**
-     * Set the reason value.
+     * Set reason of the SKU capability.
      *
      * @param reason the reason value to set
      * @return the CapabilityInner object itself.

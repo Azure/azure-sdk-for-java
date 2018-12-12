@@ -31,7 +31,7 @@ public class CertificateEmailInner extends ProxyOnlyResource {
     private DateTime timeStamp;
 
     /**
-     * Get the emailId value.
+     * Get email id.
      *
      * @return the emailId value
      */
@@ -40,7 +40,7 @@ public class CertificateEmailInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the emailId value.
+     * Set email id.
      *
      * @param emailId the emailId value to set
      * @return the CertificateEmailInner object itself.
@@ -51,7 +51,7 @@ public class CertificateEmailInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the timeStamp value.
+     * Get time stamp.
      *
      * @return the timeStamp value
      */
@@ -60,7 +60,7 @@ public class CertificateEmailInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the timeStamp value.
+     * Set time stamp.
      *
      * @param timeStamp the timeStamp value to set
      * @return the CertificateEmailInner object itself.

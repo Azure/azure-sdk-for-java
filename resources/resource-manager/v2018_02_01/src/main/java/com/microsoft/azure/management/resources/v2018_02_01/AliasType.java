@@ -28,7 +28,7 @@ public class AliasType {
     private List<AliasPathType> paths;
 
     /**
-     * Get the name value.
+     * Get the alias name.
      *
      * @return the name value
      */
@@ -37,7 +37,7 @@ public class AliasType {
     }
 
     /**
-     * Set the name value.
+     * Set the alias name.
      *
      * @param name the name value to set
      * @return the AliasType object itself.
@@ -48,7 +48,7 @@ public class AliasType {
     }
 
     /**
-     * Get the paths value.
+     * Get the paths for an alias.
      *
      * @return the paths value
      */
@@ -57,7 +57,7 @@ public class AliasType {
     }
 
     /**
-     * Set the paths value.
+     * Set the paths for an alias.
      *
      * @param paths the paths value to set
      * @return the AliasType object itself.

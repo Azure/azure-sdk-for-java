@@ -24,7 +24,7 @@ public class FunctionsUpdateHeaders {
     private String eTag;
 
     /**
-     * Get the eTag value.
+     * Get the current entity tag for the function. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
      *
      * @return the eTag value
      */
@@ -33,7 +33,7 @@ public class FunctionsUpdateHeaders {
     }
 
     /**
-     * Set the eTag value.
+     * Set the current entity tag for the function. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
      *
      * @param eTag the eTag value to set
      * @return the FunctionsUpdateHeaders object itself.

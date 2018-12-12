@@ -80,7 +80,7 @@ public class ConnectionMonitorParameters {
     }
 
     /**
-     * Get the autoStart value.
+     * Get determines if the connection monitor will start automatically once created.
      *
      * @return the autoStart value
      */
@@ -89,7 +89,7 @@ public class ConnectionMonitorParameters {
     }
 
     /**
-     * Set the autoStart value.
+     * Set determines if the connection monitor will start automatically once created.
      *
      * @param autoStart the autoStart value to set
      * @return the ConnectionMonitorParameters object itself.
@@ -100,7 +100,7 @@ public class ConnectionMonitorParameters {
     }
 
     /**
-     * Get the monitoringIntervalInSeconds value.
+     * Get monitoring interval in seconds.
      *
      * @return the monitoringIntervalInSeconds value
      */
@@ -109,7 +109,7 @@ public class ConnectionMonitorParameters {
     }
 
     /**
-     * Set the monitoringIntervalInSeconds value.
+     * Set monitoring interval in seconds.
      *
      * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set
      * @return the ConnectionMonitorParameters object itself.

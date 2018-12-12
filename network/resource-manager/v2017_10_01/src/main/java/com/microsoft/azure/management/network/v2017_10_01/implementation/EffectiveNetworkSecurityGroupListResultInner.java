@@ -29,7 +29,7 @@ public class EffectiveNetworkSecurityGroupListResultInner {
     private String nextLink;
 
     /**
-     * Get the value value.
+     * Get a list of effective network security groups.
      *
      * @return the value value
      */
@@ -38,7 +38,7 @@ public class EffectiveNetworkSecurityGroupListResultInner {
     }
 
     /**
-     * Set the value value.
+     * Set a list of effective network security groups.
      *
      * @param value the value value to set
      * @return the EffectiveNetworkSecurityGroupListResultInner object itself.
@@ -49,7 +49,7 @@ public class EffectiveNetworkSecurityGroupListResultInner {
     }
 
     /**
-     * Get the nextLink value.
+     * Get the URL to get the next set of results.
      *
      * @return the nextLink value
      */

@@ -10,12 +10,12 @@ package com.microsoft.azure.management.mediaservices.v2015_10_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.mediaservices.v2015_10_01.implementation.MediaManager;
 import java.util.List;
@@ -58,11 +58,13 @@ public interface MediaService extends HasInner<MediaServiceInner>, Resource, Gro
         }
 
         /**
-         * The stage of the mediaservice update allowing to specify StorageAccounts.
+         * The stage of the mediaservice definition allowing to specify StorageAccounts.
          */
         interface WithStorageAccounts {
             /**
              * Specifies storageAccounts.
+             * @param storageAccounts The storage accounts for this resource
+             * @return the next definition stage
              */
             WithCreate withStorageAccounts(List<StorageAccount> storageAccounts);
         }
@@ -86,11 +88,13 @@ public interface MediaService extends HasInner<MediaServiceInner>, Resource, Gro
      */
     interface UpdateStages {
         /**
-         * The stage of the mediaservice {0} allowing to specify StorageAccounts.
+         * The stage of the mediaservice update allowing to specify StorageAccounts.
          */
         interface WithStorageAccounts {
             /**
              * Specifies storageAccounts.
+             * @param storageAccounts The storage accounts for this resource
+             * @return the next update stage
              */
             Update withStorageAccounts(List<StorageAccount> storageAccounts);
         }

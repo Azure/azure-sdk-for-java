@@ -27,7 +27,7 @@ public class IpSecurityRestriction {
     private String subnetMask;
 
     /**
-     * Get the ipAddress value.
+     * Get iP address the security restriction is valid for.
      *
      * @return the ipAddress value
      */
@@ -36,7 +36,7 @@ public class IpSecurityRestriction {
     }
 
     /**
-     * Set the ipAddress value.
+     * Set iP address the security restriction is valid for.
      *
      * @param ipAddress the ipAddress value to set
      * @return the IpSecurityRestriction object itself.
@@ -47,7 +47,7 @@ public class IpSecurityRestriction {
     }
 
     /**
-     * Get the subnetMask value.
+     * Get subnet mask for the range of IP addresses the restriction is valid for.
      *
      * @return the subnetMask value
      */
@@ -56,7 +56,7 @@ public class IpSecurityRestriction {
     }
 
     /**
-     * Set the subnetMask value.
+     * Set subnet mask for the range of IP addresses the restriction is valid for.
      *
      * @param subnetMask the subnetMask value to set
      * @return the IpSecurityRestriction object itself.

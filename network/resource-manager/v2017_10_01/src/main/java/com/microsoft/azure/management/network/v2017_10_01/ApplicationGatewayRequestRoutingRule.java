@@ -80,7 +80,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     private String type;
 
     /**
-     * Get the ruleType value.
+     * Get rule type. Possible values include: 'Basic', 'PathBasedRouting'.
      *
      * @return the ruleType value
      */
@@ -89,7 +89,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Set the ruleType value.
+     * Set rule type. Possible values include: 'Basic', 'PathBasedRouting'.
      *
      * @param ruleType the ruleType value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
@@ -100,7 +100,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Get the backendAddressPool value.
+     * Get backend address pool resource of the application gateway.
      *
      * @return the backendAddressPool value
      */
@@ -109,7 +109,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Set the backendAddressPool value.
+     * Set backend address pool resource of the application gateway.
      *
      * @param backendAddressPool the backendAddressPool value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
@@ -120,7 +120,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Get the backendHttpSettings value.
+     * Get frontend port resource of the application gateway.
      *
      * @return the backendHttpSettings value
      */
@@ -129,7 +129,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Set the backendHttpSettings value.
+     * Set frontend port resource of the application gateway.
      *
      * @param backendHttpSettings the backendHttpSettings value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
@@ -140,7 +140,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Get the httpListener value.
+     * Get http listener resource of the application gateway.
      *
      * @return the httpListener value
      */
@@ -149,7 +149,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Set the httpListener value.
+     * Set http listener resource of the application gateway.
      *
      * @param httpListener the httpListener value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
@@ -160,7 +160,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Get the urlPathMap value.
+     * Get uRL path map resource of the application gateway.
      *
      * @return the urlPathMap value
      */
@@ -169,7 +169,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Set the urlPathMap value.
+     * Set uRL path map resource of the application gateway.
      *
      * @param urlPathMap the urlPathMap value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
@@ -180,7 +180,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Get the redirectConfiguration value.
+     * Get redirect configuration resource of the application gateway.
      *
      * @return the redirectConfiguration value
      */
@@ -189,7 +189,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Set the redirectConfiguration value.
+     * Set redirect configuration resource of the application gateway.
      *
      * @param redirectConfiguration the redirectConfiguration value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
@@ -200,7 +200,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get provisioning state of the request routing rule resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -209,7 +209,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set provisioning state of the request routing rule resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
@@ -220,7 +220,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -229,7 +229,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
@@ -240,7 +240,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -249,7 +249,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.
@@ -260,7 +260,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get type of the resource.
      *
      * @return the type value
      */
@@ -269,7 +269,7 @@ public class ApplicationGatewayRequestRoutingRule extends SubResource {
     }
 
     /**
-     * Set the type value.
+     * Set type of the resource.
      *
      * @param type the type value to set
      * @return the ApplicationGatewayRequestRoutingRule object itself.

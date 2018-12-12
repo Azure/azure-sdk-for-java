@@ -169,7 +169,8 @@ class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainI
             public Iterable<NameIdentifierInner> call(Page<NameIdentifierInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<NameIdentifierInner, NameIdentifier>() {
+        })
+        .map(new Func1<NameIdentifierInner, NameIdentifier>() {
             @Override
             public NameIdentifier call(NameIdentifierInner inner) {
                 return new NameIdentifierImpl(inner, manager());

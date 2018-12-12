@@ -67,7 +67,7 @@ public class AzureReachabilityReportParameters {
     }
 
     /**
-     * Get the providers value.
+     * Get list of Internet service providers.
      *
      * @return the providers value
      */
@@ -76,7 +76,7 @@ public class AzureReachabilityReportParameters {
     }
 
     /**
-     * Set the providers value.
+     * Set list of Internet service providers.
      *
      * @param providers the providers value to set
      * @return the AzureReachabilityReportParameters object itself.
@@ -87,7 +87,7 @@ public class AzureReachabilityReportParameters {
     }
 
     /**
-     * Get the azureLocations value.
+     * Get optional Azure regions to scope the query to.
      *
      * @return the azureLocations value
      */
@@ -96,7 +96,7 @@ public class AzureReachabilityReportParameters {
     }
 
     /**
-     * Set the azureLocations value.
+     * Set optional Azure regions to scope the query to.
      *
      * @param azureLocations the azureLocations value to set
      * @return the AzureReachabilityReportParameters object itself.
@@ -107,7 +107,7 @@ public class AzureReachabilityReportParameters {
     }
 
     /**
-     * Get the startTime value.
+     * Get the start time for the Azure reachability report.
      *
      * @return the startTime value
      */
@@ -116,7 +116,7 @@ public class AzureReachabilityReportParameters {
     }
 
     /**
-     * Set the startTime value.
+     * Set the start time for the Azure reachability report.
      *
      * @param startTime the startTime value to set
      * @return the AzureReachabilityReportParameters object itself.
@@ -127,7 +127,7 @@ public class AzureReachabilityReportParameters {
     }
 
     /**
-     * Get the endTime value.
+     * Get the end time for the Azure reachability report.
      *
      * @return the endTime value
      */
@@ -136,7 +136,7 @@ public class AzureReachabilityReportParameters {
     }
 
     /**
-     * Set the endTime value.
+     * Set the end time for the Azure reachability report.
      *
      * @param endTime the endTime value to set
      * @return the AzureReachabilityReportParameters object itself.

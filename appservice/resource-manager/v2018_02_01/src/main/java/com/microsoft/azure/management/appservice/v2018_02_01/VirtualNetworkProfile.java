@@ -39,7 +39,7 @@ public class VirtualNetworkProfile {
     private String subnet;
 
     /**
-     * Get the id value.
+     * Get resource id of the Virtual Network.
      *
      * @return the id value
      */
@@ -48,7 +48,7 @@ public class VirtualNetworkProfile {
     }
 
     /**
-     * Set the id value.
+     * Set resource id of the Virtual Network.
      *
      * @param id the id value to set
      * @return the VirtualNetworkProfile object itself.
@@ -59,7 +59,7 @@ public class VirtualNetworkProfile {
     }
 
     /**
-     * Get the name value.
+     * Get name of the Virtual Network (read-only).
      *
      * @return the name value
      */
@@ -68,7 +68,7 @@ public class VirtualNetworkProfile {
     }
 
     /**
-     * Get the type value.
+     * Get resource type of the Virtual Network (read-only).
      *
      * @return the type value
      */
@@ -77,7 +77,7 @@ public class VirtualNetworkProfile {
     }
 
     /**
-     * Get the subnet value.
+     * Get subnet within the Virtual Network.
      *
      * @return the subnet value
      */
@@ -86,7 +86,7 @@ public class VirtualNetworkProfile {
     }
 
     /**
-     * Set the subnet value.
+     * Set subnet within the Virtual Network.
      *
      * @param subnet the subnet value to set
      * @return the VirtualNetworkProfile object itself.

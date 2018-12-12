@@ -27,7 +27,7 @@ public class HostingEnvironmentDiagnosticsInner {
     private String diagnosicsOutput;
 
     /**
-     * Get the name value.
+     * Get name/identifier of the diagnostics.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class HostingEnvironmentDiagnosticsInner {
     }
 
     /**
-     * Set the name value.
+     * Set name/identifier of the diagnostics.
      *
      * @param name the name value to set
      * @return the HostingEnvironmentDiagnosticsInner object itself.
@@ -47,7 +47,7 @@ public class HostingEnvironmentDiagnosticsInner {
     }
 
     /**
-     * Get the diagnosicsOutput value.
+     * Get diagnostics output.
      *
      * @return the diagnosicsOutput value
      */
@@ -56,7 +56,7 @@ public class HostingEnvironmentDiagnosticsInner {
     }
 
     /**
-     * Set the diagnosicsOutput value.
+     * Set diagnostics output.
      *
      * @param diagnosicsOutput the diagnosicsOutput value to set
      * @return the HostingEnvironmentDiagnosticsInner object itself.

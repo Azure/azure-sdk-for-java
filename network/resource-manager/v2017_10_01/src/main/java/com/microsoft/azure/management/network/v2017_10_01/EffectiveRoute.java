@@ -58,7 +58,7 @@ public class EffectiveRoute {
     private RouteNextHopType nextHopType;
 
     /**
-     * Get the name value.
+     * Get the name of the user defined route. This is optional.
      *
      * @return the name value
      */
@@ -67,7 +67,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the user defined route. This is optional.
      *
      * @param name the name value to set
      * @return the EffectiveRoute object itself.
@@ -78,7 +78,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Get the source value.
+     * Get who created the route. Possible values are: 'Unknown', 'User', 'VirtualNetworkGateway', and 'Default'. Possible values include: 'Unknown', 'User', 'VirtualNetworkGateway', 'Default'.
      *
      * @return the source value
      */
@@ -87,7 +87,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Set the source value.
+     * Set who created the route. Possible values are: 'Unknown', 'User', 'VirtualNetworkGateway', and 'Default'. Possible values include: 'Unknown', 'User', 'VirtualNetworkGateway', 'Default'.
      *
      * @param source the source value to set
      * @return the EffectiveRoute object itself.
@@ -98,7 +98,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Get the state value.
+     * Get the value of effective route. Possible values are: 'Active' and 'Invalid'. Possible values include: 'Active', 'Invalid'.
      *
      * @return the state value
      */
@@ -107,7 +107,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Set the state value.
+     * Set the value of effective route. Possible values are: 'Active' and 'Invalid'. Possible values include: 'Active', 'Invalid'.
      *
      * @param state the state value to set
      * @return the EffectiveRoute object itself.
@@ -118,7 +118,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Get the addressPrefix value.
+     * Get the address prefixes of the effective routes in CIDR notation.
      *
      * @return the addressPrefix value
      */
@@ -127,7 +127,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Set the addressPrefix value.
+     * Set the address prefixes of the effective routes in CIDR notation.
      *
      * @param addressPrefix the addressPrefix value to set
      * @return the EffectiveRoute object itself.
@@ -138,7 +138,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Get the nextHopIpAddress value.
+     * Get the IP address of the next hop of the effective route.
      *
      * @return the nextHopIpAddress value
      */
@@ -147,7 +147,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Set the nextHopIpAddress value.
+     * Set the IP address of the next hop of the effective route.
      *
      * @param nextHopIpAddress the nextHopIpAddress value to set
      * @return the EffectiveRoute object itself.
@@ -158,7 +158,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Get the nextHopType value.
+     * Get the type of Azure hop the packet should be sent to. Possible values are: 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', and 'None'. Possible values include: 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', 'None'.
      *
      * @return the nextHopType value
      */
@@ -167,7 +167,7 @@ public class EffectiveRoute {
     }
 
     /**
-     * Set the nextHopType value.
+     * Set the type of Azure hop the packet should be sent to. Possible values are: 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', and 'None'. Possible values include: 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', 'None'.
      *
      * @param nextHopType the nextHopType value to set
      * @return the EffectiveRoute object itself.

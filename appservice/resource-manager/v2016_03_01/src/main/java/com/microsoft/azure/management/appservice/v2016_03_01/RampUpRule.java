@@ -78,7 +78,7 @@ public class RampUpRule {
     private String name;
 
     /**
-     * Get the actionHostName value.
+     * Get hostname of a slot to which the traffic will be redirected if decided to. E.g. myapp-stage.azurewebsites.net.
      *
      * @return the actionHostName value
      */
@@ -87,7 +87,7 @@ public class RampUpRule {
     }
 
     /**
-     * Set the actionHostName value.
+     * Set hostname of a slot to which the traffic will be redirected if decided to. E.g. myapp-stage.azurewebsites.net.
      *
      * @param actionHostName the actionHostName value to set
      * @return the RampUpRule object itself.
@@ -98,7 +98,7 @@ public class RampUpRule {
     }
 
     /**
-     * Get the reroutePercentage value.
+     * Get percentage of the traffic which will be redirected to &lt;code&gt;ActionHostName&lt;/code&gt;.
      *
      * @return the reroutePercentage value
      */
@@ -107,7 +107,7 @@ public class RampUpRule {
     }
 
     /**
-     * Set the reroutePercentage value.
+     * Set percentage of the traffic which will be redirected to &lt;code&gt;ActionHostName&lt;/code&gt;.
      *
      * @param reroutePercentage the reroutePercentage value to set
      * @return the RampUpRule object itself.
@@ -118,7 +118,9 @@ public class RampUpRule {
     }
 
     /**
-     * Get the changeStep value.
+     * Get in auto ramp up scenario this is the step to to add/remove from &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
+     &lt;code&gt;MinReroutePercentage&lt;/code&gt; or &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specificed in &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
+     Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified in &lt;code&gt;ChangeDecisionCallbackUrl&lt;/code&gt;.
      *
      * @return the changeStep value
      */
@@ -127,7 +129,9 @@ public class RampUpRule {
     }
 
     /**
-     * Set the changeStep value.
+     * Set in auto ramp up scenario this is the step to to add/remove from &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
+     &lt;code&gt;MinReroutePercentage&lt;/code&gt; or &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specificed in &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
+     Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified in &lt;code&gt;ChangeDecisionCallbackUrl&lt;/code&gt;.
      *
      * @param changeStep the changeStep value to set
      * @return the RampUpRule object itself.
@@ -138,7 +142,7 @@ public class RampUpRule {
     }
 
     /**
-     * Get the changeIntervalInMinutes value.
+     * Get specifies interval in mimuntes to reevaluate ReroutePercentage.
      *
      * @return the changeIntervalInMinutes value
      */
@@ -147,7 +151,7 @@ public class RampUpRule {
     }
 
     /**
-     * Set the changeIntervalInMinutes value.
+     * Set specifies interval in mimuntes to reevaluate ReroutePercentage.
      *
      * @param changeIntervalInMinutes the changeIntervalInMinutes value to set
      * @return the RampUpRule object itself.
@@ -158,7 +162,7 @@ public class RampUpRule {
     }
 
     /**
-     * Get the minReroutePercentage value.
+     * Get specifies lower boundary above which ReroutePercentage will stay.
      *
      * @return the minReroutePercentage value
      */
@@ -167,7 +171,7 @@ public class RampUpRule {
     }
 
     /**
-     * Set the minReroutePercentage value.
+     * Set specifies lower boundary above which ReroutePercentage will stay.
      *
      * @param minReroutePercentage the minReroutePercentage value to set
      * @return the RampUpRule object itself.
@@ -178,7 +182,7 @@ public class RampUpRule {
     }
 
     /**
-     * Get the maxReroutePercentage value.
+     * Get specifies upper boundary below which ReroutePercentage will stay.
      *
      * @return the maxReroutePercentage value
      */
@@ -187,7 +191,7 @@ public class RampUpRule {
     }
 
     /**
-     * Set the maxReroutePercentage value.
+     * Set specifies upper boundary below which ReroutePercentage will stay.
      *
      * @param maxReroutePercentage the maxReroutePercentage value to set
      * @return the RampUpRule object itself.
@@ -198,7 +202,8 @@ public class RampUpRule {
     }
 
     /**
-     * Get the changeDecisionCallbackUrl value.
+     * Get custom decision algorithm can be provided in TiPCallback site extension which URL can be specified. See TiPCallback site extension for the scaffold and contracts.
+     https://www.siteextensions.net/packages/TiPCallback/.
      *
      * @return the changeDecisionCallbackUrl value
      */
@@ -207,7 +212,8 @@ public class RampUpRule {
     }
 
     /**
-     * Set the changeDecisionCallbackUrl value.
+     * Set custom decision algorithm can be provided in TiPCallback site extension which URL can be specified. See TiPCallback site extension for the scaffold and contracts.
+     https://www.siteextensions.net/packages/TiPCallback/.
      *
      * @param changeDecisionCallbackUrl the changeDecisionCallbackUrl value to set
      * @return the RampUpRule object itself.
@@ -218,7 +224,7 @@ public class RampUpRule {
     }
 
     /**
-     * Get the name value.
+     * Get name of the routing rule. The recommended name would be to point to the slot which will receive the traffic in the experiment.
      *
      * @return the name value
      */
@@ -227,7 +233,7 @@ public class RampUpRule {
     }
 
     /**
-     * Set the name value.
+     * Set name of the routing rule. The recommended name would be to point to the slot which will receive the traffic in the experiment.
      *
      * @param name the name value to set
      * @return the RampUpRule object itself.

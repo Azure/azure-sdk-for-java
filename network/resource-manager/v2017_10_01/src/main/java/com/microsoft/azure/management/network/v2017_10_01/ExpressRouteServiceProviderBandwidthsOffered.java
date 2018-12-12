@@ -27,7 +27,7 @@ public class ExpressRouteServiceProviderBandwidthsOffered {
     private Integer valueInMbps;
 
     /**
-     * Get the offerName value.
+     * Get the OfferName.
      *
      * @return the offerName value
      */
@@ -36,7 +36,7 @@ public class ExpressRouteServiceProviderBandwidthsOffered {
     }
 
     /**
-     * Set the offerName value.
+     * Set the OfferName.
      *
      * @param offerName the offerName value to set
      * @return the ExpressRouteServiceProviderBandwidthsOffered object itself.
@@ -47,7 +47,7 @@ public class ExpressRouteServiceProviderBandwidthsOffered {
     }
 
     /**
-     * Get the valueInMbps value.
+     * Get the ValueInMbps.
      *
      * @return the valueInMbps value
      */
@@ -56,7 +56,7 @@ public class ExpressRouteServiceProviderBandwidthsOffered {
     }
 
     /**
-     * Set the valueInMbps value.
+     * Set the ValueInMbps.
      *
      * @param valueInMbps the valueInMbps value to set
      * @return the ExpressRouteServiceProviderBandwidthsOffered object itself.

@@ -48,7 +48,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     private List<ApplicationGatewayFirewallDisabledRuleGroup> disabledRuleGroups;
 
     /**
-     * Get the enabled value.
+     * Get whether the web application firewall is enabled or not.
      *
      * @return the enabled value
      */
@@ -57,7 +57,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the enabled value.
+     * Set whether the web application firewall is enabled or not.
      *
      * @param enabled the enabled value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -68,7 +68,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get the firewallMode value.
+     * Get web application firewall mode. Possible values include: 'Detection', 'Prevention'.
      *
      * @return the firewallMode value
      */
@@ -77,7 +77,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the firewallMode value.
+     * Set web application firewall mode. Possible values include: 'Detection', 'Prevention'.
      *
      * @param firewallMode the firewallMode value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -88,7 +88,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get the ruleSetType value.
+     * Get the type of the web application firewall rule set. Possible values are: 'OWASP'.
      *
      * @return the ruleSetType value
      */
@@ -97,7 +97,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the ruleSetType value.
+     * Set the type of the web application firewall rule set. Possible values are: 'OWASP'.
      *
      * @param ruleSetType the ruleSetType value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -108,7 +108,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get the ruleSetVersion value.
+     * Get the version of the rule set type.
      *
      * @return the ruleSetVersion value
      */
@@ -117,7 +117,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the ruleSetVersion value.
+     * Set the version of the rule set type.
      *
      * @param ruleSetVersion the ruleSetVersion value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
@@ -128,7 +128,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Get the disabledRuleGroups value.
+     * Get the disabled rule groups.
      *
      * @return the disabledRuleGroups value
      */
@@ -137,7 +137,7 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     }
 
     /**
-     * Set the disabledRuleGroups value.
+     * Set the disabled rule groups.
      *
      * @param disabledRuleGroups the disabledRuleGroups value to set
      * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.

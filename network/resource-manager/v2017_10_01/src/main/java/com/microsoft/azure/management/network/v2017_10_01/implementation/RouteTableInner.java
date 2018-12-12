@@ -60,7 +60,7 @@ public class RouteTableInner extends Resource {
     private String id;
 
     /**
-     * Get the routes value.
+     * Get collection of routes contained within a route table.
      *
      * @return the routes value
      */
@@ -69,7 +69,7 @@ public class RouteTableInner extends Resource {
     }
 
     /**
-     * Set the routes value.
+     * Set collection of routes contained within a route table.
      *
      * @param routes the routes value to set
      * @return the RouteTableInner object itself.
@@ -80,7 +80,7 @@ public class RouteTableInner extends Resource {
     }
 
     /**
-     * Get the subnets value.
+     * Get a collection of references to subnets.
      *
      * @return the subnets value
      */
@@ -89,7 +89,7 @@ public class RouteTableInner extends Resource {
     }
 
     /**
-     * Get the disableBgpRoutePropagation value.
+     * Get gets or sets whether to disable the routes learned by BGP on that route table. True means disable.
      *
      * @return the disableBgpRoutePropagation value
      */
@@ -98,7 +98,7 @@ public class RouteTableInner extends Resource {
     }
 
     /**
-     * Set the disableBgpRoutePropagation value.
+     * Set gets or sets whether to disable the routes learned by BGP on that route table. True means disable.
      *
      * @param disableBgpRoutePropagation the disableBgpRoutePropagation value to set
      * @return the RouteTableInner object itself.
@@ -109,7 +109,7 @@ public class RouteTableInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -118,7 +118,7 @@ public class RouteTableInner extends Resource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the provisioning state of the resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the RouteTableInner object itself.
@@ -129,7 +129,7 @@ public class RouteTableInner extends Resource {
     }
 
     /**
-     * Get the etag value.
+     * Get gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -138,7 +138,7 @@ public class RouteTableInner extends Resource {
     }
 
     /**
-     * Set the etag value.
+     * Set gets a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the RouteTableInner object itself.
@@ -149,7 +149,7 @@ public class RouteTableInner extends Resource {
     }
 
     /**
-     * Get the id value.
+     * Get resource ID.
      *
      * @return the id value
      */
@@ -158,7 +158,7 @@ public class RouteTableInner extends Resource {
     }
 
     /**
-     * Set the id value.
+     * Set resource ID.
      *
      * @param id the id value to set
      * @return the RouteTableInner object itself.

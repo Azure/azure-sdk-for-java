@@ -99,7 +99,7 @@ public class DeploymentPropertiesExtended {
     private OnErrorDeploymentExtended onErrorDeployment;
 
     /**
-     * Get the provisioningState value.
+     * Get the state of the provisioning.
      *
      * @return the provisioningState value
      */
@@ -108,7 +108,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the correlationId value.
+     * Get the correlation ID of the deployment.
      *
      * @return the correlationId value
      */
@@ -117,7 +117,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the timestamp value.
+     * Get the timestamp of the template deployment.
      *
      * @return the timestamp value
      */
@@ -126,7 +126,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the outputs value.
+     * Get key/value pairs that represent deploymentoutput.
      *
      * @return the outputs value
      */
@@ -135,7 +135,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the outputs value.
+     * Set key/value pairs that represent deploymentoutput.
      *
      * @param outputs the outputs value to set
      * @return the DeploymentPropertiesExtended object itself.
@@ -146,7 +146,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the providers value.
+     * Get the list of resource providers needed for the deployment.
      *
      * @return the providers value
      */
@@ -155,7 +155,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the providers value.
+     * Set the list of resource providers needed for the deployment.
      *
      * @param providers the providers value to set
      * @return the DeploymentPropertiesExtended object itself.
@@ -166,7 +166,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the dependencies value.
+     * Get the list of deployment dependencies.
      *
      * @return the dependencies value
      */
@@ -175,7 +175,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the dependencies value.
+     * Set the list of deployment dependencies.
      *
      * @param dependencies the dependencies value to set
      * @return the DeploymentPropertiesExtended object itself.
@@ -186,7 +186,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the template value.
+     * Get the template content. Use only one of Template or TemplateLink.
      *
      * @return the template value
      */
@@ -195,7 +195,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the template value.
+     * Set the template content. Use only one of Template or TemplateLink.
      *
      * @param template the template value to set
      * @return the DeploymentPropertiesExtended object itself.
@@ -206,7 +206,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the templateLink value.
+     * Get the URI referencing the template. Use only one of Template or TemplateLink.
      *
      * @return the templateLink value
      */
@@ -215,7 +215,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the templateLink value.
+     * Set the URI referencing the template. Use only one of Template or TemplateLink.
      *
      * @param templateLink the templateLink value to set
      * @return the DeploymentPropertiesExtended object itself.
@@ -226,7 +226,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the parameters value.
+     * Get deployment parameters. Use only one of Parameters or ParametersLink.
      *
      * @return the parameters value
      */
@@ -235,7 +235,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the parameters value.
+     * Set deployment parameters. Use only one of Parameters or ParametersLink.
      *
      * @param parameters the parameters value to set
      * @return the DeploymentPropertiesExtended object itself.
@@ -246,7 +246,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the parametersLink value.
+     * Get the URI referencing the parameters. Use only one of Parameters or ParametersLink.
      *
      * @return the parametersLink value
      */
@@ -255,7 +255,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the parametersLink value.
+     * Set the URI referencing the parameters. Use only one of Parameters or ParametersLink.
      *
      * @param parametersLink the parametersLink value to set
      * @return the DeploymentPropertiesExtended object itself.
@@ -266,7 +266,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the mode value.
+     * Get the deployment mode. Possible values are Incremental and Complete. Possible values include: 'Incremental', 'Complete'.
      *
      * @return the mode value
      */
@@ -275,7 +275,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the mode value.
+     * Set the deployment mode. Possible values are Incremental and Complete. Possible values include: 'Incremental', 'Complete'.
      *
      * @param mode the mode value to set
      * @return the DeploymentPropertiesExtended object itself.
@@ -286,7 +286,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the debugSetting value.
+     * Get the debug setting of the deployment.
      *
      * @return the debugSetting value
      */
@@ -295,7 +295,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the debugSetting value.
+     * Set the debug setting of the deployment.
      *
      * @param debugSetting the debugSetting value to set
      * @return the DeploymentPropertiesExtended object itself.
@@ -306,7 +306,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the onErrorDeployment value.
+     * Get the deployment on error behavior.
      *
      * @return the onErrorDeployment value
      */
@@ -315,7 +315,7 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the onErrorDeployment value.
+     * Set the deployment on error behavior.
      *
      * @param onErrorDeployment the onErrorDeployment value to set
      * @return the DeploymentPropertiesExtended object itself.

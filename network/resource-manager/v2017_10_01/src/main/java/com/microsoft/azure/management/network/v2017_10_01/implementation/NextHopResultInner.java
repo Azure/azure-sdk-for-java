@@ -37,7 +37,7 @@ public class NextHopResultInner {
     private String routeTableId;
 
     /**
-     * Get the nextHopType value.
+     * Get next hop type. Possible values include: 'Internet', 'VirtualAppliance', 'VirtualNetworkGateway', 'VnetLocal', 'HyperNetGateway', 'None'.
      *
      * @return the nextHopType value
      */
@@ -46,7 +46,7 @@ public class NextHopResultInner {
     }
 
     /**
-     * Set the nextHopType value.
+     * Set next hop type. Possible values include: 'Internet', 'VirtualAppliance', 'VirtualNetworkGateway', 'VnetLocal', 'HyperNetGateway', 'None'.
      *
      * @param nextHopType the nextHopType value to set
      * @return the NextHopResultInner object itself.
@@ -57,7 +57,7 @@ public class NextHopResultInner {
     }
 
     /**
-     * Get the nextHopIpAddress value.
+     * Get next hop IP Address.
      *
      * @return the nextHopIpAddress value
      */
@@ -66,7 +66,7 @@ public class NextHopResultInner {
     }
 
     /**
-     * Set the nextHopIpAddress value.
+     * Set next hop IP Address.
      *
      * @param nextHopIpAddress the nextHopIpAddress value to set
      * @return the NextHopResultInner object itself.
@@ -77,7 +77,7 @@ public class NextHopResultInner {
     }
 
     /**
-     * Get the routeTableId value.
+     * Get the resource identifier for the route table associated with the route being returned. If the route being returned does not correspond to any user created routes then this field will be the string 'System Route'.
      *
      * @return the routeTableId value
      */
@@ -86,7 +86,7 @@ public class NextHopResultInner {
     }
 
     /**
-     * Set the routeTableId value.
+     * Set the resource identifier for the route table associated with the route being returned. If the route being returned does not correspond to any user created routes then this field will be the string 'System Route'.
      *
      * @param routeTableId the routeTableId value to set
      * @return the NextHopResultInner object itself.

@@ -55,7 +55,7 @@ public class ResourceGroupInner {
     private Map<String, String> tags;
 
     /**
-     * Get the id value.
+     * Get the ID of the resource group.
      *
      * @return the id value
      */
@@ -64,7 +64,7 @@ public class ResourceGroupInner {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the resource group.
      *
      * @return the name value
      */
@@ -73,7 +73,7 @@ public class ResourceGroupInner {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource group.
      *
      * @param name the name value to set
      * @return the ResourceGroupInner object itself.
@@ -104,7 +104,7 @@ public class ResourceGroupInner {
     }
 
     /**
-     * Get the location value.
+     * Get the location of the resource group. It cannot be changed after the resource group has been created. It muct be one of the supported Azure locations.
      *
      * @return the location value
      */
@@ -113,7 +113,7 @@ public class ResourceGroupInner {
     }
 
     /**
-     * Set the location value.
+     * Set the location of the resource group. It cannot be changed after the resource group has been created. It muct be one of the supported Azure locations.
      *
      * @param location the location value to set
      * @return the ResourceGroupInner object itself.
@@ -124,7 +124,7 @@ public class ResourceGroupInner {
     }
 
     /**
-     * Get the managedBy value.
+     * Get the ID of the resource that manages this resource group.
      *
      * @return the managedBy value
      */
@@ -133,7 +133,7 @@ public class ResourceGroupInner {
     }
 
     /**
-     * Set the managedBy value.
+     * Set the ID of the resource that manages this resource group.
      *
      * @param managedBy the managedBy value to set
      * @return the ResourceGroupInner object itself.
@@ -144,7 +144,7 @@ public class ResourceGroupInner {
     }
 
     /**
-     * Get the tags value.
+     * Get the tags attached to the resource group.
      *
      * @return the tags value
      */
@@ -153,7 +153,7 @@ public class ResourceGroupInner {
     }
 
     /**
-     * Set the tags value.
+     * Set the tags attached to the resource group.
      *
      * @param tags the tags value to set
      * @return the ResourceGroupInner object itself.

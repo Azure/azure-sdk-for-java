@@ -37,7 +37,7 @@ public class InputInner extends SubResource {
     private String type;
 
     /**
-     * Get the properties value.
+     * Get the properties that are associated with an input. Required on PUT (CreateOrReplace) requests.
      *
      * @return the properties value
      */
@@ -46,7 +46,7 @@ public class InputInner extends SubResource {
     }
 
     /**
-     * Set the properties value.
+     * Set the properties that are associated with an input. Required on PUT (CreateOrReplace) requests.
      *
      * @param properties the properties value to set
      * @return the InputInner object itself.
@@ -57,7 +57,7 @@ public class InputInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get resource name.
      *
      * @return the name value
      */
@@ -66,7 +66,7 @@ public class InputInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set resource name.
      *
      * @param name the name value to set
      * @return the InputInner object itself.
@@ -77,7 +77,7 @@ public class InputInner extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get resource type.
      *
      * @return the type value
      */

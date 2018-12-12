@@ -27,7 +27,7 @@ public class PolicyDefinitionReference {
     private Object parameters;
 
     /**
-     * Get the policyDefinitionId value.
+     * Get the ID of the policy definition or policy set definition.
      *
      * @return the policyDefinitionId value
      */
@@ -36,7 +36,7 @@ public class PolicyDefinitionReference {
     }
 
     /**
-     * Set the policyDefinitionId value.
+     * Set the ID of the policy definition or policy set definition.
      *
      * @param policyDefinitionId the policyDefinitionId value to set
      * @return the PolicyDefinitionReference object itself.
@@ -47,7 +47,7 @@ public class PolicyDefinitionReference {
     }
 
     /**
-     * Get the parameters value.
+     * Get required if a parameter is used in policy rule.
      *
      * @return the parameters value
      */
@@ -56,7 +56,7 @@ public class PolicyDefinitionReference {
     }
 
     /**
-     * Set the parameters value.
+     * Set required if a parameter is used in policy rule.
      *
      * @param parameters the parameters value to set
      * @return the PolicyDefinitionReference object itself.

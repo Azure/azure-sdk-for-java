@@ -33,7 +33,13 @@ public class OperationDisplay {
     private String operation;
 
     /**
-     * Get the provider value.
+     * Description of the operation.
+     */
+    @JsonProperty(value = "description")
+    private String description;
+
+    /**
+     * Get service provider: Microsoft Storage.
      *
      * @return the provider value
      */
@@ -42,7 +48,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set the provider value.
+     * Set service provider: Microsoft Storage.
      *
      * @param provider the provider value to set
      * @return the OperationDisplay object itself.
@@ -53,7 +59,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the resource value.
+     * Get resource on which the operation is performed etc.
      *
      * @return the resource value
      */
@@ -62,7 +68,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Set the resource value.
+     * Set resource on which the operation is performed etc.
      *
      * @param resource the resource value to set
      * @return the OperationDisplay object itself.
@@ -73,7 +79,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the operation value.
+     * Get type of operation: get, read, delete, etc.
      *
      * @return the operation value
      */
@@ -82,13 +88,33 @@ public class OperationDisplay {
     }
 
     /**
-     * Set the operation value.
+     * Set type of operation: get, read, delete, etc.
      *
      * @param operation the operation value to set
      * @return the OperationDisplay object itself.
      */
     public OperationDisplay withOperation(String operation) {
         this.operation = operation;
+        return this;
+    }
+
+    /**
+     * Get description of the operation.
+     *
+     * @return the description value
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set description of the operation.
+     *
+     * @param description the description value to set
+     * @return the OperationDisplay object itself.
+     */
+    public OperationDisplay withDescription(String description) {
+        this.description = description;
         return this;
     }
 

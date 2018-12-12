@@ -76,7 +76,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     private String groupName;
 
     /**
-     * Get the refreshToken value.
+     * Get a refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests.
      *
      * @return the refreshToken value
      */
@@ -85,7 +85,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the refreshToken value.
+     * Set a refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace) requests.
      *
      * @param refreshToken the refreshToken value to set
      * @return the PowerBIOutputDataSource object itself.
@@ -96,7 +96,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the tokenUserPrincipalName value.
+     * Get the user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @return the tokenUserPrincipalName value
      */
@@ -105,7 +105,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the tokenUserPrincipalName value.
+     * Set the user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @param tokenUserPrincipalName the tokenUserPrincipalName value to set
      * @return the PowerBIOutputDataSource object itself.
@@ -116,7 +116,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the tokenUserDisplayName value.
+     * Get the user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @return the tokenUserDisplayName value
      */
@@ -125,7 +125,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the tokenUserDisplayName value.
+     * Set the user display name of the user that was used to obtain the refresh token. Use this property to help remember which user was used to obtain the refresh token.
      *
      * @param tokenUserDisplayName the tokenUserDisplayName value to set
      * @return the PowerBIOutputDataSource object itself.
@@ -136,7 +136,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the dataset value.
+     * Get the name of the Power BI dataset. Required on PUT (CreateOrReplace) requests.
      *
      * @return the dataset value
      */
@@ -145,7 +145,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the dataset value.
+     * Set the name of the Power BI dataset. Required on PUT (CreateOrReplace) requests.
      *
      * @param dataset the dataset value to set
      * @return the PowerBIOutputDataSource object itself.
@@ -156,7 +156,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the table value.
+     * Get the name of the Power BI table under the specified dataset. Required on PUT (CreateOrReplace) requests.
      *
      * @return the table value
      */
@@ -165,7 +165,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the table value.
+     * Set the name of the Power BI table under the specified dataset. Required on PUT (CreateOrReplace) requests.
      *
      * @param table the table value to set
      * @return the PowerBIOutputDataSource object itself.
@@ -176,7 +176,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the groupId value.
+     * Get the ID of the Power BI group.
      *
      * @return the groupId value
      */
@@ -185,7 +185,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the groupId value.
+     * Set the ID of the Power BI group.
      *
      * @param groupId the groupId value to set
      * @return the PowerBIOutputDataSource object itself.
@@ -196,7 +196,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the groupName value.
+     * Get the name of the Power BI group. Use this property to help remember which specific Power BI group id was used.
      *
      * @return the groupName value
      */
@@ -205,7 +205,7 @@ public class PowerBIOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the groupName value.
+     * Set the name of the Power BI group. Use this property to help remember which specific Power BI group id was used.
      *
      * @param groupName the groupName value to set
      * @return the PowerBIOutputDataSource object itself.

@@ -29,7 +29,7 @@ public class ResourceTestStatusInner {
     private ErrorResponse error;
 
     /**
-     * Get the status value.
+     * Get the status of the test operation.
      *
      * @return the status value
      */
@@ -38,7 +38,7 @@ public class ResourceTestStatusInner {
     }
 
     /**
-     * Get the error value.
+     * Get describes the error that occurred.
      *
      * @return the error value
      */

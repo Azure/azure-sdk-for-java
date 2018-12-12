@@ -33,7 +33,7 @@ public class BgpSettings {
     private Integer peerWeight;
 
     /**
-     * Get the asn value.
+     * Get the BGP speaker's ASN.
      *
      * @return the asn value
      */
@@ -42,7 +42,7 @@ public class BgpSettings {
     }
 
     /**
-     * Set the asn value.
+     * Set the BGP speaker's ASN.
      *
      * @param asn the asn value to set
      * @return the BgpSettings object itself.
@@ -53,7 +53,7 @@ public class BgpSettings {
     }
 
     /**
-     * Get the bgpPeeringAddress value.
+     * Get the BGP peering address and BGP identifier of this BGP speaker.
      *
      * @return the bgpPeeringAddress value
      */
@@ -62,7 +62,7 @@ public class BgpSettings {
     }
 
     /**
-     * Set the bgpPeeringAddress value.
+     * Set the BGP peering address and BGP identifier of this BGP speaker.
      *
      * @param bgpPeeringAddress the bgpPeeringAddress value to set
      * @return the BgpSettings object itself.
@@ -73,7 +73,7 @@ public class BgpSettings {
     }
 
     /**
-     * Get the peerWeight value.
+     * Get the weight added to routes learned from this BGP speaker.
      *
      * @return the peerWeight value
      */
@@ -82,7 +82,7 @@ public class BgpSettings {
     }
 
     /**
-     * Set the peerWeight value.
+     * Set the weight added to routes learned from this BGP speaker.
      *
      * @param peerWeight the peerWeight value to set
      * @return the BgpSettings object itself.

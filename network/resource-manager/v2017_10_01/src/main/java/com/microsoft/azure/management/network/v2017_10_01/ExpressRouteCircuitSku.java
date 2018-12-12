@@ -35,7 +35,7 @@ public class ExpressRouteCircuitSku {
     private ExpressRouteCircuitSkuFamily family;
 
     /**
-     * Get the name value.
+     * Get the name of the SKU.
      *
      * @return the name value
      */
@@ -44,7 +44,7 @@ public class ExpressRouteCircuitSku {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the SKU.
      *
      * @param name the name value to set
      * @return the ExpressRouteCircuitSku object itself.
@@ -55,7 +55,7 @@ public class ExpressRouteCircuitSku {
     }
 
     /**
-     * Get the tier value.
+     * Get the tier of the SKU. Possible values are 'Standard' and 'Premium'. Possible values include: 'Standard', 'Premium'.
      *
      * @return the tier value
      */
@@ -64,7 +64,7 @@ public class ExpressRouteCircuitSku {
     }
 
     /**
-     * Set the tier value.
+     * Set the tier of the SKU. Possible values are 'Standard' and 'Premium'. Possible values include: 'Standard', 'Premium'.
      *
      * @param tier the tier value to set
      * @return the ExpressRouteCircuitSku object itself.
@@ -75,7 +75,7 @@ public class ExpressRouteCircuitSku {
     }
 
     /**
-     * Get the family value.
+     * Get the family of the SKU. Possible values are: 'UnlimitedData' and 'MeteredData'. Possible values include: 'UnlimitedData', 'MeteredData'.
      *
      * @return the family value
      */
@@ -84,7 +84,7 @@ public class ExpressRouteCircuitSku {
     }
 
     /**
-     * Set the family value.
+     * Set the family of the SKU. Possible values are: 'UnlimitedData' and 'MeteredData'. Possible values include: 'UnlimitedData', 'MeteredData'.
      *
      * @param family the family value to set
      * @return the ExpressRouteCircuitSku object itself.

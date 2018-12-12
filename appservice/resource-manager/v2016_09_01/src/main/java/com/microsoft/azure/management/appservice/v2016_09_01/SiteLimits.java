@@ -33,7 +33,7 @@ public class SiteLimits {
     private Long maxDiskSizeInMb;
 
     /**
-     * Get the maxPercentageCpu value.
+     * Get maximum allowed CPU usage percentage.
      *
      * @return the maxPercentageCpu value
      */
@@ -42,7 +42,7 @@ public class SiteLimits {
     }
 
     /**
-     * Set the maxPercentageCpu value.
+     * Set maximum allowed CPU usage percentage.
      *
      * @param maxPercentageCpu the maxPercentageCpu value to set
      * @return the SiteLimits object itself.
@@ -53,7 +53,7 @@ public class SiteLimits {
     }
 
     /**
-     * Get the maxMemoryInMb value.
+     * Get maximum allowed memory usage in MB.
      *
      * @return the maxMemoryInMb value
      */
@@ -62,7 +62,7 @@ public class SiteLimits {
     }
 
     /**
-     * Set the maxMemoryInMb value.
+     * Set maximum allowed memory usage in MB.
      *
      * @param maxMemoryInMb the maxMemoryInMb value to set
      * @return the SiteLimits object itself.
@@ -73,7 +73,7 @@ public class SiteLimits {
     }
 
     /**
-     * Get the maxDiskSizeInMb value.
+     * Get maximum allowed disk size usage in MB.
      *
      * @return the maxDiskSizeInMb value
      */
@@ -82,7 +82,7 @@ public class SiteLimits {
     }
 
     /**
-     * Set the maxDiskSizeInMb value.
+     * Set maximum allowed disk size usage in MB.
      *
      * @param maxDiskSizeInMb the maxDiskSizeInMb value to set
      * @return the SiteLimits object itself.

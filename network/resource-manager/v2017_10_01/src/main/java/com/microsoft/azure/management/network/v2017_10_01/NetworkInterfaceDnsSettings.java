@@ -56,7 +56,7 @@ public class NetworkInterfaceDnsSettings {
     private String internalDomainNameSuffix;
 
     /**
-     * Get the dnsServers value.
+     * Get list of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in dnsServers collection.
      *
      * @return the dnsServers value
      */
@@ -65,7 +65,7 @@ public class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the dnsServers value.
+     * Set list of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in dnsServers collection.
      *
      * @param dnsServers the dnsServers value to set
      * @return the NetworkInterfaceDnsSettings object itself.
@@ -76,7 +76,7 @@ public class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Get the appliedDnsServers value.
+     * Get if the VM that uses this NIC is part of an Availability Set, then this list will have the union of all DNS servers from all NICs that are part of the Availability Set. This property is what is configured on each of those VMs.
      *
      * @return the appliedDnsServers value
      */
@@ -85,7 +85,7 @@ public class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the appliedDnsServers value.
+     * Set if the VM that uses this NIC is part of an Availability Set, then this list will have the union of all DNS servers from all NICs that are part of the Availability Set. This property is what is configured on each of those VMs.
      *
      * @param appliedDnsServers the appliedDnsServers value to set
      * @return the NetworkInterfaceDnsSettings object itself.
@@ -96,7 +96,7 @@ public class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Get the internalDnsNameLabel value.
+     * Get relative DNS name for this NIC used for internal communications between VMs in the same virtual network.
      *
      * @return the internalDnsNameLabel value
      */
@@ -105,7 +105,7 @@ public class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the internalDnsNameLabel value.
+     * Set relative DNS name for this NIC used for internal communications between VMs in the same virtual network.
      *
      * @param internalDnsNameLabel the internalDnsNameLabel value to set
      * @return the NetworkInterfaceDnsSettings object itself.
@@ -116,7 +116,7 @@ public class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Get the internalFqdn value.
+     * Get fully qualified DNS name supporting internal communications between VMs in the same virtual network.
      *
      * @return the internalFqdn value
      */
@@ -125,7 +125,7 @@ public class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the internalFqdn value.
+     * Set fully qualified DNS name supporting internal communications between VMs in the same virtual network.
      *
      * @param internalFqdn the internalFqdn value to set
      * @return the NetworkInterfaceDnsSettings object itself.
@@ -136,7 +136,7 @@ public class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Get the internalDomainNameSuffix value.
+     * Get even if internalDnsNameLabel is not specified, a DNS entry is created for the primary NIC of the VM. This DNS name can be constructed by concatenating the VM name with the value of internalDomainNameSuffix.
      *
      * @return the internalDomainNameSuffix value
      */
@@ -145,7 +145,7 @@ public class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the internalDomainNameSuffix value.
+     * Set even if internalDnsNameLabel is not specified, a DNS entry is created for the primary NIC of the VM. This DNS name can be constructed by concatenating the VM name with the value of internalDomainNameSuffix.
      *
      * @param internalDomainNameSuffix the internalDomainNameSuffix value to set
      * @return the NetworkInterfaceDnsSettings object itself.

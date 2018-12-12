@@ -31,7 +31,7 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
     private List<String> appSettingNames;
 
     /**
-     * Get the connectionStringNames value.
+     * Get list of connection string names.
      *
      * @return the connectionStringNames value
      */
@@ -40,7 +40,7 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the connectionStringNames value.
+     * Set list of connection string names.
      *
      * @param connectionStringNames the connectionStringNames value to set
      * @return the SlotConfigNamesResourceInner object itself.
@@ -51,7 +51,7 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the appSettingNames value.
+     * Get list of application settings names.
      *
      * @return the appSettingNames value
      */
@@ -60,7 +60,7 @@ public class SlotConfigNamesResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the appSettingNames value.
+     * Set list of application settings names.
      *
      * @param appSettingNames the appSettingNames value to set
      * @return the SlotConfigNamesResourceInner object itself.

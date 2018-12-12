@@ -41,7 +41,7 @@ public class TroubleshootingRecommendedActions {
     private String actionUriText;
 
     /**
-     * Get the actionId value.
+     * Get iD of the recommended action.
      *
      * @return the actionId value
      */
@@ -50,7 +50,7 @@ public class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Set the actionId value.
+     * Set iD of the recommended action.
      *
      * @param actionId the actionId value to set
      * @return the TroubleshootingRecommendedActions object itself.
@@ -61,7 +61,7 @@ public class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Get the actionText value.
+     * Get description of recommended actions.
      *
      * @return the actionText value
      */
@@ -70,7 +70,7 @@ public class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Set the actionText value.
+     * Set description of recommended actions.
      *
      * @param actionText the actionText value to set
      * @return the TroubleshootingRecommendedActions object itself.
@@ -81,7 +81,7 @@ public class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Get the actionUri value.
+     * Get the uri linking to a documentation for the recommended troubleshooting actions.
      *
      * @return the actionUri value
      */
@@ -90,7 +90,7 @@ public class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Set the actionUri value.
+     * Set the uri linking to a documentation for the recommended troubleshooting actions.
      *
      * @param actionUri the actionUri value to set
      * @return the TroubleshootingRecommendedActions object itself.
@@ -101,7 +101,7 @@ public class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Get the actionUriText value.
+     * Get the information from the URI for the recommended troubleshooting actions.
      *
      * @return the actionUriText value
      */
@@ -110,7 +110,7 @@ public class TroubleshootingRecommendedActions {
     }
 
     /**
-     * Set the actionUriText value.
+     * Set the information from the URI for the recommended troubleshooting actions.
      *
      * @param actionUriText the actionUriText value to set
      * @return the TroubleshootingRecommendedActions object itself.

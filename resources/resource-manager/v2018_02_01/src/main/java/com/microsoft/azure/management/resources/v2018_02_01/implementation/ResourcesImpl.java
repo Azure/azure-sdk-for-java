@@ -43,7 +43,8 @@ class ResourcesImpl extends WrapperImpl<ResourcesInner> implements Resources {
             public Iterable<GenericResourceInner> call(Page<GenericResourceInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<GenericResourceInner, GenericResource>() {
+        })
+        .map(new Func1<GenericResourceInner, GenericResource>() {
             @Override
             public GenericResource call(GenericResourceInner inner) {
                 return new GenericResourceImpl(inner, manager());

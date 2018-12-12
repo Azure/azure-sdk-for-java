@@ -30,7 +30,7 @@ public class HybridConnectionKey extends ProxyOnlyResource {
     private String sendKeyValue;
 
     /**
-     * Get the sendKeyName value.
+     * Get the name of the send key.
      *
      * @return the sendKeyName value
      */
@@ -39,7 +39,7 @@ public class HybridConnectionKey extends ProxyOnlyResource {
     }
 
     /**
-     * Get the sendKeyValue value.
+     * Get the value of the send key.
      *
      * @return the sendKeyValue value
      */

@@ -47,7 +47,7 @@ public class AnalysisData {
     private ResponseMetaData detectorMetaData;
 
     /**
-     * Get the source value.
+     * Get name of the Detector.
      *
      * @return the source value
      */
@@ -56,7 +56,7 @@ public class AnalysisData {
     }
 
     /**
-     * Set the source value.
+     * Set name of the Detector.
      *
      * @param source the source value to set
      * @return the AnalysisData object itself.
@@ -67,7 +67,7 @@ public class AnalysisData {
     }
 
     /**
-     * Get the detectorDefinition value.
+     * Get detector Definition.
      *
      * @return the detectorDefinition value
      */
@@ -76,7 +76,7 @@ public class AnalysisData {
     }
 
     /**
-     * Set the detectorDefinition value.
+     * Set detector Definition.
      *
      * @param detectorDefinition the detectorDefinition value to set
      * @return the AnalysisData object itself.
@@ -87,7 +87,7 @@ public class AnalysisData {
     }
 
     /**
-     * Get the metrics value.
+     * Get source Metrics.
      *
      * @return the metrics value
      */
@@ -96,7 +96,7 @@ public class AnalysisData {
     }
 
     /**
-     * Set the metrics value.
+     * Set source Metrics.
      *
      * @param metrics the metrics value to set
      * @return the AnalysisData object itself.
@@ -107,7 +107,7 @@ public class AnalysisData {
     }
 
     /**
-     * Get the data value.
+     * Get additional Source Data.
      *
      * @return the data value
      */
@@ -116,7 +116,7 @@ public class AnalysisData {
     }
 
     /**
-     * Set the data value.
+     * Set additional Source Data.
      *
      * @param data the data value to set
      * @return the AnalysisData object itself.
@@ -127,7 +127,7 @@ public class AnalysisData {
     }
 
     /**
-     * Get the detectorMetaData value.
+     * Get detector Meta Data.
      *
      * @return the detectorMetaData value
      */
@@ -136,7 +136,7 @@ public class AnalysisData {
     }
 
     /**
-     * Set the detectorMetaData value.
+     * Set detector Meta Data.
      *
      * @param detectorMetaData the detectorMetaData value to set
      * @return the AnalysisData object itself.

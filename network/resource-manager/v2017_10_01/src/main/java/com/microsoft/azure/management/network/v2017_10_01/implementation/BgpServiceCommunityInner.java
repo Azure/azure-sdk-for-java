@@ -40,7 +40,7 @@ public class BgpServiceCommunityInner extends Resource {
     private String id;
 
     /**
-     * Get the serviceName value.
+     * Get the name of the bgp community. e.g. Skype.
      *
      * @return the serviceName value
      */
@@ -49,7 +49,7 @@ public class BgpServiceCommunityInner extends Resource {
     }
 
     /**
-     * Set the serviceName value.
+     * Set the name of the bgp community. e.g. Skype.
      *
      * @param serviceName the serviceName value to set
      * @return the BgpServiceCommunityInner object itself.
@@ -60,7 +60,7 @@ public class BgpServiceCommunityInner extends Resource {
     }
 
     /**
-     * Get the bgpCommunities value.
+     * Get get a list of bgp communities.
      *
      * @return the bgpCommunities value
      */
@@ -69,7 +69,7 @@ public class BgpServiceCommunityInner extends Resource {
     }
 
     /**
-     * Set the bgpCommunities value.
+     * Set get a list of bgp communities.
      *
      * @param bgpCommunities the bgpCommunities value to set
      * @return the BgpServiceCommunityInner object itself.
@@ -80,7 +80,7 @@ public class BgpServiceCommunityInner extends Resource {
     }
 
     /**
-     * Get the id value.
+     * Get resource ID.
      *
      * @return the id value
      */
@@ -89,7 +89,7 @@ public class BgpServiceCommunityInner extends Resource {
     }
 
     /**
-     * Set the id value.
+     * Set resource ID.
      *
      * @param id the id value to set
      * @return the BgpServiceCommunityInner object itself.

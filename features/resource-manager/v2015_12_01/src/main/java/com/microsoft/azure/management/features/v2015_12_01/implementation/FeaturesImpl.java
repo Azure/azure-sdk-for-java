@@ -53,7 +53,8 @@ class FeaturesImpl extends WrapperImpl<FeaturesInner> implements Features {
             public Iterable<FeatureResultInner> call(Page<FeatureResultInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<FeatureResultInner, FeatureResult>() {
+        })
+        .map(new Func1<FeatureResultInner, FeatureResult>() {
             @Override
             public FeatureResult call(FeatureResultInner inner) {
                 return new FeatureResultImpl(inner, manager());

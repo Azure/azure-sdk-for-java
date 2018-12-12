@@ -34,7 +34,7 @@ public class Rendering {
     private String description;
 
     /**
-     * Get the renderingType value.
+     * Get rendering Type. Possible values include: 'NoGraph', 'Table', 'TimeSeries', 'TimeSeriesPerInstance'.
      *
      * @return the renderingType value
      */
@@ -43,7 +43,7 @@ public class Rendering {
     }
 
     /**
-     * Set the renderingType value.
+     * Set rendering Type. Possible values include: 'NoGraph', 'Table', 'TimeSeries', 'TimeSeriesPerInstance'.
      *
      * @param renderingType the renderingType value to set
      * @return the Rendering object itself.
@@ -54,7 +54,7 @@ public class Rendering {
     }
 
     /**
-     * Get the title value.
+     * Get title of data.
      *
      * @return the title value
      */
@@ -63,7 +63,7 @@ public class Rendering {
     }
 
     /**
-     * Set the title value.
+     * Set title of data.
      *
      * @param title the title value to set
      * @return the Rendering object itself.
@@ -74,7 +74,7 @@ public class Rendering {
     }
 
     /**
-     * Get the description value.
+     * Get description of the data that will help it be interpreted.
      *
      * @return the description value
      */
@@ -83,7 +83,7 @@ public class Rendering {
     }
 
     /**
-     * Set the description value.
+     * Set description of the data that will help it be interpreted.
      *
      * @param description the description value to set
      * @return the Rendering object itself.

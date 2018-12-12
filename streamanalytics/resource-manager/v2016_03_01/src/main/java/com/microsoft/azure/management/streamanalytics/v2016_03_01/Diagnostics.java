@@ -24,7 +24,7 @@ public class Diagnostics {
     private List<DiagnosticCondition> conditions;
 
     /**
-     * Get the conditions value.
+     * Get a collection of zero or more conditions applicable to the resource, or to the job overall, that warrant customer attention.
      *
      * @return the conditions value
      */

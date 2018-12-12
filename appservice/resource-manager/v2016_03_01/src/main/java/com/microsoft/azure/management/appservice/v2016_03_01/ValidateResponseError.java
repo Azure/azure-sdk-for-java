@@ -27,7 +27,7 @@ public class ValidateResponseError {
     private String message;
 
     /**
-     * Get the code value.
+     * Get validation error code.
      *
      * @return the code value
      */
@@ -36,7 +36,7 @@ public class ValidateResponseError {
     }
 
     /**
-     * Set the code value.
+     * Set validation error code.
      *
      * @param code the code value to set
      * @return the ValidateResponseError object itself.
@@ -47,7 +47,7 @@ public class ValidateResponseError {
     }
 
     /**
-     * Get the message value.
+     * Get validation error message.
      *
      * @return the message value
      */
@@ -56,7 +56,7 @@ public class ValidateResponseError {
     }
 
     /**
-     * Set the message value.
+     * Set validation error message.
      *
      * @param message the message value to set
      * @return the ValidateResponseError object itself.

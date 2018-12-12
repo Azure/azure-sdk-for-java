@@ -42,7 +42,7 @@ public class TagDetailsInner {
     private List<TagValueInner> values;
 
     /**
-     * Get the id value.
+     * Get the tag ID.
      *
      * @return the id value
      */
@@ -51,7 +51,7 @@ public class TagDetailsInner {
     }
 
     /**
-     * Get the tagName value.
+     * Get the tag name.
      *
      * @return the tagName value
      */
@@ -60,7 +60,7 @@ public class TagDetailsInner {
     }
 
     /**
-     * Set the tagName value.
+     * Set the tag name.
      *
      * @param tagName the tagName value to set
      * @return the TagDetailsInner object itself.
@@ -71,7 +71,7 @@ public class TagDetailsInner {
     }
 
     /**
-     * Get the count value.
+     * Get the total number of resources that use the resource tag. When a tag is initially created and has no associated resources, the value is 0.
      *
      * @return the count value
      */
@@ -80,7 +80,7 @@ public class TagDetailsInner {
     }
 
     /**
-     * Set the count value.
+     * Set the total number of resources that use the resource tag. When a tag is initially created and has no associated resources, the value is 0.
      *
      * @param count the count value to set
      * @return the TagDetailsInner object itself.
@@ -91,7 +91,7 @@ public class TagDetailsInner {
     }
 
     /**
-     * Get the values value.
+     * Get the list of tag values.
      *
      * @return the values value
      */
@@ -100,7 +100,7 @@ public class TagDetailsInner {
     }
 
     /**
-     * Set the values value.
+     * Set the list of tag values.
      *
      * @param values the values value to set
      * @return the TagDetailsInner object itself.

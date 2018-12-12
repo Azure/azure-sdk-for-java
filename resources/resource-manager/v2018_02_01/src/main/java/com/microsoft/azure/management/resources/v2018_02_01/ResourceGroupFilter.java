@@ -27,7 +27,7 @@ public class ResourceGroupFilter {
     private String tagValue;
 
     /**
-     * Get the tagName value.
+     * Get the tag name.
      *
      * @return the tagName value
      */
@@ -36,7 +36,7 @@ public class ResourceGroupFilter {
     }
 
     /**
-     * Set the tagName value.
+     * Set the tag name.
      *
      * @param tagName the tagName value to set
      * @return the ResourceGroupFilter object itself.
@@ -47,7 +47,7 @@ public class ResourceGroupFilter {
     }
 
     /**
-     * Get the tagValue value.
+     * Get the tag value.
      *
      * @return the tagValue value
      */
@@ -56,7 +56,7 @@ public class ResourceGroupFilter {
     }
 
     /**
-     * Set the tagValue value.
+     * Set the tag value.
      *
      * @param tagValue the tagValue value to set
      * @return the ResourceGroupFilter object itself.

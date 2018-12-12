@@ -23,7 +23,7 @@ public class StringDictionaryInner extends ProxyOnlyResource {
     private Map<String, String> properties;
 
     /**
-     * Get the properties value.
+     * Get settings.
      *
      * @return the properties value
      */
@@ -32,7 +32,7 @@ public class StringDictionaryInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the properties value.
+     * Set settings.
      *
      * @param properties the properties value to set
      * @return the StringDictionaryInner object itself.

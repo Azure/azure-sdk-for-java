@@ -186,7 +186,7 @@ public class StreamingJobInner extends Resource {
     private String etag;
 
     /**
-     * Get the sku value.
+     * Get describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
      *
      * @return the sku value
      */
@@ -195,7 +195,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
      *
      * @param sku the sku value to set
      * @return the StreamingJobInner object itself.
@@ -206,7 +206,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the jobId value.
+     * Get a GUID uniquely identifying the streaming job. This GUID is generated upon creation of the streaming job.
      *
      * @return the jobId value
      */
@@ -215,7 +215,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get describes the provisioning status of the streaming job.
      *
      * @return the provisioningState value
      */
@@ -224,7 +224,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the jobState value.
+     * Get describes the state of the streaming job.
      *
      * @return the jobState value
      */
@@ -233,7 +233,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the outputStartMode value.
+     * Get this property should only be utilized when it is desired that the job be started immediately upon creation. Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output event stream should start whenever the job is started, start at a custom user time stamp specified via the outputStartTime property, or start from the last event output time. Possible values include: 'JobStartTime', 'CustomTime', 'LastOutputEventTime'.
      *
      * @return the outputStartMode value
      */
@@ -242,7 +242,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the outputStartMode value.
+     * Set this property should only be utilized when it is desired that the job be started immediately upon creation. Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output event stream should start whenever the job is started, start at a custom user time stamp specified via the outputStartTime property, or start from the last event output time. Possible values include: 'JobStartTime', 'CustomTime', 'LastOutputEventTime'.
      *
      * @param outputStartMode the outputStartMode value to set
      * @return the StreamingJobInner object itself.
@@ -253,7 +253,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the outputStartTime value.
+     * Get value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or null to indicate that the output event stream will start whenever the streaming job is started. This property must have a value if outputStartMode is set to CustomTime.
      *
      * @return the outputStartTime value
      */
@@ -262,7 +262,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the outputStartTime value.
+     * Set value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or null to indicate that the output event stream will start whenever the streaming job is started. This property must have a value if outputStartMode is set to CustomTime.
      *
      * @param outputStartTime the outputStartTime value to set
      * @return the StreamingJobInner object itself.
@@ -273,7 +273,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the lastOutputEventTime value.
+     * Get value is either an ISO-8601 formatted timestamp indicating the last output event time of the streaming job or null indicating that output has not yet been produced. In case of multiple outputs or multiple streams, this shows the latest value in that set.
      *
      * @return the lastOutputEventTime value
      */
@@ -282,7 +282,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the eventsOutOfOrderPolicy value.
+     * Get indicates the policy to apply to events that arrive out of order in the input event stream. Possible values include: 'Adjust', 'Drop'.
      *
      * @return the eventsOutOfOrderPolicy value
      */
@@ -291,7 +291,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the eventsOutOfOrderPolicy value.
+     * Set indicates the policy to apply to events that arrive out of order in the input event stream. Possible values include: 'Adjust', 'Drop'.
      *
      * @param eventsOutOfOrderPolicy the eventsOutOfOrderPolicy value to set
      * @return the StreamingJobInner object itself.
@@ -302,7 +302,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the outputErrorPolicy value.
+     * Get indicates the policy to apply to events that arrive at the output and cannot be written to the external storage due to being malformed (missing column values, column values of wrong type or size). Possible values include: 'Stop', 'Drop'.
      *
      * @return the outputErrorPolicy value
      */
@@ -311,7 +311,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the outputErrorPolicy value.
+     * Set indicates the policy to apply to events that arrive at the output and cannot be written to the external storage due to being malformed (missing column values, column values of wrong type or size). Possible values include: 'Stop', 'Drop'.
      *
      * @param outputErrorPolicy the outputErrorPolicy value to set
      * @return the StreamingJobInner object itself.
@@ -322,7 +322,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the eventsOutOfOrderMaxDelayInSeconds value.
+     * Get the maximum tolerable delay in seconds where out-of-order events can be adjusted to be back in order.
      *
      * @return the eventsOutOfOrderMaxDelayInSeconds value
      */
@@ -331,7 +331,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the eventsOutOfOrderMaxDelayInSeconds value.
+     * Set the maximum tolerable delay in seconds where out-of-order events can be adjusted to be back in order.
      *
      * @param eventsOutOfOrderMaxDelayInSeconds the eventsOutOfOrderMaxDelayInSeconds value to set
      * @return the StreamingJobInner object itself.
@@ -342,7 +342,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the eventsLateArrivalMaxDelayInSeconds value.
+     * Get the maximum tolerable delay in seconds where events arriving late could be included.  Supported range is -1 to 1814399 (20.23:59:59 days) and -1 is used to specify wait indefinitely. If the property is absent, it is interpreted to have a value of -1.
      *
      * @return the eventsLateArrivalMaxDelayInSeconds value
      */
@@ -351,7 +351,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the eventsLateArrivalMaxDelayInSeconds value.
+     * Set the maximum tolerable delay in seconds where events arriving late could be included.  Supported range is -1 to 1814399 (20.23:59:59 days) and -1 is used to specify wait indefinitely. If the property is absent, it is interpreted to have a value of -1.
      *
      * @param eventsLateArrivalMaxDelayInSeconds the eventsLateArrivalMaxDelayInSeconds value to set
      * @return the StreamingJobInner object itself.
@@ -362,7 +362,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the dataLocale value.
+     * Get the data locale of the stream analytics job. Value should be the name of a supported .NET Culture from the set https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US' if none specified.
      *
      * @return the dataLocale value
      */
@@ -371,7 +371,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the dataLocale value.
+     * Set the data locale of the stream analytics job. Value should be the name of a supported .NET Culture from the set https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US' if none specified.
      *
      * @param dataLocale the dataLocale value to set
      * @return the StreamingJobInner object itself.
@@ -382,7 +382,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the compatibilityLevel value.
+     * Get controls certain runtime behaviors of the streaming job. Possible values include: '1.0'.
      *
      * @return the compatibilityLevel value
      */
@@ -391,7 +391,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the compatibilityLevel value.
+     * Set controls certain runtime behaviors of the streaming job. Possible values include: '1.0'.
      *
      * @param compatibilityLevel the compatibilityLevel value to set
      * @return the StreamingJobInner object itself.
@@ -402,7 +402,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the createdDate value.
+     * Get value is an ISO-8601 formatted UTC timestamp indicating when the streaming job was created.
      *
      * @return the createdDate value
      */
@@ -411,7 +411,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the inputs value.
+     * Get a list of one or more inputs to the streaming job. The name property for each input is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual input.
      *
      * @return the inputs value
      */
@@ -420,7 +420,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the inputs value.
+     * Set a list of one or more inputs to the streaming job. The name property for each input is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual input.
      *
      * @param inputs the inputs value to set
      * @return the StreamingJobInner object itself.
@@ -431,7 +431,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the transformation value.
+     * Get indicates the query and the number of streaming units to use for the streaming job. The name property of the transformation is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual tranformation.
      *
      * @return the transformation value
      */
@@ -440,7 +440,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the transformation value.
+     * Set indicates the query and the number of streaming units to use for the streaming job. The name property of the transformation is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual tranformation.
      *
      * @param transformation the transformation value to set
      * @return the StreamingJobInner object itself.
@@ -451,7 +451,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the outputs value.
+     * Get a list of one or more outputs for the streaming job. The name property for each output is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual output.
      *
      * @return the outputs value
      */
@@ -460,7 +460,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the outputs value.
+     * Set a list of one or more outputs for the streaming job. The name property for each output is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual output.
      *
      * @param outputs the outputs value to set
      * @return the StreamingJobInner object itself.
@@ -471,7 +471,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the functions value.
+     * Get a list of one or more functions for the streaming job. The name property for each function is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual transformation.
      *
      * @return the functions value
      */
@@ -480,7 +480,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Set the functions value.
+     * Set a list of one or more functions for the streaming job. The name property for each function is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API available for the individual transformation.
      *
      * @param functions the functions value to set
      * @return the StreamingJobInner object itself.
@@ -491,7 +491,7 @@ public class StreamingJobInner extends Resource {
     }
 
     /**
-     * Get the etag value.
+     * Get the current entity tag for the streaming job. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
      *
      * @return the etag value
      */

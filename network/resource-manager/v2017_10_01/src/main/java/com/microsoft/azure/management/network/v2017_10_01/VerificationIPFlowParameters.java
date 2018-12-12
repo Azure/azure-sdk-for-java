@@ -69,7 +69,7 @@ public class VerificationIPFlowParameters {
     private String targetNicResourceId;
 
     /**
-     * Get the targetResourceId value.
+     * Get the ID of the target resource to perform next-hop on.
      *
      * @return the targetResourceId value
      */
@@ -78,7 +78,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Set the targetResourceId value.
+     * Set the ID of the target resource to perform next-hop on.
      *
      * @param targetResourceId the targetResourceId value to set
      * @return the VerificationIPFlowParameters object itself.
@@ -89,7 +89,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Get the direction value.
+     * Get the direction of the packet represented as a 5-tuple. Possible values include: 'Inbound', 'Outbound'.
      *
      * @return the direction value
      */
@@ -98,7 +98,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Set the direction value.
+     * Set the direction of the packet represented as a 5-tuple. Possible values include: 'Inbound', 'Outbound'.
      *
      * @param direction the direction value to set
      * @return the VerificationIPFlowParameters object itself.
@@ -109,7 +109,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Get the protocol value.
+     * Get protocol to be verified on. Possible values include: 'TCP', 'UDP'.
      *
      * @return the protocol value
      */
@@ -118,7 +118,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Set the protocol value.
+     * Set protocol to be verified on. Possible values include: 'TCP', 'UDP'.
      *
      * @param protocol the protocol value to set
      * @return the VerificationIPFlowParameters object itself.
@@ -129,7 +129,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Get the localPort value.
+     * Get the local port. Acceptable values are a single integer in the range (0-65535). Support for * for the source port, which depends on the direction.
      *
      * @return the localPort value
      */
@@ -138,7 +138,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Set the localPort value.
+     * Set the local port. Acceptable values are a single integer in the range (0-65535). Support for * for the source port, which depends on the direction.
      *
      * @param localPort the localPort value to set
      * @return the VerificationIPFlowParameters object itself.
@@ -149,7 +149,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Get the remotePort value.
+     * Get the remote port. Acceptable values are a single integer in the range (0-65535). Support for * for the source port, which depends on the direction.
      *
      * @return the remotePort value
      */
@@ -158,7 +158,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Set the remotePort value.
+     * Set the remote port. Acceptable values are a single integer in the range (0-65535). Support for * for the source port, which depends on the direction.
      *
      * @param remotePort the remotePort value to set
      * @return the VerificationIPFlowParameters object itself.
@@ -169,7 +169,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Get the localIPAddress value.
+     * Get the local IP address. Acceptable values are valid IPv4 addresses.
      *
      * @return the localIPAddress value
      */
@@ -178,7 +178,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Set the localIPAddress value.
+     * Set the local IP address. Acceptable values are valid IPv4 addresses.
      *
      * @param localIPAddress the localIPAddress value to set
      * @return the VerificationIPFlowParameters object itself.
@@ -189,7 +189,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Get the remoteIPAddress value.
+     * Get the remote IP address. Acceptable values are valid IPv4 addresses.
      *
      * @return the remoteIPAddress value
      */
@@ -198,7 +198,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Set the remoteIPAddress value.
+     * Set the remote IP address. Acceptable values are valid IPv4 addresses.
      *
      * @param remoteIPAddress the remoteIPAddress value to set
      * @return the VerificationIPFlowParameters object itself.
@@ -209,7 +209,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Get the targetNicResourceId value.
+     * Get the NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of them, then this parameter must be specified. Otherwise optional).
      *
      * @return the targetNicResourceId value
      */
@@ -218,7 +218,7 @@ public class VerificationIPFlowParameters {
     }
 
     /**
-     * Set the targetNicResourceId value.
+     * Set the NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of them, then this parameter must be specified. Otherwise optional).
      *
      * @param targetNicResourceId the targetNicResourceId value to set
      * @return the VerificationIPFlowParameters object itself.

@@ -10,12 +10,12 @@ package com.microsoft.azure.management.network.v2017_10_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2017_10_01.implementation.NetworkManager;
 import java.util.List;
@@ -84,51 +84,61 @@ public interface NetworkSecurityGroup extends HasInner<NetworkSecurityGroupInner
         }
 
         /**
-         * The stage of the networksecuritygroup update allowing to specify DefaultSecurityRules.
+         * The stage of the networksecuritygroup definition allowing to specify DefaultSecurityRules.
          */
         interface WithDefaultSecurityRules {
             /**
              * Specifies defaultSecurityRules.
+             * @param defaultSecurityRules The default security rules of network security group
+             * @return the next definition stage
              */
             WithCreate withDefaultSecurityRules(List<SecurityRuleInner> defaultSecurityRules);
         }
 
         /**
-         * The stage of the networksecuritygroup update allowing to specify Etag.
+         * The stage of the networksecuritygroup definition allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
+             * @param etag A unique read-only string that changes whenever the resource is updated
+             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the networksecuritygroup update allowing to specify ProvisioningState.
+         * The stage of the networksecuritygroup definition allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
+             * @param provisioningState The provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
+             * @return the next definition stage
              */
             WithCreate withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the networksecuritygroup update allowing to specify ResourceGuid.
+         * The stage of the networksecuritygroup definition allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
+             * @param resourceGuid The resource GUID property of the network security group resource
+             * @return the next definition stage
              */
             WithCreate withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the networksecuritygroup update allowing to specify SecurityRules.
+         * The stage of the networksecuritygroup definition allowing to specify SecurityRules.
          */
         interface WithSecurityRules {
             /**
              * Specifies securityRules.
+             * @param securityRules A collection of security rules of the network security group
+             * @return the next definition stage
              */
             WithCreate withSecurityRules(List<SecurityRuleInner> securityRules);
         }
@@ -152,51 +162,61 @@ public interface NetworkSecurityGroup extends HasInner<NetworkSecurityGroupInner
      */
     interface UpdateStages {
         /**
-         * The stage of the networksecuritygroup {0} allowing to specify DefaultSecurityRules.
+         * The stage of the networksecuritygroup update allowing to specify DefaultSecurityRules.
          */
         interface WithDefaultSecurityRules {
             /**
              * Specifies defaultSecurityRules.
+             * @param defaultSecurityRules The default security rules of network security group
+             * @return the next update stage
              */
             Update withDefaultSecurityRules(List<SecurityRuleInner> defaultSecurityRules);
         }
 
         /**
-         * The stage of the networksecuritygroup {0} allowing to specify Etag.
+         * The stage of the networksecuritygroup update allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
+             * @param etag A unique read-only string that changes whenever the resource is updated
+             * @return the next update stage
              */
             Update withEtag(String etag);
         }
 
         /**
-         * The stage of the networksecuritygroup {0} allowing to specify ProvisioningState.
+         * The stage of the networksecuritygroup update allowing to specify ProvisioningState.
          */
         interface WithProvisioningState {
             /**
              * Specifies provisioningState.
+             * @param provisioningState The provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'
+             * @return the next update stage
              */
             Update withProvisioningState(String provisioningState);
         }
 
         /**
-         * The stage of the networksecuritygroup {0} allowing to specify ResourceGuid.
+         * The stage of the networksecuritygroup update allowing to specify ResourceGuid.
          */
         interface WithResourceGuid {
             /**
              * Specifies resourceGuid.
+             * @param resourceGuid The resource GUID property of the network security group resource
+             * @return the next update stage
              */
             Update withResourceGuid(String resourceGuid);
         }
 
         /**
-         * The stage of the networksecuritygroup {0} allowing to specify SecurityRules.
+         * The stage of the networksecuritygroup update allowing to specify SecurityRules.
          */
         interface WithSecurityRules {
             /**
              * Specifies securityRules.
+             * @param securityRules A collection of security rules of the network security group
+             * @return the next update stage
              */
             Update withSecurityRules(List<SecurityRuleInner> securityRules);
         }

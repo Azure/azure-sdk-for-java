@@ -33,7 +33,7 @@ public class SlowRequestsBasedTrigger {
     private String timeInterval;
 
     /**
-     * Get the timeTaken value.
+     * Get time taken.
      *
      * @return the timeTaken value
      */
@@ -42,7 +42,7 @@ public class SlowRequestsBasedTrigger {
     }
 
     /**
-     * Set the timeTaken value.
+     * Set time taken.
      *
      * @param timeTaken the timeTaken value to set
      * @return the SlowRequestsBasedTrigger object itself.
@@ -53,7 +53,7 @@ public class SlowRequestsBasedTrigger {
     }
 
     /**
-     * Get the count value.
+     * Get request Count.
      *
      * @return the count value
      */
@@ -62,7 +62,7 @@ public class SlowRequestsBasedTrigger {
     }
 
     /**
-     * Set the count value.
+     * Set request Count.
      *
      * @param count the count value to set
      * @return the SlowRequestsBasedTrigger object itself.
@@ -73,7 +73,7 @@ public class SlowRequestsBasedTrigger {
     }
 
     /**
-     * Get the timeInterval value.
+     * Get time interval.
      *
      * @return the timeInterval value
      */
@@ -82,7 +82,7 @@ public class SlowRequestsBasedTrigger {
     }
 
     /**
-     * Set the timeInterval value.
+     * Set time interval.
      *
      * @param timeInterval the timeInterval value to set
      * @return the SlowRequestsBasedTrigger object itself.

@@ -47,7 +47,7 @@ public class WorkerPool {
     private List<String> instanceNames;
 
     /**
-     * Get the workerSizeId value.
+     * Get worker size ID for referencing this worker pool.
      *
      * @return the workerSizeId value
      */
@@ -56,7 +56,7 @@ public class WorkerPool {
     }
 
     /**
-     * Set the workerSizeId value.
+     * Set worker size ID for referencing this worker pool.
      *
      * @param workerSizeId the workerSizeId value to set
      * @return the WorkerPool object itself.
@@ -67,7 +67,7 @@ public class WorkerPool {
     }
 
     /**
-     * Get the computeMode value.
+     * Get shared or dedicated app hosting. Possible values include: 'Shared', 'Dedicated', 'Dynamic'.
      *
      * @return the computeMode value
      */
@@ -76,7 +76,7 @@ public class WorkerPool {
     }
 
     /**
-     * Set the computeMode value.
+     * Set shared or dedicated app hosting. Possible values include: 'Shared', 'Dedicated', 'Dynamic'.
      *
      * @param computeMode the computeMode value to set
      * @return the WorkerPool object itself.
@@ -87,7 +87,7 @@ public class WorkerPool {
     }
 
     /**
-     * Get the workerSize value.
+     * Get vM size of the worker pool instances.
      *
      * @return the workerSize value
      */
@@ -96,7 +96,7 @@ public class WorkerPool {
     }
 
     /**
-     * Set the workerSize value.
+     * Set vM size of the worker pool instances.
      *
      * @param workerSize the workerSize value to set
      * @return the WorkerPool object itself.
@@ -107,7 +107,7 @@ public class WorkerPool {
     }
 
     /**
-     * Get the workerCount value.
+     * Get number of instances in the worker pool.
      *
      * @return the workerCount value
      */
@@ -116,7 +116,7 @@ public class WorkerPool {
     }
 
     /**
-     * Set the workerCount value.
+     * Set number of instances in the worker pool.
      *
      * @param workerCount the workerCount value to set
      * @return the WorkerPool object itself.
@@ -127,7 +127,7 @@ public class WorkerPool {
     }
 
     /**
-     * Get the instanceNames value.
+     * Get names of all instances in the worker pool (read only).
      *
      * @return the instanceNames value
      */

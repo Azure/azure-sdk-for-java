@@ -29,7 +29,7 @@ public class EffectiveRouteListResultInner {
     private String nextLink;
 
     /**
-     * Get the value value.
+     * Get a list of effective routes.
      *
      * @return the value value
      */
@@ -38,7 +38,7 @@ public class EffectiveRouteListResultInner {
     }
 
     /**
-     * Set the value value.
+     * Set a list of effective routes.
      *
      * @param value the value value to set
      * @return the EffectiveRouteListResultInner object itself.
@@ -49,7 +49,7 @@ public class EffectiveRouteListResultInner {
     }
 
     /**
-     * Get the nextLink value.
+     * Get the URL to get the next set of results.
      *
      * @return the nextLink value
      */

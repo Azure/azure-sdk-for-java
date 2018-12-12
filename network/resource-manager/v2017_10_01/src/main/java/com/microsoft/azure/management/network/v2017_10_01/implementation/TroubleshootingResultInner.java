@@ -42,7 +42,7 @@ public class TroubleshootingResultInner {
     private List<TroubleshootingDetails> results;
 
     /**
-     * Get the startTime value.
+     * Get the start time of the troubleshooting.
      *
      * @return the startTime value
      */
@@ -51,7 +51,7 @@ public class TroubleshootingResultInner {
     }
 
     /**
-     * Set the startTime value.
+     * Set the start time of the troubleshooting.
      *
      * @param startTime the startTime value to set
      * @return the TroubleshootingResultInner object itself.
@@ -62,7 +62,7 @@ public class TroubleshootingResultInner {
     }
 
     /**
-     * Get the endTime value.
+     * Get the end time of the troubleshooting.
      *
      * @return the endTime value
      */
@@ -71,7 +71,7 @@ public class TroubleshootingResultInner {
     }
 
     /**
-     * Set the endTime value.
+     * Set the end time of the troubleshooting.
      *
      * @param endTime the endTime value to set
      * @return the TroubleshootingResultInner object itself.
@@ -82,7 +82,7 @@ public class TroubleshootingResultInner {
     }
 
     /**
-     * Get the code value.
+     * Get the result code of the troubleshooting.
      *
      * @return the code value
      */
@@ -91,7 +91,7 @@ public class TroubleshootingResultInner {
     }
 
     /**
-     * Set the code value.
+     * Set the result code of the troubleshooting.
      *
      * @param code the code value to set
      * @return the TroubleshootingResultInner object itself.
@@ -102,7 +102,7 @@ public class TroubleshootingResultInner {
     }
 
     /**
-     * Get the results value.
+     * Get information from troubleshooting.
      *
      * @return the results value
      */
@@ -111,7 +111,7 @@ public class TroubleshootingResultInner {
     }
 
     /**
-     * Set the results value.
+     * Set information from troubleshooting.
      *
      * @param results the results value to set
      * @return the TroubleshootingResultInner object itself.

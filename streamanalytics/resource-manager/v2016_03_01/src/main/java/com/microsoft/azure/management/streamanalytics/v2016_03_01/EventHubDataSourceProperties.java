@@ -21,7 +21,7 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
     private String eventHubName;
 
     /**
-     * Get the eventHubName value.
+     * Get the name of the Event Hub. Required on PUT (CreateOrReplace) requests.
      *
      * @return the eventHubName value
      */
@@ -30,7 +30,7 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
     }
 
     /**
-     * Set the eventHubName value.
+     * Set the name of the Event Hub. Required on PUT (CreateOrReplace) requests.
      *
      * @param eventHubName the eventHubName value to set
      * @return the EventHubDataSourceProperties object itself.

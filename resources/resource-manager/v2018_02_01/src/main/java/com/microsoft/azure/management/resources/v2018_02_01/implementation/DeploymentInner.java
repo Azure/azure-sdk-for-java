@@ -22,7 +22,7 @@ public class DeploymentInner {
     private DeploymentProperties properties;
 
     /**
-     * Get the properties value.
+     * Get the deployment properties.
      *
      * @return the properties value
      */
@@ -31,7 +31,7 @@ public class DeploymentInner {
     }
 
     /**
-     * Set the properties value.
+     * Set the deployment properties.
      *
      * @param properties the properties value to set
      * @return the DeploymentInner object itself.

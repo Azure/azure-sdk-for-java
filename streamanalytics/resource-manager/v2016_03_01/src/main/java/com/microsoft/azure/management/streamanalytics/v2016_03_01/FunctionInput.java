@@ -31,7 +31,7 @@ public class FunctionInput {
     private Boolean isConfigurationParameter;
 
     /**
-     * Get the dataType value.
+     * Get the (Azure Stream Analytics supported) data type of the function input parameter. A list of valid Azure Stream Analytics data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx.
      *
      * @return the dataType value
      */
@@ -40,7 +40,7 @@ public class FunctionInput {
     }
 
     /**
-     * Set the dataType value.
+     * Set the (Azure Stream Analytics supported) data type of the function input parameter. A list of valid Azure Stream Analytics data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx.
      *
      * @param dataType the dataType value to set
      * @return the FunctionInput object itself.
@@ -51,7 +51,7 @@ public class FunctionInput {
     }
 
     /**
-     * Get the isConfigurationParameter value.
+     * Get a flag indicating if the parameter is a configuration parameter. True if this input parameter is expected to be a constant. Default is false.
      *
      * @return the isConfigurationParameter value
      */
@@ -60,7 +60,7 @@ public class FunctionInput {
     }
 
     /**
-     * Set the isConfigurationParameter value.
+     * Set a flag indicating if the parameter is a configuration parameter. True if this input parameter is expected to be a constant. Default is false.
      *
      * @param isConfigurationParameter the isConfigurationParameter value to set
      * @return the FunctionInput object itself.

@@ -134,7 +134,8 @@ class PublicIPAddressesImpl extends GroupableResourcesCoreImpl<PublicIPAddress, 
             public Iterable<PublicIPAddressInner> call(Page<PublicIPAddressInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<PublicIPAddressInner, PublicIPAddress>() {
+        })
+        .map(new Func1<PublicIPAddressInner, PublicIPAddress>() {
             @Override
             public PublicIPAddress call(PublicIPAddressInner inner) {
                 return new PublicIPAddressImpl(inner.name(), inner, manager());
@@ -151,7 +152,8 @@ class PublicIPAddressesImpl extends GroupableResourcesCoreImpl<PublicIPAddress, 
             public Iterable<PublicIPAddressInner> call(Page<PublicIPAddressInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<PublicIPAddressInner, PublicIPAddress>() {
+        })
+        .map(new Func1<PublicIPAddressInner, PublicIPAddress>() {
             @Override
             public PublicIPAddress call(PublicIPAddressInner inner) {
                 return new PublicIPAddressImpl(inner.name(), inner, manager());

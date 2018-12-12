@@ -27,7 +27,7 @@ public class VirtualDirectory {
     private String physicalPath;
 
     /**
-     * Get the virtualPath value.
+     * Get path to virtual application.
      *
      * @return the virtualPath value
      */
@@ -36,7 +36,7 @@ public class VirtualDirectory {
     }
 
     /**
-     * Set the virtualPath value.
+     * Set path to virtual application.
      *
      * @param virtualPath the virtualPath value to set
      * @return the VirtualDirectory object itself.
@@ -47,7 +47,7 @@ public class VirtualDirectory {
     }
 
     /**
-     * Get the physicalPath value.
+     * Get physical path.
      *
      * @return the physicalPath value
      */
@@ -56,7 +56,7 @@ public class VirtualDirectory {
     }
 
     /**
-     * Set the physicalPath value.
+     * Set physical path.
      *
      * @param physicalPath the physicalPath value to set
      * @return the VirtualDirectory object itself.

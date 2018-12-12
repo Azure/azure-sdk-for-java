@@ -34,7 +34,7 @@ public class ManagedServiceIdentity {
     private String principalId;
 
     /**
-     * Get the type value.
+     * Get type of managed service identity. Possible values include: 'SystemAssigned'.
      *
      * @return the type value
      */
@@ -43,7 +43,7 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Set the type value.
+     * Set type of managed service identity. Possible values include: 'SystemAssigned'.
      *
      * @param type the type value to set
      * @return the ManagedServiceIdentity object itself.
@@ -54,7 +54,7 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Get the tenantId value.
+     * Get tenant of managed service identity.
      *
      * @return the tenantId value
      */
@@ -63,7 +63,7 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Get the principalId value.
+     * Get principal Id of managed service identity.
      *
      * @return the principalId value
      */

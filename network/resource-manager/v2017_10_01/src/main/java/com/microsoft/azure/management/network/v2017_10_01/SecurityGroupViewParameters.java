@@ -21,7 +21,7 @@ public class SecurityGroupViewParameters {
     private String targetResourceId;
 
     /**
-     * Get the targetResourceId value.
+     * Get iD of the target VM.
      *
      * @return the targetResourceId value
      */
@@ -30,7 +30,7 @@ public class SecurityGroupViewParameters {
     }
 
     /**
-     * Set the targetResourceId value.
+     * Set iD of the target VM.
      *
      * @param targetResourceId the targetResourceId value to set
      * @return the SecurityGroupViewParameters object itself.

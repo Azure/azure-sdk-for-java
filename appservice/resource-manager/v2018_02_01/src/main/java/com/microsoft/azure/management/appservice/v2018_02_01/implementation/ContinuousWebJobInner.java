@@ -82,7 +82,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     private Map<String, Object> settings;
 
     /**
-     * Get the status value.
+     * Get job status. Possible values include: 'Initializing', 'Starting', 'Running', 'PendingRestart', 'Stopped'.
      *
      * @return the status value
      */
@@ -91,7 +91,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the status value.
+     * Set job status. Possible values include: 'Initializing', 'Starting', 'Running', 'PendingRestart', 'Stopped'.
      *
      * @param status the status value to set
      * @return the ContinuousWebJobInner object itself.
@@ -102,7 +102,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the detailedStatus value.
+     * Get detailed status.
      *
      * @return the detailedStatus value
      */
@@ -111,7 +111,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the detailedStatus value.
+     * Set detailed status.
      *
      * @param detailedStatus the detailedStatus value to set
      * @return the ContinuousWebJobInner object itself.
@@ -122,7 +122,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the logUrl value.
+     * Get log URL.
      *
      * @return the logUrl value
      */
@@ -131,7 +131,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the logUrl value.
+     * Set log URL.
      *
      * @param logUrl the logUrl value to set
      * @return the ContinuousWebJobInner object itself.
@@ -142,7 +142,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the runCommand value.
+     * Get run command.
      *
      * @return the runCommand value
      */
@@ -151,7 +151,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the runCommand value.
+     * Set run command.
      *
      * @param runCommand the runCommand value to set
      * @return the ContinuousWebJobInner object itself.
@@ -162,7 +162,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the url value.
+     * Get job URL.
      *
      * @return the url value
      */
@@ -171,7 +171,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the url value.
+     * Set job URL.
      *
      * @param url the url value to set
      * @return the ContinuousWebJobInner object itself.
@@ -182,7 +182,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the extraInfoUrl value.
+     * Get extra Info URL.
      *
      * @return the extraInfoUrl value
      */
@@ -191,7 +191,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the extraInfoUrl value.
+     * Set extra Info URL.
      *
      * @param extraInfoUrl the extraInfoUrl value to set
      * @return the ContinuousWebJobInner object itself.
@@ -202,7 +202,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the webJobType value.
+     * Get job type. Possible values include: 'Continuous', 'Triggered'.
      *
      * @return the webJobType value
      */
@@ -211,7 +211,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the webJobType value.
+     * Set job type. Possible values include: 'Continuous', 'Triggered'.
      *
      * @param webJobType the webJobType value to set
      * @return the ContinuousWebJobInner object itself.
@@ -222,7 +222,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the error value.
+     * Get error information.
      *
      * @return the error value
      */
@@ -231,7 +231,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the error value.
+     * Set error information.
      *
      * @param error the error value to set
      * @return the ContinuousWebJobInner object itself.
@@ -242,7 +242,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the usingSdk value.
+     * Get using SDK?.
      *
      * @return the usingSdk value
      */
@@ -251,7 +251,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the usingSdk value.
+     * Set using SDK?.
      *
      * @param usingSdk the usingSdk value to set
      * @return the ContinuousWebJobInner object itself.
@@ -262,7 +262,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the settings value.
+     * Get job settings.
      *
      * @return the settings value
      */
@@ -271,7 +271,7 @@ public class ContinuousWebJobInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the settings value.
+     * Set job settings.
      *
      * @param settings the settings value to set
      * @return the ContinuousWebJobInner object itself.

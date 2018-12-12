@@ -58,7 +58,7 @@ public class BackendAddressPoolInner extends SubResource {
     private String etag;
 
     /**
-     * Get the backendIPConfigurations value.
+     * Get gets collection of references to IP addresses defined in network interfaces.
      *
      * @return the backendIPConfigurations value
      */
@@ -67,7 +67,7 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the loadBalancingRules value.
+     * Get gets load balancing rules that use this backend address pool.
      *
      * @return the loadBalancingRules value
      */
@@ -76,7 +76,7 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the outboundNatRule value.
+     * Get gets outbound rules that use this backend address pool.
      *
      * @return the outboundNatRule value
      */
@@ -85,7 +85,7 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get get provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -94,7 +94,7 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set get provisioning state of the public IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the BackendAddressPoolInner object itself.
@@ -105,7 +105,7 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get gets name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -114,7 +114,7 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set gets name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the BackendAddressPoolInner object itself.
@@ -125,7 +125,7 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -134,7 +134,7 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the BackendAddressPoolInner object itself.

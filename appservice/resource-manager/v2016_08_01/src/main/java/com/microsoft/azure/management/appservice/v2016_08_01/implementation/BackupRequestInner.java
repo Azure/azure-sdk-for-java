@@ -60,7 +60,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     private BackupRestoreOperationType backupRequestType;
 
     /**
-     * Get the backupRequestName value.
+     * Get name of the backup.
      *
      * @return the backupRequestName value
      */
@@ -69,7 +69,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the backupRequestName value.
+     * Set name of the backup.
      *
      * @param backupRequestName the backupRequestName value to set
      * @return the BackupRequestInner object itself.
@@ -80,7 +80,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the enabled value.
+     * Get true if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.
      *
      * @return the enabled value
      */
@@ -89,7 +89,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled value.
+     * Set true if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.
      *
      * @param enabled the enabled value to set
      * @return the BackupRequestInner object itself.
@@ -100,7 +100,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the storageAccountUrl value.
+     * Get sAS URL to the container.
      *
      * @return the storageAccountUrl value
      */
@@ -109,7 +109,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the storageAccountUrl value.
+     * Set sAS URL to the container.
      *
      * @param storageAccountUrl the storageAccountUrl value to set
      * @return the BackupRequestInner object itself.
@@ -120,7 +120,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the backupSchedule value.
+     * Get schedule for the backup if it is executed periodically.
      *
      * @return the backupSchedule value
      */
@@ -129,7 +129,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the backupSchedule value.
+     * Set schedule for the backup if it is executed periodically.
      *
      * @param backupSchedule the backupSchedule value to set
      * @return the BackupRequestInner object itself.
@@ -140,7 +140,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the databases value.
+     * Get databases included in the backup.
      *
      * @return the databases value
      */
@@ -149,7 +149,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the databases value.
+     * Set databases included in the backup.
      *
      * @param databases the databases value to set
      * @return the BackupRequestInner object itself.
@@ -160,7 +160,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the backupRequestType value.
+     * Get type of the backup. Possible values include: 'Default', 'Clone', 'Relocation', 'Snapshot'.
      *
      * @return the backupRequestType value
      */
@@ -169,7 +169,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the backupRequestType value.
+     * Set type of the backup. Possible values include: 'Default', 'Clone', 'Relocation', 'Snapshot'.
      *
      * @param backupRequestType the backupRequestType value to set
      * @return the BackupRequestInner object itself.

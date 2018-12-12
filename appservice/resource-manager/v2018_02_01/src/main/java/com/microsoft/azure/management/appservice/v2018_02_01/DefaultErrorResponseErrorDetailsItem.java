@@ -33,7 +33,7 @@ public class DefaultErrorResponseErrorDetailsItem {
     private String target;
 
     /**
-     * Get the code value.
+     * Get standardized string to programmatically identify the error.
      *
      * @return the code value
      */
@@ -42,7 +42,7 @@ public class DefaultErrorResponseErrorDetailsItem {
     }
 
     /**
-     * Get the message value.
+     * Get detailed error description and debugging information.
      *
      * @return the message value
      */
@@ -51,7 +51,7 @@ public class DefaultErrorResponseErrorDetailsItem {
     }
 
     /**
-     * Get the target value.
+     * Get detailed error description and debugging information.
      *
      * @return the target value
      */

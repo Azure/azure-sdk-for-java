@@ -147,7 +147,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     private String id;
 
     /**
-     * Get the authorizationKey value.
+     * Get the authorizationKey.
      *
      * @return the authorizationKey value
      */
@@ -156,7 +156,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the authorizationKey value.
+     * Set the authorizationKey.
      *
      * @param authorizationKey the authorizationKey value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -167,7 +167,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworkGateway1 value.
+     * Get the reference to virtual network gateway resource.
      *
      * @return the virtualNetworkGateway1 value
      */
@@ -176,7 +176,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the virtualNetworkGateway1 value.
+     * Set the reference to virtual network gateway resource.
      *
      * @param virtualNetworkGateway1 the virtualNetworkGateway1 value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -187,7 +187,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworkGateway2 value.
+     * Get the reference to virtual network gateway resource.
      *
      * @return the virtualNetworkGateway2 value
      */
@@ -196,7 +196,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the virtualNetworkGateway2 value.
+     * Set the reference to virtual network gateway resource.
      *
      * @param virtualNetworkGateway2 the virtualNetworkGateway2 value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -207,7 +207,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the localNetworkGateway2 value.
+     * Get the reference to local network gateway resource.
      *
      * @return the localNetworkGateway2 value
      */
@@ -216,7 +216,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the localNetworkGateway2 value.
+     * Set the reference to local network gateway resource.
      *
      * @param localNetworkGateway2 the localNetworkGateway2 value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -227,7 +227,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the connectionType value.
+     * Get gateway connection type. Possible values are: 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'.
      *
      * @return the connectionType value
      */
@@ -236,7 +236,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the connectionType value.
+     * Set gateway connection type. Possible values are: 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'.
      *
      * @param connectionType the connectionType value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -247,7 +247,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the routingWeight value.
+     * Get the routing weight.
      *
      * @return the routingWeight value
      */
@@ -256,7 +256,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the routingWeight value.
+     * Set the routing weight.
      *
      * @param routingWeight the routingWeight value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -267,7 +267,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the sharedKey value.
+     * Get the IPSec shared key.
      *
      * @return the sharedKey value
      */
@@ -276,7 +276,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the sharedKey value.
+     * Set the IPSec shared key.
      *
      * @param sharedKey the sharedKey value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -287,7 +287,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the connectionStatus value.
+     * Get virtual network Gateway connection status. Possible values are 'Unknown', 'Connecting', 'Connected' and 'NotConnected'. Possible values include: 'Unknown', 'Connecting', 'Connected', 'NotConnected'.
      *
      * @return the connectionStatus value
      */
@@ -296,7 +296,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the tunnelConnectionStatus value.
+     * Get collection of all tunnels' connection health status.
      *
      * @return the tunnelConnectionStatus value
      */
@@ -305,7 +305,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the egressBytesTransferred value.
+     * Get the egress bytes transferred in this connection.
      *
      * @return the egressBytesTransferred value
      */
@@ -314,7 +314,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the ingressBytesTransferred value.
+     * Get the ingress bytes transferred in this connection.
      *
      * @return the ingressBytesTransferred value
      */
@@ -323,7 +323,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the peer value.
+     * Get the reference to peerings resource.
      *
      * @return the peer value
      */
@@ -332,7 +332,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the peer value.
+     * Set the reference to peerings resource.
      *
      * @param peer the peer value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -343,7 +343,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the enableBgp value.
+     * Get enableBgp flag.
      *
      * @return the enableBgp value
      */
@@ -352,7 +352,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the enableBgp value.
+     * Set enableBgp flag.
      *
      * @param enableBgp the enableBgp value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -363,7 +363,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the usePolicyBasedTrafficSelectors value.
+     * Get enable policy-based traffic selectors.
      *
      * @return the usePolicyBasedTrafficSelectors value
      */
@@ -372,7 +372,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the usePolicyBasedTrafficSelectors value.
+     * Set enable policy-based traffic selectors.
      *
      * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -383,7 +383,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the ipsecPolicies value.
+     * Get the IPSec Policies to be considered by this connection.
      *
      * @return the ipsecPolicies value
      */
@@ -392,7 +392,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the ipsecPolicies value.
+     * Set the IPSec Policies to be considered by this connection.
      *
      * @param ipsecPolicies the ipsecPolicies value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -403,7 +403,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid value.
+     * Get the resource GUID property of the VirtualNetworkGatewayConnection resource.
      *
      * @return the resourceGuid value
      */
@@ -412,7 +412,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the resourceGuid value.
+     * Set the resource GUID property of the VirtualNetworkGatewayConnection resource.
      *
      * @param resourceGuid the resourceGuid value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -423,7 +423,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the VirtualNetworkGatewayConnection resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -432,7 +432,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the etag value.
+     * Get gets a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -441,7 +441,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the etag value.
+     * Set gets a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
@@ -452,7 +452,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Get the id value.
+     * Get resource ID.
      *
      * @return the id value
      */
@@ -461,7 +461,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the id value.
+     * Set resource ID.
      *
      * @param id the id value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.

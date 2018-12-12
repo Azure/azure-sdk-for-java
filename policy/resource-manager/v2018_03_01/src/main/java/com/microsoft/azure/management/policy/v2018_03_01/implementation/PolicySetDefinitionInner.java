@@ -60,7 +60,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     private List<PolicyDefinitionReference> policyDefinitions;
 
     /**
-     * Get the policyType value.
+     * Get the type of policy definition. Possible values are NotSpecified, BuiltIn, and Custom. Possible values include: 'NotSpecified', 'BuiltIn', 'Custom'.
      *
      * @return the policyType value
      */
@@ -69,7 +69,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the policyType value.
+     * Set the type of policy definition. Possible values are NotSpecified, BuiltIn, and Custom. Possible values include: 'NotSpecified', 'BuiltIn', 'Custom'.
      *
      * @param policyType the policyType value to set
      * @return the PolicySetDefinitionInner object itself.
@@ -80,7 +80,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the displayName value.
+     * Get the display name of the policy set definition.
      *
      * @return the displayName value
      */
@@ -89,7 +89,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the displayName value.
+     * Set the display name of the policy set definition.
      *
      * @param displayName the displayName value to set
      * @return the PolicySetDefinitionInner object itself.
@@ -100,7 +100,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the description value.
+     * Get the policy set definition description.
      *
      * @return the description value
      */
@@ -109,7 +109,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the description value.
+     * Set the policy set definition description.
      *
      * @param description the description value to set
      * @return the PolicySetDefinitionInner object itself.
@@ -120,7 +120,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the metadata value.
+     * Get the policy set definition metadata.
      *
      * @return the metadata value
      */
@@ -129,7 +129,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the metadata value.
+     * Set the policy set definition metadata.
      *
      * @param metadata the metadata value to set
      * @return the PolicySetDefinitionInner object itself.
@@ -140,7 +140,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the parameters value.
+     * Get the policy set definition parameters that can be used in policy definition references.
      *
      * @return the parameters value
      */
@@ -149,7 +149,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the parameters value.
+     * Set the policy set definition parameters that can be used in policy definition references.
      *
      * @param parameters the parameters value to set
      * @return the PolicySetDefinitionInner object itself.
@@ -160,7 +160,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Get the policyDefinitions value.
+     * Get an array of policy definition references.
      *
      * @return the policyDefinitions value
      */
@@ -169,7 +169,7 @@ public class PolicySetDefinitionInner extends ProxyResource {
     }
 
     /**
-     * Set the policyDefinitions value.
+     * Set an array of policy definition references.
      *
      * @param policyDefinitions the policyDefinitions value to set
      * @return the PolicySetDefinitionInner object itself.

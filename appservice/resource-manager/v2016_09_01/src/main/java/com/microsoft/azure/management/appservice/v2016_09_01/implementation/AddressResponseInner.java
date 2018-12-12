@@ -42,7 +42,7 @@ public class AddressResponseInner {
     private List<VirtualIPMapping> vipMappings;
 
     /**
-     * Get the serviceIpAddress value.
+     * Get main public virtual IP.
      *
      * @return the serviceIpAddress value
      */
@@ -51,7 +51,7 @@ public class AddressResponseInner {
     }
 
     /**
-     * Set the serviceIpAddress value.
+     * Set main public virtual IP.
      *
      * @param serviceIpAddress the serviceIpAddress value to set
      * @return the AddressResponseInner object itself.
@@ -62,7 +62,7 @@ public class AddressResponseInner {
     }
 
     /**
-     * Get the internalIpAddress value.
+     * Get virtual Network internal IP address of the App Service Environment if it is in internal load-balancing mode.
      *
      * @return the internalIpAddress value
      */
@@ -71,7 +71,7 @@ public class AddressResponseInner {
     }
 
     /**
-     * Set the internalIpAddress value.
+     * Set virtual Network internal IP address of the App Service Environment if it is in internal load-balancing mode.
      *
      * @param internalIpAddress the internalIpAddress value to set
      * @return the AddressResponseInner object itself.
@@ -82,7 +82,7 @@ public class AddressResponseInner {
     }
 
     /**
-     * Get the outboundIpAddresses value.
+     * Get iP addresses appearing on outbound connections.
      *
      * @return the outboundIpAddresses value
      */
@@ -91,7 +91,7 @@ public class AddressResponseInner {
     }
 
     /**
-     * Set the outboundIpAddresses value.
+     * Set iP addresses appearing on outbound connections.
      *
      * @param outboundIpAddresses the outboundIpAddresses value to set
      * @return the AddressResponseInner object itself.
@@ -102,7 +102,7 @@ public class AddressResponseInner {
     }
 
     /**
-     * Get the vipMappings value.
+     * Get additional virtual IPs.
      *
      * @return the vipMappings value
      */
@@ -111,7 +111,7 @@ public class AddressResponseInner {
     }
 
     /**
-     * Set the vipMappings value.
+     * Set additional virtual IPs.
      *
      * @param vipMappings the vipMappings value to set
      * @return the AddressResponseInner object itself.

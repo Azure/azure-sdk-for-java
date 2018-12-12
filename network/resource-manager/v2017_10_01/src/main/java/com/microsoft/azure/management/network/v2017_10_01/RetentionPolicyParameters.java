@@ -27,7 +27,7 @@ public class RetentionPolicyParameters {
     private Boolean enabled;
 
     /**
-     * Get the days value.
+     * Get number of days to retain flow log records.
      *
      * @return the days value
      */
@@ -36,7 +36,7 @@ public class RetentionPolicyParameters {
     }
 
     /**
-     * Set the days value.
+     * Set number of days to retain flow log records.
      *
      * @param days the days value to set
      * @return the RetentionPolicyParameters object itself.
@@ -47,7 +47,7 @@ public class RetentionPolicyParameters {
     }
 
     /**
-     * Get the enabled value.
+     * Get flag to enable/disable retention.
      *
      * @return the enabled value
      */
@@ -56,7 +56,7 @@ public class RetentionPolicyParameters {
     }
 
     /**
-     * Set the enabled value.
+     * Set flag to enable/disable retention.
      *
      * @param enabled the enabled value to set
      * @return the RetentionPolicyParameters object itself.

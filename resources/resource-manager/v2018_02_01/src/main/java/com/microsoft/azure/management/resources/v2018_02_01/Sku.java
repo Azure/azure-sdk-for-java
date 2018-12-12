@@ -51,7 +51,7 @@ public class Sku {
     private Integer capacity;
 
     /**
-     * Get the name value.
+     * Get the SKU name.
      *
      * @return the name value
      */
@@ -60,7 +60,7 @@ public class Sku {
     }
 
     /**
-     * Set the name value.
+     * Set the SKU name.
      *
      * @param name the name value to set
      * @return the Sku object itself.
@@ -71,7 +71,7 @@ public class Sku {
     }
 
     /**
-     * Get the tier value.
+     * Get the SKU tier.
      *
      * @return the tier value
      */
@@ -80,7 +80,7 @@ public class Sku {
     }
 
     /**
-     * Set the tier value.
+     * Set the SKU tier.
      *
      * @param tier the tier value to set
      * @return the Sku object itself.
@@ -91,7 +91,7 @@ public class Sku {
     }
 
     /**
-     * Get the size value.
+     * Get the SKU size.
      *
      * @return the size value
      */
@@ -100,7 +100,7 @@ public class Sku {
     }
 
     /**
-     * Set the size value.
+     * Set the SKU size.
      *
      * @param size the size value to set
      * @return the Sku object itself.
@@ -111,7 +111,7 @@ public class Sku {
     }
 
     /**
-     * Get the family value.
+     * Get the SKU family.
      *
      * @return the family value
      */
@@ -120,7 +120,7 @@ public class Sku {
     }
 
     /**
-     * Set the family value.
+     * Set the SKU family.
      *
      * @param family the family value to set
      * @return the Sku object itself.
@@ -131,7 +131,7 @@ public class Sku {
     }
 
     /**
-     * Get the model value.
+     * Get the SKU model.
      *
      * @return the model value
      */
@@ -140,7 +140,7 @@ public class Sku {
     }
 
     /**
-     * Set the model value.
+     * Set the SKU model.
      *
      * @param model the model value to set
      * @return the Sku object itself.
@@ -151,7 +151,7 @@ public class Sku {
     }
 
     /**
-     * Get the capacity value.
+     * Get the SKU capacity.
      *
      * @return the capacity value
      */
@@ -160,7 +160,7 @@ public class Sku {
     }
 
     /**
-     * Set the capacity value.
+     * Set the SKU capacity.
      *
      * @param capacity the capacity value to set
      * @return the Sku object itself.

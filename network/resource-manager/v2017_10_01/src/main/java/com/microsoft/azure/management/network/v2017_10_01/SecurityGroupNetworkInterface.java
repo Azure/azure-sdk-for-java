@@ -27,7 +27,7 @@ public class SecurityGroupNetworkInterface {
     private SecurityRuleAssociations securityRuleAssociations;
 
     /**
-     * Get the id value.
+     * Get iD of the network interface.
      *
      * @return the id value
      */
@@ -36,7 +36,7 @@ public class SecurityGroupNetworkInterface {
     }
 
     /**
-     * Set the id value.
+     * Set iD of the network interface.
      *
      * @param id the id value to set
      * @return the SecurityGroupNetworkInterface object itself.

@@ -27,7 +27,7 @@ public class HostingEnvironmentDeploymentInfo {
     private String location;
 
     /**
-     * Get the name value.
+     * Get name of the App Service Environment.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class HostingEnvironmentDeploymentInfo {
     }
 
     /**
-     * Set the name value.
+     * Set name of the App Service Environment.
      *
      * @param name the name value to set
      * @return the HostingEnvironmentDeploymentInfo object itself.
@@ -47,7 +47,7 @@ public class HostingEnvironmentDeploymentInfo {
     }
 
     /**
-     * Get the location value.
+     * Get location of the App Service Environment.
      *
      * @return the location value
      */
@@ -56,7 +56,7 @@ public class HostingEnvironmentDeploymentInfo {
     }
 
     /**
-     * Set the location value.
+     * Set location of the App Service Environment.
      *
      * @param location the location value to set
      * @return the HostingEnvironmentDeploymentInfo object itself.

@@ -27,7 +27,7 @@ public class NameValuePair {
     private String value;
 
     /**
-     * Get the name value.
+     * Get pair name.
      *
      * @return the name value
      */
@@ -36,7 +36,7 @@ public class NameValuePair {
     }
 
     /**
-     * Set the name value.
+     * Set pair name.
      *
      * @param name the name value to set
      * @return the NameValuePair object itself.
@@ -47,7 +47,7 @@ public class NameValuePair {
     }
 
     /**
-     * Get the value value.
+     * Get pair value.
      *
      * @return the value value
      */
@@ -56,7 +56,7 @@ public class NameValuePair {
     }
 
     /**
-     * Set the value value.
+     * Set pair value.
      *
      * @param value the value value to set
      * @return the NameValuePair object itself.

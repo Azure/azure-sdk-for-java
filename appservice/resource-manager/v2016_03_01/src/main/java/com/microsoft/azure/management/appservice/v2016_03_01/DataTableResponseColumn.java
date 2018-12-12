@@ -33,7 +33,7 @@ public class DataTableResponseColumn {
     private String columnType;
 
     /**
-     * Get the columnName value.
+     * Get name of the column.
      *
      * @return the columnName value
      */
@@ -42,7 +42,7 @@ public class DataTableResponseColumn {
     }
 
     /**
-     * Set the columnName value.
+     * Set name of the column.
      *
      * @param columnName the columnName value to set
      * @return the DataTableResponseColumn object itself.
@@ -53,7 +53,7 @@ public class DataTableResponseColumn {
     }
 
     /**
-     * Get the dataType value.
+     * Get data type which looks like 'String' or 'Int32'.
      *
      * @return the dataType value
      */
@@ -62,7 +62,7 @@ public class DataTableResponseColumn {
     }
 
     /**
-     * Set the dataType value.
+     * Set data type which looks like 'String' or 'Int32'.
      *
      * @param dataType the dataType value to set
      * @return the DataTableResponseColumn object itself.
@@ -73,7 +73,7 @@ public class DataTableResponseColumn {
     }
 
     /**
-     * Get the columnType value.
+     * Get column Type.
      *
      * @return the columnType value
      */
@@ -82,7 +82,7 @@ public class DataTableResponseColumn {
     }
 
     /**
-     * Set the columnType value.
+     * Set column Type.
      *
      * @param columnType the columnType value to set
      * @return the DataTableResponseColumn object itself.

@@ -28,7 +28,7 @@ public class ResourcesMoveInfo {
     private String targetResourceGroup;
 
     /**
-     * Get the resources value.
+     * Get the IDs of the resources.
      *
      * @return the resources value
      */
@@ -37,7 +37,7 @@ public class ResourcesMoveInfo {
     }
 
     /**
-     * Set the resources value.
+     * Set the IDs of the resources.
      *
      * @param resources the resources value to set
      * @return the ResourcesMoveInfo object itself.
@@ -48,7 +48,7 @@ public class ResourcesMoveInfo {
     }
 
     /**
-     * Get the targetResourceGroup value.
+     * Get the target resource group.
      *
      * @return the targetResourceGroup value
      */
@@ -57,7 +57,7 @@ public class ResourcesMoveInfo {
     }
 
     /**
-     * Set the targetResourceGroup value.
+     * Set the target resource group.
      *
      * @param targetResourceGroup the targetResourceGroup value to set
      * @return the ResourcesMoveInfo object itself.

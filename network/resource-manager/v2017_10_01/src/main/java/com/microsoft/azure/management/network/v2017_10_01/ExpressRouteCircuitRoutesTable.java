@@ -45,7 +45,7 @@ public class ExpressRouteCircuitRoutesTable {
     private String path;
 
     /**
-     * Get the network value.
+     * Get network.
      *
      * @return the network value
      */
@@ -54,7 +54,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the network value.
+     * Set network.
      *
      * @param network the network value to set
      * @return the ExpressRouteCircuitRoutesTable object itself.
@@ -65,7 +65,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Get the nextHop value.
+     * Get nextHop.
      *
      * @return the nextHop value
      */
@@ -74,7 +74,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the nextHop value.
+     * Set nextHop.
      *
      * @param nextHop the nextHop value to set
      * @return the ExpressRouteCircuitRoutesTable object itself.
@@ -85,7 +85,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Get the locPrf value.
+     * Get locPrf.
      *
      * @return the locPrf value
      */
@@ -94,7 +94,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the locPrf value.
+     * Set locPrf.
      *
      * @param locPrf the locPrf value to set
      * @return the ExpressRouteCircuitRoutesTable object itself.
@@ -105,7 +105,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Get the weight value.
+     * Get weight.
      *
      * @return the weight value
      */
@@ -114,7 +114,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the weight value.
+     * Set weight.
      *
      * @param weight the weight value to set
      * @return the ExpressRouteCircuitRoutesTable object itself.
@@ -125,7 +125,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Get the path value.
+     * Get path.
      *
      * @return the path value
      */
@@ -134,7 +134,7 @@ public class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the path value.
+     * Set path.
      *
      * @param path the path value to set
      * @return the ExpressRouteCircuitRoutesTable object itself.

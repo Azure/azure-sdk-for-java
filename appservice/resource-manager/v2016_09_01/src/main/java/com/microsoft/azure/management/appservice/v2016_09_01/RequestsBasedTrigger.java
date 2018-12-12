@@ -27,7 +27,7 @@ public class RequestsBasedTrigger {
     private String timeInterval;
 
     /**
-     * Get the count value.
+     * Get request Count.
      *
      * @return the count value
      */
@@ -36,7 +36,7 @@ public class RequestsBasedTrigger {
     }
 
     /**
-     * Set the count value.
+     * Set request Count.
      *
      * @param count the count value to set
      * @return the RequestsBasedTrigger object itself.
@@ -47,7 +47,7 @@ public class RequestsBasedTrigger {
     }
 
     /**
-     * Get the timeInterval value.
+     * Get time interval.
      *
      * @return the timeInterval value
      */
@@ -56,7 +56,7 @@ public class RequestsBasedTrigger {
     }
 
     /**
-     * Set the timeInterval value.
+     * Set time interval.
      *
      * @param timeInterval the timeInterval value to set
      * @return the RequestsBasedTrigger object itself.

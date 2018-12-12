@@ -346,7 +346,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     private FtpsState ftpsState;
 
     /**
-     * Get the numberOfWorkers value.
+     * Get number of workers.
      *
      * @return the numberOfWorkers value
      */
@@ -355,7 +355,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the numberOfWorkers value.
+     * Set number of workers.
      *
      * @param numberOfWorkers the numberOfWorkers value to set
      * @return the SiteConfigResourceInner object itself.
@@ -366,7 +366,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the defaultDocuments value.
+     * Get default documents.
      *
      * @return the defaultDocuments value
      */
@@ -375,7 +375,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the defaultDocuments value.
+     * Set default documents.
      *
      * @param defaultDocuments the defaultDocuments value to set
      * @return the SiteConfigResourceInner object itself.
@@ -386,7 +386,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the netFrameworkVersion value.
+     * Get .NET Framework version.
      *
      * @return the netFrameworkVersion value
      */
@@ -395,7 +395,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the netFrameworkVersion value.
+     * Set .NET Framework version.
      *
      * @param netFrameworkVersion the netFrameworkVersion value to set
      * @return the SiteConfigResourceInner object itself.
@@ -406,7 +406,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the phpVersion value.
+     * Get version of PHP.
      *
      * @return the phpVersion value
      */
@@ -415,7 +415,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the phpVersion value.
+     * Set version of PHP.
      *
      * @param phpVersion the phpVersion value to set
      * @return the SiteConfigResourceInner object itself.
@@ -426,7 +426,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the pythonVersion value.
+     * Get version of Python.
      *
      * @return the pythonVersion value
      */
@@ -435,7 +435,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the pythonVersion value.
+     * Set version of Python.
      *
      * @param pythonVersion the pythonVersion value to set
      * @return the SiteConfigResourceInner object itself.
@@ -446,7 +446,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the nodeVersion value.
+     * Get version of Node.js.
      *
      * @return the nodeVersion value
      */
@@ -455,7 +455,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the nodeVersion value.
+     * Set version of Node.js.
      *
      * @param nodeVersion the nodeVersion value to set
      * @return the SiteConfigResourceInner object itself.
@@ -466,7 +466,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the linuxFxVersion value.
+     * Get linux App Framework and version.
      *
      * @return the linuxFxVersion value
      */
@@ -475,7 +475,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the linuxFxVersion value.
+     * Set linux App Framework and version.
      *
      * @param linuxFxVersion the linuxFxVersion value to set
      * @return the SiteConfigResourceInner object itself.
@@ -486,7 +486,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the xenonFxVersion value.
+     * Get xenon App Framework and version.
      *
      * @return the xenonFxVersion value
      */
@@ -495,7 +495,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the xenonFxVersion value.
+     * Set xenon App Framework and version.
      *
      * @param xenonFxVersion the xenonFxVersion value to set
      * @return the SiteConfigResourceInner object itself.
@@ -506,7 +506,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the requestTracingEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the requestTracingEnabled value
      */
@@ -515,7 +515,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the requestTracingEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param requestTracingEnabled the requestTracingEnabled value to set
      * @return the SiteConfigResourceInner object itself.
@@ -526,7 +526,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the requestTracingExpirationTime value.
+     * Get request tracing expiration time.
      *
      * @return the requestTracingExpirationTime value
      */
@@ -535,7 +535,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the requestTracingExpirationTime value.
+     * Set request tracing expiration time.
      *
      * @param requestTracingExpirationTime the requestTracingExpirationTime value to set
      * @return the SiteConfigResourceInner object itself.
@@ -546,7 +546,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the remoteDebuggingEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the remoteDebuggingEnabled value
      */
@@ -555,7 +555,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the remoteDebuggingEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param remoteDebuggingEnabled the remoteDebuggingEnabled value to set
      * @return the SiteConfigResourceInner object itself.
@@ -566,7 +566,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the remoteDebuggingVersion value.
+     * Get remote debugging version.
      *
      * @return the remoteDebuggingVersion value
      */
@@ -575,7 +575,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the remoteDebuggingVersion value.
+     * Set remote debugging version.
      *
      * @param remoteDebuggingVersion the remoteDebuggingVersion value to set
      * @return the SiteConfigResourceInner object itself.
@@ -586,7 +586,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the httpLoggingEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; if HTTP logging is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the httpLoggingEnabled value
      */
@@ -595,7 +595,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the httpLoggingEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; if HTTP logging is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param httpLoggingEnabled the httpLoggingEnabled value to set
      * @return the SiteConfigResourceInner object itself.
@@ -606,7 +606,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the logsDirectorySizeLimit value.
+     * Get hTTP logs directory size limit.
      *
      * @return the logsDirectorySizeLimit value
      */
@@ -615,7 +615,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the logsDirectorySizeLimit value.
+     * Set hTTP logs directory size limit.
      *
      * @param logsDirectorySizeLimit the logsDirectorySizeLimit value to set
      * @return the SiteConfigResourceInner object itself.
@@ -626,7 +626,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the detailedErrorLoggingEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the detailedErrorLoggingEnabled value
      */
@@ -635,7 +635,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the detailedErrorLoggingEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param detailedErrorLoggingEnabled the detailedErrorLoggingEnabled value to set
      * @return the SiteConfigResourceInner object itself.
@@ -646,7 +646,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the publishingUsername value.
+     * Get publishing user name.
      *
      * @return the publishingUsername value
      */
@@ -655,7 +655,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the publishingUsername value.
+     * Set publishing user name.
      *
      * @param publishingUsername the publishingUsername value to set
      * @return the SiteConfigResourceInner object itself.
@@ -666,7 +666,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the appSettings value.
+     * Get application settings.
      *
      * @return the appSettings value
      */
@@ -675,7 +675,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the appSettings value.
+     * Set application settings.
      *
      * @param appSettings the appSettings value to set
      * @return the SiteConfigResourceInner object itself.
@@ -686,7 +686,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the connectionStrings value.
+     * Get connection strings.
      *
      * @return the connectionStrings value
      */
@@ -695,7 +695,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the connectionStrings value.
+     * Set connection strings.
      *
      * @param connectionStrings the connectionStrings value to set
      * @return the SiteConfigResourceInner object itself.
@@ -706,7 +706,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the machineKey value.
+     * Get site MachineKey.
      *
      * @return the machineKey value
      */
@@ -715,7 +715,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the handlerMappings value.
+     * Get handler mappings.
      *
      * @return the handlerMappings value
      */
@@ -724,7 +724,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the handlerMappings value.
+     * Set handler mappings.
      *
      * @param handlerMappings the handlerMappings value to set
      * @return the SiteConfigResourceInner object itself.
@@ -735,7 +735,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the documentRoot value.
+     * Get document root.
      *
      * @return the documentRoot value
      */
@@ -744,7 +744,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the documentRoot value.
+     * Set document root.
      *
      * @param documentRoot the documentRoot value to set
      * @return the SiteConfigResourceInner object itself.
@@ -755,7 +755,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the scmType value.
+     * Get sCM type. Possible values include: 'None', 'Dropbox', 'Tfs', 'LocalGit', 'GitHub', 'CodePlexGit', 'CodePlexHg', 'BitbucketGit', 'BitbucketHg', 'ExternalGit', 'ExternalHg', 'OneDrive', 'VSO'.
      *
      * @return the scmType value
      */
@@ -764,7 +764,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the scmType value.
+     * Set sCM type. Possible values include: 'None', 'Dropbox', 'Tfs', 'LocalGit', 'GitHub', 'CodePlexGit', 'CodePlexHg', 'BitbucketGit', 'BitbucketHg', 'ExternalGit', 'ExternalHg', 'OneDrive', 'VSO'.
      *
      * @param scmType the scmType value to set
      * @return the SiteConfigResourceInner object itself.
@@ -775,7 +775,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the use32BitWorkerProcess value.
+     * Get &lt;code&gt;true&lt;/code&gt; to use 32-bit worker process; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the use32BitWorkerProcess value
      */
@@ -784,7 +784,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the use32BitWorkerProcess value.
+     * Set &lt;code&gt;true&lt;/code&gt; to use 32-bit worker process; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param use32BitWorkerProcess the use32BitWorkerProcess value to set
      * @return the SiteConfigResourceInner object itself.
@@ -795,7 +795,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the webSocketsEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; if WebSocket is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the webSocketsEnabled value
      */
@@ -804,7 +804,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the webSocketsEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; if WebSocket is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param webSocketsEnabled the webSocketsEnabled value to set
      * @return the SiteConfigResourceInner object itself.
@@ -815,7 +815,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the alwaysOn value.
+     * Get &lt;code&gt;true&lt;/code&gt; if Always On is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the alwaysOn value
      */
@@ -824,7 +824,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the alwaysOn value.
+     * Set &lt;code&gt;true&lt;/code&gt; if Always On is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param alwaysOn the alwaysOn value to set
      * @return the SiteConfigResourceInner object itself.
@@ -835,7 +835,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the javaVersion value.
+     * Get java version.
      *
      * @return the javaVersion value
      */
@@ -844,7 +844,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the javaVersion value.
+     * Set java version.
      *
      * @param javaVersion the javaVersion value to set
      * @return the SiteConfigResourceInner object itself.
@@ -855,7 +855,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the javaContainer value.
+     * Get java container.
      *
      * @return the javaContainer value
      */
@@ -864,7 +864,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the javaContainer value.
+     * Set java container.
      *
      * @param javaContainer the javaContainer value to set
      * @return the SiteConfigResourceInner object itself.
@@ -875,7 +875,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the javaContainerVersion value.
+     * Get java container version.
      *
      * @return the javaContainerVersion value
      */
@@ -884,7 +884,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the javaContainerVersion value.
+     * Set java container version.
      *
      * @param javaContainerVersion the javaContainerVersion value to set
      * @return the SiteConfigResourceInner object itself.
@@ -895,7 +895,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the appCommandLine value.
+     * Get app command line to launch.
      *
      * @return the appCommandLine value
      */
@@ -904,7 +904,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the appCommandLine value.
+     * Set app command line to launch.
      *
      * @param appCommandLine the appCommandLine value to set
      * @return the SiteConfigResourceInner object itself.
@@ -915,7 +915,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the managedPipelineMode value.
+     * Get managed pipeline mode. Possible values include: 'Integrated', 'Classic'.
      *
      * @return the managedPipelineMode value
      */
@@ -924,7 +924,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the managedPipelineMode value.
+     * Set managed pipeline mode. Possible values include: 'Integrated', 'Classic'.
      *
      * @param managedPipelineMode the managedPipelineMode value to set
      * @return the SiteConfigResourceInner object itself.
@@ -935,7 +935,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the virtualApplications value.
+     * Get virtual applications.
      *
      * @return the virtualApplications value
      */
@@ -944,7 +944,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the virtualApplications value.
+     * Set virtual applications.
      *
      * @param virtualApplications the virtualApplications value to set
      * @return the SiteConfigResourceInner object itself.
@@ -955,7 +955,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the loadBalancing value.
+     * Get site load balancing. Possible values include: 'WeightedRoundRobin', 'LeastRequests', 'LeastResponseTime', 'WeightedTotalTraffic', 'RequestHash'.
      *
      * @return the loadBalancing value
      */
@@ -964,7 +964,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the loadBalancing value.
+     * Set site load balancing. Possible values include: 'WeightedRoundRobin', 'LeastRequests', 'LeastResponseTime', 'WeightedTotalTraffic', 'RequestHash'.
      *
      * @param loadBalancing the loadBalancing value to set
      * @return the SiteConfigResourceInner object itself.
@@ -975,7 +975,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the experiments value.
+     * Get this is work around for polymophic types.
      *
      * @return the experiments value
      */
@@ -984,7 +984,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the experiments value.
+     * Set this is work around for polymophic types.
      *
      * @param experiments the experiments value to set
      * @return the SiteConfigResourceInner object itself.
@@ -995,7 +995,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the limits value.
+     * Get site limits.
      *
      * @return the limits value
      */
@@ -1004,7 +1004,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the limits value.
+     * Set site limits.
      *
      * @param limits the limits value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1015,7 +1015,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the autoHealEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; if Auto Heal is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the autoHealEnabled value
      */
@@ -1024,7 +1024,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the autoHealEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; if Auto Heal is enabled; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param autoHealEnabled the autoHealEnabled value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1035,7 +1035,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the autoHealRules value.
+     * Get auto Heal rules.
      *
      * @return the autoHealRules value
      */
@@ -1044,7 +1044,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the autoHealRules value.
+     * Set auto Heal rules.
      *
      * @param autoHealRules the autoHealRules value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1055,7 +1055,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the tracingOptions value.
+     * Get tracing options.
      *
      * @return the tracingOptions value
      */
@@ -1064,7 +1064,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the tracingOptions value.
+     * Set tracing options.
      *
      * @param tracingOptions the tracingOptions value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1075,7 +1075,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the vnetName value.
+     * Get virtual Network name.
      *
      * @return the vnetName value
      */
@@ -1084,7 +1084,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the vnetName value.
+     * Set virtual Network name.
      *
      * @param vnetName the vnetName value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1095,7 +1095,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the cors value.
+     * Get cross-Origin Resource Sharing (CORS) settings.
      *
      * @return the cors value
      */
@@ -1104,7 +1104,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the cors value.
+     * Set cross-Origin Resource Sharing (CORS) settings.
      *
      * @param cors the cors value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1115,7 +1115,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the push value.
+     * Get push endpoint settings.
      *
      * @return the push value
      */
@@ -1124,7 +1124,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the push value.
+     * Set push endpoint settings.
      *
      * @param push the push value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1135,7 +1135,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the apiDefinition value.
+     * Get information about the formal API definition for the app.
      *
      * @return the apiDefinition value
      */
@@ -1144,7 +1144,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the apiDefinition value.
+     * Set information about the formal API definition for the app.
      *
      * @param apiDefinition the apiDefinition value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1155,7 +1155,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the autoSwapSlotName value.
+     * Get auto-swap slot name.
      *
      * @return the autoSwapSlotName value
      */
@@ -1164,7 +1164,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the autoSwapSlotName value.
+     * Set auto-swap slot name.
      *
      * @param autoSwapSlotName the autoSwapSlotName value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1175,7 +1175,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the localMySqlEnabled value.
+     * Get &lt;code&gt;true&lt;/code&gt; to enable local MySQL; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the localMySqlEnabled value
      */
@@ -1184,7 +1184,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the localMySqlEnabled value.
+     * Set &lt;code&gt;true&lt;/code&gt; to enable local MySQL; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param localMySqlEnabled the localMySqlEnabled value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1195,7 +1195,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the managedServiceIdentityId value.
+     * Get managed Service Identity Id.
      *
      * @return the managedServiceIdentityId value
      */
@@ -1204,7 +1204,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the managedServiceIdentityId value.
+     * Set managed Service Identity Id.
      *
      * @param managedServiceIdentityId the managedServiceIdentityId value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1215,7 +1215,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the xManagedServiceIdentityId value.
+     * Get explicit Managed Service Identity Id.
      *
      * @return the xManagedServiceIdentityId value
      */
@@ -1224,7 +1224,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the xManagedServiceIdentityId value.
+     * Set explicit Managed Service Identity Id.
      *
      * @param xManagedServiceIdentityId the xManagedServiceIdentityId value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1235,7 +1235,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the ipSecurityRestrictions value.
+     * Get iP security restrictions.
      *
      * @return the ipSecurityRestrictions value
      */
@@ -1244,7 +1244,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the ipSecurityRestrictions value.
+     * Set iP security restrictions.
      *
      * @param ipSecurityRestrictions the ipSecurityRestrictions value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1255,7 +1255,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the http20Enabled value.
+     * Get http20Enabled: configures a web site to allow clients to connect over http2.0.
      *
      * @return the http20Enabled value
      */
@@ -1264,7 +1264,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the http20Enabled value.
+     * Set http20Enabled: configures a web site to allow clients to connect over http2.0.
      *
      * @param http20Enabled the http20Enabled value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1275,7 +1275,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the minTlsVersion value.
+     * Get minTlsVersion: configures the minimum version of TLS required for SSL requests. Possible values include: '1.0', '1.1', '1.2'.
      *
      * @return the minTlsVersion value
      */
@@ -1284,7 +1284,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the minTlsVersion value.
+     * Set minTlsVersion: configures the minimum version of TLS required for SSL requests. Possible values include: '1.0', '1.1', '1.2'.
      *
      * @param minTlsVersion the minTlsVersion value to set
      * @return the SiteConfigResourceInner object itself.
@@ -1295,7 +1295,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the ftpsState value.
+     * Get state of FTP / FTPS service. Possible values include: 'AllAllowed', 'FtpsOnly', 'Disabled'.
      *
      * @return the ftpsState value
      */
@@ -1304,7 +1304,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the ftpsState value.
+     * Set state of FTP / FTPS service. Possible values include: 'AllAllowed', 'FtpsOnly', 'Disabled'.
      *
      * @param ftpsState the ftpsState value to set
      * @return the SiteConfigResourceInner object itself.

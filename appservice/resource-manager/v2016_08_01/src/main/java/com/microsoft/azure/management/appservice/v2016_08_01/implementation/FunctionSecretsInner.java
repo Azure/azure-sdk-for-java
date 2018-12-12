@@ -30,7 +30,7 @@ public class FunctionSecretsInner extends ProxyOnlyResource {
     private String triggerUrl;
 
     /**
-     * Get the key value.
+     * Get secret key.
      *
      * @return the key value
      */
@@ -39,7 +39,7 @@ public class FunctionSecretsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the key value.
+     * Set secret key.
      *
      * @param key the key value to set
      * @return the FunctionSecretsInner object itself.
@@ -50,7 +50,7 @@ public class FunctionSecretsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the triggerUrl value.
+     * Get trigger URL.
      *
      * @return the triggerUrl value
      */
@@ -59,7 +59,7 @@ public class FunctionSecretsInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the triggerUrl value.
+     * Set trigger URL.
      *
      * @param triggerUrl the triggerUrl value to set
      * @return the FunctionSecretsInner object itself.

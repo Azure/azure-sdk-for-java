@@ -58,7 +58,7 @@ public class SubscriptionInner {
     private String authorizationSource;
 
     /**
-     * Get the id value.
+     * Get the fully qualified ID for the subscription. For example, /subscriptions/00000000-0000-0000-0000-000000000000.
      *
      * @return the id value
      */
@@ -67,7 +67,7 @@ public class SubscriptionInner {
     }
 
     /**
-     * Get the subscriptionId value.
+     * Get the subscription ID.
      *
      * @return the subscriptionId value
      */
@@ -76,7 +76,7 @@ public class SubscriptionInner {
     }
 
     /**
-     * Get the displayName value.
+     * Get the subscription display name.
      *
      * @return the displayName value
      */
@@ -85,7 +85,7 @@ public class SubscriptionInner {
     }
 
     /**
-     * Get the state value.
+     * Get the subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted. Possible values include: 'Enabled', 'Warned', 'PastDue', 'Disabled', 'Deleted'.
      *
      * @return the state value
      */
@@ -94,7 +94,7 @@ public class SubscriptionInner {
     }
 
     /**
-     * Get the subscriptionPolicies value.
+     * Get the subscription policies.
      *
      * @return the subscriptionPolicies value
      */
@@ -103,7 +103,7 @@ public class SubscriptionInner {
     }
 
     /**
-     * Set the subscriptionPolicies value.
+     * Set the subscription policies.
      *
      * @param subscriptionPolicies the subscriptionPolicies value to set
      * @return the SubscriptionInner object itself.
@@ -114,7 +114,7 @@ public class SubscriptionInner {
     }
 
     /**
-     * Get the authorizationSource value.
+     * Get the authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
      *
      * @return the authorizationSource value
      */
@@ -123,7 +123,7 @@ public class SubscriptionInner {
     }
 
     /**
-     * Set the authorizationSource value.
+     * Set the authorization source of the request. Valid values are one or more combinations of Legacy, RoleBased, Bypassed, Direct and Management. For example, 'Legacy, RoleBased'.
      *
      * @param authorizationSource the authorizationSource value to set
      * @return the SubscriptionInner object itself.

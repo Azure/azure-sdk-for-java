@@ -23,7 +23,7 @@ public class FunctionOutput {
     private String dataType;
 
     /**
-     * Get the dataType value.
+     * Get the (Azure Stream Analytics supported) data type of the function output. A list of valid Azure Stream Analytics data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx.
      *
      * @return the dataType value
      */
@@ -32,7 +32,7 @@ public class FunctionOutput {
     }
 
     /**
-     * Set the dataType value.
+     * Set the (Azure Stream Analytics supported) data type of the function output. A list of valid Azure Stream Analytics data types are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx.
      *
      * @param dataType the dataType value to set
      * @return the FunctionOutput object itself.

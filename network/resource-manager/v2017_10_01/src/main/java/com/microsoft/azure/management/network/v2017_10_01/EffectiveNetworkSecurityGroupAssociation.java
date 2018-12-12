@@ -28,7 +28,7 @@ public class EffectiveNetworkSecurityGroupAssociation {
     private SubResource networkInterface;
 
     /**
-     * Get the subnet value.
+     * Get the ID of the subnet if assigned.
      *
      * @return the subnet value
      */
@@ -37,7 +37,7 @@ public class EffectiveNetworkSecurityGroupAssociation {
     }
 
     /**
-     * Set the subnet value.
+     * Set the ID of the subnet if assigned.
      *
      * @param subnet the subnet value to set
      * @return the EffectiveNetworkSecurityGroupAssociation object itself.
@@ -48,7 +48,7 @@ public class EffectiveNetworkSecurityGroupAssociation {
     }
 
     /**
-     * Get the networkInterface value.
+     * Get the ID of the network interface if assigned.
      *
      * @return the networkInterface value
      */
@@ -57,7 +57,7 @@ public class EffectiveNetworkSecurityGroupAssociation {
     }
 
     /**
-     * Set the networkInterface value.
+     * Set the ID of the network interface if assigned.
      *
      * @param networkInterface the networkInterface value to set
      * @return the EffectiveNetworkSecurityGroupAssociation object itself.

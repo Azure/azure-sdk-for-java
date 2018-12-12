@@ -51,9 +51,15 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
     }
 
     @Override
-    public Completable deleteAsync(String scope, String policyAssignmentName) {
+    public Observable<PolicyAssignment> deleteAsync(String scope, String policyAssignmentName) {
         PolicyAssignmentsInner client = this.inner();
-        return client.deleteAsync(scope, policyAssignmentName).toCompletable();
+        return client.deleteAsync(scope, policyAssignmentName)
+        .map(new Func1<PolicyAssignmentInner, PolicyAssignment>() {
+            @Override
+            public PolicyAssignment call(PolicyAssignmentInner inner) {
+                return new PolicyAssignmentImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -77,7 +83,8 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
             public Iterable<PolicyAssignmentInner> call(Page<PolicyAssignmentInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<PolicyAssignmentInner, PolicyAssignment>() {
+        })
+        .map(new Func1<PolicyAssignmentInner, PolicyAssignment>() {
             @Override
             public PolicyAssignment call(PolicyAssignmentInner inner) {
                 return new PolicyAssignmentImpl(inner, manager());
@@ -86,9 +93,15 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
     }
 
     @Override
-    public Completable deleteByIdAsync(String policyAssignmentId) {
+    public Observable<PolicyAssignment> deleteByIdAsync(String policyAssignmentId) {
         PolicyAssignmentsInner client = this.inner();
-        return client.deleteByIdAsync(policyAssignmentId).toCompletable();
+        return client.deleteByIdAsync(policyAssignmentId)
+        .map(new Func1<PolicyAssignmentInner, PolicyAssignment>() {
+            @Override
+            public PolicyAssignment call(PolicyAssignmentInner inner) {
+                return new PolicyAssignmentImpl(inner, manager());
+            }
+        });
     }
 
     @Override

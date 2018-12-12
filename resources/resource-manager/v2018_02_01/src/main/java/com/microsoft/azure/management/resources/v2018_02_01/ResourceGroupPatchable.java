@@ -40,7 +40,7 @@ public class ResourceGroupPatchable {
     private Map<String, String> tags;
 
     /**
-     * Get the name value.
+     * Get the name of the resource group.
      *
      * @return the name value
      */
@@ -49,7 +49,7 @@ public class ResourceGroupPatchable {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource group.
      *
      * @param name the name value to set
      * @return the ResourceGroupPatchable object itself.
@@ -80,7 +80,7 @@ public class ResourceGroupPatchable {
     }
 
     /**
-     * Get the managedBy value.
+     * Get the ID of the resource that manages this resource group.
      *
      * @return the managedBy value
      */
@@ -89,7 +89,7 @@ public class ResourceGroupPatchable {
     }
 
     /**
-     * Set the managedBy value.
+     * Set the ID of the resource that manages this resource group.
      *
      * @param managedBy the managedBy value to set
      * @return the ResourceGroupPatchable object itself.
@@ -100,7 +100,7 @@ public class ResourceGroupPatchable {
     }
 
     /**
-     * Get the tags value.
+     * Get the tags attached to the resource group.
      *
      * @return the tags value
      */
@@ -109,7 +109,7 @@ public class ResourceGroupPatchable {
     }
 
     /**
-     * Set the tags value.
+     * Set the tags attached to the resource group.
      *
      * @param tags the tags value to set
      * @return the ResourceGroupPatchable object itself.

@@ -38,7 +38,7 @@ public class PublicCertificateInner extends ProxyOnlyResource {
     private String thumbprint;
 
     /**
-     * Get the blob value.
+     * Get public Certificate byte array.
      *
      * @return the blob value
      */
@@ -47,7 +47,7 @@ public class PublicCertificateInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the blob value.
+     * Set public Certificate byte array.
      *
      * @param blob the blob value to set
      * @return the PublicCertificateInner object itself.
@@ -58,7 +58,7 @@ public class PublicCertificateInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the publicCertificateLocation value.
+     * Get public Certificate Location. Possible values include: 'CurrentUserMy', 'LocalMachineMy', 'Unknown'.
      *
      * @return the publicCertificateLocation value
      */
@@ -67,7 +67,7 @@ public class PublicCertificateInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the publicCertificateLocation value.
+     * Set public Certificate Location. Possible values include: 'CurrentUserMy', 'LocalMachineMy', 'Unknown'.
      *
      * @param publicCertificateLocation the publicCertificateLocation value to set
      * @return the PublicCertificateInner object itself.
@@ -78,7 +78,7 @@ public class PublicCertificateInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the thumbprint value.
+     * Get certificate Thumbprint.
      *
      * @return the thumbprint value
      */

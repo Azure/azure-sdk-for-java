@@ -24,8 +24,18 @@ import com.microsoft.azure.management.appservice.v2018_02_01.WorkerPools;
  * Type representing AppServiceEnvironments.
  */
 public interface AppServiceEnvironments {
+    /**
+     * Begins definition for a new HostingEnvironment resource.
+     * @param name resource name.
+     * @return the first stage of the new HostingEnvironment definition.
+     */
     AppServiceEnvironmentResource.DefinitionStages.Blank defineHostingEnvironment(String name);
 
+    /**
+     * Begins definition for a new WorkerPool resource.
+     * @param name resource name.
+     * @return the first stage of the new WorkerPool definition.
+     */
     WorkerPools.DefinitionStages.Blank defineWorkerPool(String name);
 
     /**

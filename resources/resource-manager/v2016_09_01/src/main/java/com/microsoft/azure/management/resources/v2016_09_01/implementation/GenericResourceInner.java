@@ -57,7 +57,7 @@ public class GenericResourceInner extends Resource {
     private Identity identity;
 
     /**
-     * Get the plan value.
+     * Get the plan of the resource.
      *
      * @return the plan value
      */
@@ -66,7 +66,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Set the plan value.
+     * Set the plan of the resource.
      *
      * @param plan the plan value to set
      * @return the GenericResourceInner object itself.
@@ -77,7 +77,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Get the properties value.
+     * Get the resource properties.
      *
      * @return the properties value
      */
@@ -86,7 +86,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Set the properties value.
+     * Set the resource properties.
      *
      * @param properties the properties value to set
      * @return the GenericResourceInner object itself.
@@ -97,7 +97,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Get the kind value.
+     * Get the kind of the resource.
      *
      * @return the kind value
      */
@@ -106,7 +106,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Set the kind value.
+     * Set the kind of the resource.
      *
      * @param kind the kind value to set
      * @return the GenericResourceInner object itself.
@@ -117,7 +117,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Get the managedBy value.
+     * Get iD of the resource that manages this resource.
      *
      * @return the managedBy value
      */
@@ -126,7 +126,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Set the managedBy value.
+     * Set iD of the resource that manages this resource.
      *
      * @param managedBy the managedBy value to set
      * @return the GenericResourceInner object itself.
@@ -137,7 +137,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Get the sku value.
+     * Get the SKU of the resource.
      *
      * @return the sku value
      */
@@ -146,7 +146,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set the SKU of the resource.
      *
      * @param sku the sku value to set
      * @return the GenericResourceInner object itself.
@@ -157,7 +157,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Get the identity value.
+     * Get the identity of the resource.
      *
      * @return the identity value
      */
@@ -166,7 +166,7 @@ public class GenericResourceInner extends Resource {
     }
 
     /**
-     * Set the identity value.
+     * Set the identity of the resource.
      *
      * @param identity the identity value to set
      * @return the GenericResourceInner object itself.

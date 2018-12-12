@@ -25,7 +25,7 @@ public class TopLevelDomainInner extends ProxyOnlyResource {
     private Boolean privacy;
 
     /**
-     * Get the privacy value.
+     * Get if &lt;code&gt;true&lt;/code&gt;, then the top level domain supports domain privacy; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the privacy value
      */
@@ -34,7 +34,7 @@ public class TopLevelDomainInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the privacy value.
+     * Set if &lt;code&gt;true&lt;/code&gt;, then the top level domain supports domain privacy; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param privacy the privacy value to set
      * @return the TopLevelDomainInner object itself.

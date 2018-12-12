@@ -39,7 +39,7 @@ public class SiteMachineKey {
     private String decryptionKey;
 
     /**
-     * Get the validation value.
+     * Get machineKey validation.
      *
      * @return the validation value
      */
@@ -48,7 +48,7 @@ public class SiteMachineKey {
     }
 
     /**
-     * Set the validation value.
+     * Set machineKey validation.
      *
      * @param validation the validation value to set
      * @return the SiteMachineKey object itself.
@@ -59,7 +59,7 @@ public class SiteMachineKey {
     }
 
     /**
-     * Get the validationKey value.
+     * Get validation key.
      *
      * @return the validationKey value
      */
@@ -68,7 +68,7 @@ public class SiteMachineKey {
     }
 
     /**
-     * Set the validationKey value.
+     * Set validation key.
      *
      * @param validationKey the validationKey value to set
      * @return the SiteMachineKey object itself.
@@ -79,7 +79,7 @@ public class SiteMachineKey {
     }
 
     /**
-     * Get the decryption value.
+     * Get algorithm used for decryption.
      *
      * @return the decryption value
      */
@@ -88,7 +88,7 @@ public class SiteMachineKey {
     }
 
     /**
-     * Set the decryption value.
+     * Set algorithm used for decryption.
      *
      * @param decryption the decryption value to set
      * @return the SiteMachineKey object itself.
@@ -99,7 +99,7 @@ public class SiteMachineKey {
     }
 
     /**
-     * Get the decryptionKey value.
+     * Get decryption key.
      *
      * @return the decryptionKey value
      */
@@ -108,7 +108,7 @@ public class SiteMachineKey {
     }
 
     /**
-     * Set the decryptionKey value.
+     * Set decryption key.
      *
      * @param decryptionKey the decryptionKey value to set
      * @return the SiteMachineKey object itself.

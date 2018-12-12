@@ -72,7 +72,7 @@ public class Contact {
     private String phone;
 
     /**
-     * Get the addressMailing value.
+     * Get mailing address.
      *
      * @return the addressMailing value
      */
@@ -81,7 +81,7 @@ public class Contact {
     }
 
     /**
-     * Set the addressMailing value.
+     * Set mailing address.
      *
      * @param addressMailing the addressMailing value to set
      * @return the Contact object itself.
@@ -92,7 +92,7 @@ public class Contact {
     }
 
     /**
-     * Get the email value.
+     * Get email address.
      *
      * @return the email value
      */
@@ -101,7 +101,7 @@ public class Contact {
     }
 
     /**
-     * Set the email value.
+     * Set email address.
      *
      * @param email the email value to set
      * @return the Contact object itself.
@@ -112,7 +112,7 @@ public class Contact {
     }
 
     /**
-     * Get the fax value.
+     * Get fax number.
      *
      * @return the fax value
      */
@@ -121,7 +121,7 @@ public class Contact {
     }
 
     /**
-     * Set the fax value.
+     * Set fax number.
      *
      * @param fax the fax value to set
      * @return the Contact object itself.
@@ -132,7 +132,7 @@ public class Contact {
     }
 
     /**
-     * Get the jobTitle value.
+     * Get job title.
      *
      * @return the jobTitle value
      */
@@ -141,7 +141,7 @@ public class Contact {
     }
 
     /**
-     * Set the jobTitle value.
+     * Set job title.
      *
      * @param jobTitle the jobTitle value to set
      * @return the Contact object itself.
@@ -152,7 +152,7 @@ public class Contact {
     }
 
     /**
-     * Get the nameFirst value.
+     * Get first name.
      *
      * @return the nameFirst value
      */
@@ -161,7 +161,7 @@ public class Contact {
     }
 
     /**
-     * Set the nameFirst value.
+     * Set first name.
      *
      * @param nameFirst the nameFirst value to set
      * @return the Contact object itself.
@@ -172,7 +172,7 @@ public class Contact {
     }
 
     /**
-     * Get the nameLast value.
+     * Get last name.
      *
      * @return the nameLast value
      */
@@ -181,7 +181,7 @@ public class Contact {
     }
 
     /**
-     * Set the nameLast value.
+     * Set last name.
      *
      * @param nameLast the nameLast value to set
      * @return the Contact object itself.
@@ -192,7 +192,7 @@ public class Contact {
     }
 
     /**
-     * Get the nameMiddle value.
+     * Get middle name.
      *
      * @return the nameMiddle value
      */
@@ -201,7 +201,7 @@ public class Contact {
     }
 
     /**
-     * Set the nameMiddle value.
+     * Set middle name.
      *
      * @param nameMiddle the nameMiddle value to set
      * @return the Contact object itself.
@@ -212,7 +212,7 @@ public class Contact {
     }
 
     /**
-     * Get the organization value.
+     * Get organization contact belongs to.
      *
      * @return the organization value
      */
@@ -221,7 +221,7 @@ public class Contact {
     }
 
     /**
-     * Set the organization value.
+     * Set organization contact belongs to.
      *
      * @param organization the organization value to set
      * @return the Contact object itself.
@@ -232,7 +232,7 @@ public class Contact {
     }
 
     /**
-     * Get the phone value.
+     * Get phone number.
      *
      * @return the phone value
      */
@@ -241,7 +241,7 @@ public class Contact {
     }
 
     /**
-     * Set the phone value.
+     * Set phone number.
      *
      * @param phone the phone value to set
      * @return the Contact object itself.

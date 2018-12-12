@@ -33,7 +33,7 @@ public class GenericResourceFilter {
     private String tagvalue;
 
     /**
-     * Get the resourceType value.
+     * Get the resource type.
      *
      * @return the resourceType value
      */
@@ -42,7 +42,7 @@ public class GenericResourceFilter {
     }
 
     /**
-     * Set the resourceType value.
+     * Set the resource type.
      *
      * @param resourceType the resourceType value to set
      * @return the GenericResourceFilter object itself.
@@ -53,7 +53,7 @@ public class GenericResourceFilter {
     }
 
     /**
-     * Get the tagname value.
+     * Get the tag name.
      *
      * @return the tagname value
      */
@@ -62,7 +62,7 @@ public class GenericResourceFilter {
     }
 
     /**
-     * Set the tagname value.
+     * Set the tag name.
      *
      * @param tagname the tagname value to set
      * @return the GenericResourceFilter object itself.
@@ -73,7 +73,7 @@ public class GenericResourceFilter {
     }
 
     /**
-     * Get the tagvalue value.
+     * Get the tag value.
      *
      * @return the tagvalue value
      */
@@ -82,7 +82,7 @@ public class GenericResourceFilter {
     }
 
     /**
-     * Set the tagvalue value.
+     * Set the tag value.
      *
      * @param tagvalue the tagvalue value to set
      * @return the GenericResourceFilter object itself.

@@ -56,7 +56,7 @@ public class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
     private String table;
 
     /**
-     * Get the server value.
+     * Get the name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      *
      * @return the server value
      */
@@ -65,7 +65,7 @@ public class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the server value.
+     * Set the name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      *
      * @param server the server value to set
      * @return the AzureSqlDatabaseOutputDataSource object itself.
@@ -76,7 +76,7 @@ public class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the database value.
+     * Get the name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      *
      * @return the database value
      */
@@ -85,7 +85,7 @@ public class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the database value.
+     * Set the name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      *
      * @param database the database value to set
      * @return the AzureSqlDatabaseOutputDataSource object itself.
@@ -96,7 +96,7 @@ public class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the user value.
+     * Get the user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      *
      * @return the user value
      */
@@ -105,7 +105,7 @@ public class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the user value.
+     * Set the user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      *
      * @param user the user value to set
      * @return the AzureSqlDatabaseOutputDataSource object itself.
@@ -116,7 +116,7 @@ public class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the password value.
+     * Get the password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      *
      * @return the password value
      */
@@ -125,7 +125,7 @@ public class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the password value.
+     * Set the password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      *
      * @param password the password value to set
      * @return the AzureSqlDatabaseOutputDataSource object itself.
@@ -136,7 +136,7 @@ public class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Get the table value.
+     * Get the name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      *
      * @return the table value
      */
@@ -145,7 +145,7 @@ public class AzureSqlDatabaseOutputDataSource extends OutputDataSource {
     }
 
     /**
-     * Set the table value.
+     * Set the name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
      *
      * @param table the table value to set
      * @return the AzureSqlDatabaseOutputDataSource object itself.

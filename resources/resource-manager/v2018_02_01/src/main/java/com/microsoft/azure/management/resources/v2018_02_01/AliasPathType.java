@@ -28,7 +28,7 @@ public class AliasPathType {
     private List<String> apiVersions;
 
     /**
-     * Get the path value.
+     * Get the path of an alias.
      *
      * @return the path value
      */
@@ -37,7 +37,7 @@ public class AliasPathType {
     }
 
     /**
-     * Set the path value.
+     * Set the path of an alias.
      *
      * @param path the path value to set
      * @return the AliasPathType object itself.
@@ -48,7 +48,7 @@ public class AliasPathType {
     }
 
     /**
-     * Get the apiVersions value.
+     * Get the API versions.
      *
      * @return the apiVersions value
      */
@@ -57,7 +57,7 @@ public class AliasPathType {
     }
 
     /**
-     * Set the apiVersions value.
+     * Set the API versions.
      *
      * @param apiVersions the apiVersions value to set
      * @return the AliasPathType object itself.

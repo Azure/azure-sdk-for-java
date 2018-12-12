@@ -46,7 +46,7 @@ public class VpnClientParameters {
     private List<String> clientRootCertificates;
 
     /**
-     * Get the processorArchitecture value.
+     * Get vPN client Processor Architecture. Possible values are: 'AMD64' and 'X86'. Possible values include: 'Amd64', 'X86'.
      *
      * @return the processorArchitecture value
      */
@@ -55,7 +55,7 @@ public class VpnClientParameters {
     }
 
     /**
-     * Set the processorArchitecture value.
+     * Set vPN client Processor Architecture. Possible values are: 'AMD64' and 'X86'. Possible values include: 'Amd64', 'X86'.
      *
      * @param processorArchitecture the processorArchitecture value to set
      * @return the VpnClientParameters object itself.
@@ -66,7 +66,7 @@ public class VpnClientParameters {
     }
 
     /**
-     * Get the authenticationMethod value.
+     * Get vPN client Authentication Method. Possible values are: 'EAPTLS' and 'EAPMSCHAPv2'. Possible values include: 'EAPTLS', 'EAPMSCHAPv2'.
      *
      * @return the authenticationMethod value
      */
@@ -75,7 +75,7 @@ public class VpnClientParameters {
     }
 
     /**
-     * Set the authenticationMethod value.
+     * Set vPN client Authentication Method. Possible values are: 'EAPTLS' and 'EAPMSCHAPv2'. Possible values include: 'EAPTLS', 'EAPMSCHAPv2'.
      *
      * @param authenticationMethod the authenticationMethod value to set
      * @return the VpnClientParameters object itself.
@@ -86,7 +86,7 @@ public class VpnClientParameters {
     }
 
     /**
-     * Get the radiusServerAuthCertificate value.
+     * Get the public certificate data for the radius server authentication certificate as a Base-64 encoded string. Required only if external radius authentication has been configured with EAPTLS authentication.
      *
      * @return the radiusServerAuthCertificate value
      */
@@ -95,7 +95,7 @@ public class VpnClientParameters {
     }
 
     /**
-     * Set the radiusServerAuthCertificate value.
+     * Set the public certificate data for the radius server authentication certificate as a Base-64 encoded string. Required only if external radius authentication has been configured with EAPTLS authentication.
      *
      * @param radiusServerAuthCertificate the radiusServerAuthCertificate value to set
      * @return the VpnClientParameters object itself.
@@ -106,7 +106,7 @@ public class VpnClientParameters {
     }
 
     /**
-     * Get the clientRootCertificates value.
+     * Get a list of client root certificates public certificate data encoded as Base-64 strings. Optional parameter for external radius based authentication with EAPTLS.
      *
      * @return the clientRootCertificates value
      */
@@ -115,7 +115,7 @@ public class VpnClientParameters {
     }
 
     /**
-     * Set the clientRootCertificates value.
+     * Set a list of client root certificates public certificate data encoded as Base-64 strings. Optional parameter for external radius based authentication with EAPTLS.
      *
      * @param clientRootCertificates the clientRootCertificates value to set
      * @return the VpnClientParameters object itself.

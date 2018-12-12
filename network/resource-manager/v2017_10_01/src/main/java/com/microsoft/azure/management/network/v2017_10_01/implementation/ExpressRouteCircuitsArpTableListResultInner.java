@@ -29,7 +29,7 @@ public class ExpressRouteCircuitsArpTableListResultInner {
     private String nextLink;
 
     /**
-     * Get the value value.
+     * Get gets list of the ARP table.
      *
      * @return the value value
      */
@@ -38,7 +38,7 @@ public class ExpressRouteCircuitsArpTableListResultInner {
     }
 
     /**
-     * Set the value value.
+     * Set gets list of the ARP table.
      *
      * @param value the value value to set
      * @return the ExpressRouteCircuitsArpTableListResultInner object itself.
@@ -49,7 +49,7 @@ public class ExpressRouteCircuitsArpTableListResultInner {
     }
 
     /**
-     * Get the nextLink value.
+     * Get the URL to get the next set of results.
      *
      * @return the nextLink value
      */
@@ -58,7 +58,7 @@ public class ExpressRouteCircuitsArpTableListResultInner {
     }
 
     /**
-     * Set the nextLink value.
+     * Set the URL to get the next set of results.
      *
      * @param nextLink the nextLink value to set
      * @return the ExpressRouteCircuitsArpTableListResultInner object itself.

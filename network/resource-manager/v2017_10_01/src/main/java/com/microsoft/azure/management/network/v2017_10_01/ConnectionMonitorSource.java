@@ -27,7 +27,7 @@ public class ConnectionMonitorSource {
     private Integer port;
 
     /**
-     * Get the resourceId value.
+     * Get the ID of the resource used as the source by connection monitor.
      *
      * @return the resourceId value
      */
@@ -36,7 +36,7 @@ public class ConnectionMonitorSource {
     }
 
     /**
-     * Set the resourceId value.
+     * Set the ID of the resource used as the source by connection monitor.
      *
      * @param resourceId the resourceId value to set
      * @return the ConnectionMonitorSource object itself.
@@ -47,7 +47,7 @@ public class ConnectionMonitorSource {
     }
 
     /**
-     * Get the port value.
+     * Get the source port used by connection monitor.
      *
      * @return the port value
      */
@@ -56,7 +56,7 @@ public class ConnectionMonitorSource {
     }
 
     /**
-     * Set the port value.
+     * Set the source port used by connection monitor.
      *
      * @param port the port value to set
      * @return the ConnectionMonitorSource object itself.

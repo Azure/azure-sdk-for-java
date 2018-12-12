@@ -39,7 +39,7 @@ public class SkuCapacity {
     private String scaleType;
 
     /**
-     * Get the minimum value.
+     * Get minimum number of workers for this App Service plan SKU.
      *
      * @return the minimum value
      */
@@ -48,7 +48,7 @@ public class SkuCapacity {
     }
 
     /**
-     * Set the minimum value.
+     * Set minimum number of workers for this App Service plan SKU.
      *
      * @param minimum the minimum value to set
      * @return the SkuCapacity object itself.
@@ -59,7 +59,7 @@ public class SkuCapacity {
     }
 
     /**
-     * Get the maximum value.
+     * Get maximum number of workers for this App Service plan SKU.
      *
      * @return the maximum value
      */
@@ -68,7 +68,7 @@ public class SkuCapacity {
     }
 
     /**
-     * Set the maximum value.
+     * Set maximum number of workers for this App Service plan SKU.
      *
      * @param maximum the maximum value to set
      * @return the SkuCapacity object itself.
@@ -79,7 +79,7 @@ public class SkuCapacity {
     }
 
     /**
-     * Get the defaultProperty value.
+     * Get default number of workers for this App Service plan SKU.
      *
      * @return the defaultProperty value
      */
@@ -88,7 +88,7 @@ public class SkuCapacity {
     }
 
     /**
-     * Set the defaultProperty value.
+     * Set default number of workers for this App Service plan SKU.
      *
      * @param defaultProperty the defaultProperty value to set
      * @return the SkuCapacity object itself.
@@ -99,7 +99,7 @@ public class SkuCapacity {
     }
 
     /**
-     * Get the scaleType value.
+     * Get available scale configurations for an App Service plan.
      *
      * @return the scaleType value
      */
@@ -108,7 +108,7 @@ public class SkuCapacity {
     }
 
     /**
-     * Set the scaleType value.
+     * Set available scale configurations for an App Service plan.
      *
      * @param scaleType the scaleType value to set
      * @return the SkuCapacity object itself.

@@ -23,7 +23,7 @@ public class GatewayRouteListResultInner {
     private List<GatewayRoute> value;
 
     /**
-     * Get the value value.
+     * Get list of gateway routes.
      *
      * @return the value value
      */
@@ -32,7 +32,7 @@ public class GatewayRouteListResultInner {
     }
 
     /**
-     * Set the value value.
+     * Set list of gateway routes.
      *
      * @param value the value value to set
      * @return the GatewayRouteListResultInner object itself.

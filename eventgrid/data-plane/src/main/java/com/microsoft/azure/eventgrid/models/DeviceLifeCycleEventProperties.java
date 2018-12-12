@@ -18,8 +18,8 @@ public class DeviceLifeCycleEventProperties {
     /**
      * The unique identifier of the device. This case-sensitive string can be
      * up to 128 characters long, and supports ASCII 7-bit alphanumeric
-     * characters plus the following special characters: - : . + % _ # * ? ! (
-     * ) , = @ ; $ '.
+     * characters plus the following special characters: - : . + % _ &amp;#35;
+     * * ? ! ( ) , = @ ; $ '.
      */
     @JsonProperty(value = "deviceId")
     private String deviceId;
@@ -31,26 +31,14 @@ public class DeviceLifeCycleEventProperties {
     private String hubName;
 
     /**
-     * The event type specified for this operation by the IoT Hub.
-     */
-    @JsonProperty(value = "opType")
-    private String opType;
-
-    /**
-     * The ISO8601 timestamp of the operation.
-     */
-    @JsonProperty(value = "operationTimestamp")
-    private String operationTimestamp;
-
-    /**
-     * Information about the device twin, which is the cloud represenation of
+     * Information about the device twin, which is the cloud representation of
      * application device metadata.
      */
     @JsonProperty(value = "twin")
     private DeviceTwinInfo twin;
 
     /**
-     * Get the unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ # * ? ! ( ) , = @ ; $ '.
+     * Get the unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
      *
      * @return the deviceId value
      */
@@ -59,7 +47,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Set the unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ # * ? ! ( ) , = @ ; $ '.
+     * Set the unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
      *
      * @param deviceId the deviceId value to set
      * @return the DeviceLifeCycleEventProperties object itself.
@@ -90,47 +78,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Get the event type specified for this operation by the IoT Hub.
-     *
-     * @return the opType value
-     */
-    public String opType() {
-        return this.opType;
-    }
-
-    /**
-     * Set the event type specified for this operation by the IoT Hub.
-     *
-     * @param opType the opType value to set
-     * @return the DeviceLifeCycleEventProperties object itself.
-     */
-    public DeviceLifeCycleEventProperties withOpType(String opType) {
-        this.opType = opType;
-        return this;
-    }
-
-    /**
-     * Get the ISO8601 timestamp of the operation.
-     *
-     * @return the operationTimestamp value
-     */
-    public String operationTimestamp() {
-        return this.operationTimestamp;
-    }
-
-    /**
-     * Set the ISO8601 timestamp of the operation.
-     *
-     * @param operationTimestamp the operationTimestamp value to set
-     * @return the DeviceLifeCycleEventProperties object itself.
-     */
-    public DeviceLifeCycleEventProperties withOperationTimestamp(String operationTimestamp) {
-        this.operationTimestamp = operationTimestamp;
-        return this;
-    }
-
-    /**
-     * Get information about the device twin, which is the cloud represenation of application device metadata.
+     * Get information about the device twin, which is the cloud representation of application device metadata.
      *
      * @return the twin value
      */
@@ -139,7 +87,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Set information about the device twin, which is the cloud represenation of application device metadata.
+     * Set information about the device twin, which is the cloud representation of application device metadata.
      *
      * @param twin the twin value to set
      * @return the DeviceLifeCycleEventProperties object itself.

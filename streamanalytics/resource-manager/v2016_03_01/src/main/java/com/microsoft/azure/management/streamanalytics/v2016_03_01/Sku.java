@@ -22,7 +22,7 @@ public class Sku {
     private SkuName name;
 
     /**
-     * Get the name value.
+     * Get the name of the SKU. Required on PUT (CreateOrReplace) requests. Possible values include: 'Standard'.
      *
      * @return the name value
      */
@@ -31,7 +31,7 @@ public class Sku {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the SKU. Required on PUT (CreateOrReplace) requests. Possible values include: 'Standard'.
      *
      * @param name the name value to set
      * @return the Sku object itself.

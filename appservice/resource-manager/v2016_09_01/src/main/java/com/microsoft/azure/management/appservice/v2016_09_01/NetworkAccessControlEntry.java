@@ -39,7 +39,7 @@ public class NetworkAccessControlEntry {
     private String remoteSubnet;
 
     /**
-     * Get the action value.
+     * Get action object. Possible values include: 'Permit', 'Deny'.
      *
      * @return the action value
      */
@@ -48,7 +48,7 @@ public class NetworkAccessControlEntry {
     }
 
     /**
-     * Set the action value.
+     * Set action object. Possible values include: 'Permit', 'Deny'.
      *
      * @param action the action value to set
      * @return the NetworkAccessControlEntry object itself.
@@ -59,7 +59,7 @@ public class NetworkAccessControlEntry {
     }
 
     /**
-     * Get the description value.
+     * Get description of network access control entry.
      *
      * @return the description value
      */
@@ -68,7 +68,7 @@ public class NetworkAccessControlEntry {
     }
 
     /**
-     * Set the description value.
+     * Set description of network access control entry.
      *
      * @param description the description value to set
      * @return the NetworkAccessControlEntry object itself.
@@ -79,7 +79,7 @@ public class NetworkAccessControlEntry {
     }
 
     /**
-     * Get the order value.
+     * Get order of precedence.
      *
      * @return the order value
      */
@@ -88,7 +88,7 @@ public class NetworkAccessControlEntry {
     }
 
     /**
-     * Set the order value.
+     * Set order of precedence.
      *
      * @param order the order value to set
      * @return the NetworkAccessControlEntry object itself.
@@ -99,7 +99,7 @@ public class NetworkAccessControlEntry {
     }
 
     /**
-     * Get the remoteSubnet value.
+     * Get remote subnet.
      *
      * @return the remoteSubnet value
      */
@@ -108,7 +108,7 @@ public class NetworkAccessControlEntry {
     }
 
     /**
-     * Set the remoteSubnet value.
+     * Set remote subnet.
      *
      * @param remoteSubnet the remoteSubnet value to set
      * @return the NetworkAccessControlEntry object itself.

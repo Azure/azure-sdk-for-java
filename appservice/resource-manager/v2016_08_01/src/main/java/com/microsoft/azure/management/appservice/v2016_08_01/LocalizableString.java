@@ -27,7 +27,7 @@ public class LocalizableString {
     private String localizedValue;
 
     /**
-     * Get the value value.
+     * Get non-localized name.
      *
      * @return the value value
      */
@@ -36,7 +36,7 @@ public class LocalizableString {
     }
 
     /**
-     * Set the value value.
+     * Set non-localized name.
      *
      * @param value the value value to set
      * @return the LocalizableString object itself.
@@ -47,7 +47,7 @@ public class LocalizableString {
     }
 
     /**
-     * Get the localizedValue value.
+     * Get localized name.
      *
      * @return the localizedValue value
      */
@@ -56,7 +56,7 @@ public class LocalizableString {
     }
 
     /**
-     * Set the localizedValue value.
+     * Set localized name.
      *
      * @param localizedValue the localizedValue value to set
      * @return the LocalizableString object itself.

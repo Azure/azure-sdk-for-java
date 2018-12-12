@@ -28,7 +28,7 @@ public class ApplicationGatewayBackendHealthPool {
     private List<ApplicationGatewayBackendHealthHttpSettings> backendHttpSettingsCollection;
 
     /**
-     * Get the backendAddressPool value.
+     * Get reference of an ApplicationGatewayBackendAddressPool resource.
      *
      * @return the backendAddressPool value
      */
@@ -37,7 +37,7 @@ public class ApplicationGatewayBackendHealthPool {
     }
 
     /**
-     * Set the backendAddressPool value.
+     * Set reference of an ApplicationGatewayBackendAddressPool resource.
      *
      * @param backendAddressPool the backendAddressPool value to set
      * @return the ApplicationGatewayBackendHealthPool object itself.
@@ -48,7 +48,7 @@ public class ApplicationGatewayBackendHealthPool {
     }
 
     /**
-     * Get the backendHttpSettingsCollection value.
+     * Get list of ApplicationGatewayBackendHealthHttpSettings resources.
      *
      * @return the backendHttpSettingsCollection value
      */
@@ -57,7 +57,7 @@ public class ApplicationGatewayBackendHealthPool {
     }
 
     /**
-     * Set the backendHttpSettingsCollection value.
+     * Set list of ApplicationGatewayBackendHealthHttpSettings resources.
      *
      * @param backendHttpSettingsCollection the backendHttpSettingsCollection value to set
      * @return the ApplicationGatewayBackendHealthPool object itself.

@@ -21,7 +21,7 @@ public class ApiDefinitionInfo {
     private String url;
 
     /**
-     * Get the url value.
+     * Get the URL of the API definition.
      *
      * @return the url value
      */
@@ -30,7 +30,7 @@ public class ApiDefinitionInfo {
     }
 
     /**
-     * Set the url value.
+     * Set the URL of the API definition.
      *
      * @param url the url value to set
      * @return the ApiDefinitionInfo object itself.

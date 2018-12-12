@@ -24,7 +24,10 @@ public class CsmPublishingProfileOptions {
     private PublishingProfileFormat format;
 
     /**
-     * Get the format value.
+     * Get name of the format. Valid values are:
+     FileZilla3
+     WebDeploy -- default
+     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'.
      *
      * @return the format value
      */
@@ -33,7 +36,10 @@ public class CsmPublishingProfileOptions {
     }
 
     /**
-     * Set the format value.
+     * Set name of the format. Valid values are:
+     FileZilla3
+     WebDeploy -- default
+     Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'.
      *
      * @param format the format value to set
      * @return the CsmPublishingProfileOptions object itself.

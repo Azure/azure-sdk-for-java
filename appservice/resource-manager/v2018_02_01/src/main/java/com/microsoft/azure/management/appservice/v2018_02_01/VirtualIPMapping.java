@@ -39,7 +39,7 @@ public class VirtualIPMapping {
     private Boolean inUse;
 
     /**
-     * Get the virtualIP value.
+     * Get virtual IP address.
      *
      * @return the virtualIP value
      */
@@ -48,7 +48,7 @@ public class VirtualIPMapping {
     }
 
     /**
-     * Set the virtualIP value.
+     * Set virtual IP address.
      *
      * @param virtualIP the virtualIP value to set
      * @return the VirtualIPMapping object itself.
@@ -59,7 +59,7 @@ public class VirtualIPMapping {
     }
 
     /**
-     * Get the internalHttpPort value.
+     * Get internal HTTP port.
      *
      * @return the internalHttpPort value
      */
@@ -68,7 +68,7 @@ public class VirtualIPMapping {
     }
 
     /**
-     * Set the internalHttpPort value.
+     * Set internal HTTP port.
      *
      * @param internalHttpPort the internalHttpPort value to set
      * @return the VirtualIPMapping object itself.
@@ -79,7 +79,7 @@ public class VirtualIPMapping {
     }
 
     /**
-     * Get the internalHttpsPort value.
+     * Get internal HTTPS port.
      *
      * @return the internalHttpsPort value
      */
@@ -88,7 +88,7 @@ public class VirtualIPMapping {
     }
 
     /**
-     * Set the internalHttpsPort value.
+     * Set internal HTTPS port.
      *
      * @param internalHttpsPort the internalHttpsPort value to set
      * @return the VirtualIPMapping object itself.
@@ -99,7 +99,7 @@ public class VirtualIPMapping {
     }
 
     /**
-     * Get the inUse value.
+     * Get is virtual IP mapping in use.
      *
      * @return the inUse value
      */
@@ -108,7 +108,7 @@ public class VirtualIPMapping {
     }
 
     /**
-     * Set the inUse value.
+     * Set is virtual IP mapping in use.
      *
      * @param inUse the inUse value to set
      * @return the VirtualIPMapping object itself.

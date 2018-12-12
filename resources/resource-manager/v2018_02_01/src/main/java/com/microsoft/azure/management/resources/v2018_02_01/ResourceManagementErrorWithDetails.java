@@ -40,7 +40,7 @@ public class ResourceManagementErrorWithDetails {
     private List<ResourceManagementErrorWithDetails> details;
 
     /**
-     * Get the code value.
+     * Get the error code returned when exporting the template.
      *
      * @return the code value
      */
@@ -49,7 +49,7 @@ public class ResourceManagementErrorWithDetails {
     }
 
     /**
-     * Get the message value.
+     * Get the error message describing the export error.
      *
      * @return the message value
      */
@@ -58,7 +58,7 @@ public class ResourceManagementErrorWithDetails {
     }
 
     /**
-     * Get the target value.
+     * Get the target of the error.
      *
      * @return the target value
      */
@@ -67,7 +67,7 @@ public class ResourceManagementErrorWithDetails {
     }
 
     /**
-     * Get the details value.
+     * Get validation error.
      *
      * @return the details value
      */

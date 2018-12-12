@@ -30,7 +30,7 @@ public class MigrateMySqlRequest extends ProxyOnlyResource {
     private MySqlMigrationType migrationType;
 
     /**
-     * Get the connectionString value.
+     * Get connection string to the remote MySQL database.
      *
      * @return the connectionString value
      */
@@ -39,7 +39,7 @@ public class MigrateMySqlRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Set the connectionString value.
+     * Set connection string to the remote MySQL database.
      *
      * @param connectionString the connectionString value to set
      * @return the MigrateMySqlRequest object itself.
@@ -50,7 +50,7 @@ public class MigrateMySqlRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Get the migrationType value.
+     * Get the type of migration operation to be done. Possible values include: 'LocalToRemote', 'RemoteToLocal'.
      *
      * @return the migrationType value
      */
@@ -59,7 +59,7 @@ public class MigrateMySqlRequest extends ProxyOnlyResource {
     }
 
     /**
-     * Set the migrationType value.
+     * Set the type of migration operation to be done. Possible values include: 'LocalToRemote', 'RemoteToLocal'.
      *
      * @param migrationType the migrationType value to set
      * @return the MigrateMySqlRequest object itself.

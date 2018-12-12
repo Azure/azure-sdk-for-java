@@ -43,7 +43,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
     private Boolean blockWriteAccessToSite;
 
     /**
-     * Get the azurefilesConnectionString value.
+     * Get azureFiles connection string.
      *
      * @return the azurefilesConnectionString value
      */
@@ -52,7 +52,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Set the azurefilesConnectionString value.
+     * Set azureFiles connection string.
      *
      * @param azurefilesConnectionString the azurefilesConnectionString value to set
      * @return the StorageMigrationOptions object itself.
@@ -63,7 +63,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Get the azurefilesShare value.
+     * Get azureFiles share.
      *
      * @return the azurefilesShare value
      */
@@ -72,7 +72,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Set the azurefilesShare value.
+     * Set azureFiles share.
      *
      * @param azurefilesShare the azurefilesShare value to set
      * @return the StorageMigrationOptions object itself.
@@ -83,7 +83,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Get the switchSiteAfterMigration value.
+     * Get &lt;code&gt;true&lt;/code&gt;if the app should be switched over; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the switchSiteAfterMigration value
      */
@@ -92,7 +92,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Set the switchSiteAfterMigration value.
+     * Set &lt;code&gt;true&lt;/code&gt;if the app should be switched over; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param switchSiteAfterMigration the switchSiteAfterMigration value to set
      * @return the StorageMigrationOptions object itself.
@@ -103,7 +103,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Get the blockWriteAccessToSite value.
+     * Get &lt;code&gt;true&lt;/code&gt; if the app should be read only during copy operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the blockWriteAccessToSite value
      */
@@ -112,7 +112,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Set the blockWriteAccessToSite value.
+     * Set &lt;code&gt;true&lt;/code&gt; if the app should be read only during copy operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @param blockWriteAccessToSite the blockWriteAccessToSite value to set
      * @return the StorageMigrationOptions object itself.

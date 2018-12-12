@@ -55,41 +55,22 @@ class InputsImpl extends WrapperImpl<InputsInner> implements Inputs {
         });
     }
 
-    private Observable<Page<InputInner>> listByStreamingJobNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        InputsInner client = this.inner();
-        return client.listByStreamingJobNextAsync(nextLink)
-        .flatMap(new Func1<Page<InputInner>, Observable<Page<InputInner>>>() {
-            @Override
-            public Observable<Page<InputInner>> call(Page<InputInner> page) {
-                return Observable.just(page).concatWith(listByStreamingJobNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Input> listByStreamingJobAsync(final String resourceGroupName, final String jobName) {
         InputsInner client = this.inner();
         return client.listByStreamingJobAsync(resourceGroupName, jobName)
-        .flatMap(new Func1<Page<InputInner>, Observable<Page<InputInner>>>() {
-            @Override
-            public Observable<Page<InputInner>> call(Page<InputInner> page) {
-                return listByStreamingJobNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<InputInner>, Iterable<InputInner>>() {
             @Override
             public Iterable<InputInner> call(Page<InputInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<InputInner, Input>() {
             @Override
             public Input call(InputInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

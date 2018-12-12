@@ -24,7 +24,7 @@ public class Category {
      * Scoring of the category.
      */
     @JsonProperty(value = "score")
-    private Double score;
+    private double score;
 
     /**
      * The detail property.
@@ -57,7 +57,7 @@ public class Category {
      *
      * @return the score value
      */
-    public Double score() {
+    public double score() {
         return this.score;
     }
 
@@ -67,7 +67,7 @@ public class Category {
      * @param score the score value to set
      * @return the Category object itself.
      */
-    public Category withScore(Double score) {
+    public Category withScore(double score) {
         this.score = score;
         return this;
     }

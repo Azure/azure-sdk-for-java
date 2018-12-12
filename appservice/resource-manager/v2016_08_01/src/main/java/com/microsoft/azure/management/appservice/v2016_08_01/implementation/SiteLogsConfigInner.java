@@ -45,7 +45,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
     private EnabledConfig detailedErrorMessages;
 
     /**
-     * Get the applicationLogs value.
+     * Get application logs configuration.
      *
      * @return the applicationLogs value
      */
@@ -54,7 +54,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the applicationLogs value.
+     * Set application logs configuration.
      *
      * @param applicationLogs the applicationLogs value to set
      * @return the SiteLogsConfigInner object itself.
@@ -65,7 +65,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the httpLogs value.
+     * Get hTTP logs configuration.
      *
      * @return the httpLogs value
      */
@@ -74,7 +74,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the httpLogs value.
+     * Set hTTP logs configuration.
      *
      * @param httpLogs the httpLogs value to set
      * @return the SiteLogsConfigInner object itself.
@@ -85,7 +85,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the failedRequestsTracing value.
+     * Get failed requests tracing configuration.
      *
      * @return the failedRequestsTracing value
      */
@@ -94,7 +94,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the failedRequestsTracing value.
+     * Set failed requests tracing configuration.
      *
      * @param failedRequestsTracing the failedRequestsTracing value to set
      * @return the SiteLogsConfigInner object itself.
@@ -105,7 +105,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the detailedErrorMessages value.
+     * Get detailed error messages configuration.
      *
      * @return the detailedErrorMessages value
      */
@@ -114,7 +114,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the detailedErrorMessages value.
+     * Set detailed error messages configuration.
      *
      * @param detailedErrorMessages the detailedErrorMessages value to set
      * @return the SiteLogsConfigInner object itself.

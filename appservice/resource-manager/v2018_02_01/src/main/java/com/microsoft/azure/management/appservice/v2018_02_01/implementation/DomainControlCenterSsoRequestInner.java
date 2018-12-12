@@ -34,7 +34,7 @@ public class DomainControlCenterSsoRequestInner {
     private String postParameterValue;
 
     /**
-     * Get the url value.
+     * Get uRL where the single sign-on request is to be made.
      *
      * @return the url value
      */
@@ -43,7 +43,7 @@ public class DomainControlCenterSsoRequestInner {
     }
 
     /**
-     * Get the postParameterKey value.
+     * Get post parameter key.
      *
      * @return the postParameterKey value
      */
@@ -52,7 +52,7 @@ public class DomainControlCenterSsoRequestInner {
     }
 
     /**
-     * Get the postParameterValue value.
+     * Get post parameter value. Client should use 'application/x-www-form-urlencoded' encoding for this value.
      *
      * @return the postParameterValue value
      */

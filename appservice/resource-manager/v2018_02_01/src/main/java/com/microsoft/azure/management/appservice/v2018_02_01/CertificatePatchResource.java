@@ -140,7 +140,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     private String serverFarmId;
 
     /**
-     * Get the friendlyName value.
+     * Get friendly name of the certificate.
      *
      * @return the friendlyName value
      */
@@ -149,7 +149,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the subjectName value.
+     * Get subject name of the certificate.
      *
      * @return the subjectName value
      */
@@ -158,7 +158,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostNames value.
+     * Get host names the certificate applies to.
      *
      * @return the hostNames value
      */
@@ -167,7 +167,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the hostNames value.
+     * Set host names the certificate applies to.
      *
      * @param hostNames the hostNames value to set
      * @return the CertificatePatchResource object itself.
@@ -178,7 +178,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the pfxBlob value.
+     * Get pfx blob.
      *
      * @return the pfxBlob value
      */
@@ -187,7 +187,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the pfxBlob value.
+     * Set pfx blob.
      *
      * @param pfxBlob the pfxBlob value to set
      * @return the CertificatePatchResource object itself.
@@ -198,7 +198,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the siteName value.
+     * Get app name.
      *
      * @return the siteName value
      */
@@ -207,7 +207,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the selfLink value.
+     * Get self link.
      *
      * @return the selfLink value
      */
@@ -216,7 +216,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the issuer value.
+     * Get certificate issuer.
      *
      * @return the issuer value
      */
@@ -225,7 +225,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the issueDate value.
+     * Get certificate issue Date.
      *
      * @return the issueDate value
      */
@@ -234,7 +234,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the expirationDate value.
+     * Get certificate expriration date.
      *
      * @return the expirationDate value
      */
@@ -243,7 +243,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the password value.
+     * Get certificate password.
      *
      * @return the password value
      */
@@ -252,7 +252,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the password value.
+     * Set certificate password.
      *
      * @param password the password value to set
      * @return the CertificatePatchResource object itself.
@@ -263,7 +263,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the thumbprint value.
+     * Get certificate thumbprint.
      *
      * @return the thumbprint value
      */
@@ -272,7 +272,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the valid value.
+     * Get is the certificate valid?.
      *
      * @return the valid value
      */
@@ -281,7 +281,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the cerBlob value.
+     * Get raw bytes of .cer file.
      *
      * @return the cerBlob value
      */
@@ -290,7 +290,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the publicKeyHash value.
+     * Get public key hash.
      *
      * @return the publicKeyHash value
      */
@@ -299,7 +299,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the hostingEnvironmentProfile value.
+     * Get specification for the App Service Environment to use for the certificate.
      *
      * @return the hostingEnvironmentProfile value
      */
@@ -308,7 +308,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the keyVaultId value.
+     * Get key Vault Csm resource Id.
      *
      * @return the keyVaultId value
      */
@@ -317,7 +317,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the keyVaultId value.
+     * Set key Vault Csm resource Id.
      *
      * @param keyVaultId the keyVaultId value to set
      * @return the CertificatePatchResource object itself.
@@ -328,7 +328,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the keyVaultSecretName value.
+     * Get key Vault secret name.
      *
      * @return the keyVaultSecretName value
      */
@@ -337,7 +337,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the keyVaultSecretName value.
+     * Set key Vault secret name.
      *
      * @param keyVaultSecretName the keyVaultSecretName value to set
      * @return the CertificatePatchResource object itself.
@@ -348,7 +348,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the keyVaultSecretStatus value.
+     * Get status of the Key Vault secret. Possible values include: 'Initialized', 'WaitingOnCertificateOrder', 'Succeeded', 'CertificateOrderFailed', 'OperationNotPermittedOnKeyVault', 'AzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultDoesNotExist', 'KeyVaultSecretDoesNotExist', 'UnknownError', 'ExternalPrivateKey', 'Unknown'.
      *
      * @return the keyVaultSecretStatus value
      */
@@ -357,7 +357,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the serverFarmId value.
+     * Get resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @return the serverFarmId value
      */
@@ -366,7 +366,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the serverFarmId value.
+     * Set resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @param serverFarmId the serverFarmId value to set
      * @return the CertificatePatchResource object itself.

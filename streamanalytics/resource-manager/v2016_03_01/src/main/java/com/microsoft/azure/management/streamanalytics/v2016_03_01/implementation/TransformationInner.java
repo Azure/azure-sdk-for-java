@@ -56,7 +56,7 @@ public class TransformationInner extends SubResource {
     private String type;
 
     /**
-     * Get the streamingUnits value.
+     * Get specifies the number of streaming units that the streaming job uses.
      *
      * @return the streamingUnits value
      */
@@ -65,7 +65,7 @@ public class TransformationInner extends SubResource {
     }
 
     /**
-     * Set the streamingUnits value.
+     * Set specifies the number of streaming units that the streaming job uses.
      *
      * @param streamingUnits the streamingUnits value to set
      * @return the TransformationInner object itself.
@@ -76,7 +76,7 @@ public class TransformationInner extends SubResource {
     }
 
     /**
-     * Get the query value.
+     * Get specifies the query that will be run in the streaming job. You can learn more about the Stream Analytics Query Language (SAQL) here: https://msdn.microsoft.com/library/azure/dn834998 . Required on PUT (CreateOrReplace) requests.
      *
      * @return the query value
      */
@@ -85,7 +85,7 @@ public class TransformationInner extends SubResource {
     }
 
     /**
-     * Set the query value.
+     * Set specifies the query that will be run in the streaming job. You can learn more about the Stream Analytics Query Language (SAQL) here: https://msdn.microsoft.com/library/azure/dn834998 . Required on PUT (CreateOrReplace) requests.
      *
      * @param query the query value to set
      * @return the TransformationInner object itself.
@@ -96,7 +96,7 @@ public class TransformationInner extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get the current entity tag for the transformation. This is an opaque string. You can use it to detect whether the resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write operations for optimistic concurrency.
      *
      * @return the etag value
      */
@@ -105,7 +105,7 @@ public class TransformationInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get resource name.
      *
      * @return the name value
      */
@@ -114,7 +114,7 @@ public class TransformationInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set resource name.
      *
      * @param name the name value to set
      * @return the TransformationInner object itself.
@@ -125,7 +125,7 @@ public class TransformationInner extends SubResource {
     }
 
     /**
-     * Get the type value.
+     * Get resource type.
      *
      * @return the type value
      */

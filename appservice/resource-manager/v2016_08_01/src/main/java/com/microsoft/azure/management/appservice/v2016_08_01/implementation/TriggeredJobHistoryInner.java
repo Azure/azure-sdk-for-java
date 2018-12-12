@@ -27,7 +27,7 @@ public class TriggeredJobHistoryInner extends ProxyOnlyResource {
     private List<TriggeredJobRun> triggeredJobRuns;
 
     /**
-     * Get the triggeredJobRuns value.
+     * Get list of triggered web job runs.
      *
      * @return the triggeredJobRuns value
      */
@@ -36,7 +36,7 @@ public class TriggeredJobHistoryInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the triggeredJobRuns value.
+     * Set list of triggered web job runs.
      *
      * @param triggeredJobRuns the triggeredJobRuns value to set
      * @return the TriggeredJobHistoryInner object itself.

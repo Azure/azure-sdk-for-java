@@ -58,28 +58,88 @@ import com.microsoft.azure.management.appservice.v2018_02_01.WebJob;
  * Type representing WebApps.
  */
 public interface WebApps {
+    /**
+     * Begins definition for a new Site resource.
+     * @param name resource name.
+     * @return the first stage of the new Site definition.
+     */
     Sites.DefinitionStages.Blank defineSite(String name);
 
+    /**
+     * Begins definition for a new Deployment resource.
+     * @param name resource name.
+     * @return the first stage of the new Deployment definition.
+     */
     Deployment.DefinitionStages.Blank defineDeployment(String name);
 
+    /**
+     * Begins definition for a new DomainOwnershipIdentifier resource.
+     * @param name resource name.
+     * @return the first stage of the new DomainOwnershipIdentifier definition.
+     */
     Identifier.DefinitionStages.Blank defineDomainOwnershipIdentifier(String name);
 
+    /**
+     * Begins definition for a new Function resource.
+     * @param name resource name.
+     * @return the first stage of the new Function definition.
+     */
     FunctionEnvelope.DefinitionStages.Blank defineFunction(String name);
 
+    /**
+     * Begins definition for a new HostNameBinding resource.
+     * @param name resource name.
+     * @return the first stage of the new HostNameBinding definition.
+     */
     HostNameBinding.DefinitionStages.Blank defineHostNameBinding(String name);
 
+    /**
+     * Begins definition for a new Relay resource.
+     * @param name resource name.
+     * @return the first stage of the new Relay definition.
+     */
     SiteHybridConnection.DefinitionStages.Blank defineRelay(String name);
 
+    /**
+     * Begins definition for a new Premieraddon resource.
+     * @param name resource name.
+     * @return the first stage of the new Premieraddon definition.
+     */
     PremierAddOn.DefinitionStages.Blank definePremieraddon(String name);
 
+    /**
+     * Begins definition for a new PublicCertificate resource.
+     * @param name resource name.
+     * @return the first stage of the new PublicCertificate definition.
+     */
     PublicCertificate.DefinitionStages.Blank definePublicCertificate(String name);
 
+    /**
+     * Begins definition for a new Siteextension resource.
+     * @param name resource name.
+     * @return the first stage of the new Siteextension definition.
+     */
     SiteExtensionInfo.DefinitionStages.Blank defineSiteextension(String name);
 
+    /**
+     * Begins definition for a new Slot resource.
+     * @param name resource name.
+     * @return the first stage of the new Slot definition.
+     */
     Slots.DefinitionStages.Blank defineSlot(String name);
 
+    /**
+     * Begins definition for a new VirtualNetworkConnection resource.
+     * @param name resource name.
+     * @return the first stage of the new VirtualNetworkConnection definition.
+     */
     SiteVnetInfo.DefinitionStages.Blank defineVirtualNetworkConnection(String name);
 
+    /**
+     * Begins definition for a new Gateway resource.
+     * @param name resource name.
+     * @return the first stage of the new Gateway definition.
+     */
     SiteVnetGateway.DefinitionStages.Blank defineGateway(String name);
 
     /**

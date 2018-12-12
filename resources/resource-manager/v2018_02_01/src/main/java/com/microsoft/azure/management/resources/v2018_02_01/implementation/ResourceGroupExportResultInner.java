@@ -28,7 +28,7 @@ public class ResourceGroupExportResultInner {
     private ResourceManagementErrorWithDetails error;
 
     /**
-     * Get the template value.
+     * Get the template content.
      *
      * @return the template value
      */
@@ -37,7 +37,7 @@ public class ResourceGroupExportResultInner {
     }
 
     /**
-     * Set the template value.
+     * Set the template content.
      *
      * @param template the template value to set
      * @return the ResourceGroupExportResultInner object itself.
@@ -48,7 +48,7 @@ public class ResourceGroupExportResultInner {
     }
 
     /**
-     * Get the error value.
+     * Get the error.
      *
      * @return the error value
      */
@@ -57,7 +57,7 @@ public class ResourceGroupExportResultInner {
     }
 
     /**
-     * Set the error value.
+     * Set the error.
      *
      * @param error the error value to set
      * @return the ResourceGroupExportResultInner object itself.

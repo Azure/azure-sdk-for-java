@@ -27,7 +27,7 @@ public class ResourceMetricAvailability {
     private String retention;
 
     /**
-     * Get the timeGrain value.
+     * Get time grain .
      *
      * @return the timeGrain value
      */
@@ -36,7 +36,7 @@ public class ResourceMetricAvailability {
     }
 
     /**
-     * Get the retention value.
+     * Get retention period for the current time grain.
      *
      * @return the retention value
      */

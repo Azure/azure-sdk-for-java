@@ -33,7 +33,7 @@ public class DetectorResponseInner extends ProxyOnlyResource {
     private List<DiagnosticData> dataset;
 
     /**
-     * Get the metadata value.
+     * Get metadata for the detector.
      *
      * @return the metadata value
      */
@@ -42,7 +42,7 @@ public class DetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the metadata value.
+     * Set metadata for the detector.
      *
      * @param metadata the metadata value to set
      * @return the DetectorResponseInner object itself.
@@ -53,7 +53,7 @@ public class DetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the dataset value.
+     * Get data Set.
      *
      * @return the dataset value
      */
@@ -62,7 +62,7 @@ public class DetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the dataset value.
+     * Set data Set.
      *
      * @param dataset the dataset value to set
      * @return the DetectorResponseInner object itself.

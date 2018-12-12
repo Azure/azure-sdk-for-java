@@ -29,7 +29,7 @@ public class ConnStringValueTypePair {
     private ConnectionStringType type;
 
     /**
-     * Get the value value.
+     * Get value of pair.
      *
      * @return the value value
      */
@@ -38,7 +38,7 @@ public class ConnStringValueTypePair {
     }
 
     /**
-     * Set the value value.
+     * Set value of pair.
      *
      * @param value the value value to set
      * @return the ConnStringValueTypePair object itself.
@@ -49,7 +49,7 @@ public class ConnStringValueTypePair {
     }
 
     /**
-     * Get the type value.
+     * Get type of database. Possible values include: 'MySql', 'SQLServer', 'SQLAzure', 'Custom', 'NotificationHub', 'ServiceBus', 'EventHub', 'ApiHub', 'DocDb', 'RedisCache', 'PostgreSQL'.
      *
      * @return the type value
      */
@@ -58,7 +58,7 @@ public class ConnStringValueTypePair {
     }
 
     /**
-     * Set the type value.
+     * Set type of database. Possible values include: 'MySql', 'SQLServer', 'SQLAzure', 'Custom', 'NotificationHub', 'ServiceBus', 'EventHub', 'ApiHub', 'DocDb', 'RedisCache', 'PostgreSQL'.
      *
      * @param type the type value to set
      * @return the ConnStringValueTypePair object itself.

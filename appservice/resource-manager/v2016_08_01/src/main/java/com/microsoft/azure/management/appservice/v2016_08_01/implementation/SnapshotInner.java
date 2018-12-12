@@ -24,7 +24,7 @@ public class SnapshotInner extends ProxyOnlyResource {
     private String time;
 
     /**
-     * Get the time value.
+     * Get the time the snapshot was taken.
      *
      * @return the time value
      */

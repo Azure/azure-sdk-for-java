@@ -30,7 +30,7 @@ public class VerificationIPFlowResultInner {
     private String ruleName;
 
     /**
-     * Get the access value.
+     * Get indicates whether the traffic is allowed or denied. Possible values include: 'Allow', 'Deny'.
      *
      * @return the access value
      */
@@ -39,7 +39,7 @@ public class VerificationIPFlowResultInner {
     }
 
     /**
-     * Set the access value.
+     * Set indicates whether the traffic is allowed or denied. Possible values include: 'Allow', 'Deny'.
      *
      * @param access the access value to set
      * @return the VerificationIPFlowResultInner object itself.
@@ -50,7 +50,7 @@ public class VerificationIPFlowResultInner {
     }
 
     /**
-     * Get the ruleName value.
+     * Get name of the rule. If input is not matched against any security rule, it is not displayed.
      *
      * @return the ruleName value
      */
@@ -59,7 +59,7 @@ public class VerificationIPFlowResultInner {
     }
 
     /**
-     * Set the ruleName value.
+     * Set name of the rule. If input is not matched against any security rule, it is not displayed.
      *
      * @param ruleName the ruleName value to set
      * @return the VerificationIPFlowResultInner object itself.

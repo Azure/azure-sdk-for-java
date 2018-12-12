@@ -33,7 +33,7 @@ public class OperationDisplay {
     private String operation;
 
     /**
-     * Get the provider value.
+     * Get service provider: Microsoft.Media.
      *
      * @return the provider value
      */
@@ -42,7 +42,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the resource value.
+     * Get resource on which the operation is performed: Invoice, etc.
      *
      * @return the resource value
      */
@@ -51,7 +51,7 @@ public class OperationDisplay {
     }
 
     /**
-     * Get the operation value.
+     * Get operation type: Read, write, delete, etc.
      *
      * @return the operation value
      */

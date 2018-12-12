@@ -56,7 +56,7 @@ public class AzureMachineLearningWebServiceFunctionBinding extends FunctionBindi
     private Integer batchSize;
 
     /**
-     * Get the endpoint value.
+     * Get the Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs.
      *
      * @return the endpoint value
      */
@@ -65,7 +65,7 @@ public class AzureMachineLearningWebServiceFunctionBinding extends FunctionBindi
     }
 
     /**
-     * Set the endpoint value.
+     * Set the Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here: https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs.
      *
      * @param endpoint the endpoint value to set
      * @return the AzureMachineLearningWebServiceFunctionBinding object itself.
@@ -76,7 +76,7 @@ public class AzureMachineLearningWebServiceFunctionBinding extends FunctionBindi
     }
 
     /**
-     * Get the apiKey value.
+     * Get the API key used to authenticate with Request-Response endpoint.
      *
      * @return the apiKey value
      */
@@ -85,7 +85,7 @@ public class AzureMachineLearningWebServiceFunctionBinding extends FunctionBindi
     }
 
     /**
-     * Set the apiKey value.
+     * Set the API key used to authenticate with Request-Response endpoint.
      *
      * @param apiKey the apiKey value to set
      * @return the AzureMachineLearningWebServiceFunctionBinding object itself.
@@ -96,7 +96,7 @@ public class AzureMachineLearningWebServiceFunctionBinding extends FunctionBindi
     }
 
     /**
-     * Get the inputs value.
+     * Get the inputs for the Azure Machine Learning web service endpoint.
      *
      * @return the inputs value
      */
@@ -105,7 +105,7 @@ public class AzureMachineLearningWebServiceFunctionBinding extends FunctionBindi
     }
 
     /**
-     * Set the inputs value.
+     * Set the inputs for the Azure Machine Learning web service endpoint.
      *
      * @param inputs the inputs value to set
      * @return the AzureMachineLearningWebServiceFunctionBinding object itself.
@@ -116,7 +116,7 @@ public class AzureMachineLearningWebServiceFunctionBinding extends FunctionBindi
     }
 
     /**
-     * Get the outputs value.
+     * Get a list of outputs from the Azure Machine Learning web service endpoint execution.
      *
      * @return the outputs value
      */
@@ -125,7 +125,7 @@ public class AzureMachineLearningWebServiceFunctionBinding extends FunctionBindi
     }
 
     /**
-     * Set the outputs value.
+     * Set a list of outputs from the Azure Machine Learning web service endpoint execution.
      *
      * @param outputs the outputs value to set
      * @return the AzureMachineLearningWebServiceFunctionBinding object itself.
@@ -136,7 +136,7 @@ public class AzureMachineLearningWebServiceFunctionBinding extends FunctionBindi
     }
 
     /**
-     * Get the batchSize value.
+     * Get number between 1 and 10000 describing maximum number of rows for every Azure ML RRS execute request. Default is 1000.
      *
      * @return the batchSize value
      */
@@ -145,7 +145,7 @@ public class AzureMachineLearningWebServiceFunctionBinding extends FunctionBindi
     }
 
     /**
-     * Set the batchSize value.
+     * Set number between 1 and 10000 describing maximum number of rows for every Azure ML RRS execute request. Default is 1000.
      *
      * @param batchSize the batchSize value to set
      * @return the AzureMachineLearningWebServiceFunctionBinding object itself.

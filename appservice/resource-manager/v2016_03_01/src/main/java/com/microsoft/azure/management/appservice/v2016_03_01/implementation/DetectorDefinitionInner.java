@@ -42,7 +42,7 @@ public class DetectorDefinitionInner extends ProxyOnlyResource {
     private Boolean isEnabled;
 
     /**
-     * Get the displayName value.
+     * Get display name of the detector.
      *
      * @return the displayName value
      */
@@ -51,7 +51,7 @@ public class DetectorDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the description value.
+     * Get description of the detector.
      *
      * @return the description value
      */
@@ -60,7 +60,7 @@ public class DetectorDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the rank value.
+     * Get detector Rank.
      *
      * @return the rank value
      */
@@ -69,7 +69,7 @@ public class DetectorDefinitionInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the isEnabled value.
+     * Get flag representing whether detector is enabled or not.
      *
      * @return the isEnabled value
      */

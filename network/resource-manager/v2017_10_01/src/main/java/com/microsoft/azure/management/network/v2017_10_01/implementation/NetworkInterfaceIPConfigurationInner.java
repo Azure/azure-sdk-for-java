@@ -107,7 +107,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     private String etag;
 
     /**
-     * Get the applicationGatewayBackendAddressPools value.
+     * Get the reference of ApplicationGatewayBackendAddressPool resource.
      *
      * @return the applicationGatewayBackendAddressPools value
      */
@@ -116,7 +116,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the applicationGatewayBackendAddressPools value.
+     * Set the reference of ApplicationGatewayBackendAddressPool resource.
      *
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -127,7 +127,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the loadBalancerBackendAddressPools value.
+     * Get the reference of LoadBalancerBackendAddressPool resource.
      *
      * @return the loadBalancerBackendAddressPools value
      */
@@ -136,7 +136,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the loadBalancerBackendAddressPools value.
+     * Set the reference of LoadBalancerBackendAddressPool resource.
      *
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -147,7 +147,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the loadBalancerInboundNatRules value.
+     * Get a list of references of LoadBalancerInboundNatRules.
      *
      * @return the loadBalancerInboundNatRules value
      */
@@ -156,7 +156,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the loadBalancerInboundNatRules value.
+     * Set a list of references of LoadBalancerInboundNatRules.
      *
      * @param loadBalancerInboundNatRules the loadBalancerInboundNatRules value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -167,7 +167,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the privateIPAddress value.
+     * Get private IP address of the IP configuration.
      *
      * @return the privateIPAddress value
      */
@@ -176,7 +176,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the privateIPAddress value.
+     * Set private IP address of the IP configuration.
      *
      * @param privateIPAddress the privateIPAddress value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -187,7 +187,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the privateIPAllocationMethod value.
+     * Get defines how a private IP address is assigned. Possible values are: 'Static' and 'Dynamic'. Possible values include: 'Static', 'Dynamic'.
      *
      * @return the privateIPAllocationMethod value
      */
@@ -196,7 +196,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the privateIPAllocationMethod value.
+     * Set defines how a private IP address is assigned. Possible values are: 'Static' and 'Dynamic'. Possible values include: 'Static', 'Dynamic'.
      *
      * @param privateIPAllocationMethod the privateIPAllocationMethod value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -207,7 +207,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the privateIPAddressVersion value.
+     * Get available from Api-Version 2016-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'. Possible values include: 'IPv4', 'IPv6'.
      *
      * @return the privateIPAddressVersion value
      */
@@ -216,7 +216,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the privateIPAddressVersion value.
+     * Set available from Api-Version 2016-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'. Possible values include: 'IPv4', 'IPv6'.
      *
      * @param privateIPAddressVersion the privateIPAddressVersion value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -227,7 +227,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the subnet value.
+     * Get subnet bound to the IP configuration.
      *
      * @return the subnet value
      */
@@ -236,7 +236,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the subnet value.
+     * Set subnet bound to the IP configuration.
      *
      * @param subnet the subnet value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -247,7 +247,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the primary value.
+     * Get gets whether this is a primary customer address on the network interface.
      *
      * @return the primary value
      */
@@ -256,7 +256,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the primary value.
+     * Set gets whether this is a primary customer address on the network interface.
      *
      * @param primary the primary value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -267,7 +267,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the publicIPAddress value.
+     * Get public IP address bound to the IP configuration.
      *
      * @return the publicIPAddress value
      */
@@ -276,7 +276,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the publicIPAddress value.
+     * Set public IP address bound to the IP configuration.
      *
      * @param publicIPAddress the publicIPAddress value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -287,7 +287,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the applicationSecurityGroups value.
+     * Get application security groups in which the IP configuration is included.
      *
      * @return the applicationSecurityGroups value
      */
@@ -296,7 +296,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the applicationSecurityGroups value.
+     * Set application security groups in which the IP configuration is included.
      *
      * @param applicationSecurityGroups the applicationSecurityGroups value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -307,7 +307,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state of the network interface IP configuration. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @return the provisioningState value
      */
@@ -316,7 +316,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the provisioningState value.
+     * Set the provisioning state of the network interface IP configuration. Possible values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -327,7 +327,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the name value.
+     * Get the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @return the name value
      */
@@ -336,7 +336,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the resource that is unique within a resource group. This name can be used to access the resource.
      *
      * @param name the name value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.
@@ -347,7 +347,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the etag value.
+     * Get a unique read-only string that changes whenever the resource is updated.
      *
      * @return the etag value
      */
@@ -356,7 +356,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the etag value.
+     * Set a unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set
      * @return the NetworkInterfaceIPConfigurationInner object itself.

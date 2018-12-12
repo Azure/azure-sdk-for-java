@@ -51,7 +51,7 @@ public class Address {
     private String state;
 
     /**
-     * Get the address1 value.
+     * Get first line of an Address.
      *
      * @return the address1 value
      */
@@ -60,7 +60,7 @@ public class Address {
     }
 
     /**
-     * Set the address1 value.
+     * Set first line of an Address.
      *
      * @param address1 the address1 value to set
      * @return the Address object itself.
@@ -71,7 +71,7 @@ public class Address {
     }
 
     /**
-     * Get the address2 value.
+     * Get the second line of the Address. Optional.
      *
      * @return the address2 value
      */
@@ -80,7 +80,7 @@ public class Address {
     }
 
     /**
-     * Set the address2 value.
+     * Set the second line of the Address. Optional.
      *
      * @param address2 the address2 value to set
      * @return the Address object itself.
@@ -91,7 +91,7 @@ public class Address {
     }
 
     /**
-     * Get the city value.
+     * Get the city for the address.
      *
      * @return the city value
      */
@@ -100,7 +100,7 @@ public class Address {
     }
 
     /**
-     * Set the city value.
+     * Set the city for the address.
      *
      * @param city the city value to set
      * @return the Address object itself.
@@ -111,7 +111,7 @@ public class Address {
     }
 
     /**
-     * Get the country value.
+     * Get the country for the address.
      *
      * @return the country value
      */
@@ -120,7 +120,7 @@ public class Address {
     }
 
     /**
-     * Set the country value.
+     * Set the country for the address.
      *
      * @param country the country value to set
      * @return the Address object itself.
@@ -131,7 +131,7 @@ public class Address {
     }
 
     /**
-     * Get the postalCode value.
+     * Get the postal code for the address.
      *
      * @return the postalCode value
      */
@@ -140,7 +140,7 @@ public class Address {
     }
 
     /**
-     * Set the postalCode value.
+     * Set the postal code for the address.
      *
      * @param postalCode the postalCode value to set
      * @return the Address object itself.
@@ -151,7 +151,7 @@ public class Address {
     }
 
     /**
-     * Get the state value.
+     * Get the state or province for the address.
      *
      * @return the state value
      */
@@ -160,7 +160,7 @@ public class Address {
     }
 
     /**
-     * Set the state value.
+     * Set the state or province for the address.
      *
      * @param state the state value to set
      * @return the Address object itself.

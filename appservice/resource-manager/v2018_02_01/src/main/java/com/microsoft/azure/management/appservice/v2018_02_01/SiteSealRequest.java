@@ -28,7 +28,7 @@ public class SiteSealRequest {
     private String locale;
 
     /**
-     * Get the lightTheme value.
+     * Get if &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal; otherwise, use the default color theme.
      *
      * @return the lightTheme value
      */
@@ -37,7 +37,7 @@ public class SiteSealRequest {
     }
 
     /**
-     * Set the lightTheme value.
+     * Set if &lt;code&gt;true&lt;/code&gt; use the light color theme for site seal; otherwise, use the default color theme.
      *
      * @param lightTheme the lightTheme value to set
      * @return the SiteSealRequest object itself.
@@ -48,7 +48,7 @@ public class SiteSealRequest {
     }
 
     /**
-     * Get the locale value.
+     * Get locale of site seal.
      *
      * @return the locale value
      */
@@ -57,7 +57,7 @@ public class SiteSealRequest {
     }
 
     /**
-     * Set the locale value.
+     * Set locale of site seal.
      *
      * @param locale the locale value to set
      * @return the SiteSealRequest object itself.

@@ -33,7 +33,7 @@ public class TargetResource {
     private String resourceType;
 
     /**
-     * Get the id value.
+     * Get the ID of the resource.
      *
      * @return the id value
      */
@@ -42,7 +42,7 @@ public class TargetResource {
     }
 
     /**
-     * Set the id value.
+     * Set the ID of the resource.
      *
      * @param id the id value to set
      * @return the TargetResource object itself.
@@ -53,7 +53,7 @@ public class TargetResource {
     }
 
     /**
-     * Get the resourceName value.
+     * Get the name of the resource.
      *
      * @return the resourceName value
      */
@@ -62,7 +62,7 @@ public class TargetResource {
     }
 
     /**
-     * Set the resourceName value.
+     * Set the name of the resource.
      *
      * @param resourceName the resourceName value to set
      * @return the TargetResource object itself.
@@ -73,7 +73,7 @@ public class TargetResource {
     }
 
     /**
-     * Get the resourceType value.
+     * Get the type of the resource.
      *
      * @return the resourceType value
      */
@@ -82,7 +82,7 @@ public class TargetResource {
     }
 
     /**
-     * Set the resourceType value.
+     * Set the type of the resource.
      *
      * @param resourceType the resourceType value to set
      * @return the TargetResource object itself.

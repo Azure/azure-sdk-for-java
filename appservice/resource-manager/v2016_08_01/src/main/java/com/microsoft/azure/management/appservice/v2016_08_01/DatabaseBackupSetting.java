@@ -44,7 +44,7 @@ public class DatabaseBackupSetting {
     private String connectionString;
 
     /**
-     * Get the databaseType value.
+     * Get database type (e.g. SqlAzure / MySql). Possible values include: 'SqlAzure', 'MySql', 'LocalMySql', 'PostgreSql'.
      *
      * @return the databaseType value
      */
@@ -53,7 +53,7 @@ public class DatabaseBackupSetting {
     }
 
     /**
-     * Set the databaseType value.
+     * Set database type (e.g. SqlAzure / MySql). Possible values include: 'SqlAzure', 'MySql', 'LocalMySql', 'PostgreSql'.
      *
      * @param databaseType the databaseType value to set
      * @return the DatabaseBackupSetting object itself.
@@ -84,7 +84,8 @@ public class DatabaseBackupSetting {
     }
 
     /**
-     * Get the connectionStringName value.
+     * Get contains a connection string name that is linked to the SiteConfig.ConnectionStrings.
+     This is used during restore with overwrite connection strings options.
      *
      * @return the connectionStringName value
      */
@@ -93,7 +94,8 @@ public class DatabaseBackupSetting {
     }
 
     /**
-     * Set the connectionStringName value.
+     * Set contains a connection string name that is linked to the SiteConfig.ConnectionStrings.
+     This is used during restore with overwrite connection strings options.
      *
      * @param connectionStringName the connectionStringName value to set
      * @return the DatabaseBackupSetting object itself.
@@ -104,7 +106,7 @@ public class DatabaseBackupSetting {
     }
 
     /**
-     * Get the connectionString value.
+     * Get contains a connection string to a database which is being backed up or restored. If the restore should happen to a new database, the database name inside is the new one.
      *
      * @return the connectionString value
      */
@@ -113,7 +115,7 @@ public class DatabaseBackupSetting {
     }
 
     /**
-     * Set the connectionString value.
+     * Set contains a connection string to a database which is being backed up or restored. If the restore should happen to a new database, the database name inside is the new one.
      *
      * @param connectionString the connectionString value to set
      * @return the DatabaseBackupSetting object itself.

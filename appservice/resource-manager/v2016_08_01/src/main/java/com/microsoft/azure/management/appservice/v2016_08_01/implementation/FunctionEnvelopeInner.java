@@ -79,7 +79,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     private String testData;
 
     /**
-     * Get the functionEnvelopeName value.
+     * Get function name.
      *
      * @return the functionEnvelopeName value
      */
@@ -88,7 +88,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the functionAppId value.
+     * Get function App ID.
      *
      * @return the functionAppId value
      */
@@ -97,7 +97,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the scriptRootPathHref value.
+     * Get script root path URI.
      *
      * @return the scriptRootPathHref value
      */
@@ -106,7 +106,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the scriptRootPathHref value.
+     * Set script root path URI.
      *
      * @param scriptRootPathHref the scriptRootPathHref value to set
      * @return the FunctionEnvelopeInner object itself.
@@ -117,7 +117,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the scriptHref value.
+     * Get script URI.
      *
      * @return the scriptHref value
      */
@@ -126,7 +126,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the scriptHref value.
+     * Set script URI.
      *
      * @param scriptHref the scriptHref value to set
      * @return the FunctionEnvelopeInner object itself.
@@ -137,7 +137,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the configHref value.
+     * Get config URI.
      *
      * @return the configHref value
      */
@@ -146,7 +146,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the configHref value.
+     * Set config URI.
      *
      * @param configHref the configHref value to set
      * @return the FunctionEnvelopeInner object itself.
@@ -157,7 +157,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the secretsFileHref value.
+     * Get secrets file URI.
      *
      * @return the secretsFileHref value
      */
@@ -166,7 +166,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the secretsFileHref value.
+     * Set secrets file URI.
      *
      * @param secretsFileHref the secretsFileHref value to set
      * @return the FunctionEnvelopeInner object itself.
@@ -177,7 +177,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the href value.
+     * Get function URI.
      *
      * @return the href value
      */
@@ -186,7 +186,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the href value.
+     * Set function URI.
      *
      * @param href the href value to set
      * @return the FunctionEnvelopeInner object itself.
@@ -197,7 +197,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the config value.
+     * Get config information.
      *
      * @return the config value
      */
@@ -206,7 +206,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the config value.
+     * Set config information.
      *
      * @param config the config value to set
      * @return the FunctionEnvelopeInner object itself.
@@ -217,7 +217,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the files value.
+     * Get file list.
      *
      * @return the files value
      */
@@ -226,7 +226,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the files value.
+     * Set file list.
      *
      * @param files the files value to set
      * @return the FunctionEnvelopeInner object itself.
@@ -237,7 +237,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the testData value.
+     * Get test data used when testing via the Azure Portal.
      *
      * @return the testData value
      */
@@ -246,7 +246,7 @@ public class FunctionEnvelopeInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the testData value.
+     * Set test data used when testing via the Azure Portal.
      *
      * @param testData the testData value to set
      * @return the FunctionEnvelopeInner object itself.

@@ -32,7 +32,7 @@ public class ExportTemplateRequest {
     private String options;
 
     /**
-     * Get the resources value.
+     * Get the IDs of the resources. The only supported string currently is '*' (all resources). Future updates will support exporting specific resources.
      *
      * @return the resources value
      */
@@ -41,7 +41,7 @@ public class ExportTemplateRequest {
     }
 
     /**
-     * Set the resources value.
+     * Set the IDs of the resources. The only supported string currently is '*' (all resources). Future updates will support exporting specific resources.
      *
      * @param resources the resources value to set
      * @return the ExportTemplateRequest object itself.
@@ -52,7 +52,7 @@ public class ExportTemplateRequest {
     }
 
     /**
-     * Get the options value.
+     * Get the export template options. Supported values include 'IncludeParameterDefaultValue', 'IncludeComments' or 'IncludeParameterDefaultValue, IncludeComments.
      *
      * @return the options value
      */
@@ -61,7 +61,7 @@ public class ExportTemplateRequest {
     }
 
     /**
-     * Set the options value.
+     * Set the export template options. Supported values include 'IncludeParameterDefaultValue', 'IncludeComments' or 'IncludeParameterDefaultValue, IncludeComments.
      *
      * @param options the options value to set
      * @return the ExportTemplateRequest object itself.

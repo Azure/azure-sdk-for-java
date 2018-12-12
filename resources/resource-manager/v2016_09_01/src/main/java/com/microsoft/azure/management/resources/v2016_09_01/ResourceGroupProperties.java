@@ -21,7 +21,7 @@ public class ResourceGroupProperties {
     private String provisioningState;
 
     /**
-     * Get the provisioningState value.
+     * Get the provisioning state.
      *
      * @return the provisioningState value
      */

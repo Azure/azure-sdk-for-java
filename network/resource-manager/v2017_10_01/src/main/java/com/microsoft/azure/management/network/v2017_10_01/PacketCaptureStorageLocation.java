@@ -38,7 +38,7 @@ public class PacketCaptureStorageLocation {
     private String filePath;
 
     /**
-     * Get the storageId value.
+     * Get the ID of the storage account to save the packet capture session. Required if no local file path is provided.
      *
      * @return the storageId value
      */
@@ -47,7 +47,7 @@ public class PacketCaptureStorageLocation {
     }
 
     /**
-     * Set the storageId value.
+     * Set the ID of the storage account to save the packet capture session. Required if no local file path is provided.
      *
      * @param storageId the storageId value to set
      * @return the PacketCaptureStorageLocation object itself.
@@ -58,7 +58,7 @@ public class PacketCaptureStorageLocation {
     }
 
     /**
-     * Get the storagePath value.
+     * Get the URI of the storage path to save the packet capture. Must be a well-formed URI describing the location to save the packet capture.
      *
      * @return the storagePath value
      */
@@ -67,7 +67,7 @@ public class PacketCaptureStorageLocation {
     }
 
     /**
-     * Set the storagePath value.
+     * Set the URI of the storage path to save the packet capture. Must be a well-formed URI describing the location to save the packet capture.
      *
      * @param storagePath the storagePath value to set
      * @return the PacketCaptureStorageLocation object itself.
@@ -78,7 +78,7 @@ public class PacketCaptureStorageLocation {
     }
 
     /**
-     * Get the filePath value.
+     * Get a valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux virtual machine it must start with /var/captures. Required if no storage ID is provided, otherwise optional.
      *
      * @return the filePath value
      */
@@ -87,7 +87,7 @@ public class PacketCaptureStorageLocation {
     }
 
     /**
-     * Set the filePath value.
+     * Set a valid local path on the targeting VM. Must include the name of the capture file (*.cap). For linux virtual machine it must start with /var/captures. Required if no storage ID is provided, otherwise optional.
      *
      * @param filePath the filePath value to set
      * @return the PacketCaptureStorageLocation object itself.

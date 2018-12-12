@@ -46,7 +46,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     private List<DatabaseBackupSetting> databases;
 
     /**
-     * Get the enabled value.
+     * Get true if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.
      *
      * @return the enabled value
      */
@@ -55,7 +55,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the enabled value.
+     * Set true if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.
      *
      * @param enabled the enabled value to set
      * @return the BackupRequestInner object itself.
@@ -66,7 +66,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the storageAccountUrl value.
+     * Get sAS URL to the container.
      *
      * @return the storageAccountUrl value
      */
@@ -75,7 +75,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the storageAccountUrl value.
+     * Set sAS URL to the container.
      *
      * @param storageAccountUrl the storageAccountUrl value to set
      * @return the BackupRequestInner object itself.
@@ -86,7 +86,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the backupSchedule value.
+     * Get schedule for the backup if it is executed periodically.
      *
      * @return the backupSchedule value
      */
@@ -95,7 +95,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the backupSchedule value.
+     * Set schedule for the backup if it is executed periodically.
      *
      * @param backupSchedule the backupSchedule value to set
      * @return the BackupRequestInner object itself.
@@ -106,7 +106,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the databases value.
+     * Get databases included in the backup.
      *
      * @return the databases value
      */
@@ -115,7 +115,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the databases value.
+     * Set databases included in the backup.
      *
      * @param databases the databases value to set
      * @return the BackupRequestInner object itself.

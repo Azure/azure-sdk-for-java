@@ -54,7 +54,7 @@ public class PremierAddOnInner extends Resource {
     private String kind;
 
     /**
-     * Get the sku value.
+     * Get premier add on SKU.
      *
      * @return the sku value
      */
@@ -63,7 +63,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Set the sku value.
+     * Set premier add on SKU.
      *
      * @param sku the sku value to set
      * @return the PremierAddOnInner object itself.
@@ -74,7 +74,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Get the product value.
+     * Get premier add on Product.
      *
      * @return the product value
      */
@@ -83,7 +83,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Set the product value.
+     * Set premier add on Product.
      *
      * @param product the product value to set
      * @return the PremierAddOnInner object itself.
@@ -94,7 +94,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Get the vendor value.
+     * Get premier add on Vendor.
      *
      * @return the vendor value
      */
@@ -103,7 +103,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Set the vendor value.
+     * Set premier add on Vendor.
      *
      * @param vendor the vendor value to set
      * @return the PremierAddOnInner object itself.
@@ -114,7 +114,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Get the marketplacePublisher value.
+     * Get premier add on Marketplace publisher.
      *
      * @return the marketplacePublisher value
      */
@@ -123,7 +123,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Set the marketplacePublisher value.
+     * Set premier add on Marketplace publisher.
      *
      * @param marketplacePublisher the marketplacePublisher value to set
      * @return the PremierAddOnInner object itself.
@@ -134,7 +134,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Get the marketplaceOffer value.
+     * Get premier add on Marketplace offer.
      *
      * @return the marketplaceOffer value
      */
@@ -143,7 +143,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Set the marketplaceOffer value.
+     * Set premier add on Marketplace offer.
      *
      * @param marketplaceOffer the marketplaceOffer value to set
      * @return the PremierAddOnInner object itself.
@@ -154,7 +154,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Get the kind value.
+     * Get kind of resource.
      *
      * @return the kind value
      */
@@ -163,7 +163,7 @@ public class PremierAddOnInner extends Resource {
     }
 
     /**
-     * Set the kind value.
+     * Set kind of resource.
      *
      * @param kind the kind value to set
      * @return the PremierAddOnInner object itself.

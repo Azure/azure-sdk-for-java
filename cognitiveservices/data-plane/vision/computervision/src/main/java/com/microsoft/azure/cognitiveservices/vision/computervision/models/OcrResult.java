@@ -34,7 +34,7 @@ public class OcrResult {
      * recognized correctly.
      */
     @JsonProperty(value = "textAngle")
-    private Double textAngle;
+    private double textAngle;
 
     /**
      * Orientation of the text recognized in the image. The value
@@ -77,7 +77,7 @@ public class OcrResult {
      *
      * @return the textAngle value
      */
-    public Double textAngle() {
+    public double textAngle() {
         return this.textAngle;
     }
 
@@ -87,7 +87,7 @@ public class OcrResult {
      * @param textAngle the textAngle value to set
      * @return the OcrResult object itself.
      */
-    public OcrResult withTextAngle(Double textAngle) {
+    public OcrResult withTextAngle(double textAngle) {
         this.textAngle = textAngle;
         return this;
     }

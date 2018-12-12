@@ -32,7 +32,7 @@ public class SnapshotRecoveryTarget {
     private String id;
 
     /**
-     * Get the location value.
+     * Get geographical location of the target web app, e.g. SouthEastAsia, SouthCentralUS.
      *
      * @return the location value
      */
@@ -41,7 +41,7 @@ public class SnapshotRecoveryTarget {
     }
 
     /**
-     * Set the location value.
+     * Set geographical location of the target web app, e.g. SouthEastAsia, SouthCentralUS.
      *
      * @param location the location value to set
      * @return the SnapshotRecoveryTarget object itself.
@@ -52,7 +52,9 @@ public class SnapshotRecoveryTarget {
     }
 
     /**
-     * Get the id value.
+     * Get aRM resource ID of the target app.
+     /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production slots and
+     /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
      *
      * @return the id value
      */
@@ -61,7 +63,9 @@ public class SnapshotRecoveryTarget {
     }
 
     /**
-     * Set the id value.
+     * Set aRM resource ID of the target app.
+     /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production slots and
+     /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
      *
      * @param id the id value to set
      * @return the SnapshotRecoveryTarget object itself.

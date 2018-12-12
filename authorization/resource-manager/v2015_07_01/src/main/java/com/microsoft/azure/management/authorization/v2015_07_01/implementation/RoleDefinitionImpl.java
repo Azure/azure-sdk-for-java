@@ -13,10 +13,14 @@ import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinition;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinitionProperties;
+import java.util.List;
+import rx.functions.Func1;
 
 class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefinitionInner, RoleDefinitionImpl> implements RoleDefinition, RoleDefinition.Definition, RoleDefinition.Update {
     private String scope;
     private String roleDefinitionId;
+    private RoleDefinitionProperties cproperties;
+    private RoleDefinitionProperties uproperties;
     private final AuthorizationManager manager;
 
     RoleDefinitionImpl(String name, AuthorizationManager manager) {
@@ -25,6 +29,8 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
         // Set resource name
         this.roleDefinitionId = name;
         //
+        this.cproperties = new RoleDefinitionProperties();
+        this.uproperties = new RoleDefinitionProperties();
     }
 
     RoleDefinitionImpl(RoleDefinitionInner inner, AuthorizationManager manager) {
@@ -32,10 +38,12 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
         this.manager = manager;
         // Set resource name
         this.roleDefinitionId = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.roleDefinitionId = IdParsingUtils.getValueFromIdByName(inner.id(), "roleDefinitions");
         this.scope = IdParsingUtils.getValueFromIdByPosition(inner.id(), 0);
-        //
+        // set other parameters for create and update
+        this.cproperties = new RoleDefinitionProperties();
+        this.uproperties = new RoleDefinitionProperties();
     }
 
     @Override
@@ -46,14 +54,28 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
     @Override
     public Observable<RoleDefinition> createResourceAsync() {
         RoleDefinitionsInner client = this.manager().inner().roleDefinitions();
-        return client.createOrUpdateAsync(this.scope, this.roleDefinitionId)
+        return client.createOrUpdateAsync(this.scope, this.roleDefinitionId, this.cproperties)
+            .map(new Func1<RoleDefinitionInner, RoleDefinitionInner>() {
+               @Override
+               public RoleDefinitionInner call(RoleDefinitionInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<RoleDefinition> updateResourceAsync() {
         RoleDefinitionsInner client = this.manager().inner().roleDefinitions();
-        return client.createOrUpdateAsync(this.scope, this.roleDefinitionId)
+        return client.createOrUpdateAsync(this.scope, this.roleDefinitionId, this.uproperties)
+            .map(new Func1<RoleDefinitionInner, RoleDefinitionInner>() {
+               @Override
+               public RoleDefinitionInner call(RoleDefinitionInner resource) {
+                   resetCreateUpdateParameters();
+                   return resource;
+               }
+            })
             .map(innerToFluentMap(this));
     }
 
@@ -68,6 +90,10 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
         return this.inner().id() == null;
     }
 
+    private void resetCreateUpdateParameters() {
+        this.cproperties = new RoleDefinitionProperties();
+        this.uproperties = new RoleDefinitionProperties();
+    }
 
     @Override
     public String id() {
@@ -92,6 +118,16 @@ class RoleDefinitionImpl extends CreatableUpdatableImpl<RoleDefinition, RoleDefi
     @Override
     public RoleDefinitionImpl withScope(String scope) {
         this.scope = scope;
+        return this;
+    }
+
+    @Override
+    public RoleDefinitionImpl withProperties(RoleDefinitionProperties properties) {
+        if (isInCreateMode()) {
+            this.cproperties = properties;
+        } else {
+            this.uproperties = properties;
+        }
         return this;
     }
 

@@ -47,7 +47,7 @@ public class User extends ProxyOnlyResource {
     private String publishingPasswordHashSalt;
 
     /**
-     * Get the userName value.
+     * Get username.
      *
      * @return the userName value
      */
@@ -56,7 +56,7 @@ public class User extends ProxyOnlyResource {
     }
 
     /**
-     * Set the userName value.
+     * Set username.
      *
      * @param userName the userName value to set
      * @return the User object itself.
@@ -67,7 +67,7 @@ public class User extends ProxyOnlyResource {
     }
 
     /**
-     * Get the publishingUserName value.
+     * Get username used for publishing.
      *
      * @return the publishingUserName value
      */
@@ -76,7 +76,7 @@ public class User extends ProxyOnlyResource {
     }
 
     /**
-     * Set the publishingUserName value.
+     * Set username used for publishing.
      *
      * @param publishingUserName the publishingUserName value to set
      * @return the User object itself.
@@ -87,7 +87,7 @@ public class User extends ProxyOnlyResource {
     }
 
     /**
-     * Get the publishingPassword value.
+     * Get password used for publishing.
      *
      * @return the publishingPassword value
      */
@@ -96,7 +96,7 @@ public class User extends ProxyOnlyResource {
     }
 
     /**
-     * Set the publishingPassword value.
+     * Set password used for publishing.
      *
      * @param publishingPassword the publishingPassword value to set
      * @return the User object itself.
@@ -107,7 +107,7 @@ public class User extends ProxyOnlyResource {
     }
 
     /**
-     * Get the publishingPasswordHash value.
+     * Get password hash used for publishing.
      *
      * @return the publishingPasswordHash value
      */
@@ -116,7 +116,7 @@ public class User extends ProxyOnlyResource {
     }
 
     /**
-     * Set the publishingPasswordHash value.
+     * Set password hash used for publishing.
      *
      * @param publishingPasswordHash the publishingPasswordHash value to set
      * @return the User object itself.
@@ -127,7 +127,7 @@ public class User extends ProxyOnlyResource {
     }
 
     /**
-     * Get the publishingPasswordHashSalt value.
+     * Get password hash salt used for publishing.
      *
      * @return the publishingPasswordHashSalt value
      */
@@ -136,7 +136,7 @@ public class User extends ProxyOnlyResource {
     }
 
     /**
-     * Set the publishingPasswordHashSalt value.
+     * Set password hash salt used for publishing.
      *
      * @param publishingPasswordHashSalt the publishingPasswordHashSalt value to set
      * @return the User object itself.

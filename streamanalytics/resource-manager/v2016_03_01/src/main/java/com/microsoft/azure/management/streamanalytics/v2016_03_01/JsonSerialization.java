@@ -43,7 +43,7 @@ public class JsonSerialization extends Serialization {
     private JsonOutputSerializationFormat format;
 
     /**
-     * Get the encoding value.
+     * Get specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output. Required on PUT (CreateOrReplace) requests. Possible values include: 'UTF8'.
      *
      * @return the encoding value
      */
@@ -52,7 +52,7 @@ public class JsonSerialization extends Serialization {
     }
 
     /**
-     * Set the encoding value.
+     * Set specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output. Required on PUT (CreateOrReplace) requests. Possible values include: 'UTF8'.
      *
      * @param encoding the encoding value to set
      * @return the JsonSerialization object itself.
@@ -63,7 +63,7 @@ public class JsonSerialization extends Serialization {
     }
 
     /**
-     * Get the format value.
+     * Get this property only applies to JSON serialization of outputs only. It is not applicable to inputs. This property specifies the format of the JSON the output will be written in. The currently supported values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is 'lineSeparated' if left null. Possible values include: 'LineSeparated', 'Array'.
      *
      * @return the format value
      */
@@ -72,7 +72,7 @@ public class JsonSerialization extends Serialization {
     }
 
     /**
-     * Set the format value.
+     * Set this property only applies to JSON serialization of outputs only. It is not applicable to inputs. This property specifies the format of the JSON the output will be written in. The currently supported values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is 'lineSeparated' if left null. Possible values include: 'LineSeparated', 'Array'.
      *
      * @param format the format value to set
      * @return the JsonSerialization object itself.

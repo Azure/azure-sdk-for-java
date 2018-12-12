@@ -120,7 +120,8 @@ class PolicySetDefinitionsImpl extends WrapperImpl<PolicySetDefinitionsInner> im
             public Iterable<PolicySetDefinitionInner> call(Page<PolicySetDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<PolicySetDefinitionInner, PolicySetDefinition>() {
+        })
+        .map(new Func1<PolicySetDefinitionInner, PolicySetDefinition>() {
             @Override
             public PolicySetDefinition call(PolicySetDefinitionInner inner) {
                 return new PolicySetDefinitionImpl(inner, manager());
@@ -137,7 +138,8 @@ class PolicySetDefinitionsImpl extends WrapperImpl<PolicySetDefinitionsInner> im
             public Iterable<PolicySetDefinitionInner> call(Page<PolicySetDefinitionInner> page) {
                 return page.items();
             }
-        })    .map(new Func1<PolicySetDefinitionInner, PolicySetDefinition>() {
+        })
+        .map(new Func1<PolicySetDefinitionInner, PolicySetDefinition>() {
             @Override
             public PolicySetDefinition call(PolicySetDefinitionInner inner) {
                 return new PolicySetDefinitionImpl(inner, manager());

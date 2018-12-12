@@ -178,7 +178,8 @@ class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateO
             public Observable<CertificateOrderActionInner> call(List<CertificateOrderActionInner> innerList) {
                 return Observable.from(innerList);
             }
-        })    .map(new Func1<CertificateOrderActionInner, CertificateOrderAction>() {
+        })
+        .map(new Func1<CertificateOrderActionInner, CertificateOrderAction>() {
             @Override
             public CertificateOrderAction call(CertificateOrderActionInner inner) {
                 return new CertificateOrderActionImpl(inner, manager());
@@ -195,7 +196,8 @@ class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateO
             public Observable<CertificateEmailInner> call(List<CertificateEmailInner> innerList) {
                 return Observable.from(innerList);
             }
-        })    .map(new Func1<CertificateEmailInner, CertificateEmail>() {
+        })
+        .map(new Func1<CertificateEmailInner, CertificateEmail>() {
             @Override
             public CertificateEmail call(CertificateEmailInner inner) {
                 return new CertificateEmailImpl(inner, manager());

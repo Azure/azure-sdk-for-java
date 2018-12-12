@@ -41,7 +41,7 @@ public class ManagedServiceIdentity {
     private List<String> identityIds;
 
     /**
-     * Get the type value.
+     * Get type of managed service identity. Possible values include: 'SystemAssigned', 'UserAssigned'.
      *
      * @return the type value
      */
@@ -50,7 +50,7 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Set the type value.
+     * Set type of managed service identity. Possible values include: 'SystemAssigned', 'UserAssigned'.
      *
      * @param type the type value to set
      * @return the ManagedServiceIdentity object itself.
@@ -61,7 +61,7 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Get the tenantId value.
+     * Get tenant of managed service identity.
      *
      * @return the tenantId value
      */
@@ -70,7 +70,7 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Get the principalId value.
+     * Get principal Id of managed service identity.
      *
      * @return the principalId value
      */
@@ -79,7 +79,7 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Get the identityIds value.
+     * Get array of UserAssigned managed service identities.
      *
      * @return the identityIds value
      */
@@ -88,7 +88,7 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Set the identityIds value.
+     * Set array of UserAssigned managed service identities.
      *
      * @param identityIds the identityIds value to set
      * @return the ManagedServiceIdentity object itself.

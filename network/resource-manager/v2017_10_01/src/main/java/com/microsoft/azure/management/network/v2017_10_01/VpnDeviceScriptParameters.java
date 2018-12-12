@@ -33,7 +33,7 @@ public class VpnDeviceScriptParameters {
     private String firmwareVersion;
 
     /**
-     * Get the vendor value.
+     * Get the vendor for the vpn device.
      *
      * @return the vendor value
      */
@@ -42,7 +42,7 @@ public class VpnDeviceScriptParameters {
     }
 
     /**
-     * Set the vendor value.
+     * Set the vendor for the vpn device.
      *
      * @param vendor the vendor value to set
      * @return the VpnDeviceScriptParameters object itself.
@@ -53,7 +53,7 @@ public class VpnDeviceScriptParameters {
     }
 
     /**
-     * Get the deviceFamily value.
+     * Get the device family for the vpn device.
      *
      * @return the deviceFamily value
      */
@@ -62,7 +62,7 @@ public class VpnDeviceScriptParameters {
     }
 
     /**
-     * Set the deviceFamily value.
+     * Set the device family for the vpn device.
      *
      * @param deviceFamily the deviceFamily value to set
      * @return the VpnDeviceScriptParameters object itself.
@@ -73,7 +73,7 @@ public class VpnDeviceScriptParameters {
     }
 
     /**
-     * Get the firmwareVersion value.
+     * Get the firmware version for the vpn device.
      *
      * @return the firmwareVersion value
      */
@@ -82,7 +82,7 @@ public class VpnDeviceScriptParameters {
     }
 
     /**
-     * Set the firmwareVersion value.
+     * Set the firmware version for the vpn device.
      *
      * @param firmwareVersion the firmwareVersion value to set
      * @return the VpnDeviceScriptParameters object itself.

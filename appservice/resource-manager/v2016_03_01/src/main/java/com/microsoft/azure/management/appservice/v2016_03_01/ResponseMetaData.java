@@ -21,7 +21,7 @@ public class ResponseMetaData {
     private DataSource dataSource;
 
     /**
-     * Get the dataSource value.
+     * Get source of the Data.
      *
      * @return the dataSource value
      */
@@ -30,7 +30,7 @@ public class ResponseMetaData {
     }
 
     /**
-     * Set the dataSource value.
+     * Set source of the Data.
      *
      * @param dataSource the dataSource value to set
      * @return the ResponseMetaData object itself.
