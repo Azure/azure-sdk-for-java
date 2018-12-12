@@ -21,7 +21,9 @@ import java.util.Map;
 import java.util.Random;
 import javax.crypto.Cipher;
 
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.joda.time.DateTime;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
@@ -52,6 +54,22 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     private static final String KEY_NAME = "javaKey";
     private static final int MAX_KEYS = 4;
     private static final int PAGELIST_MAX_KEYS = 3;
+
+
+    @AfterClass
+    public static void afterClass() {
+        if (isRecordMode()) {
+            List<DeletedKeyItem> deletedKeys = keyVaultClient.getDeletedKeys(getVaultUri());
+            for (DeletedKeyItem key : deletedKeys) {
+                keyVaultClient.purgeDeletedKey(getVaultUri(), getKeyName(key.recoveryId()));
+            }
+        }
+    }
+
+    private static String getKeyName(String recoveryId) {
+        String[] idParts = recoveryId.split("/");
+        return idParts[idParts.length-1];
+    }
 
     @Test
     public void transparentAuthenticationForKeyOperationsTest() throws Exception {
@@ -281,9 +299,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
         
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
-        if (isRecordMode()) {
-        	Thread.sleep(40000);
-        }
+        SdkContext.sleep(40000);
     }
 
     @Test
@@ -303,9 +319,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         byte[] keyBackup;
         {
             keyBackup = keyVaultClient.backupKey(getVaultUri(), KEY_NAME).value();
-            if (isRecordMode()) {
-            	Thread.sleep(20000);
-            }
+            SdkContext.sleep(20000);
         }
 
         // Deletes the key.
@@ -315,9 +329,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
         
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
-        if (isRecordMode()) {
-        	Thread.sleep(40000);
-        }
+       	SdkContext.sleep(40000);
 
         // Restores the key.
         {
@@ -343,9 +355,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     ++failureCount;
                     if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
-                        if (isRecordMode()) {
-                        	Thread.sleep(failureCount * 1500);
-                        }
+                        SdkContext.sleep(failureCount * 1500);
                         continue;
                     }
                     throw e;
@@ -387,9 +397,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         		KeyIdentifier id = new KeyIdentifier(item.kid());
         		Assert.assertTrue(toDelete.contains(id.name()));
         		keyVaultClient.purgeDeletedKey(getVaultUri(), id.name());
-        		if (isRecordMode()) {
-        			Thread.sleep(40000);
-        		}
+        		SdkContext.sleep(40000);
         	}
         }
 
@@ -410,9 +418,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     ++failureCount;
                     if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
-                        if (isRecordMode()) {
-                        	Thread.sleep(failureCount * 1500);
-                        }
+                        SdkContext.sleep(failureCount * 1500);
                         continue;
                     }
                     throw e;
@@ -437,9 +443,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         pollOnKeyDeletion(getVaultUri(), KEY_NAME);
         
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
-        if (isRecordMode()) {
-        	Thread.sleep(40000);        
-        }
+        SdkContext.sleep(40000);
     }
 
     @Test

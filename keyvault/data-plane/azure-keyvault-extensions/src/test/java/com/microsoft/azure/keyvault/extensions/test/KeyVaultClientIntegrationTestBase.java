@@ -4,7 +4,6 @@ import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.AzureResponseBuilder;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.keyvault.authentication.KeyVaultCredentials;
 import com.microsoft.azure.keyvault.models.Attributes;
@@ -78,11 +77,11 @@ public class KeyVaultClientIntegrationTestBase {
 	}
 
 	private static String getLiveVaultUri1() {
-		return getenvOrDefault("keyvault.vaulturi", "https://javasdktestvault.vault.azure.net");
+		return getenvOrDefault("KEYVAULT_VAULTURI", "https://javasdktestvault.vault.azure.net");
 	}
 
 	private static String getLiveVaultUri2() {
-		return getenvOrDefault("keyvault.vaulturi.alt", "https://javasdktestvault2.vault.azure.net");
+		return getenvOrDefault("KEYVAULT_VAULTURI_ALT", "https://javasdktestvault2.vault.azure.net");
 	}
 
 	private static String getenvOrDefault(String varName, String defValue) {
@@ -100,13 +99,13 @@ public class KeyVaultClientIntegrationTestBase {
 
 	private static AuthenticationResult getAccessToken(String authorization, String resource) throws Exception {
 
-		String clientId = System.getenv("arm.clientid");
+		String clientId = System.getenv("ARM_CLIENTID");
 
 		if (clientId == null) {
 			throw new Exception("Please inform arm.clientid in the environment settings.");
 		}
 
-		String clientKey = System.getenv("arm.clientkey");
+		String clientKey = System.getenv("ARM_CLIENTKEY");
 		String username = System.getenv("arm.username");
 		String password = System.getenv("arm.password");
 
