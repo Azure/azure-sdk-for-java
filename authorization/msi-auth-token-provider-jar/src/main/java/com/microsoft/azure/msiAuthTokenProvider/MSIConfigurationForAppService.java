@@ -15,6 +15,7 @@ public class MSIConfigurationForAppService {
     private String msiEndpoint;
     private String msiSecret;
     private String clientId;
+    private String objectId;
 
     /**
      * Creates MSIConfigurationForAppService.
@@ -70,6 +71,13 @@ public class MSIConfigurationForAppService {
     }
 
     /**
+     * @return the object id
+     */
+    public String msiObjectId() {
+        return this.objectId;
+    }
+
+    /**
      * @return the client id
      */
     public String msiClientId() {
@@ -96,7 +104,7 @@ public class MSIConfigurationForAppService {
      * @return MSIConfigurationForAppService
      */
     public MSIConfigurationForAppService withMsiEndpoint(String msiEndpoint) {
-        this.msiSecret = msiEndpoint;
+        this.msiEndpoint = msiEndpoint;
         return this;
     }
 
@@ -107,6 +115,16 @@ public class MSIConfigurationForAppService {
      */
     public MSIConfigurationForAppService withClientId(String clientId) {
         this.clientId = clientId;
+        return this;
+    }
+
+    /**
+     * Specify the object Id (to be used or user assigned identities)
+     * @param objectId the object ID fot eh user assigned identity
+     * @return MSIConfigurationForAppService
+     */
+    public MSIConfigurationForAppService withObjectId(String objectId) {
+        this.objectId = objectId;
         return this;
     }
 
@@ -135,8 +153,10 @@ public class MSIConfigurationForAppService {
             copy.withMsiSecret(this.msiSecret());
         }
         if (this.msiClientId() != null) {
-
             copy.withClientId(this.msiClientId());
+        }
+        if (this.msiObjectId() != null) {
+            copy.withObjectId(this.msiObjectId());
         }
         return copy;
     }

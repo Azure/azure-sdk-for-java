@@ -6,8 +6,6 @@
 
 package com.microsoft.azure.msiAuthTokenProvider;
 
-import rx.Single;
-
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.SocketException;
@@ -143,18 +141,31 @@ public final class MSICredentials{
         }
     }
 
-    public Single<MSIToken> getToken(String tokenAudience) {
+    /**
+     * Updates the object Id for the associated config (vm or app)
+     * Specifying a null value will clear out the old value
+     * @param objectId
+     */
+    public void updateObjectId(String objectId) {
+        if (configForVM != null) {
+            configForVM.withObjectId(objectId);
+        } else {
+            configForAppService.withObjectId(objectId);
+        }
+    }
+
+    public MSIToken getToken(String tokenAudience) throws IOException, AzureMSICredentialException{
         switch (hostType) {
             case VIRTUAL_MACHINE:
-                    return Single.fromCallable(() -> this.getTokenForVirtualMachineFromIMDSEndpoint(tokenAudience == null ? this.configForVM.resource() : tokenAudience));
+                    return this.retrieveTokenFromIDMSWithRetry(tokenAudience == null ? this.configForVM.resource() : tokenAudience);
             case APP_SERVICE:
-                return Single.fromCallable(() -> getTokenForAppService(tokenAudience));
+                return this.getTokenForAppService(tokenAudience);
             default:
                 throw new IllegalArgumentException("unknown host type:" + hostType);
         }
     }
 
-    private MSIToken getTokenForAppService(String tokenAudience) throws IOException, ParseException {
+    private MSIToken getTokenForAppService(String tokenAudience) throws IOException, AzureMSICredentialException {
         String urlString = null;
 
         if (this.configForAppService.msiEndpoint() == null || this.configForAppService.msiEndpoint().isEmpty()) {
@@ -166,6 +177,10 @@ public final class MSICredentials{
             urlString = String.format("%s?resource=%s&clientid=%s&api-version=2017-09-01", this.configForAppService.msiEndpoint(),
                     tokenAudience == null ? this.configForAppService.resource() : tokenAudience,
                     this.configForAppService.msiClientId());
+        } else if (this.configForAppService.msiObjectId() != null && !this.configForAppService.msiObjectId().isEmpty()) {
+            urlString = String.format("%s?resource=%s&objectid=%s&api-version=2017-09-01", this.configForAppService.msiEndpoint(),
+                    tokenAudience == null ? this.configForAppService.resource() : tokenAudience,
+                    this.configForAppService.msiObjectId());
         } else {
             urlString = String.format("%s?resource=%s&api-version=2017-09-01", this.configForAppService.msiEndpoint(),
                     tokenAudience == null ? this.configForAppService.resource() : tokenAudience);
@@ -189,11 +204,11 @@ public final class MSICredentials{
             return getMsiTokenFromResult(result, HostType.APP_SERVICE);
         } catch (IOException ioEx){
             if  (ioEx.getMessage().contains("Server returned HTTP response code: 400 for URL")) {
-                throw new FileNotFoundException("Managed identity not found/configured");
+                throw new AzureMSICredentialException("Managed identity not found/configured", ioEx);
             } else throw ioEx;
         } catch (Exception e){
             if (e.getCause()!= null && e.getCause() instanceof SocketException && e.getCause().getMessage().contains("Permission denied: connect")) {
-                throw new FileNotFoundException("Managed identity not found/configured");
+                throw new AzureMSICredentialException("Managed identity not found/configured", e);
             } else throw e;
         } finally {
             if (connection != null) {
@@ -202,18 +217,7 @@ public final class MSICredentials{
         }
     }
 
-    private MSIToken getTokenForVirtualMachineFromIMDSEndpoint(String tokenAudience) {
-        MSIToken token = null;
-
-            try {
-                token = retrieveTokenFromIDMSWithRetry(tokenAudience);
-            } catch (IOException exception) {
-                throw new RuntimeException(exception);
-            }
-            return token;
-    }
-
-    private MSIToken retrieveTokenFromIDMSWithRetry(String tokenAudience) throws IOException {
+    private MSIToken retrieveTokenFromIDMSWithRetry(String tokenAudience) throws AzureMSICredentialException, IOException {
         StringBuilder payload = new StringBuilder();
         final int imdsUpgradeTimeInMs = 70 * 1000;
 
@@ -243,7 +247,7 @@ public final class MSICredentials{
                 payload.append(URLEncoder.encode(this.configForVM.identityId(), "UTF-8"));
             }
         } catch (IOException exception) {
-            throw new RuntimeException(exception);
+            throw new AzureMSICredentialException(exception);
         }
 
         int retry = 1;
@@ -275,7 +279,7 @@ public final class MSICredentials{
                         sleep(retryTimeoutInMs);
                     }
                 } else {
-                    throw new RuntimeException("Couldn't acquire access token from IMDS, verify your objectId, clientId or msiResourceId", exception);
+                    throw new AzureMSICredentialException("Couldn't acquire access token from IMDS, verify your objectId, clientId or msiResourceId", exception);
                 }
             } finally {
                 if (connection != null) {
@@ -285,13 +289,17 @@ public final class MSICredentials{
         }
         //
         if (retry > maxRetry) {
-            throw new RuntimeException(String.format("MSI: Failed to acquire tokens after retrying %s times", maxRetry));
+            throw new AzureMSICredentialException(String.format("MSI: Failed to acquire tokens after retrying %s times", maxRetry));
         }
         return null;
     }
 
-    private static MSIToken getMsiTokenFromResult(String result, HostType hostType) throws ParseException {
-        return new MSIToken(getTokenFromResult(result), getTokenTypeFromResult(result), getExpiryTimeFromResult(result, hostType));
+    private static MSIToken getMsiTokenFromResult(String result, HostType hostType) throws AzureMSICredentialException{
+        try {
+            return new MSIToken(getTokenFromResult(result), getTokenTypeFromResult(result), getExpiryTimeFromResult(result, hostType));
+        } catch (ParseException pe) {
+            throw new AzureMSICredentialException(pe.getMessage(), pe);
+        }
     }
 
     private static String getTokenFromResult(String result) {
@@ -306,6 +314,16 @@ public final class MSICredentials{
                 + ActiveDirectoryAuthentication.ACCESS_TOKEN_TYPE_IDENTIFIER.length();
 
         return (result.substring(startIndex_AT, result.indexOf("\"", startIndex_AT + 1)));
+    }
+
+    private int getIndexInString(String sourceText, String subString) throws ParseException {
+        int index = sourceText.indexOf(subString);
+
+        if (index < 0) {
+            throw new ParseException("Text to search not found in source text", 0);
+        }
+
+        return index;
     }
 
     private static Date getExpiryTimeFromResult(String result, HostType hostType) throws ParseException {
