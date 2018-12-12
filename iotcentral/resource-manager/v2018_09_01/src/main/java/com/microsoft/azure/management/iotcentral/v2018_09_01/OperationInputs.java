@@ -21,6 +21,12 @@ public class OperationInputs {
     private String name;
 
     /**
+     * The type of the IoT Central resource to query.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
+    /**
      * Get the name of the IoT Central application instance to check.
      *
      * @return the name value
@@ -37,6 +43,26 @@ public class OperationInputs {
      */
     public OperationInputs withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the type of the IoT Central resource to query.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type of the IoT Central resource to query.
+     *
+     * @param type the type value to set
+     * @return the OperationInputs object itself.
+     */
+    public OperationInputs withType(String type) {
+        this.type = type;
         return this;
     }
 

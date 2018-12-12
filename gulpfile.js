@@ -56,7 +56,7 @@ gulp.task('default', function() {
 const maxParallelism = parseInt(args['parallel'], 10) || os.cpus().length;
 var specRoot = args['spec-root'] || defaultSpecRoot;
 var projects = args['projects'];
-var autoRestVersion = 'latest'; // default
+var autoRestVersion = 'preview'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
@@ -66,7 +66,7 @@ var autoRestExe;
 
 gulp.task('codegen', function(cb) {
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/) ||
-        autoRestVersion == 'latest') {
+        autoRestVersion == 'preview') {
             autoRestExe = 'autorest ---version=' + autoRestVersion;
             handleInput(projects, cb);
     } else {
@@ -119,7 +119,7 @@ var codegen = function(project, cb) {
         apiVersion = '';
     }
 
-    var fconfig; 
+    var fconfig;
     if (mappings[project].fconfig !== undefined) {
         fconfig = " --fconfig='" + JSON.stringify(mappings[project].fconfig) + "'" + ' ';
     } else {
@@ -136,7 +136,7 @@ var codegen = function(project, cb) {
                         regenManager +
                         genInterface +
                         apiVersion +
-                        fconfig + 
+                        fconfig +
                         autoRestArgs;
 
     if (mappings[project].args !== undefined) {
@@ -170,7 +170,7 @@ var deleteFolderRecursive = function(folder) {
 
 gulp.task('java:build', shell.task('mvn package javadoc:aggregate -DskipTests=true -q'));
 gulp.task('java:stage', ['java:build'], function(){
-    return gulp.src('./target/site/apidocs/**/*').pipe(gulp.dest('./dist')); 
+    return gulp.src('./target/site/apidocs/**/*').pipe(gulp.dest('./dist'));
 });
 
 /// Top level build entry point
@@ -178,7 +178,7 @@ gulp.task('stage', ['java:stage']);
 gulp.task('publish', ['stage'], function(){
     var options = {};
     if(process.env.GH_TOKEN){
-        options.remoteUrl = 'https://' + process.env.GH_TOKEN + '@github.com/azure/azure-libraries-for-java.git'  
+        options.remoteUrl = 'https://' + process.env.GH_TOKEN + '@github.com/azure/azure-libraries-for-java.git'
     }
     return gulp.src('./dist/**/*').pipe(gulpif(!argv.dryrun, ghPages(options)));
 });

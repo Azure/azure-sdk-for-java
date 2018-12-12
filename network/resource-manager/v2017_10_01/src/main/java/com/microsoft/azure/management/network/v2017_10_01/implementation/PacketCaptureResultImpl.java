@@ -38,7 +38,7 @@ class PacketCaptureResultImpl extends CreatableUpdatableImpl<PacketCaptureResult
         this.manager = manager;
         // Set resource name
         this.packetCaptureName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.networkWatcherName = IdParsingUtils.getValueFromIdByName(inner.id(), "networkWatchers");
         this.packetCaptureName = IdParsingUtils.getValueFromIdByName(inner.id(), "packetCaptures");
