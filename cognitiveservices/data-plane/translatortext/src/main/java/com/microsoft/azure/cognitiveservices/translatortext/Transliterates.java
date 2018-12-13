@@ -140,14 +140,13 @@ public interface Transliterates {
        A successful response is a JSON array with one result for each element in the input array. A result object includes the following properties:
        * `text`- A string which is the result of converting the input string to the output script.
        * `script`- A string specifying the script used in the output.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. You can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorMessageException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;TransliterateSuccessItem&gt; object if successful.
      */
-    List<TransliterateSuccessItem> post(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String ocpApimSubscriptionKey, String xClientTraceId);
+    List<TransliterateSuccessItem> post(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String xClientTraceId);
 
     /**
      * Converts the text of a language in one script into another type of script. Example-
@@ -168,13 +167,12 @@ public interface Transliterates {
        A successful response is a JSON array with one result for each element in the input array. A result object includes the following properties:
        * `text`- A string which is the result of converting the input string to the output script.
        * `script`- A string specifying the script used in the output.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. You can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<TransliterateSuccessItem>> postAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String ocpApimSubscriptionKey, String xClientTraceId, final ServiceCallback<List<TransliterateSuccessItem>> serviceCallback);
+    ServiceFuture<List<TransliterateSuccessItem>> postAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String xClientTraceId, final ServiceCallback<List<TransliterateSuccessItem>> serviceCallback);
 
     /**
      * Converts the text of a language in one script into another type of script. Example-
@@ -195,12 +193,11 @@ public interface Transliterates {
        A successful response is a JSON array with one result for each element in the input array. A result object includes the following properties:
        * `text`- A string which is the result of converting the input string to the output script.
        * `script`- A string specifying the script used in the output.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. You can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TransliterateSuccessItem&gt; object
      */
-    Observable<List<TransliterateSuccessItem>> postAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String ocpApimSubscriptionKey, String xClientTraceId);
+    Observable<List<TransliterateSuccessItem>> postAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String xClientTraceId);
 
     /**
      * Converts the text of a language in one script into another type of script. Example-
@@ -221,11 +218,10 @@ public interface Transliterates {
        A successful response is a JSON array with one result for each element in the input array. A result object includes the following properties:
        * `text`- A string which is the result of converting the input string to the output script.
        * `script`- A string specifying the script used in the output.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. You can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TransliterateSuccessItem&gt; object
      */
-    Observable<ServiceResponse<List<TransliterateSuccessItem>>> postWithServiceResponseAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String ocpApimSubscriptionKey, String xClientTraceId);
+    Observable<ServiceResponse<List<TransliterateSuccessItem>>> postWithServiceResponseAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String xClientTraceId);
 
 }

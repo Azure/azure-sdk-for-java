@@ -59,7 +59,7 @@ public class TransliteratesImpl implements Transliterates {
     interface TransliteratesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.translatortext.Transliterates post" })
         @POST("transliterate")
-        Observable<Response<ResponseBody>> post(@Query("api-version") String apiVersion, @Query("language") String language, @Query("fromScript") String fromScript, @Query("toScript") String toScript, @Header("Ocp-Apim-Subscription-Key") String ocpApimSubscriptionKey, @Header("X-ClientTraceId") String xClientTraceId, @Body List<TransliterateTextInput> texts, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> post(@Query("api-version") String apiVersion, @Query("language") String language, @Query("fromScript") String fromScript, @Query("toScript") String toScript, @Header("X-ClientTraceId") String xClientTraceId, @Body List<TransliterateTextInput> texts, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -191,10 +191,9 @@ public class TransliteratesImpl implements Transliterates {
             throw new IllegalArgumentException("Parameter texts is required and cannot be null.");
         }
         Validator.validate(texts);
-        final String ocpApimSubscriptionKey = null;
         final String xClientTraceId = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.post(apiVersion, language, fromScript, toScript, ocpApimSubscriptionKey, xClientTraceId, texts, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.post(apiVersion, language, fromScript, toScript, xClientTraceId, texts, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<TransliterateSuccessItem>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<TransliterateSuccessItem>>> call(Response<ResponseBody> response) {
@@ -227,15 +226,14 @@ public class TransliteratesImpl implements Transliterates {
        A successful response is a JSON array with one result for each element in the input array. A result object includes the following properties:
        * `text`- A string which is the result of converting the input string to the output script.
        * `script`- A string specifying the script used in the output.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. You can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorMessageException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;TransliterateSuccessItem&gt; object if successful.
      */
-    public List<TransliterateSuccessItem> post(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String ocpApimSubscriptionKey, String xClientTraceId) {
-        return postWithServiceResponseAsync(apiVersion, language, fromScript, toScript, texts, ocpApimSubscriptionKey, xClientTraceId).toBlocking().single().body();
+    public List<TransliterateSuccessItem> post(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String xClientTraceId) {
+        return postWithServiceResponseAsync(apiVersion, language, fromScript, toScript, texts, xClientTraceId).toBlocking().single().body();
     }
 
     /**
@@ -257,14 +255,13 @@ public class TransliteratesImpl implements Transliterates {
        A successful response is a JSON array with one result for each element in the input array. A result object includes the following properties:
        * `text`- A string which is the result of converting the input string to the output script.
        * `script`- A string specifying the script used in the output.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. You can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<TransliterateSuccessItem>> postAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String ocpApimSubscriptionKey, String xClientTraceId, final ServiceCallback<List<TransliterateSuccessItem>> serviceCallback) {
-        return ServiceFuture.fromResponse(postWithServiceResponseAsync(apiVersion, language, fromScript, toScript, texts, ocpApimSubscriptionKey, xClientTraceId), serviceCallback);
+    public ServiceFuture<List<TransliterateSuccessItem>> postAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String xClientTraceId, final ServiceCallback<List<TransliterateSuccessItem>> serviceCallback) {
+        return ServiceFuture.fromResponse(postWithServiceResponseAsync(apiVersion, language, fromScript, toScript, texts, xClientTraceId), serviceCallback);
     }
 
     /**
@@ -286,13 +283,12 @@ public class TransliteratesImpl implements Transliterates {
        A successful response is a JSON array with one result for each element in the input array. A result object includes the following properties:
        * `text`- A string which is the result of converting the input string to the output script.
        * `script`- A string specifying the script used in the output.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. You can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TransliterateSuccessItem&gt; object
      */
-    public Observable<List<TransliterateSuccessItem>> postAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String ocpApimSubscriptionKey, String xClientTraceId) {
-        return postWithServiceResponseAsync(apiVersion, language, fromScript, toScript, texts, ocpApimSubscriptionKey, xClientTraceId).map(new Func1<ServiceResponse<List<TransliterateSuccessItem>>, List<TransliterateSuccessItem>>() {
+    public Observable<List<TransliterateSuccessItem>> postAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String xClientTraceId) {
+        return postWithServiceResponseAsync(apiVersion, language, fromScript, toScript, texts, xClientTraceId).map(new Func1<ServiceResponse<List<TransliterateSuccessItem>>, List<TransliterateSuccessItem>>() {
             @Override
             public List<TransliterateSuccessItem> call(ServiceResponse<List<TransliterateSuccessItem>> response) {
                 return response.body();
@@ -319,12 +315,11 @@ public class TransliteratesImpl implements Transliterates {
        A successful response is a JSON array with one result for each element in the input array. A result object includes the following properties:
        * `text`- A string which is the result of converting the input string to the output script.
        * `script`- A string specifying the script used in the output.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. You can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TransliterateSuccessItem&gt; object
      */
-    public Observable<ServiceResponse<List<TransliterateSuccessItem>>> postWithServiceResponseAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String ocpApimSubscriptionKey, String xClientTraceId) {
+    public Observable<ServiceResponse<List<TransliterateSuccessItem>>> postWithServiceResponseAsync(String apiVersion, String language, String fromScript, String toScript, List<TransliterateTextInput> texts, String xClientTraceId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -345,7 +340,7 @@ public class TransliteratesImpl implements Transliterates {
         }
         Validator.validate(texts);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.post(apiVersion, language, fromScript, toScript, ocpApimSubscriptionKey, xClientTraceId, texts, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.post(apiVersion, language, fromScript, toScript, xClientTraceId, texts, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<TransliterateSuccessItem>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<TransliterateSuccessItem>>> call(Response<ResponseBody> response) {

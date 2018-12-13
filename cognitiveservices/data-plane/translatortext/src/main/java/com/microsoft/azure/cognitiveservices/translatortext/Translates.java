@@ -228,14 +228,13 @@ public interface Translates {
      * @param suggestedFrom Specifies a fallback language if the language of the input text can't be identified. Language auto-detection is applied when the `from` parameter is omitted. If detection fails, the `suggestedFrom` language will be assumed.
      * @param fromScript Specifies the script of the input text.
      * @param toScript Specifies the script of the translated text.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. Note that you can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorMessageException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;TranslateSuccessItem&gt; object if successful.
      */
-    List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId);
+    List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String xClientTraceId);
 
     /**
      * Translates text into one or more languages.
@@ -297,13 +296,12 @@ public interface Translates {
      * @param suggestedFrom Specifies a fallback language if the language of the input text can't be identified. Language auto-detection is applied when the `from` parameter is omitted. If detection fails, the `suggestedFrom` language will be assumed.
      * @param fromScript Specifies the script of the input text.
      * @param toScript Specifies the script of the translated text.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. Note that you can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback);
+    ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String xClientTraceId, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback);
 
     /**
      * Translates text into one or more languages.
@@ -365,12 +363,11 @@ public interface Translates {
      * @param suggestedFrom Specifies a fallback language if the language of the input text can't be identified. Language auto-detection is applied when the `from` parameter is omitted. If detection fails, the `suggestedFrom` language will be assumed.
      * @param fromScript Specifies the script of the input text.
      * @param toScript Specifies the script of the translated text.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. Note that you can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId);
+    Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String xClientTraceId);
 
     /**
      * Translates text into one or more languages.
@@ -432,11 +429,10 @@ public interface Translates {
      * @param suggestedFrom Specifies a fallback language if the language of the input text can't be identified. Language auto-detection is applied when the `from` parameter is omitted. If detection fails, the `suggestedFrom` language will be assumed.
      * @param fromScript Specifies the script of the input text.
      * @param toScript Specifies the script of the translated text.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. Note that you can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId);
+    Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String xClientTraceId);
 
 }

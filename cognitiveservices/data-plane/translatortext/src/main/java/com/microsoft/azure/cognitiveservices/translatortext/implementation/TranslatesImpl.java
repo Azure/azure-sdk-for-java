@@ -59,7 +59,7 @@ public class TranslatesImpl implements Translates {
     interface TranslatesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.translatortext.Translates translatePost" })
         @POST("translate")
-        Observable<Response<ResponseBody>> translatePost(@Query("api-version") String apiVersion, @Query("from") String from, @Query("to") String to, @Query("textType") String textType, @Query("category") String category, @Query("profanityAction") String profanityAction, @Query("profanityMarker") String profanityMarker, @Query("includeAlignment") String includeAlignment, @Query("includeSentenceLength") String includeSentenceLength, @Query("suggestedFrom") String suggestedFrom, @Query("fromScript") String fromScript, @Query("toScript") String toScript, @Header("Ocp-Apim-Subscription-Key") String ocpApimSubscriptionKey, @Header("X-ClientTraceId") String xClientTraceId, @Body List<String> text, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> translatePost(@Query("api-version") String apiVersion, @Query("from") String from, @Query("to") String to, @Query("textType") String textType, @Query("category") String category, @Query("profanityAction") String profanityAction, @Query("profanityMarker") String profanityMarker, @Query("includeAlignment") String includeAlignment, @Query("includeSentenceLength") String includeSentenceLength, @Query("suggestedFrom") String suggestedFrom, @Query("fromScript") String fromScript, @Query("toScript") String toScript, @Header("X-ClientTraceId") String xClientTraceId, @Body List<String> text, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -244,11 +244,10 @@ public class TranslatesImpl implements Translates {
         final String suggestedFrom = null;
         final String fromScript = null;
         final List<String> toScript = null;
-        final String ocpApimSubscriptionKey = null;
         final String xClientTraceId = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String toConverted = this.client.serializerAdapter().serializeList(to, CollectionFormat.CSV);String toScriptConverted = this.client.serializerAdapter().serializeList(toScript, CollectionFormat.CSV);
-        return service.translatePost(apiVersion, from, toConverted, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScriptConverted, ocpApimSubscriptionKey, xClientTraceId, text, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.translatePost(apiVersion, from, toConverted, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScriptConverted, xClientTraceId, text, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<TranslateSuccessItem>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<TranslateSuccessItem>>> call(Response<ResponseBody> response) {
@@ -322,15 +321,14 @@ public class TranslatesImpl implements Translates {
      * @param suggestedFrom Specifies a fallback language if the language of the input text can't be identified. Language auto-detection is applied when the `from` parameter is omitted. If detection fails, the `suggestedFrom` language will be assumed.
      * @param fromScript Specifies the script of the input text.
      * @param toScript Specifies the script of the translated text.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. Note that you can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorMessageException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;TranslateSuccessItem&gt; object if successful.
      */
-    public List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId) {
-        return translatePostWithServiceResponseAsync(apiVersion, to, text, from, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScript, ocpApimSubscriptionKey, xClientTraceId).toBlocking().single().body();
+    public List<TranslateSuccessItem> translatePost(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String xClientTraceId) {
+        return translatePostWithServiceResponseAsync(apiVersion, to, text, from, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScript, xClientTraceId).toBlocking().single().body();
     }
 
     /**
@@ -393,14 +391,13 @@ public class TranslatesImpl implements Translates {
      * @param suggestedFrom Specifies a fallback language if the language of the input text can't be identified. Language auto-detection is applied when the `from` parameter is omitted. If detection fails, the `suggestedFrom` language will be assumed.
      * @param fromScript Specifies the script of the input text.
      * @param toScript Specifies the script of the translated text.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. Note that you can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback) {
-        return ServiceFuture.fromResponse(translatePostWithServiceResponseAsync(apiVersion, to, text, from, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScript, ocpApimSubscriptionKey, xClientTraceId), serviceCallback);
+    public ServiceFuture<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String xClientTraceId, final ServiceCallback<List<TranslateSuccessItem>> serviceCallback) {
+        return ServiceFuture.fromResponse(translatePostWithServiceResponseAsync(apiVersion, to, text, from, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScript, xClientTraceId), serviceCallback);
     }
 
     /**
@@ -463,13 +460,12 @@ public class TranslatesImpl implements Translates {
      * @param suggestedFrom Specifies a fallback language if the language of the input text can't be identified. Language auto-detection is applied when the `from` parameter is omitted. If detection fails, the `suggestedFrom` language will be assumed.
      * @param fromScript Specifies the script of the input text.
      * @param toScript Specifies the script of the translated text.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. Note that you can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    public Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId) {
-        return translatePostWithServiceResponseAsync(apiVersion, to, text, from, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScript, ocpApimSubscriptionKey, xClientTraceId).map(new Func1<ServiceResponse<List<TranslateSuccessItem>>, List<TranslateSuccessItem>>() {
+    public Observable<List<TranslateSuccessItem>> translatePostAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String xClientTraceId) {
+        return translatePostWithServiceResponseAsync(apiVersion, to, text, from, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScript, xClientTraceId).map(new Func1<ServiceResponse<List<TranslateSuccessItem>>, List<TranslateSuccessItem>>() {
             @Override
             public List<TranslateSuccessItem> call(ServiceResponse<List<TranslateSuccessItem>> response) {
                 return response.body();
@@ -537,12 +533,11 @@ public class TranslatesImpl implements Translates {
      * @param suggestedFrom Specifies a fallback language if the language of the input text can't be identified. Language auto-detection is applied when the `from` parameter is omitted. If detection fails, the `suggestedFrom` language will be assumed.
      * @param fromScript Specifies the script of the input text.
      * @param toScript Specifies the script of the translated text.
-     * @param ocpApimSubscriptionKey This is used to pass a key for auth. If you are passing a token for auth then use the previous header auth option. **ONE OF THESE METHODS MUST BE USED.**
      * @param xClientTraceId A client-generated GUID to uniquely identify the request. Note that you can omit this header if you include the trace ID in the query string using a query parameter named ClientTraceId.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TranslateSuccessItem&gt; object
      */
-    public Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String ocpApimSubscriptionKey, String xClientTraceId) {
+    public Observable<ServiceResponse<List<TranslateSuccessItem>>> translatePostWithServiceResponseAsync(String apiVersion, List<String> to, List<String> text, String from, String textType, String category, String profanityAction, String profanityMarker, String includeAlignment, String includeSentenceLength, String suggestedFrom, String fromScript, List<String> toScript, String xClientTraceId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -560,7 +555,7 @@ public class TranslatesImpl implements Translates {
         Validator.validate(text);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String toConverted = this.client.serializerAdapter().serializeList(to, CollectionFormat.CSV);String toScriptConverted = this.client.serializerAdapter().serializeList(toScript, CollectionFormat.CSV);
-        return service.translatePost(apiVersion, from, toConverted, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScriptConverted, ocpApimSubscriptionKey, xClientTraceId, text, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.translatePost(apiVersion, from, toConverted, textType, category, profanityAction, profanityMarker, includeAlignment, includeSentenceLength, suggestedFrom, fromScript, toScriptConverted, xClientTraceId, text, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<TranslateSuccessItem>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<TranslateSuccessItem>>> call(Response<ResponseBody> response) {
