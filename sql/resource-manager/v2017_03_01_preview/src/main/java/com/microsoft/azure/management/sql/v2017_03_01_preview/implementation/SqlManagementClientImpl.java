@@ -471,6 +471,32 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ManagedDatabaseSecurityAlertPoliciesInner object to access its operations.
+     */
+    private ManagedDatabaseSecurityAlertPoliciesInner managedDatabaseSecurityAlertPolicies;
+
+    /**
+     * Gets the ManagedDatabaseSecurityAlertPoliciesInner object to access its operations.
+     * @return the ManagedDatabaseSecurityAlertPoliciesInner object.
+     */
+    public ManagedDatabaseSecurityAlertPoliciesInner managedDatabaseSecurityAlertPolicies() {
+        return this.managedDatabaseSecurityAlertPolicies;
+    }
+
+    /**
+     * The ManagedServerSecurityAlertPoliciesInner object to access its operations.
+     */
+    private ManagedServerSecurityAlertPoliciesInner managedServerSecurityAlertPolicies;
+
+    /**
+     * Gets the ManagedServerSecurityAlertPoliciesInner object to access its operations.
+     * @return the ManagedServerSecurityAlertPoliciesInner object.
+     */
+    public ManagedServerSecurityAlertPoliciesInner managedServerSecurityAlertPolicies() {
+        return this.managedServerSecurityAlertPolicies;
+    }
+
+    /**
      * Initializes an instance of SqlManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -531,6 +557,8 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.serverAutomaticTunings = new ServerAutomaticTuningsInner(restClient().retrofit(), this);
         this.serverDnsAliases = new ServerDnsAliasesInner(restClient().retrofit(), this);
         this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesInner(restClient().retrofit(), this);
+        this.managedDatabaseSecurityAlertPolicies = new ManagedDatabaseSecurityAlertPoliciesInner(restClient().retrofit(), this);
+        this.managedServerSecurityAlertPolicies = new ManagedServerSecurityAlertPoliciesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
