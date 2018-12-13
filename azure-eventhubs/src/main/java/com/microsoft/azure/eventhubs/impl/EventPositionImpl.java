@@ -54,6 +54,22 @@ public final class EventPositionImpl implements EventPosition {
         return new EventPositionImpl(ClientConstants.END_OF_STREAM, null, null, false);
     }
 
+    public Long getSequenceNumber() {
+        return this.sequenceNumber;
+    }
+
+    public Instant getEnqueuedTime() {
+        return this.dateTime;
+    }
+
+    public String getOffset() {
+        return this.offset;
+    }
+
+    public boolean getInclusiveFlag() {
+        return this.inclusiveFlag;
+    }
+
     String getExpression() {
         // order of preference
         if (this.offset != null) {

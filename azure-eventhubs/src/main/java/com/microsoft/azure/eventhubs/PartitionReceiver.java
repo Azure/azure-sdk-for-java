@@ -79,6 +79,14 @@ public interface PartitionReceiver {
     ReceiverRuntimeInformation getRuntimeInformation();
 
     /**
+     * Get the {@link EventPosition} that corresponds to an {@link EventData} which was returned last by the receiver.
+     * <p> This value will not be populated, unless the knob {@link ReceiverOptions#setReceiverRuntimeMetricEnabled(boolean)} is set.
+     *
+     * @return the EventPosition object.
+     */
+    EventPosition getEventPosition();
+
+    /**
      * Synchronous version of {@link #receive}.
      *
      * @param maxEventCount maximum number of {@link EventData}'s that this call should return

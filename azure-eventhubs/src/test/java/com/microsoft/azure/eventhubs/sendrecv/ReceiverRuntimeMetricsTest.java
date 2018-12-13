@@ -70,8 +70,11 @@ public class ReceiverRuntimeMetricsTest extends ApiTestBase {
 
         LinkedList<EventData> receivedEventsWithOptions = new LinkedList<>();
         while (receivedEventsWithOptions.size() < sentEvents)
-            for (EventData eData : receiverWithOptions.receiveSync(sentEvents))
+            for (EventData eData : receiverWithOptions.receiveSync(1)) {
                 receivedEventsWithOptions.add(eData);
+                Assert.assertEquals((Long) eData.getSystemProperties().getSequenceNumber(),
+                        receiverWithOptions.getEventPosition().getSequenceNumber());
+            }
 
         HashSet<String> offsets = new HashSet<>();
         for (EventData eData : receivedEventsWithOptions)

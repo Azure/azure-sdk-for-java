@@ -89,4 +89,32 @@ public interface EventPosition extends Serializable {
     static EventPosition fromEndOfStream() {
         return EventPositionImpl.fromEndOfStream();
     }
+
+    /**
+     * Gets the sequence number.
+     * <p>
+     * @return the sequence number.
+     */
+    Long getSequenceNumber();
+
+    /**
+     * Gets the enqueued time.
+     * <p>
+     * @return the enqueued time.
+     */
+    Instant getEnqueuedTime();
+
+    /**
+     * Gets the offset.
+     * <p>
+     * @return the offset.
+     */
+    String getOffset();
+
+    /**
+     * Gets the inclusive value.
+     * <p>
+     * @return the inclusive value.
+     */
+    boolean getInclusiveFlag();
 }
