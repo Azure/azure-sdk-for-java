@@ -35,7 +35,7 @@ public class AlertInner {
     private Level level;
 
     /**
-     * The alert state which can be either active or resolved with multile
+     * The alert state which can be either active or resolved with multiple
      * resolution types. Possible values include: 'Active',
      * 'ResolvedByPositiveResult', 'ResolvedManually', 'ResolvedByTimer',
      * 'ResolvedByStateChange'.
@@ -181,7 +181,7 @@ public class AlertInner {
     }
 
     /**
-     * Get the alert state which can be either active or resolved with multile resolution types. Possible values include: 'Active', 'ResolvedByPositiveResult', 'ResolvedManually', 'ResolvedByTimer', 'ResolvedByStateChange'.
+     * Get the alert state which can be either active or resolved with multiple resolution types. Possible values include: 'Active', 'ResolvedByPositiveResult', 'ResolvedManually', 'ResolvedByTimer', 'ResolvedByStateChange'.
      *
      * @return the state value
      */
@@ -190,7 +190,7 @@ public class AlertInner {
     }
 
     /**
-     * Set the alert state which can be either active or resolved with multile resolution types. Possible values include: 'Active', 'ResolvedByPositiveResult', 'ResolvedManually', 'ResolvedByTimer', 'ResolvedByStateChange'.
+     * Set the alert state which can be either active or resolved with multiple resolution types. Possible values include: 'Active', 'ResolvedByPositiveResult', 'ResolvedManually', 'ResolvedByTimer', 'ResolvedByStateChange'.
      *
      * @param state the state value to set
      * @return the AlertInner object itself.

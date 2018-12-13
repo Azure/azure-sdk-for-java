@@ -33,7 +33,7 @@ public class PasswordManagementSettings {
     private String connectTo;
 
     /**
-     * Connection timeoit for password extension.
+     * Connection timeout for password extension.
      */
     @JsonProperty(value = "connectionTimeout")
     private Integer connectionTimeout;
@@ -70,7 +70,7 @@ public class PasswordManagementSettings {
     private Boolean requiresSecureConnection;
 
     /**
-     * Indicates if accounts should be unloacked when resetting password.
+     * Indicates if accounts should be unlocked when resetting password.
      */
     @JsonProperty(value = "unlockAccount")
     private Boolean unlockAccount;
@@ -136,7 +136,7 @@ public class PasswordManagementSettings {
     }
 
     /**
-     * Get connection timeoit for password extension.
+     * Get connection timeout for password extension.
      *
      * @return the connectionTimeout value
      */
@@ -145,7 +145,7 @@ public class PasswordManagementSettings {
     }
 
     /**
-     * Set connection timeoit for password extension.
+     * Set connection timeout for password extension.
      *
      * @param connectionTimeout the connectionTimeout value to set
      * @return the PasswordManagementSettings object itself.
@@ -256,7 +256,7 @@ public class PasswordManagementSettings {
     }
 
     /**
-     * Get indicates if accounts should be unloacked when resetting password.
+     * Get indicates if accounts should be unlocked when resetting password.
      *
      * @return the unlockAccount value
      */
@@ -265,7 +265,7 @@ public class PasswordManagementSettings {
     }
 
     /**
-     * Set indicates if accounts should be unloacked when resetting password.
+     * Set indicates if accounts should be unlocked when resetting password.
      *
      * @param unlockAccount the unlockAccount value to set
      * @return the PasswordManagementSettings object itself.

@@ -52,7 +52,7 @@ public class ConnectorObjectError {
     private String message;
 
     /**
-     * The entry number for object error occured.
+     * The entry number for object error occurred.
      */
     @JsonProperty(value = "entryNumber")
     private Integer entryNumber;
@@ -70,7 +70,7 @@ public class ConnectorObjectError {
     private Integer columnNumber;
 
     /**
-     * The distingished name of the object.
+     * The distinguished name of the object.
      */
     @JsonProperty(value = "dn")
     private String dn;
@@ -220,7 +220,7 @@ public class ConnectorObjectError {
     }
 
     /**
-     * Get the entry number for object error occured.
+     * Get the entry number for object error occurred.
      *
      * @return the entryNumber value
      */
@@ -229,7 +229,7 @@ public class ConnectorObjectError {
     }
 
     /**
-     * Set the entry number for object error occured.
+     * Set the entry number for object error occurred.
      *
      * @param entryNumber the entryNumber value to set
      * @return the ConnectorObjectError object itself.
@@ -280,7 +280,7 @@ public class ConnectorObjectError {
     }
 
     /**
-     * Get the distingished name of the object.
+     * Get the distinguished name of the object.
      *
      * @return the dn value
      */
@@ -289,7 +289,7 @@ public class ConnectorObjectError {
     }
 
     /**
-     * Set the distingished name of the object.
+     * Set the distinguished name of the object.
      *
      * @param dn the dn value to set
      * @return the ConnectorObjectError object itself.

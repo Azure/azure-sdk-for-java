@@ -21,7 +21,7 @@ public class ReplicationStatusInner {
     private String forestName;
 
     /**
-     * The total numbe of domain controllers for a given forest.
+     * The total number of domain controllers for a given forest.
      */
     @JsonProperty(value = "totalDcCount")
     private Integer totalDcCount;
@@ -53,7 +53,7 @@ public class ReplicationStatusInner {
     }
 
     /**
-     * Get the total numbe of domain controllers for a given forest.
+     * Get the total number of domain controllers for a given forest.
      *
      * @return the totalDcCount value
      */
@@ -62,7 +62,7 @@ public class ReplicationStatusInner {
     }
 
     /**
-     * Set the total numbe of domain controllers for a given forest.
+     * Set the total number of domain controllers for a given forest.
      *
      * @param totalDcCount the totalDcCount value to set
      * @return the ReplicationStatusInner object itself.

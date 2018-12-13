@@ -52,7 +52,7 @@ public class ConnectorConnectionError {
     private String message;
 
     /**
-     * The time when the connection error occured.
+     * The time when the connection error occurred.
      */
     @JsonProperty(value = "timeOccured")
     private DateTime timeOccured;
@@ -184,7 +184,7 @@ public class ConnectorConnectionError {
     }
 
     /**
-     * Get the time when the connection error occured.
+     * Get the time when the connection error occurred.
      *
      * @return the timeOccured value
      */
@@ -193,7 +193,7 @@ public class ConnectorConnectionError {
     }
 
     /**
-     * Set the time when the connection error occured.
+     * Set the time when the connection error occurred.
      *
      * @param timeOccured the timeOccured value to set
      * @return the ConnectorConnectionError object itself.

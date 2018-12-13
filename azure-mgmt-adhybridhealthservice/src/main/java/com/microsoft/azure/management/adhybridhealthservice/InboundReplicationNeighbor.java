@@ -22,7 +22,7 @@ public class InboundReplicationNeighbor {
     private String sourceDomainController;
 
     /**
-     * The number of consecutive faulire counts.
+     * The number of consecutive failure counts.
      */
     @JsonProperty(value = "consecutiveFailureCount")
     private Integer consecutiveFailureCount;
@@ -114,7 +114,7 @@ public class InboundReplicationNeighbor {
     }
 
     /**
-     * Get the number of consecutive faulire counts.
+     * Get the number of consecutive failure counts.
      *
      * @return the consecutiveFailureCount value
      */
@@ -123,7 +123,7 @@ public class InboundReplicationNeighbor {
     }
 
     /**
-     * Set the number of consecutive faulire counts.
+     * Set the number of consecutive failure counts.
      *
      * @param consecutiveFailureCount the consecutiveFailureCount value to set
      * @return the InboundReplicationNeighbor object itself.
