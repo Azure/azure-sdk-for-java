@@ -34,7 +34,7 @@ public class ChangeNotReimportedEntry {
     private String primaryObjectClass;
 
     /**
-     * The olist of object classes.
+     * The list of object classes.
      */
     @JsonProperty(value = "objectClasses")
     private List<String> objectClasses;
@@ -118,7 +118,7 @@ public class ChangeNotReimportedEntry {
     }
 
     /**
-     * Get the olist of object classes.
+     * Get the list of object classes.
      *
      * @return the objectClasses value
      */
@@ -127,7 +127,7 @@ public class ChangeNotReimportedEntry {
     }
 
     /**
-     * Set the olist of object classes.
+     * Set the list of object classes.
      *
      * @param objectClasses the objectClasses value to set
      * @return the ChangeNotReimportedEntry object itself.

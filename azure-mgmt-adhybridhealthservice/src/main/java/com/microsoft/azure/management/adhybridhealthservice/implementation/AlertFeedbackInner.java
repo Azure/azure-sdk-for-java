@@ -22,7 +22,7 @@ public class AlertFeedbackInner {
     private String level;
 
     /**
-     * The alert state which can be either active or resolved with multile
+     * The alert state which can be either active or resolved with multiple
      * resolution types.
      */
     @JsonProperty(value = "state")
@@ -86,7 +86,7 @@ public class AlertFeedbackInner {
     }
 
     /**
-     * Get the alert state which can be either active or resolved with multile resolution types.
+     * Get the alert state which can be either active or resolved with multiple resolution types.
      *
      * @return the state value
      */
@@ -95,7 +95,7 @@ public class AlertFeedbackInner {
     }
 
     /**
-     * Set the alert state which can be either active or resolved with multile resolution types.
+     * Set the alert state which can be either active or resolved with multiple resolution types.
      *
      * @param state the state value to set
      * @return the AlertFeedbackInner object itself.

@@ -58,7 +58,7 @@ public class ExportError {
     private String serverErrorDetail;
 
     /**
-     * The date and time when the export error first occured.
+     * The date and time when the export error first occurred.
      */
     @JsonProperty(value = "timeFirstOccured")
     private DateTime timeFirstOccured;
@@ -178,7 +178,7 @@ public class ExportError {
     private String adMail;
 
     /**
-     * The date and time of occurance.
+     * The date and time of occurrence.
      */
     @JsonProperty(value = "timeOccured")
     private DateTime timeOccured;
@@ -232,7 +232,7 @@ public class ExportError {
     private DateTime lastDirSyncTime;
 
     /**
-     * The modified atttribute value.
+     * The modified attribute value.
      */
     @JsonProperty(value = "modifiedAttributeValue")
     private String modifiedAttributeValue;
@@ -378,7 +378,7 @@ public class ExportError {
     }
 
     /**
-     * Get the date and time when the export error first occured.
+     * Get the date and time when the export error first occurred.
      *
      * @return the timeFirstOccured value
      */
@@ -387,7 +387,7 @@ public class ExportError {
     }
 
     /**
-     * Set the date and time when the export error first occured.
+     * Set the date and time when the export error first occurred.
      *
      * @param timeFirstOccured the timeFirstOccured value to set
      * @return the ExportError object itself.
@@ -778,7 +778,7 @@ public class ExportError {
     }
 
     /**
-     * Get the date and time of occurance.
+     * Get the date and time of occurrence.
      *
      * @return the timeOccured value
      */
@@ -787,7 +787,7 @@ public class ExportError {
     }
 
     /**
-     * Set the date and time of occurance.
+     * Set the date and time of occurrence.
      *
      * @param timeOccured the timeOccured value to set
      * @return the ExportError object itself.
@@ -958,7 +958,7 @@ public class ExportError {
     }
 
     /**
-     * Get the modified atttribute value.
+     * Get the modified attribute value.
      *
      * @return the modifiedAttributeValue value
      */
@@ -967,7 +967,7 @@ public class ExportError {
     }
 
     /**
-     * Set the modified atttribute value.
+     * Set the modified attribute value.
      *
      * @param modifiedAttributeValue the modifiedAttributeValue value to set
      * @return the ExportError object itself.

@@ -42,7 +42,7 @@ public class TenantInner {
     private Boolean agentAutoUpdate;
 
     /**
-     * The time in minutues after which an alert will be autosupressed.
+     * The time in minutes after which an alert will be auto-suppressed.
      */
     @JsonProperty(value = "alertSuppressionTimeInMins")
     private Integer alertSuppressionTimeInMins;
@@ -89,7 +89,7 @@ public class TenantInner {
     private Integer disabledReason;
 
     /**
-     * The list of golbal administrators for the tenant.
+     * The list of global administrators for the tenant.
      */
     @JsonProperty(value = "globalAdminsEmail")
     private Object globalAdminsEmail;
@@ -235,7 +235,7 @@ public class TenantInner {
     }
 
     /**
-     * Get the time in minutues after which an alert will be autosupressed.
+     * Get the time in minutes after which an alert will be auto-suppressed.
      *
      * @return the alertSuppressionTimeInMins value
      */
@@ -244,7 +244,7 @@ public class TenantInner {
     }
 
     /**
-     * Set the time in minutues after which an alert will be autosupressed.
+     * Set the time in minutes after which an alert will be auto-suppressed.
      *
      * @param alertSuppressionTimeInMins the alertSuppressionTimeInMins value to set
      * @return the TenantInner object itself.
@@ -375,7 +375,7 @@ public class TenantInner {
     }
 
     /**
-     * Get the list of golbal administrators for the tenant.
+     * Get the list of global administrators for the tenant.
      *
      * @return the globalAdminsEmail value
      */
@@ -384,7 +384,7 @@ public class TenantInner {
     }
 
     /**
-     * Set the list of golbal administrators for the tenant.
+     * Set the list of global administrators for the tenant.
      *
      * @param globalAdminsEmail the globalAdminsEmail value to set
      * @return the TenantInner object itself.

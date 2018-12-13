@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The objects withg sync errors.
+ * The objects with sync errors.
  */
 public class ObjectWithSyncError {
     /**
@@ -64,7 +64,7 @@ public class ObjectWithSyncError {
     private String objectGuid;
 
     /**
-     * Indicates if the atttibute is multi-valued or not.
+     * Indicates if the attribute is multi-valued or not.
      */
     @JsonProperty(value = "attributeMultiValues")
     private Boolean attributeMultiValues;
@@ -94,7 +94,7 @@ public class ObjectWithSyncError {
     private String mail;
 
     /**
-     * The date and time of occurance.
+     * The date and time of occurrence.
      */
     @JsonProperty(value = "timeOccured")
     private DateTime timeOccured;
@@ -272,7 +272,7 @@ public class ObjectWithSyncError {
     }
 
     /**
-     * Get indicates if the atttibute is multi-valued or not.
+     * Get indicates if the attribute is multi-valued or not.
      *
      * @return the attributeMultiValues value
      */
@@ -281,7 +281,7 @@ public class ObjectWithSyncError {
     }
 
     /**
-     * Set indicates if the atttibute is multi-valued or not.
+     * Set indicates if the attribute is multi-valued or not.
      *
      * @param attributeMultiValues the attributeMultiValues value to set
      * @return the ObjectWithSyncError object itself.
@@ -372,7 +372,7 @@ public class ObjectWithSyncError {
     }
 
     /**
-     * Get the date and time of occurance.
+     * Get the date and time of occurrence.
      *
      * @return the timeOccured value
      */
@@ -381,7 +381,7 @@ public class ObjectWithSyncError {
     }
 
     /**
-     * Set the date and time of occurance.
+     * Set the date and time of occurrence.
      *
      * @param timeOccured the timeOccured value to set
      * @return the ObjectWithSyncError object itself.

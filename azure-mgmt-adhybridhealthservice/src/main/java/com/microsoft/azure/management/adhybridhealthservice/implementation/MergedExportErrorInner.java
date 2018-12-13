@@ -96,7 +96,7 @@ public class MergedExportErrorInner {
     private AssociatedObject existingObject;
 
     /**
-     * The modified or removed attribute vlaue.
+     * The modified or removed attribute value.
      */
     @JsonProperty(value = "modifiedOrRemovedAttributeValue")
     private String modifiedOrRemovedAttributeValue;
@@ -410,7 +410,7 @@ public class MergedExportErrorInner {
     }
 
     /**
-     * Get the modified or removed attribute vlaue.
+     * Get the modified or removed attribute value.
      *
      * @return the modifiedOrRemovedAttributeValue value
      */
@@ -419,7 +419,7 @@ public class MergedExportErrorInner {
     }
 
     /**
-     * Set the modified or removed attribute vlaue.
+     * Set the modified or removed attribute value.
      *
      * @param modifiedOrRemovedAttributeValue the modifiedOrRemovedAttributeValue value to set
      * @return the MergedExportErrorInner object itself.

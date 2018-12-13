@@ -21,7 +21,7 @@ public class RunStep {
     private Integer batchSize;
 
     /**
-     * The obect processing limit.
+     * The object processing limit.
      */
     @JsonProperty(value = "objectProcessLimit")
     private Integer objectProcessLimit;
@@ -39,7 +39,7 @@ public class RunStep {
     private Integer pageSize;
 
     /**
-     * The Id of the partition that a current run setp operation is executing.
+     * The Id of the partition that a current run step operation is executing.
      */
     @JsonProperty(value = "partitionId")
     private String partitionId;
@@ -77,7 +77,7 @@ public class RunStep {
     }
 
     /**
-     * Get the obect processing limit.
+     * Get the object processing limit.
      *
      * @return the objectProcessLimit value
      */
@@ -86,7 +86,7 @@ public class RunStep {
     }
 
     /**
-     * Set the obect processing limit.
+     * Set the object processing limit.
      *
      * @param objectProcessLimit the objectProcessLimit value to set
      * @return the RunStep object itself.
@@ -137,7 +137,7 @@ public class RunStep {
     }
 
     /**
-     * Get the Id of the partition that a current run setp operation is executing.
+     * Get the Id of the partition that a current run step operation is executing.
      *
      * @return the partitionId value
      */
@@ -146,7 +146,7 @@ public class RunStep {
     }
 
     /**
-     * Set the Id of the partition that a current run setp operation is executing.
+     * Set the Id of the partition that a current run step operation is executing.
      *
      * @param partitionId the partitionId value to set
      * @return the RunStep object itself.

@@ -47,7 +47,7 @@ public class MetricMetadataInner {
     private String valueKind;
 
     /**
-     * The minimun value.
+     * The minimum value.
      */
     @JsonProperty(value = "minValue")
     private Integer minValue;
@@ -184,7 +184,7 @@ public class MetricMetadataInner {
     }
 
     /**
-     * Get the minimun value.
+     * Get the minimum value.
      *
      * @return the minValue value
      */
@@ -193,7 +193,7 @@ public class MetricMetadataInner {
     }
 
     /**
-     * Set the minimun value.
+     * Set the minimum value.
      *
      * @param minValue the minValue value to set
      * @return the MetricMetadataInner object itself.

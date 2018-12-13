@@ -47,7 +47,7 @@ public class ServiceMemberInner {
     private String additionalInformation;
 
     /**
-     * The date time , in UTC, when the server was onboaraded to Azure Active
+     * The date time , in UTC, when the server was onboarded to Azure Active
      * Directory Connect Health.
      */
     @JsonProperty(value = "createdDate")
@@ -97,7 +97,7 @@ public class ServiceMemberInner {
     private DateTime lastServerReportedMonitoringLevelChange;
 
     /**
-     * The date and time, in UTC, when the server proeprties were last updated.
+     * The date and time, in UTC, when the server properties were last updated.
      */
     @JsonProperty(value = "lastUpdated")
     private DateTime lastUpdated;
@@ -278,7 +278,7 @@ public class ServiceMemberInner {
     }
 
     /**
-     * Get the date time , in UTC, when the server was onboaraded to Azure Active Directory Connect Health.
+     * Get the date time , in UTC, when the server was onboarded to Azure Active Directory Connect Health.
      *
      * @return the createdDate value
      */
@@ -287,7 +287,7 @@ public class ServiceMemberInner {
     }
 
     /**
-     * Set the date time , in UTC, when the server was onboaraded to Azure Active Directory Connect Health.
+     * Set the date time , in UTC, when the server was onboarded to Azure Active Directory Connect Health.
      *
      * @param createdDate the createdDate value to set
      * @return the ServiceMemberInner object itself.
@@ -438,7 +438,7 @@ public class ServiceMemberInner {
     }
 
     /**
-     * Get the date and time, in UTC, when the server proeprties were last updated.
+     * Get the date and time, in UTC, when the server properties were last updated.
      *
      * @return the lastUpdated value
      */
@@ -447,7 +447,7 @@ public class ServiceMemberInner {
     }
 
     /**
-     * Set the date and time, in UTC, when the server proeprties were last updated.
+     * Set the date and time, in UTC, when the server properties were last updated.
      *
      * @param lastUpdated the lastUpdated value to set
      * @return the ServiceMemberInner object itself.

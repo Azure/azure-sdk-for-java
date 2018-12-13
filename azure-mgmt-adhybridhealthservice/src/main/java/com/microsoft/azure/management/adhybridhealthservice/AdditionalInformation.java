@@ -11,7 +11,7 @@ package com.microsoft.azure.management.adhybridhealthservice;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The addtional information for a property.
+ * The additional information for a property.
  */
 public class AdditionalInformation {
     /**

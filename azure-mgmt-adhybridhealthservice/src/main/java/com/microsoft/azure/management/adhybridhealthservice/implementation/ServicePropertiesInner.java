@@ -42,7 +42,7 @@ public class ServicePropertiesInner {
     private DateTime createdDate;
 
     /**
-     * The list of additional emails that are configured to recieve
+     * The list of additional emails that are configured to receive
      * notifications about the service.
      */
     @JsonProperty(value = "customNotificationEmails")
@@ -251,7 +251,7 @@ public class ServicePropertiesInner {
     }
 
     /**
-     * Get the list of additional emails that are configured to recieve notifications about the service.
+     * Get the list of additional emails that are configured to receive notifications about the service.
      *
      * @return the customNotificationEmails value
      */
@@ -260,7 +260,7 @@ public class ServicePropertiesInner {
     }
 
     /**
-     * Set the list of additional emails that are configured to recieve notifications about the service.
+     * Set the list of additional emails that are configured to receive notifications about the service.
      *
      * @param customNotificationEmails the customNotificationEmails value to set
      * @return the ServicePropertiesInner object itself.
