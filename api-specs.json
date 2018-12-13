@@ -50,6 +50,10 @@
     "source": "specification/datalake-store/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "datamigration/resource-manager": {
+    "source": "specification/datamigration/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "dns/resource-manager": {
     "source": "specification/dns/resource-manager/readme.md",
     "args": "--multiapi --fluent"
