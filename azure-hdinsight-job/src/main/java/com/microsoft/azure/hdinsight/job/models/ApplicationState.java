@@ -33,6 +33,9 @@ public enum ApplicationState {
     /** Enum value FINISHED. */
     FINISHED("FINISHED"),
 
+    /** Enum value FINISHING. */
+    FINISHING("FINISHING"),
+
     /** Enum value FAILED. */
     FAILED("FAILED"),
 
