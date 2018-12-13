@@ -22,6 +22,7 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.hdinsight.v2015_03_01_preview.ClusterDiskEncryptionParameters;
 import com.microsoft.azure.management.hdinsight.v2015_03_01_preview.ExecuteScriptActionParameters;
 
 class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, ClusterInner, ClustersInner, HDInsightManager>  implements Clusters {
@@ -124,6 +125,12 @@ class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, Clus
     @Override
     public ClusterImpl define(String name) {
         return wrapModel(name);
+    }
+
+    @Override
+    public Completable rotateDiskEncryptionKeyAsync(String resourceGroupName, String clusterName, ClusterDiskEncryptionParameters parameters) {
+        ClustersInner client = this.inner();
+        return client.rotateDiskEncryptionKeyAsync(resourceGroupName, clusterName, parameters).toCompletable();
     }
 
     @Override

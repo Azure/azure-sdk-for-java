@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.hdinsight.v2018_06_01_preview;
 
-import java.util.Map;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,12 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Gets the application HTTP endpoints.
  */
 public class ApplicationGetHttpsEndpoint {
-    /**
-     * Unmatched properties from the message are deserialized this collection.
-     */
-    @JsonProperty(value = "")
-    private Map<String, String> additionalProperties;
-
     /**
      * The list of access modes for the application.
      */
@@ -45,26 +38,6 @@ public class ApplicationGetHttpsEndpoint {
      */
     @JsonProperty(value = "publicPort")
     private Integer publicPort;
-
-    /**
-     * Get unmatched properties from the message are deserialized this collection.
-     *
-     * @return the additionalProperties value
-     */
-    public Map<String, String> additionalProperties() {
-        return this.additionalProperties;
-    }
-
-    /**
-     * Set unmatched properties from the message are deserialized this collection.
-     *
-     * @param additionalProperties the additionalProperties value to set
-     * @return the ApplicationGetHttpsEndpoint object itself.
-     */
-    public ApplicationGetHttpsEndpoint withAdditionalProperties(Map<String, String> additionalProperties) {
-        this.additionalProperties = additionalProperties;
-        return this;
-    }
 
     /**
      * Get the list of access modes for the application.
