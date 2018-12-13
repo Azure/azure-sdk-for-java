@@ -156,6 +156,10 @@
       "\"knownSingulars\"": ["\"signalr\""]
     }
   },
+  "sql/resource-manager": {
+    "source": "specification/sql/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "storage/resource-manager": {
     "source": "specification/storage/resource-manager/readme.md",
     "args": "--multiapi --fluent"

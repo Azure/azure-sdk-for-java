@@ -45,7 +45,7 @@ public interface BackupShortTermRetentionPolicy extends HasInner<BackupShortTerm
     /**
      * The entirety of the BackupShortTermRetentionPolicy definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithDatabasis, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithDatabasis, DefinitionStages.WithRetentionDays, DefinitionStages.WithCreate {
     }
 
     /**
@@ -64,8 +64,24 @@ public interface BackupShortTermRetentionPolicy extends HasInner<BackupShortTerm
         interface WithDatabasis {
            /**
             * Specifies resourceGroupName, serverName, databaseName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param serverName The name of the server
+            * @param databaseName The name of the database
+            * @return the next definition stage
             */
-            WithCreate withExistingDatabasis(String resourceGroupName, String serverName, String databaseName);
+            WithRetentionDays withExistingDatabasis(String resourceGroupName, String serverName, String databaseName);
+        }
+
+        /**
+         * The stage of the backupshorttermretentionpolicy definition allowing to specify RetentionDays.
+         */
+        interface WithRetentionDays {
+           /**
+            * Specifies retentionDays.
+            * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported
+            * @return the next definition stage
+            */
+            WithCreate withRetentionDays(Integer retentionDays);
         }
 
         /**
@@ -79,12 +95,24 @@ public interface BackupShortTermRetentionPolicy extends HasInner<BackupShortTerm
     /**
      * The template for a BackupShortTermRetentionPolicy update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<BackupShortTermRetentionPolicy> {
+    interface Update extends Appliable<BackupShortTermRetentionPolicy>, UpdateStages.WithRetentionDays {
     }
 
     /**
      * Grouping of BackupShortTermRetentionPolicy update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the backupshorttermretentionpolicy update allowing to specify RetentionDays.
+         */
+        interface WithRetentionDays {
+            /**
+             * Specifies retentionDays.
+             * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be supported
+             * @return the next update stage
+             */
+            Update withRetentionDays(Integer retentionDays);
+        }
+
     }
 }
