@@ -29,6 +29,12 @@ public class OperationInner {
     private OperationDisplay display;
 
     /**
+     * The additional properties.
+     */
+    @JsonProperty(value = "properties")
+    private Object properties;
+
+    /**
      * The intended executor of the operation. Possible values include: 'User',
      * 'System'.
      */
@@ -72,6 +78,26 @@ public class OperationInner {
      */
     public OperationInner withDisplay(OperationDisplay display) {
         this.display = display;
+        return this;
+    }
+
+    /**
+     * Get the additional properties.
+     *
+     * @return the properties value
+     */
+    public Object properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the additional properties.
+     *
+     * @param properties the properties value to set
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withProperties(Object properties) {
+        this.properties = properties;
         return this;
     }
 
