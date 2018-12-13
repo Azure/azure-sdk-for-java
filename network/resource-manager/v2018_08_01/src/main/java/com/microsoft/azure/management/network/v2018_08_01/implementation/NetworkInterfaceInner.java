@@ -25,7 +25,7 @@ public class NetworkInterfaceInner extends Resource {
     /**
      * The reference of a virtual machine.
      */
-    @JsonProperty(value = "properties.virtualMachine")
+    @JsonProperty(value = "properties.virtualMachine", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource virtualMachine;
 
     /**
@@ -121,17 +121,6 @@ public class NetworkInterfaceInner extends Resource {
      */
     public SubResource virtualMachine() {
         return this.virtualMachine;
-    }
-
-    /**
-     * Set the reference of a virtual machine.
-     *
-     * @param virtualMachine the virtualMachine value to set
-     * @return the NetworkInterfaceInner object itself.
-     */
-    public NetworkInterfaceInner withVirtualMachine(SubResource virtualMachine) {
-        this.virtualMachine = virtualMachine;
-        return this;
     }
 
     /**
