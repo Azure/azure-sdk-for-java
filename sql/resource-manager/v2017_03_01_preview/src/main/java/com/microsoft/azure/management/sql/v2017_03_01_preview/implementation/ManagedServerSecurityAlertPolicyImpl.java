@@ -8,34 +8,34 @@
 
 package com.microsoft.azure.management.sql.v2017_03_01_preview.implementation;
 
-import com.microsoft.azure.management.sql.v2017_03_01_preview.ServerSecurityAlertPolicy;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedServerSecurityAlertPolicy;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.SecurityAlertPolicyState;
 import java.util.List;
 import org.joda.time.DateTime;
 
-class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurityAlertPolicy, ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicyImpl> implements ServerSecurityAlertPolicy, ServerSecurityAlertPolicy.Definition, ServerSecurityAlertPolicy.Update {
+class ManagedServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ManagedServerSecurityAlertPolicy, ManagedServerSecurityAlertPolicyInner, ManagedServerSecurityAlertPolicyImpl> implements ManagedServerSecurityAlertPolicy, ManagedServerSecurityAlertPolicy.Definition, ManagedServerSecurityAlertPolicy.Update {
     private final SqlManager manager;
     private String resourceGroupName;
-    private String serverName;
+    private String managedInstanceName;
 
-    ServerSecurityAlertPolicyImpl(String name, SqlManager manager) {
-        super(name, new ServerSecurityAlertPolicyInner());
+    ManagedServerSecurityAlertPolicyImpl(String name, SqlManager manager) {
+        super(name, new ManagedServerSecurityAlertPolicyInner());
         this.manager = manager;
         // Set resource name
-        this.serverName = name;
+        this.managedInstanceName = name;
         //
     }
 
-    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner inner, SqlManager manager) {
+    ManagedServerSecurityAlertPolicyImpl(ManagedServerSecurityAlertPolicyInner inner, SqlManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.serverName = inner.name();
+        this.managedInstanceName = inner.name();
         // resource ancestor names
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
-        this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
+        this.managedInstanceName = IdParsingUtils.getValueFromIdByName(inner.id(), "managedInstances");
         //
     }
 
@@ -45,23 +45,23 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
     }
 
     @Override
-    public Observable<ServerSecurityAlertPolicy> createResourceAsync() {
-        ServerSecurityAlertPoliciesInner client = this.manager().inner().serverSecurityAlertPolicies();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.serverName, this.inner())
+    public Observable<ManagedServerSecurityAlertPolicy> createResourceAsync() {
+        ManagedServerSecurityAlertPoliciesInner client = this.manager().inner().managedServerSecurityAlertPolicies();
+        return client.createOrUpdateAsync(this.resourceGroupName, this.managedInstanceName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
-    public Observable<ServerSecurityAlertPolicy> updateResourceAsync() {
-        ServerSecurityAlertPoliciesInner client = this.manager().inner().serverSecurityAlertPolicies();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.serverName, this.inner())
+    public Observable<ManagedServerSecurityAlertPolicy> updateResourceAsync() {
+        ManagedServerSecurityAlertPoliciesInner client = this.manager().inner().managedServerSecurityAlertPolicies();
+        return client.createOrUpdateAsync(this.resourceGroupName, this.managedInstanceName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
-    protected Observable<ServerSecurityAlertPolicyInner> getInnerAsync() {
-        ServerSecurityAlertPoliciesInner client = this.manager().inner().serverSecurityAlertPolicies();
-        return client.getAsync(this.resourceGroupName, this.serverName);
+    protected Observable<ManagedServerSecurityAlertPolicyInner> getInnerAsync() {
+        ManagedServerSecurityAlertPoliciesInner client = this.manager().inner().managedServerSecurityAlertPolicies();
+        return client.getAsync(this.resourceGroupName, this.managedInstanceName);
     }
 
     @Override
@@ -126,50 +126,50 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withExistingServer(String resourceGroupName, String serverName) {
+    public ManagedServerSecurityAlertPolicyImpl withExistingManagedInstance(String resourceGroupName, String managedInstanceName) {
         this.resourceGroupName = resourceGroupName;
-        this.serverName = serverName;
+        this.managedInstanceName = managedInstanceName;
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withState(SecurityAlertPolicyState state) {
+    public ManagedServerSecurityAlertPolicyImpl withState(SecurityAlertPolicyState state) {
         this.inner().withState(state);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withDisabledAlerts(List<String> disabledAlerts) {
+    public ManagedServerSecurityAlertPolicyImpl withDisabledAlerts(List<String> disabledAlerts) {
         this.inner().withDisabledAlerts(disabledAlerts);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withEmailAccountAdmins(Boolean emailAccountAdmins) {
+    public ManagedServerSecurityAlertPolicyImpl withEmailAccountAdmins(Boolean emailAccountAdmins) {
         this.inner().withEmailAccountAdmins(emailAccountAdmins);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withEmailAddresses(List<String> emailAddresses) {
+    public ManagedServerSecurityAlertPolicyImpl withEmailAddresses(List<String> emailAddresses) {
         this.inner().withEmailAddresses(emailAddresses);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withRetentionDays(Integer retentionDays) {
+    public ManagedServerSecurityAlertPolicyImpl withRetentionDays(Integer retentionDays) {
         this.inner().withRetentionDays(retentionDays);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withStorageAccountAccessKey(String storageAccountAccessKey) {
+    public ManagedServerSecurityAlertPolicyImpl withStorageAccountAccessKey(String storageAccountAccessKey) {
         this.inner().withStorageAccountAccessKey(storageAccountAccessKey);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withStorageEndpoint(String storageEndpoint) {
+    public ManagedServerSecurityAlertPolicyImpl withStorageEndpoint(String storageEndpoint) {
         this.inner().withStorageEndpoint(storageEndpoint);
         return this;
     }

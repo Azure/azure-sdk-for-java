@@ -9,7 +9,7 @@
 package com.microsoft.azure.management.sql.v2017_03_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.sql.v2017_03_01_preview.implementation.ServerSecurityAlertPolicyInner;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.implementation.ManagedDatabaseSecurityAlertPolicyInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
@@ -21,9 +21,9 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 /**
- * Type representing ServerSecurityAlertPolicy.
+ * Type representing ManagedDatabaseSecurityAlertPolicy.
  */
-public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertPolicyInner>, Indexable, Refreshable<ServerSecurityAlertPolicy>, Updatable<ServerSecurityAlertPolicy.Update>, HasManager<SqlManager> {
+public interface ManagedDatabaseSecurityAlertPolicy extends HasInner<ManagedDatabaseSecurityAlertPolicyInner>, Indexable, Refreshable<ManagedDatabaseSecurityAlertPolicy>, Updatable<ManagedDatabaseSecurityAlertPolicy.Update>, HasManager<SqlManager> {
     /**
      * @return the creationTime value.
      */
@@ -80,33 +80,33 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
     String type();
 
     /**
-     * The entirety of the ServerSecurityAlertPolicy definition.
+     * The entirety of the ManagedDatabaseSecurityAlertPolicy definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithServer, DefinitionStages.WithState, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithDatabasis, DefinitionStages.WithState, DefinitionStages.WithCreate {
     }
 
     /**
-     * Grouping of ServerSecurityAlertPolicy definition stages.
+     * Grouping of ManagedDatabaseSecurityAlertPolicy definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a ServerSecurityAlertPolicy definition.
+         * The first stage of a ManagedDatabaseSecurityAlertPolicy definition.
          */
-        interface Blank extends WithServer {
+        interface Blank extends WithDatabasis {
         }
 
         /**
-         * The stage of the serversecurityalertpolicy definition allowing to specify Server.
+         * The stage of the manageddatabasesecurityalertpolicy definition allowing to specify Databasis.
          */
-        interface WithServer {
+        interface WithDatabasis {
            /**
-            * Specifies resourceGroupName, serverName.
+            * Specifies resourceGroupName, managedInstanceName, databaseName.
             */
-            WithState withExistingServer(String resourceGroupName, String serverName);
+            WithState withExistingDatabasis(String resourceGroupName, String managedInstanceName, String databaseName);
         }
 
         /**
-         * The stage of the serversecurityalertpolicy definition allowing to specify State.
+         * The stage of the manageddatabasesecurityalertpolicy definition allowing to specify State.
          */
         interface WithState {
            /**
@@ -116,7 +116,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy definition allowing to specify DisabledAlerts.
+         * The stage of the manageddatabasesecurityalertpolicy definition allowing to specify DisabledAlerts.
          */
         interface WithDisabledAlerts {
             /**
@@ -126,7 +126,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy definition allowing to specify EmailAccountAdmins.
+         * The stage of the manageddatabasesecurityalertpolicy definition allowing to specify EmailAccountAdmins.
          */
         interface WithEmailAccountAdmins {
             /**
@@ -136,7 +136,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy definition allowing to specify EmailAddresses.
+         * The stage of the manageddatabasesecurityalertpolicy definition allowing to specify EmailAddresses.
          */
         interface WithEmailAddresses {
             /**
@@ -146,7 +146,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy definition allowing to specify RetentionDays.
+         * The stage of the manageddatabasesecurityalertpolicy definition allowing to specify RetentionDays.
          */
         interface WithRetentionDays {
             /**
@@ -156,7 +156,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy definition allowing to specify StorageAccountAccessKey.
+         * The stage of the manageddatabasesecurityalertpolicy definition allowing to specify StorageAccountAccessKey.
          */
         interface WithStorageAccountAccessKey {
             /**
@@ -166,7 +166,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy definition allowing to specify StorageEndpoint.
+         * The stage of the manageddatabasesecurityalertpolicy definition allowing to specify StorageEndpoint.
          */
         interface WithStorageEndpoint {
             /**
@@ -180,21 +180,21 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ServerSecurityAlertPolicy>, DefinitionStages.WithDisabledAlerts, DefinitionStages.WithEmailAccountAdmins, DefinitionStages.WithEmailAddresses, DefinitionStages.WithRetentionDays, DefinitionStages.WithStorageAccountAccessKey, DefinitionStages.WithStorageEndpoint {
+        interface WithCreate extends Creatable<ManagedDatabaseSecurityAlertPolicy>, DefinitionStages.WithDisabledAlerts, DefinitionStages.WithEmailAccountAdmins, DefinitionStages.WithEmailAddresses, DefinitionStages.WithRetentionDays, DefinitionStages.WithStorageAccountAccessKey, DefinitionStages.WithStorageEndpoint {
         }
     }
     /**
-     * The template for a ServerSecurityAlertPolicy update operation, containing all the settings that can be modified.
+     * The template for a ManagedDatabaseSecurityAlertPolicy update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ServerSecurityAlertPolicy>, UpdateStages.WithDisabledAlerts, UpdateStages.WithEmailAccountAdmins, UpdateStages.WithEmailAddresses, UpdateStages.WithRetentionDays, UpdateStages.WithStorageAccountAccessKey, UpdateStages.WithStorageEndpoint {
+    interface Update extends Appliable<ManagedDatabaseSecurityAlertPolicy>, UpdateStages.WithDisabledAlerts, UpdateStages.WithEmailAccountAdmins, UpdateStages.WithEmailAddresses, UpdateStages.WithRetentionDays, UpdateStages.WithStorageAccountAccessKey, UpdateStages.WithStorageEndpoint {
     }
 
     /**
-     * Grouping of ServerSecurityAlertPolicy update stages.
+     * Grouping of ManagedDatabaseSecurityAlertPolicy update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the serversecurityalertpolicy update allowing to specify DisabledAlerts.
+         * The stage of the manageddatabasesecurityalertpolicy update allowing to specify DisabledAlerts.
          */
         interface WithDisabledAlerts {
             /**
@@ -204,7 +204,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy update allowing to specify EmailAccountAdmins.
+         * The stage of the manageddatabasesecurityalertpolicy update allowing to specify EmailAccountAdmins.
          */
         interface WithEmailAccountAdmins {
             /**
@@ -214,7 +214,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy update allowing to specify EmailAddresses.
+         * The stage of the manageddatabasesecurityalertpolicy update allowing to specify EmailAddresses.
          */
         interface WithEmailAddresses {
             /**
@@ -224,7 +224,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy update allowing to specify RetentionDays.
+         * The stage of the manageddatabasesecurityalertpolicy update allowing to specify RetentionDays.
          */
         interface WithRetentionDays {
             /**
@@ -234,7 +234,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy update allowing to specify StorageAccountAccessKey.
+         * The stage of the manageddatabasesecurityalertpolicy update allowing to specify StorageAccountAccessKey.
          */
         interface WithStorageAccountAccessKey {
             /**
@@ -244,7 +244,7 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         }
 
         /**
-         * The stage of the serversecurityalertpolicy update allowing to specify StorageEndpoint.
+         * The stage of the manageddatabasesecurityalertpolicy update allowing to specify StorageEndpoint.
          */
         interface WithStorageEndpoint {
             /**

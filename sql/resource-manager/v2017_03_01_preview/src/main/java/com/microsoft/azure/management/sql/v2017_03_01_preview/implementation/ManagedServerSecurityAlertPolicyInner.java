@@ -16,10 +16,10 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * A server security alert policy.
+ * A managed server security alert policy.
  */
 @JsonFlatten
-public class ServerSecurityAlertPolicyInner extends ProxyResource {
+public class ManagedServerSecurityAlertPolicyInner extends ProxyResource {
     /**
      * Specifies the state of the policy, whether it is enabled or disabled.
      * Possible values include: 'New', 'Enabled', 'Disabled'.
@@ -87,9 +87,9 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * Set specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'New', 'Enabled', 'Disabled'.
      *
      * @param state the state value to set
-     * @return the ServerSecurityAlertPolicyInner object itself.
+     * @return the ManagedServerSecurityAlertPolicyInner object itself.
      */
-    public ServerSecurityAlertPolicyInner withState(SecurityAlertPolicyState state) {
+    public ManagedServerSecurityAlertPolicyInner withState(SecurityAlertPolicyState state) {
         this.state = state;
         return this;
     }
@@ -107,9 +107,9 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * Set specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action.
      *
      * @param disabledAlerts the disabledAlerts value to set
-     * @return the ServerSecurityAlertPolicyInner object itself.
+     * @return the ManagedServerSecurityAlertPolicyInner object itself.
      */
-    public ServerSecurityAlertPolicyInner withDisabledAlerts(List<String> disabledAlerts) {
+    public ManagedServerSecurityAlertPolicyInner withDisabledAlerts(List<String> disabledAlerts) {
         this.disabledAlerts = disabledAlerts;
         return this;
     }
@@ -127,9 +127,9 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * Set specifies an array of e-mail addresses to which the alert is sent.
      *
      * @param emailAddresses the emailAddresses value to set
-     * @return the ServerSecurityAlertPolicyInner object itself.
+     * @return the ManagedServerSecurityAlertPolicyInner object itself.
      */
-    public ServerSecurityAlertPolicyInner withEmailAddresses(List<String> emailAddresses) {
+    public ManagedServerSecurityAlertPolicyInner withEmailAddresses(List<String> emailAddresses) {
         this.emailAddresses = emailAddresses;
         return this;
     }
@@ -147,9 +147,9 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * Set specifies that the alert is sent to the account administrators.
      *
      * @param emailAccountAdmins the emailAccountAdmins value to set
-     * @return the ServerSecurityAlertPolicyInner object itself.
+     * @return the ManagedServerSecurityAlertPolicyInner object itself.
      */
-    public ServerSecurityAlertPolicyInner withEmailAccountAdmins(Boolean emailAccountAdmins) {
+    public ManagedServerSecurityAlertPolicyInner withEmailAccountAdmins(Boolean emailAccountAdmins) {
         this.emailAccountAdmins = emailAccountAdmins;
         return this;
     }
@@ -167,9 +167,9 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * Set specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.
      *
      * @param storageEndpoint the storageEndpoint value to set
-     * @return the ServerSecurityAlertPolicyInner object itself.
+     * @return the ManagedServerSecurityAlertPolicyInner object itself.
      */
-    public ServerSecurityAlertPolicyInner withStorageEndpoint(String storageEndpoint) {
+    public ManagedServerSecurityAlertPolicyInner withStorageEndpoint(String storageEndpoint) {
         this.storageEndpoint = storageEndpoint;
         return this;
     }
@@ -187,9 +187,9 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * Set specifies the identifier key of the Threat Detection audit storage account.
      *
      * @param storageAccountAccessKey the storageAccountAccessKey value to set
-     * @return the ServerSecurityAlertPolicyInner object itself.
+     * @return the ManagedServerSecurityAlertPolicyInner object itself.
      */
-    public ServerSecurityAlertPolicyInner withStorageAccountAccessKey(String storageAccountAccessKey) {
+    public ManagedServerSecurityAlertPolicyInner withStorageAccountAccessKey(String storageAccountAccessKey) {
         this.storageAccountAccessKey = storageAccountAccessKey;
         return this;
     }
@@ -207,9 +207,9 @@ public class ServerSecurityAlertPolicyInner extends ProxyResource {
      * Set specifies the number of days to keep in the Threat Detection audit logs.
      *
      * @param retentionDays the retentionDays value to set
-     * @return the ServerSecurityAlertPolicyInner object itself.
+     * @return the ManagedServerSecurityAlertPolicyInner object itself.
      */
-    public ServerSecurityAlertPolicyInner withRetentionDays(Integer retentionDays) {
+    public ManagedServerSecurityAlertPolicyInner withRetentionDays(Integer retentionDays) {
         this.retentionDays = retentionDays;
         return this;
     }

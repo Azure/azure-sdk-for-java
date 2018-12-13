@@ -8,34 +8,36 @@
 
 package com.microsoft.azure.management.sql.v2017_03_01_preview.implementation;
 
-import com.microsoft.azure.management.sql.v2017_03_01_preview.ServerSecurityAlertPolicy;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedDatabaseSecurityAlertPolicy;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.SecurityAlertPolicyState;
 import java.util.List;
 import org.joda.time.DateTime;
 
-class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurityAlertPolicy, ServerSecurityAlertPolicyInner, ServerSecurityAlertPolicyImpl> implements ServerSecurityAlertPolicy, ServerSecurityAlertPolicy.Definition, ServerSecurityAlertPolicy.Update {
+class ManagedDatabaseSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ManagedDatabaseSecurityAlertPolicy, ManagedDatabaseSecurityAlertPolicyInner, ManagedDatabaseSecurityAlertPolicyImpl> implements ManagedDatabaseSecurityAlertPolicy, ManagedDatabaseSecurityAlertPolicy.Definition, ManagedDatabaseSecurityAlertPolicy.Update {
     private final SqlManager manager;
     private String resourceGroupName;
-    private String serverName;
+    private String managedInstanceName;
+    private String databaseName;
 
-    ServerSecurityAlertPolicyImpl(String name, SqlManager manager) {
-        super(name, new ServerSecurityAlertPolicyInner());
+    ManagedDatabaseSecurityAlertPolicyImpl(String name, SqlManager manager) {
+        super(name, new ManagedDatabaseSecurityAlertPolicyInner());
         this.manager = manager;
         // Set resource name
-        this.serverName = name;
+        this.databaseName = name;
         //
     }
 
-    ServerSecurityAlertPolicyImpl(ServerSecurityAlertPolicyInner inner, SqlManager manager) {
+    ManagedDatabaseSecurityAlertPolicyImpl(ManagedDatabaseSecurityAlertPolicyInner inner, SqlManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.serverName = inner.name();
+        this.databaseName = inner.name();
         // resource ancestor names
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
-        this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
+        this.managedInstanceName = IdParsingUtils.getValueFromIdByName(inner.id(), "managedInstances");
+        this.databaseName = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
         //
     }
 
@@ -45,23 +47,23 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
     }
 
     @Override
-    public Observable<ServerSecurityAlertPolicy> createResourceAsync() {
-        ServerSecurityAlertPoliciesInner client = this.manager().inner().serverSecurityAlertPolicies();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.serverName, this.inner())
+    public Observable<ManagedDatabaseSecurityAlertPolicy> createResourceAsync() {
+        ManagedDatabaseSecurityAlertPoliciesInner client = this.manager().inner().managedDatabaseSecurityAlertPolicies();
+        return client.createOrUpdateAsync(this.resourceGroupName, this.managedInstanceName, this.databaseName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
-    public Observable<ServerSecurityAlertPolicy> updateResourceAsync() {
-        ServerSecurityAlertPoliciesInner client = this.manager().inner().serverSecurityAlertPolicies();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.serverName, this.inner())
+    public Observable<ManagedDatabaseSecurityAlertPolicy> updateResourceAsync() {
+        ManagedDatabaseSecurityAlertPoliciesInner client = this.manager().inner().managedDatabaseSecurityAlertPolicies();
+        return client.createOrUpdateAsync(this.resourceGroupName, this.managedInstanceName, this.databaseName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
-    protected Observable<ServerSecurityAlertPolicyInner> getInnerAsync() {
-        ServerSecurityAlertPoliciesInner client = this.manager().inner().serverSecurityAlertPolicies();
-        return client.getAsync(this.resourceGroupName, this.serverName);
+    protected Observable<ManagedDatabaseSecurityAlertPolicyInner> getInnerAsync() {
+        ManagedDatabaseSecurityAlertPoliciesInner client = this.manager().inner().managedDatabaseSecurityAlertPolicies();
+        return client.getAsync(this.resourceGroupName, this.managedInstanceName, this.databaseName);
     }
 
     @Override
@@ -126,50 +128,51 @@ class ServerSecurityAlertPolicyImpl extends CreatableUpdatableImpl<ServerSecurit
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withExistingServer(String resourceGroupName, String serverName) {
+    public ManagedDatabaseSecurityAlertPolicyImpl withExistingDatabasis(String resourceGroupName, String managedInstanceName, String databaseName) {
         this.resourceGroupName = resourceGroupName;
-        this.serverName = serverName;
+        this.managedInstanceName = managedInstanceName;
+        this.databaseName = databaseName;
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withState(SecurityAlertPolicyState state) {
+    public ManagedDatabaseSecurityAlertPolicyImpl withState(SecurityAlertPolicyState state) {
         this.inner().withState(state);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withDisabledAlerts(List<String> disabledAlerts) {
+    public ManagedDatabaseSecurityAlertPolicyImpl withDisabledAlerts(List<String> disabledAlerts) {
         this.inner().withDisabledAlerts(disabledAlerts);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withEmailAccountAdmins(Boolean emailAccountAdmins) {
+    public ManagedDatabaseSecurityAlertPolicyImpl withEmailAccountAdmins(Boolean emailAccountAdmins) {
         this.inner().withEmailAccountAdmins(emailAccountAdmins);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withEmailAddresses(List<String> emailAddresses) {
+    public ManagedDatabaseSecurityAlertPolicyImpl withEmailAddresses(List<String> emailAddresses) {
         this.inner().withEmailAddresses(emailAddresses);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withRetentionDays(Integer retentionDays) {
+    public ManagedDatabaseSecurityAlertPolicyImpl withRetentionDays(Integer retentionDays) {
         this.inner().withRetentionDays(retentionDays);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withStorageAccountAccessKey(String storageAccountAccessKey) {
+    public ManagedDatabaseSecurityAlertPolicyImpl withStorageAccountAccessKey(String storageAccountAccessKey) {
         this.inner().withStorageAccountAccessKey(storageAccountAccessKey);
         return this;
     }
 
     @Override
-    public ServerSecurityAlertPolicyImpl withStorageEndpoint(String storageEndpoint) {
+    public ManagedDatabaseSecurityAlertPolicyImpl withStorageEndpoint(String storageEndpoint) {
         this.inner().withStorageEndpoint(storageEndpoint);
         return this;
     }
