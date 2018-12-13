@@ -28,6 +28,18 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
+    /** The API version to use for the request. */
+    private String apiVersion;
+
+    /**
+     * Gets The API version to use for the request.
+     *
+     * @return the apiVersion value.
+     */
+    public String apiVersion() {
+        return this.apiVersion;
+    }
+
     /** The subscription ID that identifies an Azure subscription. */
     private String subscriptionId;
 
@@ -49,18 +61,6 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     public SqlManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
-    }
-
-    /** The API version to use for the request. */
-    private String apiVersion;
-
-    /**
-     * Gets The API version to use for the request.
-     *
-     * @return the apiVersion value.
-     */
-    public String apiVersion() {
-        return this.apiVersion;
     }
 
     /** Gets or sets the preferred language for the response. */
@@ -133,6 +133,97 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ServerAdvisorsInner object to access its operations.
+     */
+    private ServerAdvisorsInner serverAdvisors;
+
+    /**
+     * Gets the ServerAdvisorsInner object to access its operations.
+     * @return the ServerAdvisorsInner object.
+     */
+    public ServerAdvisorsInner serverAdvisors() {
+        return this.serverAdvisors;
+    }
+
+    /**
+     * The DatabaseAdvisorsInner object to access its operations.
+     */
+    private DatabaseAdvisorsInner databaseAdvisors;
+
+    /**
+     * Gets the DatabaseAdvisorsInner object to access its operations.
+     * @return the DatabaseAdvisorsInner object.
+     */
+    public DatabaseAdvisorsInner databaseAdvisors() {
+        return this.databaseAdvisors;
+    }
+
+    /**
+     * The BackupLongTermRetentionPoliciesInner object to access its operations.
+     */
+    private BackupLongTermRetentionPoliciesInner backupLongTermRetentionPolicies;
+
+    /**
+     * Gets the BackupLongTermRetentionPoliciesInner object to access its operations.
+     * @return the BackupLongTermRetentionPoliciesInner object.
+     */
+    public BackupLongTermRetentionPoliciesInner backupLongTermRetentionPolicies() {
+        return this.backupLongTermRetentionPolicies;
+    }
+
+    /**
+     * The BackupLongTermRetentionVaultsInner object to access its operations.
+     */
+    private BackupLongTermRetentionVaultsInner backupLongTermRetentionVaults;
+
+    /**
+     * Gets the BackupLongTermRetentionVaultsInner object to access its operations.
+     * @return the BackupLongTermRetentionVaultsInner object.
+     */
+    public BackupLongTermRetentionVaultsInner backupLongTermRetentionVaults() {
+        return this.backupLongTermRetentionVaults;
+    }
+
+    /**
+     * The RecoverableDatabasesInner object to access its operations.
+     */
+    private RecoverableDatabasesInner recoverableDatabases;
+
+    /**
+     * Gets the RecoverableDatabasesInner object to access its operations.
+     * @return the RecoverableDatabasesInner object.
+     */
+    public RecoverableDatabasesInner recoverableDatabases() {
+        return this.recoverableDatabases;
+    }
+
+    /**
+     * The RestorableDroppedDatabasesInner object to access its operations.
+     */
+    private RestorableDroppedDatabasesInner restorableDroppedDatabases;
+
+    /**
+     * Gets the RestorableDroppedDatabasesInner object to access its operations.
+     * @return the RestorableDroppedDatabasesInner object.
+     */
+    public RestorableDroppedDatabasesInner restorableDroppedDatabases() {
+        return this.restorableDroppedDatabases;
+    }
+
+    /**
+     * The CapabilitiesInner object to access its operations.
+     */
+    private CapabilitiesInner capabilities;
+
+    /**
+     * Gets the CapabilitiesInner object to access its operations.
+     * @return the CapabilitiesInner object.
+     */
+    public CapabilitiesInner capabilities() {
+        return this.capabilities;
+    }
+
+    /**
      * The ServersInner object to access its operations.
      */
     private ServersInner servers;
@@ -146,6 +237,19 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ServerConnectionPoliciesInner object to access its operations.
+     */
+    private ServerConnectionPoliciesInner serverConnectionPolicies;
+
+    /**
+     * Gets the ServerConnectionPoliciesInner object to access its operations.
+     * @return the ServerConnectionPoliciesInner object.
+     */
+    public ServerConnectionPoliciesInner serverConnectionPolicies() {
+        return this.serverConnectionPolicies;
+    }
+
+    /**
      * The DatabasesInner object to access its operations.
      */
     private DatabasesInner databases;
@@ -156,6 +260,84 @@ public class SqlManagementClientImpl extends AzureServiceClient {
      */
     public DatabasesInner databases() {
         return this.databases;
+    }
+
+    /**
+     * The DatabaseThreatDetectionPoliciesInner object to access its operations.
+     */
+    private DatabaseThreatDetectionPoliciesInner databaseThreatDetectionPolicies;
+
+    /**
+     * Gets the DatabaseThreatDetectionPoliciesInner object to access its operations.
+     * @return the DatabaseThreatDetectionPoliciesInner object.
+     */
+    public DatabaseThreatDetectionPoliciesInner databaseThreatDetectionPolicies() {
+        return this.databaseThreatDetectionPolicies;
+    }
+
+    /**
+     * The DataMaskingPoliciesInner object to access its operations.
+     */
+    private DataMaskingPoliciesInner dataMaskingPolicies;
+
+    /**
+     * Gets the DataMaskingPoliciesInner object to access its operations.
+     * @return the DataMaskingPoliciesInner object.
+     */
+    public DataMaskingPoliciesInner dataMaskingPolicies() {
+        return this.dataMaskingPolicies;
+    }
+
+    /**
+     * The DataMaskingRulesInner object to access its operations.
+     */
+    private DataMaskingRulesInner dataMaskingRules;
+
+    /**
+     * Gets the DataMaskingRulesInner object to access its operations.
+     * @return the DataMaskingRulesInner object.
+     */
+    public DataMaskingRulesInner dataMaskingRules() {
+        return this.dataMaskingRules;
+    }
+
+    /**
+     * The TransparentDataEncryptionConfigurationsInner object to access its operations.
+     */
+    private TransparentDataEncryptionConfigurationsInner transparentDataEncryptionConfigurations;
+
+    /**
+     * Gets the TransparentDataEncryptionConfigurationsInner object to access its operations.
+     * @return the TransparentDataEncryptionConfigurationsInner object.
+     */
+    public TransparentDataEncryptionConfigurationsInner transparentDataEncryptionConfigurations() {
+        return this.transparentDataEncryptionConfigurations;
+    }
+
+    /**
+     * The ExtensionsInner object to access its operations.
+     */
+    private ExtensionsInner extensions;
+
+    /**
+     * Gets the ExtensionsInner object to access its operations.
+     * @return the ExtensionsInner object.
+     */
+    public ExtensionsInner extensions() {
+        return this.extensions;
+    }
+
+    /**
+     * The DisasterRecoveryConfigurationsInner object to access its operations.
+     */
+    private DisasterRecoveryConfigurationsInner disasterRecoveryConfigurations;
+
+    /**
+     * Gets the DisasterRecoveryConfigurationsInner object to access its operations.
+     * @return the DisasterRecoveryConfigurationsInner object.
+     */
+    public DisasterRecoveryConfigurationsInner disasterRecoveryConfigurations() {
+        return this.disasterRecoveryConfigurations;
     }
 
     /**
@@ -185,6 +367,71 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The GeoBackupPoliciesInner object to access its operations.
+     */
+    private GeoBackupPoliciesInner geoBackupPolicies;
+
+    /**
+     * Gets the GeoBackupPoliciesInner object to access its operations.
+     * @return the GeoBackupPoliciesInner object.
+     */
+    public GeoBackupPoliciesInner geoBackupPolicies() {
+        return this.geoBackupPolicies;
+    }
+
+    /**
+     * The OperationsInner object to access its operations.
+     */
+    private OperationsInner operations;
+
+    /**
+     * Gets the OperationsInner object to access its operations.
+     * @return the OperationsInner object.
+     */
+    public OperationsInner operations() {
+        return this.operations;
+    }
+
+    /**
+     * The QueriesInner object to access its operations.
+     */
+    private QueriesInner queries;
+
+    /**
+     * Gets the QueriesInner object to access its operations.
+     * @return the QueriesInner object.
+     */
+    public QueriesInner queries() {
+        return this.queries;
+    }
+
+    /**
+     * The QueryStatisticsInner object to access its operations.
+     */
+    private QueryStatisticsInner queryStatistics;
+
+    /**
+     * Gets the QueryStatisticsInner object to access its operations.
+     * @return the QueryStatisticsInner object.
+     */
+    public QueryStatisticsInner queryStatistics() {
+        return this.queryStatistics;
+    }
+
+    /**
+     * The QueryTextsInner object to access its operations.
+     */
+    private QueryTextsInner queryTexts;
+
+    /**
+     * Gets the QueryTextsInner object to access its operations.
+     * @return the QueryTextsInner object.
+     */
+    public QueryTextsInner queryTexts() {
+        return this.queryTexts;
+    }
+
+    /**
      * The RecommendedElasticPoolsInner object to access its operations.
      */
     private RecommendedElasticPoolsInner recommendedElasticPools;
@@ -208,6 +455,58 @@ public class SqlManagementClientImpl extends AzureServiceClient {
      */
     public ReplicationLinksInner replicationLinks() {
         return this.replicationLinks;
+    }
+
+    /**
+     * The RestorePointsInner object to access its operations.
+     */
+    private RestorePointsInner restorePoints;
+
+    /**
+     * Gets the RestorePointsInner object to access its operations.
+     * @return the RestorePointsInner object.
+     */
+    public RestorePointsInner restorePoints() {
+        return this.restorePoints;
+    }
+
+    /**
+     * The ServerAzureADAdministratorsInner object to access its operations.
+     */
+    private ServerAzureADAdministratorsInner serverAzureADAdministrators;
+
+    /**
+     * Gets the ServerAzureADAdministratorsInner object to access its operations.
+     * @return the ServerAzureADAdministratorsInner object.
+     */
+    public ServerAzureADAdministratorsInner serverAzureADAdministrators() {
+        return this.serverAzureADAdministrators;
+    }
+
+    /**
+     * The ServerCommunicationLinksInner object to access its operations.
+     */
+    private ServerCommunicationLinksInner serverCommunicationLinks;
+
+    /**
+     * Gets the ServerCommunicationLinksInner object to access its operations.
+     * @return the ServerCommunicationLinksInner object.
+     */
+    public ServerCommunicationLinksInner serverCommunicationLinks() {
+        return this.serverCommunicationLinks;
+    }
+
+    /**
+     * The ServiceObjectivesInner object to access its operations.
+     */
+    private ServiceObjectivesInner serviceObjectives;
+
+    /**
+     * Gets the ServiceObjectivesInner object to access its operations.
+     * @return the ServiceObjectivesInner object.
+     */
+    public ServiceObjectivesInner serviceObjectives() {
+        return this.serviceObjectives;
     }
 
     /**
@@ -276,16 +575,68 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The DatabaseThreatDetectionPoliciesInner object to access its operations.
+     * The ServerTableAuditingPoliciesInner object to access its operations.
      */
-    private DatabaseThreatDetectionPoliciesInner databaseThreatDetectionPolicies;
+    private ServerTableAuditingPoliciesInner serverTableAuditingPolicies;
 
     /**
-     * Gets the DatabaseThreatDetectionPoliciesInner object to access its operations.
-     * @return the DatabaseThreatDetectionPoliciesInner object.
+     * Gets the ServerTableAuditingPoliciesInner object to access its operations.
+     * @return the ServerTableAuditingPoliciesInner object.
      */
-    public DatabaseThreatDetectionPoliciesInner databaseThreatDetectionPolicies() {
-        return this.databaseThreatDetectionPolicies;
+    public ServerTableAuditingPoliciesInner serverTableAuditingPolicies() {
+        return this.serverTableAuditingPolicies;
+    }
+
+    /**
+     * The DatabaseTableAuditingPoliciesInner object to access its operations.
+     */
+    private DatabaseTableAuditingPoliciesInner databaseTableAuditingPolicies;
+
+    /**
+     * Gets the DatabaseTableAuditingPoliciesInner object to access its operations.
+     * @return the DatabaseTableAuditingPoliciesInner object.
+     */
+    public DatabaseTableAuditingPoliciesInner databaseTableAuditingPolicies() {
+        return this.databaseTableAuditingPolicies;
+    }
+
+    /**
+     * The DatabaseConnectionPoliciesInner object to access its operations.
+     */
+    private DatabaseConnectionPoliciesInner databaseConnectionPolicies;
+
+    /**
+     * Gets the DatabaseConnectionPoliciesInner object to access its operations.
+     * @return the DatabaseConnectionPoliciesInner object.
+     */
+    public DatabaseConnectionPoliciesInner databaseConnectionPolicies() {
+        return this.databaseConnectionPolicies;
+    }
+
+    /**
+     * The ServerUsagesInner object to access its operations.
+     */
+    private ServerUsagesInner serverUsages;
+
+    /**
+     * Gets the ServerUsagesInner object to access its operations.
+     * @return the ServerUsagesInner object.
+     */
+    public ServerUsagesInner serverUsages() {
+        return this.serverUsages;
+    }
+
+    /**
+     * The DatabaseUsagesInner object to access its operations.
+     */
+    private DatabaseUsagesInner databaseUsages;
+
+    /**
+     * Gets the DatabaseUsagesInner object to access its operations.
+     * @return the DatabaseUsagesInner object.
+     */
+    public DatabaseUsagesInner databaseUsages() {
+        return this.databaseUsages;
     }
 
     /**
@@ -323,18 +674,45 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.serverAdvisors = new ServerAdvisorsInner(restClient().retrofit(), this);
+        this.databaseAdvisors = new DatabaseAdvisorsInner(restClient().retrofit(), this);
+        this.backupLongTermRetentionPolicies = new BackupLongTermRetentionPoliciesInner(restClient().retrofit(), this);
+        this.backupLongTermRetentionVaults = new BackupLongTermRetentionVaultsInner(restClient().retrofit(), this);
+        this.recoverableDatabases = new RecoverableDatabasesInner(restClient().retrofit(), this);
+        this.restorableDroppedDatabases = new RestorableDroppedDatabasesInner(restClient().retrofit(), this);
+        this.capabilities = new CapabilitiesInner(restClient().retrofit(), this);
         this.servers = new ServersInner(restClient().retrofit(), this);
+        this.serverConnectionPolicies = new ServerConnectionPoliciesInner(restClient().retrofit(), this);
         this.databases = new DatabasesInner(restClient().retrofit(), this);
+        this.databaseThreatDetectionPolicies = new DatabaseThreatDetectionPoliciesInner(restClient().retrofit(), this);
+        this.dataMaskingPolicies = new DataMaskingPoliciesInner(restClient().retrofit(), this);
+        this.dataMaskingRules = new DataMaskingRulesInner(restClient().retrofit(), this);
+        this.transparentDataEncryptionConfigurations = new TransparentDataEncryptionConfigurationsInner(restClient().retrofit(), this);
+        this.extensions = new ExtensionsInner(restClient().retrofit(), this);
+        this.disasterRecoveryConfigurations = new DisasterRecoveryConfigurationsInner(restClient().retrofit(), this);
         this.elasticPools = new ElasticPoolsInner(restClient().retrofit(), this);
         this.firewallRules = new FirewallRulesInner(restClient().retrofit(), this);
+        this.geoBackupPolicies = new GeoBackupPoliciesInner(restClient().retrofit(), this);
+        this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.queries = new QueriesInner(restClient().retrofit(), this);
+        this.queryStatistics = new QueryStatisticsInner(restClient().retrofit(), this);
+        this.queryTexts = new QueryTextsInner(restClient().retrofit(), this);
         this.recommendedElasticPools = new RecommendedElasticPoolsInner(restClient().retrofit(), this);
         this.replicationLinks = new ReplicationLinksInner(restClient().retrofit(), this);
+        this.restorePoints = new RestorePointsInner(restClient().retrofit(), this);
+        this.serverAzureADAdministrators = new ServerAzureADAdministratorsInner(restClient().retrofit(), this);
+        this.serverCommunicationLinks = new ServerCommunicationLinksInner(restClient().retrofit(), this);
+        this.serviceObjectives = new ServiceObjectivesInner(restClient().retrofit(), this);
         this.elasticPoolActivities = new ElasticPoolActivitiesInner(restClient().retrofit(), this);
         this.elasticPoolDatabaseActivities = new ElasticPoolDatabaseActivitiesInner(restClient().retrofit(), this);
         this.serviceTierAdvisors = new ServiceTierAdvisorsInner(restClient().retrofit(), this);
         this.transparentDataEncryptions = new TransparentDataEncryptionsInner(restClient().retrofit(), this);
         this.transparentDataEncryptionActivities = new TransparentDataEncryptionActivitiesInner(restClient().retrofit(), this);
-        this.databaseThreatDetectionPolicies = new DatabaseThreatDetectionPoliciesInner(restClient().retrofit(), this);
+        this.serverTableAuditingPolicies = new ServerTableAuditingPoliciesInner(restClient().retrofit(), this);
+        this.databaseTableAuditingPolicies = new DatabaseTableAuditingPoliciesInner(restClient().retrofit(), this);
+        this.databaseConnectionPolicies = new DatabaseConnectionPoliciesInner(restClient().retrofit(), this);
+        this.serverUsages = new ServerUsagesInner(restClient().retrofit(), this);
+        this.databaseUsages = new DatabaseUsagesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
