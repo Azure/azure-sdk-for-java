@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for JobState.
+ * Defines values for MediaJobState.
  */
-public enum JobState {
+public enum MediaJobState {
     /** The job was canceled. This is a final state for the job. */
     CANCELED("Canceled"),
 
@@ -36,23 +36,23 @@ public enum JobState {
     /** The job is being scheduled to run on an available resource. This is a transient state, between queued and processing states. */
     SCHEDULED("Scheduled");
 
-    /** The actual serialized value for a JobState instance. */
+    /** The actual serialized value for a MediaJobState instance. */
     private String value;
 
-    JobState(String value) {
+    MediaJobState(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a JobState instance.
+     * Parses a serialized value to a MediaJobState instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed JobState object, or null if unable to parse.
+     * @return the parsed MediaJobState object, or null if unable to parse.
      */
     @JsonCreator
-    public static JobState fromString(String value) {
-        JobState[] items = JobState.values();
-        for (JobState item : items) {
+    public static MediaJobState fromString(String value) {
+        MediaJobState[] items = MediaJobState.values();
+        for (MediaJobState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

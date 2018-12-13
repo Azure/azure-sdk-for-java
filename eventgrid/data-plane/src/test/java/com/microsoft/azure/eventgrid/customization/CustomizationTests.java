@@ -9,31 +9,7 @@ import com.microsoft.azure.eventgrid.customization.models.ContosoItemReceivedEve
 import com.microsoft.azure.eventgrid.customization.models.ContosoItemSentEventData;
 import com.microsoft.azure.eventgrid.customization.models.DroneShippingInfo;
 import com.microsoft.azure.eventgrid.customization.models.RocketShippingInfo;
-import com.microsoft.azure.eventgrid.models.ContainerRegistryImageDeletedEventData;
-import com.microsoft.azure.eventgrid.models.ContainerRegistryImagePushedEventData;
-import com.microsoft.azure.eventgrid.models.EventGridEvent;
-import com.microsoft.azure.eventgrid.models.EventHubCaptureFileCreatedEventData;
-import com.microsoft.azure.eventgrid.models.IotHubDeviceConnectedEventData;
-import com.microsoft.azure.eventgrid.models.IotHubDeviceCreatedEventData;
-import com.microsoft.azure.eventgrid.models.IotHubDeviceDeletedEventData;
-import com.microsoft.azure.eventgrid.models.IotHubDeviceDisconnectedEventData;
-import com.microsoft.azure.eventgrid.models.JobState;
-import com.microsoft.azure.eventgrid.models.MediaJobStateChangeEventData;
-import com.microsoft.azure.eventgrid.models.ResourceActionCancelData;
-import com.microsoft.azure.eventgrid.models.ResourceActionFailureData;
-import com.microsoft.azure.eventgrid.models.ResourceActionSuccessData;
-import com.microsoft.azure.eventgrid.models.ResourceDeleteCancelData;
-import com.microsoft.azure.eventgrid.models.ResourceDeleteFailureData;
-import com.microsoft.azure.eventgrid.models.ResourceDeleteSuccessData;
-import com.microsoft.azure.eventgrid.models.ResourceWriteCancelData;
-import com.microsoft.azure.eventgrid.models.ResourceWriteFailureData;
-import com.microsoft.azure.eventgrid.models.ResourceWriteSuccessData;
-import com.microsoft.azure.eventgrid.models.ServiceBusActiveMessagesAvailableWithNoListenersEventData;
-import com.microsoft.azure.eventgrid.models.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
-import com.microsoft.azure.eventgrid.models.StorageBlobCreatedEventData;
-import com.microsoft.azure.eventgrid.models.StorageBlobDeletedEventData;
-import com.microsoft.azure.eventgrid.models.SubscriptionDeletedEventData;
-import com.microsoft.azure.eventgrid.models.SubscriptionValidationEventData;
+import com.microsoft.azure.eventgrid.models.*;
 import org.junit.Assert;
 import org.junit.Test;
 import sun.misc.IOUtils;
@@ -321,7 +297,7 @@ public class CustomizationTests {
         Assert.assertNotNull(events);
         Assert.assertTrue(events[0].data() instanceof MediaJobStateChangeEventData);
         MediaJobStateChangeEventData eventData = (MediaJobStateChangeEventData)events[0].data();
-        Assert.assertEquals(JobState.FINISHED, eventData.state());
+        Assert.assertEquals(MediaJobState.FINISHED, eventData.state());
     }
 
     // Resource Manager (Azure Subscription/Resource Group) events

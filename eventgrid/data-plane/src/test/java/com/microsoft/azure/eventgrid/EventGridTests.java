@@ -53,20 +53,20 @@ public class EventGridTests {
     private List<EventGridEvent> getEventsList() {
         List<EventGridEvent> eventsList = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++)
-        {
-            eventsList.add(new EventGridEvent(
-                    UUID.randomUUID().toString(),
-                    "TestSubject",
-                    new HashMap<String, String>() {{
-                        put("Field1", "Value1");
-                        put("Field2", "Value2");
-                        put("Field3", "Value3");
-                    }},
-                    "Microsoft.MockPublisher.TestEvent",
-                    DateTime.now(),
-                    "1.0"));
-        }
+//        for (int i = 0; i < 10; i++)
+//        {
+//            eventsList.add(new EventGridEvent(
+//                    UUID.randomUUID().toString(),
+//                    "TestSubject",
+//                    new HashMap<String, String>() {{
+//                        put("Field1", "Value1");
+//                        put("Field2", "Value2");
+//                        put("Field3", "Value3");
+//                    }},
+//                    "Microsoft.MockPublisher.TestEvent",
+//                    DateTime.now(),
+//                    "1.0"));
+//        }
         return eventsList;
     }
 }
