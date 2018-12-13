@@ -1,14 +1,14 @@
-## What is this?
+# What is this?
 
 The "msi-auth-token-provider" jar is a library that enables :
 * Azure VMs and container instances and
 * Web Apps (funcitons included)
 Retrieve authentication tokens for syatem/user assigned [managed identities](https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview).
 
-Thios is a light weight library that does not have many dependencies. The ohnly external library ti depends on is [`RxJava`](https://github.com/ReactiveX/RxJava/releases/tag/v1.2.4)
+This is a light weight library that does not have many dependencies. 
 
-## Usage
-### Dependency
+# Usage
+## Dependency
 Take a dependency on the jar in you pom file like follows
 ```xml
   <dependencies>
@@ -20,7 +20,7 @@ Take a dependency on the jar in you pom file like follows
   </dependencies>
 ```
 
-### Getting the token
+## Getting the token
 
 Add the folowing import statement to get in all the classes in the jar
 
@@ -28,26 +28,41 @@ Add the folowing import statement to get in all the classes in the jar
 import com.microsoft.azure.msiAuthTokenProvider.*;
 ```
 
-#### Getting a token for system assigned identity
+### Getting a token for system assigned identity
 Use the following code to get the auth token for System assigned identity :
 
 ``` java
 ...
     MSICredentials credsProvider = MSICredentials.getMSICredentials();
-    String token = credsProvider.getToken(null).toBlocking().value();
+    MSIToken token = credsProvider.getToken(null);
+    String tokenValue = token.accessToken();
 ...
 ```
 
-The `getToken` function returns a [Rx Single](http://reactivex.io/documentation/single.html). What i have shown above is how to use in a syncronous fashion.
+### Getting a token for user assigned identity
 
-#### Getting a token for user assigned identity
+#### Using the client Id for the user assigned identity :
 Use the following code to get the auth token for an User assigned identity :
 ```java
 ...
     MSICredentials credsProvider = MSICredentials.getMSICredentials();
     credsProvider.updateClientId(clientId);
-    String token = credsProvider.getToken(null).toBlocking().value();
+    MSIToken token = credsProvider.getToken(null);
+    String tokenValue = token.accessToken();
 ...            
 ```
 
 Where `clientId` is retrieved from the User Assigned Identity (This is currently only supported from within the portal).
+
+#### Using the object Id for the user assigned identity :
+Use the following code to get the auth token for an User assigned identity :
+```java
+...
+    MSICredentials credsProvider = MSICredentials.getMSICredentials();
+    credsProvider.updateObjectId(objectId);
+    MSIToken token = credsProvider.getToken(null);
+    String tokenValue = token.accessToken();
+...            
+```
+
+Where `objectId` is retrieved from the User Assigned Identity (This is currently only supported from within the portal).
