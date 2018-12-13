@@ -75,8 +75,8 @@ public class MigrateSqlServerSqlMITaskOutputMigrationLevel extends MigrateSqlSer
     /**
      * List of orphaned users.
      */
-    @JsonProperty(value = "orphanedUsers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<OrphanedUserInfo> orphanedUsers;
+    @JsonProperty(value = "orphanedUsersInfo", access = JsonProperty.Access.WRITE_ONLY)
+    private List<OrphanedUserInfo> orphanedUsersInfo;
 
     /**
      * Selected databases as a map from database name to database id.
@@ -189,10 +189,10 @@ public class MigrateSqlServerSqlMITaskOutputMigrationLevel extends MigrateSqlSer
     /**
      * Get list of orphaned users.
      *
-     * @return the orphanedUsers value
+     * @return the orphanedUsersInfo value
      */
-    public List<OrphanedUserInfo> orphanedUsers() {
-        return this.orphanedUsers;
+    public List<OrphanedUserInfo> orphanedUsersInfo() {
+        return this.orphanedUsersInfo;
     }
 
     /**
