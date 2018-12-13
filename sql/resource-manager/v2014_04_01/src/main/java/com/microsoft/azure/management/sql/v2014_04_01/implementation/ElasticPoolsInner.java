@@ -86,6 +86,14 @@ public class ElasticPoolsInner {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools")
         Observable<Response<ResponseBody>> listByServer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.ElasticPools listMetrics" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/metrics")
+        Observable<Response<ResponseBody>> listMetrics(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2014_04_01.ElasticPools listMetricDefinitions" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/metricDefinitions")
+        Observable<Response<ResponseBody>> listMetricDefinitions(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -734,6 +742,209 @@ public class ElasticPoolsInner {
     private ServiceResponse<PageImpl<ElasticPoolInner>> listByServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<ElasticPoolInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<ElasticPoolInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns elastic pool  metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;MetricInner&gt; object if successful.
+     */
+    public List<MetricInner> listMetrics(String resourceGroupName, String serverName, String elasticPoolName, String filter) {
+        return listMetricsWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, filter).toBlocking().single().body();
+    }
+
+    /**
+     * Returns elastic pool  metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<MetricInner>> listMetricsAsync(String resourceGroupName, String serverName, String elasticPoolName, String filter, final ServiceCallback<List<MetricInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listMetricsWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, filter), serviceCallback);
+    }
+
+    /**
+     * Returns elastic pool  metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;MetricInner&gt; object
+     */
+    public Observable<List<MetricInner>> listMetricsAsync(String resourceGroupName, String serverName, String elasticPoolName, String filter) {
+        return listMetricsWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, filter).map(new Func1<ServiceResponse<List<MetricInner>>, List<MetricInner>>() {
+            @Override
+            public List<MetricInner> call(ServiceResponse<List<MetricInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns elastic pool  metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
+     * @param filter An OData filter expression that describes a subset of metrics to return.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;MetricInner&gt; object
+     */
+    public Observable<ServiceResponse<List<MetricInner>>> listMetricsWithServiceResponseAsync(String resourceGroupName, String serverName, String elasticPoolName, String filter) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (elasticPoolName == null) {
+            throw new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (filter == null) {
+            throw new IllegalArgumentException("Parameter filter is required and cannot be null.");
+        }
+        return service.listMetrics(this.client.subscriptionId(), resourceGroupName, serverName, elasticPoolName, this.client.apiVersion(), filter, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<MetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<MetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricInner>> result = listMetricsDelegate(response);
+                        List<MetricInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<MetricInner>> clientResponse = new ServiceResponse<List<MetricInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MetricInner>> listMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<MetricInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<MetricInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns elastic pool metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;MetricDefinitionInner&gt; object if successful.
+     */
+    public List<MetricDefinitionInner> listMetricDefinitions(String resourceGroupName, String serverName, String elasticPoolName) {
+        return listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().body();
+    }
+
+    /**
+     * Returns elastic pool metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<MetricDefinitionInner>> listMetricDefinitionsAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<MetricDefinitionInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
+    }
+
+    /**
+     * Returns elastic pool metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<List<MetricDefinitionInner>> listMetricDefinitionsAsync(String resourceGroupName, String serverName, String elasticPoolName) {
+        return listMetricDefinitionsWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<List<MetricDefinitionInner>>, List<MetricDefinitionInner>>() {
+            @Override
+            public List<MetricDefinitionInner> call(ServiceResponse<List<MetricDefinitionInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Returns elastic pool metric definitions.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<List<MetricDefinitionInner>>> listMetricDefinitionsWithServiceResponseAsync(String resourceGroupName, String serverName, String elasticPoolName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (elasticPoolName == null) {
+            throw new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listMetricDefinitions(this.client.subscriptionId(), resourceGroupName, serverName, elasticPoolName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = listMetricDefinitionsDelegate(response);
+                        List<MetricDefinitionInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<MetricDefinitionInner>> clientResponse = new ServiceResponse<List<MetricDefinitionInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MetricDefinitionInner>> listMetricDefinitionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<MetricDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

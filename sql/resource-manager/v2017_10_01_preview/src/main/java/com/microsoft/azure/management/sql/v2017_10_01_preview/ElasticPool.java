@@ -111,6 +111,9 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param serverName The name of the server
+            * @return the next definition stage
             */
             WithLocation withExistingServer(String resourceGroupName, String serverName);
         }
@@ -121,6 +124,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location Resource location
+            * @return the next definition stage
             */
             WithCreate withLocation(String location);
         }
@@ -131,6 +136,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithLicenseType {
             /**
              * Specifies licenseType.
+             * @param licenseType The license type to apply for this elastic pool. Possible values include: 'LicenseIncluded', 'BasePrice'
+             * @return the next definition stage
              */
             WithCreate withLicenseType(ElasticPoolLicenseType licenseType);
         }
@@ -141,6 +148,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithMaxSizeBytes {
             /**
              * Specifies maxSizeBytes.
+             * @param maxSizeBytes The storage limit for the database elastic pool in bytes
+             * @return the next definition stage
              */
             WithCreate withMaxSizeBytes(Long maxSizeBytes);
         }
@@ -151,6 +160,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithPerDatabaseSettings {
             /**
              * Specifies perDatabaseSettings.
+             * @param perDatabaseSettings The per database settings for the elastic pool
+             * @return the next definition stage
              */
             WithCreate withPerDatabaseSettings(ElasticPoolPerDatabaseSettings perDatabaseSettings);
         }
@@ -161,6 +172,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku the sku parameter value
+             * @return the next definition stage
              */
             WithCreate withSku(Sku sku);
         }
@@ -171,6 +184,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -181,6 +196,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithZoneRedundant {
             /**
              * Specifies zoneRedundant.
+             * @param zoneRedundant Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across multiple availability zones
+             * @return the next definition stage
              */
             WithCreate withZoneRedundant(Boolean zoneRedundant);
         }
@@ -209,6 +226,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithLicenseType {
             /**
              * Specifies licenseType.
+             * @param licenseType The license type to apply for this elastic pool. Possible values include: 'LicenseIncluded', 'BasePrice'
+             * @return the next update stage
              */
             Update withLicenseType(ElasticPoolLicenseType licenseType);
         }
@@ -219,6 +238,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithMaxSizeBytes {
             /**
              * Specifies maxSizeBytes.
+             * @param maxSizeBytes The storage limit for the database elastic pool in bytes
+             * @return the next update stage
              */
             Update withMaxSizeBytes(Long maxSizeBytes);
         }
@@ -229,6 +250,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithPerDatabaseSettings {
             /**
              * Specifies perDatabaseSettings.
+             * @param perDatabaseSettings The per database settings for the elastic pool
+             * @return the next update stage
              */
             Update withPerDatabaseSettings(ElasticPoolPerDatabaseSettings perDatabaseSettings);
         }
@@ -239,6 +262,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku the sku parameter value
+             * @return the next update stage
              */
             Update withSku(Sku sku);
         }
@@ -249,6 +274,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
@@ -259,6 +286,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithZoneRedundant {
             /**
              * Specifies zoneRedundant.
+             * @param zoneRedundant Whether or not this elastic pool is zone redundant, which means the replicas of this elastic pool will be spread across multiple availability zones
+             * @return the next update stage
              */
             Update withZoneRedundant(Boolean zoneRedundant);
         }

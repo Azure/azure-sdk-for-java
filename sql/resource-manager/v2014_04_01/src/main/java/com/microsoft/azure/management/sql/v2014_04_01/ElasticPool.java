@@ -116,6 +116,9 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param serverName The name of the server
+            * @return the next definition stage
             */
             WithLocation withExistingServer(String resourceGroupName, String serverName);
         }
@@ -126,6 +129,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location Resource location
+            * @return the next definition stage
             */
             WithCreate withLocation(String location);
         }
@@ -136,6 +141,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithDatabaseDtuMax {
             /**
              * Specifies databaseDtuMax.
+             * @param databaseDtuMax The maximum DTU any one database can consume
+             * @return the next definition stage
              */
             WithCreate withDatabaseDtuMax(Integer databaseDtuMax);
         }
@@ -146,6 +153,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithDatabaseDtuMin {
             /**
              * Specifies databaseDtuMin.
+             * @param databaseDtuMin The minimum DTU all databases are guaranteed
+             * @return the next definition stage
              */
             WithCreate withDatabaseDtuMin(Integer databaseDtuMin);
         }
@@ -156,6 +165,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithDtu {
             /**
              * Specifies dtu.
+             * @param dtu The total shared DTU for the database elastic pool
+             * @return the next definition stage
              */
             WithCreate withDtu(Integer dtu);
         }
@@ -166,6 +177,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithEdition {
             /**
              * Specifies edition.
+             * @param edition The edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium'
+             * @return the next definition stage
              */
             WithCreate withEdition(ElasticPoolEdition edition);
         }
@@ -176,6 +189,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithStorageMB {
             /**
              * Specifies storageMB.
+             * @param storageMB Gets storage limit for the database elastic pool in MB
+             * @return the next definition stage
              */
             WithCreate withStorageMB(Integer storageMB);
         }
@@ -186,6 +201,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -196,6 +213,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithZoneRedundant {
             /**
              * Specifies zoneRedundant.
+             * @param zoneRedundant Whether or not this database elastic pool is zone redundant, which means the replicas of this database will be spread across multiple availability zones
+             * @return the next definition stage
              */
             WithCreate withZoneRedundant(Boolean zoneRedundant);
         }
@@ -224,6 +243,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithDatabaseDtuMax {
             /**
              * Specifies databaseDtuMax.
+             * @param databaseDtuMax The maximum DTU any one database can consume
+             * @return the next update stage
              */
             Update withDatabaseDtuMax(Integer databaseDtuMax);
         }
@@ -234,6 +255,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithDatabaseDtuMin {
             /**
              * Specifies databaseDtuMin.
+             * @param databaseDtuMin The minimum DTU all databases are guaranteed
+             * @return the next update stage
              */
             Update withDatabaseDtuMin(Integer databaseDtuMin);
         }
@@ -244,6 +267,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithDtu {
             /**
              * Specifies dtu.
+             * @param dtu The total shared DTU for the database elastic pool
+             * @return the next update stage
              */
             Update withDtu(Integer dtu);
         }
@@ -254,6 +279,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithEdition {
             /**
              * Specifies edition.
+             * @param edition The edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium'
+             * @return the next update stage
              */
             Update withEdition(ElasticPoolEdition edition);
         }
@@ -264,6 +291,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithStorageMB {
             /**
              * Specifies storageMB.
+             * @param storageMB Gets storage limit for the database elastic pool in MB
+             * @return the next update stage
              */
             Update withStorageMB(Integer storageMB);
         }
@@ -274,6 +303,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
@@ -284,6 +315,8 @@ public interface ElasticPool extends HasInner<ElasticPoolInner>, Indexable, Refr
         interface WithZoneRedundant {
             /**
              * Specifies zoneRedundant.
+             * @param zoneRedundant Whether or not this database elastic pool is zone redundant, which means the replicas of this database will be spread across multiple availability zones
+             * @return the next update stage
              */
             Update withZoneRedundant(Boolean zoneRedundant);
         }
