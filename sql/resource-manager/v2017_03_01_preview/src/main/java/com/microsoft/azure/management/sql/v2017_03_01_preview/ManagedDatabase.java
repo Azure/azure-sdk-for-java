@@ -75,6 +75,16 @@ public interface ManagedDatabase extends HasInner<ManagedDatabaseInner>, Indexab
     String name();
 
     /**
+     * @return the recoverableDatabaseId value.
+     */
+    String recoverableDatabaseId();
+
+    /**
+     * @return the restorableDroppedDatabaseId value.
+     */
+    String restorableDroppedDatabaseId();
+
+    /**
      * @return the restorePointInTime value.
      */
     DateTime restorePointInTime();
@@ -176,6 +186,26 @@ public interface ManagedDatabase extends HasInner<ManagedDatabaseInner>, Indexab
         }
 
         /**
+         * The stage of the manageddatabase definition allowing to specify RecoverableDatabaseId.
+         */
+        interface WithRecoverableDatabaseId {
+            /**
+             * Specifies recoverableDatabaseId.
+             */
+            WithCreate withRecoverableDatabaseId(String recoverableDatabaseId);
+        }
+
+        /**
+         * The stage of the manageddatabase definition allowing to specify RestorableDroppedDatabaseId.
+         */
+        interface WithRestorableDroppedDatabaseId {
+            /**
+             * Specifies restorableDroppedDatabaseId.
+             */
+            WithCreate withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId);
+        }
+
+        /**
          * The stage of the manageddatabase definition allowing to specify RestorePointInTime.
          */
         interface WithRestorePointInTime {
@@ -230,13 +260,13 @@ public interface ManagedDatabase extends HasInner<ManagedDatabaseInner>, Indexab
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ManagedDatabase>, DefinitionStages.WithCatalogCollation, DefinitionStages.WithCollation, DefinitionStages.WithCreateMode, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSourceDatabaseId, DefinitionStages.WithStorageContainerSasToken, DefinitionStages.WithStorageContainerUri, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<ManagedDatabase>, DefinitionStages.WithCatalogCollation, DefinitionStages.WithCollation, DefinitionStages.WithCreateMode, DefinitionStages.WithRecoverableDatabaseId, DefinitionStages.WithRestorableDroppedDatabaseId, DefinitionStages.WithRestorePointInTime, DefinitionStages.WithSourceDatabaseId, DefinitionStages.WithStorageContainerSasToken, DefinitionStages.WithStorageContainerUri, DefinitionStages.WithTags {
         }
     }
     /**
      * The template for a ManagedDatabase update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ManagedDatabase>, UpdateStages.WithCatalogCollation, UpdateStages.WithCollation, UpdateStages.WithCreateMode, UpdateStages.WithRestorePointInTime, UpdateStages.WithSourceDatabaseId, UpdateStages.WithStorageContainerSasToken, UpdateStages.WithStorageContainerUri, UpdateStages.WithTags {
+    interface Update extends Appliable<ManagedDatabase>, UpdateStages.WithCatalogCollation, UpdateStages.WithCollation, UpdateStages.WithCreateMode, UpdateStages.WithRecoverableDatabaseId, UpdateStages.WithRestorableDroppedDatabaseId, UpdateStages.WithRestorePointInTime, UpdateStages.WithSourceDatabaseId, UpdateStages.WithStorageContainerSasToken, UpdateStages.WithStorageContainerUri, UpdateStages.WithTags {
     }
 
     /**
@@ -271,6 +301,26 @@ public interface ManagedDatabase extends HasInner<ManagedDatabaseInner>, Indexab
              * Specifies createMode.
              */
             Update withCreateMode(ManagedDatabaseCreateMode createMode);
+        }
+
+        /**
+         * The stage of the manageddatabase update allowing to specify RecoverableDatabaseId.
+         */
+        interface WithRecoverableDatabaseId {
+            /**
+             * Specifies recoverableDatabaseId.
+             */
+            Update withRecoverableDatabaseId(String recoverableDatabaseId);
+        }
+
+        /**
+         * The stage of the manageddatabase update allowing to specify RestorableDroppedDatabaseId.
+         */
+        interface WithRestorableDroppedDatabaseId {
+            /**
+             * Specifies restorableDroppedDatabaseId.
+             */
+            Update withRestorableDroppedDatabaseId(String restorableDroppedDatabaseId);
         }
 
         /**
