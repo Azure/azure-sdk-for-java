@@ -20,6 +20,7 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.IpFilterRule;
 import rx.Completable;
 import com.microsoft.azure.management.eventhub.v2018_01_01_preview.VirtualNetworkRule;
+import com.microsoft.azure.management.eventhub.v2018_01_01_preview.implementation.NetworkRuleSetInner;
 
 /**
  * Type representing Namespaces.
@@ -102,5 +103,26 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
      * @return the observable for the request
      */
     Completable deleteVirtualNetworkRuleAsync(String resourceGroupName, String namespaceName, String virtualNetworkRuleName);
+
+    /**
+     * Create or update NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param namespaceName The Namespace name
+     * @param parameters The Namespace IpFilterRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkRuleSet> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters);
+
+    /**
+     * Gets NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param namespaceName The Namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName);
 
 }
