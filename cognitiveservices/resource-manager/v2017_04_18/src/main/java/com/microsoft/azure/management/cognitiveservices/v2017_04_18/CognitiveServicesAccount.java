@@ -83,10 +83,10 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
         interface WithKind {
            /**
             * Specifies kind.
-            * @param kind Required. Gets or sets the Kind of the resource. Possible values include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7', 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction', 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'
+            * @param kind Required. Gets or sets the Kind of the resource
             * @return the next definition stage
 */
-            WithProperties withKind(Kind kind);
+            WithProperties withKind(String kind);
         }
 
         /**

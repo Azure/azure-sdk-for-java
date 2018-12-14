@@ -22,16 +22,10 @@ public class CognitiveServicesAccountCreateParameters {
     private Sku sku;
 
     /**
-     * Required. Gets or sets the Kind of the resource. Possible values
-     * include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7',
-     * 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision',
-     * 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction',
-     * 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker',
-     * 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics',
-     * 'TextTranslation', 'WebLM'.
+     * Required. Gets or sets the Kind of the resource.
      */
     @JsonProperty(value = "kind", required = true)
-    private Kind kind;
+    private String kind;
 
     /**
      * Required. Gets or sets the location of the resource. This will be one of
@@ -80,21 +74,21 @@ public class CognitiveServicesAccountCreateParameters {
     }
 
     /**
-     * Get required. Gets or sets the Kind of the resource. Possible values include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7', 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction', 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'.
+     * Get required. Gets or sets the Kind of the resource.
      *
      * @return the kind value
      */
-    public Kind kind() {
+    public String kind() {
         return this.kind;
     }
 
     /**
-     * Set required. Gets or sets the Kind of the resource. Possible values include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7', 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction', 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'.
+     * Set required. Gets or sets the Kind of the resource.
      *
      * @param kind the kind value to set
      * @return the CognitiveServicesAccountCreateParameters object itself.
      */
-    public CognitiveServicesAccountCreateParameters withKind(Kind kind) {
+    public CognitiveServicesAccountCreateParameters withKind(String kind) {
         this.kind = kind;
         return this;
     }
