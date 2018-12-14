@@ -149,7 +149,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
     /**
      * Check the give namespace name availability.
      *
-     * @param name The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @param name The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -162,7 +162,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
     /**
      * Check the give namespace name availability.
      *
-     * @param name The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @param name The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -174,7 +174,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
     /**
      * Check the give namespace name availability.
      *
-     * @param name The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @param name The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CheckNameAvailabilityResultInner object
      */
@@ -190,7 +190,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
     /**
      * Check the give namespace name availability.
      *
-     * @param name The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @param name The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CheckNameAvailabilityResultInner object
      */
@@ -1087,7 +1087,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1103,7 +1103,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param parameters The shared access authorization rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1118,7 +1118,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
@@ -1137,7 +1137,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
@@ -1188,7 +1188,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1202,7 +1202,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1216,7 +1216,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -1234,7 +1234,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -1281,7 +1281,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1296,7 +1296,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1310,7 +1310,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
      */
@@ -1328,7 +1328,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
      */
@@ -1374,7 +1374,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1389,7 +1389,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1403,7 +1403,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
@@ -1421,7 +1421,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
@@ -1467,7 +1467,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1482,7 +1482,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1496,7 +1496,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
@@ -1514,7 +1514,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
@@ -1556,7 +1556,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1572,7 +1572,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1587,7 +1587,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
@@ -1606,7 +1606,7 @@ public class NamespacesInner implements InnerSupportsGet<NamespaceResourceInner>
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object

@@ -64,7 +64,7 @@ public interface Topics extends SupportsCreating<SBTopic.DefinitionStages.Blank>
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -87,7 +87,7 @@ public interface Topics extends SupportsCreating<SBTopic.DefinitionStages.Blank>
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -99,7 +99,7 @@ public interface Topics extends SupportsCreating<SBTopic.DefinitionStages.Blank>
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -111,7 +111,7 @@ public interface Topics extends SupportsCreating<SBTopic.DefinitionStages.Blank>
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param topicName The topic name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param parameters Parameters supplied to regenerate the authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

@@ -83,7 +83,7 @@ public interface SBNamespace extends HasInner<SBNamespaceInner>, Resource, Group
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku Porperties of Sku
+             * @param sku Properties of Sku
              * @return the next definition stage
              */
             WithCreate withSku(SBSku sku);
@@ -113,7 +113,7 @@ public interface SBNamespace extends HasInner<SBNamespaceInner>, Resource, Group
         interface WithSku {
             /**
              * Specifies sku.
-             * @param sku Porperties of Sku
+             * @param sku Properties of Sku
              * @return the next update stage
              */
             Update withSku(SBSku sku);

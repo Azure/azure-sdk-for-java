@@ -221,7 +221,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Creates Migration configuration and starts migration of enties from Standard to Premium namespace.
+     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -236,7 +236,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Creates Migration configuration and starts migration of enties from Standard to Premium namespace.
+     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -250,7 +250,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Creates Migration configuration and starts migration of enties from Standard to Premium namespace.
+     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -268,7 +268,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Creates Migration configuration and starts migration of enties from Standard to Premium namespace.
+     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -299,7 +299,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Creates Migration configuration and starts migration of enties from Standard to Premium namespace.
+     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -314,7 +314,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Creates Migration configuration and starts migration of enties from Standard to Premium namespace.
+     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -328,7 +328,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Creates Migration configuration and starts migration of enties from Standard to Premium namespace.
+     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -346,7 +346,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * Creates Migration configuration and starts migration of enties from Standard to Premium namespace.
+     * Creates Migration configuration and starts migration of entities from Standard to Premium namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -569,7 +569,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any enties created after the operation will be under Premium Namespace. CompleteMigration operation will fail when entity migration is in-progress.
+     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when entity migration is in-progress.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -582,7 +582,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any enties created after the operation will be under Premium Namespace. CompleteMigration operation will fail when entity migration is in-progress.
+     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when entity migration is in-progress.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -595,7 +595,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any enties created after the operation will be under Premium Namespace. CompleteMigration operation will fail when entity migration is in-progress.
+     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when entity migration is in-progress.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -612,7 +612,7 @@ public class MigrationConfigsInner implements InnerSupportsDelete<Void> {
     }
 
     /**
-     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any enties created after the operation will be under Premium Namespace. CompleteMigration operation will fail when entity migration is in-progress.
+     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when entity migration is in-progress.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name

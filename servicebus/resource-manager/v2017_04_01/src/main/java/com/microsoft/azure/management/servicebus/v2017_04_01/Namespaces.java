@@ -45,7 +45,7 @@ public interface Namespaces extends SupportsCreating<SBNamespace.DefinitionStage
     /**
      * Check the give namespace name availability.
      *
-     * @param name The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @param name The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -56,7 +56,7 @@ public interface Namespaces extends SupportsCreating<SBNamespace.DefinitionStage
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -77,7 +77,7 @@ public interface Namespaces extends SupportsCreating<SBNamespace.DefinitionStage
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -88,7 +88,7 @@ public interface Namespaces extends SupportsCreating<SBNamespace.DefinitionStage
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -99,7 +99,7 @@ public interface Namespaces extends SupportsCreating<SBNamespace.DefinitionStage
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param parameters Parameters supplied to regenerate the authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

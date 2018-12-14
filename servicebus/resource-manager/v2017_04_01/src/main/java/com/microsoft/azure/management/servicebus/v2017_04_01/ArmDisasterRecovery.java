@@ -97,7 +97,7 @@ public interface ArmDisasterRecovery extends HasInner<ArmDisasterRecoveryInner>,
         interface WithAlternateName {
             /**
              * Specifies alternateName.
-             * @param alternateName Primary/Secondary eventhub namespace name, which is part of GEO DR pairning
+             * @param alternateName Primary/Secondary eventhub namespace name, which is part of GEO DR pairing
              * @return the next definition stage
              */
             WithCreate withAlternateName(String alternateName);
@@ -109,7 +109,7 @@ public interface ArmDisasterRecovery extends HasInner<ArmDisasterRecoveryInner>,
         interface WithPartnerNamespace {
             /**
              * Specifies partnerNamespace.
-             * @param partnerNamespace ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairning
+             * @param partnerNamespace ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing
              * @return the next definition stage
              */
             WithCreate withPartnerNamespace(String partnerNamespace);
@@ -139,7 +139,7 @@ public interface ArmDisasterRecovery extends HasInner<ArmDisasterRecoveryInner>,
         interface WithAlternateName {
             /**
              * Specifies alternateName.
-             * @param alternateName Primary/Secondary eventhub namespace name, which is part of GEO DR pairning
+             * @param alternateName Primary/Secondary eventhub namespace name, which is part of GEO DR pairing
              * @return the next update stage
              */
             Update withAlternateName(String alternateName);
@@ -151,7 +151,7 @@ public interface ArmDisasterRecovery extends HasInner<ArmDisasterRecoveryInner>,
         interface WithPartnerNamespace {
             /**
              * Specifies partnerNamespace.
-             * @param partnerNamespace ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairning
+             * @param partnerNamespace ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing
              * @return the next update stage
              */
             Update withPartnerNamespace(String partnerNamespace);

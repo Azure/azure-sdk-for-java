@@ -35,14 +35,14 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
 
     /**
      * ARM Id of the Primary/Secondary eventhub namespace name, which is part
-     * of GEO DR pairning.
+     * of GEO DR pairing.
      */
     @JsonProperty(value = "properties.partnerNamespace")
     private String partnerNamespace;
 
     /**
      * Primary/Secondary eventhub namespace name, which is part of GEO DR
-     * pairning.
+     * pairing.
      */
     @JsonProperty(value = "properties.alternateName")
     private String alternateName;
@@ -74,7 +74,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
     }
 
     /**
-     * Get aRM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairning.
+     * Get aRM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing.
      *
      * @return the partnerNamespace value
      */
@@ -83,7 +83,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
     }
 
     /**
-     * Set aRM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairning.
+     * Set aRM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing.
      *
      * @param partnerNamespace the partnerNamespace value to set
      * @return the ArmDisasterRecoveryInner object itself.
@@ -94,7 +94,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
     }
 
     /**
-     * Get primary/Secondary eventhub namespace name, which is part of GEO DR pairning.
+     * Get primary/Secondary eventhub namespace name, which is part of GEO DR pairing.
      *
      * @return the alternateName value
      */
@@ -103,7 +103,7 @@ public class ArmDisasterRecoveryInner extends ProxyResource {
     }
 
     /**
-     * Set primary/Secondary eventhub namespace name, which is part of GEO DR pairning.
+     * Set primary/Secondary eventhub namespace name, which is part of GEO DR pairing.
      *
      * @param alternateName the alternateName value to set
      * @return the ArmDisasterRecoveryInner object itself.
