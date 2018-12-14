@@ -281,15 +281,16 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         if (future1 == null) {
             future1 = managementWithRetry(request).thenComposeAsync(new Function<Map<String, Object>, CompletableFuture<PartitionRuntimeInformation>>() {
                 @Override
-                public CompletableFuture<PartitionRuntimeInformation> apply(Map<String, Object> rawdata) {
+                public CompletableFuture<PartitionRuntimeInformation> apply(Map<String, Object> rawData) {
                     CompletableFuture<PartitionRuntimeInformation> future2 = new CompletableFuture<PartitionRuntimeInformation>();
                     future2.complete(new PartitionRuntimeInformation(
-                            (String) rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
-                            (String) rawdata.get(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY),
-                            (long) rawdata.get(ClientConstants.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
-                            (long) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
-                            (String) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
-                            ((Date) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant()));
+                            (String) rawData.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
+                            (String) rawData.get(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY),
+                            (long) rawData.get(ClientConstants.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
+                            (long) rawData.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
+                            (String) rawData.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
+                            ((Date) rawData.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
+                            (boolean)rawData.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_IS_EMPTY)));
                     return future2;
                 }
             }, this.executor);
