@@ -33,7 +33,7 @@ class ApplicationImpl extends CreatableUpdatableImpl<Application, ApplicationInn
         this.manager = manager;
         // Set resource name
         this.applicationName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.clusterName = IdParsingUtils.getValueFromIdByName(inner.id(), "clusters");
         this.applicationName = IdParsingUtils.getValueFromIdByName(inner.id(), "applications");
