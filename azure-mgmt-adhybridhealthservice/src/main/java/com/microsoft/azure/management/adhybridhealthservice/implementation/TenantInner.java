@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.adhybridhealthservice.implementation;
 
 import org.joda.time.DateTime;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -92,7 +93,7 @@ public class TenantInner {
      * The list of global administrators for the tenant.
      */
     @JsonProperty(value = "globalAdminsEmail")
-    private Object globalAdminsEmail;
+    private List<String> globalAdminsEmail;
 
     /**
      * The initial domain of the tenant.
@@ -379,7 +380,7 @@ public class TenantInner {
      *
      * @return the globalAdminsEmail value
      */
-    public Object globalAdminsEmail() {
+    public List<String> globalAdminsEmail() {
         return this.globalAdminsEmail;
     }
 
@@ -389,7 +390,7 @@ public class TenantInner {
      * @param globalAdminsEmail the globalAdminsEmail value to set
      * @return the TenantInner object itself.
      */
-    public TenantInner withGlobalAdminsEmail(Object globalAdminsEmail) {
+    public TenantInner withGlobalAdminsEmail(List<String> globalAdminsEmail) {
         this.globalAdminsEmail = globalAdminsEmail;
         return this;
     }
