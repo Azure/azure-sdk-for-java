@@ -35,7 +35,7 @@ public class ManagedClusterInner extends Resource {
     private String dnsPrefix;
 
     /**
-     * FDQN for the master pool.
+     * FQDN for the master pool.
      */
     @JsonProperty(value = "properties.fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
@@ -96,7 +96,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get fDQN for the master pool.
+     * Get fQDN for the master pool.
      *
      * @return the fqdn value
      */
