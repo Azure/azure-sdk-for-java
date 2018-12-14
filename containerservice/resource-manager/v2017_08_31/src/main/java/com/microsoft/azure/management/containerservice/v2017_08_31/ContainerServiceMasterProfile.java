@@ -93,7 +93,7 @@ public class ContainerServiceMasterProfile {
     private Integer osDiskSizeGB;
 
     /**
-     * VNet SubnetID specifies the vnet's subnet identifier.
+     * VNet SubnetID specifies the VNet's subnet identifier.
      */
     @JsonProperty(value = "vnetSubnetID")
     private String vnetSubnetID;
@@ -114,7 +114,7 @@ public class ContainerServiceMasterProfile {
     private ContainerServiceStorageProfileTypes storageProfile;
 
     /**
-     * FDQN for the master pool.
+     * FQDN for the master pool.
      */
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
@@ -200,7 +200,7 @@ public class ContainerServiceMasterProfile {
     }
 
     /**
-     * Get vNet SubnetID specifies the vnet's subnet identifier.
+     * Get vNet SubnetID specifies the VNet's subnet identifier.
      *
      * @return the vnetSubnetID value
      */
@@ -209,7 +209,7 @@ public class ContainerServiceMasterProfile {
     }
 
     /**
-     * Set vNet SubnetID specifies the vnet's subnet identifier.
+     * Set vNet SubnetID specifies the VNet's subnet identifier.
      *
      * @param vnetSubnetID the vnetSubnetID value to set
      * @return the ContainerServiceMasterProfile object itself.
@@ -260,7 +260,7 @@ public class ContainerServiceMasterProfile {
     }
 
     /**
-     * Get fDQN for the master pool.
+     * Get fQDN for the master pool.
      *
      * @return the fqdn value
      */

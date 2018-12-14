@@ -101,7 +101,7 @@ public class ContainerServiceAgentPoolProfile {
     private String dnsPrefix;
 
     /**
-     * FDQN for the agent pool.
+     * FQDN for the agent pool.
      */
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
@@ -123,7 +123,7 @@ public class ContainerServiceAgentPoolProfile {
     private ContainerServiceStorageProfileTypes storageProfile;
 
     /**
-     * VNet SubnetID specifies the vnet's subnet identifier.
+     * VNet SubnetID specifies the VNet's subnet identifier.
      */
     @JsonProperty(value = "vnetSubnetID")
     private String vnetSubnetID;
@@ -236,7 +236,7 @@ public class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Get fDQN for the agent pool.
+     * Get fQDN for the agent pool.
      *
      * @return the fqdn value
      */
@@ -285,7 +285,7 @@ public class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Get vNet SubnetID specifies the vnet's subnet identifier.
+     * Get vNet SubnetID specifies the VNet's subnet identifier.
      *
      * @return the vnetSubnetID value
      */
@@ -294,7 +294,7 @@ public class ContainerServiceAgentPoolProfile {
     }
 
     /**
-     * Set vNet SubnetID specifies the vnet's subnet identifier.
+     * Set vNet SubnetID specifies the VNet's subnet identifier.
      *
      * @param vnetSubnetID the vnetSubnetID value to set
      * @return the ContainerServiceAgentPoolProfile object itself.
