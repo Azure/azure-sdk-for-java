@@ -15,7 +15,6 @@ import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
 import java.util.Map;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountCreateParameters;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ProvisioningState;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Kind;
 import rx.functions.Func1;
 
 class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveServicesAccount, CognitiveServicesAccountInner, CognitiveServicesAccountImpl, CognitiveServicesManager> implements CognitiveServicesAccount, CognitiveServicesAccount.Definition, CognitiveServicesAccount.Update {
@@ -105,7 +104,7 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     }
 
     @Override
-    public CognitiveServicesAccountImpl withKind(Kind kind) {
+    public CognitiveServicesAccountImpl withKind(String kind) {
         this.createParameter.withKind(kind);
         return this;
     }

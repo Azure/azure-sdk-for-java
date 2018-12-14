@@ -15,16 +15,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CheckSkuAvailabilityResult {
     /**
-     * The Kind of the resource. Possible values include:
-     * 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7',
-     * 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision',
-     * 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction',
-     * 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker',
-     * 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics',
-     * 'TextTranslation', 'WebLM'.
+     * The Kind of the resource.
      */
     @JsonProperty(value = "kind")
-    private Kind kind;
+    private String kind;
 
     /**
      * The Type of the resource.
@@ -33,11 +27,10 @@ public class CheckSkuAvailabilityResult {
     private String type;
 
     /**
-     * The SKU of Cognitive Services account. Possible values include: 'F0',
-     * 'P0', 'P1', 'P2', 'S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'.
+     * The SKU of Cognitive Services account.
      */
     @JsonProperty(value = "skuName")
-    private SkuName skuName;
+    private String skuName;
 
     /**
      * Indicates the given SKU is available or not.
@@ -58,21 +51,21 @@ public class CheckSkuAvailabilityResult {
     private String message;
 
     /**
-     * Get the Kind of the resource. Possible values include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7', 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction', 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'.
+     * Get the Kind of the resource.
      *
      * @return the kind value
      */
-    public Kind kind() {
+    public String kind() {
         return this.kind;
     }
 
     /**
-     * Set the Kind of the resource. Possible values include: 'Bing.Autosuggest.v7', 'Bing.CustomSearch', 'Bing.Search.v7', 'Bing.Speech', 'Bing.SpellCheck.v7', 'ComputerVision', 'ContentModerator', 'CustomSpeech', 'CustomVision.Prediction', 'CustomVision.Training', 'Emotion', 'Face', 'LUIS', 'QnAMaker', 'SpeakerRecognition', 'SpeechTranslation', 'TextAnalytics', 'TextTranslation', 'WebLM'.
+     * Set the Kind of the resource.
      *
      * @param kind the kind value to set
      * @return the CheckSkuAvailabilityResult object itself.
      */
-    public CheckSkuAvailabilityResult withKind(Kind kind) {
+    public CheckSkuAvailabilityResult withKind(String kind) {
         this.kind = kind;
         return this;
     }
@@ -98,21 +91,21 @@ public class CheckSkuAvailabilityResult {
     }
 
     /**
-     * Get the SKU of Cognitive Services account. Possible values include: 'F0', 'P0', 'P1', 'P2', 'S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'.
+     * Get the SKU of Cognitive Services account.
      *
      * @return the skuName value
      */
-    public SkuName skuName() {
+    public String skuName() {
         return this.skuName;
     }
 
     /**
-     * Set the SKU of Cognitive Services account. Possible values include: 'F0', 'P0', 'P1', 'P2', 'S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'.
+     * Set the SKU of Cognitive Services account.
      *
      * @param skuName the skuName value to set
      * @return the CheckSkuAvailabilityResult object itself.
      */
-    public CheckSkuAvailabilityResult withSkuName(SkuName skuName) {
+    public CheckSkuAvailabilityResult withSkuName(String skuName) {
         this.skuName = skuName;
         return this;
     }

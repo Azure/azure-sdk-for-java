@@ -16,11 +16,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Sku {
     /**
      * Gets or sets the sku name. Required for account creation, optional for
-     * update. Possible values include: 'F0', 'P0', 'P1', 'P2', 'S0', 'S1',
-     * 'S2', 'S3', 'S4', 'S5', 'S6'.
+     * update.
      */
     @JsonProperty(value = "name", required = true)
-    private SkuName name;
+    private String name;
 
     /**
      * Gets the sku tier. This is based on the SKU name. Possible values
@@ -30,21 +29,21 @@ public class Sku {
     private SkuTier tier;
 
     /**
-     * Get gets or sets the sku name. Required for account creation, optional for update. Possible values include: 'F0', 'P0', 'P1', 'P2', 'S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'.
+     * Get gets or sets the sku name. Required for account creation, optional for update.
      *
      * @return the name value
      */
-    public SkuName name() {
+    public String name() {
         return this.name;
     }
 
     /**
-     * Set gets or sets the sku name. Required for account creation, optional for update. Possible values include: 'F0', 'P0', 'P1', 'P2', 'S0', 'S1', 'S2', 'S3', 'S4', 'S5', 'S6'.
+     * Set gets or sets the sku name. Required for account creation, optional for update.
      *
      * @param name the name value to set
      * @return the Sku object itself.
      */
-    public Sku withName(SkuName name) {
+    public Sku withName(String name) {
         this.name = name;
         return this;
     }
