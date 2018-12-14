@@ -37,8 +37,8 @@ public final class DeltaOperationType extends ExpandableStringEnum<DeltaOperatio
     /** Static value Obsolete for DeltaOperationType. */
     public static final DeltaOperationType OBSOLETE = fromString("Obsolete");
 
-    /** Static value DeletAdd for DeltaOperationType. */
-    public static final DeltaOperationType DELET_ADD = fromString("DeletAdd");
+    /** Static value DeleteAdd for DeltaOperationType. */
+    public static final DeltaOperationType DELETE_ADD = fromString("DeleteAdd");
 
     /**
      * Creates or finds a DeltaOperationType from its string representation.

@@ -35,7 +35,7 @@ public class ChangeNotReimportedDelta {
 
     /**
      * The operation type. Possible values include: 'Undefined', 'None', 'Add',
-     * 'Replace', 'Update', 'Delete', 'Obsolete', 'DeletAdd'.
+     * 'Replace', 'Update', 'Delete', 'Obsolete', 'DeleteAdd'.
      */
     @JsonProperty(value = "operationType")
     private DeltaOperationType operationType;
@@ -101,7 +101,7 @@ public class ChangeNotReimportedDelta {
     }
 
     /**
-     * Get the operation type. Possible values include: 'Undefined', 'None', 'Add', 'Replace', 'Update', 'Delete', 'Obsolete', 'DeletAdd'.
+     * Get the operation type. Possible values include: 'Undefined', 'None', 'Add', 'Replace', 'Update', 'Delete', 'Obsolete', 'DeleteAdd'.
      *
      * @return the operationType value
      */
@@ -110,7 +110,7 @@ public class ChangeNotReimportedDelta {
     }
 
     /**
-     * Set the operation type. Possible values include: 'Undefined', 'None', 'Add', 'Replace', 'Update', 'Delete', 'Obsolete', 'DeletAdd'.
+     * Set the operation type. Possible values include: 'Undefined', 'None', 'Add', 'Replace', 'Update', 'Delete', 'Obsolete', 'DeleteAdd'.
      *
      * @param operationType the operationType value to set
      * @return the ChangeNotReimportedDelta object itself.
