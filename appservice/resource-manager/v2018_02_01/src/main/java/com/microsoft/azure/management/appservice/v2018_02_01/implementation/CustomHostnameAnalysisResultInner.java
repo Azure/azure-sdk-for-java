@@ -48,7 +48,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     private Boolean hasConflictOnScaleUnit;
 
     /**
-     * &lt;code&gt;true&lt;/code&gt; if htere is a conflict across
+     * &lt;code&gt;true&lt;/code&gt; if there is a conflict across
      * subscriptions; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.hasConflictAcrossSubscription", access = JsonProperty.Access.WRITE_ONLY)
@@ -128,7 +128,7 @@ public class CustomHostnameAnalysisResultInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get &lt;code&gt;true&lt;/code&gt; if htere is a conflict across subscriptions; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * Get &lt;code&gt;true&lt;/code&gt; if there is a conflict across subscriptions; otherwise, &lt;code&gt;false&lt;/code&gt;.
      *
      * @return the hasConflictAcrossSubscription value
      */
