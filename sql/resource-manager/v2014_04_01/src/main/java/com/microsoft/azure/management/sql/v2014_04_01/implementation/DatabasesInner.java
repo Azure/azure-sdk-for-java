@@ -1526,7 +1526,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Gets a database inside of a recommented elastic pool.
+     * Gets a database inside of a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1542,7 +1542,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Gets a database inside of a recommented elastic pool.
+     * Gets a database inside of a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1557,7 +1557,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Gets a database inside of a recommented elastic pool.
+     * Gets a database inside of a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1576,7 +1576,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Gets a database inside of a recommented elastic pool.
+     * Gets a database inside of a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1626,7 +1626,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Returns a list of databases inside a recommented elastic pool.
+     * Returns a list of databases inside a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1641,7 +1641,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Returns a list of databases inside a recommented elastic pool.
+     * Returns a list of databases inside a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1655,7 +1655,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Returns a list of databases inside a recommented elastic pool.
+     * Returns a list of databases inside a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
@@ -1673,7 +1673,7 @@ public class DatabasesInner {
     }
 
     /**
-     * Returns a list of databases inside a recommented elastic pool.
+     * Returns a list of databases inside a recommended elastic pool.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
