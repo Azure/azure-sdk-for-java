@@ -65,7 +65,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     private List<Object> variables;
 
     /**
-     * Query timeout value (in minutes).  Effective when the HDInsight culster
+     * Query timeout value (in minutes).  Effective when the HDInsight cluster
      * is with ESP (Enterprise Security Package).
      */
     @JsonProperty(value = "typeProperties.queryTimeout")
@@ -212,7 +212,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     }
 
     /**
-     * Get query timeout value (in minutes).  Effective when the HDInsight culster is with ESP (Enterprise Security Package).
+     * Get query timeout value (in minutes).  Effective when the HDInsight cluster is with ESP (Enterprise Security Package).
      *
      * @return the queryTimeout value
      */
@@ -221,7 +221,7 @@ public class HDInsightHiveActivity extends ExecutionActivity {
     }
 
     /**
-     * Set query timeout value (in minutes).  Effective when the HDInsight culster is with ESP (Enterprise Security Package).
+     * Set query timeout value (in minutes).  Effective when the HDInsight cluster is with ESP (Enterprise Security Package).
      *
      * @param queryTimeout the queryTimeout value to set
      * @return the HDInsightHiveActivity object itself.
