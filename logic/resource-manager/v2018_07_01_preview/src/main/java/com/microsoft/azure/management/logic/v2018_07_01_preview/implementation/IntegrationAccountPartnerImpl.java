@@ -35,7 +35,7 @@ class IntegrationAccountPartnerImpl extends CreatableUpdatableImpl<IntegrationAc
         this.manager = manager;
         // Set resource name
         this.partnerName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.integrationAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "integrationAccounts");
         this.partnerName = IdParsingUtils.getValueFromIdByName(inner.id(), "partners");

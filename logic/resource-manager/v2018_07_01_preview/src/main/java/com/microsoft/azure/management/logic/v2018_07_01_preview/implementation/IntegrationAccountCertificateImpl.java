@@ -34,7 +34,7 @@ class IntegrationAccountCertificateImpl extends CreatableUpdatableImpl<Integrati
         this.manager = manager;
         // Set resource name
         this.certificateName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.integrationAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "integrationAccounts");
         this.certificateName = IdParsingUtils.getValueFromIdByName(inner.id(), "certificates");
