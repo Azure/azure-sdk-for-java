@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * Represents a recommented elastic pool.
+ * Represents a recommended elastic pool.
  */
 @JsonFlatten
 public class RecommendedElasticPoolInner extends ProxyResource {
