@@ -1288,7 +1288,7 @@ public class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
-     * @param recommendationId The GUID of the recommedation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1306,7 +1306,7 @@ public class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
-     * @param recommendationId The GUID of the recommedation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1323,7 +1323,7 @@ public class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
-     * @param recommendationId The GUID of the recommedation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecommendationRuleInner object
      */
@@ -1344,7 +1344,7 @@ public class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
-     * @param recommendationId The GUID of the recommedation object if you query an expired one. You don't need to specify it to query an active entry.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RecommendationRuleInner object
      */
