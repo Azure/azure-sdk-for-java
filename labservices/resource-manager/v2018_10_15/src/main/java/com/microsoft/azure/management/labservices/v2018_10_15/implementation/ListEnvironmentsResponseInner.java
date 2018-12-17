@@ -17,13 +17,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ListEnvironmentsResponseInner {
     /**
-     * List of all the evironments.
+     * List of all the environments.
      */
     @JsonProperty(value = "environments")
     private List<EnvironmentDetails> environments;
 
     /**
-     * Get list of all the evironments.
+     * Get list of all the environments.
      *
      * @return the environments value
      */
@@ -32,7 +32,7 @@ public class ListEnvironmentsResponseInner {
     }
 
     /**
-     * Set list of all the evironments.
+     * Set list of all the environments.
      *
      * @param environments the environments value to set
      * @return the ListEnvironmentsResponseInner object itself.
