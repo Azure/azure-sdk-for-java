@@ -59,7 +59,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 	public void keyAsyncForAsyncOperationsTest() throws Exception {
 
 		String vault = getVaultUri();
-		String keyname = "mykey";
+		String keyname = "tempkey";
 
 		CreateKeyRequest createKeyRequest = new CreateKeyRequest.Builder(vault, keyname, JsonWebKeyType.RSA).build();
 		KeyBundle keyBundle = keyVaultClient.createKeyAsync(createKeyRequest, null).get();
@@ -84,7 +84,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 		keyVaultClient.deleteKeyAsync(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name(), null).get();
 		pollOnKeyDeletion(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
 		keyVaultClient.purgeDeletedKey(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
-		SdkContext.sleep(20000);
+		SdkContext.sleep(60000);
 
 		KeyBundle restoreResult = keyVaultClient.restoreKeyAsync(vault, backupResult.value(), null).get();
 		Assert.assertNotNull(restoreResult);

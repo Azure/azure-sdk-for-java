@@ -226,7 +226,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withX509CertificateProperties(x509Properties);
 
         String vaultUri = getVaultUri();
-        String certificateName = "SelfSignedJavaPem";
+        String certificateName = "SelfSignedJavaPem2";
         CertificateOperation certificateOperation = keyVaultClient.createCertificate(
                 new CreateCertificateRequest
                     .Builder(vaultUri, certificateName)

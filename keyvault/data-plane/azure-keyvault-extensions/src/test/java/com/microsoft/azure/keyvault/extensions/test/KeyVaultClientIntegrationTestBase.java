@@ -350,7 +350,7 @@ public class KeyVaultClientIntegrationTestBase {
 
 	protected static DeletedSecretBundle pollOnSecretDeletion(String vaultBaseUrl, String secretName) throws Exception {
 		int pendingPollCount = 0;
-		while (pendingPollCount < 50) {
+		while (pendingPollCount < 70) {
 			DeletedSecretBundle deletedSecretBundle = keyVaultClient.getDeletedSecret(vaultBaseUrl, secretName);
 			if (deletedSecretBundle == null) {
 				if (isRecordMode()) {
