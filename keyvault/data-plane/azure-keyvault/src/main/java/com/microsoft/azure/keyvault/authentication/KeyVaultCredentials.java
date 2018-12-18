@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 
@@ -108,8 +107,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
         // if the service supports pop and a clientEncryptionKey has not been generated yet, generate
         // the key that will be used for encryption on this and all subsequent protected requests
-        if (supportsPop && this.clientEncryptionKey == null)
-        {
+        if (supportsPop && this.clientEncryptionKey == null) {
             try {
                 final KeyPairGenerator generator = KeyPairGenerator.getInstance(CLIENT_ENCRYPTION_KEY_TYPE);
 
