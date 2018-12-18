@@ -52,7 +52,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private final Runnable onOperationTimedout;
     private final Duration operationTimeout;
     private final CompletableFuture<Void> linkClose;
-    private final Object prefetchCountSync;
     private final ReceiverSettingsProvider settingsProvider;
     private final String tokenAudience;
     private final ActiveClientTokenManager activeClientTokenManager;
@@ -87,7 +86,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         this.linkClose = new CompletableFuture<>();
         this.lastKnownLinkError = null;
         this.receiveTimeout = factory.getOperationTimeout();
-        this.prefetchCountSync = new Object();
         this.settingsProvider = settingsProvider;
         this.linkOpen = new WorkItem<>(new CompletableFuture<>(), factory.getOperationTimeout());
         this.timer = new Timer(factory);
@@ -234,31 +232,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         return returnMessages;
     }
 
-    public int getPrefetchCount() {
-        synchronized (this.prefetchCountSync) {
-            return this.prefetchCount;
-        }
-    }
-
-    public void setPrefetchCount(final int value) throws EventHubException {
-        final int deltaPrefetchCount;
-        synchronized (this.prefetchCountSync) {
-            deltaPrefetchCount = value - this.prefetchCount;
-            this.prefetchCount = value;
-        }
-
-        try {
-            this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
-                @Override
-                public void onEvent() {
-                    sendFlow(deltaPrefetchCount);
-                }
-            });
-        } catch (IOException | RejectedExecutionException schedulerException) {
-            throw new EventHubException(false, "Setting prefetch count failed, see cause for more details", schedulerException);
-        }
-    }
-
     public Duration getReceiveTimeout() {
         return this.receiveTimeout;
     }
@@ -274,8 +247,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         if (maxMessageCount <= 0 || maxMessageCount > this.prefetchCount) {
             onReceive.completeExceptionally(new IllegalArgumentException(String.format(
                     Locale.US,
-                    "parameter 'maxMessageCount' should be a positive number and should be less than prefetchCount(%s)",
-                    this.prefetchCount)));
+                    "maxEventCount(%s) should be a positive number and should be less than prefetchCount(%s)",
+                    maxMessageCount, this.prefetchCount)));
             return onReceive;
         }
 

@@ -39,8 +39,9 @@ public class SetPrefetchCountTest extends ApiTestBase {
 
     @Test()
     public void testSetPrefetchCountToLargeValue() throws EventHubException {
-        testReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream());
-        testReceiver.setPrefetchCount(100000);
+        ReceiverOptions options = new ReceiverOptions();
+        options.setPrefetchCount(2000);
+        testReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream(), options);
         testReceiver.setReceiveTimeout(Duration.ofSeconds(2));
         int eventsReceived = 0;
         int retryCount = 0;
@@ -58,8 +59,9 @@ public class SetPrefetchCountTest extends ApiTestBase {
 
     @Test()
     public void testSetPrefetchCountToSmallValue() throws EventHubException {
-        testReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream());
-        testReceiver.setPrefetchCount(11);
+        ReceiverOptions options = new ReceiverOptions();
+        options.setPrefetchCount(11);
+        testReceiver = ehClient.createReceiverSync(CONSUMER_GROUP_NAME, PARTITION_ID, EventPosition.fromStartOfStream(), options);
         testReceiver.setReceiveTimeout(Duration.ofSeconds(2));
         int eventsReceived = 0;
         int retryCount = 0;

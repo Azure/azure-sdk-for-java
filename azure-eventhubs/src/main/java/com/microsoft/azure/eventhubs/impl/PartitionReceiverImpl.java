@@ -71,7 +71,7 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
                                                        final EventPosition eventPosition,
                                                        final long epoch,
                                                        final boolean isEpochReceiver,
-                                                       final ReceiverOptions receiverOptions,
+                                                       ReceiverOptions receiverOptions,
                                                        final Executor executor)
             throws EventHubException {
         if (epoch < NULL_EPOCH) {
@@ -80,6 +80,10 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
 
         if (StringUtil.isNullOrWhiteSpace(consumerGroupName)) {
             throw new IllegalArgumentException("specify valid string for argument - 'consumerGroupName'");
+        }
+
+        if (receiverOptions == null) {
+            receiverOptions = new ReceiverOptions();
         }
 
         final PartitionReceiverImpl receiver = new PartitionReceiverImpl(factory, eventHubName, consumerGroupName, partitionId, (EventPositionImpl) eventPosition, epoch, isEpochReceiver, receiverOptions, executor);
@@ -94,7 +98,7 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
         return MessageReceiver.create(this.underlyingFactory,
                 StringUtil.getRandomString(),
                 String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId),
-                PartitionReceiverImpl.DEFAULT_PREFETCH_COUNT, this)
+                this.receiverOptions.getPrefetchCount(), this)
                 .thenAcceptAsync(new Consumer<MessageReceiver>() {
                     public void accept(MessageReceiver r) {
                         PartitionReceiverImpl.this.internalReceiver = r;
@@ -108,19 +112,6 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
 
     public final String getPartitionId() {
         return this.partitionId;
-    }
-
-    public final int getPrefetchCount() {
-        return this.internalReceiver.getPrefetchCount();
-    }
-
-    public final void setPrefetchCount(final int prefetchCount) throws EventHubException {
-        if (prefetchCount < PartitionReceiverImpl.MINIMUM_PREFETCH_COUNT) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                    "PrefetchCount has to be above %s", PartitionReceiverImpl.MINIMUM_PREFETCH_COUNT));
-        }
-
-        this.internalReceiver.setPrefetchCount(prefetchCount);
     }
 
     public final Duration getReceiveTimeout() {

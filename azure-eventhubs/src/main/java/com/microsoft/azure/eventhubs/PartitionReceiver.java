@@ -24,8 +24,9 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface PartitionReceiver {
 
-    int MINIMUM_PREFETCH_COUNT = 10;
-    int DEFAULT_PREFETCH_COUNT = 999;
+    int MINIMUM_PREFETCH_COUNT = 1;
+    int DEFAULT_PREFETCH_COUNT = 500;
+    int MAXIMUM_PREFETCH_COUNT = 2000;
 
     long NULL_EPOCH = 0;
 
@@ -35,23 +36,6 @@ public interface PartitionReceiver {
      * @return The identifier representing the partition from which this receiver is fetching data
      */
     String getPartitionId();
-
-    /**
-     * Get Prefetch Count configured on the Receiver.
-     *
-     * @return the upper limit of events this receiver will actively receive regardless of whether a receive operation is pending.
-     * @see #setPrefetchCount
-     */
-    int getPrefetchCount();
-
-    /**
-     * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver}.
-     * <p>By default the value is 300
-     *
-     * @param prefetchCount the number of events to pre-fetch. value must be between 10 and 999. Default is 300.
-     * @throws EventHubException if setting prefetchCount encounters error
-     */
-    void setPrefetchCount(final int prefetchCount) throws EventHubException;
 
     Duration getReceiveTimeout();
 
@@ -81,6 +65,7 @@ public interface PartitionReceiver {
     /**
      * Get the {@link EventPosition} that corresponds to an {@link EventData} which was returned last by the receiver.
      * <p> This value will not be populated, unless the knob {@link ReceiverOptions#setReceiverRuntimeMetricEnabled(boolean)} is set.
+     * Note that EventPosition object is initialized using SequenceNumber and other parameters are not set and get will return null.
      *
      * @return the EventPosition object.
      */

@@ -25,7 +25,7 @@ public class EventDataBatchTest extends ApiTestBase {
         final EventDataBatch batch = ehClient.createBatch();
 
         final EventData within = EventData.create(new byte[1024]);
-        final EventData tooBig = EventData.create(new byte[1024 * 500]);
+        final EventData tooBig = EventData.create(new byte[1024 * 1024 * 2]);
 
         Assert.assertTrue(batch.tryAdd(within));
         batch.tryAdd(tooBig);

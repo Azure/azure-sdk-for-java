@@ -4,14 +4,17 @@
  */
 package com.microsoft.azure.eventhubs.proxy;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
+import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.exceptioncontracts.SendLargeMessageTest;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import org.jutils.jproxy.ProxyServer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.jutils.jproxy.ProxyServer;
 
 import java.io.IOException;
 import java.net.*;
@@ -28,7 +31,8 @@ public class ProxySendLargeMessageTest extends ApiTestBase {
     @BeforeClass
     public static void initialize() throws Exception {
         proxyServer = ProxyServer.create("localhost", proxyPort);
-        proxyServer.start(t -> {});
+        proxyServer.start(t -> {
+        });
 
         defaultProxySelector = ProxySelector.getDefault();
         ProxySelector.setDefault(new ProxySelector() {
@@ -69,7 +73,7 @@ public class ProxySendLargeMessageTest extends ApiTestBase {
 
     @Test(expected = PayloadSizeExceededException.class)
     public void sendMsgLargerThan256K() throws EventHubException, InterruptedException, ExecutionException, IOException {
-        sendLargeMessageTest.sendMsgLargerThan256K();
+        sendLargeMessageTest.sendMsgLargerThan1024K();
     }
 
     @Test()

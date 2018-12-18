@@ -75,7 +75,7 @@ public class SessionHandler extends BaseHandler {
     @Override
     public void onSessionRemoteOpen(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteOpen entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
                     this.entityName, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
         }
 
@@ -93,7 +93,7 @@ public class SessionHandler extends BaseHandler {
     @Override
     public void onSessionLocalClose(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionLocalClose entityName[%s], condition[%s]", this.entityName,
                     e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
         }
     }
@@ -101,7 +101,7 @@ public class SessionHandler extends BaseHandler {
     @Override
     public void onSessionRemoteClose(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteClose entityName[%s], condition[%s]", this.entityName,
                     e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
         }
 
@@ -118,7 +118,7 @@ public class SessionHandler extends BaseHandler {
     @Override
     public void onSessionFinal(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s]", this.entityName));
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionFinal entityName[%s]", this.entityName));
         }
     }
 

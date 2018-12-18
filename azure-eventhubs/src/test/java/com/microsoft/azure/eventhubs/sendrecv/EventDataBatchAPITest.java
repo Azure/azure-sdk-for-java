@@ -20,8 +20,8 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -153,7 +153,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
             int count = 0;
             while (true) {
-                final EventData eventData = EventData.create(new String(new char[new Random().nextInt(50000)]).replace("\0", "a").getBytes());
+                final EventData eventData = EventData.create(new String(new char[50000]).replace("\0", "a").getBytes());
                 for (int i = 0; i < new Random().nextInt(20); i++)
                     eventData.getProperties().put("somekey" + i, "somevalue");
 
@@ -241,7 +241,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
         @Override
         public int getMaxEventCount() {
-            return 999;
+            return PartitionReceiver.DEFAULT_PREFETCH_COUNT;
         }
 
         @Override

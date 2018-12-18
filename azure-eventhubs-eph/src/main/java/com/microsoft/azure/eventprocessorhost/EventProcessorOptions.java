@@ -6,8 +6,10 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
 
 import java.time.Duration;
+import java.util.Locale;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -112,11 +114,21 @@ public final class EventProcessorOptions {
     /***
      * Sets the prefetch count for the underlying event hub client.
      *
-     * The default is 300. This controls how many events are received in advance. 
+     * The default is 500. This controls how many events are received in advance.
      *
      * @param prefetchCount  The new prefetch count.
      */
     public void setPrefetchCount(int prefetchCount) {
+        if (prefetchCount < PartitionReceiver.MINIMUM_PREFETCH_COUNT) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                    "PrefetchCount has to be above %s", PartitionReceiver.MINIMUM_PREFETCH_COUNT));
+        }
+
+        if (prefetchCount > PartitionReceiver.MAXIMUM_PREFETCH_COUNT) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                    "PrefetchCount has to be below %s", PartitionReceiver.MAXIMUM_PREFETCH_COUNT));
+        }
+
         this.prefetchCount = prefetchCount;
     }
 
