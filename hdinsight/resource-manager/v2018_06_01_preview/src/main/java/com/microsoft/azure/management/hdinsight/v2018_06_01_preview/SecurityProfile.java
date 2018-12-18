@@ -60,6 +60,19 @@ public class SecurityProfile {
     private List<String> clusterUsersGroupDNs;
 
     /**
+     * The resource ID of the user's Azure Active Directory Domain Service.
+     */
+    @JsonProperty(value = "aaddsResourceId")
+    private String aaddsResourceId;
+
+    /**
+     * User assigned identity that has permissions to read and create
+     * cluster-related artifacts in the user's AADDS.
+     */
+    @JsonProperty(value = "msiResourceId")
+    private String msiResourceId;
+
+    /**
      * Get the directory type. Possible values include: 'ActiveDirectory'.
      *
      * @return the directoryType value
@@ -196,6 +209,46 @@ public class SecurityProfile {
      */
     public SecurityProfile withClusterUsersGroupDNs(List<String> clusterUsersGroupDNs) {
         this.clusterUsersGroupDNs = clusterUsersGroupDNs;
+        return this;
+    }
+
+    /**
+     * Get the resource ID of the user's Azure Active Directory Domain Service.
+     *
+     * @return the aaddsResourceId value
+     */
+    public String aaddsResourceId() {
+        return this.aaddsResourceId;
+    }
+
+    /**
+     * Set the resource ID of the user's Azure Active Directory Domain Service.
+     *
+     * @param aaddsResourceId the aaddsResourceId value to set
+     * @return the SecurityProfile object itself.
+     */
+    public SecurityProfile withAaddsResourceId(String aaddsResourceId) {
+        this.aaddsResourceId = aaddsResourceId;
+        return this;
+    }
+
+    /**
+     * Get user assigned identity that has permissions to read and create cluster-related artifacts in the user's AADDS.
+     *
+     * @return the msiResourceId value
+     */
+    public String msiResourceId() {
+        return this.msiResourceId;
+    }
+
+    /**
+     * Set user assigned identity that has permissions to read and create cluster-related artifacts in the user's AADDS.
+     *
+     * @param msiResourceId the msiResourceId value to set
+     * @return the SecurityProfile object itself.
+     */
+    public SecurityProfile withMsiResourceId(String msiResourceId) {
+        this.msiResourceId = msiResourceId;
         return this;
     }
 

@@ -210,6 +210,9 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param serverName The name of the server
+            * @return the next definition stage
             */
             WithLocation withExistingServer(String resourceGroupName, String serverName);
         }
@@ -220,6 +223,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location Resource location
+            * @return the next definition stage
             */
             WithCreate withLocation(String location);
         }
@@ -230,6 +235,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCollation {
             /**
              * Specifies collation.
+             * @param collation The collation of the database. If createMode is not Default, this value is ignored
+             * @return the next definition stage
              */
             WithCreate withCollation(String collation);
         }
@@ -240,6 +247,16 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCreateMode {
             /**
              * Specifies createMode.
+             * @param createMode Specifies the mode of database creation.
+ Default: regular database creation.
+ Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the source database.
+ OnlineSecondary/NonReadableSecondary: creates a database as a (readable or nonreadable) secondary replica of an existing database. sourceDatabaseId must be specified as the resource ID of the existing primary database.
+ PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be specified.
+ Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable database resource ID to restore.
+ Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is ignored. restorePointInTime may also be specified to restore from an earlier point in time.
+ RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
+ Copy, NonReadableSecondary, OnlineSecondary and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition. Possible values include: 'Copy', 'Default', 'NonReadableSecondary', 'OnlineSecondary', 'PointInTimeRestore', 'Recovery', 'Restore', 'RestoreLongTermRetentionBackup'
+             * @return the next definition stage
              */
             WithCreate withCreateMode(CreateMode createMode);
         }
@@ -250,6 +267,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithEdition {
             /**
              * Specifies edition.
+             * @param edition The edition of the database. The DatabaseEditions enumeration contains all the valid editions. If createMode is NonReadableSecondary or OnlineSecondary, this value is ignored. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions -l westus --query [].name`. Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2'
+             * @return the next definition stage
              */
             WithCreate withEdition(DatabaseEdition edition);
         }
@@ -260,6 +279,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithElasticPoolName {
             /**
              * Specifies elasticPoolName.
+             * @param elasticPoolName The name of the elastic pool the database is in. If elasticPoolName and requestedServiceObjectiveName are both updated, the value of requestedServiceObjectiveName is ignored. Not supported for DataWarehouse edition
+             * @return the next definition stage
              */
             WithCreate withElasticPoolName(String elasticPoolName);
         }
@@ -270,6 +291,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithMaxSizeBytes {
             /**
              * Specifies maxSizeBytes.
+             * @param maxSizeBytes The max size of the database expressed in bytes. If createMode is not Default, this value is ignored. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation."
+             * @return the next definition stage
              */
             WithCreate withMaxSizeBytes(String maxSizeBytes);
         }
@@ -280,6 +303,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithReadScale {
             /**
              * Specifies readScale.
+             * @param readScale Conditional. If the database is a geo-secondary, readScale indicates whether read-only connections are allowed to this database or not. Not supported for DataWarehouse edition. Possible values include: 'Enabled', 'Disabled'
+             * @return the next definition stage
              */
             WithCreate withReadScale(ReadScale readScale);
         }
@@ -290,6 +315,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRecoveryServicesRecoveryPointResourceId {
             /**
              * Specifies recoveryServicesRecoveryPointResourceId.
+             * @param recoveryServicesRecoveryPointResourceId Conditional. If createMode is RestoreLongTermRetentionBackup, then this value is required. Specifies the resource ID of the recovery point to restore from
+             * @return the next definition stage
              */
             WithCreate withRecoveryServicesRecoveryPointResourceId(String recoveryServicesRecoveryPointResourceId);
         }
@@ -300,6 +327,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRequestedServiceObjectiveId {
             /**
              * Specifies requestedServiceObjectiveId.
+             * @param requestedServiceObjectiveId The configured service level objective ID of the database. This is the service level objective that is in the process of being applied to the database. Once successfully updated, it will match the value of currentServiceObjectiveId property. If requestedServiceObjectiveId and requestedServiceObjectiveName are both updated, the value of requestedServiceObjectiveId overrides the value of requestedServiceObjectiveName. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions --location &lt;location&gt; --query [].supportedServiceLevelObjectives[].name`
+             * @return the next definition stage
              */
             WithCreate withRequestedServiceObjectiveId(UUID requestedServiceObjectiveId);
         }
@@ -310,6 +339,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRequestedServiceObjectiveName {
             /**
              * Specifies requestedServiceObjectiveName.
+             * @param requestedServiceObjectiveName The name of the configured service level objective of the database. This is the service level objective that is in the process of being applied to the database. Once successfully updated, it will match the value of serviceLevelObjective property. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions --location &lt;location&gt; --query [].supportedServiceLevelObjectives[].name`. Possible values include: 'System', 'System0', 'System1', 'System2', 'System3', 'System4', 'System2L', 'System3L', 'System4L', 'Free', 'Basic', 'S0', 'S1', 'S2', 'S3', 'S4', 'S6', 'S7', 'S9', 'S12', 'P1', 'P2', 'P3', 'P4', 'P6', 'P11', 'P15', 'PRS1', 'PRS2', 'PRS4', 'PRS6', 'DW100', 'DW200', 'DW300', 'DW400', 'DW500', 'DW600', 'DW1000', 'DW1200', 'DW1000c', 'DW1500', 'DW1500c', 'DW2000', 'DW2000c', 'DW3000', 'DW2500c', 'DW3000c', 'DW6000', 'DW5000c', 'DW6000c', 'DW7500c', 'DW10000c', 'DW15000c', 'DW30000c', 'DS100', 'DS200', 'DS300', 'DS400', 'DS500', 'DS600', 'DS1000', 'DS1200', 'DS1500', 'DS2000', 'ElasticPool'
+             * @return the next definition stage
              */
             WithCreate withRequestedServiceObjectiveName(ServiceObjectiveName requestedServiceObjectiveName);
         }
@@ -320,6 +351,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRestorePointInTime {
             /**
              * Specifies restorePointInTime.
+             * @param restorePointInTime Conditional. If createMode is PointInTimeRestore, this value is required. If createMode is Restore, this value is optional. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. Must be greater than or equal to the source database's earliestRestoreDate value
+             * @return the next definition stage
              */
             WithCreate withRestorePointInTime(DateTime restorePointInTime);
         }
@@ -330,6 +363,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSampleName {
             /**
              * Specifies sampleName.
+             * @param sampleName Indicates the name of the sample schema to apply when creating this database. If createMode is not Default, this value is ignored. Not supported for DataWarehouse edition. Possible values include: 'AdventureWorksLT'
+             * @return the next definition stage
              */
             WithCreate withSampleName(SampleName sampleName);
         }
@@ -340,6 +375,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSourceDatabaseDeletionDate {
             /**
              * Specifies sourceDatabaseDeletionDate.
+             * @param sourceDatabaseDeletionDate Conditional. If createMode is Restore and sourceDatabaseId is the deleted database's original resource id when it existed (as opposed to its current restorable dropped database id), then this value is required. Specifies the time that the database was deleted
+             * @return the next definition stage
              */
             WithCreate withSourceDatabaseDeletionDate(DateTime sourceDatabaseDeletionDate);
         }
@@ -350,6 +387,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSourceDatabaseId {
             /**
              * Specifies sourceDatabaseId.
+             * @param sourceDatabaseId Conditional. If createMode is Copy, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, Recovery, or Restore, then this value is required. Specifies the resource ID of the source database. If createMode is NonReadableSecondary or OnlineSecondary, the name of the source database must be the same as the new database being created
+             * @return the next definition stage
              */
             WithCreate withSourceDatabaseId(String sourceDatabaseId);
         }
@@ -360,6 +399,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -370,6 +411,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithZoneRedundant {
             /**
              * Specifies zoneRedundant.
+             * @param zoneRedundant Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones
+             * @return the next definition stage
              */
             WithCreate withZoneRedundant(Boolean zoneRedundant);
         }
@@ -398,6 +441,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCollation {
             /**
              * Specifies collation.
+             * @param collation The collation of the database. If createMode is not Default, this value is ignored
+             * @return the next update stage
              */
             Update withCollation(String collation);
         }
@@ -408,6 +453,16 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCreateMode {
             /**
              * Specifies createMode.
+             * @param createMode Specifies the mode of database creation.
+ Default: regular database creation.
+ Copy: creates a database as a copy of an existing database. sourceDatabaseId must be specified as the resource ID of the source database.
+ OnlineSecondary/NonReadableSecondary: creates a database as a (readable or nonreadable) secondary replica of an existing database. sourceDatabaseId must be specified as the resource ID of the existing primary database.
+ PointInTimeRestore: Creates a database by restoring a point in time backup of an existing database. sourceDatabaseId must be specified as the resource ID of the existing database, and restorePointInTime must be specified.
+ Recovery: Creates a database by restoring a geo-replicated backup. sourceDatabaseId must be specified as the recoverable database resource ID to restore.
+ Restore: Creates a database by restoring a backup of a deleted database. sourceDatabaseId must be specified. If sourceDatabaseId is the database's original resource ID, then sourceDatabaseDeletionDate must be specified. Otherwise sourceDatabaseId must be the restorable dropped database resource ID and sourceDatabaseDeletionDate is ignored. restorePointInTime may also be specified to restore from an earlier point in time.
+ RestoreLongTermRetentionBackup: Creates a database by restoring from a long term retention vault. recoveryServicesRecoveryPointResourceId must be specified as the recovery point resource ID.
+ Copy, NonReadableSecondary, OnlineSecondary and RestoreLongTermRetentionBackup are not supported for DataWarehouse edition. Possible values include: 'Copy', 'Default', 'NonReadableSecondary', 'OnlineSecondary', 'PointInTimeRestore', 'Recovery', 'Restore', 'RestoreLongTermRetentionBackup'
+             * @return the next update stage
              */
             Update withCreateMode(CreateMode createMode);
         }
@@ -418,6 +473,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithEdition {
             /**
              * Specifies edition.
+             * @param edition The edition of the database. The DatabaseEditions enumeration contains all the valid editions. If createMode is NonReadableSecondary or OnlineSecondary, this value is ignored. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions -l westus --query [].name`. Possible values include: 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'PremiumRS', 'Free', 'Stretch', 'DataWarehouse', 'System', 'System2'
+             * @return the next update stage
              */
             Update withEdition(DatabaseEdition edition);
         }
@@ -428,6 +485,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithElasticPoolName {
             /**
              * Specifies elasticPoolName.
+             * @param elasticPoolName The name of the elastic pool the database is in. If elasticPoolName and requestedServiceObjectiveName are both updated, the value of requestedServiceObjectiveName is ignored. Not supported for DataWarehouse edition
+             * @return the next update stage
              */
             Update withElasticPoolName(String elasticPoolName);
         }
@@ -438,6 +497,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithMaxSizeBytes {
             /**
              * Specifies maxSizeBytes.
+             * @param maxSizeBytes The max size of the database expressed in bytes. If createMode is not Default, this value is ignored. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation."
+             * @return the next update stage
              */
             Update withMaxSizeBytes(String maxSizeBytes);
         }
@@ -448,6 +509,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithReadScale {
             /**
              * Specifies readScale.
+             * @param readScale Conditional. If the database is a geo-secondary, readScale indicates whether read-only connections are allowed to this database or not. Not supported for DataWarehouse edition. Possible values include: 'Enabled', 'Disabled'
+             * @return the next update stage
              */
             Update withReadScale(ReadScale readScale);
         }
@@ -458,6 +521,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRecoveryServicesRecoveryPointResourceId {
             /**
              * Specifies recoveryServicesRecoveryPointResourceId.
+             * @param recoveryServicesRecoveryPointResourceId Conditional. If createMode is RestoreLongTermRetentionBackup, then this value is required. Specifies the resource ID of the recovery point to restore from
+             * @return the next update stage
              */
             Update withRecoveryServicesRecoveryPointResourceId(String recoveryServicesRecoveryPointResourceId);
         }
@@ -468,6 +533,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRequestedServiceObjectiveId {
             /**
              * Specifies requestedServiceObjectiveId.
+             * @param requestedServiceObjectiveId The configured service level objective ID of the database. This is the service level objective that is in the process of being applied to the database. Once successfully updated, it will match the value of currentServiceObjectiveId property. If requestedServiceObjectiveId and requestedServiceObjectiveName are both updated, the value of requestedServiceObjectiveId overrides the value of requestedServiceObjectiveName. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions --location &lt;location&gt; --query [].supportedServiceLevelObjectives[].name`
+             * @return the next update stage
              */
             Update withRequestedServiceObjectiveId(UUID requestedServiceObjectiveId);
         }
@@ -478,6 +545,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRequestedServiceObjectiveName {
             /**
              * Specifies requestedServiceObjectiveName.
+             * @param requestedServiceObjectiveName The name of the configured service level objective of the database. This is the service level objective that is in the process of being applied to the database. Once successfully updated, it will match the value of serviceLevelObjective property. To see possible values, query the capabilities API (/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationID}/capabilities) referred to by operationId: "Capabilities_ListByLocation." or use the Azure CLI command `az sql db list-editions --location &lt;location&gt; --query [].supportedServiceLevelObjectives[].name`. Possible values include: 'System', 'System0', 'System1', 'System2', 'System3', 'System4', 'System2L', 'System3L', 'System4L', 'Free', 'Basic', 'S0', 'S1', 'S2', 'S3', 'S4', 'S6', 'S7', 'S9', 'S12', 'P1', 'P2', 'P3', 'P4', 'P6', 'P11', 'P15', 'PRS1', 'PRS2', 'PRS4', 'PRS6', 'DW100', 'DW200', 'DW300', 'DW400', 'DW500', 'DW600', 'DW1000', 'DW1200', 'DW1000c', 'DW1500', 'DW1500c', 'DW2000', 'DW2000c', 'DW3000', 'DW2500c', 'DW3000c', 'DW6000', 'DW5000c', 'DW6000c', 'DW7500c', 'DW10000c', 'DW15000c', 'DW30000c', 'DS100', 'DS200', 'DS300', 'DS400', 'DS500', 'DS600', 'DS1000', 'DS1200', 'DS1500', 'DS2000', 'ElasticPool'
+             * @return the next update stage
              */
             Update withRequestedServiceObjectiveName(ServiceObjectiveName requestedServiceObjectiveName);
         }
@@ -488,6 +557,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithRestorePointInTime {
             /**
              * Specifies restorePointInTime.
+             * @param restorePointInTime Conditional. If createMode is PointInTimeRestore, this value is required. If createMode is Restore, this value is optional. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. Must be greater than or equal to the source database's earliestRestoreDate value
+             * @return the next update stage
              */
             Update withRestorePointInTime(DateTime restorePointInTime);
         }
@@ -498,6 +569,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSampleName {
             /**
              * Specifies sampleName.
+             * @param sampleName Indicates the name of the sample schema to apply when creating this database. If createMode is not Default, this value is ignored. Not supported for DataWarehouse edition. Possible values include: 'AdventureWorksLT'
+             * @return the next update stage
              */
             Update withSampleName(SampleName sampleName);
         }
@@ -508,6 +581,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSourceDatabaseDeletionDate {
             /**
              * Specifies sourceDatabaseDeletionDate.
+             * @param sourceDatabaseDeletionDate Conditional. If createMode is Restore and sourceDatabaseId is the deleted database's original resource id when it existed (as opposed to its current restorable dropped database id), then this value is required. Specifies the time that the database was deleted
+             * @return the next update stage
              */
             Update withSourceDatabaseDeletionDate(DateTime sourceDatabaseDeletionDate);
         }
@@ -518,6 +593,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithSourceDatabaseId {
             /**
              * Specifies sourceDatabaseId.
+             * @param sourceDatabaseId Conditional. If createMode is Copy, NonReadableSecondary, OnlineSecondary, PointInTimeRestore, Recovery, or Restore, then this value is required. Specifies the resource ID of the source database. If createMode is NonReadableSecondary or OnlineSecondary, the name of the source database must be the same as the new database being created
+             * @return the next update stage
              */
             Update withSourceDatabaseId(String sourceDatabaseId);
         }
@@ -528,6 +605,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
@@ -538,6 +617,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithZoneRedundant {
             /**
              * Specifies zoneRedundant.
+             * @param zoneRedundant Whether or not this database is zone redundant, which means the replicas of this database will be spread across multiple availability zones
+             * @return the next update stage
              */
             Update withZoneRedundant(Boolean zoneRedundant);
         }

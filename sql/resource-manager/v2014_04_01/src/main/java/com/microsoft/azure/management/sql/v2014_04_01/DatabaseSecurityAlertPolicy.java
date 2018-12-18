@@ -109,6 +109,10 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithDatabasis {
            /**
             * Specifies resourceGroupName, serverName, databaseName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param serverName The name of the server
+            * @param databaseName The name of the database for which database Threat Detection policy is defined
+            * @return the next definition stage
             */
             WithState withExistingDatabasis(String resourceGroupName, String serverName, String databaseName);
         }
@@ -119,6 +123,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithState {
            /**
             * Specifies state.
+            * @param state Specifies the state of the policy. If state is Enabled, storageEndpoint and storageAccountAccessKey are required. Possible values include: 'New', 'Enabled', 'Disabled'
+            * @return the next definition stage
             */
             WithCreate withState(SecurityAlertPolicyState state);
         }
@@ -129,6 +135,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithDisabledAlerts {
             /**
              * Specifies disabledAlerts.
+             * @param disabledAlerts Specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly; Data_Exfiltration; Unsafe_Action
+             * @return the next definition stage
              */
             WithCreate withDisabledAlerts(String disabledAlerts);
         }
@@ -139,6 +147,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithEmailAccountAdmins {
             /**
              * Specifies emailAccountAdmins.
+             * @param emailAccountAdmins Specifies that the alert is sent to the account administrators. Possible values include: 'Enabled', 'Disabled'
+             * @return the next definition stage
              */
             WithCreate withEmailAccountAdmins(SecurityAlertPolicyEmailAccountAdmins emailAccountAdmins);
         }
@@ -149,6 +159,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithEmailAddresses {
             /**
              * Specifies emailAddresses.
+             * @param emailAddresses Specifies the semicolon-separated list of e-mail addresses to which the alert is sent
+             * @return the next definition stage
              */
             WithCreate withEmailAddresses(String emailAddresses);
         }
@@ -159,6 +171,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The geo-location where the resource lives
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -169,6 +183,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithRetentionDays {
             /**
              * Specifies retentionDays.
+             * @param retentionDays Specifies the number of days to keep in the Threat Detection audit logs
+             * @return the next definition stage
              */
             WithCreate withRetentionDays(Integer retentionDays);
         }
@@ -179,6 +195,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithStorageAccountAccessKey {
             /**
              * Specifies storageAccountAccessKey.
+             * @param storageAccountAccessKey Specifies the identifier key of the Threat Detection audit storage account. If state is Enabled, storageAccountAccessKey is required
+             * @return the next definition stage
              */
             WithCreate withStorageAccountAccessKey(String storageAccountAccessKey);
         }
@@ -189,6 +207,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithStorageEndpoint {
             /**
              * Specifies storageEndpoint.
+             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. If state is Enabled, storageEndpoint is required
+             * @return the next definition stage
              */
             WithCreate withStorageEndpoint(String storageEndpoint);
         }
@@ -199,6 +219,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithUseServerDefault {
             /**
              * Specifies useServerDefault.
+             * @param useServerDefault Specifies whether to use the default server policy. Possible values include: 'Enabled', 'Disabled'
+             * @return the next definition stage
              */
             WithCreate withUseServerDefault(SecurityAlertPolicyUseServerDefault useServerDefault);
         }
@@ -227,6 +249,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithDisabledAlerts {
             /**
              * Specifies disabledAlerts.
+             * @param disabledAlerts Specifies the semicolon-separated list of alerts that are disabled, or empty string to disable no alerts. Possible values: Sql_Injection; Sql_Injection_Vulnerability; Access_Anomaly; Data_Exfiltration; Unsafe_Action
+             * @return the next update stage
              */
             Update withDisabledAlerts(String disabledAlerts);
         }
@@ -237,6 +261,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithEmailAccountAdmins {
             /**
              * Specifies emailAccountAdmins.
+             * @param emailAccountAdmins Specifies that the alert is sent to the account administrators. Possible values include: 'Enabled', 'Disabled'
+             * @return the next update stage
              */
             Update withEmailAccountAdmins(SecurityAlertPolicyEmailAccountAdmins emailAccountAdmins);
         }
@@ -247,6 +273,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithEmailAddresses {
             /**
              * Specifies emailAddresses.
+             * @param emailAddresses Specifies the semicolon-separated list of e-mail addresses to which the alert is sent
+             * @return the next update stage
              */
             Update withEmailAddresses(String emailAddresses);
         }
@@ -257,6 +285,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The geo-location where the resource lives
+             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -267,6 +297,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithRetentionDays {
             /**
              * Specifies retentionDays.
+             * @param retentionDays Specifies the number of days to keep in the Threat Detection audit logs
+             * @return the next update stage
              */
             Update withRetentionDays(Integer retentionDays);
         }
@@ -277,6 +309,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithStorageAccountAccessKey {
             /**
              * Specifies storageAccountAccessKey.
+             * @param storageAccountAccessKey Specifies the identifier key of the Threat Detection audit storage account. If state is Enabled, storageAccountAccessKey is required
+             * @return the next update stage
              */
             Update withStorageAccountAccessKey(String storageAccountAccessKey);
         }
@@ -287,6 +321,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithStorageEndpoint {
             /**
              * Specifies storageEndpoint.
+             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. If state is Enabled, storageEndpoint is required
+             * @return the next update stage
              */
             Update withStorageEndpoint(String storageEndpoint);
         }
@@ -297,6 +333,8 @@ public interface DatabaseSecurityAlertPolicy extends HasInner<DatabaseSecurityAl
         interface WithUseServerDefault {
             /**
              * Specifies useServerDefault.
+             * @param useServerDefault Specifies whether to use the default server policy. Possible values include: 'Enabled', 'Disabled'
+             * @return the next update stage
              */
             Update withUseServerDefault(SecurityAlertPolicyUseServerDefault useServerDefault);
         }

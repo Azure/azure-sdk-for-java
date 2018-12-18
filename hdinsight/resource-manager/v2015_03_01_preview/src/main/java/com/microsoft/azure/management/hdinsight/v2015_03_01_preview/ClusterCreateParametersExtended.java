@@ -34,6 +34,12 @@ public class ClusterCreateParametersExtended {
     private ClusterCreateProperties properties;
 
     /**
+     * The identity of the cluster, if configured.
+     */
+    @JsonProperty(value = "identity")
+    private ClusterIdentity identity;
+
+    /**
      * Get the location of the cluster.
      *
      * @return the location value
@@ -90,6 +96,26 @@ public class ClusterCreateParametersExtended {
      */
     public ClusterCreateParametersExtended withProperties(ClusterCreateProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the identity of the cluster, if configured.
+     *
+     * @return the identity value
+     */
+    public ClusterIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity of the cluster, if configured.
+     *
+     * @param identity the identity value to set
+     * @return the ClusterCreateParametersExtended object itself.
+     */
+    public ClusterCreateParametersExtended withIdentity(ClusterIdentity identity) {
+        this.identity = identity;
         return this;
     }
 

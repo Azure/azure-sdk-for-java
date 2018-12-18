@@ -45,7 +45,7 @@ class DatabaseImpl extends CreatableUpdatableImpl<Database, DatabaseInner, Datab
         this.manager = manager;
         // Set resource name
         this.databaseName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
         this.databaseName = IdParsingUtils.getValueFromIdByName(inner.id(), "databases");
