@@ -25,6 +25,15 @@ public class ManagementClient {
     }
 
     /**
+     * Retrieves information related to the namespace.
+     * Works with any claim (Send/Listen/Manage).
+     * @return - {@link NamespaceInfo} containing namespace information.
+     */
+    public NamespaceInfo getNamespaceInfo() throws ServiceBusException, InterruptedException {
+        return Utils.completeFuture(this.asyncClient.getNamespaceInfoAsync());
+    }
+
+    /**
      * Retrieves a queue from the service namespace
      * @param path - The path of the queue relative to service bus namespace.
      * @return - QueueDescription containing information about the queue.

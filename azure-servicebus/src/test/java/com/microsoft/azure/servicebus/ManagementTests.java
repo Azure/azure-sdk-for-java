@@ -10,7 +10,6 @@ import org.junit.Test;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -507,5 +506,12 @@ public class ManagementTests {
         qd2.setAuthorizationRules(new ArrayList<>(Arrays.asList(rule11, rule22)));
 
         Assert.assertTrue(qd.equals(qd2));
+    }
+
+    @Test
+    public void getNamespaceInfoTest() throws ExecutionException, InterruptedException {
+        NamespaceInfo nsInfo = this.managementClientAsync.getNamespaceInfoAsync().get();
+        Assert.assertNotNull(nsInfo);
+        Assert.assertEquals(NamespaceType.ServiceBus, nsInfo.getNamespaceType());
     }
 }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
+
 package com.microsoft.azure.servicebus.management;
 
 import com.microsoft.azure.servicebus.ClientSettings;
@@ -72,6 +75,30 @@ public class ManagementClientAsync {
                 .setConnectTimeout((int)CONNECTION_TIMEOUT.toMillis())
                 .setRequestTimeout((int)this.clientSettings.getOperationTimeout().toMillis());
         this.asyncHttpClient = asyncHttpClient(clientBuilder);
+    }
+
+    /**
+     * Retrieves information related to the namespace.
+     * Works with any claim (Send/Listen/Manage).
+     * @return - {@link NamespaceInfo} containing namespace information.
+     */
+    public CompletableFuture<NamespaceInfo> getNamespaceInfoAsync() {
+        CompletableFuture<String> contentFuture = getEntityAsync("$namespaceinfo", null, false);
+        CompletableFuture<NamespaceInfo> nsInfoFuture = new CompletableFuture<>();
+        contentFuture.handleAsync((content, ex) -> {
+            if (ex != null) {
+                nsInfoFuture.completeExceptionally(ex);
+            } else {
+                try {
+                    nsInfoFuture.complete(NamespaceInfoSerializer.parseFromContent(content));
+                } catch (ServiceBusException e) {
+                    nsInfoFuture.completeExceptionally(e);
+                }
+            }
+            return null;
+        }, MessagingFactory.INTERNAL_THREAD_POOL);
+
+        return nsInfoFuture;
     }
 
     /**
