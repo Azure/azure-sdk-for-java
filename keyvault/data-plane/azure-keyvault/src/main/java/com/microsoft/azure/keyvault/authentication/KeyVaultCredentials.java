@@ -11,9 +11,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
@@ -34,8 +39,12 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String BEARER_TOKEP_REFIX = "Bearer ";
+    private static final String CLIENT_ENCRYPTION_KEY_TYPE = "RSA";
+    private static final int CLIENT_ENCRYPTION_KEY_SIZE = 2048;
     private List<String> supportedMethods = Arrays.asList("sign", "verify", "encrypt", "decrypt", "wrapkey",
             "unwrapkey");
+
+    private JsonWebKey clientEncryptionKey = null;
 
     private final ChallengeCache cache = new ChallengeCache();
 
@@ -96,6 +105,23 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
             Map<String, String> challengeMap) throws IOException {
 
         Boolean supportsPop = supportsMessageProtection(originalRequest.url().toString(), challengeMap);
+
+        // if the service supports pop and a clientEncryptionKey has not been generated yet, generate
+        // the key that will be used for encryption on this and all subsequent protected requests
+        if (supportsPop && this.clientEncryptionKey == null)
+        {
+            try {
+                final KeyPairGenerator generator = KeyPairGenerator.getInstance(CLIENT_ENCRYPTION_KEY_TYPE);
+
+                generator.initialize(CLIENT_ENCRYPTION_KEY_SIZE);
+                
+                this.clientEncryptionKey = JsonWebKey.fromRSA(generator.generateKeyPair()).withKid(UUID.randomUUID().toString());   
+                
+            } catch (NoSuchAlgorithmException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         AuthenticationResult authResult = getAuthenticationCredentials(supportsPop, challengeMap);
 
         if (authResult == null) {
@@ -105,7 +131,8 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
         HttpMessageSecurity httpMessageSecurity = new HttpMessageSecurity(authResult.getAuthToken(),
                 supportsPop ? authResult.getPopKey() : "",
                 supportsPop ? challengeMap.get("x-ms-message-encryption-key") : "",
-                supportsPop ? challengeMap.get("x-ms-message-signing-key") : "");
+                supportsPop ? challengeMap.get("x-ms-message-signing-key") : "",
+                this.clientEncryptionKey);
 
         Request request = httpMessageSecurity.protectRequest(originalRequest);
         return Pair.of(request, httpMessageSecurity);
