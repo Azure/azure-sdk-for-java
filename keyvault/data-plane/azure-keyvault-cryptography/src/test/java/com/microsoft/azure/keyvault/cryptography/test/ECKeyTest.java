@@ -38,6 +38,11 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.microsoft.azure.keyvault.cryptography.EcKey;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es256;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es256k;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es384;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es512;
+import com.microsoft.azure.keyvault.cryptography.SignatureEncoding;
 import com.microsoft.azure.keyvault.cryptography.test.resources.PemFile;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
@@ -214,15 +219,15 @@ public class ECKeyTest {
         return keyPair;
     }
     
-    private void testFromFile(String keyType, MessageDigest digest) throws Exception {
+    private void testFromFile(String keyType, MessageDigest digest, String algorithm) throws Exception {
         String privateKeyPath = "src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "keynew.pem";
         String publicKeyPath = "src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "keypubnew.pem";
         
         EcKey newKey = new EcKey("akey", getKeyFromFile(privateKeyPath, publicKeyPath));
         
         Path signatureLocation = Paths.get("src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "sig.der");
-        byte[] signature = Files.readAllBytes(signatureLocation);
-   
+        byte[] signature = SignatureEncoding.fromAsn1Der(Files.readAllBytes(signatureLocation), algorithm);
+
         doVerify(newKey, digest, signature);
     }
     
@@ -238,22 +243,22 @@ public class ECKeyTest {
     
     @Test
     public void testFromP384File() throws Exception {
-        testFromFile("p384", DIGEST_384);
+        testFromFile("p384", DIGEST_384, Es384.ALGORITHM_NAME);
     }
     
     @Test
     public void testFromP521File() throws Exception {
-        testFromFile("p521", DIGEST_512);
+        testFromFile("p521", DIGEST_512, Es512.ALGORITHM_NAME);
     }
     
     @Test
     public void testFromP256File() throws Exception {
-        testFromFile("p256", DIGEST_256);
+        testFromFile("p256", DIGEST_256, Es256.ALGORITHM_NAME);
     }
     
     @Test
     public void testFromSEC256File() throws Exception{
-        testFromFile("secp256", DIGEST_256);
+        testFromFile("secp256", DIGEST_256, Es256k.ALGORITHM_NAME);
     }
     
     @Test

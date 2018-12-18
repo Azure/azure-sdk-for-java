@@ -7,6 +7,7 @@ import java.security.Signature;
 
 import com.microsoft.azure.keyvault.cryptography.AsymmetricSignatureAlgorithm;
 import com.microsoft.azure.keyvault.cryptography.ISignatureTransform;
+import com.microsoft.azure.keyvault.cryptography.SignatureEncoding;
 
 public abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
 
@@ -15,21 +16,30 @@ public abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
 	}
 	
 	public ISignatureTransform createSignatureTransform(KeyPair key, Provider provider) {
-		return new EcdsaSignatureTransform(key, provider);
+		return new EcdsaSignatureTransform(key, provider, this);
 	}
 	
-	abstract void checkDigestLength(byte[] digest);
+	public abstract int getDigestLength();
+	public abstract int getCoordLength();
+
+	private void checkDigestLength(byte[] digest)
+	{
+		if (digest.length != this.getDigestLength()) {
+            throw new IllegalArgumentException("Invalid digest length.");
+        }
+	}
 	
-	
+
 	class EcdsaSignatureTransform implements ISignatureTransform {
-	    private final String ALGORITHM = "NONEwithECDSA";
+		private final String ALGORITHM = "NONEwithECDSA";
 		private final KeyPair _keyPair;
-		
 		private final Provider _provider;
-		
-		public EcdsaSignatureTransform(KeyPair keyPair, Provider provider) {
+		private final Ecdsa _algorithm;
+
+		public EcdsaSignatureTransform(KeyPair keyPair, Provider provider, Ecdsa algorithm) {
 			_keyPair = keyPair;
 			_provider = provider;
+			_algorithm = algorithm;
 		}
 		
 		@Override
@@ -38,17 +48,17 @@ public abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
 			Signature signature = Signature.getInstance(ALGORITHM, _provider);
 			signature.initSign(_keyPair.getPrivate());
 			signature.update(digest);
-			return signature.sign();
+			return SignatureEncoding.fromAsn1Der(signature.sign(), _algorithm);
 		}
 
 		@Override
 		public boolean verify(byte[] digest, byte[] signature) throws GeneralSecurityException {
 			Signature verify = Signature.getInstance(ALGORITHM, _provider);
-	         checkDigestLength(digest);
+			checkDigestLength(digest);
+			signature = SignatureEncoding.toAsn1Der(signature, _algorithm);
 			verify.initVerify(_keyPair.getPublic());
 			verify.update(digest);
 			return verify.verify(signature);
 		}
-		
 	}
 }
