@@ -13,6 +13,8 @@ import com.microsoft.azure.arm.resources.models.Resource;
 import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
+import com.microsoft.azure.arm.model.Updatable;
+import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implementation.HanaOnAzureManager;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implementation.HanaInstanceInner;
@@ -20,7 +22,7 @@ import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.implementa
 /**
  * Type representing HanaInstance.
  */
-public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, GroupableResourceCore<HanaOnAzureManager, HanaInstanceInner>, HasResourceGroup, Refreshable<HanaInstance>, HasManager<HanaOnAzureManager> {
+public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, GroupableResourceCore<HanaOnAzureManager, HanaInstanceInner>, HasResourceGroup, Refreshable<HanaInstance>, Updatable<HanaInstance.Update>, HasManager<HanaOnAzureManager> {
     /**
      * @return the hanaInstanceId value.
      */
@@ -51,4 +53,15 @@ public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, Gro
      */
     StorageProfile storageProfile();
 
+    /**
+     * The template for a HanaInstance update operation, containing all the settings that can be modified.
+     */
+    interface Update extends Appliable<HanaInstance>, Resource.UpdateWithTags<Update> {
+    }
+
+    /**
+     * Grouping of HanaInstance update stages.
+     */
+    interface UpdateStages {
+    }
 }
