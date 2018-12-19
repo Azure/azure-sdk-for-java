@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Applications;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.ApplicationGetHeaders;
@@ -71,11 +72,11 @@ public class ApplicationsImpl implements Applications {
     interface ApplicationsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Applications list" })
         @GET("applications")
-        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Applications get" })
         @GET("applications/{applicationId}")
-        Observable<Response<ResponseBody>> get(@Path("applicationId") String applicationId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("applicationId") String applicationId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Applications listNext" })
         @GET
@@ -168,6 +169,9 @@ public class ApplicationsImpl implements Applications {
      * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listSinglePageAsync() {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -177,11 +181,12 @@ public class ApplicationsImpl implements Applications {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(Response<ResponseBody> response) {
@@ -301,11 +306,14 @@ public class ApplicationsImpl implements Applications {
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
-     * @param applicationListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param applicationListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listSinglePageAsync(final ApplicationListOptions applicationListOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -330,11 +338,12 @@ public class ApplicationsImpl implements Applications {
         if (applicationListOptions != null) {
             ocpDate = applicationListOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(Response<ResponseBody> response) {
@@ -408,6 +417,9 @@ public class ApplicationsImpl implements Applications {
      * @return the observable to the ApplicationSummary object
      */
     public Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> getWithServiceResponseAsync(String applicationId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
@@ -419,11 +431,12 @@ public class ApplicationsImpl implements Applications {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> call(Response<ResponseBody> response) {
@@ -494,6 +507,9 @@ public class ApplicationsImpl implements Applications {
      * @return the observable to the ApplicationSummary object
      */
     public Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> getWithServiceResponseAsync(String applicationId, ApplicationGetOptions applicationGetOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
@@ -517,11 +533,12 @@ public class ApplicationsImpl implements Applications {
         if (applicationGetOptions != null) {
             ocpDate = applicationGetOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> call(Response<ResponseBody> response) {
@@ -749,8 +766,8 @@ public class ApplicationsImpl implements Applications {
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param applicationListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param applicationListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

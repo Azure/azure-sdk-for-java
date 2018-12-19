@@ -29,10 +29,8 @@ public class UserAccount {
 
     /**
      * The elevation level of the user account.
-     * nonAdmin - The auto user is a standard user without elevated access.
-     * admin - The auto user is a user with elevated access and operates with
-     * full Administrator permissions. The default value is nonAdmin. Possible
-     * values include: 'nonAdmin', 'admin'.
+     * The default value is nonAdmin. Possible values include: 'nonAdmin',
+     * 'admin'.
      */
     @JsonProperty(value = "elevationLevel")
     private ElevationLevel elevationLevel;
@@ -44,6 +42,15 @@ public class UserAccount {
      */
     @JsonProperty(value = "linuxUserConfiguration")
     private LinuxUserConfiguration linuxUserConfiguration;
+
+    /**
+     * The Windows-specific user configuration for the user account.
+     * This property can only be specified if the user is on a Windows pool. If
+     * not specified and on a Windows pool, the user is created with the
+     * default options.
+     */
+    @JsonProperty(value = "windowsUserConfiguration")
+    private WindowsUserConfiguration windowsUserConfiguration;
 
     /**
      * Get the name value.
@@ -86,7 +93,7 @@ public class UserAccount {
     }
 
     /**
-     * Get nonAdmin - The auto user is a standard user without elevated access. admin - The auto user is a user with elevated access and operates with full Administrator permissions. The default value is nonAdmin. Possible values include: 'nonAdmin', 'admin'.
+     * Get the default value is nonAdmin. Possible values include: 'nonAdmin', 'admin'.
      *
      * @return the elevationLevel value
      */
@@ -95,7 +102,7 @@ public class UserAccount {
     }
 
     /**
-     * Set nonAdmin - The auto user is a standard user without elevated access. admin - The auto user is a user with elevated access and operates with full Administrator permissions. The default value is nonAdmin. Possible values include: 'nonAdmin', 'admin'.
+     * Set the default value is nonAdmin. Possible values include: 'nonAdmin', 'admin'.
      *
      * @param elevationLevel the elevationLevel value to set
      * @return the UserAccount object itself.
@@ -122,6 +129,26 @@ public class UserAccount {
      */
     public UserAccount withLinuxUserConfiguration(LinuxUserConfiguration linuxUserConfiguration) {
         this.linuxUserConfiguration = linuxUserConfiguration;
+        return this;
+    }
+
+    /**
+     * Get this property can only be specified if the user is on a Windows pool. If not specified and on a Windows pool, the user is created with the default options.
+     *
+     * @return the windowsUserConfiguration value
+     */
+    public WindowsUserConfiguration windowsUserConfiguration() {
+        return this.windowsUserConfiguration;
+    }
+
+    /**
+     * Set this property can only be specified if the user is on a Windows pool. If not specified and on a Windows pool, the user is created with the default options.
+     *
+     * @param windowsUserConfiguration the windowsUserConfiguration value to set
+     * @return the UserAccount object itself.
+     */
+    public UserAccount withWindowsUserConfiguration(WindowsUserConfiguration windowsUserConfiguration) {
+        this.windowsUserConfiguration = windowsUserConfiguration;
         return this;
     }
 

@@ -407,7 +407,7 @@ public interface Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -419,7 +419,7 @@ public interface Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -431,7 +431,7 @@ public interface Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -442,7 +442,7 @@ public interface Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -452,7 +452,7 @@ public interface Jobs {
     Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> updateWithServiceResponseAsync(String jobId, JobUpdateParameter jobUpdateParameter);
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -465,7 +465,7 @@ public interface Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -478,7 +478,7 @@ public interface Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -490,7 +490,7 @@ public interface Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -597,7 +597,7 @@ public interface Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -608,7 +608,7 @@ public interface Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -619,7 +619,7 @@ public interface Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -629,7 +629,7 @@ public interface Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -638,7 +638,7 @@ public interface Jobs {
     Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> enableWithServiceResponseAsync(String jobId);
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
@@ -650,7 +650,7 @@ public interface Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
@@ -662,7 +662,7 @@ public interface Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
@@ -673,7 +673,7 @@ public interface Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation

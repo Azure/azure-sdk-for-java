@@ -50,20 +50,6 @@ public class PoolUsageMetrics {
     private double totalCoreHours;
 
     /**
-     * The cross data center network ingress to the pool during this interval,
-     * in GiB.
-     */
-    @JsonProperty(value = "dataIngressGiB", required = true)
-    private double dataIngressGiB;
-
-    /**
-     * The cross data center network egress from the pool during this interval,
-     * in GiB.
-     */
-    @JsonProperty(value = "dataEgressGiB", required = true)
-    private double dataEgressGiB;
-
-    /**
      * Get the poolId value.
      *
      * @return the poolId value
@@ -160,46 +146,6 @@ public class PoolUsageMetrics {
      */
     public PoolUsageMetrics withTotalCoreHours(double totalCoreHours) {
         this.totalCoreHours = totalCoreHours;
-        return this;
-    }
-
-    /**
-     * Get the dataIngressGiB value.
-     *
-     * @return the dataIngressGiB value
-     */
-    public double dataIngressGiB() {
-        return this.dataIngressGiB;
-    }
-
-    /**
-     * Set the dataIngressGiB value.
-     *
-     * @param dataIngressGiB the dataIngressGiB value to set
-     * @return the PoolUsageMetrics object itself.
-     */
-    public PoolUsageMetrics withDataIngressGiB(double dataIngressGiB) {
-        this.dataIngressGiB = dataIngressGiB;
-        return this;
-    }
-
-    /**
-     * Get the dataEgressGiB value.
-     *
-     * @return the dataEgressGiB value
-     */
-    public double dataEgressGiB() {
-        return this.dataEgressGiB;
-    }
-
-    /**
-     * Set the dataEgressGiB value.
-     *
-     * @param dataEgressGiB the dataEgressGiB value to set
-     * @return the PoolUsageMetrics object itself.
-     */
-    public PoolUsageMetrics withDataEgressGiB(double dataEgressGiB) {
-        this.dataEgressGiB = dataEgressGiB;
         return this;
     }
 

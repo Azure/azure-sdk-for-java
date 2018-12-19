@@ -43,6 +43,21 @@ public interface BatchServiceClient {
     String apiVersion();
 
     /**
+     * Gets The base URL for all Azure Batch service requests..
+     *
+     * @return the batchUrl value.
+     */
+    String batchUrl();
+
+    /**
+     * Sets The base URL for all Azure Batch service requests..
+     *
+     * @param batchUrl the batchUrl value.
+     * @return the service client itself
+     */
+    BatchServiceClient withBatchUrl(String batchUrl);
+
+    /**
      * Gets The preferred language for the response..
      *
      * @return the acceptLanguage value.

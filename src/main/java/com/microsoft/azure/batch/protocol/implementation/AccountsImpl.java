@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Accounts;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusHeaders;
@@ -71,11 +72,11 @@ public class AccountsImpl implements Accounts {
     interface AccountsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Accounts listNodeAgentSkus" })
         @GET("nodeagentskus")
-        Observable<Response<ResponseBody>> listNodeAgentSkus(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNodeAgentSkus(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Accounts listPoolNodeCounts" })
         @GET("nodecounts")
-        Observable<Response<ResponseBody>> listPoolNodeCounts(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPoolNodeCounts(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Accounts listNodeAgentSkusNext" })
         @GET
@@ -167,6 +168,9 @@ public class AccountsImpl implements Accounts {
      * @return the PagedList&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusSinglePageAsync() {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -177,11 +181,12 @@ public class AccountsImpl implements Accounts {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(Response<ResponseBody> response) {
@@ -296,11 +301,14 @@ public class AccountsImpl implements Accounts {
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
-     * @param accountListNodeAgentSkusOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param accountListNodeAgentSkusOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> listNodeAgentSkusSinglePageAsync(final AccountListNodeAgentSkusOptions accountListNodeAgentSkusOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -329,11 +337,12 @@ public class AccountsImpl implements Accounts {
         if (accountListNodeAgentSkusOptions != null) {
             ocpDate = accountListNodeAgentSkusOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.listNodeAgentSkus(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<NodeAgentSku>, AccountListNodeAgentSkusHeaders>> call(Response<ResponseBody> response) {
@@ -434,6 +443,9 @@ public class AccountsImpl implements Accounts {
      * @return the PagedList&lt;PoolNodeCounts&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolNodeCounts>, AccountListPoolNodeCountsHeaders>> listPoolNodeCountsSinglePageAsync() {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -444,11 +456,12 @@ public class AccountsImpl implements Accounts {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listPoolNodeCounts(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.listPoolNodeCounts(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolNodeCounts>, AccountListPoolNodeCountsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<PoolNodeCounts>, AccountListPoolNodeCountsHeaders>> call(Response<ResponseBody> response) {
@@ -563,11 +576,14 @@ public class AccountsImpl implements Accounts {
     /**
      * Gets the number of nodes in each state, grouped by pool.
      *
-     * @param accountListPoolNodeCountsOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<PoolNodeCounts>, AccountListPoolNodeCountsHeaders> * @param accountListPoolNodeCountsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolNodeCounts&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolNodeCounts>, AccountListPoolNodeCountsHeaders>> listPoolNodeCountsSinglePageAsync(final AccountListPoolNodeCountsOptions accountListPoolNodeCountsOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -596,11 +612,12 @@ public class AccountsImpl implements Accounts {
         if (accountListPoolNodeCountsOptions != null) {
             ocpDate = accountListPoolNodeCountsOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listPoolNodeCounts(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.listPoolNodeCounts(this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolNodeCounts>, AccountListPoolNodeCountsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<PoolNodeCounts>, AccountListPoolNodeCountsHeaders>> call(Response<ResponseBody> response) {
@@ -818,8 +835,8 @@ public class AccountsImpl implements Accounts {
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -1063,8 +1080,8 @@ public class AccountsImpl implements Accounts {
     /**
      * Gets the number of nodes in each state, grouped by pool.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<PoolNodeCounts>, AccountListPoolNodeCountsHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<PoolNodeCounts>, AccountListPoolNodeCountsHeaders> * @param accountListPoolNodeCountsNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolNodeCounts&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

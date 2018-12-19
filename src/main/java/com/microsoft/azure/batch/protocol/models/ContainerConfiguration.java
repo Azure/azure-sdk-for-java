@@ -42,7 +42,7 @@ public class ContainerConfiguration {
      * Creates an instance of ContainerConfiguration class.
      */
     public ContainerConfiguration() {
-        type = "docker";
+        type = "dockerCompatible";
     }
 
     /**

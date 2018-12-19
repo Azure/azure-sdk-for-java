@@ -52,7 +52,7 @@ public class ExitConditions {
      * listed in the exitCodes or exitCodeRanges collection, with a
      * pre-processing error if the preProcessingError property is not present,
      * or with a file upload error if the fileUploadError property is not
-     * present. If you want non-default behaviour on exit code 0, you must list
+     * present. If you want non-default behavior on exit code 0, you must list
      * it explicitly using the exitCodes or exitCodeRanges collection.
      */
     @JsonProperty(value = "default")
@@ -139,7 +139,7 @@ public class ExitConditions {
     }
 
     /**
-     * Get this value is used if the task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behaviour on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
+     * Get this value is used if the task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behavior on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
      *
      * @return the defaultProperty value
      */
@@ -148,7 +148,7 @@ public class ExitConditions {
     }
 
     /**
-     * Set this value is used if the task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behaviour on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
+     * Set this value is used if the task exits with any nonzero exit code not listed in the exitCodes or exitCodeRanges collection, with a pre-processing error if the preProcessingError property is not present, or with a file upload error if the fileUploadError property is not present. If you want non-default behavior on exit code 0, you must list it explicitly using the exitCodes or exitCodeRanges collection.
      *
      * @param defaultProperty the defaultProperty value to set
      * @return the ExitConditions object itself.

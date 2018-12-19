@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Certificates;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
@@ -81,23 +82,23 @@ public class CertificatesImpl implements Certificates {
     interface CertificatesService {
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Certificates add" })
         @POST("certificates")
-        Observable<Response<ResponseBody>> add(@Body CertificateAddParameter certificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> add(@Body CertificateAddParameter certificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Certificates list" })
         @GET("certificates")
-        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Certificates cancelDeletion" })
         @POST("certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
-        Observable<Response<ResponseBody>> cancelDeletion(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> cancelDeletion(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Certificates delete" })
         @HTTP(path = "certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Certificates get" })
         @GET("certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
-        Observable<Response<ResponseBody>> get(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Certificates listNext" })
         @GET
@@ -153,6 +154,9 @@ public class CertificatesImpl implements Certificates {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> addWithServiceResponseAsync(CertificateAddParameter certificate) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (certificate == null) {
             throw new IllegalArgumentException("Parameter certificate is required and cannot be null.");
         }
@@ -165,11 +169,12 @@ public class CertificatesImpl implements Certificates {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> call(Response<ResponseBody> response) {
@@ -235,6 +240,9 @@ public class CertificatesImpl implements Certificates {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> addWithServiceResponseAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (certificate == null) {
             throw new IllegalArgumentException("Parameter certificate is required and cannot be null.");
         }
@@ -259,11 +267,12 @@ public class CertificatesImpl implements Certificates {
         if (certificateAddOptions != null) {
             ocpDate = certificateAddOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> call(Response<ResponseBody> response) {
@@ -364,6 +373,9 @@ public class CertificatesImpl implements Certificates {
      * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listSinglePageAsync() {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -375,11 +387,12 @@ public class CertificatesImpl implements Certificates {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(Response<ResponseBody> response) {
@@ -494,11 +507,14 @@ public class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
-     * @param certificateListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param certificateListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listSinglePageAsync(final CertificateListOptions certificateListOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -531,11 +547,12 @@ public class CertificatesImpl implements Certificates {
         if (certificateListOptions != null) {
             ocpDate = certificateListOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(Response<ResponseBody> response) {
@@ -612,6 +629,9 @@ public class CertificatesImpl implements Certificates {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> cancelDeletionWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -626,11 +646,12 @@ public class CertificatesImpl implements Certificates {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> call(Response<ResponseBody> response) {
@@ -704,6 +725,9 @@ public class CertificatesImpl implements Certificates {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> cancelDeletionWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -730,11 +754,12 @@ public class CertificatesImpl implements Certificates {
         if (certificateCancelDeletionOptions != null) {
             ocpDate = certificateCancelDeletionOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> call(Response<ResponseBody> response) {
@@ -811,6 +836,9 @@ public class CertificatesImpl implements Certificates {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> deleteWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -825,11 +853,12 @@ public class CertificatesImpl implements Certificates {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> call(Response<ResponseBody> response) {
@@ -903,6 +932,9 @@ public class CertificatesImpl implements Certificates {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> deleteWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -929,11 +961,12 @@ public class CertificatesImpl implements Certificates {
         if (certificateDeleteOptions != null) {
             ocpDate = certificateDeleteOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> call(Response<ResponseBody> response) {
@@ -1007,6 +1040,9 @@ public class CertificatesImpl implements Certificates {
      * @return the observable to the Certificate object
      */
     public Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> getWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -1022,11 +1058,12 @@ public class CertificatesImpl implements Certificates {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> call(Response<ResponseBody> response) {
@@ -1097,6 +1134,9 @@ public class CertificatesImpl implements Certificates {
      * @return the observable to the Certificate object
      */
     public Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> getWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -1127,11 +1167,12 @@ public class CertificatesImpl implements Certificates {
         if (certificateGetOptions != null) {
             ocpDate = certificateGetOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> call(Response<ResponseBody> response) {
@@ -1349,8 +1390,8 @@ public class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param certificateListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param certificateListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

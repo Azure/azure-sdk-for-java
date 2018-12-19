@@ -44,7 +44,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.6.1</version>
+      <version>1.6.4</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-storage</artifactId>
-      <version>4.0.0</version>
+      <version>8.0.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>

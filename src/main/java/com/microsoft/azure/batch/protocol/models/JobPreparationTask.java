@@ -132,7 +132,7 @@ public class JobPreparationTask {
     /**
      * The user identity under which the Job Preparation task runs.
      * If omitted, the task runs as a non-administrative user unique to the
-     * task on Windows nodes, or a a non-administrative user unique to the pool
+     * task on Windows nodes, or a non-administrative user unique to the pool
      * on Linux nodes.
      */
     @JsonProperty(value = "userIdentity")
@@ -291,7 +291,7 @@ public class JobPreparationTask {
     }
 
     /**
-     * Get if omitted, the task runs as a non-administrative user unique to the task on Windows nodes, or a a non-administrative user unique to the pool on Linux nodes.
+     * Get if omitted, the task runs as a non-administrative user unique to the task on Windows nodes, or a non-administrative user unique to the pool on Linux nodes.
      *
      * @return the userIdentity value
      */
@@ -300,7 +300,7 @@ public class JobPreparationTask {
     }
 
     /**
-     * Set if omitted, the task runs as a non-administrative user unique to the task on Windows nodes, or a a non-administrative user unique to the pool on Linux nodes.
+     * Set if omitted, the task runs as a non-administrative user unique to the task on Windows nodes, or a non-administrative user unique to the pool on Linux nodes.
      *
      * @param userIdentity the userIdentity value to set
      * @return the JobPreparationTask object itself.

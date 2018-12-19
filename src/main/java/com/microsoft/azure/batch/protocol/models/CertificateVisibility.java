@@ -18,10 +18,10 @@ public enum CertificateVisibility {
     /** The certificate should be visible to the user account under which the start task is run. */
     START_TASK("starttask"),
 
-    /** The certificate should be visibile to the user accounts under which job tasks are run. */
+    /** The certificate should be visible to the user accounts under which job tasks are run. */
     TASK("task"),
 
-    /** The certificate should be visibile to the user accounts under which users remotely access the node. */
+    /** The certificate should be visible to the user accounts under which users remotely access the node. */
     REMOTE_USER("remoteuser");
 
     /** The actual serialized value for a CertificateVisibility instance. */

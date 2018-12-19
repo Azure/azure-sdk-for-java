@@ -172,6 +172,12 @@ public class CloudJob {
     private OnTaskFailure onTaskFailure;
 
     /**
+     * The network configuration for the job.
+     */
+    @JsonProperty(value = "networkConfiguration")
+    private JobNetworkConfiguration networkConfiguration;
+
+    /**
      * A list of name-value pairs associated with the job as metadata.
      * The Batch service does not assign any meaning to metadata; it is solely
      * for the use of user code.
@@ -590,6 +596,26 @@ public class CloudJob {
      */
     public CloudJob withOnTaskFailure(OnTaskFailure onTaskFailure) {
         this.onTaskFailure = onTaskFailure;
+        return this;
+    }
+
+    /**
+     * Get the networkConfiguration value.
+     *
+     * @return the networkConfiguration value
+     */
+    public JobNetworkConfiguration networkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set the networkConfiguration value.
+     *
+     * @param networkConfiguration the networkConfiguration value to set
+     * @return the CloudJob object itself.
+     */
+    public CloudJob withNetworkConfiguration(JobNetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
         return this;
     }
 

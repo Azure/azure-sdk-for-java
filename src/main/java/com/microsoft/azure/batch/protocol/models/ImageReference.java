@@ -52,10 +52,8 @@ public class ImageReference {
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}.
      * This property is mutually exclusive with other ImageReference
      * properties. The virtual machine image must be in the same region and
-     * subscription as the Azure Batch account. For information about the
-     * firewall settings for the Batch node agent to communicate with the Batch
-     * service see
-     * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * subscription as the Azure Batch account. For more details, see
+     * https://docs.microsoft.com/azure/batch/batch-custom-images.
      */
     @JsonProperty(value = "virtualMachineImageId")
     private String virtualMachineImageId;
@@ -141,7 +139,7 @@ public class ImageReference {
     }
 
     /**
-     * Get this property is mutually exclusive with other ImageReference properties. The virtual machine image must be in the same region and subscription as the Azure Batch account. For information about the firewall settings for the Batch node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * Get this property is mutually exclusive with other ImageReference properties. The virtual machine image must be in the same region and subscription as the Azure Batch account. For more details, see https://docs.microsoft.com/azure/batch/batch-custom-images.
      *
      * @return the virtualMachineImageId value
      */
@@ -150,7 +148,7 @@ public class ImageReference {
     }
 
     /**
-     * Set this property is mutually exclusive with other ImageReference properties. The virtual machine image must be in the same region and subscription as the Azure Batch account. For information about the firewall settings for the Batch node agent to communicate with the Batch service see https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * Set this property is mutually exclusive with other ImageReference properties. The virtual machine image must be in the same region and subscription as the Azure Batch account. For more details, see https://docs.microsoft.com/azure/batch/batch-custom-images.
      *
      * @param virtualMachineImageId the virtualMachineImageId value to set
      * @return the ImageReference object itself.

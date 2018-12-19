@@ -1,5 +1,31 @@
 # Azure Batch SDK for Java release notes
 
+## Changes in 5.0.0
+### Features
+- **[Breaking]** Removed support for the `ChangeOSVersion` API on `CloudServiceConfiguration` pools. 
+  - Removed `PoolOperations.ChangeOSVersion`.
+  - Renamed `TargetOSVersion` to `OSVersion` and removed `CurrentOSVersion` on `CloudPool`.
+  - Removed `PoolState.Upgrading` enum.
+- **[Breaking]** Removed `DataEgressGiB` and `DataIngressGiB` from `PoolUsageMetrics`. These properties are no longer supported.
+- **[Breaking]** ResourceFile improvements
+  - Added the ability specify an entire Azure Storage container in `ResourceFile`. There are now three supported modes for `ResourceFile`:
+    - `ResourceFile.withUrl` creates a `ResourceFile` pointing to a single HTTP URL.
+    - `ResourceFile.withStorageContainerUrl` creates a `ResourceFile` pointing to an Azure Blob Storage container.
+    - `ResourceFile.withAutoStorageContainer` creates a `ResourceFile` pointing to an Azure Blob Storage container in the Batch registered auto-storage account.
+      - The `BlobPrefix` property can be used to filter downloads from a storage container to only those matching the prefix.
+  - URLs provided to `ResourceFile` via the `ResourceFile.withUrl` method can now be any HTTP URL. Previously, these had to be an Azure Blob Storage URL.
+- **[Breaking]** Removed `OSDisk` property from `VirtualMachineConfiguration`. This property is no longer supported.
+- Pools which set the `DynamicVNetAssignmentScope` on `NetworkConfiguration` to be `DynamicVNetAssignmentScope.Job` can 
+  now dynamically assign a Virtual Network to each node the job's tasks run on. The specific Virtual Network to join the nodes to is specified in 
+  the new `JobNetworkConfiguration` property on `CloudJob` and `JobSpecification`. 
+  - Note: This feature is in public preview. It is disabled for all Batch accounts except for those which have contacted us and requested to be in the pilot.
+- The maximum lifetime of a task is now 180 days (previously it was 7).
+- Added support on Windows pools for creating users with a specific login mode (either `Batch` or `Interactive`) via `WindowsUserConfiguration.LoginMode`.
+- The default task retention time for all tasks is now 7 days, previously it was infinite.
+
+### REST API version
+This version of the Batch .NET client library targets version 2018-12-01.8.0 of the Azure Batch REST API.
+
 ## Changes in 4.0.1
 ### Fixes
   - Fix missing signing of 4.0.0 Java SDK binary

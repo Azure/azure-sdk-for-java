@@ -395,7 +395,8 @@ public class TaskOperations implements IInheritedBehaviors {
      *             serialization/deserialization of data sent to/received from the
      *             Batch service.
      */
-    public PagedList<CloudTask> listTasks(String jobId, DetailLevel detailLevel) throws BatchErrorException, IOException {
+    public PagedList<CloudTask> listTasks(String jobId, DetailLevel detailLevel)
+            throws BatchErrorException, IOException {
         return listTasks(jobId, detailLevel, null);
     }
 

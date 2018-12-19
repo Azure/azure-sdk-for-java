@@ -27,24 +27,26 @@ public class PoolTests extends BatchTestBase {
     public static void cleanup() throws Exception {
         try {
             // batchClient.poolOperations().deletePool(livePool.id());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             // ignore any clean up exception
         }
     }
 
     @Test
     public void testPoolOData() throws Exception {
-        CloudPool pool = batchClient.poolOperations().getPool(livePool.id(), new DetailLevel.Builder().withExpandClause("stats").build());
+        CloudPool pool = batchClient.poolOperations().getPool(livePool.id(),
+                new DetailLevel.Builder().withExpandClause("stats").build());
         Assert.assertNotNull(pool.stats());
 
-        List<CloudPool> pools = batchClient.poolOperations().listPools(new DetailLevel.Builder().withSelectClause("id, state").build());
+        List<CloudPool> pools = batchClient.poolOperations()
+                .listPools(new DetailLevel.Builder().withSelectClause("id, state").build());
         Assert.assertTrue(pools.size() > 0);
         Assert.assertNotNull(pools.get(0).id());
         Assert.assertNull(pools.get(0).vmSize());
 
         // Test assumes not run in parallel
-        pools = batchClient.poolOperations().listPools(new DetailLevel.Builder().withFilterClause("state eq 'deleting'").build());
+        pools = batchClient.poolOperations()
+                .listPools(new DetailLevel.Builder().withFilterClause("state eq 'deleting'").build());
         Assert.assertEquals(0, pools.size());
     }
 
@@ -63,28 +65,22 @@ public class PoolTests extends BatchTestBase {
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
-            ImageReference imgRef = new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("16.04-LTS").withVersion("latest");
+            ImageReference imgRef = new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer")
+                    .withSku("16.04-LTS").withVersion("latest");
             VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
             configuration.withNodeAgentSKUId("batch.node.ubuntu 16.04").withImageReference(imgRef);
 
             NetworkConfiguration netConfig = new NetworkConfiguration();
             PoolEndpointConfiguration endpointConfig = new PoolEndpointConfiguration();
             List<InboundNATPool> inbounds = new ArrayList<>();
-            inbounds.add(new InboundNATPool()
-                    .withName("testinbound")
-                    .withProtocol(InboundEndpointProtocol.TCP)
-                    .withBackendPort(5000)
-                    .withFrontendPortRangeStart(60000)
-                    .withFrontendPortRangeEnd(60040));
+            inbounds.add(new InboundNATPool().withName("testinbound").withProtocol(InboundEndpointProtocol.TCP)
+                    .withBackendPort(5000).withFrontendPortRangeStart(60000).withFrontendPortRangeEnd(60040));
             endpointConfig.withInboundNATPools(inbounds);
             netConfig.withEndpointConfiguration(endpointConfig);
 
-            PoolAddParameter addParameter = new PoolAddParameter()
-                    .withId(poolId)
-                    .withTargetDedicatedNodes(POOL_VM_COUNT)
-                    .withTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
-                    .withVmSize(POOL_VM_SIZE)
-                    .withVirtualMachineConfiguration(configuration)
+            PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
+                    .withTargetDedicatedNodes(POOL_VM_COUNT).withTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT)
+                    .withVmSize(POOL_VM_SIZE).withVirtualMachineConfiguration(configuration)
                     .withNetworkConfiguration(netConfig);
             batchClient.poolOperations().createPool(addParameter);
         }
@@ -107,14 +103,14 @@ public class PoolTests extends BatchTestBase {
                     steady = true;
                     break;
                 }
-                System.out.println("wait 30 seconds for pool steady...");
-                Thread.sleep(30 * 1000);
+                System.out.println("wait 120 seconds for pool steady...");
+                Thread.sleep(120 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
 
             Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
-            Assert.assertEquals(POOL_VM_COUNT, (long)pool.currentDedicatedNodes());
-            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long)pool.currentLowPriorityNodes());
+            Assert.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
+            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.currentLowPriorityNodes());
 
             List<ComputeNode> computeNodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
             List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).endpointConfiguration().inboundEndpoints();
@@ -129,13 +125,13 @@ public class PoolTests extends BatchTestBase {
             // CHECK POOL NODE COUNTS
             PoolNodeCounts poolNodeCount = null;
             List<PoolNodeCounts> poolNodeCounts = batchClient.accountOperations().listPoolNodeCounts();
-            for(PoolNodeCounts tmp : poolNodeCounts) {
+            for (PoolNodeCounts tmp : poolNodeCounts) {
                 if (tmp.poolId().equals(poolId)) {
                     poolNodeCount = tmp;
                     break;
                 }
             }
-            Assert.assertNotNull(poolNodeCount);  // Single pool only
+            Assert.assertNotNull(poolNodeCount); // Single pool only
             Assert.assertNotNull(poolNodeCount.lowPriority());
 
             Assert.assertEquals(2, poolNodeCount.lowPriority().total());
@@ -145,8 +141,8 @@ public class PoolTests extends BatchTestBase {
             batchClient.poolOperations().resizePool(poolId, 1, 1);
 
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertEquals(1, (long)pool.targetDedicatedNodes());
-            Assert.assertEquals(1, (long)pool.targetLowPriorityNodes());
+            Assert.assertEquals(1, (long) pool.targetDedicatedNodes());
+            Assert.assertEquals(1, (long) pool.targetLowPriorityNodes());
 
             // DELETE
             boolean deleted = false;
@@ -168,55 +164,12 @@ public class PoolTests extends BatchTestBase {
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assert.assertTrue(deleted);
-        }
-        finally {
+        } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
                     batchClient.poolOperations().deletePool(poolId);
                 }
-            }
-            catch (Exception e)
-            {
-                // Ignore exception
-            }
-        }
-    }
-
-    @Test
-    public void canCreateOSDisk() throws Exception {
-        String poolId = getStringWithUserNamePrefix("-canCreateOSDisk");
-
-        // Create a pool with 0 Small VMs
-        String POOL_VM_SIZE = "STANDARD_D1";
-        int POOL_VM_COUNT = 0;
-
-        // Use IaaS VM with Linux
-        VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
-        configuration.withImageReference(
-                    new ImageReference()
-                            .withPublisher("Canonical")
-                            .withOffer("UbuntuServer")
-                            .withSku("16.04-LTS"))
-                .withNodeAgentSKUId("batch.node.ubuntu 16.04")
-                .withOsDisk(new OSDisk()
-                        .withCaching(CachingType.NONE))
-                .withLicenseType("Windows_Server");
-
-        try
-        {
-            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT);
-
-            CloudPool pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertEquals(CachingType.NONE, pool.virtualMachineConfiguration().osDisk().caching());
-        }
-        finally {
-            try {
-                if (batchClient.poolOperations().existsPool(poolId)) {
-                    batchClient.poolOperations().deletePool(poolId);
-                }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 // Ignore exception
             }
         }
@@ -234,34 +187,25 @@ public class PoolTests extends BatchTestBase {
 
         // Use IaaS VM with Linux
         List<DataDisk> dataDisks = new ArrayList<DataDisk>();
-        dataDisks.add(new DataDisk()
-                        .withLun(lun)
-                        .withDiskSizeGB(diskSizeGB)
-                );
+        dataDisks.add(new DataDisk().withLun(lun).withDiskSizeGB(diskSizeGB));
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
-        configuration.withImageReference(
-                new ImageReference().withPublisher("Canonical")
-                        .withOffer("UbuntuServer")
-                        .withSku("16.04-LTS"))
-                .withNodeAgentSKUId("batch.node.ubuntu 16.04")
-                .withDataDisks(dataDisks);
+        configuration
+                .withImageReference(
+                        new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("16.04-LTS"))
+                .withNodeAgentSKUId("batch.node.ubuntu 16.04").withDataDisks(dataDisks);
 
-        try
-        {
+        try {
             batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT);
 
             CloudPool pool = batchClient.poolOperations().getPool(poolId);
             Assert.assertEquals(lun, pool.virtualMachineConfiguration().dataDisks().get(0).lun());
             Assert.assertEquals(diskSizeGB, pool.virtualMachineConfiguration().dataDisks().get(0).diskSizeGB());
-        }
-        finally {
+        } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
                     batchClient.poolOperations().deletePool(poolId);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 // Ignore exception
             }
         }
@@ -275,45 +219,31 @@ public class PoolTests extends BatchTestBase {
         String POOL_VM_SIZE = "STANDARD_D1";
         int POOL_VM_COUNT = 0;
 
-        BatchApplicationTokenCredentials credentials = new BatchApplicationTokenCredentials(
-                System.getenv("AZURE_BATCH_ENDPOINT"),
-                System.getenv("CLIENT_ID"),
-                System.getenv("APPLICATION_SECRET"),
-                "microsoft.onmicrosoft.com",
-                null,
-                null);
-        BatchClient aadClient = BatchClient.open(credentials);
-
         // Use IaaS VM with Linux
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
-        configuration.withImageReference(
-                new ImageReference()
-                        .withVirtualMachineImageId("/subscriptions/f30ef677-64a9-4768-934f-5fbbc0e1ad27/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage"))
+        configuration.withImageReference(new ImageReference().withVirtualMachineImageId(
+                "/subscriptions/f30ef677-64a9-4768-934f-5fbbc0e1ad27/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage"))
                 .withNodeAgentSKUId("batch.node.ubuntu 16.04");
 
-        try
-        {
+        try {
             batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT);
             throw new Exception("Expect exception, but not got it.");
-        }
-        catch (BatchErrorException err) {
+        } catch (BatchErrorException err) {
             if (err.body().code().equals("InsufficientPermissions")) {
                 // Accepted Error
-                Assert.assertTrue(err.body().values().get(0).value().contains("The user identity used for this operation does not have the required privelege Microsoft.Compute/images/read on the specified resource"));
+                Assert.assertTrue(err.body().values().get(0).value().contains(
+                        "The user identity used for this operation does not have the required privelege Microsoft.Compute/images/read on the specified resource"));
             } else {
-                if(!err.body().code().equals("InvalidPropertyValue")) {
+                if (!err.body().code().equals("InvalidPropertyValue")) {
                     throw err;
                 }
             }
-        }
-        finally {
+        } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
                     batchClient.poolOperations().deletePool(poolId);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 // Ignore exception
             }
         }
@@ -331,28 +261,23 @@ public class PoolTests extends BatchTestBase {
         List<String> images = new ArrayList<String>();
         images.add("ubuntu");
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
-        configuration.withImageReference(
-                new ImageReference()
-                        .withPublisher("Canonical")
-                        .withOffer("UbuntuServer")
-                        .withSku("16.04-LTS"))
+        configuration
+                .withImageReference(
+                        new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("16.04-LTS"))
                 .withNodeAgentSKUId("batch.node.ubuntu 16.04")
-                .withContainerConfiguration(
-                        new ContainerConfiguration()
-                                .withContainerImageNames(images)
-                );
+                .withContainerConfiguration(new ContainerConfiguration().withContainerImageNames(images));
 
-        try
-        {
+        try {
             batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT);
             throw new Exception("The test case should throw exception here");
-        }
-        catch (BatchErrorException err) {
+        } catch (BatchErrorException err) {
             if (err.body().code().equals("InvalidPropertyValue")) {
                 // Accepted Error
                 for (int i = 0; i < err.body().values().size(); i++) {
                     if (err.body().values().get(i).key().equals("Reason")) {
-                        Assert.assertEquals("The value provided for one of the properties in the request body is invalid.", err.body().values().get(i).value());
+                        Assert.assertEquals(
+                                "The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.",
+                                err.body().values().get(i).value());
                         return;
                     }
                 }
@@ -360,15 +285,70 @@ public class PoolTests extends BatchTestBase {
             } else {
                 throw err;
             }
-        }
-        finally {
+        } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
                     batchClient.poolOperations().deletePool(poolId);
                 }
+            } catch (Exception e) {
+                // Ignore exception
             }
-            catch (Exception e)
-            {
+        }
+    }
+    
+    @Test
+    public void shouldFailOnCreateLinuxPoolWithWindowsConfig() throws Exception {
+        String poolId = getStringWithUserNamePrefix("-createLinuxPool");
+
+        // Create a pool with 0 Small VMs
+        String POOL_VM_SIZE = "STANDARD_D1";
+        int POOL_VM_COUNT = 0;
+
+        // Use IaaS VM with Linux
+        List<String> images = new ArrayList<String>();
+        images.add("ubuntu");
+        VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
+        configuration
+                .withImageReference(
+                        new ImageReference().withPublisher("Canonical").withOffer("UbuntuServer").withSku("16.04-LTS"))
+                .withNodeAgentSKUId("batch.node.ubuntu 16.04");
+        UserAccount windowsUser = new UserAccount();
+        windowsUser.withWindowsUserConfiguration(new WindowsUserConfiguration().withLoginMode(LoginMode.INTERACTIVE))
+            .withName("testaccount")
+            .withPassword("password");
+        ArrayList<UserAccount> users = new ArrayList<UserAccount>();
+        users.add(windowsUser);
+        PoolAddParameter pool = new PoolAddParameter().withId(poolId)
+                .withVirtualMachineConfiguration(configuration)
+                .withTargetDedicatedNodes(POOL_VM_COUNT)
+                .withTargetLowPriorityNodes(0)
+                .withVmSize(POOL_VM_SIZE)
+                .withUserAccounts(users);
+
+        try {
+            batchClient.poolOperations().createPool(pool);
+            throw new Exception("The test case should throw exception here");
+        } catch (BatchErrorException err) {
+            if (err.body().code().equals("InvalidPropertyValue")) {
+                // Accepted Error
+                for (int i = 0; i < err.body().values().size(); i++) {
+                    if (err.body().values().get(i).key().equals("Reason")) {
+                        Assert.assertEquals(
+                                "The value provided for one of the properties in the request body is invalid.",
+                                err.body().values().get(i).value());
+                        return;
+                    }
+                }
+                throw new Exception("Couldn't find expect error reason");
+            } else {
+                throw err;
+            }
+        } finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            } catch (Exception e) {
                 // Ignore exception
             }
         }
@@ -393,9 +373,10 @@ public class PoolTests extends BatchTestBase {
         if (!batchClient.poolOperations().existsPool(poolId)) {
             // Use PaaS VM with Windows
             CloudServiceConfiguration configuration = new CloudServiceConfiguration();
-            configuration.withOsFamily(POOL_OS_FAMILY).withTargetOSVersion(POOL_OS_VERSION);
+            configuration.withOsFamily(POOL_OS_FAMILY).withOsVersion(POOL_OS_VERSION);
 
-            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT, POOL_LOW_PRI_VM_COUNT);
+            batchClient.poolOperations().createPool(poolId, POOL_VM_SIZE, configuration, POOL_VM_COUNT,
+                    POOL_LOW_PRI_VM_COUNT);
         }
 
         try {
@@ -422,15 +403,15 @@ public class PoolTests extends BatchTestBase {
             }
 
             Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
-            Assert.assertEquals(POOL_VM_COUNT, (long)pool.currentDedicatedNodes());
-            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long)pool.currentLowPriorityNodes());
+            Assert.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
+            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.currentLowPriorityNodes());
 
             // RESIZE
             batchClient.poolOperations().resizePool(poolId, null, 1);
 
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertEquals(POOL_VM_COUNT, (long)pool.targetDedicatedNodes());
-            Assert.assertEquals(1, (long)pool.targetLowPriorityNodes());
+            Assert.assertEquals(POOL_VM_COUNT, (long) pool.targetDedicatedNodes());
+            Assert.assertEquals(1, (long) pool.targetLowPriorityNodes());
 
             // DELETE
             boolean deleted = false;
@@ -452,15 +433,12 @@ public class PoolTests extends BatchTestBase {
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assert.assertTrue(deleted);
-        }
-        finally {
+        } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
                     batchClient.poolOperations().deletePool(poolId);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 // Ignore exception
             }
         }
@@ -476,24 +454,22 @@ public class PoolTests extends BatchTestBase {
         int POOL_VM_COUNT = 3;
         String POOL_OS_FAMILY = "4";
         String POOL_OS_VERSION = "*";
-        // 5 minutes
-        long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
+        // 15 minutes
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 15 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
             // Use PaaS VM with Windows
             CloudServiceConfiguration configuration = new CloudServiceConfiguration();
-            configuration.withOsFamily(POOL_OS_FAMILY).withTargetOSVersion(POOL_OS_VERSION);
+            configuration.withOsFamily(POOL_OS_FAMILY).withOsVersion(POOL_OS_VERSION);
 
             List<UserAccount> userList = new ArrayList<>();
             userList.add(new UserAccount().withName("test-user-1").withPassword("kt#_gahr!@aGERDXA"));
-            userList.add(new UserAccount().withName("test-user-2").withPassword("kt#_gahr!@aGERDXA").withElevationLevel(ElevationLevel.ADMIN));
-            PoolAddParameter addParameter = new PoolAddParameter()
-                    .withId(poolId)
-                    .withTargetDedicatedNodes(POOL_VM_COUNT)
-                    .withVmSize(POOL_VM_SIZE)
-                    .withCloudServiceConfiguration(configuration)
-                    .withUserAccounts(userList);
+            userList.add(new UserAccount().withName("test-user-2").withPassword("kt#_gahr!@aGERDXA")
+                    .withElevationLevel(ElevationLevel.ADMIN));
+            PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
+                    .withTargetDedicatedNodes(POOL_VM_COUNT).withVmSize(POOL_VM_SIZE)
+                    .withCloudServiceConfiguration(configuration).withUserAccounts(userList);
             batchClient.poolOperations().createPool(addParameter);
         }
 
@@ -544,13 +520,13 @@ public class PoolTests extends BatchTestBase {
             // CHECK POOL NODE COUNTS
             PoolNodeCounts poolNodeCount = null;
             List<PoolNodeCounts> poolNodeCounts = batchClient.accountOperations().listPoolNodeCounts();
-            for(PoolNodeCounts tmp : poolNodeCounts) {
+            for (PoolNodeCounts tmp : poolNodeCounts) {
                 if (tmp.poolId().equals(poolId)) {
                     poolNodeCount = tmp;
                     break;
                 }
             }
-            Assert.assertNotNull(poolNodeCount);  // Single pool only
+            Assert.assertNotNull(poolNodeCount); // Single pool only
             Assert.assertNotNull(poolNodeCount.lowPriority());
             Assert.assertEquals(0, poolNodeCount.lowPriority().total());
             Assert.assertEquals(3, poolNodeCount.dedicated().total());
@@ -564,10 +540,8 @@ public class PoolTests extends BatchTestBase {
             Assert.assertTrue(pool.metadata().size() == 1);
             Assert.assertTrue(pool.metadata().get(0).name().equals("key1"));
 
-            batchClient.poolOperations().updatePoolProperties(poolId, null,
-                    new LinkedList<CertificateReference>(),
-                    new LinkedList<ApplicationPackageReference>(),
-                    new LinkedList<MetadataItem>());
+            batchClient.poolOperations().updatePoolProperties(poolId, null, new LinkedList<CertificateReference>(),
+                    new LinkedList<ApplicationPackageReference>(), new LinkedList<MetadataItem>());
             pool = batchClient.poolOperations().getPool(poolId);
             Assert.assertNull(pool.metadata());
 
@@ -591,15 +565,12 @@ public class PoolTests extends BatchTestBase {
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assert.assertTrue(deleted);
-        }
-        finally {
+        } finally {
             try {
                 if (batchClient.poolOperations().existsPool(poolId)) {
                     batchClient.poolOperations().deletePool(poolId);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 // Ignore exception
             }
         }

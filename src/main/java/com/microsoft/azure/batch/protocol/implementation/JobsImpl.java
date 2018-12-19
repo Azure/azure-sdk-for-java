@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Jobs;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
@@ -109,55 +110,55 @@ public class JobsImpl implements Jobs {
     interface JobsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs getAllLifetimeStatistics" })
         @GET("lifetimejobstats")
-        Observable<Response<ResponseBody>> getAllLifetimeStatistics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllLifetimeStatistics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs delete" })
         @HTTP(path = "jobs/{jobId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs get" })
         @GET("jobs/{jobId}")
-        Observable<Response<ResponseBody>> get(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("$expand") String expand, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("$expand") String expand, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs patch" })
         @PATCH("jobs/{jobId}")
-        Observable<Response<ResponseBody>> patch(@Path("jobId") String jobId, @Body JobPatchParameter jobPatchParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> patch(@Path("jobId") String jobId, @Body JobPatchParameter jobPatchParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs update" })
         @PUT("jobs/{jobId}")
-        Observable<Response<ResponseBody>> update(@Path("jobId") String jobId, @Body JobUpdateParameter jobUpdateParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("jobId") String jobId, @Body JobUpdateParameter jobUpdateParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs disable" })
         @POST("jobs/{jobId}/disable")
-        Observable<Response<ResponseBody>> disable(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body JobDisableParameter jobDisableParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> disable(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body JobDisableParameter jobDisableParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs enable" })
         @POST("jobs/{jobId}/enable")
-        Observable<Response<ResponseBody>> enable(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> enable(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs terminate" })
         @POST("jobs/{jobId}/terminate")
-        Observable<Response<ResponseBody>> terminate(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body JobTerminateParameter jobTerminateParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> terminate(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body JobTerminateParameter jobTerminateParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs add" })
         @POST("jobs")
-        Observable<Response<ResponseBody>> add(@Body JobAddParameter job, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> add(@Body JobAddParameter job, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs list" })
         @GET("jobs")
-        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs listFromJobSchedule" })
         @GET("jobschedules/{jobScheduleId}/jobs")
-        Observable<Response<ResponseBody>> listFromJobSchedule(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listFromJobSchedule(@Path("jobScheduleId") String jobScheduleId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs listPreparationAndReleaseTaskStatus" })
         @GET("jobs/{jobId}/jobpreparationandreleasetaskstatus")
-        Observable<Response<ResponseBody>> listPreparationAndReleaseTaskStatus(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPreparationAndReleaseTaskStatus(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs getTaskCounts" })
         @GET("jobs/{jobId}/taskcounts")
-        Observable<Response<ResponseBody>> getTaskCounts(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getTaskCounts(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs listNext" })
         @GET
@@ -222,6 +223,9 @@ public class JobsImpl implements Jobs {
      * @return the observable to the JobStatistics object
      */
     public Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync() {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -230,11 +234,12 @@ public class JobsImpl implements Jobs {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> call(Response<ResponseBody> response) {
@@ -301,6 +306,9 @@ public class JobsImpl implements Jobs {
      * @return the observable to the JobStatistics object
      */
     public Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync(JobGetAllLifetimeStatisticsOptions jobGetAllLifetimeStatisticsOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -321,11 +329,12 @@ public class JobsImpl implements Jobs {
         if (jobGetAllLifetimeStatisticsOptions != null) {
             ocpDate = jobGetAllLifetimeStatisticsOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<JobStatistics, JobGetAllLifetimeStatisticsHeaders>> call(Response<ResponseBody> response) {
@@ -398,6 +407,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> deleteWithServiceResponseAsync(String jobId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -413,6 +425,7 @@ public class JobsImpl implements Jobs {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -425,7 +438,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> call(Response<ResponseBody> response) {
@@ -495,6 +508,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> deleteWithServiceResponseAsync(String jobId, JobDeleteOptions jobDeleteOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -534,6 +550,7 @@ public class JobsImpl implements Jobs {
         if (jobDeleteOptions != null) {
             ifUnmodifiedSince = jobDeleteOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -546,7 +563,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> call(Response<ResponseBody> response) {
@@ -616,6 +633,9 @@ public class JobsImpl implements Jobs {
      * @return the observable to the CloudJob object
      */
     public Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>> getWithServiceResponseAsync(String jobId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -633,6 +653,7 @@ public class JobsImpl implements Jobs {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -645,7 +666,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>> call(Response<ResponseBody> response) {
@@ -712,6 +733,9 @@ public class JobsImpl implements Jobs {
      * @return the observable to the CloudJob object
      */
     public Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>> getWithServiceResponseAsync(String jobId, JobGetOptions jobGetOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -759,6 +783,7 @@ public class JobsImpl implements Jobs {
         if (jobGetOptions != null) {
             ifUnmodifiedSince = jobGetOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -771,7 +796,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.get(jobId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<CloudJob, JobGetHeaders>> call(Response<ResponseBody> response) {
@@ -848,6 +873,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>> patchWithServiceResponseAsync(String jobId, JobPatchParameter jobPatchParameter) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -867,6 +895,7 @@ public class JobsImpl implements Jobs {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -879,7 +908,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>> call(Response<ResponseBody> response) {
@@ -953,6 +982,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>> patchWithServiceResponseAsync(String jobId, JobPatchParameter jobPatchParameter, JobPatchOptions jobPatchOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -996,6 +1028,7 @@ public class JobsImpl implements Jobs {
         if (jobPatchOptions != null) {
             ifUnmodifiedSince = jobPatchOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1008,7 +1041,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.patch(jobId, jobPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobPatchHeaders>> call(Response<ResponseBody> response) {
@@ -1031,7 +1064,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -1045,7 +1078,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -1059,7 +1092,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -1077,7 +1110,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -1085,6 +1118,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> updateWithServiceResponseAsync(String jobId, JobUpdateParameter jobUpdateParameter) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1104,6 +1140,7 @@ public class JobsImpl implements Jobs {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1116,7 +1153,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> call(Response<ResponseBody> response) {
@@ -1132,7 +1169,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -1147,7 +1184,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -1162,7 +1199,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -1181,7 +1218,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Updates the properties of the specified job.
-     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
+     * This fully replaces all the updatable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
      * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
@@ -1190,6 +1227,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> updateWithServiceResponseAsync(String jobId, JobUpdateParameter jobUpdateParameter, JobUpdateOptions jobUpdateOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1233,6 +1273,7 @@ public class JobsImpl implements Jobs {
         if (jobUpdateOptions != null) {
             ifUnmodifiedSince = jobUpdateOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1245,7 +1286,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.update(jobId, jobUpdateParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobUpdateHeaders>> call(Response<ResponseBody> response) {
@@ -1322,6 +1363,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>> disableWithServiceResponseAsync(String jobId, DisableJobOption disableTasks) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1342,6 +1386,7 @@ public class JobsImpl implements Jobs {
         DateTime ifUnmodifiedSince = null;
         JobDisableParameter jobDisableParameter = new JobDisableParameter();
         jobDisableParameter.withDisableTasks(disableTasks);
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1354,7 +1399,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent())
+        return service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>> call(Response<ResponseBody> response) {
@@ -1428,6 +1473,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>> disableWithServiceResponseAsync(String jobId, DisableJobOption disableTasks, JobDisableOptions jobDisableOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1472,6 +1520,7 @@ public class JobsImpl implements Jobs {
         }
         JobDisableParameter jobDisableParameter = new JobDisableParameter();
         jobDisableParameter.withDisableTasks(disableTasks);
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1484,7 +1533,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, this.client.userAgent())
+        return service.disable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobDisableParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobDisableHeaders>> call(Response<ResponseBody> response) {
@@ -1507,7 +1556,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1520,7 +1569,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1533,7 +1582,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1550,13 +1599,16 @@ public class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> enableWithServiceResponseAsync(String jobId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1572,6 +1624,7 @@ public class JobsImpl implements Jobs {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1584,7 +1637,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> call(Response<ResponseBody> response) {
@@ -1600,7 +1653,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
@@ -1614,7 +1667,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
@@ -1628,7 +1681,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
@@ -1646,7 +1699,7 @@ public class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
-     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 180 days. Therefore, if you enable a job containing active tasks which were added more than 180 days ago, those tasks will not run.
      *
      * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
@@ -1654,6 +1707,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> enableWithServiceResponseAsync(String jobId, JobEnableOptions jobEnableOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1693,6 +1749,7 @@ public class JobsImpl implements Jobs {
         if (jobEnableOptions != null) {
             ifUnmodifiedSince = jobEnableOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1705,7 +1762,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.enable(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobEnableHeaders>> call(Response<ResponseBody> response) {
@@ -1778,6 +1835,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> terminateWithServiceResponseAsync(String jobId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1796,6 +1856,7 @@ public class JobsImpl implements Jobs {
         DateTime ifUnmodifiedSince = null;
         JobTerminateParameter jobTerminateParameter = new JobTerminateParameter();
         jobTerminateParameter.withTerminateReason(null);
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1808,7 +1869,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent())
+        return service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> call(Response<ResponseBody> response) {
@@ -1882,6 +1943,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> terminateWithServiceResponseAsync(String jobId, String terminateReason, JobTerminateOptions jobTerminateOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1926,6 +1990,7 @@ public class JobsImpl implements Jobs {
             jobTerminateParameter = new JobTerminateParameter();
             jobTerminateParameter.withTerminateReason(terminateReason);
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1938,7 +2003,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, this.client.userAgent())
+        return service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> call(Response<ResponseBody> response) {
@@ -2011,6 +2076,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>> addWithServiceResponseAsync(JobAddParameter job) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (job == null) {
             throw new IllegalArgumentException("Parameter job is required and cannot be null.");
         }
@@ -2023,11 +2091,12 @@ public class JobsImpl implements Jobs {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>> call(Response<ResponseBody> response) {
@@ -2097,6 +2166,9 @@ public class JobsImpl implements Jobs {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>> addWithServiceResponseAsync(JobAddParameter job, JobAddOptions jobAddOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (job == null) {
             throw new IllegalArgumentException("Parameter job is required and cannot be null.");
         }
@@ -2121,11 +2193,12 @@ public class JobsImpl implements Jobs {
         if (jobAddOptions != null) {
             ocpDate = jobAddOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.add(job, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobAddHeaders>> call(Response<ResponseBody> response) {
@@ -2226,6 +2299,9 @@ public class JobsImpl implements Jobs {
      * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listSinglePageAsync() {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -2238,11 +2314,12 @@ public class JobsImpl implements Jobs {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(Response<ResponseBody> response) {
@@ -2357,11 +2434,14 @@ public class JobsImpl implements Jobs {
     /**
      * Lists all of the jobs in the specified account.
      *
-     * @param jobListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param jobListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> listSinglePageAsync(final JobListOptions jobListOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -2398,11 +2478,12 @@ public class JobsImpl implements Jobs {
         if (jobListOptions != null) {
             ocpDate = jobListOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListHeaders>> call(Response<ResponseBody> response) {
@@ -2508,6 +2589,9 @@ public class JobsImpl implements Jobs {
      * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleSinglePageAsync(final String jobScheduleId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -2523,11 +2607,12 @@ public class JobsImpl implements Jobs {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(Response<ResponseBody> response) {
@@ -2646,12 +2731,15 @@ public class JobsImpl implements Jobs {
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
-     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
-     * @param jobListFromJobScheduleOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobListFromJobScheduleOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> listFromJobScheduleSinglePageAsync(final String jobScheduleId, final JobListFromJobScheduleOptions jobListFromJobScheduleOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobScheduleId == null) {
             throw new IllegalArgumentException("Parameter jobScheduleId is required and cannot be null.");
         }
@@ -2691,11 +2779,12 @@ public class JobsImpl implements Jobs {
         if (jobListFromJobScheduleOptions != null) {
             ocpDate = jobListFromJobScheduleOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.listFromJobSchedule(jobScheduleId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<CloudJob>, JobListFromJobScheduleHeaders>> call(Response<ResponseBody> response) {
@@ -2806,6 +2895,9 @@ public class JobsImpl implements Jobs {
      * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusSinglePageAsync(final String jobId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -2820,11 +2912,12 @@ public class JobsImpl implements Jobs {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(Response<ResponseBody> response) {
@@ -2948,12 +3041,15 @@ public class JobsImpl implements Jobs {
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool. If this API is invoked on a job which has no Job Preparation or Job Release task, the Batch service returns HTTP status code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
      *
-     * @param jobId The ID of the job.
-     * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobId The ID of the job.
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> listPreparationAndReleaseTaskStatusSinglePageAsync(final String jobId, final JobListPreparationAndReleaseTaskStatusOptions jobListPreparationAndReleaseTaskStatusOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -2989,11 +3085,12 @@ public class JobsImpl implements Jobs {
         if (jobListPreparationAndReleaseTaskStatusOptions != null) {
             ocpDate = jobListPreparationAndReleaseTaskStatusOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.listPreparationAndReleaseTaskStatus(jobId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders>> call(Response<ResponseBody> response) {
@@ -3067,6 +3164,9 @@ public class JobsImpl implements Jobs {
      * @return the observable to the TaskCounts object
      */
     public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -3078,11 +3178,12 @@ public class JobsImpl implements Jobs {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.getTaskCounts(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.getTaskCounts(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> call(Response<ResponseBody> response) {
@@ -3153,6 +3254,9 @@ public class JobsImpl implements Jobs {
      * @return the observable to the TaskCounts object
      */
     public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> getTaskCountsWithServiceResponseAsync(String jobId, JobGetTaskCountsOptions jobGetTaskCountsOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -3176,11 +3280,12 @@ public class JobsImpl implements Jobs {
         if (jobGetTaskCountsOptions != null) {
             ocpDate = jobGetTaskCountsOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.getTaskCounts(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.getTaskCounts(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<TaskCounts, JobGetTaskCountsHeaders>> call(Response<ResponseBody> response) {
@@ -3398,8 +3503,8 @@ public class JobsImpl implements Jobs {
     /**
      * Lists all of the jobs in the specified account.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param jobListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -3643,8 +3748,8 @@ public class JobsImpl implements Jobs {
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -3898,8 +4003,8 @@ public class JobsImpl implements Jobs {
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool. If this API is invoked on a job which has no Job Preparation or Job Release task, the Batch service returns HTTP status code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

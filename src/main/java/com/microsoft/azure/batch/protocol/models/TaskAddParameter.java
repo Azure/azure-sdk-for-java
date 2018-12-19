@@ -118,8 +118,8 @@ public class TaskAddParameter {
     /**
      * The execution constraints that apply to this task.
      * If you do not specify constraints, the maxTaskRetryCount is the
-     * maxTaskRetryCount specified for the job, and the maxWallClockTime and
-     * retentionTime are infinite.
+     * maxTaskRetryCount specified for the job, the maxWallClockTime is
+     * infinite, and the retentionTime is 7 days.
      */
     @JsonProperty(value = "constraints")
     private TaskConstraints constraints;
@@ -359,7 +359,7 @@ public class TaskAddParameter {
     }
 
     /**
-     * Get if you do not specify constraints, the maxTaskRetryCount is the maxTaskRetryCount specified for the job, and the maxWallClockTime and retentionTime are infinite.
+     * Get if you do not specify constraints, the maxTaskRetryCount is the maxTaskRetryCount specified for the job, the maxWallClockTime is infinite, and the retentionTime is 7 days.
      *
      * @return the constraints value
      */
@@ -368,7 +368,7 @@ public class TaskAddParameter {
     }
 
     /**
-     * Set if you do not specify constraints, the maxTaskRetryCount is the maxTaskRetryCount specified for the job, and the maxWallClockTime and retentionTime are infinite.
+     * Set if you do not specify constraints, the maxTaskRetryCount is the maxTaskRetryCount specified for the job, the maxWallClockTime is infinite, and the retentionTime is 7 days.
      *
      * @param constraints the constraints value to set
      * @return the TaskAddParameter object itself.

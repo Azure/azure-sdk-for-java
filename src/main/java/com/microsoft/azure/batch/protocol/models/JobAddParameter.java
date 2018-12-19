@@ -145,6 +145,12 @@ public class JobAddParameter {
     private Boolean usesTaskDependencies;
 
     /**
+     * The network configuration for the job.
+     */
+    @JsonProperty(value = "networkConfiguration")
+    private JobNetworkConfiguration networkConfiguration;
+
+    /**
      * Get the ID can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and case-insensitive (that is, you may not have two IDs within an account that differ only by case).
      *
      * @return the id value
@@ -401,6 +407,26 @@ public class JobAddParameter {
      */
     public JobAddParameter withUsesTaskDependencies(Boolean usesTaskDependencies) {
         this.usesTaskDependencies = usesTaskDependencies;
+        return this;
+    }
+
+    /**
+     * Get the networkConfiguration value.
+     *
+     * @return the networkConfiguration value
+     */
+    public JobNetworkConfiguration networkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set the networkConfiguration value.
+     *
+     * @param networkConfiguration the networkConfiguration value to set
+     * @return the JobAddParameter object itself.
+     */
+    public JobAddParameter withNetworkConfiguration(JobNetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
         return this;
     }
 

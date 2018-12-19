@@ -29,8 +29,8 @@ public class TaskConstraints {
      * The minimum time to retain the task directory on the compute node where
      * it ran, from the time it completes execution. After this time, the Batch
      * service may delete the task directory and all its contents.
-     * The default is infinite, i.e. the task directory will be retained until
-     * the compute node is removed or reimaged.
+     * The default is 7 days, i.e. the task directory will be retained for 7
+     * days unless the compute node is removed or the job is deleted.
      */
     @JsonProperty(value = "retentionTime")
     private Period retentionTime;
@@ -45,8 +45,6 @@ public class TaskConstraints {
      * initial try and 3 retries). If the maximum retry count is 0, the Batch
      * service does not retry the task after the first attempt. If the maximum
      * retry count is -1, the Batch service retries the task without limit.
-     * Resource files and application packages are only downloaded again if the
-     * task is retried on a new compute node.
      */
     @JsonProperty(value = "maxTaskRetryCount")
     private Integer maxTaskRetryCount;
@@ -72,7 +70,7 @@ public class TaskConstraints {
     }
 
     /**
-     * Get the default is infinite, i.e. the task directory will be retained until the compute node is removed or reimaged.
+     * Get the default is 7 days, i.e. the task directory will be retained for 7 days unless the compute node is removed or the job is deleted.
      *
      * @return the retentionTime value
      */
@@ -81,7 +79,7 @@ public class TaskConstraints {
     }
 
     /**
-     * Set the default is infinite, i.e. the task directory will be retained until the compute node is removed or reimaged.
+     * Set the default is 7 days, i.e. the task directory will be retained for 7 days unless the compute node is removed or the job is deleted.
      *
      * @param retentionTime the retentionTime value to set
      * @return the TaskConstraints object itself.
@@ -92,7 +90,7 @@ public class TaskConstraints {
     }
 
     /**
-     * Get note that this value specifically controls the number of retries for the task executable due to a nonzero exit code. The Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task after the first attempt. If the maximum retry count is -1, the Batch service retries the task without limit. Resource files and application packages are only downloaded again if the task is retried on a new compute node.
+     * Get note that this value specifically controls the number of retries for the task executable due to a nonzero exit code. The Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task after the first attempt. If the maximum retry count is -1, the Batch service retries the task without limit.
      *
      * @return the maxTaskRetryCount value
      */
@@ -101,7 +99,7 @@ public class TaskConstraints {
     }
 
     /**
-     * Set note that this value specifically controls the number of retries for the task executable due to a nonzero exit code. The Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task after the first attempt. If the maximum retry count is -1, the Batch service retries the task without limit. Resource files and application packages are only downloaded again if the task is retried on a new compute node.
+     * Set note that this value specifically controls the number of retries for the task executable due to a nonzero exit code. The Batch service will try the task once, and may then retry up to this limit. For example, if the maximum retry count is 3, Batch tries the task up to 4 times (one initial try and 3 retries). If the maximum retry count is 0, the Batch service does not retry the task after the first attempt. If the maximum retry count is -1, the Batch service retries the task without limit.
      *
      * @param maxTaskRetryCount the maxTaskRetryCount value to set
      * @return the TaskConstraints object itself.

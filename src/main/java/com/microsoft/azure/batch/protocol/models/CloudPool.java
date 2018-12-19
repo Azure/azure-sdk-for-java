@@ -68,7 +68,7 @@ public class CloudPool {
 
     /**
      * The current state of the pool.
-     * Possible values include: 'active', 'deleting', 'upgrading'.
+     * Possible values include: 'active', 'deleting'.
      */
     @JsonProperty(value = "state")
     private PoolState state;
@@ -407,7 +407,7 @@ public class CloudPool {
     }
 
     /**
-     * Get possible values include: 'active', 'deleting', 'upgrading'.
+     * Get possible values include: 'active', 'deleting'.
      *
      * @return the state value
      */
@@ -416,7 +416,7 @@ public class CloudPool {
     }
 
     /**
-     * Set possible values include: 'active', 'deleting', 'upgrading'.
+     * Set possible values include: 'active', 'deleting'.
      *
      * @param state the state value to set
      * @return the CloudPool object itself.

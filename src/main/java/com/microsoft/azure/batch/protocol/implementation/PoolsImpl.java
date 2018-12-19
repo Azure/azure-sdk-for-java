@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Pools;
+import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.batch.protocol.models.AutoScaleRun;
@@ -56,9 +57,6 @@ import com.microsoft.azure.batch.protocol.models.PoolStopResizeOptions;
 import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesOptions;
 import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesParameter;
-import com.microsoft.azure.batch.protocol.models.PoolUpgradeOSHeaders;
-import com.microsoft.azure.batch.protocol.models.PoolUpgradeOSOptions;
-import com.microsoft.azure.batch.protocol.models.PoolUpgradeOSParameter;
 import com.microsoft.azure.batch.protocol.models.PoolUsageMetrics;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
@@ -116,67 +114,63 @@ public class PoolsImpl implements Pools {
     interface PoolsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools listUsageMetrics" })
         @GET("poolusagemetrics")
-        Observable<Response<ResponseBody>> listUsageMetrics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("starttime") DateTime startTime, @Query("endtime") DateTime endTime, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listUsageMetrics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("starttime") DateTime startTime, @Query("endtime") DateTime endTime, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools getAllLifetimeStatistics" })
         @GET("lifetimepoolstats")
-        Observable<Response<ResponseBody>> getAllLifetimeStatistics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllLifetimeStatistics(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools add" })
         @POST("pools")
-        Observable<Response<ResponseBody>> add(@Body PoolAddParameter pool, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> add(@Body PoolAddParameter pool, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools list" })
         @GET("pools")
-        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("$expand") String expand, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools delete" })
         @HTTP(path = "pools/{poolId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools exists" })
         @HEAD("pools/{poolId}")
-        Observable<Response<Void>> exists(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<Void>> exists(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools get" })
         @GET("pools/{poolId}")
-        Observable<Response<ResponseBody>> get(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("$expand") String expand, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("$expand") String expand, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools patch" })
         @PATCH("pools/{poolId}")
-        Observable<Response<ResponseBody>> patch(@Path("poolId") String poolId, @Body PoolPatchParameter poolPatchParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> patch(@Path("poolId") String poolId, @Body PoolPatchParameter poolPatchParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools disableAutoScale" })
         @POST("pools/{poolId}/disableautoscale")
-        Observable<Response<ResponseBody>> disableAutoScale(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> disableAutoScale(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools enableAutoScale" })
         @POST("pools/{poolId}/enableautoscale")
-        Observable<Response<ResponseBody>> enableAutoScale(@Path("poolId") String poolId, @Body PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> enableAutoScale(@Path("poolId") String poolId, @Body PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools evaluateAutoScale" })
         @POST("pools/{poolId}/evaluateautoscale")
-        Observable<Response<ResponseBody>> evaluateAutoScale(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> evaluateAutoScale(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools resize" })
         @POST("pools/{poolId}/resize")
-        Observable<Response<ResponseBody>> resize(@Path("poolId") String poolId, @Body PoolResizeParameter poolResizeParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> resize(@Path("poolId") String poolId, @Body PoolResizeParameter poolResizeParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools stopResize" })
         @POST("pools/{poolId}/stopresize")
-        Observable<Response<ResponseBody>> stopResize(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> stopResize(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools updateProperties" })
         @POST("pools/{poolId}/updateproperties")
-        Observable<Response<ResponseBody>> updateProperties(@Path("poolId") String poolId, @Body PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools upgradeOS" })
-        @POST("pools/{poolId}/upgradeos")
-        Observable<Response<ResponseBody>> upgradeOS(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body PoolUpgradeOSParameter poolUpgradeOSParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateProperties(@Path("poolId") String poolId, @Body PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools removeNodes" })
         @POST("pools/{poolId}/removenodes")
-        Observable<Response<ResponseBody>> removeNodes(@Path("poolId") String poolId, @Body NodeRemoveParameter nodeRemoveParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> removeNodes(@Path("poolId") String poolId, @Body NodeRemoveParameter nodeRemoveParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Pools listUsageMetricsNext" })
         @GET
@@ -273,6 +267,9 @@ public class PoolsImpl implements Pools {
      * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsSinglePageAsync() {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -285,11 +282,12 @@ public class PoolsImpl implements Pools {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.listUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(Response<ResponseBody> response) {
@@ -409,11 +407,14 @@ public class PoolsImpl implements Pools {
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals. If you do not specify a $filter clause including a startTime or endTime these filters default to the start and end times of the last aggregation interval currently available; that is, only the last aggregation interval is returned.
      *
-     * @param poolListUsageMetricsOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param poolListUsageMetricsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsSinglePageAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -450,11 +451,12 @@ public class PoolsImpl implements Pools {
         if (poolListUsageMetricsOptions != null) {
             ocpDate = poolListUsageMetricsOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.listUsageMetrics(this.client.apiVersion(), this.client.acceptLanguage(), startTime, endTime, filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> call(Response<ResponseBody> response) {
@@ -524,6 +526,9 @@ public class PoolsImpl implements Pools {
      * @return the observable to the PoolStatistics object
      */
     public Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync() {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -532,11 +537,12 @@ public class PoolsImpl implements Pools {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> call(Response<ResponseBody> response) {
@@ -603,6 +609,9 @@ public class PoolsImpl implements Pools {
      * @return the observable to the PoolStatistics object
      */
     public Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -623,11 +632,12 @@ public class PoolsImpl implements Pools {
         if (poolGetAllLifetimeStatisticsOptions != null) {
             ocpDate = poolGetAllLifetimeStatisticsOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.getAllLifetimeStatistics(this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> call(Response<ResponseBody> response) {
@@ -700,6 +710,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> addWithServiceResponseAsync(PoolAddParameter pool) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (pool == null) {
             throw new IllegalArgumentException("Parameter pool is required and cannot be null.");
         }
@@ -712,11 +725,12 @@ public class PoolsImpl implements Pools {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> call(Response<ResponseBody> response) {
@@ -786,6 +800,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> addWithServiceResponseAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (pool == null) {
             throw new IllegalArgumentException("Parameter pool is required and cannot be null.");
         }
@@ -810,11 +827,12 @@ public class PoolsImpl implements Pools {
         if (poolAddOptions != null) {
             ocpDate = poolAddOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.add(pool, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> call(Response<ResponseBody> response) {
@@ -915,6 +933,9 @@ public class PoolsImpl implements Pools {
      * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listSinglePageAsync() {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -927,11 +948,12 @@ public class PoolsImpl implements Pools {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(Response<ResponseBody> response) {
@@ -1046,11 +1068,14 @@ public class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
-     * @param poolListOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
     public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listSinglePageAsync(final PoolListOptions poolListOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -1087,11 +1112,12 @@ public class PoolsImpl implements Pools {
         if (poolListOptions != null) {
             ocpDate = poolListOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, expand, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> call(Response<ResponseBody> response) {
@@ -1164,6 +1190,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> deleteWithServiceResponseAsync(String poolId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1179,6 +1208,7 @@ public class PoolsImpl implements Pools {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1191,7 +1221,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> call(Response<ResponseBody> response) {
@@ -1261,6 +1291,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> deleteWithServiceResponseAsync(String poolId, PoolDeleteOptions poolDeleteOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1300,6 +1333,7 @@ public class PoolsImpl implements Pools {
         if (poolDeleteOptions != null) {
             ifUnmodifiedSince = poolDeleteOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1312,7 +1346,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.delete(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolDeleteHeaders>> call(Response<ResponseBody> response) {
@@ -1382,6 +1416,9 @@ public class PoolsImpl implements Pools {
      * @return the observable to the Boolean object
      */
     public Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> existsWithServiceResponseAsync(String poolId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1397,6 +1434,7 @@ public class PoolsImpl implements Pools {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1409,7 +1447,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<Void>, Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> call(Response<Void> response) {
@@ -1476,6 +1514,9 @@ public class PoolsImpl implements Pools {
      * @return the observable to the Boolean object
      */
     public Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> existsWithServiceResponseAsync(String poolId, PoolExistsOptions poolExistsOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1515,6 +1556,7 @@ public class PoolsImpl implements Pools {
         if (poolExistsOptions != null) {
             ifUnmodifiedSince = poolExistsOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1527,7 +1569,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.exists(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<Void>, Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Boolean, PoolExistsHeaders>> call(Response<Void> response) {
@@ -1598,6 +1640,9 @@ public class PoolsImpl implements Pools {
      * @return the observable to the CloudPool object
      */
     public Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> getWithServiceResponseAsync(String poolId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1615,6 +1660,7 @@ public class PoolsImpl implements Pools {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1627,7 +1673,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> call(Response<ResponseBody> response) {
@@ -1694,6 +1740,9 @@ public class PoolsImpl implements Pools {
      * @return the observable to the CloudPool object
      */
     public Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> getWithServiceResponseAsync(String poolId, PoolGetOptions poolGetOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1741,6 +1790,7 @@ public class PoolsImpl implements Pools {
         if (poolGetOptions != null) {
             ifUnmodifiedSince = poolGetOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1753,7 +1803,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.get(poolId, this.client.apiVersion(), this.client.acceptLanguage(), select, expand, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<CloudPool, PoolGetHeaders>> call(Response<ResponseBody> response) {
@@ -1830,6 +1880,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> patchWithServiceResponseAsync(String poolId, PoolPatchParameter poolPatchParameter) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1849,6 +1902,7 @@ public class PoolsImpl implements Pools {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1861,7 +1915,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> call(Response<ResponseBody> response) {
@@ -1935,6 +1989,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> patchWithServiceResponseAsync(String poolId, PoolPatchParameter poolPatchParameter, PoolPatchOptions poolPatchOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1978,6 +2035,7 @@ public class PoolsImpl implements Pools {
         if (poolPatchOptions != null) {
             ifUnmodifiedSince = poolPatchOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -1990,7 +2048,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.patch(poolId, poolPatchParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolPatchHeaders>> call(Response<ResponseBody> response) {
@@ -2059,6 +2117,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> disableAutoScaleWithServiceResponseAsync(String poolId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2070,11 +2131,12 @@ public class PoolsImpl implements Pools {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> call(Response<ResponseBody> response) {
@@ -2140,6 +2202,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> disableAutoScaleWithServiceResponseAsync(String poolId, PoolDisableAutoScaleOptions poolDisableAutoScaleOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2163,11 +2228,12 @@ public class PoolsImpl implements Pools {
         if (poolDisableAutoScaleOptions != null) {
             ocpDate = poolDisableAutoScaleOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.disableAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolDisableAutoScaleHeaders>> call(Response<ResponseBody> response) {
@@ -2244,6 +2310,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> enableAutoScaleWithServiceResponseAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2263,6 +2332,7 @@ public class PoolsImpl implements Pools {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -2275,7 +2345,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> call(Response<ResponseBody> response) {
@@ -2349,6 +2419,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> enableAutoScaleWithServiceResponseAsync(String poolId, PoolEnableAutoScaleParameter poolEnableAutoScaleParameter, PoolEnableAutoScaleOptions poolEnableAutoScaleOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2392,6 +2465,7 @@ public class PoolsImpl implements Pools {
         if (poolEnableAutoScaleOptions != null) {
             ifUnmodifiedSince = poolEnableAutoScaleOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -2404,7 +2478,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.enableAutoScale(poolId, poolEnableAutoScaleParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolEnableAutoScaleHeaders>> call(Response<ResponseBody> response) {
@@ -2482,6 +2556,9 @@ public class PoolsImpl implements Pools {
      * @return the observable to the AutoScaleRun object
      */
     public Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> evaluateAutoScaleWithServiceResponseAsync(String poolId, String autoScaleFormula) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2498,11 +2575,12 @@ public class PoolsImpl implements Pools {
         DateTime ocpDate = null;
         PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
         poolEvaluateAutoScaleParameter.withAutoScaleFormula(autoScaleFormula);
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, this.client.userAgent())
+        return service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> call(Response<ResponseBody> response) {
@@ -2577,6 +2655,9 @@ public class PoolsImpl implements Pools {
      * @return the observable to the AutoScaleRun object
      */
     public Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> evaluateAutoScaleWithServiceResponseAsync(String poolId, String autoScaleFormula, PoolEvaluateAutoScaleOptions poolEvaluateAutoScaleOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2605,11 +2686,12 @@ public class PoolsImpl implements Pools {
         }
         PoolEvaluateAutoScaleParameter poolEvaluateAutoScaleParameter = new PoolEvaluateAutoScaleParameter();
         poolEvaluateAutoScaleParameter.withAutoScaleFormula(autoScaleFormula);
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, this.client.userAgent())
+        return service.evaluateAutoScale(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, poolEvaluateAutoScaleParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<AutoScaleRun, PoolEvaluateAutoScaleHeaders>> call(Response<ResponseBody> response) {
@@ -2686,6 +2768,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> resizeWithServiceResponseAsync(String poolId, PoolResizeParameter poolResizeParameter) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2705,6 +2790,7 @@ public class PoolsImpl implements Pools {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -2717,7 +2803,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> call(Response<ResponseBody> response) {
@@ -2791,6 +2877,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> resizeWithServiceResponseAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2834,6 +2923,7 @@ public class PoolsImpl implements Pools {
         if (poolResizeOptions != null) {
             ifUnmodifiedSince = poolResizeOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -2846,7 +2936,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.resize(poolId, poolResizeParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolResizeHeaders>> call(Response<ResponseBody> response) {
@@ -2919,6 +3009,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> stopResizeWithServiceResponseAsync(String poolId) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2934,6 +3027,7 @@ public class PoolsImpl implements Pools {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -2946,7 +3040,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> call(Response<ResponseBody> response) {
@@ -3016,6 +3110,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> stopResizeWithServiceResponseAsync(String poolId, PoolStopResizeOptions poolStopResizeOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3055,6 +3152,7 @@ public class PoolsImpl implements Pools {
         if (poolStopResizeOptions != null) {
             ifUnmodifiedSince = poolStopResizeOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -3067,7 +3165,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.stopResize(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolStopResizeHeaders>> call(Response<ResponseBody> response) {
@@ -3090,7 +3188,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Updates the properties of the specified pool.
-     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     * This fully replaces all the updatable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -3104,7 +3202,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Updates the properties of the specified pool.
-     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     * This fully replaces all the updatable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -3118,7 +3216,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Updates the properties of the specified pool.
-     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     * This fully replaces all the updatable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -3136,7 +3234,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Updates the properties of the specified pool.
-     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     * This fully replaces all the updatable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -3144,6 +3242,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> updatePropertiesWithServiceResponseAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3159,11 +3260,12 @@ public class PoolsImpl implements Pools {
         UUID clientRequestId = null;
         Boolean returnClientRequestId = null;
         DateTime ocpDate = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> call(Response<ResponseBody> response) {
@@ -3179,7 +3281,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Updates the properties of the specified pool.
-     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     * This fully replaces all the updatable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -3194,7 +3296,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Updates the properties of the specified pool.
-     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     * This fully replaces all the updatable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -3209,7 +3311,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Updates the properties of the specified pool.
-     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     * This fully replaces all the updatable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -3228,7 +3330,7 @@ public class PoolsImpl implements Pools {
 
     /**
      * Updates the properties of the specified pool.
-     * This fully replaces all the updateable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
+     * This fully replaces all the updatable properties of the pool. For example, if the pool has a start task associated with it and if start task is not specified with this request, then the Batch service will remove the existing start task.
      *
      * @param poolId The ID of the pool to update.
      * @param poolUpdatePropertiesParameter The parameters for the request.
@@ -3237,6 +3339,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> updatePropertiesWithServiceResponseAsync(String poolId, PoolUpdatePropertiesParameter poolUpdatePropertiesParameter, PoolUpdatePropertiesOptions poolUpdatePropertiesOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3264,11 +3369,12 @@ public class PoolsImpl implements Pools {
         if (poolUpdatePropertiesOptions != null) {
             ocpDate = poolUpdatePropertiesOptions.ocpDate();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+        return service.updateProperties(poolId, poolUpdatePropertiesParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolUpdatePropertiesHeaders>> call(Response<ResponseBody> response) {
@@ -3287,245 +3393,6 @@ public class PoolsImpl implements Pools {
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(BatchErrorException.class)
                 .buildWithHeaders(response, PoolUpdatePropertiesHeaders.class);
-    }
-
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active. While the upgrade is in progress, the pool's currentOSVersion reflects the OS version that nodes are upgrading from, and targetOSVersion reflects the OS version that nodes are upgrading to. Once the upgrade is complete, currentOSVersion is updated to reflect the OS version now running on all nodes. This operation can only be invoked on pools created with the cloudServiceConfiguration property.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void upgradeOS(String poolId, String targetOSVersion) {
-        upgradeOSWithServiceResponseAsync(poolId, targetOSVersion).toBlocking().single().body();
-    }
-
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active. While the upgrade is in progress, the pool's currentOSVersion reflects the OS version that nodes are upgrading from, and targetOSVersion reflects the OS version that nodes are upgrading to. Once the upgrade is complete, currentOSVersion is updated to reflect the OS version now running on all nodes. This operation can only be invoked on pools created with the cloudServiceConfiguration property.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> upgradeOSAsync(String poolId, String targetOSVersion, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(upgradeOSWithServiceResponseAsync(poolId, targetOSVersion), serviceCallback);
-    }
-
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active. While the upgrade is in progress, the pool's currentOSVersion reflects the OS version that nodes are upgrading from, and targetOSVersion reflects the OS version that nodes are upgrading to. Once the upgrade is complete, currentOSVersion is updated to reflect the OS version now running on all nodes. This operation can only be invoked on pools created with the cloudServiceConfiguration property.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> upgradeOSAsync(String poolId, String targetOSVersion) {
-        return upgradeOSWithServiceResponseAsync(poolId, targetOSVersion).map(new Func1<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active. While the upgrade is in progress, the pool's currentOSVersion reflects the OS version that nodes are upgrading from, and targetOSVersion reflects the OS version that nodes are upgrading to. Once the upgrade is complete, currentOSVersion is updated to reflect the OS version now running on all nodes. This operation can only be invoked on pools created with the cloudServiceConfiguration property.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> upgradeOSWithServiceResponseAsync(String poolId, String targetOSVersion) {
-        if (poolId == null) {
-            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (targetOSVersion == null) {
-            throw new IllegalArgumentException("Parameter targetOSVersion is required and cannot be null.");
-        }
-        final PoolUpgradeOSOptions poolUpgradeOSOptions = null;
-        Integer timeout = null;
-        UUID clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        String ifMatch = null;
-        String ifNoneMatch = null;
-        DateTime ifModifiedSince = null;
-        DateTime ifUnmodifiedSince = null;
-        PoolUpgradeOSParameter poolUpgradeOSParameter = new PoolUpgradeOSParameter();
-        poolUpgradeOSParameter.withTargetOSVersion(targetOSVersion);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        return service.upgradeOS(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> clientResponse = upgradeOSDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active. While the upgrade is in progress, the pool's currentOSVersion reflects the OS version that nodes are upgrading from, and targetOSVersion reflects the OS version that nodes are upgrading to. Once the upgrade is complete, currentOSVersion is updated to reflect the OS version now running on all nodes. This operation can only be invoked on pools created with the cloudServiceConfiguration property.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @param poolUpgradeOSOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void upgradeOS(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) {
-        upgradeOSWithServiceResponseAsync(poolId, targetOSVersion, poolUpgradeOSOptions).toBlocking().single().body();
-    }
-
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active. While the upgrade is in progress, the pool's currentOSVersion reflects the OS version that nodes are upgrading from, and targetOSVersion reflects the OS version that nodes are upgrading to. Once the upgrade is complete, currentOSVersion is updated to reflect the OS version now running on all nodes. This operation can only be invoked on pools created with the cloudServiceConfiguration property.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @param poolUpgradeOSOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(upgradeOSWithServiceResponseAsync(poolId, targetOSVersion, poolUpgradeOSOptions), serviceCallback);
-    }
-
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active. While the upgrade is in progress, the pool's currentOSVersion reflects the OS version that nodes are upgrading from, and targetOSVersion reflects the OS version that nodes are upgrading to. Once the upgrade is complete, currentOSVersion is updated to reflect the OS version now running on all nodes. This operation can only be invoked on pools created with the cloudServiceConfiguration property.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @param poolUpgradeOSOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> upgradeOSAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) {
-        return upgradeOSWithServiceResponseAsync(poolId, targetOSVersion, poolUpgradeOSOptions).map(new Func1<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Upgrades the operating system of the specified pool.
-     * During an upgrade, the Batch service upgrades each compute node in the pool. When a compute node is chosen for upgrade, any tasks running on that node are removed from the node and returned to the queue to be rerun later (or on a different compute node). The node will be unavailable until the upgrade is complete. This operation results in temporarily reduced pool capacity as nodes are taken out of service to be upgraded. Although the Batch service tries to avoid upgrading all compute nodes at the same time, it does not guarantee to do this (particularly on small pools); therefore, the pool may be temporarily unavailable to run tasks. When this operation runs, the pool state changes to upgrading. When all compute nodes have finished upgrading, the pool state returns to active. While the upgrade is in progress, the pool's currentOSVersion reflects the OS version that nodes are upgrading from, and targetOSVersion reflects the OS version that nodes are upgrading to. Once the upgrade is complete, currentOSVersion is updated to reflect the OS version now running on all nodes. This operation can only be invoked on pools created with the cloudServiceConfiguration property.
-     *
-     * @param poolId The ID of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @param poolUpgradeOSOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> upgradeOSWithServiceResponseAsync(String poolId, String targetOSVersion, PoolUpgradeOSOptions poolUpgradeOSOptions) {
-        if (poolId == null) {
-            throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        if (targetOSVersion == null) {
-            throw new IllegalArgumentException("Parameter targetOSVersion is required and cannot be null.");
-        }
-        Validator.validate(poolUpgradeOSOptions);
-        Integer timeout = null;
-        if (poolUpgradeOSOptions != null) {
-            timeout = poolUpgradeOSOptions.timeout();
-        }
-        UUID clientRequestId = null;
-        if (poolUpgradeOSOptions != null) {
-            clientRequestId = poolUpgradeOSOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (poolUpgradeOSOptions != null) {
-            returnClientRequestId = poolUpgradeOSOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (poolUpgradeOSOptions != null) {
-            ocpDate = poolUpgradeOSOptions.ocpDate();
-        }
-        String ifMatch = null;
-        if (poolUpgradeOSOptions != null) {
-            ifMatch = poolUpgradeOSOptions.ifMatch();
-        }
-        String ifNoneMatch = null;
-        if (poolUpgradeOSOptions != null) {
-            ifNoneMatch = poolUpgradeOSOptions.ifNoneMatch();
-        }
-        DateTime ifModifiedSince = null;
-        if (poolUpgradeOSOptions != null) {
-            ifModifiedSince = poolUpgradeOSOptions.ifModifiedSince();
-        }
-        DateTime ifUnmodifiedSince = null;
-        if (poolUpgradeOSOptions != null) {
-            ifUnmodifiedSince = poolUpgradeOSOptions.ifUnmodifiedSince();
-        }
-        PoolUpgradeOSParameter poolUpgradeOSParameter = new PoolUpgradeOSParameter();
-        poolUpgradeOSParameter.withTargetOSVersion(targetOSVersion);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        DateTimeRfc1123 ifModifiedSinceConverted = null;
-        if (ifModifiedSince != null) {
-            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
-        }
-        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        if (ifUnmodifiedSince != null) {
-            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
-        }
-        return service.upgradeOS(poolId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, poolUpgradeOSParameter, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> clientResponse = upgradeOSDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponseWithHeaders<Void, PoolUpgradeOSHeaders> upgradeOSDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, BatchErrorException>newInstance(this.client.serializerAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .registerError(BatchErrorException.class)
-                .buildWithHeaders(response, PoolUpgradeOSHeaders.class);
     }
 
     /**
@@ -3584,6 +3451,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> removeNodesWithServiceResponseAsync(String poolId, NodeRemoveParameter nodeRemoveParameter) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3603,6 +3473,7 @@ public class PoolsImpl implements Pools {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -3615,7 +3486,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> call(Response<ResponseBody> response) {
@@ -3689,6 +3560,9 @@ public class PoolsImpl implements Pools {
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> removeNodesWithServiceResponseAsync(String poolId, NodeRemoveParameter nodeRemoveParameter, PoolRemoveNodesOptions poolRemoveNodesOptions) {
+        if (this.client.batchUrl() == null) {
+            throw new IllegalArgumentException("Parameter this.client.batchUrl() is required and cannot be null.");
+        }
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -3732,6 +3606,7 @@ public class PoolsImpl implements Pools {
         if (poolRemoveNodesOptions != null) {
             ifUnmodifiedSince = poolRemoveNodesOptions.ifUnmodifiedSince();
         }
+        String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
@@ -3744,7 +3619,7 @@ public class PoolsImpl implements Pools {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
+        return service.removeNodes(poolId, nodeRemoveParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, PoolRemoveNodesHeaders>> call(Response<ResponseBody> response) {
@@ -3972,8 +3847,8 @@ public class PoolsImpl implements Pools {
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals. If you do not specify a $filter clause including a startTime or endTime these filters default to the start and end times of the last aggregation interval currently available; that is, only the last aggregation interval is returned.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param poolListUsageMetricsNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -4217,8 +4092,8 @@ public class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param poolListNextOptions Additional parameters for the operation
+    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

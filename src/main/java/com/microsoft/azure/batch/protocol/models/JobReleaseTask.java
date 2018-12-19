@@ -108,8 +108,8 @@ public class JobReleaseTask {
      * The minimum time to retain the task directory for the Job Release task
      * on the compute node. After this time, the Batch service may delete the
      * task directory and all its contents.
-     * The default is infinite, i.e. the task directory will be retained until
-     * the compute node is removed or reimaged.
+     * The default is 7 days, i.e. the task directory will be retained for 7
+     * days unless the compute node is removed or the job is deleted.
      */
     @JsonProperty(value = "retentionTime")
     private Period retentionTime;
@@ -243,7 +243,7 @@ public class JobReleaseTask {
     }
 
     /**
-     * Get the default is infinite, i.e. the task directory will be retained until the compute node is removed or reimaged.
+     * Get the default is 7 days, i.e. the task directory will be retained for 7 days unless the compute node is removed or the job is deleted.
      *
      * @return the retentionTime value
      */
@@ -252,7 +252,7 @@ public class JobReleaseTask {
     }
 
     /**
-     * Set the default is infinite, i.e. the task directory will be retained until the compute node is removed or reimaged.
+     * Set the default is 7 days, i.e. the task directory will be retained for 7 days unless the compute node is removed or the job is deleted.
      *
      * @param retentionTime the retentionTime value to set
      * @return the JobReleaseTask object itself.

@@ -69,6 +69,12 @@ public class JobSpecification {
     private OnTaskFailure onTaskFailure;
 
     /**
+     * The network configuration for the job.
+     */
+    @JsonProperty(value = "networkConfiguration")
+    private JobNetworkConfiguration networkConfiguration;
+
+    /**
      * The execution constraints for jobs created under this schedule.
      */
     @JsonProperty(value = "constraints")
@@ -231,6 +237,26 @@ public class JobSpecification {
      */
     public JobSpecification withOnTaskFailure(OnTaskFailure onTaskFailure) {
         this.onTaskFailure = onTaskFailure;
+        return this;
+    }
+
+    /**
+     * Get the networkConfiguration value.
+     *
+     * @return the networkConfiguration value
+     */
+    public JobNetworkConfiguration networkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set the networkConfiguration value.
+     *
+     * @param networkConfiguration the networkConfiguration value to set
+     * @return the JobSpecification object itself.
+     */
+    public JobSpecification withNetworkConfiguration(JobNetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
         return this;
     }
 

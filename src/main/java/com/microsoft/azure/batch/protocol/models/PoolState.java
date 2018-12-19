@@ -19,10 +19,7 @@ public enum PoolState {
     ACTIVE("active"),
 
     /** The user has requested that the pool be deleted, but the delete operation has not yet completed. */
-    DELETING("deleting"),
-
-    /** The user has requested that the operating system of the pool's nodes be upgraded, but the upgrade operation has not yet completed (that is, some nodes in the pool have not yet been upgraded). While upgrading, the pool may be able to run tasks (with reduced capacity) but this is not guaranteed. */
-    UPGRADING("upgrading");
+    DELETING("deleting");
 
     /** The actual serialized value for a PoolState instance. */
     private String value;

@@ -57,7 +57,7 @@ public class ComputeNode {
     private DateTime stateTransitionTime;
 
     /**
-     * The time at which the compute node was started.
+     * The last time at which the compute node was started.
      * This property may not be present if the node state is unusable.
      */
     @JsonProperty(value = "lastBootTime")
@@ -65,6 +65,9 @@ public class ComputeNode {
 
     /**
      * The time at which this compute node was allocated to the pool.
+     * This is the time when the node was initially allocated and doesn't
+     * change once set. It is not updated when the node is service healed or
+     * preempted.
      */
     @JsonProperty(value = "allocationTime")
     private DateTime allocationTime;
@@ -306,7 +309,7 @@ public class ComputeNode {
     }
 
     /**
-     * Get the allocationTime value.
+     * Get this is the time when the node was initially allocated and doesn't change once set. It is not updated when the node is service healed or preempted.
      *
      * @return the allocationTime value
      */
@@ -315,7 +318,7 @@ public class ComputeNode {
     }
 
     /**
-     * Set the allocationTime value.
+     * Set this is the time when the node was initially allocated and doesn't change once set. It is not updated when the node is service healed or preempted.
      *
      * @param allocationTime the allocationTime value to set
      * @return the ComputeNode object itself.

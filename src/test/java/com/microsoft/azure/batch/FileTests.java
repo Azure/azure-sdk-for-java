@@ -55,7 +55,6 @@ public class FileTests extends BatchTestBase {
             PoolInformation poolInfo = new PoolInformation();
             poolInfo.withPoolId(livePool.id());
             batchClient.jobOperations().createJob(jobId, poolInfo);
-
             TaskAddParameter taskToAdd = new TaskAddParameter();
             taskToAdd.withId(taskId)
                     .withCommandLine("cmd /c echo hello");

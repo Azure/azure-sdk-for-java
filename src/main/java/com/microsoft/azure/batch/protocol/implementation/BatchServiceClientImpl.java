@@ -50,6 +50,29 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
         return this.apiVersion;
     }
 
+    /** The base URL for all Azure Batch service requests. */
+    private String batchUrl;
+
+    /**
+     * Gets The base URL for all Azure Batch service requests.
+     *
+     * @return the batchUrl value.
+     */
+    public String batchUrl() {
+        return this.batchUrl;
+    }
+
+    /**
+     * Sets The base URL for all Azure Batch service requests.
+     *
+     * @param batchUrl the batchUrl value.
+     * @return the service client itself
+     */
+    public BatchServiceClientImpl withBatchUrl(String batchUrl) {
+        this.batchUrl = batchUrl;
+        return this;
+    }
+
     /** The preferred language for the response. */
     private String acceptLanguage;
 
@@ -242,7 +265,7 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
      * @param credentials the management credentials for Azure
      */
     public BatchServiceClientImpl(ServiceClientCredentials credentials) {
-        this("https://batch.core.windows.net", credentials);
+        this("https://{batchUrl}", credentials);
     }
 
     /**
@@ -251,7 +274,7 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public BatchServiceClientImpl(String baseUrl, ServiceClientCredentials credentials) {
+    private BatchServiceClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
@@ -267,7 +290,7 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
     }
 
     protected void initialize() {
-        this.apiVersion = "2018-08-01.7.0";
+        this.apiVersion = "2018-12-01.8.0";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -290,6 +313,6 @@ public class BatchServiceClientImpl extends AzureServiceClient implements BatchS
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "BatchServiceClient", "2018-08-01.7.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "BatchServiceClient", "2018-12-01.8.0");
     }
 }

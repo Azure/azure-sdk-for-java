@@ -59,7 +59,7 @@ public class BatchClient {
                 }
             })
             .build();
-        this.protocolLayer = new BatchServiceClientImpl(restClient);
+        this.protocolLayer = new BatchServiceClientImpl(restClient).withBatchUrl(credentials.baseUrl());
         this.customBehaviors = new LinkedList<>();
         this.customBehaviors.add(new ClientRequestIdInterceptor());
         this.certificateOperations = new CertificateOperations(this, customBehaviors());
