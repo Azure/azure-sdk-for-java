@@ -4,8 +4,11 @@
  */
 package com.microsoft.azure.servicebus.amqp;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.net.ssl.SSLContext;
 
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.TransportType;
@@ -18,6 +21,7 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Sasl;
 import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.SslPeerDetails;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.apache.qpid.proton.reactor.Handshaker;
@@ -44,7 +48,7 @@ public class ConnectionHandler extends BaseHandler
 	{
 		switch(transportType) {
 			case AMQP_WEB_SOCKETS:
-				if (ProxyConnectionHandler.shouldUseProxy( ((MessagingFactory)messagingFactory).getHostName()  )) {
+				if (ProxyConnectionHandler.shouldUseProxy(messagingFactory.getHostName())) {
 					return new ProxyConnectionHandler(messagingFactory);
 				} else {
 					return new WebSocketConnectionHandler(messagingFactory);
@@ -59,7 +63,7 @@ public class ConnectionHandler extends BaseHandler
 	public void onConnectionInit(Event event)
 	{
 		final Connection connection = event.getConnection();
-		final String hostName = new StringBuilder(((MessagingFactory)messagingFactory).getHostName())
+		final String hostName = new StringBuilder(messagingFactory.getHostName())
 									.append(":")
 									.append(String.valueOf(this.getProtocolPort()))
 									.toString();
@@ -83,13 +87,28 @@ public class ConnectionHandler extends BaseHandler
 
 	public void addTransportLayers(final Event event, final TransportInternal transport)
 	{
-		final SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
-		transport.ssl(domain);
+		SslDomain domain = Proton.sslDomain();
+		domain.init(SslDomain.Mode.CLIENT);
+		
+		try {
+			// Default SSL context will have the root certificate from azure in truststore anyway
+			SSLContext defaultContext = SSLContext.getDefault();
+			StrictTLSContextSpi strictTlsContextSpi = new StrictTLSContextSpi(defaultContext);
+			SSLContext strictTlsContext = new StrictTLSContext(strictTlsContextSpi, defaultContext.getProvider(), defaultContext.getProtocol());
+			domain.setSslContext(strictTlsContext);
+			domain.setPeerAuthentication(SslDomain.VerifyMode.VERIFY_PEER_NAME);
+			SslPeerDetails peerDetails = Proton.sslPeerDetails(this.getOutboundSocketHostName(), this.getOutboundSocketPort());
+			transport.ssl(domain, peerDetails);
+		} catch (NoSuchAlgorithmException e) {
+			// Should never happen
+			TRACE_LOGGER.error("Default SSL algorithm not found in JRE. Please check your JRE setup.", e);
+//			this.messagingFactory.onConnectionError(new ErrorCondition(AmqpErrorCode.InternalError, e.getMessage()));
+		}
 	}
 
 	protected void notifyTransportErrors(final Event event) { /* no-op */ }
 
-	public String getOutboundSocketHostName() { return ((MessagingFactory)messagingFactory).getHostName(); }
+	public String getOutboundSocketHostName() { return messagingFactory.getHostName(); }
 
 	public int getOutboundSocketPort() { return this.getProtocolPort(); }
 
@@ -106,11 +125,10 @@ public class ConnectionHandler extends BaseHandler
 	@Override
 	public void onConnectionBound(Event event)
 	{
-	    TRACE_LOGGER.debug("onConnectionBound: hostname:{}", event.getConnection().getHostname());
+		TRACE_LOGGER.debug("onConnectionBound: hostname:{}", event.getConnection().getHostname());
 		Transport transport = event.getTransport();
-
+		
 		this.addTransportLayers(event, (TransportInternal) transport);
-
 		Sasl sasl = transport.sasl();
 		sasl.setMechanisms("ANONYMOUS");
 	}
@@ -180,14 +198,4 @@ public class ConnectionHandler extends BaseHandler
 	        connection.free();
 	    }
     }
-
-	private static SslDomain makeDomain(SslDomain.Mode mode)
-	{
-		SslDomain domain = Proton.sslDomain();
-		domain.init(mode);
-
-		// TODO: VERIFY_PEER_NAME support
-		domain.setPeerAuthentication(SslDomain.VerifyMode.ANONYMOUS_PEER);
-		return domain;
-	}
 }

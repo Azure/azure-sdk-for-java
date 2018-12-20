@@ -7,7 +7,7 @@ public class SubscriptionClientSessionTests extends ClientSessionTests{
 
     @Override
     public boolean isEntityQueue() {
-        return true;
+        return false;
     }
 
     @Override

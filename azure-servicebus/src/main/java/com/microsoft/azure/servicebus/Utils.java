@@ -3,6 +3,8 @@
 
 package com.microsoft.azure.servicebus;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -40,5 +42,45 @@ public final class Utils {
     static void assertNonNull(String argumentName, Object argument) {
         if (argument == null)
             throw new IllegalArgumentException("Argument '" + argumentName + "' is null.");
+    }
+    
+    static MessageBody fromSequence(List<Object> sequence)
+    {
+    	List<List<Object>> sequenceData = new ArrayList<>();
+    	sequenceData.add(sequence);
+    	return MessageBody.fromSequenceData(sequenceData);
+    }
+    
+    static MessageBody fromBinay(byte[] binary)
+    {
+    	List<byte[]> binaryData = new ArrayList<>();
+    	binaryData.add(binary);
+    	return MessageBody.fromBinaryData(binaryData);
+    }
+    
+    static byte[] getDataFromMessageBody(MessageBody messageBody)
+    {
+    	List<byte[]> binaryData = messageBody.getBinaryData();
+		if(binaryData == null || binaryData.size() == 0)
+		{
+			return null;
+		}
+		else
+		{
+			return binaryData.get(0);
+		}
+    }
+    
+    static List<Object> getSequenceFromMessageBody(MessageBody messageBody)
+    {
+    	List<List<Object>> sequenceData = messageBody.getSequenceData();
+		if(sequenceData == null || sequenceData.size() == 0)
+		{
+			return null;
+		}
+		else
+		{
+			return sequenceData.get(0);
+		}
     }
 }

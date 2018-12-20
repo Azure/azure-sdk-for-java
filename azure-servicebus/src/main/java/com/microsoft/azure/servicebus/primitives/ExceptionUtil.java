@@ -83,7 +83,15 @@ public final class ExceptionUtil
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.AmqpLinkDetachForced)
 		{
-			return new ServiceBusException(false, new AmqpException(errorCondition));
+			return new ServiceBusException(true, new AmqpException(errorCondition));
+		}
+		else if (errorCondition.getCondition() == AmqpErrorCode.ConnectionForced)
+		{
+			return new ServiceBusException(true, new AmqpException(errorCondition));
+		}
+		else if (errorCondition.getCondition() == AmqpErrorCode.FramingError)
+		{
+			return new ServiceBusException(true, new AmqpException(errorCondition));
 		}
 		else if (errorCondition.getCondition() == AmqpErrorCode.ResourceLimitExceeded)
 		{

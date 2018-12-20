@@ -90,7 +90,7 @@ public class MessageAndSessionPumpTests {
 			sender.send(new Message("AMQPMessage"));
 		}
 		boolean autoComplete = true;
-		int sleepMinutes = 1; // This should be less than message lock duration of the queue or subscription
+		int sleepMinutes = 1; // This should be more than message lock duration of the queue or subscription
 		CountingMessageHandler messageHandler = new CountingMessageHandler(messagePump, !autoComplete, numMessages, false, Duration.ofMinutes(sleepMinutes));		
 		messagePump.registerMessageHandler(messageHandler, new MessageHandlerOptions(numMessages, autoComplete, Duration.ofMinutes(10)), EXECUTOR_SERVICE);
 		int waitMinutes = 2 * sleepMinutes;
@@ -309,7 +309,8 @@ public class MessageAndSessionPumpTests {
 		
 		CountingMessageHandler(IMessageAndSessionPump messagePump, boolean completeMessages, int messageCount, boolean firstThrowException)
 		{
-			this(messagePump, completeMessages, messageCount, firstThrowException, Duration.ZERO);
+			// Let's make every onMessage sleep for sometime so we can reliably count max concurrent threads
+			this(messagePump, completeMessages, messageCount, firstThrowException, Duration.ofSeconds(2));
 		}
 		
 		CountingMessageHandler(IMessageAndSessionPump messagePump, boolean completeMessages, int messageCount, boolean firstThrowException, Duration sleepDuration)
@@ -391,7 +392,8 @@ public class MessageAndSessionPumpTests {
 		
 		CountingSessionHandler(IMessageAndSessionPump sessionPump, boolean completeMessages, int totalMessageCount, boolean firstThrowException)
 		{
-			this(sessionPump, completeMessages, totalMessageCount, firstThrowException, Duration.ZERO);
+			// Let's make every onMessage sleep for sometime so we can reliably count max concurrent threads
+			this(sessionPump, completeMessages, totalMessageCount, firstThrowException, Duration.ofSeconds(2));
 		}
 		
 		CountingSessionHandler(IMessageAndSessionPump sessionPump, boolean completeMessages, int totalMessageCount, boolean firstThrowException, Duration sleepDuration)

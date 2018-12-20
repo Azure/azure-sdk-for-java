@@ -185,7 +185,7 @@ public class ClientValidationTests
 					}
 				}, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
 
-				Thread.sleep(1000); // Sleep for a second for the exception
+				Thread.sleep(2000); // Sleep for two seconds for the exception
 				Assert.assertTrue("QueueClient created to a subscription which shouldn't be allowed.", unsupportedExceptionOccured.get());
 			} finally {
 				qc.close();
@@ -223,7 +223,7 @@ public class ClientValidationTests
 					}
 				}, MessageAndSessionPumpTests.EXECUTOR_SERVICE);
 
-				Thread.sleep(1000); // Sleep for a second for the exception
+				Thread.sleep(2000); // Sleep for two seconds for the exception
 				Assert.assertTrue("SubscriptionClient created to a queue which shouldn't be allowed.", unsupportedExceptionOccured.get());
 			} finally {
 				sc.close();

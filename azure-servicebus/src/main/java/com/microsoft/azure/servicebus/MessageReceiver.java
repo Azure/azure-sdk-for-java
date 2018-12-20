@@ -651,6 +651,11 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     public CompletableFuture<Collection<Instant>> renewMessageLockBatchAsync(Collection<? extends IMessage> messages) {
         this.ensurePeekLockReceiveMode();
 
+        if(messages == null || messages.size() == 0)
+        {
+        	throw new UnsupportedOperationException("Message collection is null or empty. Locks cannot be renewed.");
+        }
+        
         UUID[] lockTokens = new UUID[messages.size()];
         int messageIndex = 0;
         for (IMessage message : messages) {

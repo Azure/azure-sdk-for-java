@@ -106,17 +106,38 @@ public abstract class SendReceiveTests extends Tests {
 	}
 
 	@Test
-	public void testBasicReceiveAndDelete() throws InterruptedException, ServiceBusException, ExecutionException
-	{
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
-		TestCommons.testBasicReceiveAndDelete(this.sender, this.sessionId, this.receiver);
-	}
+    public void testBasicReceiveAndDeleteWithValueData() throws InterruptedException, ServiceBusException, ExecutionException
+    {
+        this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
+        TestCommons.testBasicReceiveAndDeleteWithValueData(this.sender, this.sessionId, this.receiver);
+    }
+		
+	@Test
+    public void testBasicReceiveAndDeleteWithBinaryData() throws InterruptedException, ServiceBusException, ExecutionException
+    {
+        this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
+        TestCommons.testBasicReceiveAndDeleteWithBinaryData(this.sender, this.sessionId, this.receiver);
+    }
+	
+	@Test
+    public void testBasicReceiveAndDeleteWithLargeBinaryData() throws InterruptedException, ServiceBusException, ExecutionException
+    {
+        this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
+        TestCommons.testBasicReceiveAndDeleteWithLargeBinaryData(this.sender, this.sessionId, this.receiver);
+    }
+	
+	@Test
+    public void testBasicReceiveAndDeleteWithSequenceData() throws InterruptedException, ServiceBusException, ExecutionException
+    {
+        this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
+        TestCommons.testBasicReceiveAndDeleteWithSequenceData(this.sender, this.sessionId, this.receiver);
+    }
 	
 	@Test
 	public void testBasicReceiveBatchAndDelete() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
-		TestCommons.testBasicReceiveBatchAndDelete(this.sender, this.sessionId, this.receiver);
+		TestCommons.testBasicReceiveBatchAndDelete(this.sender, this.sessionId, this.receiver, this.isEntityPartitioned());
 	}
 	
 	@Test
@@ -151,14 +172,14 @@ public abstract class SendReceiveTests extends Tests {
 	public void testBasicReceiveAndRenewLockBatch() throws InterruptedException, ServiceBusException, ExecutionException
 	{		
 		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
-		TestCommons.testBasicReceiveAndRenewLockBatch(this.sender, this.sessionId, this.receiver);
+		TestCommons.testBasicReceiveAndRenewLockBatch(this.sender, this.sessionId, this.receiver, this.isEntityPartitioned());
 	}
 	
 	@Test
 	public void testBasicReceiveBatchAndComplete() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
-		TestCommons.testBasicReceiveBatchAndComplete(this.sender, this.sessionId, this.receiver);
+		TestCommons.testBasicReceiveBatchAndComplete(this.sender, this.sessionId, this.receiver, this.isEntityPartitioned());
 	}
 	
 	@Test
@@ -186,7 +207,7 @@ public abstract class SendReceiveTests extends Tests {
 	public void testPeekMessageBatch() throws InterruptedException, ServiceBusException
 	{
 		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
-		TestCommons.testPeekMessageBatch(this.sender, this.sessionId, this.receiver);
+		TestCommons.testPeekMessageBatch(this.sender, this.sessionId, this.receiver, this.isEntityPartitioned());
 	}
 	
 	@Test

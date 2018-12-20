@@ -75,7 +75,7 @@ public interface IMessage {
      * Gets the content type of this message.
      *
      * Optionally describes the payload of the message, with a descriptor following the format of 
-     * RFC2045, Section 5, for example "application/json".
+     * RFC2045, Section 5, for example "application/json". Note that content type is not same as message body type.
      * 
      * @return content type of this message
      */
@@ -213,7 +213,9 @@ public interface IMessage {
      *
      * @return body of this message
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads">Messages, payloads, and serialization</a>
+     * @deprecated Message body need not just a byte array. Replaced by {@link #getMessageBody()}
      */
+    @Deprecated
     public byte[] getBody();
 
     /**
@@ -221,9 +223,28 @@ public interface IMessage {
      *
      * @param body body of this message
      * @see #getBody()
+     * @deprecated Message body need not just a byte array. Replaced by {@link #setMessageBody(MessageBody)}
      */
+    @Deprecated
     public void setBody(byte[] body);
 
+    /**
+     * Gets the body of this message. Client applications should extract message content based on body type.
+     *
+     * @return body of this message
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads">Messages, payloads, and serialization</a>
+     */
+    public MessageBody getMessageBody();
+
+    /**
+     * Sets the body of this message.
+     *
+     * @param body body of this message
+     * @see #getMessageBody()
+     */
+    public void setMessageBody(MessageBody body);
+	
+    
     /**
      * Gets the map of user application properties of this message. Client 
      * applications can set user properties (headers) on the message using this map.

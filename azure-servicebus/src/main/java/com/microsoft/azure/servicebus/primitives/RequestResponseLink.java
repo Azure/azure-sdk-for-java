@@ -60,6 +60,8 @@ class RequestResponseLink extends ClientEntity{
 	private boolean isRecreateLinksInProgress;
 	private Map<Symbol, Object> additionalProperties;
 	private MessagingEntityType entityType;
+	private boolean isInnerLinksCloseHandled;
+	private int internalLinkGeneration;
 
 	public static CompletableFuture<RequestResponseLink> createAsync(
 			MessagingFactory messagingFactory,
@@ -170,6 +172,7 @@ class RequestResponseLink extends ClientEntity{
 	{
 		super(linkName);
 
+		this.internalLinkGeneration = 1;
 		this.recreateLinksLock = new Object();
 		this.isRecreateLinksInProgress = false;
 		this.underlyingFactory = messagingFactory;
@@ -184,6 +187,7 @@ class RequestResponseLink extends ClientEntity{
 		this.replyTo = UUID.randomUUID().toString();
 		this.createFuture = new CompletableFuture<RequestResponseLink>();
 		this.entityType = entityType;
+		this.isInnerLinksCloseHandled = false;
 	}
 
 	public String getLinkPath()
@@ -200,7 +204,7 @@ class RequestResponseLink extends ClientEntity{
 		else
 		{
 			CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSecurityTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendTokenAndSetRenewTimer(true));
-			CompletableFuture<Void> sasTokenFuture = sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f; TRACE_LOGGER.debug("Set SAS Token renew timer");});
+			CompletableFuture<Void> sasTokenFuture = sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f;});
 
 			if (additionalAudienceURI != null) {
 				CompletableFuture<Void> transferSendTokenFuture = this.underlyingFactory.sendSecurityToken(this.additionalAudienceURI);
@@ -208,6 +212,41 @@ class RequestResponseLink extends ClientEntity{
 			}
 
 			return sasTokenFuture;
+        }
+    }
+	
+	private void onInnerLinksClosed(int linkGeneration, Exception exception)
+	{
+		// Ignore exceptions from last generation links
+		if(this.internalLinkGeneration == linkGeneration)
+		{
+			// This method is called twice once when inner receive link is closed and again when inner send link is closed.
+			// Both of them happen in succession anyway, not concurrently as all these happen on the reactor thread.
+			if(!this.isInnerLinksCloseHandled)
+			{
+				// Set it here and Reset the flag only before recreating inner links
+				this.isInnerLinksCloseHandled = true;
+				this.cancelSASTokenRenewTimer();
+				if(this.pendingRequests.size() > 0)
+				{
+					if(exception != null && exception instanceof ServiceBusException && ((ServiceBusException) exception).getIsTransient())
+					{
+						Duration nextRetryInterval = this.underlyingFactory.getRetryPolicy().getNextRetryInterval(this.getClientId(), exception, this.underlyingFactory.getOperationTimeout());
+						if (nextRetryInterval != null)
+						{
+							Timer.schedule(() -> {RequestResponseLink.this.ensureUniqueLinkRecreation();}, nextRetryInterval, TimerType.OneTimeRun);
+						}
+						else
+						{
+							this.completeAllPendingRequestsWithException(exception);
+						}
+					}
+					else
+					{
+						this.completeAllPendingRequestsWithException(exception);
+					}
+				}
+			}
 		}
 	}
 
@@ -222,6 +261,7 @@ class RequestResponseLink extends ClientEntity{
 
 	private void createInternalLinks()
 	{
+		this.isInnerLinksCloseHandled = false;
 		Map<Symbol, Object> commonLinkProperties = new HashMap<>();
 		// ServiceBus expects timeout to be of type unsignedint
 		commonLinkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis()));
@@ -257,9 +297,6 @@ class RequestResponseLink extends ClientEntity{
 		sender.setProperties(commonLinkProperties);
 		SendLinkHandler sendLinkHandler = new SendLinkHandler(this.amqpSender);
 		BaseHandler.setHandler(sender, sendLinkHandler);
-		this.amqpSender.setSendLink(sender);
-		TRACE_LOGGER.debug("RequestReponseLink - opening send link to {}", this.linkPath);
-		sender.open();
 
 		// Create receive link
 		session = connection.session();
@@ -286,9 +323,40 @@ class RequestResponseLink extends ClientEntity{
 
 		final ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(this.amqpReceiver);
 		BaseHandler.setHandler(receiver, receiveLinkHandler);
-		this.amqpReceiver.setReceiveLink(receiver);
+		
+		this.amqpSender.setLinks(sender, receiver);
+		this.amqpReceiver.setLinks(sender, receiver);
+		
+		TRACE_LOGGER.debug("RequestReponseLink - opening send link to {}", this.linkPath);
+		sender.open();
+		this.underlyingFactory.registerForConnectionError(sender);
 		TRACE_LOGGER.debug("RequestReponseLink - opening receive link to {}", this.linkPath);
 		receiver.open();
+		this.underlyingFactory.registerForConnectionError(receiver);
+	}
+	
+	private void ensureUniqueLinkRecreation()
+	{
+		synchronized (this.recreateLinksLock) {
+            if(!this.isRecreateLinksInProgress)
+            {
+                this.isRecreateLinksInProgress = true;
+                this.recreateInternalLinks().handleAsync((v, recreationEx) ->
+                {
+                    if(recreationEx != null)
+                    {
+                        TRACE_LOGGER.warn("Recreating internal links of reqestresponselink '{}' failed.", this.linkPath, ExceptionUtil.extractAsyncCompletionCause(recreationEx));
+                    }
+                    
+                    synchronized (this.recreateLinksLock)
+                    {
+                        this.isRecreateLinksInProgress = false;
+                    }
+                    
+                    return null;
+                }, MessagingFactory.INTERNAL_THREAD_POOL);
+            }
+        }
 	}
 
 	private CompletableFuture<Void> recreateInternalLinks()
@@ -299,6 +367,7 @@ class RequestResponseLink extends ClientEntity{
 		this.cancelSASTokenRenewTimer();
 
 		// Create new internal sender and receiver objects, as old ones are closed
+		this.internalLinkGeneration++;
 		this.amqpSender = new InternalSender(this.getClientId() + ":internalSender", this, this.amqpSender);
 		this.amqpReceiver = new InternalReceiver(this.getClientId() + ":interalReceiver", this);
 		CompletableFuture<Void> recreateInternalLinksFuture = new CompletableFuture<Void>();
@@ -337,6 +406,7 @@ class RequestResponseLink extends ClientEntity{
 			if(ex == null)
 			{
 				TRACE_LOGGER.info("Recreated internal links to {}", this.linkPath);
+                this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
 				recreateInternalLinksFuture.complete(null);
 			}
 			else
@@ -384,32 +454,7 @@ class RequestResponseLink extends ClientEntity{
 	public CompletableFuture<Message> requestAysnc(Message requestMessage, TransactionContext transaction, Duration timeout)
 	{
 		this.throwIfClosed(null);
-		// Check and recreate links if necessary
-		if(!((this.amqpSender.sendLink.getLocalState() == EndpointState.ACTIVE && this.amqpSender.sendLink.getRemoteState() == EndpointState.ACTIVE)
-				&& (this.amqpReceiver.receiveLink.getLocalState() == EndpointState.ACTIVE && this.amqpReceiver.receiveLink.getRemoteState() == EndpointState.ACTIVE)))
-		{
-			synchronized (this.recreateLinksLock) {
-				if(!this.isRecreateLinksInProgress)
-				{
-					this.isRecreateLinksInProgress = true;
-					this.recreateInternalLinks().handleAsync((v, recreationEx) ->
-					{
-						if(recreationEx != null)
-						{
-							TRACE_LOGGER.warn("Recreating internal links of reqestresponselink '{}' failed.", this.linkPath, ExceptionUtil.extractAsyncCompletionCause(recreationEx));
-						}
-
-						synchronized (this.recreateLinksLock)
-						{
-							this.isRecreateLinksInProgress = false;
-						}
-
-						return null;
-                    }, MessagingFactory.INTERNAL_THREAD_POOL);
-				}
-			}
-		}
-
+		
 		CompletableFuture<Message> responseFuture = new CompletableFuture<Message>();
 		RequestResponseWorkItem workItem = new RequestResponseWorkItem(requestMessage, transaction, responseFuture, timeout);
 		String requestId = "request:" +  this.requestCounter.incrementAndGet();
@@ -419,6 +464,14 @@ class RequestResponseLink extends ClientEntity{
 		workItem.setTimeoutTask(this.scheduleRequestTimeout(requestId, timeout));
 		TRACE_LOGGER.debug("Sending request with id:{}", requestId);
 		this.amqpSender.sendRequest(requestId, false);
+		
+		// Check and recreate links if necessary
+        if(!((this.amqpSender.sendLink.getLocalState() == EndpointState.ACTIVE && this.amqpSender.sendLink.getRemoteState() == EndpointState.ACTIVE)
+                && (this.amqpReceiver.receiveLink.getLocalState() == EndpointState.ACTIVE && this.amqpReceiver.receiveLink.getRemoteState() == EndpointState.ACTIVE)))
+        {
+            this.ensureUniqueLinkRecreation();
+        }
+        
 		return responseFuture;
 	}
 
@@ -544,12 +597,15 @@ class RequestResponseLink extends ClientEntity{
 	{
 		private RequestResponseLink parent;
 		private Receiver receiveLink;
+		private Sender matchingSendLink;
 		private CompletableFuture<Void> openFuture;
 		private CompletableFuture<Void> closeFuture;
+		private int linkGeneration;
 
 		protected InternalReceiver(String clientId, RequestResponseLink parent) {
 			super(clientId);
 			this.parent = parent;
+			this.linkGeneration = parent.internalLinkGeneration;// Read it in the constructor as it may change later
 			this.openFuture = new CompletableFuture<Void>();
 			this.closeFuture = new CompletableFuture<Void>();
 		}
@@ -603,7 +659,6 @@ class RequestResponseLink extends ClientEntity{
 			if(completionException == null)
 			{
 				TRACE_LOGGER.debug("Opened internal receive link of requestresponselink to {}", parent.linkPath);
-				this.parent.underlyingFactory.registerForConnectionError(this.receiveLink);
 				AsyncUtil.completeFuture(this.openFuture, null);
 
 				// Send unlimited credit
@@ -633,59 +688,30 @@ class RequestResponseLink extends ClientEntity{
 					AsyncUtil.completeFutureExceptionally(this.closeFuture, exception);
 				}
 			}
-
-			TRACE_LOGGER.warn("Internal receive link '{}' of requestresponselink to '{}' encountered error.", this.receiveLink.getName(), this.parent.linkPath, exception);
-			this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
-			if(this.parent.amqpSender.sendLink != null)
+			else
 			{
-				this.parent.amqpSender.sendLink.close();
-				this.parent.underlyingFactory.deregisterForConnectionError(this.parent.amqpSender.sendLink);
+				TRACE_LOGGER.warn("Internal receive link '{}' of requestresponselink to '{}' encountered error.", this.receiveLink.getName(), this.parent.linkPath, exception);
+				this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
+				this.matchingSendLink.close();
+                this.parent.underlyingFactory.deregisterForConnectionError(this.matchingSendLink);
+				this.parent.onInnerLinksClosed(this.linkGeneration, exception);
 			}
-			this.parent.cancelSASTokenRenewTimer();
-			this.parent.completeAllPendingRequestsWithException(exception);
 		}
 
 		@Override
 		public void onClose(ErrorCondition condition) {
-			if(this.getIsClosingOrClosed())
+			if(condition == null || condition.getCondition() == null)
 			{
-				if(!this.closeFuture.isDone())
+				if(this.getIsClosingOrClosed() && !this.closeFuture.isDone())
 				{
-					if(condition == null || condition.getCondition() == null)
-					{
-						TRACE_LOGGER.info("Closed internal receive link of requestresponselink to {}", parent.linkPath);
-						AsyncUtil.completeFuture(this.closeFuture, null);
-					}
-					else
-					{
-						Exception exception = ExceptionUtil.toException(condition);
-						TRACE_LOGGER.error("Closing internal receive link '{}' of requestresponselink to {} failed.", this.receiveLink.getName(), this.parent.linkPath, exception);
-						AsyncUtil.completeFutureExceptionally(this.closeFuture, exception);
-					}
+					TRACE_LOGGER.info("Closed internal receive link of requestresponselink to {}", parent.linkPath);
+					AsyncUtil.completeFuture(this.closeFuture, null);
 				}
 			}
 			else
 			{
-				if(condition != null)
-				{
-					Exception exception = ExceptionUtil.toException(condition);
-					if(!this.openFuture.isDone())
-					{
-						this.onOpenComplete(exception);
-					}
-					else
-					{
-						TRACE_LOGGER.warn("Internal receive link '{}' of requestresponselink to '{}' closed with error.", this.receiveLink.getName(), this.parent.linkPath, exception);
-						this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
-						if(this.parent.amqpSender.sendLink != null)
-						{
-							this.parent.amqpSender.sendLink.close();
-							this.parent.underlyingFactory.deregisterForConnectionError(this.parent.amqpSender.sendLink);
-						}
-						this.parent.cancelSASTokenRenewTimer();
-						this.parent.completeAllPendingRequestsWithException(exception);
-					}
-				}
+				Exception exception = ExceptionUtil.toException(condition);
+				this.onError(exception);
 			}
 		}
 
@@ -724,15 +750,17 @@ class RequestResponseLink extends ClientEntity{
 				}
 			});
 		}
-
-		public void setReceiveLink(Receiver receiveLink) {
+		
+		public void setLinks(Sender sendLink, Receiver receiveLink) {			
 			this.receiveLink = receiveLink;
+			this.matchingSendLink = sendLink;
 		}
 	}
 
 	private class InternalSender extends ClientEntity implements IAmqpSender
 	{
 		private Sender sendLink;
+		private Receiver matchingReceiveLink;
 		private RequestResponseLink parent;
 		private CompletableFuture<Void> openFuture;
 		private CompletableFuture<Void> closeFuture;
@@ -742,10 +770,12 @@ class RequestResponseLink extends ClientEntity{
 		private Object pendingSendsSyncLock;
 		private boolean isSendLoopRunning;
 		private int maxMessageSize;
+		private int linkGeneration;
 
 		protected InternalSender(String clientId, RequestResponseLink parent, InternalSender senderToBeCopied) {
 			super(clientId);
 			this.parent = parent;
+			this.linkGeneration = parent.internalLinkGeneration;// Read it in the constructor as it may change later
 			this.availableCredit = new AtomicInteger(0);
 			this.pendingSendsSyncLock = new Object();
 			this.isSendLoopRunning = false;
@@ -813,7 +843,6 @@ class RequestResponseLink extends ClientEntity{
 			if(completionException == null)
 			{
 				TRACE_LOGGER.debug("Opened internal send link of requestresponselink to {}", parent.linkPath);
-				this.parent.underlyingFactory.registerForConnectionError(this.sendLink);
 				this.maxMessageSize = Util.getMaxMessageSizeFromLink(this.sendLink);
 				AsyncUtil.completeFuture(this.openFuture, null);
 				this.runSendLoop();
@@ -842,61 +871,30 @@ class RequestResponseLink extends ClientEntity{
 					AsyncUtil.completeFutureExceptionally(this.closeFuture, exception);
 				}
 			}
-
-			TRACE_LOGGER.warn("Internal send link '{}' of requestresponselink to '{}' encountered error.", this.sendLink.getName(), this.parent.linkPath, exception);
-			this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
-			if(this.parent.amqpReceiver.receiveLink != null)
+			else
 			{
-				this.parent.amqpReceiver.receiveLink.close();
-				this.parent.underlyingFactory.deregisterForConnectionError(this.parent.amqpReceiver.receiveLink);
+				TRACE_LOGGER.warn("Internal send link '{}' of requestresponselink to '{}' encountered error.", this.sendLink.getName(), this.parent.linkPath, exception);
+				this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
+				this.matchingReceiveLink.close();
+                this.parent.underlyingFactory.deregisterForConnectionError(this.matchingReceiveLink);
+	            this.parent.onInnerLinksClosed(this.linkGeneration, exception);
 			}
-			this.parent.cancelSASTokenRenewTimer();
-			this.parent.completeAllPendingRequestsWithException(exception);
 		}
 
 		@Override
 		public void onClose(ErrorCondition condition) {
-			if(this.getIsClosingOrClosed())
+			if(condition == null || condition.getCondition() == null)
 			{
-				if(!this.closeFuture.isDone())
+				if(!this.closeFuture.isDone() && !this.closeFuture.isDone())
 				{
-					if(condition == null || condition.getCondition() == null)
-					{
-						TRACE_LOGGER.info("Closed internal send link of requestresponselink to {}", this.parent.linkPath);
-						AsyncUtil.completeFuture(this.closeFuture, null);
-					}
-					else
-					{
-						Exception exception = ExceptionUtil.toException(condition);
-						TRACE_LOGGER.error("Closing internal send link '{}' of requestresponselink to {} failed.", this.sendLink.getName(), this.parent.linkPath, exception);
-						AsyncUtil.completeFutureExceptionally(this.closeFuture, exception);
-					}
+					TRACE_LOGGER.info("Closed internal send link of requestresponselink to {}", this.parent.linkPath);
+					AsyncUtil.completeFuture(this.closeFuture, null);
 				}
 			}
 			else
 			{
-				if(condition != null)
-				{
-					Exception exception = ExceptionUtil.toException(condition);
-					if(!this.openFuture.isDone())
-					{
-						this.onOpenComplete(exception);
-					}
-					else
-					{
-						TRACE_LOGGER.warn("Internal send link '{}' of requestresponselink to '{}' closed with error.", this.sendLink.getName(), this.parent.linkPath, exception);
-						this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
-
-						if(this.parent.amqpReceiver.receiveLink != null)
-						{
-							this.parent.amqpReceiver.receiveLink.close();
-							this.parent.underlyingFactory.deregisterForConnectionError(this.parent.amqpReceiver.receiveLink);
-						}
-
-						this.parent.cancelSASTokenRenewTimer();
-						this.parent.completeAllPendingRequestsWithException(exception);
-					}
-				}
+				Exception exception = ExceptionUtil.toException(condition);
+				this.onError(exception);
 			}
 		}
 
@@ -960,9 +958,10 @@ class RequestResponseLink extends ClientEntity{
 		public void onSendComplete(Delivery delivery) {
 			// Doesn't happen as sends are settled on send
 		}
-
-		public void setSendLink(Sender sendLink) {
+		
+		public void setLinks(Sender sendLink, Receiver receiveLink) {			
 			this.sendLink = sendLink;
+			this.matchingReceiveLink = receiveLink;
 			this.availableCredit = new AtomicInteger(0);
 		}
 
@@ -1043,7 +1042,7 @@ class RequestResponseLink extends ClientEntity{
 					else
 					{
 						TRACE_LOGGER.warn("Request with id:{} not found in the requestresponse link.", requestIdToBeSent);
-					}
+                    }
 				}
 			}
 			finally

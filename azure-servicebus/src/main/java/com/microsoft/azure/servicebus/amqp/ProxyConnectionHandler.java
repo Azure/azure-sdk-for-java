@@ -91,7 +91,7 @@ public class ProxyConnectionHandler extends WebSocketConnectionHandler {
 
         final IOException ioException = reconstructIOException(errorCondition);
         proxySelector.connectFailed(
-                createURIFromHostNamePort(((MessagingFactory)this.getMessagingFactory()).getHostName(), this.getProtocolPort()),
+                createURIFromHostNamePort(this.getMessagingFactory().getHostName(), this.getProtocolPort()),
                 new InetSocketAddress(hostNameParts[0], port),
                 ioException
         );
@@ -144,7 +144,7 @@ public class ProxyConnectionHandler extends WebSocketConnectionHandler {
 
     private InetSocketAddress getProxyAddress() {
         final URI serviceUri = createURIFromHostNamePort(
-                ((MessagingFactory)this.getMessagingFactory()).getHostName(),
+                this.getMessagingFactory().getHostName(),
                 this.getProtocolPort());
         final ProxySelector proxySelector = ProxySelector.getDefault();
         if (proxySelector == null) {

@@ -34,7 +34,7 @@ interface IMessageAndSessionPump {
      * IMessageHandler methods are executed on the passed executor service.
      *
      * @param handler The {@link IMessageHandler} instance
-     * @param executorService ExecutorService which is used to execute {@link IMessageHandler} methods. If there are 
+     * @param executorService ExecutorService which is used to execute {@link IMessageHandler} methods.
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if register failed
      */

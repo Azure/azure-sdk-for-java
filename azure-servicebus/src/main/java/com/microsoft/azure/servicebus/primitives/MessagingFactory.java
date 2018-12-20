@@ -70,16 +70,15 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	private RequestResponseLink cbsLink;
 	private int cbsLinkCreationAttempts = 0;
 	private Throwable lastCBSLinkCreationException = null;
+	private URI namespaceEndpointUri;
 	
 	private final ClientSettings clientSettings;
-	private final URI namespaceEndpointUri;
 
 	private MessagingFactory(URI namespaceEndpointUri, ClientSettings clientSettings)
 	{
 	    super("MessagingFactory".concat(StringUtil.getShortRandomString()));
-	    this.namespaceEndpointUri = namespaceEndpointUri;
 	    this.clientSettings = clientSettings;
-	    
+	    this.namespaceEndpointUri = namespaceEndpointUri;
 	    this.hostName = namespaceEndpointUri.getHost();
 	    this.registeredLinks = new LinkedList<Link>();
         this.connetionCloseFuture = new CompletableFuture<Void>();
@@ -181,6 +180,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
         });
     }
 
+	@Override
 	public String getHostName()
 	{
 		return this.hostName;
@@ -222,7 +222,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	{
 		if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED)
 		{
-		    TRACE_LOGGER.info("Creating connection to host '{}:{}'", hostName, ClientConstants.AMQPS_PORT);
+		    TRACE_LOGGER.info("Creating connection to host '{}:{}'", this.connectionHandler.getOutboundSocketHostName(), this.connectionHandler.getOutboundSocketPort());
             this.connection = this.getReactor().connectionToHost(
                     this.connectionHandler.getOutboundSocketHostName(),
                     this.connectionHandler.getOutboundSocketPort(),
@@ -655,41 +655,73 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 
 	CompletableFuture<ScheduledFuture<?>> sendSecurityTokenAndSetRenewTimer(String sasTokenAudienceURI, boolean retryOnFailure, Runnable validityRenewer)
     {
+		CompletableFuture<ScheduledFuture<?>> result = new CompletableFuture<ScheduledFuture<?>>();
 	    TRACE_LOGGER.debug("Sending token for {}", sasTokenAudienceURI);
-	    CompletableFuture<SecurityToken> tokenFuture = this.clientSettings.getTokenProvider().getSecurityTokenAsync(sasTokenAudienceURI);
-	    return tokenFuture.thenComposeAsync((t) ->
-    	    {
-    	        SecurityToken generatedSecurityToken = t;
-    	        CompletableFuture<Void> sendTokenFuture = this.cbsLinkCreationFuture.thenComposeAsync((v) -> {
-    	                return CommonRequestResponseOperations.sendCBSTokenAsync(this.cbsLink, Util.adjustServerTimeout(this.clientSettings.getOperationTimeout()), generatedSecurityToken);
-    	            }, MessagingFactory.INTERNAL_THREAD_POOL);
-    	        
-    	        if(retryOnFailure)
-    	        {
-    	            return sendTokenFuture.handleAsync((v, sendTokenEx) -> {
-    	                if(sendTokenEx == null)
-    	                {
-    	                    TRACE_LOGGER.debug("Sent token for {}", sasTokenAudienceURI);
-    	                    return MessagingFactory.scheduleRenewTimer(generatedSecurityToken.getValidUntil(), validityRenewer);
-    	                }
-    	                else
-    	                {
-    	                    TRACE_LOGGER.warn("Sending CBS Token for {} failed.", sasTokenAudienceURI, sendTokenEx);
-    	                    TRACE_LOGGER.info("Will retry sending CBS Token for {} after {} seconds.", sasTokenAudienceURI, ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS);
-    	                    return Timer.schedule(validityRenewer, Duration.ofSeconds(ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS), TimerType.OneTimeRun);
-    	                }
-    	            }, MessagingFactory.INTERNAL_THREAD_POOL);
-    	        }
-    	        else
-    	        {
-    	            // Let the exception of the sendToken state pass up to caller
-    	            return sendTokenFuture.thenApply((v) -> {
-    	                TRACE_LOGGER.debug("Sent token for {}", sasTokenAudienceURI);
-    	                return MessagingFactory.scheduleRenewTimer(generatedSecurityToken.getValidUntil(), validityRenewer);
-    	            });
-    	        }
-    	    }, MessagingFactory.INTERNAL_THREAD_POOL);
+	    CompletableFuture<Instant> sendTokenFuture = this.generateAndSendSecurityToken(sasTokenAudienceURI);
+	    sendTokenFuture.handleAsync((validUntil, sendTokenEx) -> {
+            if(sendTokenEx == null)
+            {
+                TRACE_LOGGER.debug("Sent CBS token for {} and setting renew timer", sasTokenAudienceURI);
+                ScheduledFuture<?> renewalFuture = MessagingFactory.scheduleRenewTimer(validUntil, validityRenewer);
+                result.complete(renewalFuture);
+            }
+            else
+            {
+            	Throwable sendFailureCause = ExceptionUtil.extractAsyncCompletionCause(sendTokenEx);
+                TRACE_LOGGER.warn("Sending CBS Token for {} failed.", sasTokenAudienceURI, sendFailureCause);
+                if(retryOnFailure)
+                {
+                	// Just schedule another attempt
+                	TRACE_LOGGER.info("Will retry sending CBS Token for {} after {} seconds.", sasTokenAudienceURI, ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS);
+                	ScheduledFuture<?> renewalFuture = Timer.schedule(validityRenewer, Duration.ofSeconds(ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS), TimerType.OneTimeRun);
+                	result.complete(renewalFuture);
+                }
+                else
+                {
+                	if(sendFailureCause instanceof TimeoutException)
+                	{
+                		// Retry immediately on timeout. This is a special case as CBSLink may be disconnected right after the token is sent, but before it reaches the service
+                		TRACE_LOGGER.debug("Resending token for {}", sasTokenAudienceURI);
+                		CompletableFuture<Instant> resendTokenFuture = this.generateAndSendSecurityToken(sasTokenAudienceURI);
+                		resendTokenFuture.handleAsync((resendValidUntil, resendTokenEx) -> {
+                			if(resendTokenEx == null)
+                			{
+                				TRACE_LOGGER.debug("Sent CBS token for {} and setting renew timer", sasTokenAudienceURI);
+                                ScheduledFuture<?> renewalFuture = MessagingFactory.scheduleRenewTimer(resendValidUntil, validityRenewer);
+                                result.complete(renewalFuture);
+                			}
+                			else
+                			{
+                				Throwable resendFailureCause = ExceptionUtil.extractAsyncCompletionCause(resendTokenEx);
+                				TRACE_LOGGER.warn("Resending CBS Token for {} failed.", sasTokenAudienceURI, resendFailureCause);
+                				result.completeExceptionally(resendFailureCause);
+                			}
+                            return null;
+                		}, MessagingFactory.INTERNAL_THREAD_POOL);
+                	}
+                	else
+                	{
+                		result.completeExceptionally(sendFailureCause);
+                	}
+                }
+            }
+            return null;
+        }, MessagingFactory.INTERNAL_THREAD_POOL);
+	    
+	    return result;
     }
+	
+	private CompletableFuture<Instant> generateAndSendSecurityToken(String sasTokenAudienceURI)
+	{
+		CompletableFuture<SecurityToken> tokenFuture = this.clientSettings.getTokenProvider().getSecurityTokenAsync(sasTokenAudienceURI);
+		return tokenFuture.thenComposeAsync((t) ->
+	    {
+	        SecurityToken generatedSecurityToken = t;
+	        return this.cbsLinkCreationFuture.thenComposeAsync((v) -> {
+	                return CommonRequestResponseOperations.sendCBSTokenAsync(this.cbsLink, ClientConstants.SAS_TOKEN_SEND_TIMEOUT, generatedSecurityToken).thenApply((u) -> generatedSecurityToken.getValidUntil());
+	            }, MessagingFactory.INTERNAL_THREAD_POOL);
+	    }, MessagingFactory.INTERNAL_THREAD_POOL);
+	}
 	
 	private static ScheduledFuture<?> scheduleRenewTimer(Instant currentTokenValidUntil, Runnable validityRenewer)
 	{
