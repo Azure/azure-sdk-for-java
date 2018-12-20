@@ -15,27 +15,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class SSISPackageLocation {
     /**
-     * The SSIS package path.
+     * The SSIS package path. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "packagePath", required = true)
-    private String packagePath;
+    private Object packagePath;
 
     /**
-     * Get the SSIS package path.
+     * Get the SSIS package path. Type: string (or Expression with resultType string).
      *
      * @return the packagePath value
      */
-    public String packagePath() {
+    public Object packagePath() {
         return this.packagePath;
     }
 
     /**
-     * Set the SSIS package path.
+     * Set the SSIS package path. Type: string (or Expression with resultType string).
      *
      * @param packagePath the packagePath value to set
      * @return the SSISPackageLocation object itself.
      */
-    public SSISPackageLocation withPackagePath(String packagePath) {
+    public SSISPackageLocation withPackagePath(Object packagePath) {
         this.packagePath = packagePath;
         return this;
     }
