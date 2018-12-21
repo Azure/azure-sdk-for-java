@@ -31,7 +31,7 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
     @Override
     public Observable<HanaInstance> updateResourceAsync() {
         HanaInstancesInner client = this.manager().inner().hanaInstances();
-        return client.updateTagsAsync(this.resourceGroupName(), this.name())
+        return client.updateAsync(this.resourceGroupName(), this.name())
             .map(innerToFluentMap(this));
     }
 

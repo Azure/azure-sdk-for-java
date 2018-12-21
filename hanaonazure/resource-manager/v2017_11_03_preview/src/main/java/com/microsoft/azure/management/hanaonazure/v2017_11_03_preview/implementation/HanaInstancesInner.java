@@ -78,9 +78,9 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
         Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances updateTags" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
-        Observable<Response<ResponseBody>> updateTags(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body Tags tagsParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body Tags tagsParameter, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances restart" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/restart")
@@ -429,8 +429,8 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HanaInstanceInner object if successful.
      */
-    public HanaInstanceInner updateTags(String resourceGroupName, String hanaInstanceName) {
-        return updateTagsWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().single().body();
+    public HanaInstanceInner update(String resourceGroupName, String hanaInstanceName) {
+        return updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().single().body();
     }
 
     /**
@@ -443,8 +443,8 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<HanaInstanceInner> updateTagsAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<HanaInstanceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateTagsWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    public ServiceFuture<HanaInstanceInner> updateAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<HanaInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
     }
 
     /**
@@ -456,8 +456,8 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HanaInstanceInner object
      */
-    public Observable<HanaInstanceInner> updateTagsAsync(String resourceGroupName, String hanaInstanceName) {
-        return updateTagsWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
+    public Observable<HanaInstanceInner> updateAsync(String resourceGroupName, String hanaInstanceName) {
+        return updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
             @Override
             public HanaInstanceInner call(ServiceResponse<HanaInstanceInner> response) {
                 return response.body();
@@ -474,7 +474,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HanaInstanceInner object
      */
-    public Observable<ServiceResponse<HanaInstanceInner>> updateTagsWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+    public Observable<ServiceResponse<HanaInstanceInner>> updateWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -490,12 +490,12 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         final Map<String, String> tags = null;
         Tags tagsParameter = new Tags();
         tagsParameter.withTags(null);
-        return service.updateTags(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), tagsParameter, this.client.userAgent())
+        return service.update(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), tagsParameter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HanaInstanceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<HanaInstanceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<HanaInstanceInner> clientResponse = updateTagsDelegate(response);
+                        ServiceResponse<HanaInstanceInner> clientResponse = updateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -516,8 +516,8 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the HanaInstanceInner object if successful.
      */
-    public HanaInstanceInner updateTags(String resourceGroupName, String hanaInstanceName, Map<String, String> tags) {
-        return updateTagsWithServiceResponseAsync(resourceGroupName, hanaInstanceName, tags).toBlocking().single().body();
+    public HanaInstanceInner update(String resourceGroupName, String hanaInstanceName, Map<String, String> tags) {
+        return updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName, tags).toBlocking().single().body();
     }
 
     /**
@@ -531,8 +531,8 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<HanaInstanceInner> updateTagsAsync(String resourceGroupName, String hanaInstanceName, Map<String, String> tags, final ServiceCallback<HanaInstanceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateTagsWithServiceResponseAsync(resourceGroupName, hanaInstanceName, tags), serviceCallback);
+    public ServiceFuture<HanaInstanceInner> updateAsync(String resourceGroupName, String hanaInstanceName, Map<String, String> tags, final ServiceCallback<HanaInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName, tags), serviceCallback);
     }
 
     /**
@@ -545,8 +545,8 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HanaInstanceInner object
      */
-    public Observable<HanaInstanceInner> updateTagsAsync(String resourceGroupName, String hanaInstanceName, Map<String, String> tags) {
-        return updateTagsWithServiceResponseAsync(resourceGroupName, hanaInstanceName, tags).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
+    public Observable<HanaInstanceInner> updateAsync(String resourceGroupName, String hanaInstanceName, Map<String, String> tags) {
+        return updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName, tags).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
             @Override
             public HanaInstanceInner call(ServiceResponse<HanaInstanceInner> response) {
                 return response.body();
@@ -564,7 +564,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the HanaInstanceInner object
      */
-    public Observable<ServiceResponse<HanaInstanceInner>> updateTagsWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName, Map<String, String> tags) {
+    public Observable<ServiceResponse<HanaInstanceInner>> updateWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName, Map<String, String> tags) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -580,12 +580,12 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         Validator.validate(tags);
         Tags tagsParameter = new Tags();
         tagsParameter.withTags(tags);
-        return service.updateTags(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), tagsParameter, this.client.userAgent())
+        return service.update(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), tagsParameter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HanaInstanceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<HanaInstanceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<HanaInstanceInner> clientResponse = updateTagsDelegate(response);
+                        ServiceResponse<HanaInstanceInner> clientResponse = updateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -594,7 +594,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
             });
     }
 
-    private ServiceResponse<HanaInstanceInner> updateTagsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<HanaInstanceInner> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<HanaInstanceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HanaInstanceInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
