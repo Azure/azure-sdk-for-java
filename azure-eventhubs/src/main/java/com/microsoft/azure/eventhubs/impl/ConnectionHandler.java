@@ -8,18 +8,14 @@ import com.microsoft.azure.eventhubs.TransportType;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.BaseHandler;
-import org.apache.qpid.proton.engine.Connection;
-import org.apache.qpid.proton.engine.EndpointState;
-import org.apache.qpid.proton.engine.Event;
-import org.apache.qpid.proton.engine.SslDomain;
-import org.apache.qpid.proton.engine.Transport;
+import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.apache.qpid.proton.reactor.Handshaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 // ServiceBus <-> ProtonReactor interaction handles all
@@ -50,10 +46,6 @@ public class ConnectionHandler extends BaseHandler {
         }
     }
 
-    protected AmqpConnection getAmqpConnection() {
-        return this.amqpConnection;
-    }
-
     private static SslDomain makeDomain(SslDomain.Mode mode) {
 
         final SslDomain domain = Proton.sslDomain();
@@ -64,14 +56,21 @@ public class ConnectionHandler extends BaseHandler {
         return domain;
     }
 
+    protected AmqpConnection getAmqpConnection() {
+        return this.amqpConnection;
+    }
+
     @Override
     public void onConnectionInit(Event event) {
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "onConnectionInit hostname[%s]", this.amqpConnection.getHostName()));
+        }
 
         final Connection connection = event.getConnection();
         final String hostName = new StringBuilder(this.amqpConnection.getHostName())
-                                    .append(":")
-                                    .append(String.valueOf(this.getProtocolPort()))
-                                        .toString();
+                .append(":")
+                .append(String.valueOf(this.getProtocolPort()))
+                .toString();
 
         connection.setHostname(hostName);
         connection.setContainer(StringUtil.getRandomString());
@@ -105,6 +104,7 @@ public class ConnectionHandler extends BaseHandler {
     /**
      * HostName to be used for socket creation.
      * for ex: in case of proxy server - this could be proxy ip address
+     *
      * @return host name
      */
     public String getRemoteHostName() {
@@ -114,6 +114,7 @@ public class ConnectionHandler extends BaseHandler {
     /**
      * port used to create socket.
      * for ex: in case of talking to event hubs service via proxy - use proxy port
+     *
      * @return port
      */
     protected int getRemotePort() {
@@ -122,6 +123,7 @@ public class ConnectionHandler extends BaseHandler {
 
     /**
      * Port used on connection open frame
+     *
      * @return port
      */
     protected int getProtocolPort() {
@@ -134,6 +136,9 @@ public class ConnectionHandler extends BaseHandler {
 
     @Override
     public void onConnectionBound(Event event) {
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "onConnectionBound hostname[%s]", this.amqpConnection.getHostName()));
+        }
 
         final Transport transport = event.getTransport();
 
@@ -145,8 +150,8 @@ public class ConnectionHandler extends BaseHandler {
 
         final Connection connection = event.getConnection();
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(
-                    "onConnectionUnbound: hostname[" + connection.getHostname() + "], state[" + connection.getLocalState() + "], remoteState[" + connection.getRemoteState() + "]");
+            TRACE_LOGGER.info(String.format(Locale.US, "onConnectionUnbound: hostname[%s], state[%s], remoteState[%s]",
+                    connection.getHostname(), connection.getLocalState(), connection.getRemoteState()));
         }
 
         // if failure happened while establishing transport - nothing to free up.
@@ -162,7 +167,9 @@ public class ConnectionHandler extends BaseHandler {
         final ErrorCondition condition = transport.getCondition();
 
         if (TRACE_LOGGER.isWarnEnabled()) {
-            TRACE_LOGGER.warn("onTransportClosed: hostname[" + (connection != null ? connection.getHostname() : "n/a") + "], error[" + (condition != null ? condition.getDescription() : "n/a") + "]");
+            TRACE_LOGGER.warn(String.format(Locale.US, "onTransportError: hostname[%s], error[%s]",
+                    connection != null ? connection.getHostname() : "n/a",
+                    condition != null ? condition.getDescription() : "n/a"));
         }
 
         if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
@@ -185,7 +192,8 @@ public class ConnectionHandler extends BaseHandler {
         final ErrorCondition condition = transport.getCondition();
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info("onTransportClosed: hostname[" + (connection != null ? connection.getHostname() : "n/a") + "], error[" + (condition != null ? condition.getDescription() : "n/a") + "]");
+            TRACE_LOGGER.info(String.format(Locale.US, "onTransportClosed: hostname[%s], error[%s]",
+                    connection != null ? connection.getHostname() : "n/a", (condition != null ? condition.getDescription() : "n/a")));
         }
 
         if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
@@ -196,10 +204,24 @@ public class ConnectionHandler extends BaseHandler {
     }
 
     @Override
+    public void onConnectionLocalOpen(Event event) {
+        final Connection connection = event.getConnection();
+        final ErrorCondition error = connection.getCondition();
+
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "onConnectionLocalOpen: hostname[%s], errorCondition[%s], errorDescription[%s]",
+                    connection.getHostname(),
+                    error != null ? error.getCondition() : "n/a",
+                    error != null ? error.getDescription() : "n/a"));
+        }
+    }
+
+    @Override
     public void onConnectionRemoteOpen(Event event) {
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info("onConnectionRemoteOpen: hostname[" + event.getConnection().getHostname() + ", " + event.getConnection().getRemoteContainer() + "]");
+            TRACE_LOGGER.info(String.format(Locale.US, "onConnectionRemoteOpen: hostname[%s], remoteContainer[%s]",
+                    event.getConnection().getHostname(), event.getConnection().getRemoteContainer()));
         }
 
         this.amqpConnection.onOpenComplete(null);
@@ -209,13 +231,13 @@ public class ConnectionHandler extends BaseHandler {
     public void onConnectionLocalClose(Event event) {
 
         final Connection connection = event.getConnection();
-
         final ErrorCondition error = connection.getCondition();
+
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info("onConnectionLocalClose: hostname[" + connection.getHostname() +
-                    (error != null
-                            ? "], errorCondition[" + error.getCondition() + ", " + error.getDescription() + "]"
-                            : "]"));
+            TRACE_LOGGER.info(String.format(Locale.US, "onConnectionLocalClose: hostname[%s], errorCondition[%s], errorDescription[%s]",
+                    connection.getHostname(),
+                    error != null ? error.getCondition() : "n/a",
+                    error != null ? error.getDescription() : "n/a"));
         }
 
         if (connection.getRemoteState() == EndpointState.CLOSED) {
@@ -234,12 +256,25 @@ public class ConnectionHandler extends BaseHandler {
         final ErrorCondition error = connection.getRemoteCondition();
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info("onConnectionRemoteClose: hostname[" + connection.getHostname() +
-                    (error != null
-                            ? "], errorCondition[" + error.getCondition() + ", " + error.getDescription() + "]"
-                            : "]"));
+            TRACE_LOGGER.info(String.format(Locale.US, "onConnectionRemoteClose: hostname[%s], errorCondition[%s], errorDescription[%s]",
+                    connection.getHostname(),
+                    error != null ? error.getCondition() : "n/a",
+                    error != null ? error.getDescription() : "n/a"));
         }
 
         this.amqpConnection.onConnectionError(error);
+    }
+
+    @Override
+    public void onConnectionFinal(Event event) {
+        final Connection connection = event.getConnection();
+        final ErrorCondition error = connection.getCondition();
+
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "onConnectionFinal: hostname[%s], errorCondition[%s], errorDescription[%s]",
+                    connection.getHostname(),
+                    error != null ? error.getCondition() : "n/a",
+                    error != null ? error.getDescription() : "n/a"));
+        }
     }
 }

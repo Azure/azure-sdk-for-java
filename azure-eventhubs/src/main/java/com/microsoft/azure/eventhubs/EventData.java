@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.*;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * The data structure encapsulating the Event being sent-to and received-from EventHubs.
@@ -48,7 +48,7 @@ public interface EventData extends Serializable {
      *
      * @param data the actual payload of data in bytes to be Sent to EventHubs.
      * @return EventData the created {@link EventData} to send to EventHubs.
-     * @see EventHubClient#create(String, Executor)
+     * @see EventHubClient#create(String, ScheduledExecutorService)
      */
     static EventData create(final byte[] data) {
         return new EventDataImpl(data);
@@ -72,7 +72,7 @@ public interface EventData extends Serializable {
      * @param offset Offset in the byte[] to read from ; inclusive index
      * @param length length of the byte[] to be read, starting from offset
      * @return EventData the created {@link EventData} to send to EventHubs.
-     * @see EventHubClient#create(String, Executor)
+     * @see EventHubClient#create(String, ScheduledExecutorService)
      */
     static EventData create(final byte[] data, final int offset, final int length) {
         return new EventDataImpl(data, offset, length);
@@ -94,7 +94,7 @@ public interface EventData extends Serializable {
      *
      * @param buffer ByteBuffer which references the payload of the Event to be sent to EventHubs
      * @return EventData the created {@link EventData} to send to EventHubs.
-     * @see EventHubClient#create(String, Executor)
+     * @see EventHubClient#create(String, ScheduledExecutorService)
      */
     static EventData create(final ByteBuffer buffer) {
         return new EventDataImpl(buffer);

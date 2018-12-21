@@ -165,7 +165,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
         if (!getIsClosingOrClosed()) {
             int seconds = this.hostContext.getPartitionManagerOptions().getLeaseRenewIntervalInSeconds();
             this.leaseRenewerFuture = this.hostContext.getExecutor().schedule(() -> leaseRenewer(), seconds, TimeUnit.SECONDS);
-            TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.lease, "scheduling leaseRenewer in " + seconds));
+            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(this.lease, "scheduling leaseRenewer in " + seconds));
         }
     }
 

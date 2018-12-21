@@ -42,11 +42,11 @@ For a simple event consumer, you'll need to import the *com.microsoft.azure.even
 Event Hubs client library uses qpid proton reactor framework which exposes AMQP connection and message delivery related 
 state transitions as reactive events. In the process,
 the library will need to run many asynchronous tasks while sending and receiving messages to Event Hubs.
-So, `EventHubClient` requires an instance of `Executor`, where all these tasks are run.
+So, `EventHubClient` requires an instance of `ScheduledExecutorService`, where all these tasks are run.
 
 
 ```Java
-    ExecutorService executor = Executors.newCachedThreadPool();
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(8)
 ```
 
 The receiver code creates an *EventHubClient* from a given connecting string

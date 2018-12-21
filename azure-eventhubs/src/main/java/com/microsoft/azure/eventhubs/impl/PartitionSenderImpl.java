@@ -7,7 +7,7 @@ package com.microsoft.azure.eventhubs.impl;
 import com.microsoft.azure.eventhubs.*;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -18,8 +18,8 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
 
     private volatile MessageSender internalSender;
 
-    private PartitionSenderImpl(final MessagingFactory factory, final String eventHubName, final String partitionId, final Executor executor) {
-        super(null, null, executor);
+    private PartitionSenderImpl(final MessagingFactory factory, final String eventHubName, final String partitionId, final ScheduledExecutorService executor) {
+        super("PartitionSenderImpl".concat(StringUtil.getRandomString()), null, executor);
 
         this.partitionId = partitionId;
         this.eventHubName = eventHubName;
@@ -29,7 +29,7 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
     static CompletableFuture<PartitionSender> Create(final MessagingFactory factory,
                                                      final String eventHubName,
                                                      final String partitionId,
-                                                     final Executor executor) throws EventHubException {
+                                                     final ScheduledExecutorService executor) throws EventHubException {
         final PartitionSenderImpl sender = new PartitionSenderImpl(factory, eventHubName, partitionId, executor);
         return sender.createInternalSender()
                 .thenApplyAsync(new Function<Void, PartitionSender>() {
@@ -40,7 +40,7 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
     }
 
     private CompletableFuture<Void> createInternalSender() throws EventHubException {
-        return MessageSender.create(this.factory, StringUtil.getRandomString(),
+        return MessageSender.create(this.factory, this.getClientId().concat("-InternalSender"),
                 String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
                 .thenAcceptAsync(new Consumer<MessageSender>() {
                     public void accept(MessageSender a) {

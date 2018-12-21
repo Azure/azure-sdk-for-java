@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -46,8 +46,8 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
                                   final Long epoch,
                                   final boolean isEpochReceiver,
                                   final ReceiverOptions receiverOptions,
-                                  final Executor executor) {
-        super(null, null, executor);
+                                  final ScheduledExecutorService executor) {
+        super("PartitionReceiverImpl".concat(StringUtil.getRandomString()), null, executor);
 
         this.underlyingFactory = factory;
         this.eventHubName = eventHubName;
@@ -72,8 +72,7 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
                                                        final long epoch,
                                                        final boolean isEpochReceiver,
                                                        ReceiverOptions receiverOptions,
-                                                       final Executor executor)
-            throws EventHubException {
+                                                       final ScheduledExecutorService executor) {
         if (epoch < NULL_EPOCH) {
             throw new IllegalArgumentException("epoch cannot be a negative value. Please specify a zero or positive long value.");
         }
@@ -96,7 +95,7 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
 
     private CompletableFuture<Void> createInternalReceiver() {
         return MessageReceiver.create(this.underlyingFactory,
-                StringUtil.getRandomString(),
+                this.getClientId().concat("-InternalReceiver"),
                 String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId),
                 this.receiverOptions.getPrefetchCount(), this)
                 .thenAcceptAsync(new Consumer<MessageReceiver>() {
@@ -179,6 +178,8 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
                             "Unexpected value for parameter 'receiveHandler'. PartitionReceiver was already registered with a PartitionReceiveHandler instance. Only 1 instance can be registered.");
 
                 this.receivePump = new ReceivePump(
+                        this.eventHubName,
+                        this.consumerGroupName,
                         new ReceivePump.IPartitionReceiver() {
                             @Override
                             public CompletableFuture<Iterable<EventData>> receive(int maxBatchSize) {

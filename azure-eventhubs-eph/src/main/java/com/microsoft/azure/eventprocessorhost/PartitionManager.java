@@ -27,7 +27,7 @@ class PartitionManager extends Closable {
     private ScheduledFuture<?> scanFuture = null;
 
     PartitionManager(HostContext hostContext) {
-    	super(null);
+        super(null);
         this.hostContext = hostContext;
     }
 
@@ -41,17 +41,17 @@ class PartitionManager extends Closable {
             // EventHubException or IOException, in addition to whatever failures may occur when the result of
             // the CompletableFuture is evaluated.
             try {
-            	final CompletableFuture<Void> cleanupFuture = new CompletableFuture<Void>();
-            	
+                final CompletableFuture<Void> cleanupFuture = new CompletableFuture<Void>();
+
                 // Stage 0A: get EventHubClient for the event hub
                 retval = EventHubClient.create(this.hostContext.getEventHubConnectionString(), this.hostContext.getRetryPolicy(), this.hostContext.getExecutor())
-                		// Stage 0B: set up a way to close the EventHubClient when we're done
-                		.thenApplyAsync((ehClient) ->
-                		{
-                			final EventHubClient saveForCleanupClient = ehClient;
-                			cleanupFuture.thenComposeAsync((empty) -> saveForCleanupClient.close(), this.hostContext.getExecutor());
-                			return ehClient;
-                		}, this.hostContext.getExecutor())
+                        // Stage 0B: set up a way to close the EventHubClient when we're done
+                        .thenApplyAsync((ehClient) ->
+                        {
+                            final EventHubClient saveForCleanupClient = ehClient;
+                            cleanupFuture.thenComposeAsync((empty) -> saveForCleanupClient.close(), this.hostContext.getExecutor());
+                            return ehClient;
+                        }, this.hostContext.getExecutor())
                         // Stage 1: use the client to get runtime info for the event hub
                         .thenComposeAsync((ehClient) -> ehClient.getRuntimeInformation(), this.hostContext.getExecutor())
                         // Stage 2: extract the partition ids from the runtime info or throw on null (timeout)
@@ -71,7 +71,7 @@ class PartitionManager extends Closable {
                         // Stage 3: RUN REGARDLESS OF EXCEPTIONS -- if there was an error, wrap it in IllegalEntityException and throw
                         .handleAsync((empty, e) ->
                         {
-                        	cleanupFuture.complete(null); // trigger client cleanup
+                            cleanupFuture.complete(null); // trigger client cleanup
                             if (e != null) {
                                 Throwable notifyWith = e;
                                 if (e instanceof CompletionException) {
@@ -104,8 +104,8 @@ class PartitionManager extends Closable {
     }
 
     CompletableFuture<Void> stopPartitions() {
-    	setClosing();
-    	
+        setClosing();
+
         // If the lease scanner is between runs, cancel so it doesn't run again.
         synchronized (this.scanFutureSynchronizer) {
             if (this.scanFuture != null) {
@@ -119,20 +119,20 @@ class PartitionManager extends Closable {
         if (this.pumpManager != null) {
             TRACE_LOGGER.info(this.hostContext.withHost("Shutting down all pumps"));
             stopping = this.pumpManager.removeAllPumps(CloseReason.Shutdown)
-            .whenCompleteAsync((empty, e) -> {
-                if (e != null) {
-                    Throwable notifyWith = LoggingUtils.unwrapException(e, null);
-                    TRACE_LOGGER.warn(this.hostContext.withHost("Failure during shutdown"), notifyWith);
-                    if (notifyWith instanceof Exception) {
-                        this.hostContext.getEventProcessorOptions().notifyOfException(this.hostContext.getHostName(), (Exception) notifyWith,
-                                EventProcessorHostActionStrings.PARTITION_MANAGER_CLEANUP);
+                    .whenCompleteAsync((empty, e) -> {
+                        if (e != null) {
+                            Throwable notifyWith = LoggingUtils.unwrapException(e, null);
+                            TRACE_LOGGER.warn(this.hostContext.withHost("Failure during shutdown"), notifyWith);
+                            if (notifyWith instanceof Exception) {
+                                this.hostContext.getEventProcessorOptions().notifyOfException(this.hostContext.getHostName(), (Exception) notifyWith,
+                                        EventProcessorHostActionStrings.PARTITION_MANAGER_CLEANUP);
 
-                    }
-                }
-            }, this.hostContext.getExecutor());
+                            }
+                        }
+                    }, this.hostContext.getExecutor());
         }
         // else no pumps to shut down
-        
+
         stopping = stopping.whenCompleteAsync((empty, e) -> {
             TRACE_LOGGER.info(this.hostContext.withHost("Partition manager exiting"));
             setClosed();
@@ -287,14 +287,14 @@ class PartitionManager extends Closable {
     // Return Void so it can be called from a lambda.
     // throwOnFailure is true
     private Void scan(boolean isFirst) {
-        TRACE_LOGGER.info(this.hostContext.withHost("Starting lease scan"));
+        TRACE_LOGGER.debug(this.hostContext.withHost("Starting lease scan"));
         long start = System.currentTimeMillis();
 
         (new PartitionScanner(this.hostContext, (lease) -> this.pumpManager.addPump(lease), this)).scan(isFirst)
                 .whenCompleteAsync((didSteal, e) ->
                 {
                     TRACE_LOGGER.debug(this.hostContext.withHost("Scanning took " + (System.currentTimeMillis() - start)));
-                    
+
                     onPartitionCheckCompleteTestHook();
 
                     // Schedule the next scan unless we are shutting down.
@@ -305,11 +305,11 @@ class PartitionManager extends Closable {
                             seconds = this.hostContext.getPartitionManagerOptions().getStartupScanDelayInSeconds();
                         }
                         synchronized (this.scanFutureSynchronizer) {
-                        	this.scanFuture = this.hostContext.getExecutor().schedule(() -> scan(false), seconds, TimeUnit.SECONDS);
+                            this.scanFuture = this.hostContext.getExecutor().schedule(() -> scan(false), seconds, TimeUnit.SECONDS);
                         }
                         TRACE_LOGGER.debug(this.hostContext.withHost("Scheduling lease scanner in " + seconds));
                     } else {
-                    	TRACE_LOGGER.debug(this.hostContext.withHost("Not scheduling lease scanner due to shutdown"));
+                        TRACE_LOGGER.debug(this.hostContext.withHost("Not scheduling lease scanner due to shutdown"));
                     }
                 }, this.hostContext.getExecutor());
 

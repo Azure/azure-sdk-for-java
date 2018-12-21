@@ -34,7 +34,7 @@ So, `EventHubClient` requires an instance of `Executor`, where all these tasks a
 
 
 ```Java
-    ExecutorService executor = Executors.newCachedThreadPool();
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(8)
 ```
 
 Using an Event Hub connection string, which holds all required connection information including an authorization key or token 

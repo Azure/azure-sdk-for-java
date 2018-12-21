@@ -50,7 +50,7 @@ public class RequestResponseTest extends ApiTestBase {
     @Test()
     public void testRequestResponse() throws Exception {
 
-        final ReactorDispatcher dispatcher = factory.getReactorScheduler();
+        final ReactorDispatcher dispatcher = factory.getReactorDispatcher();
         final RequestResponseChannel requestResponseChannel = new RequestResponseChannel(
                 "reqresp",
                 ClientConstants.MANAGEMENT_ADDRESS,

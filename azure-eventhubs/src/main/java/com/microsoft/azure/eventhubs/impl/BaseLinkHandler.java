@@ -25,7 +25,7 @@ public class BaseLinkHandler extends BaseHandler {
     public void onLinkLocalClose(Event event) {
         final Link link = event.getLink();
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format("linkName[%s]", link.getName()));
+            TRACE_LOGGER.info(String.format("onLinkLocalClose linkName[%s]", link.getName()));
         }
 
         closeSession(link);
@@ -33,18 +33,30 @@ public class BaseLinkHandler extends BaseHandler {
 
     @Override
     public void onLinkRemoteClose(Event event) {
+        final Link link = event.getLink();
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format("onLinkRemoteClose linkName[%s]", link.getName()));
+        }
+
         handleRemoteLinkClosed(event);
     }
 
     @Override
     public void onLinkRemoteDetach(Event event) {
+        final Link link = event.getLink();
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format("onLinkRemoteDetach linkName[%s]", link.getName()));
+        }
+
         handleRemoteLinkClosed(event);
     }
 
     public void processOnClose(Link link, ErrorCondition condition) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info("linkName[" + link.getName() +
-                    (condition != null ? "], ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]" : "], condition[null]"));
+            TRACE_LOGGER.info(String.format("processOnClose linkName[%s], errorCondition[%s], errorDescription[%s]",
+                    link.getName(),
+                    condition != null ? condition.getCondition() : "n/a",
+                    condition != null ? condition.getDescription() : "n/a"));
         }
 
         this.underlyingEntity.onClose(condition);

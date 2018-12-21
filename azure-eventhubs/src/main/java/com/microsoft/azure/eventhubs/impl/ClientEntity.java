@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Contract for all client entities with Open-Close/Abort state m/c
@@ -21,7 +21,7 @@ import java.util.concurrent.Executor;
 abstract class ClientEntity {
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ClientEntity.class);
-    protected final Executor executor;
+    protected final ScheduledExecutorService executor;
     private final String clientId;
     private final Object syncClose;
     private final ClientEntity parent;
@@ -29,7 +29,7 @@ abstract class ClientEntity {
     private boolean isClosing;
     private boolean isClosed;
 
-    protected ClientEntity(final String clientId, final ClientEntity parent, final Executor executor) {
+    protected ClientEntity(final String clientId, final ClientEntity parent, final ScheduledExecutorService executor) {
         this.clientId = clientId;
         this.parent = parent;
         this.executor = executor;

@@ -14,7 +14,9 @@ import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class EventHubClientTest extends ApiTestBase {
 
@@ -24,7 +26,7 @@ public class EventHubClientTest extends ApiTestBase {
         final String consumerGroupName = TestContext.getConsumerGroupName();
         final String partitionId = "0";
         final int noOfClients = 4;
-        final ExecutorService executorService = Executors.newSingleThreadExecutor();
+        final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
         @SuppressWarnings("unchecked")
         CompletableFuture<EventHubClient>[] createFutures = new CompletableFuture[noOfClients];

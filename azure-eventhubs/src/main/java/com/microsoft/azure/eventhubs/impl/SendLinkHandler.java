@@ -28,13 +28,24 @@ public class SendLinkHandler extends BaseLinkHandler {
     }
 
     @Override
+    public void onLinkLocalOpen(Event event) {
+        Link link = event.getLink();
+        if (link instanceof Sender) {
+            Sender sender = (Sender) link;
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info(String.format("onLinkLocalOpen linkName[%s], localTarget[%s]", sender.getName(), sender.getTarget()));
+            }
+        }
+    }
+
+    @Override
     public void onLinkRemoteOpen(Event event) {
         Link link = event.getLink();
-        if (link != null && link instanceof Sender) {
+        if (link instanceof Sender) {
             Sender sender = (Sender) link;
             if (link.getRemoteTarget() != null) {
                 if (TRACE_LOGGER.isInfoEnabled()) {
-                    TRACE_LOGGER.info(String.format(Locale.US, "linkName[%s], remoteTarget[%s]", sender.getName(), link.getRemoteTarget()));
+                    TRACE_LOGGER.info(String.format(Locale.US, "onLinkRemoteOpen linkName[%s], remoteTarget[%s]", sender.getName(), link.getRemoteTarget()));
                 }
 
                 synchronized (this.firstFlow) {
@@ -44,7 +55,7 @@ public class SendLinkHandler extends BaseLinkHandler {
             } else {
                 if (TRACE_LOGGER.isInfoEnabled()) {
                     TRACE_LOGGER.info(
-                            String.format(Locale.US, "linkName[%s], remoteTarget[null], remoteSource[null], action[waitingForError]", sender.getName()));
+                            String.format(Locale.US, "onLinkRemoteOpen linkName[%s], remoteTarget[null], remoteSource[null], action[waitingForError]", sender.getName()));
                 }
             }
         }
@@ -59,7 +70,7 @@ public class SendLinkHandler extends BaseLinkHandler {
 
             if (TRACE_LOGGER.isTraceEnabled()) {
                 TRACE_LOGGER.trace(
-                        "linkName[" + sender.getName() +
+                        "onDelivery linkName[" + sender.getName() +
                                 "], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getRemoteCredit() + "], deliveryState[" + delivery.getRemoteState() +
                                 "], delivery.isBuffered[" + delivery.isBuffered() + "], delivery.id[" + new String(delivery.getTag()) + "]");
             }
@@ -86,7 +97,7 @@ public class SendLinkHandler extends BaseLinkHandler {
         this.msgSender.onFlow(sender.getRemoteCredit());
 
         if (TRACE_LOGGER.isDebugEnabled()) {
-            TRACE_LOGGER.debug("linkName[" + sender.getName() + "], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit() + "]");
+            TRACE_LOGGER.debug("onLinkFlow linkName[" + sender.getName() + "], unsettled[" + sender.getUnsettled() + "], credit[" + sender.getCredit() + "]");
         }
     }
 }
