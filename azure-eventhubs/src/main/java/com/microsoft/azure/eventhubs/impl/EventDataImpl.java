@@ -258,4 +258,12 @@ public final class EventDataImpl implements EventData {
             this.bodyData = new Binary(data, 0, length);
         }
     }
+
+    @Override
+    public int compareTo(EventData other) {
+        return Long.compare(
+                this.getSystemProperties().getSequenceNumber(),
+                other.getSystemProperties().getSequenceNumber()
+        );
+    }
 }

@@ -30,7 +30,7 @@ import java.util.concurrent.ScheduledExecutorService;
  * Section (iii) is used for advanced scenarios, where the sending application uses third-party AMQP library to send the message to EventHubs and the receiving application
  * uses this client library to receive {@link EventData}.
  */
-public interface EventData extends Serializable {
+public interface EventData extends Serializable, Comparable<EventData> {
 
     /**
      * Construct EventData to Send to EventHubs.
