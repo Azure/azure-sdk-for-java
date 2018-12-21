@@ -80,7 +80,7 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances updateTags" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
-        Observable<Response<ResponseBody>> updateTags(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body Tags hanaInstancePatchTagsParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateTags(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body Tags tagsParameter, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances restart" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/restart")
@@ -488,9 +488,9 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Map<String, String> tags = null;
-        Tags hanaInstancePatchTagsParameter = new Tags();
-        hanaInstancePatchTagsParameter.withTags(null);
-        return service.updateTags(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), hanaInstancePatchTagsParameter, this.client.userAgent())
+        Tags tagsParameter = new Tags();
+        tagsParameter.withTags(null);
+        return service.updateTags(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), tagsParameter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HanaInstanceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<HanaInstanceInner>> call(Response<ResponseBody> response) {
@@ -578,9 +578,9 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(tags);
-        Tags hanaInstancePatchTagsParameter = new Tags();
-        hanaInstancePatchTagsParameter.withTags(tags);
-        return service.updateTags(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), hanaInstancePatchTagsParameter, this.client.userAgent())
+        Tags tagsParameter = new Tags();
+        tagsParameter.withTags(tags);
+        return service.updateTags(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), tagsParameter, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HanaInstanceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<HanaInstanceInner>> call(Response<ResponseBody> response) {
