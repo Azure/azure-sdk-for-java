@@ -17,7 +17,7 @@ import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.OSProfile;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstancePowerStateEnum;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.StorageProfile;
 
-class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInstanceInner, HanaInstanceImpl, HanaOnAzureManager> implements HanaInstance {
+class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInstanceInner, HanaInstanceImpl, HanaOnAzureManager> implements HanaInstance, HanaInstance.Update {
     HanaInstanceImpl(String name, HanaInstanceInner inner, HanaOnAzureManager manager) {
         super(name, inner, manager);
     }
@@ -31,7 +31,8 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
     @Override
     public Observable<HanaInstance> updateResourceAsync() {
         HanaInstancesInner client = this.manager().inner().hanaInstances();
-        return null; // NOP updateResourceAsync implementation as update is not supported
+        return client.updateAsync(this.resourceGroupName(), this.name())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -40,6 +41,10 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
         return client.getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
+    @Override
+    public boolean isInCreateMode() {
+        return this.inner().id() == null;
+    }
 
 
     @Override

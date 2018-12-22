@@ -16,17 +16,22 @@ import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.ErrorResponseException;
+import com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.Tags;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -72,6 +77,10 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
         Observable<Response<ResponseBody>> getByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances update" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}")
+        Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("hanaInstanceName") String hanaInstanceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body Tags tagsParameter, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.hanaonazure.v2017_11_03_preview.HanaInstances restart" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/hanaInstances/{hanaInstanceName}/restart")
@@ -403,6 +412,189 @@ public class HanaInstancesInner implements InnerSupportsGet<HanaInstanceInner>, 
     }
 
     private ServiceResponse<HanaInstanceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<HanaInstanceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<HanaInstanceInner>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Patches the Tags field of a SAP HANA instance.
+     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the HanaInstanceInner object if successful.
+     */
+    public HanaInstanceInner update(String resourceGroupName, String hanaInstanceName) {
+        return updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName).toBlocking().single().body();
+    }
+
+    /**
+     * Patches the Tags field of a SAP HANA instance.
+     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<HanaInstanceInner> updateAsync(String resourceGroupName, String hanaInstanceName, final ServiceCallback<HanaInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName), serviceCallback);
+    }
+
+    /**
+     * Patches the Tags field of a SAP HANA instance.
+     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HanaInstanceInner object
+     */
+    public Observable<HanaInstanceInner> updateAsync(String resourceGroupName, String hanaInstanceName) {
+        return updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
+            @Override
+            public HanaInstanceInner call(ServiceResponse<HanaInstanceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Patches the Tags field of a SAP HANA instance.
+     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HanaInstanceInner object
+     */
+    public Observable<ServiceResponse<HanaInstanceInner>> updateWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hanaInstanceName == null) {
+            throw new IllegalArgumentException("Parameter hanaInstanceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Map<String, String> tags = null;
+        Tags tagsParameter = new Tags();
+        tagsParameter.withTags(null);
+        return service.update(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), tagsParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HanaInstanceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<HanaInstanceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<HanaInstanceInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Patches the Tags field of a SAP HANA instance.
+     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param tags Tags field of the HANA instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the HanaInstanceInner object if successful.
+     */
+    public HanaInstanceInner update(String resourceGroupName, String hanaInstanceName, Map<String, String> tags) {
+        return updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName, tags).toBlocking().single().body();
+    }
+
+    /**
+     * Patches the Tags field of a SAP HANA instance.
+     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param tags Tags field of the HANA instance.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<HanaInstanceInner> updateAsync(String resourceGroupName, String hanaInstanceName, Map<String, String> tags, final ServiceCallback<HanaInstanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName, tags), serviceCallback);
+    }
+
+    /**
+     * Patches the Tags field of a SAP HANA instance.
+     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param tags Tags field of the HANA instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HanaInstanceInner object
+     */
+    public Observable<HanaInstanceInner> updateAsync(String resourceGroupName, String hanaInstanceName, Map<String, String> tags) {
+        return updateWithServiceResponseAsync(resourceGroupName, hanaInstanceName, tags).map(new Func1<ServiceResponse<HanaInstanceInner>, HanaInstanceInner>() {
+            @Override
+            public HanaInstanceInner call(ServiceResponse<HanaInstanceInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Patches the Tags field of a SAP HANA instance.
+     * Patches the Tags field of a SAP HANA instance for the specified subscription, resource group, and instance name.
+     *
+     * @param resourceGroupName Name of the resource group.
+     * @param hanaInstanceName Name of the SAP HANA on Azure instance.
+     * @param tags Tags field of the HANA instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HanaInstanceInner object
+     */
+    public Observable<ServiceResponse<HanaInstanceInner>> updateWithServiceResponseAsync(String resourceGroupName, String hanaInstanceName, Map<String, String> tags) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (hanaInstanceName == null) {
+            throw new IllegalArgumentException("Parameter hanaInstanceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(tags);
+        Tags tagsParameter = new Tags();
+        tagsParameter.withTags(tags);
+        return service.update(this.client.subscriptionId(), resourceGroupName, hanaInstanceName, this.client.apiVersion(), this.client.acceptLanguage(), tagsParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HanaInstanceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<HanaInstanceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<HanaInstanceInner> clientResponse = updateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<HanaInstanceInner> updateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<HanaInstanceInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HanaInstanceInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
