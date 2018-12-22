@@ -18,6 +18,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Operations;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.ExposureControls;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimes;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeObjectMetadatas;
 import com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimeNodes;
@@ -38,6 +39,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class DataFactoryManager extends ManagerCore<DataFactoryManager, DataFactoryManagementClientImpl> {
     private Operations operations;
     private Factories factories;
+    private ExposureControls exposureControls;
     private IntegrationRuntimes integrationRuntimes;
     private IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas;
     private IntegrationRuntimeNodes integrationRuntimeNodes;
@@ -114,6 +116,16 @@ public final class DataFactoryManager extends ManagerCore<DataFactoryManager, Da
             this.factories = new FactoriesImpl(this);
         }
         return this.factories;
+    }
+
+    /**
+     * @return Entry point to manage ExposureControls.
+     */
+    public ExposureControls exposureControls() {
+        if (this.exposureControls == null) {
+            this.exposureControls = new ExposureControlsImpl(this);
+        }
+        return this.exposureControls;
     }
 
     /**

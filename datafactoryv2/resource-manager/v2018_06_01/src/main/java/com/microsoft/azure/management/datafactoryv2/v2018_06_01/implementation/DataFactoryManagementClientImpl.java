@@ -159,6 +159,19 @@ public class DataFactoryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ExposureControlsInner object to access its operations.
+     */
+    private ExposureControlsInner exposureControls;
+
+    /**
+     * Gets the ExposureControlsInner object to access its operations.
+     * @return the ExposureControlsInner object.
+     */
+    public ExposureControlsInner exposureControls() {
+        return this.exposureControls;
+    }
+
+    /**
      * The IntegrationRuntimesInner object to access its operations.
      */
     private IntegrationRuntimesInner integrationRuntimes;
@@ -338,6 +351,7 @@ public class DataFactoryManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.factories = new FactoriesInner(restClient().retrofit(), this);
+        this.exposureControls = new ExposureControlsInner(restClient().retrofit(), this);
         this.integrationRuntimes = new IntegrationRuntimesInner(restClient().retrofit(), this);
         this.integrationRuntimeObjectMetadatas = new IntegrationRuntimeObjectMetadatasInner(restClient().retrofit(), this);
         this.integrationRuntimeNodes = new IntegrationRuntimeNodesInner(restClient().retrofit(), this);
