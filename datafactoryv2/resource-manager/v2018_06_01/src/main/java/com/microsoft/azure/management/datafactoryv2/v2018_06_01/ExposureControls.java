@@ -33,6 +33,6 @@ public interface ExposureControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ExposureControlResponse> getFeatureForSubscriptionAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest);
+    Observable<ExposureControlResponse> getFeatureBySubscriptionAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest);
 
 }

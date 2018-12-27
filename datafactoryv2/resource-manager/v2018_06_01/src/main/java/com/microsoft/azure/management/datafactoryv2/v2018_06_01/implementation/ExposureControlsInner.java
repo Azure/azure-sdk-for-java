@@ -58,9 +58,9 @@ public class ExposureControlsInner {
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/locations/{locationId}/getFeatureValue")
         Observable<Response<ResponseBody>> getFeature(@Path("subscriptionId") String subscriptionId, @Path("locationId") String locationId, @Query("api-version") String apiVersion, @Body ExposureControlRequest exposureControlRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.ExposureControls getFeatureForSubscription" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.ExposureControls getFeatureBySubscription" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getFeatureValue")
-        Observable<Response<ResponseBody>> getFeatureForSubscription(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body ExposureControlRequest exposureControlRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getFeatureBySubscription(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body ExposureControlRequest exposureControlRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -162,8 +162,8 @@ public class ExposureControlsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExposureControlResponseInner object if successful.
      */
-    public ExposureControlResponseInner getFeatureForSubscription(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
-        return getFeatureForSubscriptionWithServiceResponseAsync(resourceGroupName, factoryName, exposureControlRequest).toBlocking().single().body();
+    public ExposureControlResponseInner getFeatureBySubscription(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
+        return getFeatureBySubscriptionWithServiceResponseAsync(resourceGroupName, factoryName, exposureControlRequest).toBlocking().single().body();
     }
 
     /**
@@ -176,8 +176,8 @@ public class ExposureControlsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ExposureControlResponseInner> getFeatureForSubscriptionAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest, final ServiceCallback<ExposureControlResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getFeatureForSubscriptionWithServiceResponseAsync(resourceGroupName, factoryName, exposureControlRequest), serviceCallback);
+    public ServiceFuture<ExposureControlResponseInner> getFeatureBySubscriptionAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest, final ServiceCallback<ExposureControlResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getFeatureBySubscriptionWithServiceResponseAsync(resourceGroupName, factoryName, exposureControlRequest), serviceCallback);
     }
 
     /**
@@ -189,8 +189,8 @@ public class ExposureControlsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExposureControlResponseInner object
      */
-    public Observable<ExposureControlResponseInner> getFeatureForSubscriptionAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
-        return getFeatureForSubscriptionWithServiceResponseAsync(resourceGroupName, factoryName, exposureControlRequest).map(new Func1<ServiceResponse<ExposureControlResponseInner>, ExposureControlResponseInner>() {
+    public Observable<ExposureControlResponseInner> getFeatureBySubscriptionAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
+        return getFeatureBySubscriptionWithServiceResponseAsync(resourceGroupName, factoryName, exposureControlRequest).map(new Func1<ServiceResponse<ExposureControlResponseInner>, ExposureControlResponseInner>() {
             @Override
             public ExposureControlResponseInner call(ServiceResponse<ExposureControlResponseInner> response) {
                 return response.body();
@@ -207,7 +207,7 @@ public class ExposureControlsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExposureControlResponseInner object
      */
-    public Observable<ServiceResponse<ExposureControlResponseInner>> getFeatureForSubscriptionWithServiceResponseAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
+    public Observable<ServiceResponse<ExposureControlResponseInner>> getFeatureBySubscriptionWithServiceResponseAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -224,12 +224,12 @@ public class ExposureControlsInner {
             throw new IllegalArgumentException("Parameter exposureControlRequest is required and cannot be null.");
         }
         Validator.validate(exposureControlRequest);
-        return service.getFeatureForSubscription(this.client.subscriptionId(), resourceGroupName, factoryName, this.client.apiVersion(), exposureControlRequest, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getFeatureBySubscription(this.client.subscriptionId(), resourceGroupName, factoryName, this.client.apiVersion(), exposureControlRequest, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExposureControlResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExposureControlResponseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ExposureControlResponseInner> clientResponse = getFeatureForSubscriptionDelegate(response);
+                        ServiceResponse<ExposureControlResponseInner> clientResponse = getFeatureBySubscriptionDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -238,7 +238,7 @@ public class ExposureControlsInner {
             });
     }
 
-    private ServiceResponse<ExposureControlResponseInner> getFeatureForSubscriptionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<ExposureControlResponseInner> getFeatureBySubscriptionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ExposureControlResponseInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ExposureControlResponseInner>() { }.getType())
                 .registerError(CloudException.class)

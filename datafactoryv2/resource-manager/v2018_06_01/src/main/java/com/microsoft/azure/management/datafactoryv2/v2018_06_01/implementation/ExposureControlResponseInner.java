@@ -17,13 +17,13 @@ public class ExposureControlResponseInner {
     /**
      * The feature name.
      */
-    @JsonProperty(value = "featureName")
+    @JsonProperty(value = "featureName", access = JsonProperty.Access.WRITE_ONLY)
     private String featureName;
 
     /**
      * The feature value.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
@@ -36,34 +36,12 @@ public class ExposureControlResponseInner {
     }
 
     /**
-     * Set the feature name.
-     *
-     * @param featureName the featureName value to set
-     * @return the ExposureControlResponseInner object itself.
-     */
-    public ExposureControlResponseInner withFeatureName(String featureName) {
-        this.featureName = featureName;
-        return this;
-    }
-
-    /**
      * Get the feature value.
      *
      * @return the value value
      */
     public String value() {
         return this.value;
-    }
-
-    /**
-     * Set the feature value.
-     *
-     * @param value the value value to set
-     * @return the ExposureControlResponseInner object itself.
-     */
-    public ExposureControlResponseInner withValue(String value) {
-        this.value = value;
-        return this;
     }
 
 }
