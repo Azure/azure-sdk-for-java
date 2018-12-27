@@ -128,9 +128,9 @@ class VirtualNetworksImpl extends GroupableResourcesCoreImpl<VirtualNetwork, Vir
     }
 
     @Override
-    public Observable<IPAddressAvailabilityResult> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName) {
+    public Observable<IPAddressAvailabilityResult> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName, String ipAddress) {
         VirtualNetworksInner client = this.inner();
-        return client.checkIPAddressAvailabilityAsync(resourceGroupName, virtualNetworkName)
+        return client.checkIPAddressAvailabilityAsync(resourceGroupName, virtualNetworkName, ipAddress)
         .map(new Func1<IPAddressAvailabilityResultInner, IPAddressAvailabilityResult>() {
             @Override
             public IPAddressAvailabilityResult call(IPAddressAvailabilityResultInner inner) {

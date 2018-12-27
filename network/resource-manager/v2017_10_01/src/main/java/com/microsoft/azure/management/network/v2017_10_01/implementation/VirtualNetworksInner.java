@@ -1147,84 +1147,6 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the IPAddressAvailabilityResultInner object if successful.
-     */
-    public IPAddressAvailabilityResultInner checkIPAddressAvailability(String resourceGroupName, String virtualNetworkName) {
-        return checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName).toBlocking().single().body();
-    }
-
-    /**
-     * Checks whether a private IP address is available for use.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName, final ServiceCallback<IPAddressAvailabilityResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName), serviceCallback);
-    }
-
-    /**
-     * Checks whether a private IP address is available for use.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the IPAddressAvailabilityResultInner object
-     */
-    public Observable<IPAddressAvailabilityResultInner> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName) {
-        return checkIPAddressAvailabilityWithServiceResponseAsync(resourceGroupName, virtualNetworkName).map(new Func1<ServiceResponse<IPAddressAvailabilityResultInner>, IPAddressAvailabilityResultInner>() {
-            @Override
-            public IPAddressAvailabilityResultInner call(ServiceResponse<IPAddressAvailabilityResultInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Checks whether a private IP address is available for use.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the IPAddressAvailabilityResultInner object
-     */
-    public Observable<ServiceResponse<IPAddressAvailabilityResultInner>> checkIPAddressAvailabilityWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (virtualNetworkName == null) {
-            throw new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2017-10-01";
-        final String ipAddress = null;
-        return service.checkIPAddressAvailability(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), ipAddress, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IPAddressAvailabilityResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<IPAddressAvailabilityResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<IPAddressAvailabilityResultInner> clientResponse = checkIPAddressAvailabilityDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Checks whether a private IP address is available for use.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1285,6 +1207,9 @@ public class VirtualNetworksInner implements InnerSupportsGet<VirtualNetworkInne
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (ipAddress == null) {
+            throw new IllegalArgumentException("Parameter ipAddress is required and cannot be null.");
         }
         final String apiVersion = "2017-10-01";
         return service.checkIPAddressAvailability(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), ipAddress, apiVersion, this.client.acceptLanguage(), this.client.userAgent())

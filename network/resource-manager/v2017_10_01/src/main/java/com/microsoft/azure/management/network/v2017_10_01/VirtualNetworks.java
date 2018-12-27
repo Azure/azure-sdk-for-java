@@ -28,10 +28,11 @@ public interface VirtualNetworks extends SupportsCreating<VirtualNetwork.Definit
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @param ipAddress The private IP address to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<IPAddressAvailabilityResult> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName);
+    Observable<IPAddressAvailabilityResult> checkIPAddressAvailabilityAsync(String resourceGroupName, String virtualNetworkName, String ipAddress);
 
     /**
      * Lists usage stats.
