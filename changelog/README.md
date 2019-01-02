@@ -2,9 +2,9 @@
 
 ### 2.3.0
 
-Fixed a resource leak bug.
-Added support for MultiPolygon
-Added support for custom headers in RequestOptions.
+* Fixed a resource leak bug.
+* Added support for MultiPolygon
+* Added support for custom headers in RequestOptions.
 
 ### 2.2.2
 * Fixed a packaging bug.
