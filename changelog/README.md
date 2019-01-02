@@ -1,12 +1,18 @@
 ## Changelog
 
+### 2.3.0
+
+Fixed a resource leak bug.
+Added support for MultiPolygon
+Added support for custom headers in RequestOptions.
+
 ### 2.2.2
 * Fixed a packaging bug.
 
 ### 2.2.1
 * Fixed a NPE bug in write retry path.
 * Fixed a NPE bug in endpoint management.
-* Upgraded vulnerable dependencies (([github #68](https://github.com/Azure/azure-cosmosdb-java/issues/68)).
+* Upgraded vulnerable dependencies ([github #68](https://github.com/Azure/azure-cosmosdb-java/issues/68)).
 * Added support for Netty network logging for troubleshooting.
 
 ### 2.2.0
