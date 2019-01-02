@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -51,6 +52,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     private CompletableFuture<MessagingFactory> open;
     private CompletableFuture<?> openTimer;
     private CompletableFuture<?> closeTimer;
+    private String reactorCreationTime;
 
     MessagingFactory(final ConnectionStringBuilder builder,
                      final RetryPolicy retryPolicy,
@@ -159,6 +161,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             reactorHandler.unsafeSetReactorDispatcher(this.reactorDispatcher);
         }
 
+        this.reactorCreationTime = Instant.now().toString();
+
         executor.execute(new RunReactor(newReactor, executor));
     }
 
@@ -259,6 +263,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                                 this.hostName, link.getName()));
                     }
 
+                    link.setCondition(error);
                     link.close();
                     closedLinks.add(link);
                 }

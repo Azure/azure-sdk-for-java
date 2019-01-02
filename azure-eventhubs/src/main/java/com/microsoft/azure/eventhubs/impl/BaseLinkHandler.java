@@ -5,10 +5,7 @@
 package com.microsoft.azure.eventhubs.impl;
 
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.BaseHandler;
-import org.apache.qpid.proton.engine.EndpointState;
-import org.apache.qpid.proton.engine.Event;
-import org.apache.qpid.proton.engine.Link;
+import org.apache.qpid.proton.engine.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,18 +21,28 @@ public class BaseLinkHandler extends BaseHandler {
     @Override
     public void onLinkLocalClose(Event event) {
         final Link link = event.getLink();
+        final ErrorCondition condition = link.getCondition();
+
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format("onLinkLocalClose linkName[%s]", link.getName()));
+            TRACE_LOGGER.info(String.format("onLinkLocalClose linkName[%s], errorCondition[%s], errorDescription[%s]",
+                    link.getName(),
+                    condition != null ? condition.getCondition() : "n/a",
+                    condition != null ? condition.getDescription() : "n/a"));
         }
 
-        closeSession(link);
+        closeSession(link, link.getCondition());
     }
 
     @Override
     public void onLinkRemoteClose(Event event) {
         final Link link = event.getLink();
+        final ErrorCondition condition = link.getCondition();
+
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format("onLinkRemoteClose linkName[%s]", link.getName()));
+            TRACE_LOGGER.info(String.format("onLinkRemoteClose linkName[%s], errorCondition[%s], errorDescription[%s]",
+                    link.getName(),
+                    condition != null ? condition.getCondition() : "n/a",
+                    condition != null ? condition.getDescription() : "n/a"));
         }
 
         handleRemoteLinkClosed(event);
@@ -44,8 +51,13 @@ public class BaseLinkHandler extends BaseHandler {
     @Override
     public void onLinkRemoteDetach(Event event) {
         final Link link = event.getLink();
+        final ErrorCondition condition = link.getCondition();
+
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format("onLinkRemoteDetach linkName[%s]", link.getName()));
+            TRACE_LOGGER.info(String.format("onLinkRemoteDetach linkName[%s], errorCondition[%s], errorDescription[%s]",
+                    link.getName(),
+                    condition != null ? condition.getCondition() : "n/a",
+                    condition != null ? condition.getDescription() : "n/a"));
         }
 
         handleRemoteLinkClosed(event);
@@ -66,21 +78,34 @@ public class BaseLinkHandler extends BaseHandler {
         this.underlyingEntity.onError(exception);
     }
 
-    private void closeSession(Link link) {
-        if (link.getSession() != null && link.getSession().getLocalState() != EndpointState.CLOSED)
-            link.getSession().close();
+    private void closeSession(Link link, ErrorCondition condition) {
+        final Session session = link.getSession();
+
+        if (session != null && session.getLocalState() != EndpointState.CLOSED) {
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info(String.format("closeSession for linkName[%s], errorCondition[%s], errorDescription[%s]",
+                        link.getName(),
+                        condition != null ? condition.getCondition() : "n/a",
+                        condition != null ? condition.getDescription() : "n/a"));
+            }
+
+            session.setCondition(condition);
+            session.close();
+        }
     }
 
     private void handleRemoteLinkClosed(final Event event) {
         final Link link = event.getLink();
 
+        final ErrorCondition condition = link.getRemoteCondition();
+
         if (link.getLocalState() != EndpointState.CLOSED) {
+            link.setCondition(condition);
             link.close();
         }
 
-        final ErrorCondition condition = link.getRemoteCondition();
         this.processOnClose(link, condition);
 
-        closeSession(link);
+        this.closeSession(link, condition);
     }
 }

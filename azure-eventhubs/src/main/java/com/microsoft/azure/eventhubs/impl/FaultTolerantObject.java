@@ -10,14 +10,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class FaultTolerantObject<T extends IOObject> {
 
-    final Operation<T> openTask;
-    final Operation<Void> closeTask;
-    final Queue<OperationResult<T, Exception>> openCallbacks;
-    final Queue<OperationResult<Void, Exception>> closeCallbacks;
+    private final Operation<T> openTask;
+    private final Operation<Void> closeTask;
+    private final Queue<OperationResult<T, Exception>> openCallbacks;
+    private final Queue<OperationResult<Void, Exception>> closeCallbacks;
 
-    T innerObject;
-    boolean creatingNewInnerObject;
-    boolean closingInnerObject;
+    private T innerObject;
+    private boolean creatingNewInnerObject;
+    private boolean closingInnerObject;
 
     public FaultTolerantObject(
             final Operation<T> openAsync,
@@ -30,7 +30,7 @@ public class FaultTolerantObject<T extends IOObject> {
     }
 
     // should be invoked from reactor thread
-    public T unsafeGetIfOpened() {
+    T unsafeGetIfOpened() {
 
         if (innerObject != null && innerObject.getState() == IOObject.IOObjectState.OPENED)
             return innerObject;
@@ -47,29 +47,33 @@ public class FaultTolerantObject<T extends IOObject> {
                 @Override
                 public void onEvent() {
                     if (!creatingNewInnerObject
-                            && (innerObject == null || innerObject.getState() == IOObject.IOObjectState.CLOSED || innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
+                            && (innerObject == null || innerObject.getState() == IOObject.IOObjectState.CLOSED ||
+                            innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
                         creatingNewInnerObject = true;
-                        openCallbacks.offer(openCallback);
-                        openTask.run(new OperationResult<T, Exception>() {
-                            @Override
-                            public void onComplete(T result) {
-                                creatingNewInnerObject = false;
-                                innerObject = result;
-                                for (OperationResult<T, Exception> callback : openCallbacks)
-                                    callback.onComplete(result);
 
-                                openCallbacks.clear();
-                            }
+                        try {
+                            openCallbacks.offer(openCallback);
+                            openTask.run(new OperationResult<T, Exception>() {
+                                @Override
+                                public void onComplete(T result) {
+                                    innerObject = result;
+                                    for (OperationResult<T, Exception> callback : openCallbacks)
+                                        callback.onComplete(result);
 
-                            @Override
-                            public void onError(Exception error) {
-                                creatingNewInnerObject = false;
-                                for (OperationResult<T, Exception> callback : openCallbacks)
-                                    callback.onError(error);
+                                    openCallbacks.clear();
+                                }
 
-                                openCallbacks.clear();
-                            }
-                        });
+                                @Override
+                                public void onError(Exception error) {
+                                    for (OperationResult<T, Exception> callback : openCallbacks)
+                                        callback.onError(error);
+
+                                    openCallbacks.clear();
+                                }
+                            });
+                        } finally {
+                            creatingNewInnerObject = false;
+                        }
                     } else if (innerObject != null && innerObject.getState() == IOObject.IOObjectState.OPENED) {
                         openCallback.onComplete(innerObject);
                     } else {
