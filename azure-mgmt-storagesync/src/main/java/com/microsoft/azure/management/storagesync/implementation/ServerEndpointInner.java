@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.storagesync.implementation;
 
+import com.microsoft.azure.management.storagesync.ServerEndpointHealth;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
@@ -72,10 +73,34 @@ public class ServerEndpointInner extends ProxyResource {
     private String lastOperationName;
 
     /**
-     * Sync Health Status.
+     * Server Endpoint properties.
      */
     @JsonProperty(value = "properties.syncStatus")
-    private Object syncStatus;
+    private ServerEndpointHealth syncStatus;
+
+    /**
+     * Offline data transfer. Possible values include: 'on', 'off'.
+     */
+    @JsonProperty(value = "properties.offlineDataTransfer")
+    private String offlineDataTransfer;
+
+    /**
+     * Offline data transfer storage account resource ID.
+     */
+    @JsonProperty(value = "properties.offlineDataTransferStorageAccountResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String offlineDataTransferStorageAccountResourceId;
+
+    /**
+     * Offline data transfer storage account tenant ID.
+     */
+    @JsonProperty(value = "properties.offlineDataTransferStorageAccountTenantId", access = JsonProperty.Access.WRITE_ONLY)
+    private String offlineDataTransferStorageAccountTenantId;
+
+    /**
+     * Offline data transfer share name.
+     */
+    @JsonProperty(value = "properties.offlineDataTransferShareName")
+    private String offlineDataTransferShareName;
 
     /**
      * Get server Local path.
@@ -258,22 +283,80 @@ public class ServerEndpointInner extends ProxyResource {
     }
 
     /**
-     * Get sync Health Status.
+     * Get server Endpoint properties.
      *
      * @return the syncStatus value
      */
-    public Object syncStatus() {
+    public ServerEndpointHealth syncStatus() {
         return this.syncStatus;
     }
 
     /**
-     * Set sync Health Status.
+     * Set server Endpoint properties.
      *
      * @param syncStatus the syncStatus value to set
      * @return the ServerEndpointInner object itself.
      */
-    public ServerEndpointInner withSyncStatus(Object syncStatus) {
+    public ServerEndpointInner withSyncStatus(ServerEndpointHealth syncStatus) {
         this.syncStatus = syncStatus;
+        return this;
+    }
+
+    /**
+     * Get offline data transfer. Possible values include: 'on', 'off'.
+     *
+     * @return the offlineDataTransfer value
+     */
+    public String offlineDataTransfer() {
+        return this.offlineDataTransfer;
+    }
+
+    /**
+     * Set offline data transfer. Possible values include: 'on', 'off'.
+     *
+     * @param offlineDataTransfer the offlineDataTransfer value to set
+     * @return the ServerEndpointInner object itself.
+     */
+    public ServerEndpointInner withOfflineDataTransfer(String offlineDataTransfer) {
+        this.offlineDataTransfer = offlineDataTransfer;
+        return this;
+    }
+
+    /**
+     * Get offline data transfer storage account resource ID.
+     *
+     * @return the offlineDataTransferStorageAccountResourceId value
+     */
+    public String offlineDataTransferStorageAccountResourceId() {
+        return this.offlineDataTransferStorageAccountResourceId;
+    }
+
+    /**
+     * Get offline data transfer storage account tenant ID.
+     *
+     * @return the offlineDataTransferStorageAccountTenantId value
+     */
+    public String offlineDataTransferStorageAccountTenantId() {
+        return this.offlineDataTransferStorageAccountTenantId;
+    }
+
+    /**
+     * Get offline data transfer share name.
+     *
+     * @return the offlineDataTransferShareName value
+     */
+    public String offlineDataTransferShareName() {
+        return this.offlineDataTransferShareName;
+    }
+
+    /**
+     * Set offline data transfer share name.
+     *
+     * @param offlineDataTransferShareName the offlineDataTransferShareName value to set
+     * @return the ServerEndpointInner object itself.
+     */
+    public ServerEndpointInner withOfflineDataTransferShareName(String offlineDataTransferShareName) {
+        this.offlineDataTransferShareName = offlineDataTransferShareName;
         return this;
     }
 

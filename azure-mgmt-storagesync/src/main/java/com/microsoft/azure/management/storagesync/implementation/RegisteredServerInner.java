@@ -38,8 +38,8 @@ public class RegisteredServerInner extends ProxyResource {
     /**
      * Registered Server Management Error Code.
      */
-    @JsonProperty(value = "properties.serverManagementtErrorCode")
-    private Integer serverManagementtErrorCode;
+    @JsonProperty(value = "properties.serverManagementErrorCode")
+    private Integer serverManagementErrorCode;
 
     /**
      * Registered Server last heart beat.
@@ -194,20 +194,20 @@ public class RegisteredServerInner extends ProxyResource {
     /**
      * Get registered Server Management Error Code.
      *
-     * @return the serverManagementtErrorCode value
+     * @return the serverManagementErrorCode value
      */
-    public Integer serverManagementtErrorCode() {
-        return this.serverManagementtErrorCode;
+    public Integer serverManagementErrorCode() {
+        return this.serverManagementErrorCode;
     }
 
     /**
      * Set registered Server Management Error Code.
      *
-     * @param serverManagementtErrorCode the serverManagementtErrorCode value to set
+     * @param serverManagementErrorCode the serverManagementErrorCode value to set
      * @return the RegisteredServerInner object itself.
      */
-    public RegisteredServerInner withServerManagementtErrorCode(Integer serverManagementtErrorCode) {
-        this.serverManagementtErrorCode = serverManagementtErrorCode;
+    public RegisteredServerInner withServerManagementErrorCode(Integer serverManagementErrorCode) {
+        this.serverManagementErrorCode = serverManagementErrorCode;
         return this;
     }
 
