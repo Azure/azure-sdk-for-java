@@ -35,6 +35,18 @@ public class ServerEndpointUpdateParameters {
     private Integer tierFilesOlderThanDays;
 
     /**
+     * Offline data transfer. Possible values include: 'on', 'off'.
+     */
+    @JsonProperty(value = "properties.offlineDataTransfer")
+    private String offlineDataTransfer;
+
+    /**
+     * Offline data transfer share name.
+     */
+    @JsonProperty(value = "properties.offlineDataTransferShareName")
+    private String offlineDataTransferShareName;
+
+    /**
      * Get cloud Tiering. Possible values include: 'on', 'off'.
      *
      * @return the cloudTiering value
@@ -91,6 +103,46 @@ public class ServerEndpointUpdateParameters {
      */
     public ServerEndpointUpdateParameters withTierFilesOlderThanDays(Integer tierFilesOlderThanDays) {
         this.tierFilesOlderThanDays = tierFilesOlderThanDays;
+        return this;
+    }
+
+    /**
+     * Get offline data transfer. Possible values include: 'on', 'off'.
+     *
+     * @return the offlineDataTransfer value
+     */
+    public String offlineDataTransfer() {
+        return this.offlineDataTransfer;
+    }
+
+    /**
+     * Set offline data transfer. Possible values include: 'on', 'off'.
+     *
+     * @param offlineDataTransfer the offlineDataTransfer value to set
+     * @return the ServerEndpointUpdateParameters object itself.
+     */
+    public ServerEndpointUpdateParameters withOfflineDataTransfer(String offlineDataTransfer) {
+        this.offlineDataTransfer = offlineDataTransfer;
+        return this;
+    }
+
+    /**
+     * Get offline data transfer share name.
+     *
+     * @return the offlineDataTransferShareName value
+     */
+    public String offlineDataTransferShareName() {
+        return this.offlineDataTransferShareName;
+    }
+
+    /**
+     * Set offline data transfer share name.
+     *
+     * @param offlineDataTransferShareName the offlineDataTransferShareName value to set
+     * @return the ServerEndpointUpdateParameters object itself.
+     */
+    public ServerEndpointUpdateParameters withOfflineDataTransferShareName(String offlineDataTransferShareName) {
+        this.offlineDataTransferShareName = offlineDataTransferShareName;
         return this;
     }
 

@@ -254,7 +254,7 @@ public class StorageSyncManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2018-07-01";
+        this.apiVersion = "2018-10-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -275,6 +275,6 @@ public class StorageSyncManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "StorageSyncManagementClient", "2018-07-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "StorageSyncManagementClient", "2018-10-01");
     }
 }

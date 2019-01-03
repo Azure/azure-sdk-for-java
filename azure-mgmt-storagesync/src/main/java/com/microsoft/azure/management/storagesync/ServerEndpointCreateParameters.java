@@ -54,6 +54,18 @@ public class ServerEndpointCreateParameters extends ProxyResource {
     private String serverResourceId;
 
     /**
+     * Offline data transfer. Possible values include: 'on', 'off'.
+     */
+    @JsonProperty(value = "properties.offlineDataTransfer")
+    private String offlineDataTransfer;
+
+    /**
+     * Offline data transfer share name.
+     */
+    @JsonProperty(value = "properties.offlineDataTransferShareName")
+    private String offlineDataTransferShareName;
+
+    /**
      * Get server Local path.
      *
      * @return the serverLocalPath value
@@ -170,6 +182,46 @@ public class ServerEndpointCreateParameters extends ProxyResource {
      */
     public ServerEndpointCreateParameters withServerResourceId(String serverResourceId) {
         this.serverResourceId = serverResourceId;
+        return this;
+    }
+
+    /**
+     * Get offline data transfer. Possible values include: 'on', 'off'.
+     *
+     * @return the offlineDataTransfer value
+     */
+    public String offlineDataTransfer() {
+        return this.offlineDataTransfer;
+    }
+
+    /**
+     * Set offline data transfer. Possible values include: 'on', 'off'.
+     *
+     * @param offlineDataTransfer the offlineDataTransfer value to set
+     * @return the ServerEndpointCreateParameters object itself.
+     */
+    public ServerEndpointCreateParameters withOfflineDataTransfer(String offlineDataTransfer) {
+        this.offlineDataTransfer = offlineDataTransfer;
+        return this;
+    }
+
+    /**
+     * Get offline data transfer share name.
+     *
+     * @return the offlineDataTransferShareName value
+     */
+    public String offlineDataTransferShareName() {
+        return this.offlineDataTransferShareName;
+    }
+
+    /**
+     * Set offline data transfer share name.
+     *
+     * @param offlineDataTransferShareName the offlineDataTransferShareName value to set
+     * @return the ServerEndpointCreateParameters object itself.
+     */
+    public ServerEndpointCreateParameters withOfflineDataTransferShareName(String offlineDataTransferShareName) {
+        this.offlineDataTransferShareName = offlineDataTransferShareName;
         return this;
     }
 
