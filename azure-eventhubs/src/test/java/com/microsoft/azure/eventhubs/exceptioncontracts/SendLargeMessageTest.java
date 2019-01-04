@@ -56,8 +56,8 @@ public class SendLargeMessageTest extends ApiTestBase {
     }
 
     @Test(expected = PayloadSizeExceededException.class)
-    public void sendMsgLargerThan256K() throws EventHubException, InterruptedException, ExecutionException, IOException {
-        int msgSize = 256 * 1024;
+    public void sendMsgLargerThan1024K() throws EventHubException, InterruptedException, ExecutionException, IOException {
+        int msgSize = 1024 * 1024 * 2;
         byte[] body = new byte[msgSize];
         for (int i = 0; i < msgSize; i++) {
             body[i] = 1;

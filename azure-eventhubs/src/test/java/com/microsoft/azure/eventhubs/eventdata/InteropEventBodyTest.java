@@ -37,7 +37,6 @@ public class InteropEventBodyTest extends ApiTestBase {
     static PartitionSender partitionSender;
     static EventData receivedEvent;
     static EventData reSentAndReceivedEvent;
-    static Message reSendAndReceivedMessage;
 
     @BeforeClass
     public static void initialize() throws EventHubException, IOException, InterruptedException, ExecutionException {

@@ -5,7 +5,6 @@
 package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.EventHubException;
-import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -13,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.function.BiConsumer;
@@ -24,20 +24,29 @@ public class SessionHandler extends BaseHandler {
     private final String entityName;
     private final Consumer<Session> onRemoteSessionOpen;
     private final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError;
+    private final Duration openTimeout;
 
     private boolean sessionCreated = false;
     private boolean sessionOpenErrorDispatched = false;
 
-    public SessionHandler(final String entityName, final Consumer<Session> onRemoteSessionOpen, final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError) {
+    public SessionHandler(final String entityName,
+                          final Consumer<Session> onRemoteSessionOpen,
+                          final BiConsumer<ErrorCondition, Exception> onRemoteSessionOpenError,
+                          final Duration openTimeout) {
         this.entityName = entityName;
         this.onRemoteSessionOpenError = onRemoteSessionOpenError;
         this.onRemoteSessionOpen = onRemoteSessionOpen;
+        this.openTimeout = openTimeout;
     }
 
     @Override
     public void onSessionLocalOpen(Event e) {
-        if (this.onRemoteSessionOpenError != null) {
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionLocalOpen entityName[%s], condition[%s]", this.entityName,
+                    e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
+        }
 
+        if (this.onRemoteSessionOpenError != null) {
             ReactorHandler reactorHandler = null;
             final Reactor reactor = e.getReactor();
             final Iterator<Handler> reactorEventHandlers = reactor.getHandler().children();
@@ -53,12 +62,11 @@ public class SessionHandler extends BaseHandler {
             final Session session = e.getSession();
 
             try {
-
-                reactorDispatcher.invoke(ClientConstants.SESSION_OPEN_TIMEOUT_IN_MS, new SessionTimeoutHandler(session));
-            } catch (IOException ignore) {
-
+                reactorDispatcher.invoke((int) this.openTimeout.toMillis(), new SessionTimeoutHandler(session, entityName));
+            } catch (IOException ioException) {
                 if (TRACE_LOGGER.isWarnEnabled()) {
-                    TRACE_LOGGER.warn(String.format(Locale.US, "entityName[%s], reactorDispatcherError[%s]", this.entityName, ignore.getMessage()));
+                    TRACE_LOGGER.warn(String.format(Locale.US, "onSessionLocalOpen entityName[%s], reactorDispatcherError[%s]",
+                            this.entityName, ioException.getMessage()));
                 }
 
                 session.close();
@@ -66,8 +74,8 @@ public class SessionHandler extends BaseHandler {
                         null,
                         new EventHubException(
                                 false,
-                                String.format("underlying IO of reactorDispatcher faulted with error: %s", ignore.getMessage()),
-                                ignore));
+                                String.format("onSessionLocalOpen entityName[%s], underlying IO of reactorDispatcher faulted with error: %s",
+                                        this.entityName, ioException.getMessage()), ioException));
             }
         }
     }
@@ -75,7 +83,7 @@ public class SessionHandler extends BaseHandler {
     @Override
     public void onSessionRemoteOpen(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteOpen entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
                     this.entityName, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
         }
 
@@ -89,11 +97,10 @@ public class SessionHandler extends BaseHandler {
             this.onRemoteSessionOpen.accept(session);
     }
 
-
     @Override
     public void onSessionLocalClose(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionLocalClose entityName[%s], condition[%s]", this.entityName,
                     e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
         }
     }
@@ -101,63 +108,67 @@ public class SessionHandler extends BaseHandler {
     @Override
     public void onSessionRemoteClose(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteClose entityName[%s], condition[%s]", this.entityName,
                     e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
         }
 
         final Session session = e.getSession();
+        ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
+
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
+            if (TRACE_LOGGER.isInfoEnabled()) {
+                TRACE_LOGGER.info(String.format(Locale.US, "onSessionRemoteClose closing a local session for entityName[%s], condition[%s], description[%s]",
+                        this.entityName,
+                        condition != null ? condition.getCondition() : "n/a",
+                        condition != null ? condition.getDescription() : "n/a"));
+            }
+
+            session.setCondition(session.getRemoteCondition());
             session.close();
         }
 
         this.sessionOpenErrorDispatched = true;
         if (!sessionCreated && this.onRemoteSessionOpenError != null)
-            this.onRemoteSessionOpenError.accept(session.getRemoteCondition(), null);
+            this.onRemoteSessionOpenError.accept(condition, null);
     }
 
     @Override
     public void onSessionFinal(Event e) {
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info(String.format(Locale.US, "entityName[%s]", this.entityName));
+            final Session session = e.getSession();
+            ErrorCondition condition = session != null ? session.getCondition() : null;
+
+            TRACE_LOGGER.info(String.format(Locale.US, "onSessionFinal entityName[%s], condition[%s], description[%s]",
+                    this.entityName,
+                    condition != null ? condition.getCondition() : "n/a",
+                    condition != null ? condition.getDescription() : "n/a"));
         }
     }
 
     private class SessionTimeoutHandler extends DispatchHandler {
 
         private final Session session;
+        private final String entityName;
 
-        public SessionTimeoutHandler(final Session session) {
+        SessionTimeoutHandler(final Session session, final String entityName) {
             this.session = session;
+            this.entityName = entityName;
         }
 
         @Override
         public void onEvent() {
+            // It is supposed to close a local session to handle timeout exception.
+            // However, closing the session can result in NPE because of proton-j bug (https://issues.apache.org/jira/browse/PROTON-1939).
+            // And the bug will cause the reactor thread to stop processing pending tasks scheduled on the reactor and
+            // as a result task won't be completed at all.
 
-            // notify - if connection or transport error'ed out before even session open completed
+            // TODO: handle timeout error once the proton-j bug is fixed.
+
             if (!sessionCreated && !sessionOpenErrorDispatched) {
-
-                final Connection connection = session.getConnection();
-
-                if (connection != null) {
-
-                    if (connection.getRemoteCondition() != null && connection.getRemoteCondition().getCondition() != null) {
-
-                        session.close();
-                        onRemoteSessionOpenError.accept(connection.getRemoteCondition(), null);
-                        return;
-                    }
-
-                    final Transport transport = connection.getTransport();
-                    if (transport != null && transport.getCondition() != null && transport.getCondition().getCondition() != null) {
-
-                        session.close();
-                        onRemoteSessionOpenError.accept(transport.getCondition(), null);
-                        return;
-                    }
+                if (TRACE_LOGGER.isWarnEnabled()) {
+                    TRACE_LOGGER.warn(String.format(Locale.US, "SessionTimeoutHandler.onEvent - entityName[%s], session open timed out.",
+                            this.entityName));
                 }
-
-                session.close();
-                onRemoteSessionOpenError.accept(null, new TimeoutException("session creation timedout."));
             }
         }
     }

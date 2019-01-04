@@ -5,38 +5,24 @@
 package com.microsoft.azure.eventhubs.impl;
 
 
+import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.BaseHandler;
-import org.apache.qpid.proton.engine.Connection;
-import org.apache.qpid.proton.engine.Event;
-import org.apache.qpid.proton.engine.EndpointState;
-import org.apache.qpid.proton.engine.Handler;
-import org.apache.qpid.proton.engine.HandlerException;
-import org.apache.qpid.proton.engine.Link;
+import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.Reactor;
-import org.apache.qpid.proton.engine.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
-import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-
-import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.CommunicationException;
-import com.microsoft.azure.eventhubs.EventHubException;
-import com.microsoft.azure.eventhubs.OperationCancelledException;
-import com.microsoft.azure.eventhubs.RetryPolicy;
-import com.microsoft.azure.eventhubs.TimeoutException;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
@@ -57,26 +43,25 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     private final ReactorFactory reactorFactory;
 
     private Reactor reactor;
-    private ReactorDispatcher reactorScheduler;
+    private ReactorDispatcher reactorDispatcher;
     private Connection connection;
     private CBSChannel cbsChannel;
     private ManagementChannel mgmtChannel;
-
     private Duration operationTimeout;
     private RetryPolicy retryPolicy;
     private CompletableFuture<MessagingFactory> open;
     private CompletableFuture<?> openTimer;
     private CompletableFuture<?> closeTimer;
+    private String reactorCreationTime;
 
     MessagingFactory(final ConnectionStringBuilder builder,
                      final RetryPolicy retryPolicy,
-                     final Executor executor,
+                     final ScheduledExecutorService executor,
                      final ReactorFactory reactorFactory) {
         super("MessagingFactory".concat(StringUtil.getRandomString()), null, executor);
 
         this.hostName = builder.getEndpoint().getHost();
         this.reactorFactory = reactorFactory;
-
         this.operationTimeout = builder.getOperationTimeout();
         this.retryPolicy = retryPolicy;
         this.registeredLinks = new LinkedList<>();
@@ -91,21 +76,21 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         this.closeTask = new CompletableFuture<>();
     }
 
-    public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString, final Executor executor) throws IOException {
+    public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString, final ScheduledExecutorService executor) throws IOException {
         return createFromConnectionString(connectionString, RetryPolicy.getDefault(), executor);
     }
 
     public static CompletableFuture<MessagingFactory> createFromConnectionString(
             final String connectionString,
             final RetryPolicy retryPolicy,
-            final Executor executor) throws IOException {
+            final ScheduledExecutorService executor) throws IOException {
         return createFromConnectionString(connectionString, retryPolicy, executor, new ReactorFactory());
     }
 
     public static CompletableFuture<MessagingFactory> createFromConnectionString(
             final String connectionString,
             final RetryPolicy retryPolicy,
-            final Executor executor,
+            final ScheduledExecutorService executor,
             final ReactorFactory reactorFactory) throws IOException {
         final ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
         final MessagingFactory messagingFactory = new MessagingFactory(builder,
@@ -153,9 +138,9 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         }
     }
 
-    public ReactorDispatcher getReactorScheduler() {
+    public ReactorDispatcher getReactorDispatcher() {
         synchronized (this.reactorLock) {
-            return this.reactorScheduler;
+            return this.reactorDispatcher;
         }
     }
 
@@ -165,27 +150,18 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
     private void createConnection() throws IOException {
         this.open = new CompletableFuture<>();
-        this.startReactor(new ReactorHandler() {
-            @Override
-            public void onReactorInit(Event e) {
-                super.onReactorInit(e);
-
-                final Reactor r = e.getReactor();
-                connection = r.connectionToHost(
-                        connectionHandler.getRemoteHostName(),
-                        connectionHandler.getRemotePort(),
-                        connectionHandler);
-            }
-        });
+        this.startReactor(new ReactorHandlerWithConnection());
     }
 
     private void startReactor(final ReactorHandler reactorHandler) throws IOException {
         final Reactor newReactor = this.reactorFactory.create(reactorHandler, this.connectionHandler.getMaxFrameSize());
         synchronized (this.reactorLock) {
             this.reactor = newReactor;
-            this.reactorScheduler = new ReactorDispatcher(newReactor);
-            reactorHandler.unsafeSetReactorDispatcher(this.reactorScheduler);
+            this.reactorDispatcher = new ReactorDispatcher(newReactor);
+            reactorHandler.unsafeSetReactorDispatcher(this.reactorDispatcher);
         }
+
+        this.reactorCreationTime = Instant.now().toString();
 
         executor.execute(new RunReactor(newReactor, executor));
     }
@@ -226,7 +202,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         }
 
         final Session session = this.connection.session();
-        BaseHandler.setHandler(session, new SessionHandler(path, onRemoteSessionOpen, onRemoteSessionOpenError));
+        BaseHandler.setHandler(session, new SessionHandler(path, onRemoteSessionOpen, onRemoteSessionOpenError, this.operationTimeout));
         session.open();
 
         return session;
@@ -258,16 +234,36 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
     @Override
     public void onConnectionError(ErrorCondition error) {
+        if (TRACE_LOGGER.isWarnEnabled()) {
+            TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError: messagingFactory[%s], hostname[%s], error[%s]",
+                    this.getClientId(),
+                    this.hostName,
+                    error != null ? error.getDescription() : "n/a"));
+        }
 
         if (!this.open.isDone()) {
+            if (TRACE_LOGGER.isWarnEnabled()) {
+                TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError: messagingFactory[%s], hostname[%s], open hasn't complete, stopping the reactor",
+                        this.getClientId(),
+                        this.hostName));
+            }
+
             this.getReactor().stop();
             this.onOpenComplete(ExceptionUtil.toException(error));
         } else {
-            final Connection currentConnection = this.connection;
-            final List<Link> registeredLinksCopy = new LinkedList<>(this.registeredLinks);
+            final Connection oldConnection = this.connection;
+            final List<Link> oldRegisteredLinksCopy = new LinkedList<>(this.registeredLinks);
             final List<Link> closedLinks = new LinkedList<>();
-            for (Link link : registeredLinksCopy) {
+
+            for (Link link : oldRegisteredLinksCopy) {
                 if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED) {
+                    if (TRACE_LOGGER.isWarnEnabled()) {
+                        TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError: messagingFactory[%s], hostname[%s], closing link [%s]",
+                                this.getClientId(),
+                                this.hostName, link.getName()));
+                    }
+
+                    link.setCondition(error);
                     link.close();
                     closedLinks.add(link);
                 }
@@ -275,11 +271,18 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
             // if proton-j detects transport error - onConnectionError is invoked, but, the connection state is not set to closed
             // in connection recreation we depend on currentConnection state to evaluate need for recreation
-            if (currentConnection.getLocalState() != EndpointState.CLOSED) {
+            if (oldConnection.getLocalState() != EndpointState.CLOSED) {
+                if (TRACE_LOGGER.isWarnEnabled()) {
+                    TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError: messagingFactory[%s], hostname[%s], closing current connection",
+                            this.getClientId(),
+                            this.hostName));
+                }
+
                 // this should ideally be done in Connectionhandler
                 // - but, since proton doesn't automatically emit close events
                 // for all child objects (links & sessions) we are doing it here
-                currentConnection.close();
+                oldConnection.setCondition(error);
+                oldConnection.close();
             }
 
             for (Link link : closedLinks) {
@@ -300,19 +303,29 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         if (!this.open.isDone()) {
             this.onOpenComplete(cause);
         } else {
-            final Connection currentConnection = this.connection;
+            if (this.getIsClosingOrClosed()) {
+                return;
+            }
+
+            TRACE_LOGGER.warn(String.format(Locale.US, "onReactorError messagingFactory[%s], hostName[%s], error[%s]",
+                    this.getClientId(), this.getHostName(),
+                    cause.getMessage()));
+
+            final Connection oldConnection = this.connection;
+            final List<Link> oldRegisteredLinksCopy = new LinkedList<>(this.registeredLinks);
 
             try {
-                if (this.getIsClosingOrClosed()) {
-                    return;
-                } else {
-                    this.startReactor(new ReactorHandler());
-                }
+                TRACE_LOGGER.info(String.format(Locale.US, "onReactorError messagingFactory[%s], hostName[%s], message[%s]",
+                        this.getClientId(), this.getHostName(),
+                        "starting new reactor"));
+
+                this.startReactor(new ReactorHandlerWithConnection());
             } catch (IOException e) {
                 TRACE_LOGGER.error(String.format(Locale.US, "messagingFactory[%s], hostName[%s], error[%s]",
                         this.getClientId(), this.getHostName(),
                         ExceptionUtil.toStackTraceString(e, "Re-starting reactor failed with error")));
 
+                // TODO - stop retrying on the error after multiple attempts.
                 this.onReactorError(cause);
             }
 
@@ -320,12 +333,11 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             // below .close() calls (local closes).
             // But, we still need to change the states of these to Closed - so that subsequent retries - will
             // treat the links and connection as closed and re-establish them and continue running on new Reactor instance.
-            if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED) {
-                currentConnection.close();
+            if (oldConnection.getLocalState() != EndpointState.CLOSED && oldConnection.getRemoteState() != EndpointState.CLOSED) {
+                oldConnection.close();
             }
 
-            final List<Link> registeredLinksCopy = new LinkedList<>(this.registeredLinks);
-            for (final Link link : registeredLinksCopy) {
+            for (final Link link : oldRegisteredLinksCopy) {
                 if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED) {
                     link.close();
                 }
@@ -379,11 +391,11 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     public void scheduleOnReactorThread(final DispatchHandler handler) throws IOException, RejectedExecutionException {
-        this.getReactorScheduler().invoke(handler);
+        this.getReactorDispatcher().invoke(handler);
     }
 
     public void scheduleOnReactorThread(final int delay, final DispatchHandler handler) throws IOException, RejectedExecutionException {
-        this.getReactorScheduler().invoke(delay, handler);
+        this.getReactorDispatcher().invoke(delay, handler);
     }
 
     public static class ReactorFactory {
@@ -396,15 +408,12 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     private class CloseWork extends DispatchHandler {
         @Override
         public void onEvent() {
-            final ReactorDispatcher dispatcher = getReactorScheduler();
+            final ReactorDispatcher dispatcher = getReactorDispatcher();
             synchronized (cbsChannelCreateLock) {
-
                 if (cbsChannel != null) {
-
                     cbsChannel.close(
                             dispatcher,
                             new OperationResult<Void, Exception>() {
-
                                 @Override
                                 public void onComplete(Void result) {
                                     if (TRACE_LOGGER.isInfoEnabled()) {
@@ -416,7 +425,6 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
                                 @Override
                                 public void onError(Exception error) {
-
                                     if (TRACE_LOGGER.isWarnEnabled()) {
                                         TRACE_LOGGER.warn(String.format(Locale.US,
                                                 "messagingFactory[%s], hostName[%s], cbsChannelCloseError[%s]",
@@ -428,12 +436,10 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             }
 
             synchronized (mgmtChannelCreateLock) {
-
                 if (mgmtChannel != null) {
                     mgmtChannel.close(
                             dispatcher,
                             new OperationResult<Void, Exception>() {
-
                                 @Override
                                 public void onComplete(Void result) {
                                     if (TRACE_LOGGER.isInfoEnabled()) {
@@ -456,33 +462,34 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 }
             }
 
-            if (connection != null && connection.getRemoteState() != EndpointState.CLOSED && connection.getLocalState() != EndpointState.CLOSED)
+            if (connection != null && connection.getRemoteState() != EndpointState.CLOSED && connection.getLocalState() != EndpointState.CLOSED) {
                 connection.close();
+            }
         }
     }
 
     private class RunReactor implements Runnable {
         final private Reactor rctr;
-        final private Executor executor;
+        final private ScheduledExecutorService executor;
 
         volatile boolean hasStarted;
 
-        public RunReactor(final Reactor reactor, final Executor executor) {
+        public RunReactor(final Reactor reactor, final ScheduledExecutorService executor) {
             this.rctr = reactor;
             this.executor = executor;
             this.hasStarted = false;
         }
 
         public void run() {
-            if (TRACE_LOGGER.isInfoEnabled() && !this.hasStarted) {
-                TRACE_LOGGER.info(String.format(Locale.US, "messagingFactory[%s], hostName[%s], info[%s]",
-                        getClientId(), getHostName(), "starting reactor instance."));
-            }
-
             boolean reScheduledReactor = false;
 
             try {
                 if (!this.hasStarted) {
+                    if (TRACE_LOGGER.isInfoEnabled()) {
+                        TRACE_LOGGER.info(String.format(Locale.US, "messagingFactory[%s], hostName[%s], info[%s]",
+                                getClientId(), getHostName(), "starting reactor instance."));
+                    }
+
                     this.rctr.start();
                     this.hasStarted = true;
                 }
@@ -495,13 +502,19 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                         if (TRACE_LOGGER.isWarnEnabled()) {
                             TRACE_LOGGER.warn(String.format(Locale.US, "messagingFactory[%s], hostName[%s], error[%s]",
                                     getClientId(), getHostName(),
-                                    ExceptionUtil.toStackTraceString(exception, "scheduling reactor failed")));
+                                    ExceptionUtil.toStackTraceString(exception, "scheduling reactor failed because the executor has been shut down")));
                         }
 
                         this.rctr.attachments().set(RejectedExecutionException.class, RejectedExecutionException.class, exception);
                     }
 
                     return;
+                }
+
+                if (TRACE_LOGGER.isWarnEnabled()) {
+                    TRACE_LOGGER.warn(String.format(Locale.US, "messagingFactory[%s], hostName[%s], message[%s]",
+                            getClientId(), getHostName(),
+                            "stopping the reactor because thread was interrupted or the reactor has no more events to process."));
                 }
 
                 this.rctr.stop();
@@ -543,15 +556,55 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                     return;
                 }
 
-                this.rctr.free();
-
                 if (getIsClosingOrClosed() && !closeTask.isDone()) {
+                    this.rctr.free();
                     closeTask.complete(null);
-
-                    if (closeTimer != null)
+                    if (closeTimer != null) {
                         closeTimer.cancel(false);
+                    }
+                } else {
+                    scheduleCompletePendingTasks();
                 }
             }
+        }
+
+        private void scheduleCompletePendingTasks() {
+            this.executor.schedule(new Runnable() {
+                @Override
+                public void run() {
+                    if (TRACE_LOGGER.isWarnEnabled()) {
+                        TRACE_LOGGER.warn(String.format(Locale.US, "messagingFactory[%s], hostName[%s], message[%s]",
+                                getClientId(), getHostName(),
+                                "Processing all pending tasks and closing old reactor."));
+                    }
+
+                    try {
+                        rctr.stop();
+                        rctr.process();
+                    } catch (HandlerException e) {
+                        if (TRACE_LOGGER.isWarnEnabled()) {
+                            TRACE_LOGGER.warn(String.format(Locale.US, "messagingFactory[%s], hostName[%s], error[%s]",
+                                    getClientId(), getHostName(), ExceptionUtil.toStackTraceString(e,
+                                            "scheduleCompletePendingTasks - exception occurred while processing events.")));
+                        }
+                    } finally {
+                        rctr.free();
+                    }
+                }
+            }, MessagingFactory.this.getOperationTimeout().getSeconds(), TimeUnit.SECONDS);
+        }
+    }
+
+    private class ReactorHandlerWithConnection extends ReactorHandler {
+        @Override
+        public void onReactorInit(Event e) {
+            super.onReactorInit(e);
+
+            final Reactor r = e.getReactor();
+            connection = r.connectionToHost(
+                    connectionHandler.getRemoteHostName(),
+                    connectionHandler.getRemotePort(),
+                    connectionHandler);
         }
     }
 }

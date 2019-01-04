@@ -32,6 +32,7 @@ public class ReceivePumpTest {
     public void testPumpOnReceiveEventFlow() throws Exception {
         final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
+                "eventhub1", "consumerGroup1",
                 new ReceivePump.IPartitionReceiver() {
                     @Override
                     public CompletableFuture<Iterable<EventData>> receive(int maxBatchSize) {
@@ -82,6 +83,7 @@ public class ReceivePumpTest {
     public void testPumpReceiveTransientErrorsPropagated() throws Exception {
         final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
+                "eventhub1", "consumerGroup1",
                 new ReceivePump.IPartitionReceiver() {
                     @Override
                     public CompletableFuture<Iterable<EventData>> receive(int maxBatchSize) {
@@ -128,6 +130,7 @@ public class ReceivePumpTest {
     public void testPumpReceiveExceptionsPropagated() throws Exception {
         final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
+                "eventhub1", "consumerGroup1",
                 new ReceivePump.IPartitionReceiver() {
                     @Override
                     public CompletableFuture<Iterable<EventData>> receive(int maxBatchSize) {
@@ -175,6 +178,7 @@ public class ReceivePumpTest {
         final String runtimeExceptionMsg = "random exception";
         final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
+                "eventhub1", "consumerGroup1",
                 new ReceivePump.IPartitionReceiver() {
                     @Override
                     public CompletableFuture<Iterable<EventData>> receive(int maxBatchSize) {

@@ -14,6 +14,7 @@ public final class PartitionRuntimeInformation {
     private final long lastEnqueuedSequenceNumber;
     private final String lastEnqueuedOffset;
     private final Instant lastEnqueuedTimeUtc;
+    private final boolean isEmpty;
 
     public PartitionRuntimeInformation(
             final String eventHubPath,
@@ -21,7 +22,8 @@ public final class PartitionRuntimeInformation {
             final long beginSequenceNumber,
             final long lastEnqueuedSequenceNumber,
             final String lastEnqueuedOffset,
-            final Instant lastEnqueuedTimeUtc) {
+            final Instant lastEnqueuedTimeUtc,
+            final boolean isEmpty) {
 
         this.eventHubPath = eventHubPath;
         this.partitionId = partitionId;
@@ -29,6 +31,7 @@ public final class PartitionRuntimeInformation {
         this.lastEnqueuedSequenceNumber = lastEnqueuedSequenceNumber;
         this.lastEnqueuedOffset = lastEnqueuedOffset;
         this.lastEnqueuedTimeUtc = lastEnqueuedTimeUtc;
+        this.isEmpty = isEmpty;
     }
 
     public String getEventHubPath() {
@@ -53,5 +56,9 @@ public final class PartitionRuntimeInformation {
 
     public Instant getLastEnqueuedTimeUtc() {
         return this.lastEnqueuedTimeUtc;
+    }
+
+    public boolean getIsEmpty() {
+        return this.isEmpty;
     }
 }

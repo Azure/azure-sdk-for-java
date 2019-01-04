@@ -69,10 +69,8 @@ public class ReceivePumpEventHubTest extends ApiTestBase {
     @Test(expected = IllegalArgumentException.class)
     public void testInvokeWithInvalidArgs() throws Throwable {
         final CompletableFuture<Void> invokeSignal = new CompletableFuture<Void>();
-        final int prefetchCount = 1000;
         receiver.setReceiveTimeout(Duration.ofSeconds(1));
-        receiver.setPrefetchCount(prefetchCount);
-        receiver.setReceiveHandler(new InvokeOnReceiveEventValidator(invokeSignal, prefetchCount + 1), true);
+        receiver.setReceiveHandler(new InvokeOnReceiveEventValidator(invokeSignal, PartitionReceiver.DEFAULT_PREFETCH_COUNT + 1), true);
         try {
             invokeSignal.get(3, TimeUnit.SECONDS);
         } catch (ExecutionException executionException) {

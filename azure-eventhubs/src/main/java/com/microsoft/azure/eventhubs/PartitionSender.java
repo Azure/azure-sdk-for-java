@@ -7,14 +7,14 @@ package com.microsoft.azure.eventhubs;
 import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * This sender class is a logical representation of sending events to a specific EventHub partition. Do not use this class
  * if you do not care about sending events to specific partitions. Instead, use {@link EventHubClient#send} method.
  *
  * @see EventHubClient#createPartitionSender(String)
- * @see EventHubClient#create(String, Executor)
+ * @see EventHubClient#create(String, ScheduledExecutorService)
  */
 public interface PartitionSender {
 

@@ -6,6 +6,8 @@ package com.microsoft.azure.eventhubs;
 
 import com.microsoft.azure.eventhubs.impl.ClientConstants;
 
+import java.util.Locale;
+
 /**
  * Represents various optional behaviors which can be turned on or off during the creation of a {@link PartitionReceiver}.
  */
@@ -13,6 +15,11 @@ public final class ReceiverOptions {
 
     private boolean receiverRuntimeMetricEnabled;
     private String identifier;
+    private int prefetchCount;
+
+    public ReceiverOptions() {
+        this.prefetchCount = PartitionReceiver.DEFAULT_PREFETCH_COUNT;
+    }
 
     private static void validateReceiverIdentifier(final String receiverName) {
 
@@ -37,7 +44,8 @@ public final class ReceiverOptions {
 
     /**
      * Knob to enable/disable runtime metric of the receiver. If this is set to true and is passed to {@link EventHubClient#createReceiver},
-     * after the first {@link PartitionReceiver#receive(int)} call, {@link PartitionReceiver#getRuntimeInformation()} is populated.
+     * after the first {@link PartitionReceiver#receive(int)} call, {@link PartitionReceiver#getRuntimeInformation()} and
+     * {@link PartitionReceiver#getEventPosition()} will be populated.
      * <p>
      * This knob facilitates for an optimization where the Consumer of Event Hub has the end of stream details at the disposal,
      * without making any additional {@link EventHubClient#getPartitionRuntimeInformation(String)} call to Event Hubs service.
@@ -80,5 +88,36 @@ public final class ReceiverOptions {
 
         ReceiverOptions.validateReceiverIdentifier(value);
         this.identifier = value;
+    }
+
+    /**
+     * Get Prefetch Count.
+     *
+     * @return the upper limit of events this receiver will actively receive regardless of whether a receive operation is pending.
+     * @see #setPrefetchCount
+     */
+    public int getPrefetchCount() {
+        return this.prefetchCount;
+    }
+
+    /**
+     * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver}.
+     * <p>By default the value is 500
+     *
+     * @param prefetchCount the number of events to pre-fetch. value must be between 1 and 2000.
+     * @throws EventHubException if setting prefetchCount encounters error
+     */
+    public void setPrefetchCount(final int prefetchCount) throws EventHubException {
+        if (prefetchCount < PartitionReceiver.MINIMUM_PREFETCH_COUNT) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                    "PrefetchCount has to be above %s", PartitionReceiver.MINIMUM_PREFETCH_COUNT));
+        }
+
+        if (prefetchCount > PartitionReceiver.MAXIMUM_PREFETCH_COUNT) {
+            throw new IllegalArgumentException(String.format(Locale.US,
+                    "PrefetchCount has to be below %s", PartitionReceiver.MAXIMUM_PREFETCH_COUNT));
+        }
+
+        this.prefetchCount = prefetchCount;
     }
 }

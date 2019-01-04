@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -37,15 +37,15 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
 
     private CompletableFuture<Void> createSender;
 
-    private EventHubClientImpl(final ConnectionStringBuilder connectionString, final Executor executor) {
-        super(StringUtil.getRandomString(), null, executor);
+    private EventHubClientImpl(final ConnectionStringBuilder connectionString, final ScheduledExecutorService executor) {
+        super("EventHubClientImpl".concat(StringUtil.getRandomString()), null, executor);
 
         this.eventHubName = connectionString.getEventHubName();
         this.senderCreateSync = new Object();
     }
 
     public static CompletableFuture<EventHubClient> create(
-            final String connectionString, final RetryPolicy retryPolicy, final Executor executor)
+            final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
             throws EventHubException, IOException {
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr, executor);
@@ -220,7 +220,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         if (!this.isSenderCreateStarted) {
             synchronized (this.senderCreateSync) {
                 if (!this.isSenderCreateStarted) {
-                    this.createSender = MessageSender.create(this.underlyingFactory, StringUtil.getRandomString(), this.eventHubName)
+                    this.createSender = MessageSender.create(this.underlyingFactory, this.getClientId().concat("-InternalSender"), this.eventHubName)
                             .thenAcceptAsync(new Consumer<MessageSender>() {
                                 public void accept(MessageSender a) {
                                     EventHubClientImpl.this.sender = a;
@@ -281,15 +281,16 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         if (future1 == null) {
             future1 = managementWithRetry(request).thenComposeAsync(new Function<Map<String, Object>, CompletableFuture<PartitionRuntimeInformation>>() {
                 @Override
-                public CompletableFuture<PartitionRuntimeInformation> apply(Map<String, Object> rawdata) {
+                public CompletableFuture<PartitionRuntimeInformation> apply(Map<String, Object> rawData) {
                     CompletableFuture<PartitionRuntimeInformation> future2 = new CompletableFuture<PartitionRuntimeInformation>();
                     future2.complete(new PartitionRuntimeInformation(
-                            (String) rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
-                            (String) rawdata.get(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY),
-                            (long) rawdata.get(ClientConstants.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
-                            (long) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
-                            (String) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
-                            ((Date) rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant()));
+                            (String) rawData.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
+                            (String) rawData.get(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY),
+                            (long) rawData.get(ClientConstants.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),
+                            (long) rawData.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER),
+                            (String) rawData.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET),
+                            ((Date) rawData.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant(),
+                            (boolean) rawData.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_IS_EMPTY)));
                     return future2;
                 }
             }, this.executor);
@@ -348,7 +349,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         public void run() {
             final long timeLeft = this.timeoutTracker.remaining().toMillis();
             final CompletableFuture<Map<String, Object>> intermediateFuture = this.mf.getManagementChannel()
-                    .request(this.mf.getReactorScheduler(),
+                    .request(this.mf.getReactorDispatcher(),
                             this.request,
                             timeLeft > 0 ? timeLeft : 0);
 

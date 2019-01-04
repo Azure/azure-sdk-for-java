@@ -12,7 +12,7 @@ following dependency declaration inside of your Maven project file:
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId>
-   		<version>1.3.0</version>
+   		<version>2.0.0</version>
    	</dependency>
  ```
  
@@ -34,7 +34,7 @@ So, `EventHubClient` requires an instance of `Executor`, where all these tasks a
 
 
 ```Java
-    ExecutorService executor = Executors.newCachedThreadPool();
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(8)
 ```
 
 Using an Event Hub connection string, which holds all required connection information including an authorization key or token 

@@ -14,6 +14,7 @@ public interface PartitionReceiveHandler {
 
     /**
      * Maximum number of {@link EventData} to supply while invoking {@link #onReceive(Iterable)}
+     * <p>Ensure that the value should be less than or equal to the value of {@link ReceiverOptions#getPrefetchCount()}
      *
      * @return value indicating the maximum number of {@link EventData} to supply while invoking {@link #onReceive(Iterable)}
      */

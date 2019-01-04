@@ -20,12 +20,12 @@ public class EventDataBatchTest extends ApiTestBase {
     @Test(expected = PayloadSizeExceededException.class)
     public void payloadExceededException() throws EventHubException, IOException {
         final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
-        ehClient = EventHubClient.createSync(connStrBuilder.toString(), Executors.newSingleThreadExecutor());
+        ehClient = EventHubClient.createSync(connStrBuilder.toString(), Executors.newScheduledThreadPool(1));
 
         final EventDataBatch batch = ehClient.createBatch();
 
         final EventData within = EventData.create(new byte[1024]);
-        final EventData tooBig = EventData.create(new byte[1024 * 500]);
+        final EventData tooBig = EventData.create(new byte[1024 * 1024 * 2]);
 
         Assert.assertTrue(batch.tryAdd(within));
         batch.tryAdd(tooBig);

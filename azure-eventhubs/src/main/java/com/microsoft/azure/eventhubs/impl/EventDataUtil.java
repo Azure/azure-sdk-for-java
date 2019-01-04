@@ -5,6 +5,7 @@
 package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventPosition;
 import org.apache.qpid.proton.message.Message;
 
 import java.util.*;
@@ -27,7 +28,7 @@ final class EventDataUtil {
     private EventDataUtil() {
     }
 
-    static LinkedList<EventData> toEventDataCollection(final Collection<Message> messages, final PassByRef<Message> lastMessageRef) {
+    static LinkedList<EventData> toEventDataCollection(final Collection<Message> messages, final PassByRef<MessageWrapper> lastMessageRef) {
 
         if (messages == null) {
             return null;
@@ -35,11 +36,13 @@ final class EventDataUtil {
 
         LinkedList<EventData> events = new LinkedList<>();
         for (Message message : messages) {
+            EventData eventData = new EventDataImpl(message);
+            events.add(eventData);
 
-            events.add(new EventDataImpl(message));
-
-            if (lastMessageRef != null)
-                lastMessageRef.set(message);
+            if (lastMessageRef != null) {
+                lastMessageRef.set(new MessageWrapper(message,
+                        EventPosition.fromSequenceNumber(eventData.getSystemProperties().getSequenceNumber(), true)));
+            }
         }
 
         return events;
