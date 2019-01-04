@@ -31,12 +31,9 @@ import com.microsoft.rest.v2.policy.RetryPolicyFactory;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.SerializerEncoding;
 import com.microsoft.rest.v2.util.TypeUtil;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.exceptions.Exceptions;
-import io.reactivex.functions.Function;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -45,7 +42,8 @@ import java.lang.reflect.Type;
 import java.net.NetworkInterface;
 import java.security.MessageDigest;
 import java.util.Enumeration;
-import java.util.concurrent.Callable;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * This class can be used to create an Azure specific proxy implementation for a provided Swagger
@@ -259,67 +257,42 @@ public final class AzureProxy extends RestProxy {
     }
 
     @Override
-    protected Object handleAsyncHttpResponse(final HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
-        Object result;
-
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, Observable.class)) {
+    protected Object handleAsyncHttpResponse(final HttpRequest httpRequest, Mono<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
+        //
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
             if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
-                throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Observable (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Observable's inner type that is OperationStatus (not " + returnType.toString() + ").");
-            }
-            else {
+                throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ").");
+            } else {
                 final Type operationStatusResultType = ((ParameterizedType) operationStatusType).getActualTypeArguments()[0];
-                result = asyncHttpResponse.flatMapObservable(new Function<HttpResponse, ObservableSource<?>>() {
-                    @Override
-                    public ObservableSource<?> apply(HttpResponse httpResponse) throws Exception {
-                        final HttpResponse bufferedHttpResponse = httpResponse.buffer();
-                        return createPollStrategy(httpRequest, Single.just(bufferedHttpResponse), methodParser)
-                                .flatMapObservable(new Function<PollStrategy, ObservableSource<OperationStatus<?>>>() {
-                            @Override
-                            public ObservableSource<OperationStatus<?>> apply(final PollStrategy pollStrategy) throws Exception {
-                                Observable<OperationStatus<?>> first = handleBodyReturnTypeAsync(bufferedHttpResponse, methodParser, operationStatusResultType)
-                                        .map(new Function<Object, OperationStatus<?>>() {
-                                            @Override
-                                            public OperationStatus<?> apply(Object operationResult) throws Exception {
-                                                return new OperationStatus<>(operationResult, pollStrategy.status());
-                                            }
-                                        }).switchIfEmpty(Single.defer(new Callable<SingleSource<? extends OperationStatus<?>>>() {
-                                            @Override
-                                            public SingleSource<? extends OperationStatus<?>> call() throws Exception {
-                                                return Single.just(new OperationStatus<>((Object) null, pollStrategy.status()));
-                                            }
-                                        })).toObservable();
-                                Observable<OperationStatus<Object>> rest = pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType);
+                //
+                return asyncHttpResponse.flatMapMany(httpResponse -> {
+                    final HttpResponse bufferedHttpResponse = httpResponse.buffer();
+                    return createPollStrategy(httpRequest, Mono.just(bufferedHttpResponse), methodParser)
+                            .flatMapMany(pollStrategy -> {
+                                Mono<OperationStatus<Object>> first = handleBodyReturnTypeAsync(bufferedHttpResponse, methodParser, operationStatusResultType)
+                                        .map(operationResult -> new OperationStatus<Object>(operationResult, pollStrategy.status()))
+                                        .switchIfEmpty(Mono.defer((Supplier<Mono<OperationStatus<Object>>>) () -> Mono.just(new OperationStatus<Object>((Object) null, pollStrategy.status()))));
+                                Flux<OperationStatus<Object>> rest = pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType);
                                 return first.concatWith(rest);
-                            }
-                        });
-                    }
+                            });
                 });
             }
+        } else {
+            final Mono<HttpResponse> lastAsyncHttpResponse = createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
+                    .flatMap((Function<PollStrategy, Mono<HttpResponse>>) pollStrategy -> pollStrategy.pollUntilDone());
+            return handleRestReturnType(httpRequest, lastAsyncHttpResponse, methodParser, returnType);
         }
-        else {
-            final Single<HttpResponse> lastAsyncHttpResponse = createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
-                    .flatMap(new Function<PollStrategy, Single<HttpResponse>>() {
-                        @Override
-                        public Single<HttpResponse> apply(PollStrategy pollStrategy) {
-                            return pollStrategy.pollUntilDone();
-                        }
-                    });
-            result = handleRestReturnType(httpRequest, lastAsyncHttpResponse, methodParser, returnType);
-        }
-
-        return result;
     }
 
     @Override
     protected Object handleResumeOperation(final HttpRequest httpRequest,
                                            OperationDescription operationDescription,
                                            final SwaggerMethodParser methodParser,
-                                           Type returnType)
-            throws Exception {
+                                           Type returnType) {
         final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
         if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
-            throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Observable (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Observable's inner type that is OperationStatus (not " + returnType.toString() + ").");
+            throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ").");
         }
 
         PollStrategy.PollStrategyData pollStrategyData =
@@ -328,117 +301,105 @@ public final class AzureProxy extends RestProxy {
         return pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusType);
     }
 
-    private Single<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest, final Single<HttpResponse> asyncOriginalHttpResponse, final SwaggerMethodParser methodParser) {
+    private Mono<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest, final Mono<HttpResponse> asyncOriginalHttpResponse, final SwaggerMethodParser methodParser) {
         return asyncOriginalHttpResponse
-                .flatMap(new Function<HttpResponse, Single<PollStrategy>>() {
-                    @Override
-                    public Single<PollStrategy> apply(final HttpResponse originalHttpResponse) {
-                        final int httpStatusCode = originalHttpResponse.statusCode();
-                        final int[] longRunningOperationStatusCodes = new int[] {200, 201, 202};
-                        return ensureExpectedStatus(originalHttpResponse, methodParser, longRunningOperationStatusCodes)
-                                .flatMap(new Function<HttpResponse, Single<? extends PollStrategy>>() {
-                                    @Override
-                                    public Single<? extends PollStrategy> apply(HttpResponse response) {
-                                        Single<PollStrategy> result = null;
+                .flatMap((Function<HttpResponse, Mono<PollStrategy>>) originalHttpResponse -> {
+                    final int httpStatusCode = originalHttpResponse.statusCode();
+                    final int[] longRunningOperationStatusCodes = new int[] {200, 201, 202};
+                    return ensureExpectedStatus(originalHttpResponse, methodParser, longRunningOperationStatusCodes)
+                            .flatMap(response -> {
+                                Mono<PollStrategy> result = null;
 
-                                        final Long parsedDelayInMilliseconds = PollStrategy.delayInMillisecondsFrom(originalHttpResponse);
-                                        final long delayInMilliseconds = parsedDelayInMilliseconds != null ? parsedDelayInMilliseconds : AzureProxy.defaultDelayInMilliseconds();
+                                final Long parsedDelayInMilliseconds = PollStrategy.delayInMillisecondsFrom(originalHttpResponse);
+                                final long delayInMilliseconds = parsedDelayInMilliseconds != null ? parsedDelayInMilliseconds : AzureProxy.defaultDelayInMilliseconds();
 
-                                        final HttpMethod originalHttpRequestMethod = originalHttpRequest.httpMethod();
+                                final HttpMethod originalHttpRequestMethod = originalHttpRequest.httpMethod();
 
-                                        PollStrategy pollStrategy = null;
-                                        if (httpStatusCode == 200) {
-                                            pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
-                                            if (pollStrategy != null) {
-                                                result = Single.just(pollStrategy);
-                                            }
-                                            else {
-                                                result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
-                                            }
-                                        }
-                                        else if (originalHttpRequestMethod == HttpMethod.PUT || originalHttpRequestMethod == HttpMethod.PATCH) {
-                                            if (httpStatusCode == 201) {
-                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
-                                                if (pollStrategy == null) {
-                                                    result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
-                                                }
-                                            } else if (httpStatusCode == 202) {
-                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
-                                                if (pollStrategy == null) {
-                                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
-                                                }
-                                            }
-                                        }
-                                        else {
-                                            if (httpStatusCode == 202) {
-                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
-                                                if (pollStrategy == null) {
-                                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
-                                                    if (pollStrategy == null) {
-                                                        throw new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", originalHttpResponse);
-                                                    }
-                                                }
-                                            }
-                                        }
-
-                                        if (pollStrategy == null && result == null) {
-                                            pollStrategy = new CompletedPollStrategy(
-                                                    new CompletedPollStrategy.CompletedPollStrategyData(AzureProxy.this, methodParser, originalHttpResponse));
-                                        }
-
-                                        if (pollStrategy != null) {
-                                            result = Single.just(pollStrategy);
-                                        }
-
-                                        return result;
+                                PollStrategy pollStrategy = null;
+                                if (httpStatusCode == 200) {
+                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                    if (pollStrategy != null) {
+                                        result = Mono.just(pollStrategy);
                                     }
-                                });
-                    }
+                                    else {
+                                        result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
+                                    }
+                                }
+                                else if (originalHttpRequestMethod == HttpMethod.PUT || originalHttpRequestMethod == HttpMethod.PATCH) {
+                                    if (httpStatusCode == 201) {
+                                        pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                        if (pollStrategy == null) {
+                                            result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
+                                        }
+                                    } else if (httpStatusCode == 202) {
+                                        pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                        if (pollStrategy == null) {
+                                            pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                        }
+                                    }
+                                }
+                                else {
+                                    if (httpStatusCode == 202) {
+                                        pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                        if (pollStrategy == null) {
+                                            pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                            if (pollStrategy == null) {
+                                                throw new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", originalHttpResponse);
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (pollStrategy == null && result == null) {
+                                    pollStrategy = new CompletedPollStrategy(
+                                            new CompletedPollStrategy.CompletedPollStrategyData(AzureProxy.this, methodParser, originalHttpResponse));
+                                }
+
+                                if (pollStrategy != null) {
+                                    result = Mono.just(pollStrategy);
+                                }
+
+                                return result;
+                            });
                 });
     }
 
-    private Single<PollStrategy> createProvisioningStateOrCompletedPollStrategy(final HttpRequest httpRequest, HttpResponse httpResponse, final SwaggerMethodParser methodParser, final long delayInMilliseconds) {
-        Single<PollStrategy> result;
+    private Mono<PollStrategy> createProvisioningStateOrCompletedPollStrategy(final HttpRequest httpRequest, HttpResponse httpResponse, final SwaggerMethodParser methodParser, final long delayInMilliseconds) {
+        Mono<PollStrategy> pollStrategyMono;
 
         final HttpMethod httpRequestMethod = httpRequest.httpMethod();
         if (httpRequestMethod == HttpMethod.DELETE
                 || httpRequestMethod == HttpMethod.GET
                 || httpRequestMethod == HttpMethod.HEAD
                 || !methodParser.expectsResponseBody()) {
-            result = Single.<PollStrategy>just(new CompletedPollStrategy(
+            pollStrategyMono = Mono.<PollStrategy>just(new CompletedPollStrategy(
                     new CompletedPollStrategy.CompletedPollStrategyData(AzureProxy.this, methodParser, httpResponse)));
         } else {
             final HttpResponse bufferedOriginalHttpResponse = httpResponse.buffer();
-            result = bufferedOriginalHttpResponse.bodyAsString()
-                    .map(new Function<String, PollStrategy>() {
-                        @Override
-                        public PollStrategy apply(String originalHttpResponseBody) {
-                            if (originalHttpResponseBody == null || originalHttpResponseBody.isEmpty()) {
-                                throw new CloudException("The HTTP response does not contain a body.", bufferedOriginalHttpResponse);
-                            }
-
-                            PollStrategy result;
-                            try {
-                                final SerializerAdapter<?> serializer = serializer();
-                                final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class, SerializerEncoding.JSON);
-                                if (resource != null && resource.properties() != null && !OperationState.isCompleted(resource.properties().provisioningState())) {
-                                    result = new ProvisioningStatePollStrategy(
-                                            new ProvisioningStatePollStrategy.ProvisioningStatePollStrategyData(
-                                                    AzureProxy.this, methodParser, httpRequest, resource.properties().provisioningState(), delayInMilliseconds));
-                                } else {
-                                    result = new CompletedPollStrategy(
-                                            new CompletedPollStrategy.CompletedPollStrategyData(
-                                                    AzureProxy.this, methodParser, bufferedOriginalHttpResponse));
-                                }
-                            } catch (IOException e) {
-                                throw Exceptions.propagate(e);
-                            }
-
-                            return result;
+            pollStrategyMono = bufferedOriginalHttpResponse.bodyAsString()
+                    .map(originalHttpResponseBody -> {
+                        if (originalHttpResponseBody == null || originalHttpResponseBody.isEmpty()) {
+                            throw new CloudException("The HTTP response does not contain a body.", bufferedOriginalHttpResponse);
                         }
+                        PollStrategy pollStrategy;
+                        try {
+                            final SerializerAdapter<?> serializer = serializer();
+                            final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class, SerializerEncoding.JSON);
+                            if (resource != null && resource.properties() != null && !OperationState.isCompleted(resource.properties().provisioningState())) {
+                                pollStrategy = new ProvisioningStatePollStrategy(
+                                        new ProvisioningStatePollStrategy.ProvisioningStatePollStrategyData(
+                                                AzureProxy.this, methodParser, httpRequest, resource.properties().provisioningState(), delayInMilliseconds));
+                            } else {
+                                pollStrategy = new CompletedPollStrategy(
+                                        new CompletedPollStrategy.CompletedPollStrategyData(
+                                                AzureProxy.this, methodParser, bufferedOriginalHttpResponse));
+                            }
+                        } catch (IOException e) {
+                            throw Exceptions.propagate(e);
+                        }
+                        return pollStrategy;
                     });
         }
-
-        return result;
+        return pollStrategyMono;
     }
 }

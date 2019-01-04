@@ -9,14 +9,13 @@ package com.microsoft.azure.v2;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import io.reactivex.Observable;
-import io.reactivex.functions.Consumer;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 
 public class PagedListTests {
     private PagedList<Integer> list;
@@ -269,55 +268,44 @@ public class PagedListTests {
     }
 
     @Test
-    public void canCreateObservableFromPagedList() {
-        // Test lazy observable can be created by ensuring loadNextPage invoked lazily
+    public void canCreateFluxFromPagedList() {
+        // Test lazy flux can be created by ensuring loadNextPage invoked lazily
         //
-        class ObservableFromPagedList {
+        class FluxFromPagedList {
             int loadNextPageCallCount;
 
-            Observable<Integer> toObservable() {
-                return firstObservable().concatWith(nextObservable());
+            Flux<Integer> toFlux() {
+                return firstFlux().concatWith(nextFlux());
             }
 
-            Observable<Integer> firstObservable() {
-                return Observable.defer(new Callable<Observable<Integer>>() {
-                    @Override
-                    public Observable<Integer> call() {
-                        return Observable.fromIterable(list.currentPage().items());
-                    }
-                });
+            Flux<Integer> firstFlux() {
+                return Flux.defer((Supplier<Flux<Integer>>) () -> Flux.fromIterable(list.currentPage().items()));
             }
 
-            Observable<Integer> nextObservable() {
-                return Observable.defer(new Callable<Observable<Integer>>() {
-                    @Override
-                    public Observable<Integer> call() {
-                        if (list.hasNextPage()) {
-                            list.loadNextPage();
-                            loadNextPageCallCount++;
-                            return Observable.fromIterable(list.currentPage().items()).concatWith(Observable.defer(new Callable<Observable<Integer>>() {
-                                @Override
-                                public Observable<Integer> call() {
-                                    return nextObservable();
-                                }
-                            }));
-                        } else {
-                            return Observable.empty();
-                        }
+            Flux<Integer> nextFlux() {
+                return Flux.defer((Supplier<Flux<Integer>>) () -> {
+                    if (list.hasNextPage()) {
+                        list.loadNextPage();
+                        loadNextPageCallCount++;
+                        return Flux.fromIterable(list.currentPage().items()).concatWith(Flux.defer(new Supplier<Flux<Integer>>() {
+                            @Override
+                            public Flux<Integer> get() {
+                                return nextFlux();
+                            }
+                        }));
+                    } else {
+                        return Flux.empty();
                     }
                 });
             }
         }
 
-        ObservableFromPagedList obpl = new ObservableFromPagedList();
+        FluxFromPagedList obpl = new FluxFromPagedList();
 
         final Integer[] cnt = new Integer[] { 0 };
-        obpl.toObservable().subscribe(new Consumer<Integer>() {
-            @Override
-            public void accept(Integer integer) {
-                Assert.assertEquals(cnt[0], integer);
-                cnt[0]++;
-            }
+        obpl.toFlux().subscribe(integer -> {
+            Assert.assertEquals(cnt[0], integer);
+            cnt[0]++;
         });
         Assert.assertEquals(20, (long) cnt[0]);
         Assert.assertEquals(19, obpl.loadNextPageCallCount);

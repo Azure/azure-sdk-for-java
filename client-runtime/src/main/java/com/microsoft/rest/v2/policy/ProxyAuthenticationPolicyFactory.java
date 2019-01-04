@@ -9,7 +9,7 @@ package com.microsoft.rest.v2.policy;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.util.Base64Util;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 
@@ -43,7 +43,7 @@ public class ProxyAuthenticationPolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
             String auth = username + ":" + password;
             String encodedAuth = Base64Util.encodeToString(auth.getBytes(StandardCharsets.UTF_8));
             request.withHeader("Proxy-Authentication", "Basic " + encodedAuth);

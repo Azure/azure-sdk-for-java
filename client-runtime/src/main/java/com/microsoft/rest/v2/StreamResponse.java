@@ -7,8 +7,7 @@
 package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.http.HttpRequest;
-import io.reactivex.Flowable;
-import io.reactivex.internal.functions.Functions;
+import reactor.core.publisher.Flux;
 
 import java.io.Closeable;
 import java.nio.ByteBuffer;
@@ -17,7 +16,7 @@ import java.util.Map;
 /**
  * A response to a REST call with a streaming body.
  */
-public final class StreamResponse extends RestResponse<Void, Flowable<ByteBuffer>> implements Closeable {
+public final class StreamResponse extends RestResponse<Void, Flux<ByteBuffer>> implements Closeable {
     /**
      * Creates a StreamResponse.
      *
@@ -26,13 +25,13 @@ public final class StreamResponse extends RestResponse<Void, Flowable<ByteBuffer
      * @param rawHeaders the raw headers of the HTTP response
      * @param body the streaming body
      */
-    public StreamResponse(HttpRequest request, int statusCode, Map<String, String> rawHeaders, Flowable<ByteBuffer> body) {
+    public StreamResponse(HttpRequest request, int statusCode, Map<String, String> rawHeaders, Flux<ByteBuffer> body) {
         super(request, statusCode, null, rawHeaders, body);
     }
 
     // Used for uniform reflective creation in RestProxy.
     @SuppressWarnings("unused")
-    StreamResponse(HttpRequest request, int statusCode, Void headers, Map<String, String> rawHeaders, Flowable<ByteBuffer> body) {
+    StreamResponse(HttpRequest request, int statusCode, Void headers, Map<String, String> rawHeaders, Flux<ByteBuffer> body) {
         super(request, statusCode, headers, rawHeaders, body);
     }
 
@@ -51,7 +50,7 @@ public final class StreamResponse extends RestResponse<Void, Flowable<ByteBuffer
      * @return the body content stream
      */
     @Override
-    public Flowable<ByteBuffer> body() {
+    public Flux<ByteBuffer> body() {
         return super.body();
     }
 
@@ -60,6 +59,6 @@ public final class StreamResponse extends RestResponse<Void, Flowable<ByteBuffer
      */
     @Override
     public void close() {
-        body().subscribe(Functions.emptyConsumer(), Functions.<Throwable>emptyConsumer()).dispose();
+        body().subscribe().dispose();
     }
 }

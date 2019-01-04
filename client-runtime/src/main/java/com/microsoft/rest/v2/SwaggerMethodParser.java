@@ -28,8 +28,8 @@ import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.util.TypeUtil;
 import com.microsoft.rest.v2.util.escapers.PercentEscaper;
 import com.microsoft.rest.v2.util.escapers.UrlEscapers;
-import io.reactivex.Observable;
-import io.reactivex.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -457,7 +457,7 @@ public class SwaggerMethodParser {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             result = false;
         }
-        else if (TypeUtil.isTypeOrSubTypeOf(returnType, Single.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Observable.class)) {
+        else if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final ParameterizedType asyncReturnType = (ParameterizedType) returnType;
             final Type syncReturnType = asyncReturnType.getActualTypeArguments()[0];
             if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Void.class)) {

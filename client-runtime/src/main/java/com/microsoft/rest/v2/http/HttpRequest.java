@@ -8,7 +8,7 @@ package com.microsoft.rest.v2.http;
 
 import com.microsoft.rest.v2.Context;
 import com.microsoft.rest.v2.protocol.HttpResponseDecoder;
-import io.reactivex.Flowable;
+import reactor.core.publisher.Flux;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -22,7 +22,7 @@ public class HttpRequest {
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
-    private Flowable<ByteBuffer> body;
+    private Flux<ByteBuffer> body;
     private Context context;
     private final HttpResponseDecoder responseDecoder;
 
@@ -39,7 +39,6 @@ public class HttpRequest {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = new HttpHeaders();
-        this.body = null;
         this.responseDecoder = responseDecoder;
     }
 
@@ -52,7 +51,7 @@ public class HttpRequest {
      * @param body The body of this HTTP request.
      * @param responseDecoder the which decodes messages sent in response to this HttpRequest.
      */
-    public HttpRequest(String callerMethod, HttpMethod httpMethod, URL url, HttpHeaders headers, Flowable<ByteBuffer> body, HttpResponseDecoder responseDecoder) {
+    public HttpRequest(String callerMethod, HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuffer> body, HttpResponseDecoder responseDecoder) {
         this.callerMethod = callerMethod;
         this.httpMethod = httpMethod;
         this.url = url;
@@ -156,7 +155,7 @@ public class HttpRequest {
      * Get the body for this HttpRequest.
      * @return The body for this HttpRequest.
      */
-    public Flowable<ByteBuffer> body() {
+    public Flux<ByteBuffer> body() {
         return body;
     }
 
@@ -178,7 +177,7 @@ public class HttpRequest {
      */
     public HttpRequest withBody(byte[] body) {
         headers.set("Content-Length", String.valueOf(body.length));
-        return withBody(Flowable.just(ByteBuffer.wrap(body)));
+        return withBody(Flux.just(ByteBuffer.wrap(body)));
     }
 
     /**
@@ -188,7 +187,7 @@ public class HttpRequest {
      * @param body The body of this HTTP request.
      * @return This HttpRequest so that multiple operations can be chained together.
      */
-    public HttpRequest withBody(Flowable<ByteBuffer> body) {
+    public HttpRequest withBody(Flux<ByteBuffer> body) {
         this.body = body;
         return this;
     }

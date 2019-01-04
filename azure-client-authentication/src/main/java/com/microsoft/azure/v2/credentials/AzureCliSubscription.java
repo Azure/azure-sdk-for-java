@@ -8,7 +8,8 @@ package com.microsoft.azure.v2.credentials;
 
 import com.microsoft.azure.v2.AzureEnvironment;
 import com.microsoft.rest.v2.annotations.Beta;
-import io.reactivex.Single;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +103,7 @@ final class AzureCliSubscription {
         } else {
             credentialInstance = new UserTokenCredentials(clientId(), tenant(), null, null, environment()) {
                 @Override
-                public synchronized Single<String> getToken(String resource) {
+                public synchronized Mono<String> getToken(String resource) {
                     AzureCliToken token = userTokens.get(resource);
                     // Management endpoint also works for resource manager
                     if (token == null && (resource.equalsIgnoreCase(environment().resourceManagerEndpoint()))) {
@@ -110,7 +111,7 @@ final class AzureCliSubscription {
                     }
                     // Exact match and token hasn't expired
                     if (token != null && !token.expired()) {
-                        return Single.just(token.accessToken());
+                        return Mono.just(token.accessToken());
                     }
                     // If found then refresh
                     boolean shouldRefresh = token != null;
@@ -123,12 +124,16 @@ final class AzureCliSubscription {
                         AzureCliToken finalToken = token;
                         return acquireAccessTokenFromRefreshToken(resource, token.refreshToken(), token.isMRRT())
                                 .map(authenticationResult -> {
-                                    AzureCliToken newToken = finalToken.clone().withResource(resource).withAuthenticationResult(authenticationResult);
-                                    userTokens.put(resource, newToken);
-                                    return newToken.accessToken();
+                                    try {
+                                        AzureCliToken newToken = finalToken.clone().withResource(resource).withAuthenticationResult(authenticationResult);
+                                        userTokens.put(resource, newToken);
+                                        return newToken.accessToken();
+                                    } catch (CloneNotSupportedException cnse) {
+                                        throw Exceptions.propagate(cnse);
+                                    }
                                 });
                     } else {
-                        return Single.error(new RuntimeException("No refresh token available for user " + userName()));
+                        return Mono.error(new RuntimeException("No refresh token available for user " + userName()));
                     }
                 }
             };

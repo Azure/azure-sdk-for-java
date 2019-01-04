@@ -16,7 +16,7 @@ import com.microsoft.rest.v2.policy.UserAgentPolicyFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 
@@ -25,19 +25,20 @@ public class UserAgentTests {
     public void defaultUserAgentTests() throws Exception {
         HttpPipeline pipeline = HttpPipeline.build(
             new MockHttpClient() {
+
                 @Override
-                public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
                     Assert.assertEquals(
                             request.headers().value("User-Agent"),
                             "AutoRest-Java");
-                    return Single.<HttpResponse>just(new MockHttpResponse(200));
+                    return Mono.<HttpResponse>just(new MockHttpResponse(200));
                 }
             },
             new UserAgentPolicyFactory("AutoRest-Java"));
 
         HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(
                 "defaultUserAgentTests",
-                HttpMethod.GET, new URL("http://localhost"), null)).blockingGet();
+                HttpMethod.GET, new URL("http://localhost"), null)).block();
 
         Assert.assertEquals(200, response.statusCode());
     }
@@ -46,16 +47,17 @@ public class UserAgentTests {
     public void customUserAgentTests() throws Exception {
         HttpPipeline pipeline = HttpPipeline.build(
             new MockHttpClient() {
+
                 @Override
-                public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
                     String header = request.headers().value("User-Agent");
                     Assert.assertEquals("Awesome", header);
-                    return Single.<HttpResponse>just(new MockHttpResponse(200));
+                    return Mono.<HttpResponse>just(new MockHttpResponse(200));
                 }
             },
             new UserAgentPolicyFactory("Awesome"));
 
-        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", HttpMethod.GET, new URL("http://localhost"), null)).blockingGet();
+        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", HttpMethod.GET, new URL("http://localhost"), null)).block();
         Assert.assertEquals(200, response.statusCode());
     }
 }

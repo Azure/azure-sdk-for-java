@@ -11,8 +11,8 @@ import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -81,26 +81,25 @@ public final class LocationPollStrategy extends PollStrategy {
     }
 
     @Override
-    public Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
+    public Mono<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
         return ensureExpectedStatus(httpPollResponse, new int[] {202})
-                .map(new Function<HttpResponse, HttpResponse>() {
-                    @Override
-                    public HttpResponse apply(HttpResponse response) throws MalformedURLException {
-                        final int httpStatusCode = response.statusCode();
-
-                        updateDelayInMillisecondsFrom(response);
-
-                        if (httpStatusCode == 202) {
-                            String newLocationUrl = getHeader(response);
-                            if (newLocationUrl != null) {
+                .map(response -> {
+                    final int httpStatusCode = response.statusCode();
+                    updateDelayInMillisecondsFrom(response);
+                    if (httpStatusCode == 202) {
+                        String newLocationUrl = getHeader(response);
+                        if (newLocationUrl != null) {
+                            try {
                                 data.locationUrl = new URL(newLocationUrl);
+                            } catch (MalformedURLException mfue) {
+                                throw Exceptions.propagate(mfue);
                             }
                         }
-                        else {
-                            data.done = true;
-                        }
-                        return response;
                     }
+                    else {
+                        data.done = true;
+                    }
+                    return response;
                 });
     }
 

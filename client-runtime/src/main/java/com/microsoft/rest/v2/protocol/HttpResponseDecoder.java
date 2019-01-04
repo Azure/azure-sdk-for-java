@@ -18,13 +18,10 @@ import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.util.FlowableUtil;
+import com.microsoft.rest.v2.util.FluxUtil;
 import com.microsoft.rest.v2.util.TypeUtil;
-import io.reactivex.Completable;
-import io.reactivex.Maybe;
-import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -56,16 +53,16 @@ public final class HttpResponseDecoder {
     /**
      * Asynchronously decodes an {@link HttpResponse}, deserializing into a response or error value.
      * @param response the {@link HttpResponse}
-     * @return A {@link Single} containing either the decoded HttpResponse or an error
+     * @return A {@link Mono} containing either the decoded HttpResponse or an error
      */
-    public Single<HttpResponse> decode(final HttpResponse response) {
+    public Mono<HttpResponse> decode(final HttpResponse response) {
         response.withIsDecoded(true);
 
         final Object deserializedHeaders;
         try {
             deserializedHeaders = deserializeHeaders(response.headers());
         } catch (IOException e) {
-            return Single.error(new RestException("HTTP response has malformed headers", response, e));
+            return Mono.error(new RestException("HTTP response has malformed headers", response, e));
         }
 
         final Type returnValueWireType = methodParser.returnValueWireType();
@@ -73,8 +70,8 @@ public final class HttpResponseDecoder {
         final Type entityType = getEntityType();
 
         boolean isSerializableBody = methodParser.httpMethod() != HttpMethod.HEAD
-            && !FlowableUtil.isFlowableByteBuffer(entityType)
-            && !TypeUtil.isTypeOrSubTypeOf(entityType, Completable.class)
+            && !FluxUtil.isFluxByteBuffer(entityType)
+            && !(TypeUtil.isTypeOrSubTypeOf(entityType, Mono.class) && TypeUtil.isTypeOrSubTypeOf(TypeUtil.getTypeArgument(entityType), Void.class))
             && !TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)
             && !TypeUtil.isTypeOrSubTypeOf(entityType, Void.TYPE) && !TypeUtil.isTypeOrSubTypeOf(entityType, Void.class);
 
@@ -91,42 +88,44 @@ public final class HttpResponseDecoder {
             isErrorStatus = response.statusCode() / 100 != 2;
         }
 
-        Single<HttpResponse> result;
+        Mono<HttpResponse> result;
         if (isErrorStatus) {
             final HttpResponse bufferedResponse = response.buffer();
-            result = bufferedResponse.bodyAsString().map(new Function<String, HttpResponse>() {
-                @Override
-                public HttpResponse apply(String bodyString) throws Exception {
-                    bufferedResponse.withDeserializedHeaders(deserializedHeaders);
-
-                    Object body = null;
-                    try {
-                        body = deserializeBody(bodyString, methodParser.exceptionBodyType(), null, SerializerEncoding.fromHeaders(response.headers()));
-                    } catch (IOException ignored) {
-                        // This translates in RestProxy as a RestException with no deserialized body.
-                        // The response content will still be accessible via the .response() member.
-                    }
-
-                    return bufferedResponse.withDeserializedBody(body);
-                }
-            });
+            result = bufferedResponse.bodyAsString()
+                    .map(bodyString -> {
+                        bufferedResponse.withDeserializedHeaders(deserializedHeaders);
+                        Object body = null;
+                        try {
+                            body = deserializeBody(bodyString, methodParser.exceptionBodyType(), null, SerializerEncoding.fromHeaders(response.headers()));
+                        } catch (IOException ignored) {
+                            // This translates in RestProxy as a RestException with no deserialized body.
+                            // The response content will still be accessible via the .response() member.
+                        }
+                        return bufferedResponse.withDeserializedBody(body);
+                    })
+                    // If service response does not have a body then netty-reactor will not emit body i.e. no 'onNext' will be invoked when
+                    // subscribing to such httpResponse.body(), hence the above 'map' op won't emit which result in downstream subscriber
+                    // terminal complete event, this is incorrect.  We still want to handover the response to subscriber hence the following
+                    // 'switchIfEmpty'.
+                    //
+                    .switchIfEmpty(Mono.defer(() -> Mono.just(bufferedResponse)));
+            //
         } else if (isSerializableBody) {
             final HttpResponse bufferedResponse = response.buffer();
-            result = bufferedResponse.bodyAsString().map(new Function<String, HttpResponse>() {
-                @Override
-                public HttpResponse apply(String bodyString) throws Exception {
-                    try {
-                        Object body = deserializeBody(bodyString, getEntityType(), returnValueWireType, SerializerEncoding.fromHeaders(response.headers()));
-                        return bufferedResponse
-                                .withDeserializedHeaders(deserializedHeaders)
-                                .withDeserializedBody(body);
-                    } catch (JsonParseException e) {
-                        throw new RestException("HTTP response has a malformed body", response, e);
-                    }
+            result = bufferedResponse.bodyAsString().map(bodyString -> {
+                try {
+                    Object body = deserializeBody(bodyString, getEntityType(), returnValueWireType, SerializerEncoding.fromHeaders(response.headers()));
+                    return bufferedResponse
+                            .withDeserializedHeaders(deserializedHeaders)
+                            .withDeserializedBody(body);
+                } catch (JsonParseException e) {
+                    throw new RestException("HTTP response has a malformed body", response, e);
+                } catch (IOException e) {
+                    throw new RestException("Deserialization Failed", response, e);
                 }
             });
         } else {
-            result = Single.just(response.withDeserializedHeaders(deserializedHeaders));
+            result = Mono.just(response.withDeserializedHeaders(deserializedHeaders));
         }
 
         return result;
@@ -248,8 +247,15 @@ public final class HttpResponseDecoder {
     private Type getEntityType() {
         Type token = methodParser.returnType();
 
-        if (TypeUtil.isTypeOrSubTypeOf(token, Single.class) || TypeUtil.isTypeOrSubTypeOf(token, Maybe.class) || TypeUtil.isTypeOrSubTypeOf(token, Observable.class)) {
+        if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
             token = TypeUtil.getTypeArgument(token);
+        } else if (TypeUtil.isTypeOrSubTypeOf(token, Flux.class)) {
+            Type t = TypeUtil.getTypeArgument(token);
+            try {
+                if (TypeUtil.isTypeOrSubTypeOf(t, Class.forName("com.microsoft.azure.v2.OperationStatus"))) {
+                    token = t;
+                }
+            } catch (ClassNotFoundException ignored) { }
         }
 
         if (TypeUtil.isTypeOrSubTypeOf(token, RestResponse.class)) {
@@ -262,8 +268,7 @@ public final class HttpResponseDecoder {
             if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.microsoft.azure.v2.OperationStatus"))) {
                 token = TypeUtil.getTypeArgument(token);
             }
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) { }
 
         return token;
     }
@@ -272,7 +277,7 @@ public final class HttpResponseDecoder {
         Type token = methodParser.returnType();
         Type headersType = null;
 
-        if (TypeUtil.isTypeOrSubTypeOf(token, Single.class)) {
+        if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
             token = TypeUtil.getTypeArgument(token);
         }
 

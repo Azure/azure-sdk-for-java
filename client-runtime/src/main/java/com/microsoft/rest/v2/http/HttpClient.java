@@ -6,7 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 /**
  * A generic interface for sending HTTP requests and getting responses.
@@ -15,9 +15,9 @@ public abstract class HttpClient {
     /**
      * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
      * @param request The HTTP request to send.
-     * @return A {@link Single} representing the HTTP response that will arrive asynchronously.
+     * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
      */
-    public abstract Single<HttpResponse> sendRequestAsync(HttpRequest request);
+    public abstract Mono<HttpResponse> sendRequestAsync(HttpRequest request);
 
     private static final class DefaultHttpClientHolder {
         // Putting this field in an inner class makes it so it is only instantiated when

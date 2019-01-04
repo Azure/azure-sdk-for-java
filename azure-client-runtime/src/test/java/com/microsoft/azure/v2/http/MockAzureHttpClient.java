@@ -18,9 +18,8 @@ import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.util.FlowableUtil;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
+import com.microsoft.rest.v2.util.FluxUtil;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.URL;
@@ -56,7 +55,7 @@ public class MockAzureHttpClient extends HttpClient {
     }
 
     @Override
-    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+    public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
         MockAzureHttpResponse response = null;
 
         try {
@@ -274,7 +273,7 @@ public class MockAzureHttpClient extends HttpClient {
         catch (Exception ignored) {
         }
 
-        return Single.<HttpResponse>just(response);
+        return Mono.<HttpResponse>just(response);
     }
 
     private static Map<String,String> queryToMap(String url) {
@@ -296,14 +295,9 @@ public class MockAzureHttpClient extends HttpClient {
     }
 
     private static String bodyToString(HttpRequest request) throws IOException {
-        Single<String> asyncString = FlowableUtil.collectBytesInArray(request.body()).map(new Function<byte[], String>() {
-            @Override
-            public String apply(byte[] bytes) throws Exception {
-                return new String(bytes, StandardCharsets.UTF_8);
-            }
-        });
-
-        return asyncString.blockingGet();
+        Mono<String> asyncString = FluxUtil.collectBytesInArray(request.body())
+                .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+        return asyncString.block();
     }
 
     private static Map<String, String> toMap(HttpHeaders headers) {

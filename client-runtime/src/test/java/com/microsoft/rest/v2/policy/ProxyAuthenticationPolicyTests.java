@@ -6,7 +6,7 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
 import org.junit.Test;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -30,7 +30,7 @@ public class ProxyAuthenticationPolicyTests {
                     public RequestPolicy create(final RequestPolicy next, RequestPolicyOptions options) {
                         return new RequestPolicy() {
                             @Override
-                            public Single<HttpResponse> sendAsync(HttpRequest request) {
+                            public Mono<HttpResponse> sendAsync(HttpRequest request) {
                                 assertEquals("Basic dGVzdHVzZXI6dGVzdHBhc3M=", request.headers().value("Proxy-Authentication"));
                                 auditorVisited.set(true);
                                 return next.sendAsync(request);
@@ -40,7 +40,7 @@ public class ProxyAuthenticationPolicyTests {
                 });
 
         pipeline.sendRequestAsync(new HttpRequest("test", HttpMethod.GET, new URL("http://localhost"), null))
-                .blockingGet();
+                .block();
 
         if (!auditorVisited.get()) {
             fail();

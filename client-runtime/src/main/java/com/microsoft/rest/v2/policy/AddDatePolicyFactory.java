@@ -8,7 +8,7 @@ package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -37,8 +37,8 @@ public final class AddDatePolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
-            return Single.defer(() -> {
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
+            return Mono.defer(() -> {
                 request.headers().set("Date", format.format(OffsetDateTime.now()));
                 return next.sendAsync(request);
             });

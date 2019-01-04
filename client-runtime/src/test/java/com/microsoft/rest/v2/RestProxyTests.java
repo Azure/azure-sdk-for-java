@@ -26,13 +26,12 @@ import com.microsoft.rest.v2.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v2.policy.HttpLoggingPolicyFactory;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
-import com.microsoft.rest.v2.util.FlowableUtil;
-import io.reactivex.Flowable;
+import com.microsoft.rest.v2.util.FluxUtil;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
@@ -62,10 +61,10 @@ public abstract class RestProxyTests {
 
         @GET("bytes/100")
         @ExpectedResponses({200})
-        Single<byte[]> getByteArrayAsync();
+        Mono<byte[]> getByteArrayAsync();
 
         @GET("bytes/100")
-        Single<byte[]> getByteArrayAsyncWithNoExpectedResponses();
+        Mono<byte[]> getByteArrayAsyncWithNoExpectedResponses();
     }
 
     @Test
@@ -80,7 +79,7 @@ public abstract class RestProxyTests {
     public void AsyncRequestWithByteArrayReturnType() {
         final byte[] result = createService(Service1.class)
                 .getByteArrayAsync()
-                .blockingGet();
+                .block();
         assertNotNull(result);
         assertEquals(100, result.length);
     }
@@ -89,7 +88,7 @@ public abstract class RestProxyTests {
     public void getByteArrayAsyncWithNoExpectedResponses() {
         final byte[] result = createService(Service1.class)
                 .getByteArrayAsyncWithNoExpectedResponses()
-                .blockingGet();
+                .block();
         assertNotNull(result);
         assertEquals(result.length, 100);
     }
@@ -102,7 +101,7 @@ public abstract class RestProxyTests {
 
         @GET("bytes/{numberOfBytes}")
         @ExpectedResponses({200})
-        Single<byte[]> getByteArrayAsync(@HostParam("hostName") String host, @PathParam("numberOfBytes") int numberOfBytes);
+        Mono<byte[]> getByteArrayAsync(@HostParam("hostName") String host, @PathParam("numberOfBytes") int numberOfBytes);
     }
 
     @Test
@@ -117,7 +116,7 @@ public abstract class RestProxyTests {
     public void AsyncRequestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
         final byte[] result = createService(Service2.class)
                 .getByteArrayAsync("httpbin", 50)
-                .blockingGet();
+                .block();
         assertNotNull(result);
         assertEquals(result.length, 50);
     }
@@ -126,8 +125,8 @@ public abstract class RestProxyTests {
     public void SyncRequestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() {
         final byte[] result = createService(Service2.class)
                 .getByteArray("httpbin", 0);
-        assertNotNull(result);
-        assertEquals(result.length, 0);
+        // If no body then for async returns Mono.empty() for sync return null.
+        assertNull(result);
     }
 
     @Host("http://httpbin.org")
@@ -138,7 +137,7 @@ public abstract class RestProxyTests {
 
         @GET("bytes/2")
         @ExpectedResponses({200})
-        Completable getNothingAsync();
+        Mono<Void> getNothingAsync();
     }
 
     @Test
@@ -150,7 +149,7 @@ public abstract class RestProxyTests {
     public void AsyncGetRequestWithNoReturn() {
         createService(Service3.class)
                 .getNothingAsync()
-                .blockingAwait();
+                .block();
     }
 
     @Host("http://httpbin.org")
@@ -173,7 +172,7 @@ public abstract class RestProxyTests {
 
         @GET("anything")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> getAnythingAsync();
+        Mono<HttpBinJSON> getAnythingAsync();
     }
 
     @Test
@@ -244,7 +243,7 @@ public abstract class RestProxyTests {
     public void AsyncGetRequestWithAnything() {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnythingAsync()
-                .blockingGet();
+                .block();
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything", json.url);
     }
@@ -261,7 +260,7 @@ public abstract class RestProxyTests {
 
         @GET("anything")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> getAnythingAsync(@QueryParam("a") String a, @QueryParam("b") int b);
+        Mono<HttpBinJSON> getAnythingAsync(@QueryParam("a") String a, @QueryParam("b") int b);
     }
 
     @Test
@@ -292,7 +291,7 @@ public abstract class RestProxyTests {
     public void AsyncGetRequestWithQueryParametersAndAnything() {
         final HttpBinJSON json = createService(Service6.class)
                 .getAnythingAsync("A", 15)
-                .blockingGet();
+                .block();
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything?a=A&b=15", json.url);
     }
@@ -313,7 +312,7 @@ public abstract class RestProxyTests {
 
         @GET("anything")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> getAnythingAsync(@HeaderParam("a") String a, @HeaderParam("b") int b);
+        Mono<HttpBinJSON> getAnythingAsync(@HeaderParam("a") String a, @HeaderParam("b") int b);
     }
 
     @Test
@@ -334,7 +333,7 @@ public abstract class RestProxyTests {
     public void AsyncGetRequestWithHeaderParametersAndAnything() {
         final HttpBinJSON json = createService(Service7.class)
                 .getAnythingAsync("A", 15)
-                .blockingGet();
+                .block();
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
@@ -366,7 +365,7 @@ public abstract class RestProxyTests {
 
         @POST("post")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> postAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
+        Mono<HttpBinJSON> postAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
     }
 
     @Test
@@ -381,7 +380,7 @@ public abstract class RestProxyTests {
     public void AsyncPostRequestWithStringBody() {
         final HttpBinJSON json = createService(Service8.class)
                 .postAsync("I'm a post body!")
-                .blockingGet();
+                .block();
         assertEquals(String.class, json.data.getClass());
         assertEquals("I'm a post body!", (String)json.data);
     }
@@ -400,7 +399,7 @@ public abstract class RestProxyTests {
 
         @PUT("put")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> putAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
+        Mono<HttpBinJSON> putAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
         @PUT("put")
         @ExpectedResponses({201})
@@ -408,7 +407,7 @@ public abstract class RestProxyTests {
 
         @PUT("put")
         @ExpectedResponses({201})
-        Single<HttpBinJSON> putWithUnexpectedResponseAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+        Mono<HttpBinJSON> putWithUnexpectedResponseAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @PUT("put")
         @ExpectedResponses({201})
@@ -418,7 +417,7 @@ public abstract class RestProxyTests {
         @PUT("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MyRestException.class)
-        Single<HttpBinJSON> putWithUnexpectedResponseAndExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+        Mono<HttpBinJSON> putWithUnexpectedResponseAndExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
     }
 
     @Test
@@ -433,7 +432,7 @@ public abstract class RestProxyTests {
     public void AsyncPutRequestWithIntBody() {
         final HttpBinJSON json = createService(Service9.class)
                 .putAsync(42)
-                .blockingGet();
+                .block();
         assertEquals(String.class, json.data.getClass());
         assertEquals("42", (String)json.data);
     }
@@ -458,7 +457,7 @@ public abstract class RestProxyTests {
         try {
             createService(Service9.class)
                     .putWithUnexpectedResponseAsync("I'm the body!")
-                    .blockingGet();
+                    .block();
             fail("Expected RestException would be thrown.");
         } catch (RestException e) {
             assertNotNull(e.body());
@@ -488,7 +487,7 @@ public abstract class RestProxyTests {
         try {
             createService(Service9.class)
                     .putWithUnexpectedResponseAndExceptionTypeAsync("I'm the body!")
-                    .blockingGet();
+                    .block();
             fail("Expected RestException would be thrown.");
         } catch (MyRestException e) {
             assertNotNull(e.body());
@@ -514,15 +513,15 @@ public abstract class RestProxyTests {
 
         @HEAD("anything")
         @ExpectedResponses({200})
-        Single<VoidResponse> headAsync();
+        Mono<VoidResponse> headAsync();
 
         @HEAD("anything")
         @ExpectedResponses({200})
-        Single<Boolean> headBooleanAsync();
+        Mono<Boolean> headBooleanAsync();
 
         @HEAD("anything")
         @ExpectedResponses({200})
-        Completable completableHeadAsync();
+        Mono<Void> completableHeadAsync();
     }
 
     @Test
@@ -549,7 +548,7 @@ public abstract class RestProxyTests {
     public void AsyncHeadRequest() {
         final Void body = createService(Service10.class)
                 .headAsync()
-                .blockingGet()
+                .block()
                 .body();
 
         assertNull(body);
@@ -557,7 +556,7 @@ public abstract class RestProxyTests {
 
     @Test
     public void AsyncHeadBooleanRequest() {
-        final boolean result = createService(Service10.class).headBooleanAsync().blockingGet();
+        final boolean result = createService(Service10.class).headBooleanAsync().block();
         assertTrue(result);
     }
 
@@ -565,7 +564,7 @@ public abstract class RestProxyTests {
     public void AsyncCompletableHeadRequest() {
         createService(Service10.class)
                 .completableHeadAsync()
-                .blockingAwait();
+                .block();
     }
 
     @Host("http://httpbin.org")
@@ -576,7 +575,7 @@ public abstract class RestProxyTests {
 
         @DELETE("delete")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> deleteAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
+        Mono<HttpBinJSON> deleteAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
     }
 
     @Test
@@ -591,7 +590,7 @@ public abstract class RestProxyTests {
     public void AsyncDeleteRequest() {
         final HttpBinJSON json = createService(Service11.class)
                 .deleteAsync(false)
-                .blockingGet();
+                .block();
         assertEquals(String.class, json.data.getClass());
         assertEquals("false", (String)json.data);
     }
@@ -604,7 +603,7 @@ public abstract class RestProxyTests {
 
         @PATCH("patch")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> patchAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
+        Mono<HttpBinJSON> patchAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
     }
 
     @Test
@@ -619,7 +618,7 @@ public abstract class RestProxyTests {
     public void AsyncPatchRequest() {
         final HttpBinJSON json = createService(Service12.class)
                 .patchAsync("body-contents")
-                .blockingGet();
+                .block();
         assertEquals(String.class, json.data.getClass());
         assertEquals("body-contents", (String)json.data);
     }
@@ -634,7 +633,7 @@ public abstract class RestProxyTests {
         @GET("anything")
         @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
-        Single<HttpBinJSON> getAsync();
+        Mono<HttpBinJSON> getAsync();
     }
 
     @Test
@@ -655,7 +654,7 @@ public abstract class RestProxyTests {
     public void AsyncHeadersRequest() {
         final HttpBinJSON json = createService(Service13.class)
                 .getAsync()
-                .blockingGet();
+                .block();
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
@@ -674,39 +673,19 @@ public abstract class RestProxyTests {
         @GET("anything")
         @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue" })
-        Single<HttpBinJSON> getAsync();
+        Mono<HttpBinJSON> getAsync();
     }
 
     @Test
     public void AsyncHttpsHeadersRequest() {
         final HttpBinJSON json = createService(Service14.class)
                 .getAsync()
-                .blockingGet();
+                .block();
         assertNotNull(json);
         assertEquals("https://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
         final HttpHeaders headers = new HttpHeaders(json.headers);
         assertEquals("MyHeaderValue", headers.value("MyHeader"));
-    }
-
-    @Host("https://httpbin.org")
-    private interface Service15 {
-        @GET("anything")
-        @ExpectedResponses({200})
-        Observable<HttpBinJSON> get();
-    }
-
-    @Test
-    public void service15Get() {
-        final Service15 service = createService(Service15.class);
-        try {
-            service.get();
-            fail("Expected exception.");
-        }
-        catch (InvalidReturnTypeException e) {
-            assertContains(e.getMessage(), "io.reactivex.Observable<com.microsoft.rest.v2.entities.HttpBinJSON>");
-            assertContains(e.getMessage(), "RestProxyTests$Service15.get()");
-        }
     }
 
     @Host("https://httpbin.org")
@@ -717,7 +696,7 @@ public abstract class RestProxyTests {
 
         @PUT("put")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> putByteArrayAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
+        Mono<HttpBinJSON> putByteArrayAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
     }
 
     @Test
@@ -739,7 +718,7 @@ public abstract class RestProxyTests {
         final Service16 service16 = createService(Service16.class);
         final byte[] expectedBytes = new byte[] { 1, 2, 3, 4 };
         final HttpBinJSON httpBinJSON = service16.putByteArrayAsync(expectedBytes)
-                .blockingGet();
+                .block();
         assertTrue(httpBinJSON.data instanceof String);
 
         final String base64String = (String) httpBinJSON.data;
@@ -755,7 +734,7 @@ public abstract class RestProxyTests {
 
         @GET("get")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> getAsync(@HostParam("hostPart1") String hostPart1, @HostParam("hostPart2") String hostPart2);
+        Mono<HttpBinJSON> getAsync(@HostParam("hostPart1") String hostPart1, @HostParam("hostPart2") String hostPart2);
     }
 
     @Test
@@ -769,7 +748,7 @@ public abstract class RestProxyTests {
     @Test
     public void AsyncRequestWithMultipleHostParams() {
         final Service17 service17 = createService(Service17.class);
-        final HttpBinJSON result = service17.getAsync("http", "bin").blockingGet();
+        final HttpBinJSON result = service17.getAsync("http", "bin").block();
         assertNotNull(result);
         assertEquals("http://httpbin.org/get", result.url);
     }
@@ -1302,14 +1281,14 @@ public abstract class RestProxyTests {
         StreamResponse getBytes();
 
         @GET("/bytes/30720")
-        Flowable<ByteBuffer> getBytesFlowable();
+        Flux<ByteBuffer> getBytesFlowable();
     }
 
     @Test
     public void SimpleDownloadTest() {
         StreamResponse response = createService(DownloadService.class).getBytes();
         int count = 0;
-        for (ByteBuffer bytes : response.body().blockingIterable()) {
+        for (ByteBuffer bytes : response.body().toIterable()) {
             count += bytes.remaining();
         }
         assertEquals(30720, count);
@@ -1317,9 +1296,9 @@ public abstract class RestProxyTests {
 
     @Test
     public void RawFlowableDownloadTest() {
-        Flowable<ByteBuffer> response = createService(DownloadService.class).getBytesFlowable();
+        Flux<ByteBuffer> response = createService(DownloadService.class).getBytesFlowable();
         int count = 0;
-        for (ByteBuffer bytes : response.blockingIterable()) {
+        for (ByteBuffer bytes : response.toIterable()) {
             count += bytes.remaining();
         }
         assertEquals(30720, count);
@@ -1328,13 +1307,13 @@ public abstract class RestProxyTests {
     @Host("https://httpbin.org")
     interface FlowableUploadService {
         @PUT("/put")
-        BodyResponse<HttpBinJSON> put(@BodyParam("text/plain") Flowable<ByteBuffer> content, @HeaderParam("Content-Length") long contentLength);
+        BodyResponse<HttpBinJSON> put(@BodyParam("text/plain") Flux<ByteBuffer> content, @HeaderParam("Content-Length") long contentLength);
     }
 
     @Test
     public void FlowableUploadTest() throws Exception {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
-        Flowable<ByteBuffer> stream = FlowableUtil.readFile(AsynchronousFileChannel.open(filePath));
+        Flux<ByteBuffer> stream = FluxUtil.readFile(AsynchronousFileChannel.open(filePath));
 
         final HttpClient httpClient = createHttpClient();
         // Log the body so that body buffering/replay behavior is exercised.
@@ -1349,7 +1328,7 @@ public abstract class RestProxyTests {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ);
         BodyResponse<HttpBinJSON> response = createService(FlowableUploadService.class)
-                .put(FlowableUtil.readFile(fileChannel, 4, 15), 15);
+                .put(FluxUtil.readFile(fileChannel, 4, 15), 15);
 
         assertEquals("quick brown fox", response.body().data);
     }
@@ -1406,10 +1385,10 @@ public abstract class RestProxyTests {
         HttpBinJSON get();
 
         @GET("anything")
-        Single<HttpBinJSON> getAsync();
+        Mono<HttpBinJSON> getAsync();
 
         @GET("anything")
-        Single<BodyResponse<HttpBinJSON>> getBodyResponseAsync();
+        Mono<BodyResponse<HttpBinJSON>> getBodyResponseAsync();
     }
 
     @Test(expected = RestException.class)
@@ -1421,14 +1400,14 @@ public abstract class RestProxyTests {
     @Test(expected = RestException.class)
     public void testSingleMissingDecodingPolicyCausesException() {
         Service25 service = RestProxy.create(Service25.class, HttpPipeline.build());
-        service.getAsync().blockingGet();
-        service.getBodyResponseAsync().blockingGet();
+        service.getAsync().block();
+        service.getBodyResponseAsync().block();
     }
 
     @Test(expected = RestException.class)
     public void testSingleBodyResponseMissingDecodingPolicyCausesException() {
         Service25 service = RestProxy.create(Service25.class, HttpPipeline.build());
-        service.getBodyResponseAsync().blockingGet();
+        service.getBodyResponseAsync().block();
     }
 
     // Helpers

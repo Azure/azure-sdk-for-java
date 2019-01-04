@@ -9,7 +9,7 @@ package com.microsoft.rest.v2.policy;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
@@ -44,13 +44,13 @@ public class CredentialsPolicyFactory implements RequestPolicyFactory {
          * @return An io.reactivex.Single representing the pending response.
          */
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
             try {
                 String token = credentials.authorizationHeaderValue(request.url().toString());
                 request.headers().set("Authorization", token);
                 return next.sendAsync(request);
             } catch (IOException e) {
-                return Single.error(e);
+                return Mono.error(e);
             }
         }
     }

@@ -7,18 +7,26 @@
 package com.microsoft.azure.v2.credentials;
 
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
+import com.microsoft.aad.adal4j.AuthenticationCallback;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationException;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.rest.v2.annotations.Beta;
-import io.reactivex.Completable;
-import io.reactivex.Single;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -125,85 +133,179 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public synchronized Single<String> getToken(String resource) {
+    public synchronized Mono<String> getToken(String resource) {
         // Find exact match for the resource
-        AuthenticationResult authenticationResult = tokens.get(resource);
+        AuthenticationResult[] authenticationResult = new AuthenticationResult[1];
+        authenticationResult[0] = tokens.get(resource);
         // Return if found and not expired
-        if (authenticationResult != null && authenticationResult.getExpiresOnDate().after(new Date())) {
-            return Single.just(authenticationResult.getAccessToken());
+        if (authenticationResult[0] != null && authenticationResult[0].getExpiresOnDate().after(new Date())) {
+            return Mono.just(authenticationResult[0].getAccessToken());
         }
         // If found then refresh
-        boolean shouldRefresh = authenticationResult != null;
+        boolean shouldRefresh = authenticationResult[0] != null;
         // If not found for the resource, but is MRRT then also refresh
-        if (authenticationResult == null && !tokens.isEmpty()) {
-            authenticationResult = new ArrayList<>(tokens.values()).get(0);
-            shouldRefresh = authenticationResult.isMultipleResourceRefreshToken();
+        if (authenticationResult[0] == null && !tokens.isEmpty()) {
+            authenticationResult[0] = new ArrayList<>(tokens.values()).get(0);
+            shouldRefresh = authenticationResult[0].isMultipleResourceRefreshToken();
         }
-        Completable task = Completable.complete();
-        // Refresh
+
         if (shouldRefresh) {
-            task = task.andThen(acquireAccessTokenFromRefreshToken(resource, authenticationResult.getRefreshToken(), authenticationResult.isMultipleResourceRefreshToken())
-                    .flatMapCompletable(ar -> Completable.fromAction(() -> tokens.put(resource, ar))));
+            return Mono.defer(() -> acquireAccessTokenFromRefreshToken(resource, authenticationResult[0].getRefreshToken(), authenticationResult[0].isMultipleResourceRefreshToken())
+                    .onErrorResume(t -> acquireNewAccessToken(resource))
+                    .doOnNext(ar -> tokens.put(resource, ar))
+                    .then(Mono.just(tokens.get(resource).getAccessToken())));
+        } else {
+            return Mono.just(tokens.get(resource).getAccessToken());
         }
-        // If refresh fails or not refreshable, acquire new token
-        task = task.onErrorResumeNext(t -> acquireNewAccessToken(resource)
-                .flatMapCompletable(ar -> Completable.fromAction(() -> tokens.put(resource, ar))));
-        return task.andThen(Single.just(tokens.get(resource).getAccessToken()));
     }
 
-    Single<AuthenticationResult> acquireNewAccessToken(String resource) throws IOException {
+    private Mono<AuthenticationResult> acquireNewAccessToken(String resource) {
         if (authorizationCode == null) {
-            throw new IllegalArgumentException("You must acquire an authorization code by redirecting to the authentication URL");
+            return Mono.error(new IllegalArgumentException("You must acquire an authorization code by redirecting to the authentication URL"));
         }
         String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
+        AuthenticationContext context;
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
+        try {
+            context = new AuthenticationContext(authorityUrl, false, executor);
+        } catch (MalformedURLException mue) {
+            executor.shutdown();
+            throw Exceptions.propagate(mue);
+        }
         if (proxy() != null) {
             context.setProxy(proxy());
         }
-        return Single.defer(() -> {
-            if (applicationCredentials.clientSecret() != null) {
-                return Single.fromFuture(context.acquireTokenByAuthorizationCode(
-                        authorizationCode,
-                        new URI(redirectUrl),
-                        new ClientCredential(applicationCredentials.clientId(), applicationCredentials.clientSecret()),
-                        resource, null));
-            } else if (applicationCredentials.clientCertificate() != null && applicationCredentials.clientCertificatePassword() != null) {
-                return Single.fromFuture(context.acquireTokenByAuthorizationCode(
-                        authorizationCode,
-                        new URI(redirectUrl),
-                        AsymmetricKeyCredential.create(
-                                applicationCredentials.clientId(),
-                                new ByteArrayInputStream(applicationCredentials.clientCertificate()),
-                                applicationCredentials.clientCertificatePassword()),
-                        resource,
-                        null));
-            } else if (applicationCredentials.clientCertificate() != null) {
-                return Single.fromFuture(context.acquireTokenByAuthorizationCode(
-                        authorizationCode,
-                        new URI(redirectUrl),
-                        AsymmetricKeyCredential.create(
-                                clientId(),
-                                ApplicationTokenCredentials.privateKeyFromPem(new String(applicationCredentials.clientCertificate())),
-                                ApplicationTokenCredentials.publicKeyFromPem(new String(applicationCredentials.clientCertificate()))),
-                        resource,
-                        null));
+        Mono<AuthenticationResult> authMono;
+        if (applicationCredentials.clientSecret() != null) {
+            URI uri;
+            try {
+                uri = new URI(redirectUrl);
+            } catch (URISyntaxException use) {
+                return Mono.error(use);
             }
-            throw new AuthenticationException("Please provide either a non-null secret or a non-null certificate.");
-        }).doFinally(executor::shutdown);
+            authMono = Mono.create(callback -> {
+                context.acquireTokenByAuthorizationCode(
+                        authorizationCode,
+                        uri,
+                        new ClientCredential(applicationCredentials.clientId(), applicationCredentials.clientSecret()),
+                        resource,
+                        new AuthenticationCallback() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                callback.success((AuthenticationResult) o);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                callback.error(throwable);
+                            }
+                        });
+            });
+        } else if (applicationCredentials.clientCertificate() != null && applicationCredentials.clientCertificatePassword() != null) {
+            URI uri;
+            try {
+                uri = new URI(redirectUrl);
+            } catch (URISyntaxException use) {
+                return Mono.error(use);
+            }
+            authMono = Mono.create(callback -> {
+                AsymmetricKeyCredential keyCredential;
+                try {
+                    keyCredential = AsymmetricKeyCredential.create(applicationCredentials.clientId(), new ByteArrayInputStream(applicationCredentials.clientCertificate()), applicationCredentials.clientCertificatePassword());
+                } catch (KeyStoreException kse) {
+                    throw  Exceptions.propagate(kse);
+                } catch (NoSuchProviderException nspe) {
+                    throw  Exceptions.propagate(nspe);
+                } catch (NoSuchAlgorithmException nsae) {
+                    throw  Exceptions.propagate(nsae);
+                } catch (CertificateException ce) {
+                    throw  Exceptions.propagate(ce);
+                } catch (IOException ioe) {
+                    throw  Exceptions.propagate(ioe);
+                } catch (UnrecoverableKeyException uke) {
+                    throw  Exceptions.propagate(uke);
+                }
+                context.acquireTokenByAuthorizationCode(
+                        authorizationCode,
+                        uri,
+                        keyCredential,
+                        new AuthenticationCallback() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                callback.success((AuthenticationResult) o);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                callback.error(throwable);
+                            }
+                        });
+            });
+        } else if (applicationCredentials.clientCertificate() != null) {
+            URI uri;
+            try {
+                uri = new URI(redirectUrl);
+            } catch (URISyntaxException use) {
+                return Mono.error(use);
+            }
+            AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(),
+                    ApplicationTokenCredentials.privateKeyFromPem(new String(applicationCredentials.clientCertificate())),
+                    ApplicationTokenCredentials.publicKeyFromPem(new String(applicationCredentials.clientCertificate())));
+            authMono = Mono.create(callback -> {
+                context.acquireTokenByAuthorizationCode(
+                        authorizationCode,
+                        uri,
+                        keyCredential,
+                        resource,
+                        new AuthenticationCallback() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                callback.success((AuthenticationResult) o);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                callback.error(throwable);
+                            }
+                        });
+            });
+        } else {
+            authMono = Mono.error(new AuthenticationException("Please provide either a non-null secret or a non-null certificate."));
+        }
+        return authMono.doFinally(s -> executor.shutdown());
     }
 
     // Refresh tokens are currently not used since we don't know if the refresh token has expired
-    private Single<AuthenticationResult> acquireAccessTokenFromRefreshToken(String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
+    private Mono<AuthenticationResult> acquireAccessTokenFromRefreshToken(String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
         String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        return Single.defer(() -> {
-            AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
+        Mono<AuthenticationResult> authMono = Mono.defer(() -> {
+            AuthenticationContext context;
+            try {
+                context = new AuthenticationContext(authorityUrl, false, executor);
+            } catch (MalformedURLException mue) {
+                throw Exceptions.propagate(mue);
+            }
             if (proxy() != null) {
                 context.setProxy(proxy());
             }
-            return Single.fromFuture(context.acquireTokenByRefreshToken(refreshToken, clientId(), resource, null));
-        }).doFinally(executor::shutdown);
+            return Mono.create(callback -> context.acquireTokenByRefreshToken(
+                    refreshToken,
+                    clientId(),
+                    resource,
+                    new AuthenticationCallback() {
+                        @Override
+                        public void onSuccess(Object o) {
+                            callback.success((AuthenticationResult) o);
+                        }
+
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            callback.error(throwable);
+                        }
+                    }));
+        });
+        return authMono.doFinally(s -> executor.shutdown());
     }
 
     /**

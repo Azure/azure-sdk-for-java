@@ -25,10 +25,9 @@ import com.microsoft.rest.v2.http.MockHttpResponse;
 import com.microsoft.rest.v2.policy.DecodingPolicyFactory;
 import com.microsoft.rest.v2.protocol.SerializerEncoding;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
-import com.microsoft.rest.v2.util.FlowableUtil;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
+import com.microsoft.rest.v2.util.FluxUtil;
 import org.junit.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -53,19 +52,18 @@ public class RestProxyXMLTests {
             HttpResponse res = new MockHttpResponse(200, headers, bytes);
             return res;
         }
-
         @Override
-        public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
             try {
                 if (request.url().toString().endsWith("GetContainerACLs")) {
-                    return Single.just(response("GetContainerACLs.xml"));
+                    return Mono.just(response("GetContainerACLs.xml"));
                 } else if (request.url().toString().endsWith("GetXMLWithAttributes")) {
-                    return Single.just(response("GetXMLWithAttributes.xml"));
+                    return Mono.just(response("GetXMLWithAttributes.xml"));
                 } else {
-                    return Single.<HttpResponse>just(new MockHttpResponse(404));
+                    return Mono.<HttpResponse>just(new MockHttpResponse(404));
                 }
             } catch (IOException | URISyntaxException e) {
-                return Single.error(e);
+                return Mono.error(e);
             }
         }
     }
@@ -91,18 +89,15 @@ public class RestProxyXMLTests {
         byte[] receivedBytes = null;
 
         @Override
-        public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
             if (request.url().toString().endsWith("SetContainerACLs")) {
-                return FlowableUtil.collectBytesInArray(request.body())
-                        .map(new Function<byte[], HttpResponse>() {
-                            @Override
-                            public HttpResponse apply(byte[] bytes) throws Exception {
-                                receivedBytes = bytes;
-                                return new MockHttpResponse(200);
-                            }
+                return FluxUtil.collectBytesInArray(request.body())
+                        .map(bytes -> {
+                            receivedBytes = bytes;
+                            return new MockHttpResponse(200);
                         });
             } else {
-                return Single.<HttpResponse>just(new MockHttpResponse(404));
+                return Mono.<HttpResponse>just(new MockHttpResponse(404));
             }
         }
     }

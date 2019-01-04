@@ -8,7 +8,7 @@ package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -31,7 +31,7 @@ public final class RequestIdPolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
             String requestId = request.headers().value(REQUEST_ID_HEADER);
             if (requestId == null) {
                 request.headers().set(REQUEST_ID_HEADER, UUID.randomUUID().toString());

@@ -12,7 +12,7 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 /**
  * Creates a policy which adds credentials from AsyncServiceClientCredentials to a request.
@@ -42,10 +42,10 @@ public class AsyncCredentialsPolicyFactory implements RequestPolicyFactory {
         /**
          * Adds a token header to the request, making another request to get the token if necessary.
          * @param request The HTTP request message to send.
-         * @return An io.reactivex.Single representing the pending response.
+         * @return A reactor.core.publisher.Mono representing the pending response.
          */
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
                 return credentials.authorizationHeaderValueAsync(request.url().toString())
                         .flatMap(token -> {
                             request.headers().set("Authorization", token);

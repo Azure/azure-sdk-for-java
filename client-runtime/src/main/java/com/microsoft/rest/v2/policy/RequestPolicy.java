@@ -8,7 +8,7 @@ package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 /**
  * Uses the decorator pattern to add custom behavior when an HTTP request is made.
@@ -20,7 +20,7 @@ public interface RequestPolicy {
      * Sends an HTTP request as an asynchronous operation.
      *
      * @param request The HTTP request message to send.
-     * @return The io.reactivex.Single instance representing the asynchronous operation.
+     * @return The reactor.core.publisher.Mono instance representing the asynchronous operation.
      */
-    Single<HttpResponse> sendAsync(HttpRequest request);
+    Mono<HttpResponse> sendAsync(HttpRequest request);
 }

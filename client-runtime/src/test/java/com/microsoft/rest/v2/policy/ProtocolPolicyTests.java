@@ -4,7 +4,7 @@ import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import org.junit.Test;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -28,7 +28,7 @@ public class ProtocolPolicyTests {
     private static RequestPolicy createMockRequestPolicy(final String expectedUrl) {
         return new RequestPolicy() {
             @Override
-            public Single<HttpResponse> sendAsync(HttpRequest request) {
+            public Mono<HttpResponse> sendAsync(HttpRequest request) {
                 assertEquals(expectedUrl, request.url().toString());
                 return null;
             }

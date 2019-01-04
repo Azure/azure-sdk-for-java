@@ -20,9 +20,9 @@ import com.microsoft.rest.v2.policy.RetryPolicyFactory;
 import com.microsoft.rest.v2.policy.TimeoutPolicyFactory;
 import com.microsoft.rest.v2.policy.UserAgentPolicyFactory;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * A builder class that can be used to create a HttpPipeline.
@@ -224,7 +224,7 @@ public final class HttpPipelineBuilder {
      * @param timeUnit the time unit of the delay
      * @return This HttpPipeline builder.
      */
-    public HttpPipelineBuilder withRetryPolicy(int maxRetries, long delayTime, TimeUnit timeUnit) {
+    public HttpPipelineBuilder withRetryPolicy(int maxRetries, long delayTime, ChronoUnit timeUnit) {
         return withRequestPolicy(new RetryPolicyFactory(maxRetries, delayTime, timeUnit));
     }
 
@@ -235,7 +235,7 @@ public final class HttpPipelineBuilder {
      * @param unit The unit of time associated with the timeout parameter.
      * @return This HttpPipeline builder.
      */
-    public HttpPipelineBuilder withTimeoutPolicy(long timeout, TimeUnit unit) {
+    public HttpPipelineBuilder withTimeoutPolicy(long timeout, ChronoUnit unit) {
         return withRequestPolicy(new TimeoutPolicyFactory(timeout, unit));
     }
 

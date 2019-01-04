@@ -13,17 +13,13 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.protocol.HttpResponseDecoder;
 import com.microsoft.rest.v2.protocol.SerializerEncoding;
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Predicate;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 /**
  * An abstract class for the different strategies that an OperationStatus can use when checking the
@@ -65,11 +61,11 @@ abstract class PollStrategy {
         return (T) restProxy.serializer().deserialize(value, returnType, SerializerEncoding.JSON);
     }
 
-    protected Single<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse) {
+    protected Mono<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse) {
         return ensureExpectedStatus(httpResponse, null);
     }
 
-    protected Single<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse, int[] additionalAllowedStatusCodes) {
+    protected Mono<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse, int[] additionalAllowedStatusCodes) {
         return restProxy.ensureExpectedStatus(httpResponse, methodParser, additionalAllowedStatusCodes);
     }
 
@@ -111,18 +107,16 @@ abstract class PollStrategy {
     }
 
     /**
-     * If this OperationStatus has a retryAfterSeconds value, return an Single that is delayed by the
+     * If this OperationStatus has a retryAfterSeconds value, return an Mono that is delayed by the
      * number of seconds that are in the retryAfterSeconds value. If this OperationStatus doesn't have
      * a retryAfterSeconds value, then return an Single with no delay.
-     * @return A Single with delay if this OperationStatus has a retryAfterSeconds value.
+     * @return A Mono with delay if this OperationStatus has a retryAfterSeconds value.
      */
-    Completable delayAsync() {
-        Completable result = Completable.complete();
-
+    Mono<Void> delayAsync() {
+        Mono<Void> result = Mono.empty();
         if (delayInMilliseconds > 0) {
-            result = result.delay(delayInMilliseconds, TimeUnit.MILLISECONDS);
+            result = result.delaySubscription(Duration.ofMillis(delayInMilliseconds));
         }
-
         return result;
     }
 
@@ -156,7 +150,7 @@ abstract class PollStrategy {
      * @param httpPollResponse The response of the most recent poll request.
      * @return A Completable that can be used to chain off of this operation.
      */
-    abstract Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse);
+    abstract Mono<HttpResponse> updateFromAsync(HttpResponse httpPollResponse);
 
     /**
      * Get whether or not this PollStrategy's long running operation is done.
@@ -164,73 +158,40 @@ abstract class PollStrategy {
      */
     abstract boolean isDone();
 
-    Observable<HttpResponse> sendPollRequestWithDelay() {
-        return Observable.defer(new Callable<Observable<HttpResponse>>() {
-            @Override
-            public Observable<HttpResponse> call() {
-                return delayAsync()
-                        .andThen(Single.defer(new Callable<Single<HttpResponse>>() {
-                            @Override
-                            public Single<HttpResponse> call() throws Exception {
-                                final HttpRequest pollRequest = createPollRequest();
-
-                                return restProxy.sendHttpRequestAsync(pollRequest);
-                            }
-                        }))
-                        .flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
-                            @Override
-                            public Single<HttpResponse> apply(HttpResponse response) {
-                                return updateFromAsync(response);
-                            }
-                        })
-                        .toObservable();
-            }
-        });
+    Mono<HttpResponse> sendPollRequestWithDelay() {
+        return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
+            final HttpRequest pollRequest = createPollRequest();
+            return restProxy.sendHttpRequestAsync(pollRequest);
+        })).flatMap(response -> updateFromAsync(response)));
     }
 
-    Observable<OperationStatus<Object>> createOperationStatusObservable(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType) {
+    Mono<OperationStatus<Object>> createOperationStatusMono(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType) {
         OperationStatus<Object> operationStatus;
         if (!isDone()) {
             operationStatus = new OperationStatus<>(this, httpRequest);
-        }
-        else {
+        } else {
             try {
-                final Object resultObject = restProxy.handleRestReturnType(httpRequest, Single.just(httpResponse), methodParser, operationStatusResultType);
+                final Object resultObject = restProxy.handleRestReturnType(httpRequest, Mono.just(httpResponse), methodParser, operationStatusResultType);
                 operationStatus = new OperationStatus<>(resultObject, status());
             } catch (RestException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);
             }
         }
-        return Observable.just(operationStatus);
+        return Mono.just(operationStatus);
     }
 
-    Observable<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
-        return sendPollRequestWithDelay()
-                    .flatMap(new Function<HttpResponse, Observable<OperationStatus<Object>>>() {
-                        @Override
-                        public Observable<OperationStatus<Object>> apply(HttpResponse httpResponse) {
-                            return createOperationStatusObservable(originalHttpRequest, httpResponse, methodParser, operationStatusResultType);
-                        }
-                    })
+    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
+            return sendPollRequestWithDelay()
+                    .flatMap(httpResponse -> createOperationStatusMono(originalHttpRequest, httpResponse, methodParser, operationStatusResultType))
                     .repeat()
-                    .takeUntil(new Predicate<OperationStatus<Object>>() {
-                        @Override
-                        public boolean test(OperationStatus<Object> operationStatus) {
-                            return isDone();
-                        }
-                    });
+                    .takeUntil(operationStatus -> isDone());
     }
 
-    Single<HttpResponse> pollUntilDone() {
+    Mono<HttpResponse> pollUntilDone() {
         return sendPollRequestWithDelay()
                 .repeat()
-                .takeUntil(new Predicate<HttpResponse>() {
-                    @Override
-                    public boolean test(HttpResponse ignored) {
-                        return isDone();
-                    }
-                })
-                .lastOrError();
+                .takeUntil(ignored -> isDone())
+                .last();
     }
 
     /**

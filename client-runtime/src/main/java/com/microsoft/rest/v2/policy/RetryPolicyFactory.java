@@ -8,11 +8,11 @@ package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
+import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Creates a RequestPolicy which retries when a recoverable HTTP error occurs.
@@ -20,10 +20,10 @@ import java.util.concurrent.TimeUnit;
 public class RetryPolicyFactory implements RequestPolicyFactory {
     private static final int DEFAULT_MAX_RETRIES = 3;
     private static final int DEFAULT_DELAY = 0;
-    private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.MILLISECONDS;
+    private static final ChronoUnit DEFAULT_TIME_UNIT = ChronoUnit.MILLIS;
     private final int maxRetries;
     private final long delayTime;
-    private final TimeUnit timeUnit;
+    private final ChronoUnit timeUnit;
 
     /**
      * Creates a RetryPolicyFactory with the default number of retry attempts and delay between retries.
@@ -40,7 +40,7 @@ public class RetryPolicyFactory implements RequestPolicyFactory {
      * @param delayTime the delay between retries
      * @param timeUnit the time unit of the delay
      */
-    public RetryPolicyFactory(int maxRetries, long delayTime, TimeUnit timeUnit) {
+    public RetryPolicyFactory(int maxRetries, long delayTime, ChronoUnit timeUnit) {
         this.maxRetries = maxRetries;
         this.delayTime = delayTime;
         this.timeUnit = timeUnit;
@@ -58,22 +58,26 @@ public class RetryPolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(final HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(final HttpRequest request) {
             return attemptAsync(request, 0);
         }
 
-        private Single<HttpResponse> attemptAsync(final HttpRequest request, final int tryCount) {
+        private Mono<HttpResponse> attemptAsync(final HttpRequest request, final int tryCount) {
             return next.sendAsync(request.buffer())
-                    .flatMap((Function<HttpResponse, Single<? extends HttpResponse>>) httpResponse -> {
+                    .flatMap(httpResponse -> {
                         if (shouldRetry(httpResponse, tryCount)) {
-                            return attemptAsync(request, tryCount + 1).delaySubscription(delayTime, timeUnit);
+                            return attemptAsync(request, tryCount + 1).delaySubscription(Duration.of(delayTime, timeUnit));
                         } else {
-                            return Single.just(httpResponse);
+                            return Mono.just(httpResponse);
                         }
-                    }).onErrorResumeNext(err ->
-                                    tryCount < maxRetries
-                                            ? attemptAsync(request, tryCount + 1).delaySubscription(delayTime, timeUnit)
-                                            : Single.error(err));
+                    })
+                    .onErrorResume(err -> {
+                        if (tryCount < maxRetries) {
+                            return attemptAsync(request, tryCount + 1).delaySubscription(Duration.of(delayTime, timeUnit));
+                        } else {
+                            return Mono.error(err);
+                        }
+                    });
         }
 
         private boolean shouldRetry(HttpResponse response, int tryCount) {

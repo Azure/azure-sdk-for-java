@@ -3,6 +3,7 @@ package com.microsoft.rest.v2.http;
 import com.microsoft.rest.v2.policy.RequestIdPolicyFactory;
 import org.junit.Test;
 import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,15 +17,15 @@ public class HttpPipelineTests {
         final URL expectedUrl = new URL("http://my.site.com");
         final HttpPipeline httpPipeline = HttpPipeline.build(new HttpClient() {
             @Override
-            public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+            public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
                 assertEquals(0, request.headers().size());
                 assertEquals(expectedHttpMethod, request.httpMethod());
                 assertEquals(expectedUrl, request.url());
-                return Single.<HttpResponse>just(new MockHttpResponse(200));
+                return Mono.<HttpResponse>just(new MockHttpResponse(200));
             }
         });
 
-        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl, null)).blockingGet();
+        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl, null)).block();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }
@@ -36,19 +37,19 @@ public class HttpPipelineTests {
         final String expectedUserAgent = "my-user-agent";
         final HttpClient httpClient = new HttpClient() {
             @Override
-            public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+            public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
                 assertEquals(1, request.headers().size());
                 assertEquals(expectedUserAgent, request.headers().value("User-Agent"));
                 assertEquals(expectedHttpMethod, request.httpMethod());
                 assertEquals(expectedUrl, request.url());
-                return Single.<HttpResponse>just(new MockHttpResponse(200));
+                return Mono.<HttpResponse>just(new MockHttpResponse(200));
             }
         };
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .withHttpClient(httpClient)
                 .withUserAgentPolicy(expectedUserAgent)
                 .build();
-        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl, null)).blockingGet();
+        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl, null)).block();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }
@@ -60,7 +61,7 @@ public class HttpPipelineTests {
         final HttpPipeline httpPipeline = HttpPipeline.build(
                 new HttpClient() {
                     @Override
-                    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                    public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
                         assertEquals(1, request.headers().size());
                         final String requestId = request.headers().value("x-ms-client-request-id");
                         assertNotNull(requestId);
@@ -68,11 +69,11 @@ public class HttpPipelineTests {
 
                         assertEquals(expectedHttpMethod, request.httpMethod());
                         assertEquals(expectedUrl, request.url());
-                        return Single.<HttpResponse>just(new MockHttpResponse(200));
+                        return Mono.<HttpResponse>just(new MockHttpResponse(200));
                     }
                 },
                 new RequestIdPolicyFactory());
-        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl, null)).blockingGet();
+        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl, null)).block();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }

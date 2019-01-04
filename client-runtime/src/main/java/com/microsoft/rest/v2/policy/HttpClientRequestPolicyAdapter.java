@@ -9,7 +9,7 @@ package com.microsoft.rest.v2.policy;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 /**
  * An adapter that converts an HttpClient to a RequestPolicy.
@@ -35,7 +35,7 @@ public class HttpClientRequestPolicyAdapter implements RequestPolicy {
     }
 
     @Override
-    public Single<HttpResponse> sendAsync(HttpRequest request) {
+    public Mono<HttpResponse> sendAsync(HttpRequest request) {
         return httpClient.sendRequestAsync(request);
     }
 }

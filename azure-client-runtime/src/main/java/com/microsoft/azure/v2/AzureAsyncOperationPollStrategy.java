@@ -11,8 +11,7 @@ import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -107,64 +106,49 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     }
 
     @Override
-    public Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
+    public Mono<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
         return ensureExpectedStatus(httpPollResponse)
-                .flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
-                    @Override
-                    public Single<HttpResponse> apply(HttpResponse response) {
-                        updateDelayInMillisecondsFrom(response);
+                .flatMap(response -> {
+                    updateDelayInMillisecondsFrom(response);
+                    Mono<HttpResponse> result;
+                    if (!data.pollingCompleted) {
+                        final HttpResponse bufferedHttpPollResponse = response.buffer();
+                        result = bufferedHttpPollResponse.bodyAsString()
+                                .map(bodyString -> {
+                                    AsyncOperationResource operationResource = null;
+                                    try {
+                                        operationResource = deserialize(bodyString, AsyncOperationResource.class);
+                                    } catch (IOException ignored) { }
+                                    //
+                                    if (operationResource == null || operationResource.status() == null) {
+                                        throw new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null);
+                                    } else {
+                                        final String status = operationResource.status();
+                                        setStatus(status);
 
-                        Single<HttpResponse> result;
-                        if (!data.pollingCompleted) {
-                            final HttpResponse bufferedHttpPollResponse = response.buffer();
-                            result = bufferedHttpPollResponse.bodyAsString()
-                                    .map(new Function<String, HttpResponse>() {
-                                        @Override
-                                        public HttpResponse apply(String bodyString) {
-                                            AsyncOperationResource operationResource = null;
+                                        data.pollingCompleted = OperationState.isCompleted(status);
+                                        if (data.pollingCompleted) {
+                                            data.pollingSucceeded = OperationState.SUCCEEDED.equalsIgnoreCase(status);
+                                            clearDelayInMilliseconds();
 
-                                            try {
-                                                operationResource = deserialize(bodyString, AsyncOperationResource.class);
-                                            }
-                                            catch (IOException ignored) {
-                                            }
-
-                                            if (operationResource == null || operationResource.status() == null) {
-                                                throw new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null);
-                                            }
-                                            else {
-                                                final String status = operationResource.status();
-                                                setStatus(status);
-
-                                                data.pollingCompleted = OperationState.isCompleted(status);
-                                                if (data.pollingCompleted) {
-                                                    data.pollingSucceeded = OperationState.SUCCEEDED.equalsIgnoreCase(status);
-                                                    clearDelayInMilliseconds();
-
-                                                    if (!data.pollingSucceeded) {
-                                                        throw new CloudException("Async operation failed with provisioning state: " + status, bufferedHttpPollResponse);
-                                                    }
-
-                                                    if (operationResource.id() != null) {
-                                                        data.gotResourceResponse = true;
-                                                    }
-                                                }
+                                            if (!data.pollingSucceeded) {
+                                                throw new CloudException("Async operation failed with provisioning state: " + status, bufferedHttpPollResponse);
                                             }
 
-                                            return bufferedHttpPollResponse;
+                                            if (operationResource.id() != null) {
+                                                data.gotResourceResponse = true;
+                                            }
                                         }
-                                    });
+                                        return bufferedHttpPollResponse;
+                                    }
+                                });
+                    } else {
+                        if (data.pollingSucceeded) {
+                            data.gotResourceResponse = true;
                         }
-                        else {
-                            if (data.pollingSucceeded) {
-                                data.gotResourceResponse = true;
-                            }
-
-                            result = Single.just(response);
-                        }
-
-                        return result;
+                        result = Mono.just(response);
                     }
+                    return result;
                 });
     }
 

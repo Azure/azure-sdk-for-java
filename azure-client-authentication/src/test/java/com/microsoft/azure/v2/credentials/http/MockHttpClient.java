@@ -9,7 +9,7 @@ package com.microsoft.azure.v2.credentials.http;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +30,9 @@ public class MockHttpClient extends HttpClient {
     }
 
     @Override
-    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+    public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
         requests.add(request);
 
-        return Single.just(mockResponse);
+        return Mono.just(mockResponse);
     }
 }

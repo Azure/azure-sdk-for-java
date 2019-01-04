@@ -6,12 +6,13 @@
 
 package com.microsoft.azure.v2.credentials;
 
+import com.microsoft.aad.adal4j.AuthenticationCallback;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.v2.AzureEnvironment;
-import io.reactivex.Completable;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -69,59 +70,99 @@ public class UserTokenCredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public synchronized Single<String> getToken(String resource) {
+    public synchronized Mono<String> getToken(String resource) {
         // Find exact match for the resource
-        AuthenticationResult authenticationResult = tokens.get(resource);
+        AuthenticationResult[] authenticationResult = new AuthenticationResult[1];
+        authenticationResult[0] = tokens.get(resource);
         // Return if found and not expired
-        if (authenticationResult != null && authenticationResult.getExpiresOnDate().after(new Date())) {
-            return Single.just(authenticationResult.getAccessToken());
+        if (authenticationResult[0] != null && authenticationResult[0].getExpiresOnDate().after(new Date())) {
+            return Mono.just(authenticationResult[0].getAccessToken());
         }
         // If found then refresh
-        boolean shouldRefresh = authenticationResult != null;
+        boolean shouldRefresh = authenticationResult[0] != null;
         // If not found for the resource, but is MRRT then also refresh
-        if (authenticationResult == null && !tokens.isEmpty()) {
-            authenticationResult = new ArrayList<>(tokens.values()).get(0);
-            shouldRefresh = authenticationResult.isMultipleResourceRefreshToken();
+        if (authenticationResult[0] == null && !tokens.isEmpty()) {
+            authenticationResult[0] = new ArrayList<>(tokens.values()).get(0);
+            shouldRefresh = authenticationResult[0].isMultipleResourceRefreshToken();
         }
-        Completable task = Completable.complete();
-        // Refresh
+
         if (shouldRefresh) {
-            task = task.andThen(acquireAccessTokenFromRefreshToken(resource, authenticationResult.getRefreshToken(), authenticationResult.isMultipleResourceRefreshToken())
-                    .flatMapCompletable(ar -> Completable.fromAction(() -> tokens.put(resource, ar))));
+            return Mono.defer(() -> acquireAccessTokenFromRefreshToken(resource, authenticationResult[0].getRefreshToken(), authenticationResult[0].isMultipleResourceRefreshToken())
+                    .onErrorResume(t -> acquireNewAccessToken(resource))
+                    .doOnNext(ar -> tokens.put(resource, ar))
+                    .then(Mono.just(tokens.get(resource).getAccessToken())));
+        } else {
+            return Mono.just(tokens.get(resource).getAccessToken());
         }
-        // If refresh fails or not refreshable, acquire new token
-        task = task.onErrorResumeNext(t -> acquireNewAccessToken(resource)
-                .flatMapCompletable(ar -> Completable.fromAction(() -> tokens.put(resource, ar))));
-        return task.andThen(Single.just(tokens.get(resource).getAccessToken()));
     }
 
-    Single<AuthenticationResult> acquireNewAccessToken(String resource) {
+    Mono<AuthenticationResult> acquireNewAccessToken(String resource) {
         String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        return Single.defer(() -> {
-            AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
+        Mono<AuthenticationResult> authMono = Mono.defer(() -> {
+            AuthenticationContext context;
+            try {
+                context = new AuthenticationContext(authorityUrl, false, executor);
+            } catch (MalformedURLException mue) {
+                return Mono.error(mue);
+            }
             if (proxy() != null) {
                 context.setProxy(proxy());
             }
-            return Single.fromFuture(context.acquireToken(
-                    resource,
-                    this.clientId(),
-                    this.username(),
-                    this.password,
-                    null));
-        }).doFinally(executor::shutdown);
+            return Mono.create(callback -> {
+                context.acquireToken(
+                        resource,
+                        this.clientId(),
+                        this.username(),
+                        this.password,
+                        new AuthenticationCallback() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                callback.success((AuthenticationResult) o);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                callback.error(throwable);
+                            }
+                        });
+            });
+        });
+        return authMono.doFinally(s -> executor.shutdown());
     }
 
     // Refresh tokens are currently not used since we don't know if the refresh token has expired
-    Single<AuthenticationResult> acquireAccessTokenFromRefreshToken(String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
+    Mono<AuthenticationResult> acquireAccessTokenFromRefreshToken(String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
         String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        return Single.defer(() -> {
-            AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
+        Mono<AuthenticationResult> authMono = Mono.defer(() -> {
+            AuthenticationContext context;
+            try {
+                context = new AuthenticationContext(authorityUrl, false, executor);
+            } catch (MalformedURLException mue) {
+                return Mono.error(mue);
+            }
             if (proxy() != null) {
                 context.setProxy(proxy());
             }
-            return Single.fromFuture(context.acquireTokenByRefreshToken(refreshToken, clientId(), resource, null));
-        }).doFinally(executor::shutdown);
+            return Mono.create(callback -> {
+                context.acquireTokenByRefreshToken(
+                        refreshToken,
+                        clientId(),
+                        resource,
+                        new AuthenticationCallback() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                callback.success((AuthenticationResult) o);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                callback.error(throwable);
+                            }
+                        });
+            });
+        });
+        return authMono.doFinally(s -> executor.shutdown());
     }
 }

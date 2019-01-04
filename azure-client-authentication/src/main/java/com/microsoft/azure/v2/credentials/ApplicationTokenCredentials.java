@@ -7,22 +7,28 @@
 package com.microsoft.azure.v2.credentials;
 
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
+import com.microsoft.aad.adal4j.AuthenticationCallback;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationException;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.v2.AzureEnvironment;
 import com.microsoft.rest.v2.util.Base64Util;
-import io.reactivex.Single;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
+import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -135,10 +141,10 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
     }
 
     @Override
-    public synchronized Single<String> getToken(String resource) {
+    public synchronized Mono<String> getToken(String resource) {
         AuthenticationResult authenticationResult = tokens.get(resource);
         if (authenticationResult != null && authenticationResult.getExpiresOnDate().after(new Date())) {
-            return Single.just(authenticationResult.getAccessToken());
+            return Mono.just(authenticationResult.getAccessToken());
         } else {
             return acquireAccessToken(resource)
                     .map(ar -> {
@@ -148,32 +154,92 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
         }
     }
 
-    private Single<AuthenticationResult> acquireAccessToken(String resource) {
+    private Mono<AuthenticationResult> acquireAccessToken(String resource) {
         String authorityUrl = this.environment().activeDirectoryEndpoint() + this.domain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        return Single.defer(() -> {
-            AuthenticationContext context = new AuthenticationContext(authorityUrl, false, executor);
-            if (proxy() != null) {
-                context.setProxy(proxy());
-            }
-            if (clientSecret != null) {
-                return Single.fromFuture(context.acquireToken(
+        AuthenticationContext context;
+        try {
+            context = new AuthenticationContext(authorityUrl, false, executor);
+        } catch (MalformedURLException mue) {
+            executor.shutdown();
+            throw Exceptions.propagate(mue);
+        }
+        if (proxy() != null) {
+            context.setProxy(proxy());
+        }
+        Mono<AuthenticationResult> authMono;
+        if (clientSecret != null) {
+            authMono = Mono.create(callback -> {
+                context.acquireToken(
                         resource,
                         new ClientCredential(this.clientId(), clientSecret),
-                        null));
-            } else if (clientCertificate != null && clientCertificatePassword != null) {
-                return Single.fromFuture(context.acquireToken(
+                        new AuthenticationCallback() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                callback.success((AuthenticationResult) o);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                callback.error(throwable);
+                            }
+                        });
+            });
+        } else if (clientCertificate != null && clientCertificatePassword != null) {
+            authMono = Mono.create(callback -> {
+                AsymmetricKeyCredential keyCredential;
+                try {
+                    keyCredential = AsymmetricKeyCredential.create(clientId, new ByteArrayInputStream(clientCertificate), clientCertificatePassword);
+                } catch (KeyStoreException kse) {
+                    throw  Exceptions.propagate(kse);
+                } catch (NoSuchProviderException nspe) {
+                    throw  Exceptions.propagate(nspe);
+                } catch (NoSuchAlgorithmException nsae) {
+                    throw  Exceptions.propagate(nsae);
+                } catch (CertificateException ce) {
+                    throw  Exceptions.propagate(ce);
+                } catch (IOException ioe) {
+                    throw  Exceptions.propagate(ioe);
+                } catch (UnrecoverableKeyException uke) {
+                    throw  Exceptions.propagate(uke);
+                }
+                context.acquireToken(
                         resource,
-                        AsymmetricKeyCredential.create(clientId, new ByteArrayInputStream(clientCertificate), clientCertificatePassword),
-                        null));
-            } else if (clientCertificate != null) {
-                return Single.fromFuture(context.acquireToken(
+                        keyCredential,
+                        new AuthenticationCallback() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                callback.success((AuthenticationResult) o);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                callback.error(throwable);
+                            }
+                        });
+            });
+        } else if (clientCertificate != null) {
+            AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(), privateKeyFromPem(new String(clientCertificate)), publicKeyFromPem(new String(clientCertificate)));
+            authMono = Mono.create(callback -> {
+                context.acquireToken(
                         resource,
-                        AsymmetricKeyCredential.create(clientId(), privateKeyFromPem(new String(clientCertificate)), publicKeyFromPem(new String(clientCertificate))),
-                        null));
-            }
-            throw new AuthenticationException("Please provide either a non-null secret or a non-null certificate.");
-        }).doFinally(executor::shutdown);
+                        keyCredential,
+                        new AuthenticationCallback() {
+                            @Override
+                            public void onSuccess(Object o) {
+                                callback.success((AuthenticationResult) o);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                callback.error(throwable);
+                            }
+                        });
+            });
+        } else {
+            authMono = Mono.error(new AuthenticationException("Please provide either a non-null secret or a non-null certificate."));
+        }
+        return authMono.doFinally(s -> executor.shutdown());
     }
 
     static PrivateKey privateKeyFromPem(String pem) {

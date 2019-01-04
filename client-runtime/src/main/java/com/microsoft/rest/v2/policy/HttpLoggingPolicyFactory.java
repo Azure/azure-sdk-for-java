@@ -12,19 +12,16 @@ import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.util.FlowableUtil;
+import com.microsoft.rest.v2.util.FluxUtil;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import io.reactivex.Completable;
-import io.reactivex.CompletableSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 /**
  * Creates a RequestPolicy that handles logging of HTTP requests and responses.
@@ -88,13 +85,22 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(final HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(final HttpRequest request) {
             String context = request.callerMethod();
             if (context == null) {
                 context = "";
             }
             final Logger logger = LoggerFactory.getLogger(context);
+            final long startNs = System.nanoTime();
+            //
+            Mono<Void> logRequest = logRequest(logger, request);
+            Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate = logResponseDelegate(logger, request.url(), startNs);
+            //
+            return logRequest.then(next.sendAsync(request)).flatMap(logResponseDelegate)
+            .doOnError(throwable -> log(logger, "<-- HTTP FAILED: " + throwable));
+        }
 
+        private Mono<Void> logRequest(final Logger logger, final HttpRequest request) {
             if (detailLevel.shouldLogURL()) {
                 log(logger, String.format("--> %s %s", request.httpMethod(), request.url()));
             }
@@ -104,8 +110,9 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
                     log(logger, header.toString());
                 }
             }
-
-            Completable bodyLoggingTask = Completable.complete();
+            //
+            Mono<Void> reqBodyLoggingMono = Mono.empty();
+            //
             if (detailLevel.shouldLogBody()) {
                 if (request.body() == null) {
                     log(logger, "(empty body)");
@@ -116,19 +123,16 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
 
                     if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                         try {
-                            Single<byte[]> collectedBytes = FlowableUtil.collectBytesInArray(request.body());
-                            bodyLoggingTask = collectedBytes.flatMapCompletable(new Function<byte[], CompletableSource>() {
-                                @Override
-                                public CompletableSource apply(byte[] bytes) throws Exception {
-                                    String bodyString = new String(bytes, StandardCharsets.UTF_8);
-                                    bodyString = prettyPrintIfNeeded(logger, request.headers().value("Content-Type"), bodyString);
-                                    log(logger, String.format("%s-byte body:\n%s", contentLength, bodyString));
-                                    log(logger, "--> END " + request.httpMethod());
-                                    return Completable.complete();
-                                }
+                            Mono<byte[]> collectedBytes = FluxUtil.collectBytesInArray(request.body());
+                            reqBodyLoggingMono = collectedBytes.flatMap(bytes -> {
+                                String bodyString = new String(bytes, StandardCharsets.UTF_8);
+                                bodyString = prettyPrintIfNeeded(logger, request.headers().value("Content-Type"), bodyString);
+                                log(logger, String.format("%s-byte body:\n%s", contentLength, bodyString));
+                                log(logger, "--> END " + request.httpMethod());
+                                return Mono.empty();
                             });
                         } catch (Exception e) {
-                            bodyLoggingTask = Completable.error(e);
+                            reqBodyLoggingMono = Mono.error(e);
                         }
                     } else {
                         log(logger, contentLength + "-byte body: (content not logged)");
@@ -136,66 +140,53 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
                     }
                 }
             }
-
-            final long startNs = System.nanoTime();
-            return bodyLoggingTask.andThen(next.sendAsync(request)).flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
-                @Override
-                public Single<HttpResponse> apply(HttpResponse httpResponse) {
-                    long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-                    return logResponse(logger, httpResponse, request.url(), tookMs);
-                }
-            }).doOnError(new Consumer<Throwable>() {
-                @Override
-                public void accept(Throwable throwable) {
-                    log(logger, "<-- HTTP FAILED: " + throwable);
-                }
-            });
+            return reqBodyLoggingMono;
         }
 
-        private Single<HttpResponse> logResponse(final Logger logger, final HttpResponse response, URL url, long tookMs) {
-            String contentLengthString = response.headerValue("Content-Length");
-            String bodySize;
-            if (contentLengthString == null || contentLengthString.isEmpty()) {
-                bodySize = "unknown-length";
-            } else {
-                bodySize = contentLengthString + "-byte";
-            }
-
-            HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
-            if (detailLevel.shouldLogURL()) {
-                log(logger, String.format("<-- %s %s %s (%s ms, %s body)", response.statusCode(), responseStatus.reasonPhrase(), url, tookMs, bodySize));
-            }
-
-            if (detailLevel.shouldLogHeaders()) {
-                for (HttpHeader header : response.headers()) {
-                    log(logger, header.toString());
+        private Function<HttpResponse, Mono<HttpResponse>> logResponseDelegate(final Logger logger, final URL url, final long startNs) {
+            return (HttpResponse response) -> {
+                long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
+                //
+                String contentLengthString = response.headerValue("Content-Length");
+                String bodySize;
+                if (contentLengthString == null || contentLengthString.isEmpty()) {
+                    bodySize = "unknown-length";
+                } else {
+                    bodySize = contentLengthString + "-byte";
                 }
-            }
 
-            if (detailLevel.shouldLogBody()) {
-                long contentLength = getContentLength(response.headers());
-                final String contentTypeHeader = response.headerValue("Content-Type");
-                if ((contentTypeHeader == null || !"application/octet-stream".equalsIgnoreCase(contentTypeHeader))
-                        && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
-                    final HttpResponse bufferedResponse = response.buffer();
-                    return bufferedResponse.bodyAsString().map(new Function<String, HttpResponse>() {
-                        @Override
-                        public HttpResponse apply(String s) {
-                            s = prettyPrintIfNeeded(logger, contentTypeHeader, s);
-                            log(logger, "Response body:\n" + s);
+                HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
+                if (detailLevel.shouldLogURL()) {
+                    log(logger, String.format("<-- %s %s %s (%s ms, %s body)", response.statusCode(), responseStatus.reasonPhrase(), url, tookMs, bodySize));
+                }
+
+                if (detailLevel.shouldLogHeaders()) {
+                    for (HttpHeader header : response.headers()) {
+                        log(logger, header.toString());
+                    }
+                }
+
+                if (detailLevel.shouldLogBody()) {
+                    long contentLength = getContentLength(response.headers());
+                    final String contentTypeHeader = response.headerValue("Content-Type");
+                    if ((contentTypeHeader == null || !"application/octet-stream".equalsIgnoreCase(contentTypeHeader))
+                            && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
+                        final HttpResponse bufferedResponse = response.buffer();
+                        return bufferedResponse.bodyAsString().map(bodyStr -> {
+                            bodyStr = prettyPrintIfNeeded(logger, contentTypeHeader, bodyStr);
+                            log(logger, "Response body:\n" + bodyStr);
                             log(logger, "<-- END HTTP");
                             return bufferedResponse;
-                        }
-                    });
+                        });
+                    } else {
+                        log(logger, "(body content not logged)");
+                        log(logger, "<-- END HTTP");
+                    }
                 } else {
-                    log(logger, "(body content not logged)");
                     log(logger, "<-- END HTTP");
                 }
-            } else {
-                log(logger, "<-- END HTTP");
-            }
-
-            return Single.just(response);
+                return Mono.just(response);
+            };
         }
 
         private String prettyPrintIfNeeded(Logger logger, String contentType, String body) {
@@ -208,7 +199,6 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
                     log(logger, "Failed to pretty print JSON: " + e.getMessage());
                 }
             }
-
             return result;
         }
     }

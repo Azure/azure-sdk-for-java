@@ -8,7 +8,7 @@ package com.microsoft.azure.v2.credentials;
 
 import com.microsoft.azure.v2.AzureEnvironment;
 import com.microsoft.azure.v2.AzureEnvironment.Endpoint;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.Proxy;
@@ -44,12 +44,12 @@ public abstract class AzureTokenCredentials implements AsyncServiceClientCredent
      * @param uri the url
      * @return the token
      */
-    private Single<String> getTokenFromUri(String uri) {
+    private Mono<String> getTokenFromUri(String uri) {
         URL url = null;
         try {
             url = new URL(uri);
         } catch (MalformedURLException e) {
-            return Single.error(e);
+            return Mono.error(e);
         }
         String host = String.format("%s://%s%s/", url.getProtocol(), url.getHost(), url.getPort() > 0 ? ":" + url.getPort() : "");
         String resource = environment().managementEndpoint();
@@ -83,10 +83,10 @@ public abstract class AzureTokenCredentials implements AsyncServiceClientCredent
      * @param resource the resource the access token is for
      * @return the token to access the resource
      */
-    public abstract Single<String> getToken(String resource);
+    public abstract Mono<String> getToken(String resource);
 
     @Override
-    public Single<String> authorizationHeaderValueAsync(String uri) {
+    public Mono<String> authorizationHeaderValueAsync(String uri) {
         return getTokenFromUri(uri).map(token -> "Bearer " + token);
     }
 

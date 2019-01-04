@@ -1,7 +1,7 @@
 package com.microsoft.rest.v2.http;
 
-import io.reactivex.Flowable;
 import org.junit.Test;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -30,7 +30,7 @@ public class HttpRequestTests {
                 HttpMethod.fromString("request http method"),
                 new URL("http://request.url"),
                 headers,
-                Flowable.just(ByteBuffer.allocate(0)), null);
+                Flux.just(ByteBuffer.allocate(0)), null);
 
         final HttpRequest bufferedRequest = request.buffer();
 

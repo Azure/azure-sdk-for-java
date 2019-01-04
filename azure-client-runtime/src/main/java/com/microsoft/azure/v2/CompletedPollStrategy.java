@@ -11,8 +11,8 @@ import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.BufferedHttpResponse;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Observable;
-import io.reactivex.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -69,8 +69,8 @@ public class CompletedPollStrategy extends PollStrategy {
     }
 
     @Override
-    Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
-        throw new UnsupportedOperationException();
+    Mono<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
+        return Mono.error(new UnsupportedOperationException());
     }
 
     @Override
@@ -78,12 +78,13 @@ public class CompletedPollStrategy extends PollStrategy {
         return true;
     }
 
-    Observable<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
-        return createOperationStatusObservable(originalHttpRequest, firstHttpResponse, methodParser, operationStatusResultType);
+    Flux<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
+        return createOperationStatusMono(originalHttpRequest, firstHttpResponse, methodParser, operationStatusResultType)
+                .flatMapMany(cos -> Flux.just(cos));
     }
 
-    Single<HttpResponse> pollUntilDone() {
-        return Single.<HttpResponse>just(firstHttpResponse);
+    Mono<HttpResponse> pollUntilDone() {
+        return Mono.<HttpResponse>just(firstHttpResponse);
     }
 
     @Override

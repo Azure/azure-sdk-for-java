@@ -8,23 +8,24 @@ package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Creates a RequestPolicy that limits the time allowed between sending a request and receiving the response.
  */
 public final class TimeoutPolicyFactory implements RequestPolicyFactory {
     private final long timeout;
-    private final TimeUnit unit;
+    private final ChronoUnit unit;
 
     /**
      * Creates a TimeoutPolicyFactory.
      * @param timeout the length of the timeout
      * @param unit the unit of the timeout
      */
-    public TimeoutPolicyFactory(long timeout, TimeUnit unit) {
+    public TimeoutPolicyFactory(long timeout, ChronoUnit unit) {
         this.timeout = timeout;
         this.unit = unit;
     }
@@ -41,8 +42,8 @@ public final class TimeoutPolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
-            return next.sendAsync(request).timeout(timeout, unit);
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
+            return next.sendAsync(request).timeout(Duration.of(timeout, unit));
         }
     }
 }

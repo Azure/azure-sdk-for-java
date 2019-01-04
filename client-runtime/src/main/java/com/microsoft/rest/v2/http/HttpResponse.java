@@ -6,13 +6,14 @@
 
 package com.microsoft.rest.v2.http;
 
-import io.reactivex.Flowable;
-import io.reactivex.Single;
 
 import java.io.Closeable;
 import java.nio.ByteBuffer;
 
 import com.microsoft.rest.v2.policy.DecodingPolicyFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.netty.Connection;
 
 /**
  * This class contains all of the details necessary for reacting to a HTTP response from a
@@ -52,7 +53,7 @@ public abstract class HttpResponse implements Closeable {
      * programming but if you do use methods like {@code blockingSubscribe} or {@code blockingGet}
      * on the stream then be sure to use {@code subscribeOn} and {@code observeOn}
      * before the blocking call. For example:
-     * 
+     *
      * <pre>
      * {@code
      *   response.body()
@@ -63,15 +64,15 @@ public abstract class HttpResponse implements Closeable {
      *     .blockingGet();
      * }
      * </pre>
-     * 
+     *
      * <p>
      * The above code is a simplistic example and would probably run fine without
      * the `subscribeOn` and `observeOn` but should be considered a template for
      * more complex situations.
-     * 
+     *
      * @return The response's body as a stream of {@link ByteBuffer}.
      */
-    public abstract Flowable<ByteBuffer> body();
+    public abstract Flux<ByteBuffer> body();
 
     /**
      * Get this response object's body as a byte[]. If this response object doesn't have a body,
@@ -79,7 +80,7 @@ public abstract class HttpResponse implements Closeable {
      * @return This response object's body as a byte[]. If this response object doesn't have a body,
      * then null will be returned.
      */
-    public abstract Single<byte[]> bodyAsByteArray();
+    public abstract Mono<byte[]> bodyAsByteArray();
 
     /**
      * Get this response object's body as a string. If this response object doesn't have a body,
@@ -87,7 +88,7 @@ public abstract class HttpResponse implements Closeable {
      * @return This response object's body as a string. If this response object doesn't have a body,
      * then null will be returned.
      */
-    public abstract Single<String> bodyAsString();
+    public abstract Mono<String> bodyAsString();
 
     /**
      * Buffers the HTTP response body into memory, allowing the content to be inspected and replayed.
@@ -174,5 +175,8 @@ public abstract class HttpResponse implements Closeable {
         return this;
     }
 
+    Connection internConnection() {
+        return null;
+    }
 
 }

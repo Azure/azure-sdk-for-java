@@ -8,11 +8,10 @@ package com.microsoft.azure.v2.credentials;
 
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.v2.AzureEnvironment;
-import io.reactivex.Single;
 import org.junit.Assert;
 import org.junit.Test;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.util.Date;
 
 public class UserTokenCredentialsTests {
@@ -27,9 +26,9 @@ public class UserTokenCredentialsTests {
     @Test
     public void testAcquireToken() throws Exception {
         credentials.acquireAccessToken();
-        Assert.assertEquals("token1", credentials.getToken((String)null).blockingGet());
+        Assert.assertEquals("token1", credentials.getToken((String)null).block());
         Thread.sleep(1500);
-        Assert.assertEquals("token2", credentials.getToken((String)null).blockingGet());
+        Assert.assertEquals("token2", credentials.getToken((String)null).block());
     }
 
     public static class MockUserTokenCredentials extends UserTokenCredentials {
@@ -40,14 +39,14 @@ public class UserTokenCredentialsTests {
         }
 
         @Override
-        public Single<String> getToken(String resource) {
+        public Mono<String> getToken(String resource) {
             if (authenticationResult != null
                 && authenticationResult.getExpiresOnDate().before(new Date())) {
                 acquireAccessTokenFromRefreshToken();
             } else {
                 acquireAccessToken();
             }
-            return Single.just(authenticationResult.getAccessToken());
+            return Mono.just(authenticationResult.getAccessToken());
         }
 
         private void acquireAccessToken() {

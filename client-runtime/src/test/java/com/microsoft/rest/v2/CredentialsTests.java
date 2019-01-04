@@ -20,7 +20,7 @@ import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import org.junit.Assert;
 import org.junit.Test;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 
@@ -35,7 +35,7 @@ public class CredentialsTests {
             public RequestPolicy create(final RequestPolicy next, RequestPolicyOptions options) {
                 return new RequestPolicy() {
                     @Override
-                    public Single<HttpResponse> sendAsync(HttpRequest request) {
+                    public Mono<HttpResponse> sendAsync(HttpRequest request) {
                         String headerValue = request.headers().value("Authorization");
                         Assert.assertEquals("Basic dXNlcjpwYXNz", headerValue);
                         return next.sendAsync(request);
@@ -50,7 +50,7 @@ public class CredentialsTests {
                 auditorFactory);
 
         HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, new URL("http://localhost"), null);
-        pipeline.sendRequestAsync(request).blockingGet();
+        pipeline.sendRequestAsync(request).block();
     }
 
     @Test
@@ -62,7 +62,7 @@ public class CredentialsTests {
             public RequestPolicy create(final RequestPolicy next, RequestPolicyOptions options) {
                 return new RequestPolicy() {
                     @Override
-                    public Single<HttpResponse> sendAsync(HttpRequest request) {
+                    public Mono<HttpResponse> sendAsync(HttpRequest request) {
                         String headerValue = request.headers().value("Authorization");
                         Assert.assertEquals("Bearer this_is_a_token", headerValue);
                         return next.sendAsync(request);
@@ -77,6 +77,6 @@ public class CredentialsTests {
                 auditorFactory);
 
         HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, new URL("http://localhost"), null);
-        pipeline.sendRequestAsync(request).blockingGet();
+        pipeline.sendRequestAsync(request).block();
     }
 }

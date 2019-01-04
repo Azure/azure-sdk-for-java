@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.v2.credentials;
 
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 /**
  * Provides credentials to be put in the HTTP Authorization header.
@@ -16,5 +16,5 @@ public interface AsyncServiceClientCredentials {
      * @param uri The URI to which the request is being made.
      * @return The value containing currently valid credentials to put in the HTTP header.
      */
-    Single<String> authorizationHeaderValueAsync(String uri);
+    Mono<String> authorizationHeaderValueAsync(String uri);
 }

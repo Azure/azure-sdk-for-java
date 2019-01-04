@@ -10,7 +10,7 @@ import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 
@@ -50,7 +50,7 @@ public class PortPolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
             final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
             if (overwrite || urlBuilder.port() == null) {
                 if (shouldLog(HttpPipelineLogLevel.INFO)) {
@@ -59,7 +59,7 @@ public class PortPolicyFactory implements RequestPolicyFactory {
                 try {
                     request.withUrl(urlBuilder.withPort(port).toURL());
                 } catch (MalformedURLException e) {
-                    return Single.error(e);
+                    return Mono.error(e);
                 }
             }
             return nextPolicy().sendAsync(request);

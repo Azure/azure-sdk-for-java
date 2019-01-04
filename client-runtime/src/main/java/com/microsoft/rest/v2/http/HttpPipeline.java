@@ -10,7 +10,7 @@ import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.HttpClientRequestPolicyAdapter;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 
@@ -59,7 +59,7 @@ public final class HttpPipeline {
      * @param httpRequest The HttpRequest to send.
      * @return The HttpResponse that was received.
      */
-    public Single<HttpResponse> sendRequestAsync(HttpRequest httpRequest) {
+    public Mono<HttpResponse> sendRequestAsync(HttpRequest httpRequest) {
         RequestPolicy requestPolicy = httpClientRequestPolicyAdapter;
         for (final RequestPolicyFactory requestPolicyFactory : requestPolicyFactories) {
             requestPolicy = requestPolicyFactory.create(requestPolicy, requestPolicyOptions);

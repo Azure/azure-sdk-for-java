@@ -6,12 +6,8 @@
 
 package com.microsoft.rest.v2;
 
-import io.reactivex.Completable;
-import io.reactivex.Maybe;
-import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
+import reactor.core.Disposable;
+import reactor.core.publisher.Mono;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -32,105 +28,29 @@ public class ServiceFuture<T> extends CompletableFuture<T> {
     }
 
     /**
-     * Creates a ServiceCall from a Single object and a callback.
+     * Creates a ServiceCall from a Mono object and a callback.
      *
-     * @param single the single to create from
+     * @param flux the flux to create from
      * @param callback the callback to call when events happen
      * @param <T> the type of the response
      * @return the created ServiceCall
      */
-    public static <T> ServiceFuture<T> fromBody(final Single<T> single, final ServiceCallback<T> callback) {
+    public static <T> ServiceFuture<T> fromBody(final Mono<T> flux, final ServiceCallback<T> callback) {
         final ServiceFuture<T> serviceFuture = new ServiceFuture<>();
-        serviceFuture.subscription = single
-                .subscribe(new Consumer<T>() {
-                    @Override
-                    public void accept(T t) {
-                        if (callback != null) {
-                            callback.success(t);
-                        }
-                        serviceFuture.complete(t);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) {
-                        if (callback != null) {
-                            callback.failure(throwable);
-                        }
-                        serviceFuture.completeExceptionally(throwable);
-                    }
-                });
-        return serviceFuture;
-    }
-
-    /**
-     * Creates a ServiceCall from a Single object and a callback.
-     *
-     * @param maybe the maybe to create from
-     * @param callback the callback to call when events happen
-     * @param <T> the type of the response
-     * @return the created ServiceCall
-     */
-    public static <T> ServiceFuture<T> fromBody(final Maybe<T> maybe, final ServiceCallback<T> callback) {
-        final ServiceFuture<T> serviceFuture = new ServiceFuture<>();
-        serviceFuture.subscription = maybe
-                .subscribe(new Consumer<T>() {
-                    @Override
-                    public void accept(T t) {
-                        if (callback != null) {
-                            callback.success(t);
-                        }
-                        serviceFuture.complete(t);
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) {
-                        if (callback != null) {
-                            callback.failure(throwable);
-                        }
-                        serviceFuture.completeExceptionally(throwable);
-                    }
-                }, new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        if (callback != null) {
-                            callback.success(null);
-                        }
-                        serviceFuture.complete(null);
-                    }
-                });
-        return serviceFuture;
-    }
-
-    /**
-     * Creates a ServiceFuture from an Completable object and a callback.
-     *
-     * @param completable the completable to create from
-     * @param callback the callback to call when event happen
-     * @return the created ServiceFuture
-     */
-    public static ServiceFuture<Void> fromBody(final Completable completable, final ServiceCallback<Void> callback) {
-        final ServiceFuture<Void> serviceFuture = new ServiceFuture<>();
-        completable.subscribe(new Action() {
-            Void value = null;
-            @Override
-            public void run() {
-                if (callback != null) {
-                    callback.success(value);
-                }
-                serviceFuture.complete(value);
+        serviceFuture.subscription = flux.subscribe(result -> {
+            if (callback != null) {
+                callback.success(result);
             }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) {
-                if (callback != null) {
-                    callback.failure(throwable);
-                }
-                serviceFuture.completeExceptionally(throwable);
+            serviceFuture.complete(result);
+        }, throwable -> {
+            if (callback != null) {
+                callback.failure(throwable);
             }
+            serviceFuture.completeExceptionally(throwable);
         });
         return serviceFuture;
-    };
-    
+    }
+
     /**
      * @return the current Rx subscription associated with the ServiceCall.
      */

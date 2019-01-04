@@ -10,7 +10,7 @@ import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 
@@ -39,18 +39,18 @@ public class HostPolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
             if (shouldLog(HttpPipelineLogLevel.INFO)) {
                 log(HttpPipelineLogLevel.INFO, "Setting host to {0}", host);
             }
 
-            Single<HttpResponse> result;
+            Mono<HttpResponse> result;
             final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
             try {
                 request.withUrl(urlBuilder.withHost(host).toURL());
                 result = nextPolicy().sendAsync(request);
             } catch (MalformedURLException e) {
-                result = Single.error(e);
+                result = Mono.error(e);
             }
             return result;
         }

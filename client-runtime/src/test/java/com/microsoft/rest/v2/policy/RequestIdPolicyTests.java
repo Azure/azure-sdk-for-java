@@ -13,14 +13,14 @@ import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
 import org.junit.Assert;
 import org.junit.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.util.concurrent.TimeUnit;
+import java.time.temporal.ChronoUnit;
 
 public class RequestIdPolicyTests {
     private final HttpResponse mockResponse = new HttpResponse() {
@@ -40,18 +40,18 @@ public class RequestIdPolicyTests {
         }
 
         @Override
-        public Single<byte[]> bodyAsByteArray() {
-            return Single.just(new byte[0]);
+        public Mono<byte[]> bodyAsByteArray() {
+            return Mono.empty();
         }
 
         @Override
-        public Flowable<ByteBuffer> body() {
-            return Flowable.just(ByteBuffer.allocate(0));
+        public Flux<ByteBuffer> body() {
+            return Flux.empty();
         }
 
         @Override
-        public Single<String> bodyAsString() {
-            return Single.just("");
+        public Mono<String> bodyAsString() {
+            return Mono.empty();
         }
     };
 
@@ -63,8 +63,9 @@ public class RequestIdPolicyTests {
             .withRequestPolicy(new RequestIdPolicyFactory())
             .withHttpClient(new MockHttpClient() {
                 String firstRequestId = null;
+
                 @Override
-                public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
                     if (firstRequestId != null) {
                         String newRequestId = request.headers().value(REQUEST_ID_HEADER);
                         Assert.assertNotNull(newRequestId);
@@ -75,14 +76,13 @@ public class RequestIdPolicyTests {
                     if (firstRequestId == null) {
                         Assert.fail();
                     }
-
-                    return Single.just(mockResponse);
+                    return Mono.just(mockResponse);
                 }
             })
             .build();
 
-        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", HttpMethod.GET, new URL("http://localhost/"), null)).blockingGet();
-        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", HttpMethod.GET, new URL("http://localhost/"), null)).blockingGet();
+        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", HttpMethod.GET, new URL("http://localhost/"), null)).block();
+        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", HttpMethod.GET, new URL("http://localhost/"), null)).block();
     }
 
     @Test
@@ -90,8 +90,9 @@ public class RequestIdPolicyTests {
         HttpPipeline pipeline = HttpPipeline.build(
             new MockHttpClient() {
                 String firstRequestId = null;
+
                 @Override
-                public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
                     if (firstRequestId != null) {
                         String newRequestId = request.headers().value(REQUEST_ID_HEADER);
                         Assert.assertNotNull(newRequestId);
@@ -102,12 +103,12 @@ public class RequestIdPolicyTests {
                     if (firstRequestId == null) {
                         Assert.fail();
                     }
-                    return Single.just(mockResponse);
+                    return Mono.just(mockResponse);
                 }
             },
             new RequestIdPolicyFactory(),
-            new RetryPolicyFactory(1, 0, TimeUnit.SECONDS));
+            new RetryPolicyFactory(1, 0, ChronoUnit.SECONDS));
 
-        pipeline.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", HttpMethod.GET, new URL("http://localhost/"), null)).blockingGet();
+        pipeline.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", HttpMethod.GET, new URL("http://localhost/"), null)).block();
     }
 }

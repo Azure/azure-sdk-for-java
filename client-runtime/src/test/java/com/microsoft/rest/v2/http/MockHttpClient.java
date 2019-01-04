@@ -9,9 +9,8 @@ package com.microsoft.rest.v2.http;
 import com.microsoft.rest.v2.Base64Url;
 import com.microsoft.rest.v2.DateTimeRfc1123;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
-import com.microsoft.rest.v2.util.FlowableUtil;
-import io.reactivex.functions.Function;
-import io.reactivex.Single;
+import com.microsoft.rest.v2.util.FluxUtil;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,7 +36,7 @@ public class MockHttpClient extends HttpClient {
             .set("Content-Type", "application/json");
 
     @Override
-    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+    public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
         HttpResponse response = null;
 
         try {
@@ -64,7 +63,7 @@ public class MockHttpClient extends HttpClient {
                     HttpHeaders newHeaders = new HttpHeaders(responseHeaders)
                             .set("Content-Type", "application/octet-stream")
                             .set("Content-Length", Integer.toString(byteCount));
-                    response = new MockHttpResponse(200, newHeaders, new byte[byteCount]);
+                    response = new MockHttpResponse(200, newHeaders, byteCount == 0 ? null : new byte[byteCount]);
                 }
                 else if (requestPathLower.startsWith("/base64urlbytes/")) {
                     final String byteCountString = requestPath.substring("/base64urlbytes/".length());
@@ -73,7 +72,7 @@ public class MockHttpClient extends HttpClient {
                     for (int i = 0; i < byteCount; ++i) {
                         bytes[i] = (byte)i;
                     }
-                    final Base64Url base64EncodedBytes = Base64Url.encode(bytes);
+                    final Base64Url base64EncodedBytes = bytes.length == 0 ? null : Base64Url.encode(bytes);
                     response = new MockHttpResponse(200, responseHeaders, base64EncodedBytes);
                 }
                 else if (requestPathLower.equals("/base64urllistofbytes")) {
@@ -171,29 +170,23 @@ public class MockHttpClient extends HttpClient {
             }
         }
         catch (Exception ex) {
-            return Single.error(ex);
+            return Mono.error(ex);
         }
 
         if (response == null) {
             response = new MockHttpResponse(500);
         }
 
-        return Single.just(response);
+        return Mono.just(response);
     }
 
     private static String bodyToString(HttpRequest request) throws IOException {
         String body = "";
         if (request.body() != null) {
-            Single<String> asyncString = FlowableUtil.collectBytesInArray(request.body())
-                    .map(new Function<byte[], String>() {
-                @Override
-                public String apply(byte[] bytes) throws Exception {
-                    return new String(bytes, StandardCharsets.UTF_8);
-                }
-            });
-            body = asyncString.blockingGet();
+            Mono<String> asyncString = FluxUtil.collectBytesInArray(request.body())
+                    .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
+            body = asyncString.block();
         }
-
         return body;
     }
 

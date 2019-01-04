@@ -9,8 +9,7 @@ package com.microsoft.rest.v2.policy;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -41,7 +40,7 @@ public final class CookiePolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
             try {
                 final URI uri = request.url().toURI();
 
@@ -55,20 +54,21 @@ public final class CookiePolicyFactory implements RequestPolicyFactory {
                     request.headers().set(entry.getKey(), String.join(",", entry.getValue()));
                 }
 
-                return next.sendAsync(request).map(new Function<HttpResponse, HttpResponse>() {
-                    @Override
-                    public HttpResponse apply(HttpResponse httpResponse) throws Exception {
-                        Map<String, List<String>> responseHeaders = new HashMap<>();
-                        for (HttpHeader header : httpResponse.headers()) {
-                            responseHeaders.put(header.name(), Collections.singletonList(header.value()));
-                        }
-
-                        cookies.put(uri, responseHeaders);
-                        return httpResponse;
+                return next.sendAsync(request).map(httpResponse -> {
+                    Map<String, List<String>> responseHeaders = new HashMap<>();
+                    for (HttpHeader header : httpResponse.headers()) {
+                        responseHeaders.put(header.name(), Collections.singletonList(header.value()));
                     }
+
+                    try {
+                        cookies.put(uri, responseHeaders);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e); // TODO: anuchan Review this to ensure propagation
+                    }
+                    return httpResponse;
                 });
             } catch (URISyntaxException | IOException e) {
-                return Single.error(e);
+                return Mono.error(e);
             }
         }
     }

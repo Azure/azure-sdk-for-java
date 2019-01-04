@@ -8,7 +8,7 @@ package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 /**
  * Adds a 'User-Agent' header to a request.
@@ -48,7 +48,7 @@ public final class UserAgentPolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
             String header = request.headers().value("User-Agent");
             if (header == null || DEFAULT_USER_AGENT_HEADER.equals(header)) {
                 header = userAgent;
@@ -56,7 +56,6 @@ public final class UserAgentPolicyFactory implements RequestPolicyFactory {
                 header = userAgent + " " + header;
             }
             request.headers().set("User-Agent", header);
-
             return next.sendAsync(request);
         }
     }

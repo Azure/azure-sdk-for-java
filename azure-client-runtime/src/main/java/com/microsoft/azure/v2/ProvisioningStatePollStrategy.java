@@ -11,8 +11,7 @@ import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
-import io.reactivex.functions.Function;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -70,16 +69,12 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
     }
 
     @Override
-    Single<HttpResponse> updateFromAsync(HttpResponse pollResponse) {
+    Mono<HttpResponse> updateFromAsync(HttpResponse pollResponse) {
         return ensureExpectedStatus(pollResponse)
-                .flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
-                    @Override
-                    public Single<HttpResponse> apply(HttpResponse response) {
+                .flatMap(response -> {
                         final HttpResponse bufferedHttpPollResponse = response.buffer();
                         return bufferedHttpPollResponse.bodyAsString()
-                                .map(new Function<String, HttpResponse>() {
-                                    @Override
-                                    public HttpResponse apply(String responseBody) {
+                                .map(responseBody -> {
                                         ResourceWithProvisioningState resource = null;
                                         try {
                                             resource = deserialize(responseBody, ResourceWithProvisioningState.class);
@@ -96,9 +91,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
                                             setStatus(resource.properties().provisioningState());
                                         }
                                         return bufferedHttpPollResponse;
-                                    }
                                 });
-                    }
                 });
     }
 

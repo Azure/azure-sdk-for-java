@@ -6,8 +6,8 @@
 
 package com.microsoft.rest.v2.http;
 
-import io.reactivex.Flowable;
-import io.reactivex.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
  */
 public final class BufferedHttpResponse extends HttpResponse {
     private final HttpResponse innerHttpResponse;
-    private final Single<byte[]> cachedBody;
+    private final Mono<byte[]> cachedBody;
 
     /**
      * Creates a buffered HTTP response.
@@ -44,17 +44,17 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Single<byte[]> bodyAsByteArray() {
+    public Mono<byte[]> bodyAsByteArray() {
         return cachedBody;
     }
 
     @Override
-    public Flowable<ByteBuffer> body() {
-        return bodyAsByteArray().flatMapPublisher(bytes -> Flowable.just(ByteBuffer.wrap(bytes)));
+    public Flux<ByteBuffer> body() {
+        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(ByteBuffer.wrap(bytes)));
     }
 
     @Override
-    public Single<String> bodyAsString() {
+    public Mono<String> bodyAsString() {
         return bodyAsByteArray()
                 .map(bytes -> bytes == null ? null : new String(bytes, StandardCharsets.UTF_8));
     }

@@ -10,7 +10,7 @@ import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import io.reactivex.Single;
+import reactor.core.publisher.Mono;
 
 /**
  * Creates a RequestPolicy which adds a particular set of headers to HTTP requests.
@@ -38,7 +38,7 @@ public class AddHeadersPolicyFactory implements RequestPolicyFactory {
         }
 
         @Override
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
+        public Mono<HttpResponse> sendAsync(HttpRequest request) {
             for (HttpHeader header : headers) {
                 request.withHeader(header.name(), header.value());
             }

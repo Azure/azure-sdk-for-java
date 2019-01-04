@@ -9,8 +9,8 @@ package com.microsoft.rest.v2.http;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.SerializerEncoding;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -81,17 +81,29 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Single<byte[]> bodyAsByteArray() {
-        return Single.just(bodyBytes);
+    public Mono<byte[]> bodyAsByteArray() {
+        if (bodyBytes == null) {
+            return Mono.empty();
+        } else {
+            return Mono.just(bodyBytes);
+        }
     }
 
     @Override
-    public Flowable<ByteBuffer> body() {
-        return Flowable.just(ByteBuffer.wrap(bodyBytes));
+    public Flux<ByteBuffer> body() {
+        if (bodyBytes == null) {
+            return Flux.empty();
+        } else {
+            return Flux.just(ByteBuffer.wrap(bodyBytes));
+        }
     }
 
     @Override
-    public Single<String> bodyAsString() {
-        return Single.just(bodyBytes == null ? "" : new String(bodyBytes));
+    public Mono<String> bodyAsString() {
+        if (bodyBytes == null) {
+            return Mono.empty();
+        } else {
+            return Mono.just(new String(bodyBytes));
+        }
     }
 }
