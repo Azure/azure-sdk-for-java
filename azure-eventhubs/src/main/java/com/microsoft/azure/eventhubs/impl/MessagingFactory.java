@@ -7,6 +7,7 @@ package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.TimeoutException;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -256,7 +257,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             final List<Link> closedLinks = new LinkedList<>();
 
             for (Link link : oldRegisteredLinksCopy) {
-                if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED) {
+                if (link.getLocalState() != EndpointState.CLOSED) {
                     if (TRACE_LOGGER.isWarnEnabled()) {
                         TRACE_LOGGER.warn(String.format(Locale.US, "onConnectionError: messagingFactory[%s], hostname[%s], closing link [%s]",
                                 this.getClientId(),
@@ -287,7 +288,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
             for (Link link : closedLinks) {
                 final Handler handler = BaseHandler.getHandler(link);
-                if (handler != null && handler instanceof BaseLinkHandler) {
+                if (handler instanceof BaseLinkHandler) {
                     final BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
                     linkHandler.processOnClose(link, error);
                 }
@@ -333,17 +334,26 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             // below .close() calls (local closes).
             // But, we still need to change the states of these to Closed - so that subsequent retries - will
             // treat the links and connection as closed and re-establish them and continue running on new Reactor instance.
-            if (oldConnection.getLocalState() != EndpointState.CLOSED && oldConnection.getRemoteState() != EndpointState.CLOSED) {
+            ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol("messagingfactory.onreactorerror"), cause.getMessage());
+            if (oldConnection.getLocalState() != EndpointState.CLOSED) {
+                if (TRACE_LOGGER.isWarnEnabled()) {
+                    TRACE_LOGGER.warn(String.format(Locale.US, "onReactorError: messagingFactory[%s], hostname[%s], closing current connection",
+                            this.getClientId(),
+                            this.hostName));
+                }
+
+                oldConnection.setCondition(errorCondition);
                 oldConnection.close();
             }
 
             for (final Link link : oldRegisteredLinksCopy) {
-                if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED) {
+                if (link.getLocalState() != EndpointState.CLOSED) {
+                    link.setCondition(errorCondition);
                     link.close();
                 }
 
                 final Handler handler = BaseHandler.getHandler(link);
-                if (handler != null && handler instanceof BaseLinkHandler) {
+                if (handler instanceof BaseLinkHandler) {
                     final BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
                     linkHandler.processOnClose(link, cause);
                 }

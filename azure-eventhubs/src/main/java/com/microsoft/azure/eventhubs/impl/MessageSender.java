@@ -588,6 +588,13 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
     private void createSendLink() {
         synchronized (this.errorConditionLock) {
             if (this.creatingLink) {
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info(
+                            String.format(Locale.US,
+                                    "clientId[%s], path[%s], operationTimeout[%s], creating a send link is already in progress",
+                                    this.getClientId(), this.sendPath, this.operationTimeout));
+                }
+
                 return;
             }
 

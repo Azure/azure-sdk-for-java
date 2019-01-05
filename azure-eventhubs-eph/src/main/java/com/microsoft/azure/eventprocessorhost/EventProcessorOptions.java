@@ -114,7 +114,7 @@ public final class EventProcessorOptions {
     /***
      * Sets the prefetch count for the underlying event hub client.
      *
-     * The default is 500. This controls how many events are received in advance.
+     * The default is 300. This controls how many events are received in advance.
      *
      * @param prefetchCount  The new prefetch count.
      */

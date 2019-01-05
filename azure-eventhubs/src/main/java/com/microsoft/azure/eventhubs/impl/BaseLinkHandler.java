@@ -75,6 +75,12 @@ public class BaseLinkHandler extends BaseHandler {
     }
 
     public void processOnClose(Link link, Exception exception) {
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format("processOnClose linkName[%s], exception[%s]",
+                    link.getName(),
+                    exception != null ? exception.getMessage() : "n/a"));
+        }
+
         this.underlyingEntity.onError(exception);
     }
 
