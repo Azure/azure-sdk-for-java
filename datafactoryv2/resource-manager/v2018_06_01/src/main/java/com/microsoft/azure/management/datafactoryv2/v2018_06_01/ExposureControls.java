@@ -9,11 +9,13 @@
 package com.microsoft.azure.management.datafactoryv2.v2018_06_01;
 
 import rx.Observable;
+import com.microsoft.azure.management.datafactoryv2.v2018_06_01.implementation.ExposureControlsInner;
+import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing ExposureControls.
  */
-public interface ExposureControls {
+public interface ExposureControls extends HasInner<ExposureControlsInner> {
     /**
      * Get exposure control feature for specific location.
      *
@@ -22,17 +24,6 @@ public interface ExposureControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ExposureControlResponse> getFeatureAsync(String locationId, ExposureControlRequest exposureControlRequest);
-
-    /**
-     * Get exposure control feature for specific data factory.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param exposureControlRequest The exposure control request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<ExposureControlResponse> getFeatureBySubscriptionAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest);
+    Observable<ExposureControlResponse> getFeatureValueAsync(String locationId, ExposureControlRequest exposureControlRequest);
 
 }

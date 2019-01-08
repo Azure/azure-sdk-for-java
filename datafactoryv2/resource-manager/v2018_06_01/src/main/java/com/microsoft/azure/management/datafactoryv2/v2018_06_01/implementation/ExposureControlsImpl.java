@@ -29,21 +29,9 @@ class ExposureControlsImpl extends WrapperImpl<ExposureControlsInner> implements
     }
 
     @Override
-    public Observable<ExposureControlResponse> getFeatureAsync(String locationId, ExposureControlRequest exposureControlRequest) {
+    public Observable<ExposureControlResponse> getFeatureValueAsync(String locationId, ExposureControlRequest exposureControlRequest) {
         ExposureControlsInner client = this.inner();
-        return client.getFeatureAsync(locationId, exposureControlRequest)
-        .map(new Func1<ExposureControlResponseInner, ExposureControlResponse>() {
-            @Override
-            public ExposureControlResponse call(ExposureControlResponseInner inner) {
-                return new ExposureControlResponseImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<ExposureControlResponse> getFeatureBySubscriptionAsync(String resourceGroupName, String factoryName, ExposureControlRequest exposureControlRequest) {
-        ExposureControlsInner client = this.inner();
-        return client.getFeatureBySubscriptionAsync(resourceGroupName, factoryName, exposureControlRequest)
+        return client.getFeatureValueAsync(locationId, exposureControlRequest)
         .map(new Func1<ExposureControlResponseInner, ExposureControlResponse>() {
             @Override
             public ExposureControlResponse call(ExposureControlResponseInner inner) {
