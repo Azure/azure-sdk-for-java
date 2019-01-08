@@ -368,6 +368,19 @@ public class MonitorManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The VMInsightsInner object to access its operations.
+     */
+    private VMInsightsInner vMInsights;
+
+    /**
+     * Gets the VMInsightsInner object to access its operations.
+     * @return the VMInsightsInner object.
+     */
+    public VMInsightsInner vMInsights() {
+        return this.vMInsights;
+    }
+
+    /**
      * Initializes an instance of MonitorManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -420,6 +433,7 @@ public class MonitorManagementClientImpl extends AzureServiceClient {
         this.metricAlertsStatus = new MetricAlertsStatusInner(restClient().retrofit(), this);
         this.scheduledQueryRules = new ScheduledQueryRulesInner(restClient().retrofit(), this);
         this.metricNamespaces = new MetricNamespacesInner(restClient().retrofit(), this);
+        this.vMInsights = new VMInsightsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
