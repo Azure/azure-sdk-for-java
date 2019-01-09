@@ -162,6 +162,14 @@ public abstract class SessionTests extends Tests {
 	}
 	
 	@Test
+	public void testBasicReceiveAndCompleteMessageWithProperties() throws InterruptedException, ServiceBusException, ExecutionException
+	{
+		String sessionId = TestUtils.getRandomString();
+		this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
+		TestCommons.testBasicReceiveAndCompleteMessageWithProperties(this.sender, sessionId, this.session);
+	}
+	
+	@Test
 	public void testBasicReceiveAndAbandon() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		String sessionId = TestUtils.getRandomString();

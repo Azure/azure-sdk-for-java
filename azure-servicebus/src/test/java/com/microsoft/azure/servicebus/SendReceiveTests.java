@@ -148,6 +148,13 @@ public abstract class SendReceiveTests extends Tests {
 	}
 	
 	@Test
+	public void testBasicReceiveAndCompleteMessageWithProperties() throws InterruptedException, ServiceBusException, ExecutionException
+	{
+		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
+		TestCommons.testBasicReceiveAndCompleteMessageWithProperties(this.sender, this.sessionId, this.receiver);
+	}
+	
+	@Test
 	public void testBasicReceiveAndAbandon() throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);

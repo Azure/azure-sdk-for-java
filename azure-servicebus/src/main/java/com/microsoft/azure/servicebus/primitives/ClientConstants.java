@@ -181,6 +181,11 @@ public final class ClientConstants
 
     public static final String HTTPS_URI_FORMAT = "https://%s:%s";
 
+    public static final String SSL_VERIFY_MODE_PROPERTY_NAME = "com.microsoft.azure.servicebus.ssl.verifymode";
+    public static final String SSL_VERIFY_MODE_ANONYMOUS = "anonymous"; // Accepts any certificate
+    public static final String SSL_VERIFY_MODE_CERTONLY = "verifyCertificateOnly"; // Accepts only certificates issued by trusted authorities
+    public static final String SSL_VERIFY_MODE_CERT_AND_HOSTNAME = "verifyCertificateAndHostName"; // Accepts only certificates  issued by trusted authorities and having same subject name as the host address
+    
     static final int DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS = 5;
     static final String SAS_TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     static final Duration SAS_TOKEN_SEND_TIMEOUT = Duration.ofSeconds(10);
