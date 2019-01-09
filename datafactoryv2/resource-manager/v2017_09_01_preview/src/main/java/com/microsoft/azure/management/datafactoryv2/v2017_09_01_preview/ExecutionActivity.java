@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Execution")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzureFunctionActivity", value = AzureFunctionActivity.class),
     @JsonSubTypes.Type(name = "DatabricksNotebook", value = DatabricksNotebookActivity.class),
     @JsonSubTypes.Type(name = "DataLakeAnalyticsU-SQL", value = DataLakeAnalyticsUSQLActivity.class),
     @JsonSubTypes.Type(name = "AzureMLUpdateResource", value = AzureMLUpdateResourceActivity.class),
