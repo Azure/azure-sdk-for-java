@@ -25,7 +25,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("LinkedService")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "Responsys", value = ResponsysLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDatabricks", value = AzureDatabricksLinkedService.class),
     @JsonSubTypes.Type(name = "AzureDataLakeAnalytics", value = AzureDataLakeAnalyticsLinkedService.class),
