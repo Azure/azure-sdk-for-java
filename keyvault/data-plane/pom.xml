@@ -299,7 +299,7 @@
 
                     <property>
                           <name>KEYVAULT_VAULTURI_ALT</name>
-                          <value>https://azure-keyvault-2.vault.azure.net</value>
+                          <value>https://azure-keyvault-3.vault.azure.net</value>
                     </property>
                 </properties>
             </configuration>
