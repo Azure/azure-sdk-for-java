@@ -23,8 +23,8 @@ public class AS2ErrorSettings {
     /**
      * The value indicating whether to resend message If MDN is not received.
      */
-    @JsonProperty(value = "resendIfMdnNotReceived", required = true)
-    private boolean resendIfMdnNotReceived;
+    @JsonProperty(value = "resendIfMDNNotReceived", required = true)
+    private boolean resendIfMDNNotReceived;
 
     /**
      * Get the value indicating whether to suspend duplicate message.
@@ -49,20 +49,20 @@ public class AS2ErrorSettings {
     /**
      * Get the value indicating whether to resend message If MDN is not received.
      *
-     * @return the resendIfMdnNotReceived value
+     * @return the resendIfMDNNotReceived value
      */
-    public boolean resendIfMdnNotReceived() {
-        return this.resendIfMdnNotReceived;
+    public boolean resendIfMDNNotReceived() {
+        return this.resendIfMDNNotReceived;
     }
 
     /**
      * Set the value indicating whether to resend message If MDN is not received.
      *
-     * @param resendIfMdnNotReceived the resendIfMdnNotReceived value to set
+     * @param resendIfMDNNotReceived the resendIfMDNNotReceived value to set
      * @return the AS2ErrorSettings object itself.
      */
-    public AS2ErrorSettings withResendIfMdnNotReceived(boolean resendIfMdnNotReceived) {
-        this.resendIfMdnNotReceived = resendIfMdnNotReceived;
+    public AS2ErrorSettings withResendIfMDNNotReceived(boolean resendIfMDNNotReceived) {
+        this.resendIfMDNNotReceived = resendIfMDNNotReceived;
         return this;
     }
 

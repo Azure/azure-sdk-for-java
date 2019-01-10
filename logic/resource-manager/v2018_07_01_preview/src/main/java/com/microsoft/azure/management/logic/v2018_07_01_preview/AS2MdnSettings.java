@@ -17,20 +17,20 @@ public class AS2MdnSettings {
     /**
      * The value indicating whether to send or request a MDN.
      */
-    @JsonProperty(value = "needMdn", required = true)
-    private boolean needMdn;
+    @JsonProperty(value = "needMDN", required = true)
+    private boolean needMDN;
 
     /**
      * The value indicating whether the MDN needs to be signed or not.
      */
-    @JsonProperty(value = "signMdn", required = true)
-    private boolean signMdn;
+    @JsonProperty(value = "signMDN", required = true)
+    private boolean signMDN;
 
     /**
      * The value indicating whether to send the asynchronous MDN.
      */
-    @JsonProperty(value = "sendMdnAsynchronously", required = true)
-    private boolean sendMdnAsynchronously;
+    @JsonProperty(value = "sendMDNAsynchronously", required = true)
+    private boolean sendMDNAsynchronously;
 
     /**
      * The receipt delivery URL.
@@ -47,8 +47,8 @@ public class AS2MdnSettings {
     /**
      * The value indicating whether to sign the outbound MDN if optional.
      */
-    @JsonProperty(value = "signOutboundMdnIfOptional", required = true)
-    private boolean signOutboundMdnIfOptional;
+    @JsonProperty(value = "signOutboundMDNIfOptional", required = true)
+    private boolean signOutboundMDNIfOptional;
 
     /**
      * The MDN text.
@@ -59,8 +59,8 @@ public class AS2MdnSettings {
     /**
      * The value indicating whether to send inbound MDN to message box.
      */
-    @JsonProperty(value = "sendInboundMdnToMessageBox", required = true)
-    private boolean sendInboundMdnToMessageBox;
+    @JsonProperty(value = "sendInboundMDNToMessageBox", required = true)
+    private boolean sendInboundMDNToMessageBox;
 
     /**
      * The signing or hashing algorithm. Possible values include:
@@ -72,60 +72,60 @@ public class AS2MdnSettings {
     /**
      * Get the value indicating whether to send or request a MDN.
      *
-     * @return the needMdn value
+     * @return the needMDN value
      */
-    public boolean needMdn() {
-        return this.needMdn;
+    public boolean needMDN() {
+        return this.needMDN;
     }
 
     /**
      * Set the value indicating whether to send or request a MDN.
      *
-     * @param needMdn the needMdn value to set
+     * @param needMDN the needMDN value to set
      * @return the AS2MdnSettings object itself.
      */
-    public AS2MdnSettings withNeedMdn(boolean needMdn) {
-        this.needMdn = needMdn;
+    public AS2MdnSettings withNeedMDN(boolean needMDN) {
+        this.needMDN = needMDN;
         return this;
     }
 
     /**
      * Get the value indicating whether the MDN needs to be signed or not.
      *
-     * @return the signMdn value
+     * @return the signMDN value
      */
-    public boolean signMdn() {
-        return this.signMdn;
+    public boolean signMDN() {
+        return this.signMDN;
     }
 
     /**
      * Set the value indicating whether the MDN needs to be signed or not.
      *
-     * @param signMdn the signMdn value to set
+     * @param signMDN the signMDN value to set
      * @return the AS2MdnSettings object itself.
      */
-    public AS2MdnSettings withSignMdn(boolean signMdn) {
-        this.signMdn = signMdn;
+    public AS2MdnSettings withSignMDN(boolean signMDN) {
+        this.signMDN = signMDN;
         return this;
     }
 
     /**
      * Get the value indicating whether to send the asynchronous MDN.
      *
-     * @return the sendMdnAsynchronously value
+     * @return the sendMDNAsynchronously value
      */
-    public boolean sendMdnAsynchronously() {
-        return this.sendMdnAsynchronously;
+    public boolean sendMDNAsynchronously() {
+        return this.sendMDNAsynchronously;
     }
 
     /**
      * Set the value indicating whether to send the asynchronous MDN.
      *
-     * @param sendMdnAsynchronously the sendMdnAsynchronously value to set
+     * @param sendMDNAsynchronously the sendMDNAsynchronously value to set
      * @return the AS2MdnSettings object itself.
      */
-    public AS2MdnSettings withSendMdnAsynchronously(boolean sendMdnAsynchronously) {
-        this.sendMdnAsynchronously = sendMdnAsynchronously;
+    public AS2MdnSettings withSendMDNAsynchronously(boolean sendMDNAsynchronously) {
+        this.sendMDNAsynchronously = sendMDNAsynchronously;
         return this;
     }
 
@@ -172,20 +172,20 @@ public class AS2MdnSettings {
     /**
      * Get the value indicating whether to sign the outbound MDN if optional.
      *
-     * @return the signOutboundMdnIfOptional value
+     * @return the signOutboundMDNIfOptional value
      */
-    public boolean signOutboundMdnIfOptional() {
-        return this.signOutboundMdnIfOptional;
+    public boolean signOutboundMDNIfOptional() {
+        return this.signOutboundMDNIfOptional;
     }
 
     /**
      * Set the value indicating whether to sign the outbound MDN if optional.
      *
-     * @param signOutboundMdnIfOptional the signOutboundMdnIfOptional value to set
+     * @param signOutboundMDNIfOptional the signOutboundMDNIfOptional value to set
      * @return the AS2MdnSettings object itself.
      */
-    public AS2MdnSettings withSignOutboundMdnIfOptional(boolean signOutboundMdnIfOptional) {
-        this.signOutboundMdnIfOptional = signOutboundMdnIfOptional;
+    public AS2MdnSettings withSignOutboundMDNIfOptional(boolean signOutboundMDNIfOptional) {
+        this.signOutboundMDNIfOptional = signOutboundMDNIfOptional;
         return this;
     }
 
@@ -212,20 +212,20 @@ public class AS2MdnSettings {
     /**
      * Get the value indicating whether to send inbound MDN to message box.
      *
-     * @return the sendInboundMdnToMessageBox value
+     * @return the sendInboundMDNToMessageBox value
      */
-    public boolean sendInboundMdnToMessageBox() {
-        return this.sendInboundMdnToMessageBox;
+    public boolean sendInboundMDNToMessageBox() {
+        return this.sendInboundMDNToMessageBox;
     }
 
     /**
      * Set the value indicating whether to send inbound MDN to message box.
      *
-     * @param sendInboundMdnToMessageBox the sendInboundMdnToMessageBox value to set
+     * @param sendInboundMDNToMessageBox the sendInboundMDNToMessageBox value to set
      * @return the AS2MdnSettings object itself.
      */
-    public AS2MdnSettings withSendInboundMdnToMessageBox(boolean sendInboundMdnToMessageBox) {
-        this.sendInboundMdnToMessageBox = sendInboundMdnToMessageBox;
+    public AS2MdnSettings withSendInboundMDNToMessageBox(boolean sendInboundMDNToMessageBox) {
+        this.sendInboundMDNToMessageBox = sendInboundMDNToMessageBox;
         return this;
     }
 
