@@ -124,9 +124,9 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
                 getRemoteHostName(),
                 null,
                 getRemotePort(),
-                null,
-                null,
-                "http",
+                "https",
+                "Event Hubs client websocket proxy support",
+                "basic",
                 null,
                 Authenticator.RequestorType.PROXY);
         if (authentication == null) {
