@@ -64,7 +64,7 @@ public class WebHookActivity extends ControlActivity {
      * Authentication method used for calling the endpoint.
      */
     @JsonProperty(value = "typeProperties.authentication")
-    private WebHookActivityAuthentication authentication;
+    private WebActivityAuthentication authentication;
 
     /**
      * Creates an instance of WebHookActivity class.
@@ -179,7 +179,7 @@ public class WebHookActivity extends ControlActivity {
      *
      * @return the authentication value
      */
-    public WebHookActivityAuthentication authentication() {
+    public WebActivityAuthentication authentication() {
         return this.authentication;
     }
 
@@ -189,7 +189,7 @@ public class WebHookActivity extends ControlActivity {
      * @param authentication the authentication value to set
      * @return the WebHookActivity object itself.
      */
-    public WebHookActivity withAuthentication(WebHookActivityAuthentication authentication) {
+    public WebHookActivity withAuthentication(WebActivityAuthentication authentication) {
         this.authentication = authentication;
         return this;
     }

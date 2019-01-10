@@ -15,10 +15,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class WebActivityAuthentication {
     /**
-     * Web activity authentication (Basic/ClientCertificate/MSI).
+     * Web activity authentication (Basic/ClientCertificate/MSI). Possible
+     * values include: 'Basic', 'ClientCertificate', 'MSI'.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private WebActivityAuthenticationType type;
 
     /**
      * Base64-encoded contents of a PFX file.
@@ -46,21 +47,21 @@ public class WebActivityAuthentication {
     private String resource;
 
     /**
-     * Get web activity authentication (Basic/ClientCertificate/MSI).
+     * Get web activity authentication (Basic/ClientCertificate/MSI). Possible values include: 'Basic', 'ClientCertificate', 'MSI'.
      *
      * @return the type value
      */
-    public String type() {
+    public WebActivityAuthenticationType type() {
         return this.type;
     }
 
     /**
-     * Set web activity authentication (Basic/ClientCertificate/MSI).
+     * Set web activity authentication (Basic/ClientCertificate/MSI). Possible values include: 'Basic', 'ClientCertificate', 'MSI'.
      *
      * @param type the type value to set
      * @return the WebActivityAuthentication object itself.
      */
-    public WebActivityAuthentication withType(String type) {
+    public WebActivityAuthentication withType(WebActivityAuthenticationType type) {
         this.type = type;
         return this;
     }
