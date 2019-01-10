@@ -90,6 +90,9 @@ public interface InstanceFailoverGroup extends HasInner<InstanceFailoverGroupInn
         interface WithLocation {
            /**
             * Specifies resourceGroupName, locationName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param locationName The name of the region where the resource is located
+            * @return the next definition stage
             */
             WithManagedInstancePairs withExistingLocation(String resourceGroupName, String locationName);
         }
@@ -100,6 +103,8 @@ public interface InstanceFailoverGroup extends HasInner<InstanceFailoverGroupInn
         interface WithManagedInstancePairs {
            /**
             * Specifies managedInstancePairs.
+            * @param managedInstancePairs List of managed instance pairs in the failover group
+            * @return the next definition stage
             */
             WithPartnerRegions withManagedInstancePairs(List<ManagedInstancePairInfo> managedInstancePairs);
         }
@@ -110,6 +115,8 @@ public interface InstanceFailoverGroup extends HasInner<InstanceFailoverGroupInn
         interface WithPartnerRegions {
            /**
             * Specifies partnerRegions.
+            * @param partnerRegions Partner region information for the failover group
+            * @return the next definition stage
             */
             WithReadWriteEndpoint withPartnerRegions(List<PartnerRegionInfo> partnerRegions);
         }
@@ -120,6 +127,8 @@ public interface InstanceFailoverGroup extends HasInner<InstanceFailoverGroupInn
         interface WithReadWriteEndpoint {
            /**
             * Specifies readWriteEndpoint.
+            * @param readWriteEndpoint Read-write endpoint of the failover group instance
+            * @return the next definition stage
             */
             WithCreate withReadWriteEndpoint(InstanceFailoverGroupReadWriteEndpoint readWriteEndpoint);
         }
@@ -130,6 +139,8 @@ public interface InstanceFailoverGroup extends HasInner<InstanceFailoverGroupInn
         interface WithReadOnlyEndpoint {
             /**
              * Specifies readOnlyEndpoint.
+             * @param readOnlyEndpoint Read-only endpoint of the failover group instance
+             * @return the next definition stage
              */
             WithCreate withReadOnlyEndpoint(InstanceFailoverGroupReadOnlyEndpoint readOnlyEndpoint);
         }
@@ -158,6 +169,8 @@ public interface InstanceFailoverGroup extends HasInner<InstanceFailoverGroupInn
         interface WithReadOnlyEndpoint {
             /**
              * Specifies readOnlyEndpoint.
+             * @param readOnlyEndpoint Read-only endpoint of the failover group instance
+             * @return the next update stage
              */
             Update withReadOnlyEndpoint(InstanceFailoverGroupReadOnlyEndpoint readOnlyEndpoint);
         }

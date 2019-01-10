@@ -91,6 +91,12 @@ public class ClusterGetProperties {
     private List<ConnectivityEndpoint> connectivityEndpoints;
 
     /**
+     * The disk encryption properties.
+     */
+    @JsonProperty(value = "diskEncryptionProperties")
+    private DiskEncryptionProperties diskEncryptionProperties;
+
+    /**
      * Get the version of the cluster.
      *
      * @return the clusterVersion value
@@ -327,6 +333,26 @@ public class ClusterGetProperties {
      */
     public ClusterGetProperties withConnectivityEndpoints(List<ConnectivityEndpoint> connectivityEndpoints) {
         this.connectivityEndpoints = connectivityEndpoints;
+        return this;
+    }
+
+    /**
+     * Get the disk encryption properties.
+     *
+     * @return the diskEncryptionProperties value
+     */
+    public DiskEncryptionProperties diskEncryptionProperties() {
+        return this.diskEncryptionProperties;
+    }
+
+    /**
+     * Set the disk encryption properties.
+     *
+     * @param diskEncryptionProperties the diskEncryptionProperties value to set
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withDiskEncryptionProperties(DiskEncryptionProperties diskEncryptionProperties) {
+        this.diskEncryptionProperties = diskEncryptionProperties;
         return this;
     }
 

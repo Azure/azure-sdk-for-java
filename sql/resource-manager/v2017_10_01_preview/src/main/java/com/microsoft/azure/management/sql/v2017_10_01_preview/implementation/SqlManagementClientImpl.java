@@ -63,11 +63,11 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
-    /** Gets or sets the preferred language for the response. */
+    /** The preferred language for the response. */
     private String acceptLanguage;
 
     /**
-     * Gets Gets or sets the preferred language for the response.
+     * Gets The preferred language for the response.
      *
      * @return the acceptLanguage value.
      */
@@ -76,7 +76,7 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the preferred language for the response.
+     * Sets The preferred language for the response.
      *
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
@@ -86,11 +86,11 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
+    /** The retry timeout in seconds for Long Running Operations. Default value is 30. */
     private int longRunningOperationRetryTimeout;
 
     /**
-     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Gets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @return the longRunningOperationRetryTimeout value.
      */
@@ -99,7 +99,7 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     * Sets The retry timeout in seconds for Long Running Operations. Default value is 30.
      *
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
@@ -109,11 +109,11 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
+    /** Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
     private boolean generateClientRequestId;
 
     /**
-     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Gets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @return the generateClientRequestId value.
      */
@@ -122,7 +122,7 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     * Sets Whether a unique x-ms-client-request-id should be generated. When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
      *
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
@@ -169,6 +169,45 @@ public class SqlManagementClientImpl extends AzureServiceClient {
      */
     public DatabaseVulnerabilityAssessmentScansInner databaseVulnerabilityAssessmentScans() {
         return this.databaseVulnerabilityAssessmentScans;
+    }
+
+    /**
+     * The ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner object to access its operations.
+     */
+    private ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner managedDatabaseVulnerabilityAssessmentRuleBaselines;
+
+    /**
+     * Gets the ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner object to access its operations.
+     * @return the ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner object.
+     */
+    public ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner managedDatabaseVulnerabilityAssessmentRuleBaselines() {
+        return this.managedDatabaseVulnerabilityAssessmentRuleBaselines;
+    }
+
+    /**
+     * The ManagedDatabaseVulnerabilityAssessmentScansInner object to access its operations.
+     */
+    private ManagedDatabaseVulnerabilityAssessmentScansInner managedDatabaseVulnerabilityAssessmentScans;
+
+    /**
+     * Gets the ManagedDatabaseVulnerabilityAssessmentScansInner object to access its operations.
+     * @return the ManagedDatabaseVulnerabilityAssessmentScansInner object.
+     */
+    public ManagedDatabaseVulnerabilityAssessmentScansInner managedDatabaseVulnerabilityAssessmentScans() {
+        return this.managedDatabaseVulnerabilityAssessmentScans;
+    }
+
+    /**
+     * The ManagedDatabaseVulnerabilityAssessmentsInner object to access its operations.
+     */
+    private ManagedDatabaseVulnerabilityAssessmentsInner managedDatabaseVulnerabilityAssessments;
+
+    /**
+     * Gets the ManagedDatabaseVulnerabilityAssessmentsInner object to access its operations.
+     * @return the ManagedDatabaseVulnerabilityAssessmentsInner object.
+     */
+    public ManagedDatabaseVulnerabilityAssessmentsInner managedDatabaseVulnerabilityAssessments() {
+        return this.managedDatabaseVulnerabilityAssessments;
     }
 
     /**
@@ -263,6 +302,32 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ManagedInstanceKeysInner object to access its operations.
+     */
+    private ManagedInstanceKeysInner managedInstanceKeys;
+
+    /**
+     * Gets the ManagedInstanceKeysInner object to access its operations.
+     * @return the ManagedInstanceKeysInner object.
+     */
+    public ManagedInstanceKeysInner managedInstanceKeys() {
+        return this.managedInstanceKeys;
+    }
+
+    /**
+     * The ManagedInstanceEncryptionProtectorsInner object to access its operations.
+     */
+    private ManagedInstanceEncryptionProtectorsInner managedInstanceEncryptionProtectors;
+
+    /**
+     * Gets the ManagedInstanceEncryptionProtectorsInner object to access its operations.
+     * @return the ManagedInstanceEncryptionProtectorsInner object.
+     */
+    public ManagedInstanceEncryptionProtectorsInner managedInstanceEncryptionProtectors() {
+        return this.managedInstanceEncryptionProtectors;
+    }
+
+    /**
      * Initializes an instance of SqlManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -300,6 +365,9 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.databaseOperations = new DatabaseOperationsInner(restClient().retrofit(), this);
         this.elasticPoolOperations = new ElasticPoolOperationsInner(restClient().retrofit(), this);
         this.databaseVulnerabilityAssessmentScans = new DatabaseVulnerabilityAssessmentScansInner(restClient().retrofit(), this);
+        this.managedDatabaseVulnerabilityAssessmentRuleBaselines = new ManagedDatabaseVulnerabilityAssessmentRuleBaselinesInner(restClient().retrofit(), this);
+        this.managedDatabaseVulnerabilityAssessmentScans = new ManagedDatabaseVulnerabilityAssessmentScansInner(restClient().retrofit(), this);
+        this.managedDatabaseVulnerabilityAssessments = new ManagedDatabaseVulnerabilityAssessmentsInner(restClient().retrofit(), this);
         this.capabilities = new CapabilitiesInner(restClient().retrofit(), this);
         this.databases = new DatabasesInner(restClient().retrofit(), this);
         this.elasticPools = new ElasticPoolsInner(restClient().retrofit(), this);
@@ -307,6 +375,8 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.backupShortTermRetentionPolicies = new BackupShortTermRetentionPoliciesInner(restClient().retrofit(), this);
         this.tdeCertificates = new TdeCertificatesInner(restClient().retrofit(), this);
         this.managedInstanceTdeCertificates = new ManagedInstanceTdeCertificatesInner(restClient().retrofit(), this);
+        this.managedInstanceKeys = new ManagedInstanceKeysInner(restClient().retrofit(), this);
+        this.managedInstanceEncryptionProtectors = new ManagedInstanceEncryptionProtectorsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -317,6 +387,6 @@ public class SqlManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "SqlManagementClient", "2017-10-01-preview");
+        return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "SqlManagementClient", "2017-10-01-preview");
     }
 }

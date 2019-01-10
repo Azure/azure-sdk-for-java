@@ -104,6 +104,10 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithDatabasis {
            /**
             * Specifies resourceGroupName, serverName, databaseName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param serverName The name of the server
+            * @param databaseName The name of the database to import into
+            * @return the next definition stage
             */
             WithAdministratorLogin withExistingDatabasis(String resourceGroupName, String serverName, String databaseName);
         }
@@ -114,6 +118,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithAdministratorLogin {
            /**
             * Specifies administratorLogin.
+            * @param administratorLogin The name of the SQL administrator
+            * @return the next definition stage
             */
             WithAdministratorLoginPassword withAdministratorLogin(String administratorLogin);
         }
@@ -124,6 +130,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithAdministratorLoginPassword {
            /**
             * Specifies administratorLoginPassword.
+            * @param administratorLoginPassword The password of the SQL administrator
+            * @return the next definition stage
             */
             WithOperationMode withAdministratorLoginPassword(String administratorLoginPassword);
         }
@@ -134,6 +142,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithOperationMode {
            /**
             * Specifies operationMode.
+            * @param operationMode The type of import operation being performed. This is always Import
+            * @return the next definition stage
             */
             WithStorageKey withOperationMode(String operationMode);
         }
@@ -144,6 +154,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithStorageKey {
            /**
             * Specifies storageKey.
+            * @param storageKey The storage key to use.  If storage key type is SharedAccessKey, it must be preceded with a "?."
+            * @return the next definition stage
             */
             WithStorageKeyType withStorageKey(String storageKey);
         }
@@ -154,6 +166,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithStorageKeyType {
            /**
             * Specifies storageKeyType.
+            * @param storageKeyType The type of the storage key to use. Possible values include: 'StorageAccessKey', 'SharedAccessKey'
+            * @return the next definition stage
             */
             WithStorageUri withStorageKeyType(StorageKeyType storageKeyType);
         }
@@ -164,6 +178,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithStorageUri {
            /**
             * Specifies storageUri.
+            * @param storageUri The storage uri to use
+            * @return the next definition stage
             */
             WithCreate withStorageUri(String storageUri);
         }
@@ -174,6 +190,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithAuthenticationType {
             /**
              * Specifies authenticationType.
+             * @param authenticationType The authentication type. Possible values include: 'SQL', 'ADPassword'
+             * @return the next definition stage
              */
             WithCreate withAuthenticationType(AuthenticationType authenticationType);
         }
@@ -184,6 +202,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithName {
             /**
              * Specifies name.
+             * @param name The name of the extension
+             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -194,6 +214,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithType {
             /**
              * Specifies type.
+             * @param type The type of the extension
+             * @return the next definition stage
              */
             WithCreate withType(String type);
         }
@@ -222,6 +244,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithAuthenticationType {
             /**
              * Specifies authenticationType.
+             * @param authenticationType The authentication type. Possible values include: 'SQL', 'ADPassword'
+             * @return the next update stage
              */
             Update withAuthenticationType(AuthenticationType authenticationType);
         }
@@ -232,6 +256,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithName {
             /**
              * Specifies name.
+             * @param name The name of the extension
+             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -242,6 +268,8 @@ public interface ImportExportResponse extends HasInner<ImportExportResponseInner
         interface WithType {
             /**
              * Specifies type.
+             * @param type The type of the extension
+             * @return the next update stage
              */
             Update withType(String type);
         }

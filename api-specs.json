@@ -50,6 +50,10 @@
     "source": "specification/datalake-store/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "datamigration/resource-manager": {
+    "source": "specification/datamigration/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "dns/resource-manager": {
     "source": "specification/dns/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -151,6 +155,10 @@
       "\"knownPlurals\"": ["\"signalr\""],
       "\"knownSingulars\"": ["\"signalr\""]
     }
+  },
+  "sql/resource-manager": {
+    "source": "specification/sql/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "storage/resource-manager": {
     "source": "specification/storage/resource-manager/readme.md",

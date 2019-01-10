@@ -58,6 +58,12 @@ public class ClusterCreateProperties {
     private StorageProfile storageProfile;
 
     /**
+     * The disk encryption properties.
+     */
+    @JsonProperty(value = "diskEncryptionProperties")
+    private DiskEncryptionProperties diskEncryptionProperties;
+
+    /**
      * Get the version of the cluster.
      *
      * @return the clusterVersion value
@@ -194,6 +200,26 @@ public class ClusterCreateProperties {
      */
     public ClusterCreateProperties withStorageProfile(StorageProfile storageProfile) {
         this.storageProfile = storageProfile;
+        return this;
+    }
+
+    /**
+     * Get the disk encryption properties.
+     *
+     * @return the diskEncryptionProperties value
+     */
+    public DiskEncryptionProperties diskEncryptionProperties() {
+        return this.diskEncryptionProperties;
+    }
+
+    /**
+     * Set the disk encryption properties.
+     *
+     * @param diskEncryptionProperties the diskEncryptionProperties value to set
+     * @return the ClusterCreateProperties object itself.
+     */
+    public ClusterCreateProperties withDiskEncryptionProperties(DiskEncryptionProperties diskEncryptionProperties) {
+        this.diskEncryptionProperties = diskEncryptionProperties;
         return this;
     }
 

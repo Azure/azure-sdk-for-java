@@ -30,7 +30,7 @@ import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
 
 public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
-	private static final String SECRET_NAME = "javaSecret2";
+	private static final String SECRET_NAME = "javaSecret";
 	private static final String CRUD_SECRET_NAME = "crudSecret";
 	private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
 	private static final int MAX_SECRETS = 4;
@@ -65,9 +65,9 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
 	@Test
 	public void deserializeWithExtraFieldTestForSecretOperationsTest() throws Exception {
-		String content = "{\"error\":{\"code\":\"SecretNotFound\",\"message\":\"Secret not found: javaSecret2\",\"noneexisting\":true}}";
+		String content = "{\"error\":{\"code\":\"SecretNotFound\",\"message\":\"Secret not found: javaSecret\",\"noneexisting\":true}}";
 		KeyVaultError error = keyVaultClient.serializerAdapter().deserialize(content, KeyVaultError.class);
-		Assert.assertEquals(error.error().message(), "Secret not found: javaSecret2");
+		Assert.assertEquals(error.error().message(), "Secret not found: javaSecret");
 		Assert.assertEquals(error.error().code(), "SecretNotFound");
 	}
 
@@ -203,7 +203,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 			int failureCount = 0;
 			for (;;) {
 				try {
-					SecretBundle secret = alternativeKeyVaultClient.setSecret(
+					SecretBundle secret = keyVaultClient.setSecret(
 							new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME + i, SECRET_VALUE).build());
 					SecretIdentifier id = new SecretIdentifier(secret.id());
 					secrets.add(id.baseIdentifier());
@@ -220,7 +220,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 			}
 		}
 
-		PagedList<SecretItem> listResult = alternativeKeyVaultClient.listSecrets(getVaultUri(), PAGELIST_MAX_SECRETS);
+		PagedList<SecretItem> listResult = keyVaultClient.listSecrets(getVaultUri(), PAGELIST_MAX_SECRETS);
 		Assert.assertTrue(PAGELIST_MAX_SECRETS >= listResult.currentPage().items().size());
 
 		HashSet<String> toDelete = new HashSet<String>();
@@ -239,10 +239,10 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 			try {
 				System.out.println("Deleting next secret:" + secretName);
 
-				alternativeKeyVaultClient.deleteSecret(getVaultUri(), secretName);
+				keyVaultClient.deleteSecret(getVaultUri(), secretName);
 				DeletedSecretBundle deletedSecretBundle = pollOnSecretDeletion(getVaultUri(), secretName);
 				Assert.assertNotNull(deletedSecretBundle);
-				alternativeKeyVaultClient.purgeDeletedSecret(getVaultUri(), secretName);
+				keyVaultClient.purgeDeletedSecret(getVaultUri(), secretName);
 				SdkContext.sleep(20000);
 			} catch (KeyVaultErrorException e) {
 				// Ignore forbidden exception for certificate secrets that cannot be deleted
