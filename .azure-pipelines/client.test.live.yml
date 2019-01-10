@@ -5,7 +5,7 @@ queue:
 steps:
 - bash: |
    LOG_PARAMS='-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-   mvn test  -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -Dparallel=classes -DthreadCount=3 -DforkCount=1C -f pom.client.build.xml
+   mvn test -Dhttp.keepAlive=false -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -f pom.client.build.xml 
   displayName: 'Bash Script'
   env:
     ARM_CLIENTID: $(ARM_CLIENTID)
