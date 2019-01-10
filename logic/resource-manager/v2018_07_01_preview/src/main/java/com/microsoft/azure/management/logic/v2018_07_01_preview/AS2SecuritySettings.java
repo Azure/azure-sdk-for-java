@@ -35,40 +35,40 @@ public class AS2SecuritySettings {
     /**
      * The value indicating whether to enable NRR for inbound encoded messages.
      */
-    @JsonProperty(value = "enableNrrForInboundEncodedMessages", required = true)
-    private boolean enableNrrForInboundEncodedMessages;
+    @JsonProperty(value = "enableNRRForInboundEncodedMessages", required = true)
+    private boolean enableNRRForInboundEncodedMessages;
 
     /**
      * The value indicating whether to enable NRR for inbound decoded messages.
      */
-    @JsonProperty(value = "enableNrrForInboundDecodedMessages", required = true)
-    private boolean enableNrrForInboundDecodedMessages;
+    @JsonProperty(value = "enableNRRForInboundDecodedMessages", required = true)
+    private boolean enableNRRForInboundDecodedMessages;
 
     /**
      * The value indicating whether to enable NRR for outbound MDN.
      */
-    @JsonProperty(value = "enableNrrForOutboundMdn", required = true)
-    private boolean enableNrrForOutboundMdn;
+    @JsonProperty(value = "enableNRRForOutboundMDN", required = true)
+    private boolean enableNRRForOutboundMDN;
 
     /**
      * The value indicating whether to enable NRR for outbound encoded
      * messages.
      */
-    @JsonProperty(value = "enableNrrForOutboundEncodedMessages", required = true)
-    private boolean enableNrrForOutboundEncodedMessages;
+    @JsonProperty(value = "enableNRRForOutboundEncodedMessages", required = true)
+    private boolean enableNRRForOutboundEncodedMessages;
 
     /**
      * The value indicating whether to enable NRR for outbound decoded
      * messages.
      */
-    @JsonProperty(value = "enableNrrForOutboundDecodedMessages", required = true)
-    private boolean enableNrrForOutboundDecodedMessages;
+    @JsonProperty(value = "enableNRRForOutboundDecodedMessages", required = true)
+    private boolean enableNRRForOutboundDecodedMessages;
 
     /**
      * The value indicating whether to enable NRR for inbound MDN.
      */
-    @JsonProperty(value = "enableNrrForInboundMdn", required = true)
-    private boolean enableNrrForInboundMdn;
+    @JsonProperty(value = "enableNRRForInboundMDN", required = true)
+    private boolean enableNRRForInboundMDN;
 
     /**
      * The Sha2 algorithm format. Valid values are Sha2, ShaHashSize,
@@ -140,120 +140,120 @@ public class AS2SecuritySettings {
     /**
      * Get the value indicating whether to enable NRR for inbound encoded messages.
      *
-     * @return the enableNrrForInboundEncodedMessages value
+     * @return the enableNRRForInboundEncodedMessages value
      */
-    public boolean enableNrrForInboundEncodedMessages() {
-        return this.enableNrrForInboundEncodedMessages;
+    public boolean enableNRRForInboundEncodedMessages() {
+        return this.enableNRRForInboundEncodedMessages;
     }
 
     /**
      * Set the value indicating whether to enable NRR for inbound encoded messages.
      *
-     * @param enableNrrForInboundEncodedMessages the enableNrrForInboundEncodedMessages value to set
+     * @param enableNRRForInboundEncodedMessages the enableNRRForInboundEncodedMessages value to set
      * @return the AS2SecuritySettings object itself.
      */
-    public AS2SecuritySettings withEnableNrrForInboundEncodedMessages(boolean enableNrrForInboundEncodedMessages) {
-        this.enableNrrForInboundEncodedMessages = enableNrrForInboundEncodedMessages;
+    public AS2SecuritySettings withEnableNRRForInboundEncodedMessages(boolean enableNRRForInboundEncodedMessages) {
+        this.enableNRRForInboundEncodedMessages = enableNRRForInboundEncodedMessages;
         return this;
     }
 
     /**
      * Get the value indicating whether to enable NRR for inbound decoded messages.
      *
-     * @return the enableNrrForInboundDecodedMessages value
+     * @return the enableNRRForInboundDecodedMessages value
      */
-    public boolean enableNrrForInboundDecodedMessages() {
-        return this.enableNrrForInboundDecodedMessages;
+    public boolean enableNRRForInboundDecodedMessages() {
+        return this.enableNRRForInboundDecodedMessages;
     }
 
     /**
      * Set the value indicating whether to enable NRR for inbound decoded messages.
      *
-     * @param enableNrrForInboundDecodedMessages the enableNrrForInboundDecodedMessages value to set
+     * @param enableNRRForInboundDecodedMessages the enableNRRForInboundDecodedMessages value to set
      * @return the AS2SecuritySettings object itself.
      */
-    public AS2SecuritySettings withEnableNrrForInboundDecodedMessages(boolean enableNrrForInboundDecodedMessages) {
-        this.enableNrrForInboundDecodedMessages = enableNrrForInboundDecodedMessages;
+    public AS2SecuritySettings withEnableNRRForInboundDecodedMessages(boolean enableNRRForInboundDecodedMessages) {
+        this.enableNRRForInboundDecodedMessages = enableNRRForInboundDecodedMessages;
         return this;
     }
 
     /**
      * Get the value indicating whether to enable NRR for outbound MDN.
      *
-     * @return the enableNrrForOutboundMdn value
+     * @return the enableNRRForOutboundMDN value
      */
-    public boolean enableNrrForOutboundMdn() {
-        return this.enableNrrForOutboundMdn;
+    public boolean enableNRRForOutboundMDN() {
+        return this.enableNRRForOutboundMDN;
     }
 
     /**
      * Set the value indicating whether to enable NRR for outbound MDN.
      *
-     * @param enableNrrForOutboundMdn the enableNrrForOutboundMdn value to set
+     * @param enableNRRForOutboundMDN the enableNRRForOutboundMDN value to set
      * @return the AS2SecuritySettings object itself.
      */
-    public AS2SecuritySettings withEnableNrrForOutboundMdn(boolean enableNrrForOutboundMdn) {
-        this.enableNrrForOutboundMdn = enableNrrForOutboundMdn;
+    public AS2SecuritySettings withEnableNRRForOutboundMDN(boolean enableNRRForOutboundMDN) {
+        this.enableNRRForOutboundMDN = enableNRRForOutboundMDN;
         return this;
     }
 
     /**
      * Get the value indicating whether to enable NRR for outbound encoded messages.
      *
-     * @return the enableNrrForOutboundEncodedMessages value
+     * @return the enableNRRForOutboundEncodedMessages value
      */
-    public boolean enableNrrForOutboundEncodedMessages() {
-        return this.enableNrrForOutboundEncodedMessages;
+    public boolean enableNRRForOutboundEncodedMessages() {
+        return this.enableNRRForOutboundEncodedMessages;
     }
 
     /**
      * Set the value indicating whether to enable NRR for outbound encoded messages.
      *
-     * @param enableNrrForOutboundEncodedMessages the enableNrrForOutboundEncodedMessages value to set
+     * @param enableNRRForOutboundEncodedMessages the enableNRRForOutboundEncodedMessages value to set
      * @return the AS2SecuritySettings object itself.
      */
-    public AS2SecuritySettings withEnableNrrForOutboundEncodedMessages(boolean enableNrrForOutboundEncodedMessages) {
-        this.enableNrrForOutboundEncodedMessages = enableNrrForOutboundEncodedMessages;
+    public AS2SecuritySettings withEnableNRRForOutboundEncodedMessages(boolean enableNRRForOutboundEncodedMessages) {
+        this.enableNRRForOutboundEncodedMessages = enableNRRForOutboundEncodedMessages;
         return this;
     }
 
     /**
      * Get the value indicating whether to enable NRR for outbound decoded messages.
      *
-     * @return the enableNrrForOutboundDecodedMessages value
+     * @return the enableNRRForOutboundDecodedMessages value
      */
-    public boolean enableNrrForOutboundDecodedMessages() {
-        return this.enableNrrForOutboundDecodedMessages;
+    public boolean enableNRRForOutboundDecodedMessages() {
+        return this.enableNRRForOutboundDecodedMessages;
     }
 
     /**
      * Set the value indicating whether to enable NRR for outbound decoded messages.
      *
-     * @param enableNrrForOutboundDecodedMessages the enableNrrForOutboundDecodedMessages value to set
+     * @param enableNRRForOutboundDecodedMessages the enableNRRForOutboundDecodedMessages value to set
      * @return the AS2SecuritySettings object itself.
      */
-    public AS2SecuritySettings withEnableNrrForOutboundDecodedMessages(boolean enableNrrForOutboundDecodedMessages) {
-        this.enableNrrForOutboundDecodedMessages = enableNrrForOutboundDecodedMessages;
+    public AS2SecuritySettings withEnableNRRForOutboundDecodedMessages(boolean enableNRRForOutboundDecodedMessages) {
+        this.enableNRRForOutboundDecodedMessages = enableNRRForOutboundDecodedMessages;
         return this;
     }
 
     /**
      * Get the value indicating whether to enable NRR for inbound MDN.
      *
-     * @return the enableNrrForInboundMdn value
+     * @return the enableNRRForInboundMDN value
      */
-    public boolean enableNrrForInboundMdn() {
-        return this.enableNrrForInboundMdn;
+    public boolean enableNRRForInboundMDN() {
+        return this.enableNRRForInboundMDN;
     }
 
     /**
      * Set the value indicating whether to enable NRR for inbound MDN.
      *
-     * @param enableNrrForInboundMdn the enableNrrForInboundMdn value to set
+     * @param enableNRRForInboundMDN the enableNRRForInboundMDN value to set
      * @return the AS2SecuritySettings object itself.
      */
-    public AS2SecuritySettings withEnableNrrForInboundMdn(boolean enableNrrForInboundMdn) {
-        this.enableNrrForInboundMdn = enableNrrForInboundMdn;
+    public AS2SecuritySettings withEnableNRRForInboundMDN(boolean enableNRRForInboundMDN) {
+        this.enableNRRForInboundMDN = enableNRRForInboundMDN;
         return this;
     }
 
