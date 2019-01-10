@@ -258,7 +258,7 @@ public class KeyVaultKeyResolverDefaultProviderTest extends KeyVaultClientIntegr
          byte[] CEK      = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB, (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF };
          byte[] EK       = { 0x64, (byte) 0xE8, (byte) 0xC3, (byte) 0xF9, (byte) 0xCE, 0x0F, 0x5B, (byte) 0xA2, 0x63, (byte) 0xE9, 0x77, 0x79, 0x05, (byte) 0x81, (byte) 0x8A, 0x2A, (byte) 0x93, (byte) 0xC8, 0x19, 0x1E, 0x7D, 0x6E, (byte) 0x8A, (byte) 0xE7 };
 
-         String TEST_SECRET_NAME = SECRET_NAME + "3";
+         String TEST_SECRET_NAME = SECRET_NAME + "1";
          
          try {
              SetSecretRequest request      = new SetSecretRequest.Builder(getVaultUri(), TEST_SECRET_NAME, _base64.encodeAsString(keyBytes)).withContentType("application/octet-stream").build();
