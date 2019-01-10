@@ -100,6 +100,14 @@ public class DatasetInner {
     private Object structure;
 
     /**
+     * Columns that define the physical type schema of the dataset. Type: array
+     * (or Expression with resultType array), itemType:
+     * DatasetSchemaDataElement.
+     */
+    @JsonProperty(value = "schema")
+    private Object schema;
+
+    /**
      * Linked service reference.
      */
     @JsonProperty(value = "linkedServiceName", required = true)
@@ -181,6 +189,26 @@ public class DatasetInner {
      */
     public DatasetInner withStructure(Object structure) {
         this.structure = structure;
+        return this;
+    }
+
+    /**
+     * Get columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType: DatasetSchemaDataElement.
+     *
+     * @return the schema value
+     */
+    public Object schema() {
+        return this.schema;
+    }
+
+    /**
+     * Set columns that define the physical type schema of the dataset. Type: array (or Expression with resultType array), itemType: DatasetSchemaDataElement.
+     *
+     * @param schema the schema value to set
+     * @return the DatasetInner object itself.
+     */
+    public DatasetInner withSchema(Object schema) {
+        this.schema = schema;
         return this;
     }
 
