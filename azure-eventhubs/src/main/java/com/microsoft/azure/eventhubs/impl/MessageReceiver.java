@@ -613,7 +613,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private void sendFlow(final int credits) {
         // slow down sending the flow - to make the protocol less-chat'y
         this.nextCreditToFlow += credits;
-        if (this.nextCreditToFlow >= this.prefetchCount || this.nextCreditToFlow >= 100) {
+        if (this.shouldSendFlow()) {
             final int tempFlow = this.nextCreditToFlow;
             this.receiveLink.flow(tempFlow);
             this.nextCreditToFlow = 0;
@@ -623,6 +623,11 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                         this.getClientId(), this.receivePath, this.receiveLink.getName(), this.receiveLink.getCredit(), tempFlow, Thread.currentThread().getId()));
             }
         }
+    }
+
+    private boolean shouldSendFlow() {
+        return (this.nextCreditToFlow > 0 && this.nextCreditToFlow >= (this.prefetchCount / 2)) ||
+                (this.nextCreditToFlow >= 100);
     }
 
     private void scheduleLinkOpenTimeout(final TimeoutTracker timeout) {

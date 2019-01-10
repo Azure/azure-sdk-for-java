@@ -36,7 +36,7 @@ public class BaseLinkHandler extends BaseHandler {
     @Override
     public void onLinkRemoteClose(Event event) {
         final Link link = event.getLink();
-        final ErrorCondition condition = link.getCondition();
+        final ErrorCondition condition = link.getRemoteCondition();
 
         if (TRACE_LOGGER.isInfoEnabled()) {
             TRACE_LOGGER.info(String.format("onLinkRemoteClose linkName[%s], errorCondition[%s], errorDescription[%s]",
