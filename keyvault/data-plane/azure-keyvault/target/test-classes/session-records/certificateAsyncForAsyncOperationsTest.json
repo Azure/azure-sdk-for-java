@@ -1,13 +1,13 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/create?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/create?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:52 GMT",
+      "date" : "Thu, 10 Jan 2019 20:41:48 GMT",
       "content-length" : "0",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -23,19 +23,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "dc36914b-5da8-42a8-9e9b-ca82b8434098",
+      "x-ms-request-id" : "045db300-70b7-40d3-ad3c-108e877ed162",
       "Body" : ""
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/create?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/create?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:53 GMT",
-      "content-length" : "1308",
+      "date" : "Thu, 10 Jan 2019 20:41:50 GMT",
+      "content-length" : "1310",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -46,24 +46,24 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending?api-version=7.0&request_id=e913876bde614dc1aaf8af865ee02a36",
+      "location" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending?api-version=7.0&request_id=de936211ac5a47e79041c30baed87c55",
       "x-ms-keyvault-network-info" : "addr=167.220.24.139;act_addr_fam=InterNetwork;",
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "fe10fe93-80e6-479e-9d91-2d3b8c83f218",
-      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUU2VsZlNpZ25lZEphdmFQa2NzMTIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCfSTNvUGZJSuGRc2QGG3ScYjj2jCd4yvGmHTPwcnVBftgIhLmww2Vw+yCfiOZelH5/8XNfE1wRNRbwf1PnMUP2ZVBb/h8S2TGZ3bZZ0shOfmtM6CC/n2LYfq2Nsxzyuur1KvO84zH6GL9vHWNFtlatck+ZJ234h7iQQVVZFNAvVG0K2mVasogwaSpgNivwHRCI1T4wLLXg8wNcVs1HtnlHye0x0WjgUBsME910uxtXj5jAI0ZfuB1jJnvz4YjpMa8WRSW3IDcZY7YL9/kXPZWHvGo5sSarzjQ3aL382Ebruk9JAEs25gC6O2QFzGB8gZBoVtDLr7LtJVSJZw3e/apnAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEANxzqXHa3WXQwNRtFG7VJvfA/Kd5FvpGmhf6ll7OgcMA4MTJbUSXD5ld2mqHz4nN34hu6CyoeRKNIL4eHhlrGR+3iCKbX6ICvO3fLjyyzBl0nwLyB69WW05PAbcaUe6meWIVjKRqBuYYhQRn3eSDovllGhIlsf70gRs+PM5urC6qUc+/BxkFCP//Dmslo5FpBlrVtaMJlDLsaoKtpS0EjD4Whe3rcjqfGMSHWVCPyfBHRN44BfTxE3lJvvZxRfI3S1TXFuvXbi810fly4wxl39Dhnq1/EjPDX7MQnvHOb9tSavLuYJdtqA+SX3/0378OYmQkwDdTHzBXZ0LxII1eyiQ==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"e913876bde614dc1aaf8af865ee02a36\"}"
+      "x-ms-request-id" : "b58124e1-0fd5-4a07-9ba0-4f5416b0466b",
+      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUU2VsZlNpZ25lZEphdmFQa2NzMTIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCdT5vQNXrvOZf8IEpBuzGJWZRJ7PqqN2XuLBJ6+ncFM/34X3CVEPDbIFXi/HAhaOig1HjOZOqGgZS0mTaXx9hPtmDrKVtqLf3ideYwN/mdYoP7GVEN2zBrhzliTamwLIDOSoqjkCcVTwBRy8G/RUQ1vy6/UKaf56hRhttgBIofNOFX9kjm2z7TyYmcxJEyr9KzxlS+4wmlzeC35XrAJPZ94RSYynBnCZKZi8Ss8/XtjRbuEB1UB1azFPsRFEbX6mybkhePLjJvNZB0Bm8OJiNZFy6vaNaMvuRh4f7yWrHM90IyztW7eOEwVEgFRQoEiLLspQtjSwaAVDsVQVa+ZALvAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAmx58c2ymBuu7mLwCpNc29jLLgwIDG7ifGR7t6anlLB/zx0yT1noiAFUh2U5pfp0/P94dhovhAmnNAyh7yiV6eoSLuz2lh6p9ObuDvuOCEPzQ6AAjOtoHAPLvV0llW2CmBIZKqpmAKy/Z2WV3fsY5Htsl7VhcrGI3NxG6sNmGSW1tEnOvZezON82kmYIn0VSR0wOAwFeVrVUBq3IpjBNRgazKDUFRj8fLt5tQF2B2bVnyQmyqr1eP6z1+wXuAIyuBbKZSmdYFKiuLaEN/GtGEjRxXLG5KFcGdLraz4yHKoVhg4IxdTr80NOHwBe/fW74/NGH07sGC6GALtJP/RhlkfA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"de936211ac5a47e79041c30baed87c55\"}"
     }
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:53 GMT",
-      "content-length" : "1308",
+      "date" : "Thu, 10 Jan 2019 20:41:51 GMT",
+      "content-length" : "1310",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -78,19 +78,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "eb6d7618-622d-4292-8f81-f4b72725c04f",
-      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUU2VsZlNpZ25lZEphdmFQa2NzMTIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCfSTNvUGZJSuGRc2QGG3ScYjj2jCd4yvGmHTPwcnVBftgIhLmww2Vw+yCfiOZelH5/8XNfE1wRNRbwf1PnMUP2ZVBb/h8S2TGZ3bZZ0shOfmtM6CC/n2LYfq2Nsxzyuur1KvO84zH6GL9vHWNFtlatck+ZJ234h7iQQVVZFNAvVG0K2mVasogwaSpgNivwHRCI1T4wLLXg8wNcVs1HtnlHye0x0WjgUBsME910uxtXj5jAI0ZfuB1jJnvz4YjpMa8WRSW3IDcZY7YL9/kXPZWHvGo5sSarzjQ3aL382Ebruk9JAEs25gC6O2QFzGB8gZBoVtDLr7LtJVSJZw3e/apnAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEANxzqXHa3WXQwNRtFG7VJvfA/Kd5FvpGmhf6ll7OgcMA4MTJbUSXD5ld2mqHz4nN34hu6CyoeRKNIL4eHhlrGR+3iCKbX6ICvO3fLjyyzBl0nwLyB69WW05PAbcaUe6meWIVjKRqBuYYhQRn3eSDovllGhIlsf70gRs+PM5urC6qUc+/BxkFCP//Dmslo5FpBlrVtaMJlDLsaoKtpS0EjD4Whe3rcjqfGMSHWVCPyfBHRN44BfTxE3lJvvZxRfI3S1TXFuvXbi810fly4wxl39Dhnq1/EjPDX7MQnvHOb9tSavLuYJdtqA+SX3/0378OYmQkwDdTHzBXZ0LxII1eyiQ==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"e913876bde614dc1aaf8af865ee02a36\"}"
+      "x-ms-request-id" : "a29a81b2-e57e-4be4-91e3-ccb4ed6e1642",
+      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUU2VsZlNpZ25lZEphdmFQa2NzMTIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCdT5vQNXrvOZf8IEpBuzGJWZRJ7PqqN2XuLBJ6+ncFM/34X3CVEPDbIFXi/HAhaOig1HjOZOqGgZS0mTaXx9hPtmDrKVtqLf3ideYwN/mdYoP7GVEN2zBrhzliTamwLIDOSoqjkCcVTwBRy8G/RUQ1vy6/UKaf56hRhttgBIofNOFX9kjm2z7TyYmcxJEyr9KzxlS+4wmlzeC35XrAJPZ94RSYynBnCZKZi8Ss8/XtjRbuEB1UB1azFPsRFEbX6mybkhePLjJvNZB0Bm8OJiNZFy6vaNaMvuRh4f7yWrHM90IyztW7eOEwVEgFRQoEiLLspQtjSwaAVDsVQVa+ZALvAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAmx58c2ymBuu7mLwCpNc29jLLgwIDG7ifGR7t6anlLB/zx0yT1noiAFUh2U5pfp0/P94dhovhAmnNAyh7yiV6eoSLuz2lh6p9ObuDvuOCEPzQ6AAjOtoHAPLvV0llW2CmBIZKqpmAKy/Z2WV3fsY5Htsl7VhcrGI3NxG6sNmGSW1tEnOvZezON82kmYIn0VSR0wOAwFeVrVUBq3IpjBNRgazKDUFRj8fLt5tQF2B2bVnyQmyqr1eP6z1+wXuAIyuBbKZSmdYFKiuLaEN/GtGEjRxXLG5KFcGdLraz4yHKoVhg4IxdTr80NOHwBe/fW74/NGH07sGC6GALtJP/RhlkfA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"de936211ac5a47e79041c30baed87c55\"}"
     }
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:54 GMT",
-      "content-length" : "1000",
+      "date" : "Thu, 10 Jan 2019 20:41:51 GMT",
+      "content-length" : "1006",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -105,19 +105,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "b8e0841c-11b7-40c2-874b-b210210c7655",
-      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/e7691f8821a64df19390e6b7c7809639\",\"attributes\":{\"enabled\":false,\"nbf\":1545080333,\"exp\":1576616933,\"created\":1545080933,\"updated\":1545080935,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"tag1\":\"foo\"},\"policy\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1545080933,\"updated\":1545080935}},\"pending\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending\"}}"
+      "x-ms-request-id" : "90077488-fd3c-4060-8fab-d4c00951fa01",
+      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/f77969403fa944f5ac822676d88427e1\",\"attributes\":{\"enabled\":false,\"nbf\":1547152309,\"exp\":1578688909,\"created\":1547152909,\"updated\":1547152911,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"tag1\":\"foo\"},\"policy\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1547152909,\"updated\":1547152911}},\"pending\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending\"}}"
     }
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/policy?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/policy?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:55 GMT",
-      "content-length" : "615",
+      "date" : "Thu, 10 Jan 2019 20:41:52 GMT",
+      "content-length" : "617",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -132,19 +132,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "d2fd44aa-6459-493b-aa73-e8a2fe4d12f8",
-      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1545080933,\"updated\":1545080936}}"
+      "x-ms-request-id" : "2009b636-1a02-4907-8804-1c3b623738aa",
+      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1547152909,\"updated\":1547152912}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/policy?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/policy?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:55 GMT",
-      "content-length" : "615",
+      "date" : "Thu, 10 Jan 2019 20:41:52 GMT",
+      "content-length" : "617",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -159,19 +159,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "2cec2cd5-5c62-401f-bf88-3172df8e3361",
-      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1545080933,\"updated\":1545080936}}"
+      "x-ms-request-id" : "e877e42e-8356-40e2-a472-8a31ee195e61",
+      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1547152909,\"updated\":1547152912}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:55 GMT",
-      "content-length" : "1308",
+      "date" : "Thu, 10 Jan 2019 20:41:53 GMT",
+      "content-length" : "1310",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -186,19 +186,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "41fdaf51-b469-4e13-81a8-62c21c04f61a",
-      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUU2VsZlNpZ25lZEphdmFQa2NzMTIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCfSTNvUGZJSuGRc2QGG3ScYjj2jCd4yvGmHTPwcnVBftgIhLmww2Vw+yCfiOZelH5/8XNfE1wRNRbwf1PnMUP2ZVBb/h8S2TGZ3bZZ0shOfmtM6CC/n2LYfq2Nsxzyuur1KvO84zH6GL9vHWNFtlatck+ZJ234h7iQQVVZFNAvVG0K2mVasogwaSpgNivwHRCI1T4wLLXg8wNcVs1HtnlHye0x0WjgUBsME910uxtXj5jAI0ZfuB1jJnvz4YjpMa8WRSW3IDcZY7YL9/kXPZWHvGo5sSarzjQ3aL382Ebruk9JAEs25gC6O2QFzGB8gZBoVtDLr7LtJVSJZw3e/apnAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEANxzqXHa3WXQwNRtFG7VJvfA/Kd5FvpGmhf6ll7OgcMA4MTJbUSXD5ld2mqHz4nN34hu6CyoeRKNIL4eHhlrGR+3iCKbX6ICvO3fLjyyzBl0nwLyB69WW05PAbcaUe6meWIVjKRqBuYYhQRn3eSDovllGhIlsf70gRs+PM5urC6qUc+/BxkFCP//Dmslo5FpBlrVtaMJlDLsaoKtpS0EjD4Whe3rcjqfGMSHWVCPyfBHRN44BfTxE3lJvvZxRfI3S1TXFuvXbi810fly4wxl39Dhnq1/EjPDX7MQnvHOb9tSavLuYJdtqA+SX3/0378OYmQkwDdTHzBXZ0LxII1eyiQ==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"e913876bde614dc1aaf8af865ee02a36\"}"
+      "x-ms-request-id" : "0fdcb571-2798-4fa1-9fcf-4fa3f4b20692",
+      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUU2VsZlNpZ25lZEphdmFQa2NzMTIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCdT5vQNXrvOZf8IEpBuzGJWZRJ7PqqN2XuLBJ6+ncFM/34X3CVEPDbIFXi/HAhaOig1HjOZOqGgZS0mTaXx9hPtmDrKVtqLf3ideYwN/mdYoP7GVEN2zBrhzliTamwLIDOSoqjkCcVTwBRy8G/RUQ1vy6/UKaf56hRhttgBIofNOFX9kjm2z7TyYmcxJEyr9KzxlS+4wmlzeC35XrAJPZ94RSYynBnCZKZi8Ss8/XtjRbuEB1UB1azFPsRFEbX6mybkhePLjJvNZB0Bm8OJiNZFy6vaNaMvuRh4f7yWrHM90IyztW7eOEwVEgFRQoEiLLspQtjSwaAVDsVQVa+ZALvAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAmx58c2ymBuu7mLwCpNc29jLLgwIDG7ifGR7t6anlLB/zx0yT1noiAFUh2U5pfp0/P94dhovhAmnNAyh7yiV6eoSLuz2lh6p9ObuDvuOCEPzQ6AAjOtoHAPLvV0llW2CmBIZKqpmAKy/Z2WV3fsY5Htsl7VhcrGI3NxG6sNmGSW1tEnOvZezON82kmYIn0VSR0wOAwFeVrVUBq3IpjBNRgazKDUFRj8fLt5tQF2B2bVnyQmyqr1eP6z1+wXuAIyuBbKZSmdYFKiuLaEN/GtGEjRxXLG5KFcGdLraz4yHKoVhg4IxdTr80NOHwBe/fW74/NGH07sGC6GALtJP/RhlkfA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"de936211ac5a47e79041c30baed87c55\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:57 GMT",
-      "content-length" : "1000",
+      "date" : "Thu, 10 Jan 2019 20:41:53 GMT",
+      "content-length" : "1006",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -213,18 +213,18 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "4616b1f6-56df-4a3c-8d33-b162eef1ffc3",
-      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/e7691f8821a64df19390e6b7c7809639\",\"attributes\":{\"enabled\":false,\"nbf\":1545080333,\"exp\":1576616933,\"created\":1545080933,\"updated\":1545080935,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"tag1\":\"foo\"},\"policy\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1545080933,\"updated\":1545080936}},\"pending\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending\"}}"
+      "x-ms-request-id" : "ecf57a87-74f7-44a3-b833-5511fafdf621",
+      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/f77969403fa944f5ac822676d88427e1\",\"attributes\":{\"enabled\":false,\"nbf\":1547152309,\"exp\":1578688909,\"created\":1547152909,\"updated\":1547152911,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"tag1\":\"foo\"},\"policy\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1547152909,\"updated\":1547152912}},\"pending\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:57 GMT",
+      "date" : "Thu, 10 Jan 2019 20:41:53 GMT",
       "content-length" : "924",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -240,8 +240,8 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "99bb7d6f-7555-4c5c-8f2c-1c54890951ab",
-      "Body" : "MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUU2VsZlNpZ25lZEphdmFQa2NzMTIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCfSTNvUGZJSuGRc2QGG3ScYjj2jCd4yvGmHTPwcnVBftgIhLmww2Vw+yCfiOZelH5/8XNfE1wRNRbwf1PnMUP2ZVBb/h8S2TGZ3bZZ0shOfmtM6CC/n2LYfq2Nsxzyuur1KvO84zH6GL9vHWNFtlatck+ZJ234h7iQQVVZFNAvVG0K2mVasogwaSpgNivwHRCI1T4wLLXg8wNcVs1HtnlHye0x0WjgUBsME910uxtXj5jAI0ZfuB1jJnvz4YjpMa8WRSW3IDcZY7YL9/kXPZWHvGo5sSarzjQ3aL382Ebruk9JAEs25gC6O2QFzGB8gZBoVtDLr7LtJVSJZw3e/apnAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEANxzqXHa3WXQwNRtFG7VJvfA/Kd5FvpGmhf6ll7OgcMA4MTJbUSXD5ld2mqHz4nN34hu6CyoeRKNIL4eHhlrGR+3iCKbX6ICvO3fLjyyzBl0nwLyB69WW05PAbcaUe6meWIVjKRqBuYYhQRn3eSDovllGhIlsf70gRs+PM5urC6qUc+/BxkFCP//Dmslo5FpBlrVtaMJlDLsaoKtpS0EjD4Whe3rcjqfGMSHWVCPyfBHRN44BfTxE3lJvvZxRfI3S1TXFuvXbi810fly4wxl39Dhnq1/EjPDX7MQnvHOb9tSavLuYJdtqA+SX3/0378OYmQkwDdTHzBXZ0LxII1eyiQ=="
+      "x-ms-request-id" : "f8151b68-ce25-4d9f-9689-d5f754ae6b15",
+      "Body" : "MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUU2VsZlNpZ25lZEphdmFQa2NzMTIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCdT5vQNXrvOZf8IEpBuzGJWZRJ7PqqN2XuLBJ6+ncFM/34X3CVEPDbIFXi/HAhaOig1HjOZOqGgZS0mTaXx9hPtmDrKVtqLf3ideYwN/mdYoP7GVEN2zBrhzliTamwLIDOSoqjkCcVTwBRy8G/RUQ1vy6/UKaf56hRhttgBIofNOFX9kjm2z7TyYmcxJEyr9KzxlS+4wmlzeC35XrAJPZ94RSYynBnCZKZi8Ss8/XtjRbuEB1UB1azFPsRFEbX6mybkhePLjJvNZB0Bm8OJiNZFy6vaNaMvuRh4f7yWrHM90IyztW7eOEwVEgFRQoEiLLspQtjSwaAVDsVQVa+ZALvAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAmx58c2ymBuu7mLwCpNc29jLLgwIDG7ifGR7t6anlLB/zx0yT1noiAFUh2U5pfp0/P94dhovhAmnNAyh7yiV6eoSLuz2lh6p9ObuDvuOCEPzQ6AAjOtoHAPLvV0llW2CmBIZKqpmAKy/Z2WV3fsY5Htsl7VhcrGI3NxG6sNmGSW1tEnOvZezON82kmYIn0VSR0wOAwFeVrVUBq3IpjBNRgazKDUFRj8fLt5tQF2B2bVnyQmyqr1eP6z1+wXuAIyuBbKZSmdYFKiuLaEN/GtGEjRxXLG5KFcGdLraz4yHKoVhg4IxdTr80NOHwBe/fW74/NGH07sGC6GALtJP/RhlkfA=="
     }
   }, {
     "Method" : "GET",
@@ -251,7 +251,7 @@
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:58 GMT",
+      "date" : "Thu, 10 Jan 2019 20:41:53 GMT",
       "content-length" : "28",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -267,18 +267,18 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "d015a8a6-7f8c-4c07-860d-f3fcbb358625",
+      "x-ms-request-id" : "3c92f1c0-4f48-4d55-ac41-f9f9e58fe0ff",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/versions?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/versions?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:58 GMT",
+      "date" : "Thu, 10 Jan 2019 20:41:54 GMT",
       "content-length" : "28",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
@@ -294,19 +294,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "f9fedc4a-83f2-4173-9a86-faec7f4cd1bc",
+      "x-ms-request-id" : "45d582d3-d9b6-4359-89b7-d7cc3938974c",
       "Body" : "{\"value\":[],\"nextLink\":null}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:59 GMT",
-      "content-length" : "1308",
+      "date" : "Thu, 10 Jan 2019 20:41:54 GMT",
+      "content-length" : "1310",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -321,19 +321,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "f236362d-f976-4573-9fe8-fadc65bb4dd1",
-      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUU2VsZlNpZ25lZEphdmFQa2NzMTIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCfSTNvUGZJSuGRc2QGG3ScYjj2jCd4yvGmHTPwcnVBftgIhLmww2Vw+yCfiOZelH5/8XNfE1wRNRbwf1PnMUP2ZVBb/h8S2TGZ3bZZ0shOfmtM6CC/n2LYfq2Nsxzyuur1KvO84zH6GL9vHWNFtlatck+ZJ234h7iQQVVZFNAvVG0K2mVasogwaSpgNivwHRCI1T4wLLXg8wNcVs1HtnlHye0x0WjgUBsME910uxtXj5jAI0ZfuB1jJnvz4YjpMa8WRSW3IDcZY7YL9/kXPZWHvGo5sSarzjQ3aL382Ebruk9JAEs25gC6O2QFzGB8gZBoVtDLr7LtJVSJZw3e/apnAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEANxzqXHa3WXQwNRtFG7VJvfA/Kd5FvpGmhf6ll7OgcMA4MTJbUSXD5ld2mqHz4nN34hu6CyoeRKNIL4eHhlrGR+3iCKbX6ICvO3fLjyyzBl0nwLyB69WW05PAbcaUe6meWIVjKRqBuYYhQRn3eSDovllGhIlsf70gRs+PM5urC6qUc+/BxkFCP//Dmslo5FpBlrVtaMJlDLsaoKtpS0EjD4Whe3rcjqfGMSHWVCPyfBHRN44BfTxE3lJvvZxRfI3S1TXFuvXbi810fly4wxl39Dhnq1/EjPDX7MQnvHOb9tSavLuYJdtqA+SX3/0378OYmQkwDdTHzBXZ0LxII1eyiQ==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"e913876bde614dc1aaf8af865ee02a36\"}"
+      "x-ms-request-id" : "b49dd9cc-d1d9-4479-aa10-3ec75126c511",
+      "Body" : "{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/pending\",\"issuer\":{\"name\":\"Self\"},\"csr\":\"MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUU2VsZlNpZ25lZEphdmFQa2NzMTIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCdT5vQNXrvOZf8IEpBuzGJWZRJ7PqqN2XuLBJ6+ncFM/34X3CVEPDbIFXi/HAhaOig1HjOZOqGgZS0mTaXx9hPtmDrKVtqLf3ideYwN/mdYoP7GVEN2zBrhzliTamwLIDOSoqjkCcVTwBRy8G/RUQ1vy6/UKaf56hRhttgBIofNOFX9kjm2z7TyYmcxJEyr9KzxlS+4wmlzeC35XrAJPZ94RSYynBnCZKZi8Ss8/XtjRbuEB1UB1azFPsRFEbX6mybkhePLjJvNZB0Bm8OJiNZFy6vaNaMvuRh4f7yWrHM90IyztW7eOEwVEgFRQoEiLLspQtjSwaAVDsVQVa+ZALvAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAmx58c2ymBuu7mLwCpNc29jLLgwIDG7ifGR7t6anlLB/zx0yT1noiAFUh2U5pfp0/P94dhovhAmnNAyh7yiV6eoSLuz2lh6p9ObuDvuOCEPzQ6AAjOtoHAPLvV0llW2CmBIZKqpmAKy/Z2WV3fsY5Htsl7VhcrGI3NxG6sNmGSW1tEnOvZezON82kmYIn0VSR0wOAwFeVrVUBq3IpjBNRgazKDUFRj8fLt5tQF2B2bVnyQmyqr1eP6z1+wXuAIyuBbKZSmdYFKiuLaEN/GtGEjRxXLG5KFcGdLraz4yHKoVhg4IxdTr80NOHwBe/fW74/NGH07sGC6GALtJP/RhlkfA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"de936211ac5a47e79041c30baed87c55\"}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:59 GMT",
-      "content-length" : "1052",
+      "date" : "Thu, 10 Jan 2019 20:41:54 GMT",
+      "content-length" : "1058",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -348,19 +348,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "44e1f635-f6da-4081-8127-8eaab610ce61",
-      "Body" : "{\"recoveryId\":\"https://azure-keyvault-3.vault.azure.net/deletedcertificates/myCertificate2\",\"deletedDate\":1545080939,\"scheduledPurgeDate\":1552856939,\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/e7691f8821a64df19390e6b7c7809639\",\"attributes\":{\"enabled\":false,\"nbf\":1545080333,\"exp\":1576616933,\"created\":1545080933,\"updated\":1545080935,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"tag1\":\"foo\"},\"policy\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1545080933,\"updated\":1545080936}}}"
+      "x-ms-request-id" : "00c41466-586d-4872-a98f-a42019446f31",
+      "Body" : "{\"recoveryId\":\"https://azure-keyvault-3.vault.azure.net/deletedcertificates/tempCertificate2\",\"deletedDate\":1547152914,\"scheduledPurgeDate\":1554928914,\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/f77969403fa944f5ac822676d88427e1\",\"attributes\":{\"enabled\":false,\"nbf\":1547152309,\"exp\":1578688909,\"created\":1547152909,\"updated\":1547152911,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"tag1\":\"foo\"},\"policy\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1547152909,\"updated\":1547152912}}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/deletedcertificates/myCertificate2?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/deletedcertificates/tempCertificate2?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:08:59 GMT",
-      "content-length" : "98",
+      "date" : "Thu, 10 Jan 2019 20:41:54 GMT",
+      "content-length" : "100",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -375,19 +375,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "d47565ce-17ff-411b-932d-780b23da00c2",
-      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: myCertificate2\"}}"
+      "x-ms-request-id" : "945e007f-e6eb-49b3-9e7c-663fe8ff4a53",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: tempCertificate2\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/deletedcertificates/myCertificate2?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/deletedcertificates/tempCertificate2?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:09:10 GMT",
-      "content-length" : "98",
+      "date" : "Thu, 10 Jan 2019 20:42:05 GMT",
+      "content-length" : "100",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -402,19 +402,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "a6fe9e10-87ef-4ff9-a8b2-9c4805b999c4",
-      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: myCertificate2\"}}"
+      "x-ms-request-id" : "f4354378-b03c-4e87-99a1-4507b6c26e77",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: tempCertificate2\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/deletedcertificates/myCertificate2?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/deletedcertificates/tempCertificate2?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:09:20 GMT",
-      "content-length" : "1052",
+      "date" : "Thu, 10 Jan 2019 20:42:15 GMT",
+      "content-length" : "1058",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -429,19 +429,19 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "49c1e989-9cfd-47df-a067-7c3c8cad1959",
-      "Body" : "{\"recoveryId\":\"https://azure-keyvault-3.vault.azure.net/deletedcertificates/myCertificate2\",\"deletedDate\":1545080939,\"scheduledPurgeDate\":1552856939,\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/e7691f8821a64df19390e6b7c7809639\",\"attributes\":{\"enabled\":false,\"nbf\":1545080333,\"exp\":1576616933,\"created\":1545080933,\"updated\":1545080935,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"tag1\":\"foo\"},\"policy\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1545080933,\"updated\":1545080936}}}"
+      "x-ms-request-id" : "58c5c0f3-edd3-411a-849a-d9b0cdb05edb",
+      "Body" : "{\"recoveryId\":\"https://azure-keyvault-3.vault.azure.net/deletedcertificates/tempCertificate2\",\"deletedDate\":1547152914,\"scheduledPurgeDate\":1554928914,\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/f77969403fa944f5ac822676d88427e1\",\"attributes\":{\"enabled\":false,\"nbf\":1547152309,\"exp\":1578688909,\"created\":1547152909,\"updated\":1547152911,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"tags\":{\"tag1\":\"foo\"},\"policy\":{\"id\":\"https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=SelfSignedJavaPkcs12\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"Self\"},\"attributes\":{\"enabled\":true,\"created\":1547152909,\"updated\":1547152912}}}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/myCertificate2?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/certificates/tempCertificate2?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:09:20 GMT",
-      "content-length" : "90",
+      "date" : "Thu, 10 Jan 2019 20:42:15 GMT",
+      "content-length" : "92",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -456,18 +456,18 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "9a1d2b9c-95b2-4360-b4fa-6bca6d84bc33",
-      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Certificate not found: myCertificate2\"}}"
+      "x-ms-request-id" : "6b8cec1b-dde8-4713-8157-59d54af546eb",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Certificate not found: tempCertificate2\"}}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://azure-keyvault-3.vault.azure.net/deletedcertificates/myCertificate2?api-version=7.0",
+    "Uri" : "https://azure-keyvault-3.vault.azure.net/deletedcertificates/tempCertificate2?api-version=7.0",
     "Headers" : {
       "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:9e17e79495730aacb146cd2196f12d68b3ba7dc2cad3e3f710ef4ea0fdba6280 Java:11.0.1 (KeyVaultClientBase, 7.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Mon, 17 Dec 2018 21:09:21 GMT",
+      "date" : "Thu, 10 Jan 2019 20:42:16 GMT",
       "server" : "Microsoft-IIS/10.0",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -481,7 +481,7 @@
       "x-ms-keyvault-region" : "westus2",
       "cache-control" : "no-cache",
       "x-ms-keyvault-service-version" : "1.1.0.859",
-      "x-ms-request-id" : "87eccb61-c7e8-441a-82e9-993919ea9638",
+      "x-ms-request-id" : "ea83ca6c-75b9-4653-a3fb-e834d9582e83",
       "Body" : ""
     }
   } ],
