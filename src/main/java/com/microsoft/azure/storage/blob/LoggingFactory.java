@@ -54,7 +54,7 @@ public final class LoggingFactory implements RequestPolicyFactory {
             forceLogger.setLevel(Level.WARNING);
 
             // Create the logs directory if it doesn't exist.
-            File logDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs");
+            File logDir = new File(System.getProperty("java.io.tmpdir"), "AzureStorageJavaSDKLogs");
             if (!logDir.exists()) {
                 if (!logDir.mkdir()) {
                     throw new Exception("Could not create logs directory");
