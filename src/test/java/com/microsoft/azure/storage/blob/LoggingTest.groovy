@@ -446,12 +446,4 @@ class LoggingTest extends APISpec {
                     }
                 }
     }
-
-    // Test creating directory and when directory exists
-    // Test slf4j logging and default logging and HttpPipeline logging
-    // Test that event logging only logs warnings and errors
-    // Check that string is not formatted if we don't need to log?
-    // Can attach a spy to the LoggerFactory.getLogger and make sure things are called the right number of times.
-    // Test when the forceLogger fails to load
-    // Test why the force logger seems to be printing some things to stdout? (Repro by setting the log level to warning)
 }

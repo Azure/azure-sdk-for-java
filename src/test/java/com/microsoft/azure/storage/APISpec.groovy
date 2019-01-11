@@ -176,7 +176,7 @@ class APISpec extends Specification {
         if (accountName == null || accountKey == null) {
             System.out.println("Account name or key for the " + accountType + " account was null. Test's requiring " +
                     "these credentials will fail.")
-            throw new Exception()
+            return null
         }
         return new SharedKeyCredentials(accountName, accountKey)
     }
