@@ -101,8 +101,8 @@ public class LongTermRetentionBackupsInner {
      * Gets a long term retention backup.
      *
      * @param locationName The location of the database.
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -117,8 +117,8 @@ public class LongTermRetentionBackupsInner {
      * Gets a long term retention backup.
      *
      * @param locationName The location of the database.
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -132,8 +132,8 @@ public class LongTermRetentionBackupsInner {
      * Gets a long term retention backup.
      *
      * @param locationName The location of the database.
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LongTermRetentionBackupInner object
@@ -151,8 +151,8 @@ public class LongTermRetentionBackupsInner {
      * Gets a long term retention backup.
      *
      * @param locationName The location of the database.
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LongTermRetentionBackupInner object
@@ -201,8 +201,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -216,8 +216,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -231,8 +231,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -250,8 +250,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -283,8 +283,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -298,8 +298,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -313,8 +313,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -332,8 +332,8 @@ public class LongTermRetentionBackupsInner {
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -383,8 +383,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -404,8 +404,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -426,8 +426,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
      */
@@ -445,8 +445,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
      */
@@ -468,8 +468,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -509,8 +509,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -532,8 +532,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -556,8 +556,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -577,8 +577,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -602,8 +602,8 @@ public class LongTermRetentionBackupsInner {
      * Lists all long term retention backups for a database.
      *
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param locationName The location of the database
-    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionServerName the String value
-    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionDatabaseName the String value
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionServerName The name of the server
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionDatabaseName The name of the database
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -885,7 +885,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -905,7 +905,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -926,7 +926,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
      */
@@ -944,7 +944,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;LongTermRetentionBackupInner&gt; object
      */
@@ -966,7 +966,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;LongTermRetentionBackupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1003,7 +1003,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1025,7 +1025,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1048,7 +1048,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1068,7 +1068,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
      * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1092,7 +1092,7 @@ public class LongTermRetentionBackupsInner {
      * Lists the long term retention backups for a given server.
      *
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param locationName The location of the database
-    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionServerName the String value
+    ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param longTermRetentionServerName The name of the server
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param onlyLatestPerDatabase Whether or not to only get the latest backup for each database.
     ServiceResponse<PageImpl<LongTermRetentionBackupInner>> * @param databaseState Whether to query against just live databases, just deleted databases, or all databases. Possible values include: 'All', 'Live', 'Deleted'
      * @throws IllegalArgumentException thrown if parameters fail the validation
