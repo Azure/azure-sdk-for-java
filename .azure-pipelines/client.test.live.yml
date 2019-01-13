@@ -4,22 +4,49 @@ variables:
     value: $(java-keyvault-test-arm-client-id)
   - name: ARM_CLIENTKEY
     value: $(java-keyvault-test-arm-client-key)
+  - name: AZURE_BATCH_ACCOUNT
+    value: $(java-batch-test-account-name)
+  - name: AZURE_BATCH_ACCESS_KEY
+    value: $(java-batch-test-account-access-key)
+  - name: STORAGE_ACCOUNT_NAME
+    value: $(java-batch-test-storage-account-name)
+  - name: STORAGE_ACCOUNT_KEY
+    value: $(java-batch-test-storage-account-key)
 
-queue:
-  name: Hosted VS2017
-steps:
+
+jobs:
+
+- job: 'LiveTest'
+
+  strategy:
+    matrix:
+      AzureBatch:
+        pomFilePath: './batch/data-plane/pom.xml'
+      AzureKeyVault:
+        pomFilePath: './keyvault/data-plane/pom.xml'
+      
+  pool:
+    vmImage: 'vs2017-win2016'
+
   # Adding -Dmaven.wagon.http.pool=false to the mvn command as a workaround to prevent build failures at maven artifacts downloading stage.
-- bash: |
-   LOG_PARAMS='-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-   mvn test -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -f $(pomFile)
-  displayName: 'Run Live Tests'
-  env:
-    ARM_CLIENTID: $(ARM_CLIENTID)
-    ARM_CLIENTKEY: $(ARM_CLIENTKEY)
-    AZURE_TEST_MODE: RECORD
-    
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '**/TEST-*.xml'
+  steps:
+    - bash: |
+       LOG_PARAMS='-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+       mvn test -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -f $(pomFilePath)
+      displayName: 'Run Live Tests'
+      env:
+        ARM_CLIENTID: $(ARM_CLIENTID)
+        ARM_CLIENTKEY: $(ARM_CLIENTKEY)
+        AZURE_TEST_MODE: RECORD
+        AZURE_BATCH_ACCOUNT: $(AZURE_BATCH_ACCOUNT)
+        AZURE_BATCH_ACCESS_KEY: $(AZURE_BATCH_ACCESS_KEY)
+        STORAGE_ACCOUNT_KEY: $(STORAGE_ACCOUNT_KEY)
+        STORAGE_ACCOUNT_NAME: $(STORAGE_ACCOUNT_NAME)
+        AZURE_BATCH_ENDPOINT: https://servbatch.centralus.batch.azure.com
+        
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/TEST-*.xml' 
+
 

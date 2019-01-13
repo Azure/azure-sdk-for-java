@@ -1,18 +1,12 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.protocol.models.*;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -23,8 +17,10 @@ public class JobScheduleTests extends BatchTestBase {
 
     @BeforeClass
     public static void setup() throws Exception {
+        String testMode = getTestMode();
+        Assume.assumeTrue("Tests only run in Record/Live mode", testMode.equals("RECORD"));
         createClient(AuthMode.SharedKey);
-        String poolId = getStringWithUserNamePrefix("-testpool");
+        String poolId = getStringIdWithUserNamePrefix("-testpool");
         livePool = createIfNotExistPaaSPool(poolId);
         Assert.assertNotNull(livePool);
     }
@@ -42,7 +38,7 @@ public class JobScheduleTests extends BatchTestBase {
     @Test
     public void canCRUDJobSchedule() throws Exception {
         // CREATE
-        String jobScheduleId = getStringWithUserNamePrefix("-JobSchedule-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.withPoolId(livePool.id());
@@ -100,7 +96,7 @@ public class JobScheduleTests extends BatchTestBase {
     @Test
     public void canUpdateJobScheduleState() throws Exception {
         // CREATE
-        String jobScheduleId = getStringWithUserNamePrefix("-JobSchedule-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.withPoolId(livePool.id());

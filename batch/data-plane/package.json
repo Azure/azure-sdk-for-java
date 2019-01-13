@@ -1,10 +1,10 @@
 {
-  "name": "azure-batch-sdk-for-java-codegen",
+  "name": "azure-sdk-for-java-codegen",
   "version": "0.0.1",
-  "description": "Tools for Azure Batch SDK for Java build processes",
+  "description": "Tools for Azure SDK for Java build processes",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Azure/azure-batch-sdk-for-java.git"
+    "url": "git+https://github.com/Azure/azure-sdk-for-java.git"
   },
   "keywords": [
     "azure"
@@ -12,9 +12,9 @@
   "author": "Microsoft Corporation",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Azure/azure-batch-sdk-for-java/issues"
+    "url": "https://github.com/Azure/azure-sdk-for-java/issues"
   },
-  "homepage": "https://github.com/Azure/azure-batch-sdk-for-java#readme",
+  "homepage": "https://github.com/Azure/azure-sdk-for-java#readme",
   "devDependencies": {
     "colors": "1.1.2",
     "gulp": "^3.9.0",

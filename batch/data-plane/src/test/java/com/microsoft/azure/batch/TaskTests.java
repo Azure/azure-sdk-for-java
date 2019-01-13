@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.batch;
 
@@ -12,10 +9,7 @@ import com.microsoft.azure.batch.protocol.models.*;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.*;
 import java.util.*;
@@ -27,11 +21,13 @@ public class TaskTests  extends BatchTestBase {
 
     @BeforeClass
     public static void setup() throws Exception {
+        String testMode = getTestMode();
+        Assume.assumeTrue("Tests only run in Record/Live mode", testMode.equals("RECORD"));
         try {
         createClient(AuthMode.SharedKey);
-        String poolId = getStringWithUserNamePrefix("-testpool");
+        String poolId = getStringIdWithUserNamePrefix("-testpool");
         livePool = createIfNotExistPaaSPool(poolId);
-        poolId = getStringWithUserNamePrefix("-testIaaSpool");
+        poolId = getStringIdWithUserNamePrefix("-testIaaSpool");
         liveIaaSPool = createIfNotExistIaaSPool(poolId);
         Assert.assertNotNull(livePool);
         } catch (BatchErrorException e) {
@@ -65,7 +61,7 @@ public class TaskTests  extends BatchTestBase {
         bw.write("This is an example");
         bw.close();
         temp.deleteOnExit();
-        String jobId = getStringWithUserNamePrefix("-canCRUDTest-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-canCRUDTest-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.withPoolId(liveIaaSPool.id());
@@ -160,7 +156,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void testJobUser() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-testJobUser-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-testJobUser-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
@@ -199,7 +195,7 @@ public class TaskTests  extends BatchTestBase {
     @Test
     public void testOutputFiles() throws Exception {
         int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
-        String jobId = getStringWithUserNamePrefix("-testOutputFiles-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-testOutputFiles-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
         String badTaskId = "mytask1";
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
@@ -280,7 +276,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void testAddMultiTasks() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-testAddMultiTasks-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.withPoolId(livePool.id());
@@ -326,7 +322,7 @@ public class TaskTests  extends BatchTestBase {
                 System.getenv("AZURE_BATCH_ACCESS_KEY"));
         BatchClient testBatchClient = BatchClient.open(noExistCredentials1);
 
-        String jobId = getStringWithUserNamePrefix("-testAddMultiTasksWithError-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasksWithError-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         int TASK_COUNT=1000;
 
@@ -351,7 +347,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void testGetTaskCounts() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-testGetTaskCounts-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-testGetTaskCounts-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
 
         PoolInformation poolInfo = new PoolInformation();
         poolInfo.withPoolId(livePool.id());
@@ -396,7 +392,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void failCreateContainerTaskWithRegularPool() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-failCreateContainerRegPool-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-failCreateContainerRegPool-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
@@ -439,7 +435,7 @@ public class TaskTests  extends BatchTestBase {
     
     @Test
     public void failIfPoisonTaskTooLarge() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-failIfPoisonTaskTooLarge-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
@@ -488,7 +484,7 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void succeedWithRetry() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-succeedWithRetry-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();

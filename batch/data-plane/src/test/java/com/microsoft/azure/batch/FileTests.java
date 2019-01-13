@@ -1,16 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.protocol.models.*;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.apache.commons.io.IOUtils;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
@@ -27,8 +21,10 @@ public class FileTests extends BatchTestBase {
 
     @BeforeClass
     public static void setup() throws Exception {
+        String testMode = getTestMode();
+        Assume.assumeTrue("Tests only run in Record/Live mode", testMode.equals("RECORD"));
         createClient(AuthMode.SharedKey);
-        String poolId = getStringWithUserNamePrefix("-testpool");
+        String poolId = getStringIdWithUserNamePrefix("-testpool");
         livePool = createIfNotExistPaaSPool(poolId);
         Assert.assertNotNull(livePool);
     }
@@ -46,7 +42,7 @@ public class FileTests extends BatchTestBase {
     @Test
     public void canReadFromTaskFile() throws Exception {
         // CREATE
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
         int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
 
@@ -108,7 +104,7 @@ public class FileTests extends BatchTestBase {
     @Test
     public void canReadFromNode() throws Exception {
         // CREATE
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
         String taskId = "mytask";
         int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
 

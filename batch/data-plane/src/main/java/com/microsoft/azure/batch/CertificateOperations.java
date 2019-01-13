@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.batch;
 
@@ -27,16 +24,15 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Performs certificate-related operations on an Azure Batch account.
  */
 public class CertificateOperations implements IInheritedBehaviors {
 
-    private Collection<BatchClientBehavior> _customBehaviors;
+    private Collection<BatchClientBehavior> customBehaviors;
 
-    private final BatchClient _parentBatchClient;
+    private final BatchClient parentBatchClient;
 
     /**
      * The SHA certificate algorithm.
@@ -44,7 +40,7 @@ public class CertificateOperations implements IInheritedBehaviors {
     public static final String SHA1_CERTIFICATE_ALGORITHM = "sha1";
 
     CertificateOperations(BatchClient batchClient, Iterable<BatchClientBehavior> inheritedBehaviors) {
-        _parentBatchClient = batchClient;
+        parentBatchClient = batchClient;
 
         // inherit from instantiating parent
         InternalHelper.InheritClientBehaviorsAndSetPublicProperty(this, inheritedBehaviors);
@@ -57,7 +53,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
-        return _customBehaviors;
+        return customBehaviors;
     }
 
     /**
@@ -68,7 +64,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      */
     @Override
     public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
-        _customBehaviors = behaviors;
+        customBehaviors = behaviors;
         return this;
     }
 
@@ -118,7 +114,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      */
     public void createCertificate(InputStream certStream, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException, CertificateException, NoSuchAlgorithmException {
         CertificateFactory x509CertFact = CertificateFactory.getInstance("X.509");
-        X509Certificate cert = (X509Certificate)x509CertFact.generateCertificate(certStream);
+        X509Certificate cert = (X509Certificate) x509CertFact.generateCertificate(certStream);
 
         CertificateAddParameter addParam = new CertificateAddParameter()
             .withCertificateFormat(CertificateFormat.CER)
@@ -153,7 +149,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().certificates().add(certificate, options);
+        this.parentBatchClient.protocolLayer().certificates().add(certificate, options);
     }
 
     /**
@@ -186,7 +182,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().certificates().cancelDeletion(thumbprintAlgorithm, thumbprint, options);
+        this.parentBatchClient.protocolLayer().certificates().cancelDeletion(thumbprintAlgorithm, thumbprint, options);
     }
 
     /**
@@ -233,7 +229,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.protocolLayer().certificates().delete(thumbprintAlgorithm, thumbprint, options);
+        this.parentBatchClient.protocolLayer().certificates().delete(thumbprintAlgorithm, thumbprint, options);
     }
 
     /**
@@ -280,7 +276,7 @@ public class CertificateOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(getCertificateOptions);
 
-        return this._parentBatchClient.protocolLayer().certificates().get(thumbprintAlgorithm, thumbprint, getCertificateOptions);
+        return this.parentBatchClient.protocolLayer().certificates().get(thumbprintAlgorithm, thumbprint, getCertificateOptions);
     }
 
     /**
@@ -322,6 +318,6 @@ public class CertificateOperations implements IInheritedBehaviors {
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(certificateListOptions);
 
-        return this._parentBatchClient.protocolLayer().certificates().list(certificateListOptions);
+        return this.parentBatchClient.protocolLayer().certificates().list(certificateListOptions);
     }
 }
