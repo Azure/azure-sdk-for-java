@@ -7,40 +7,22 @@
 package com.microsoft.azure.v2.credentials;
 
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
-import com.microsoft.aad.adal4j.AuthenticationCallback;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationException;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.v2.AzureEnvironment;
-import com.microsoft.rest.v2.util.Base64Util;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Token based credentials for use with a REST Service Client.
@@ -173,104 +155,27 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
                 context.acquireToken(
                         resource,
                         new ClientCredential(this.clientId(), clientSecret),
-                        new AuthenticationCallback() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                callback.success((AuthenticationResult) o);
-                            }
-
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                callback.error(throwable);
-                            }
-                        });
+                        Util.authenticationDelegate(callback));
             });
         } else if (clientCertificate != null && clientCertificatePassword != null) {
             authMono = Mono.create(callback -> {
-                AsymmetricKeyCredential keyCredential;
-                try {
-                    keyCredential = AsymmetricKeyCredential.create(clientId, new ByteArrayInputStream(clientCertificate), clientCertificatePassword);
-                } catch (KeyStoreException kse) {
-                    throw  Exceptions.propagate(kse);
-                } catch (NoSuchProviderException nspe) {
-                    throw  Exceptions.propagate(nspe);
-                } catch (NoSuchAlgorithmException nsae) {
-                    throw  Exceptions.propagate(nsae);
-                } catch (CertificateException ce) {
-                    throw  Exceptions.propagate(ce);
-                } catch (IOException ioe) {
-                    throw  Exceptions.propagate(ioe);
-                } catch (UnrecoverableKeyException uke) {
-                    throw  Exceptions.propagate(uke);
-                }
+                AsymmetricKeyCredential keyCredential = Util.createAsymmetricKeyCredential(clientId, clientCertificate, clientCertificatePassword);
                 context.acquireToken(
                         resource,
                         keyCredential,
-                        new AuthenticationCallback() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                callback.success((AuthenticationResult) o);
-                            }
-
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                callback.error(throwable);
-                            }
-                        });
+                        Util.authenticationDelegate(callback));
             });
         } else if (clientCertificate != null) {
-            AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(), privateKeyFromPem(new String(clientCertificate)), publicKeyFromPem(new String(clientCertificate)));
+            AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(), Util.privateKeyFromPem(new String(clientCertificate)), Util.publicKeyFromPem(new String(clientCertificate)));
             authMono = Mono.create(callback -> {
                 context.acquireToken(
                         resource,
                         keyCredential,
-                        new AuthenticationCallback() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                callback.success((AuthenticationResult) o);
-                            }
-
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                callback.error(throwable);
-                            }
-                        });
+                        Util.authenticationDelegate(callback));
             });
         } else {
             authMono = Mono.error(new AuthenticationException("Please provide either a non-null secret or a non-null certificate."));
         }
         return authMono.doFinally(s -> executor.shutdown());
-    }
-
-    static PrivateKey privateKeyFromPem(String pem) {
-        Pattern pattern = Pattern.compile("(?s)-----BEGIN PRIVATE KEY-----.*-----END PRIVATE KEY-----");
-        Matcher matcher = pattern.matcher(pem);
-        matcher.find();
-        String base64 = matcher.group()
-                .replace("-----BEGIN PRIVATE KEY-----", "")
-                .replace("-----END PRIVATE KEY-----", "")
-                .replace("\n", "")
-                .replace("\r", "");
-        byte[] key = Base64Util.decode(base64.getBytes(StandardCharsets.UTF_8));
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(key);
-        try {
-            KeyFactory kf = KeyFactory.getInstance("RSA");
-            return kf.generatePrivate(spec);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    static X509Certificate publicKeyFromPem(String pem) {
-        Pattern pattern = Pattern.compile("(?s)-----BEGIN CERTIFICATE-----.*-----END CERTIFICATE-----");
-        Matcher matcher = pattern.matcher(pem);
-        matcher.find();
-        try {
-            CertificateFactory factory = CertificateFactory.getInstance("X.509");
-            InputStream stream = new ByteArrayInputStream(matcher.group().getBytes());
-            return (X509Certificate) factory.generateCertificate(stream);
-        } catch (CertificateException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

@@ -7,7 +7,6 @@
 package com.microsoft.azure.v2.credentials;
 
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
-import com.microsoft.aad.adal4j.AuthenticationCallback;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationException;
 import com.microsoft.aad.adal4j.AuthenticationResult;
@@ -16,17 +15,11 @@ import com.microsoft.rest.v2.annotations.Beta;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.UnrecoverableKeyException;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -189,17 +182,7 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
                         uri,
                         new ClientCredential(applicationCredentials.clientId(), applicationCredentials.clientSecret()),
                         resource,
-                        new AuthenticationCallback() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                callback.success((AuthenticationResult) o);
-                            }
-
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                callback.error(throwable);
-                            }
-                        });
+                        Util.authenticationDelegate(callback));
             });
         } else if (applicationCredentials.clientCertificate() != null && applicationCredentials.clientCertificatePassword() != null) {
             URI uri;
@@ -209,37 +192,12 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
                 return Mono.error(use);
             }
             authMono = Mono.create(callback -> {
-                AsymmetricKeyCredential keyCredential;
-                try {
-                    keyCredential = AsymmetricKeyCredential.create(applicationCredentials.clientId(), new ByteArrayInputStream(applicationCredentials.clientCertificate()), applicationCredentials.clientCertificatePassword());
-                } catch (KeyStoreException kse) {
-                    throw  Exceptions.propagate(kse);
-                } catch (NoSuchProviderException nspe) {
-                    throw  Exceptions.propagate(nspe);
-                } catch (NoSuchAlgorithmException nsae) {
-                    throw  Exceptions.propagate(nsae);
-                } catch (CertificateException ce) {
-                    throw  Exceptions.propagate(ce);
-                } catch (IOException ioe) {
-                    throw  Exceptions.propagate(ioe);
-                } catch (UnrecoverableKeyException uke) {
-                    throw  Exceptions.propagate(uke);
-                }
+                AsymmetricKeyCredential keyCredential  = Util.createAsymmetricKeyCredential(applicationCredentials.clientId(), applicationCredentials.clientCertificate(), applicationCredentials.clientCertificatePassword());
                 context.acquireTokenByAuthorizationCode(
                         authorizationCode,
                         uri,
                         keyCredential,
-                        new AuthenticationCallback() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                callback.success((AuthenticationResult) o);
-                            }
-
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                callback.error(throwable);
-                            }
-                        });
+                        Util.authenticationDelegate(callback));
             });
         } else if (applicationCredentials.clientCertificate() != null) {
             URI uri;
@@ -249,25 +207,15 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
                 return Mono.error(use);
             }
             AsymmetricKeyCredential keyCredential = AsymmetricKeyCredential.create(clientId(),
-                    ApplicationTokenCredentials.privateKeyFromPem(new String(applicationCredentials.clientCertificate())),
-                    ApplicationTokenCredentials.publicKeyFromPem(new String(applicationCredentials.clientCertificate())));
+                    Util.privateKeyFromPem(new String(applicationCredentials.clientCertificate())),
+                    Util.publicKeyFromPem(new String(applicationCredentials.clientCertificate())));
             authMono = Mono.create(callback -> {
                 context.acquireTokenByAuthorizationCode(
                         authorizationCode,
                         uri,
                         keyCredential,
                         resource,
-                        new AuthenticationCallback() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                callback.success((AuthenticationResult) o);
-                            }
-
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                callback.error(throwable);
-                            }
-                        });
+                        Util.authenticationDelegate(callback));
             });
         } else {
             authMono = Mono.error(new AuthenticationException("Please provide either a non-null secret or a non-null certificate."));
@@ -293,17 +241,7 @@ public class DelegatedTokenCredentials extends AzureTokenCredentials {
                     refreshToken,
                     clientId(),
                     resource,
-                    new AuthenticationCallback() {
-                        @Override
-                        public void onSuccess(Object o) {
-                            callback.success((AuthenticationResult) o);
-                        }
-
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            callback.error(throwable);
-                        }
-                    }));
+                    Util.authenticationDelegate(callback)));
         });
         return authMono.doFinally(s -> executor.shutdown());
     }

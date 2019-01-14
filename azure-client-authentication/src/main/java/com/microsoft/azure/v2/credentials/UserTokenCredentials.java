@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.v2.credentials;
 
-import com.microsoft.aad.adal4j.AuthenticationCallback;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.v2.AzureEnvironment;
@@ -115,17 +114,7 @@ public class UserTokenCredentials extends AzureTokenCredentials {
                         this.clientId(),
                         this.username(),
                         this.password,
-                        new AuthenticationCallback() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                callback.success((AuthenticationResult) o);
-                            }
-
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                callback.error(throwable);
-                            }
-                        });
+                        Util.authenticationDelegate(callback));
             });
         });
         return authMono.doFinally(s -> executor.shutdown());
@@ -150,17 +139,7 @@ public class UserTokenCredentials extends AzureTokenCredentials {
                         refreshToken,
                         clientId(),
                         resource,
-                        new AuthenticationCallback() {
-                            @Override
-                            public void onSuccess(Object o) {
-                                callback.success((AuthenticationResult) o);
-                            }
-
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                callback.error(throwable);
-                            }
-                        });
+                        Util.authenticationDelegate(callback));
             });
         });
         return authMono.doFinally(s -> executor.shutdown());
