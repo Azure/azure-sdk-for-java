@@ -30,7 +30,7 @@ public interface LongTermRetentionBackups extends HasInner<LongTermRetentionBack
      * Lists the long term retention backups for a given server.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
+     * @param longTermRetentionServerName The name of the server
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -40,8 +40,8 @@ public interface LongTermRetentionBackups extends HasInner<LongTermRetentionBack
      * Gets a long term retention backup.
      *
      * @param locationName The location of the database.
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -52,8 +52,8 @@ public interface LongTermRetentionBackups extends HasInner<LongTermRetentionBack
      * Lists all long term retention backups for a database.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -63,8 +63,8 @@ public interface LongTermRetentionBackups extends HasInner<LongTermRetentionBack
      * Deletes a long term retention backup.
      *
      * @param locationName The location of the database
-     * @param longTermRetentionServerName the String value
-     * @param longTermRetentionDatabaseName the String value
+     * @param longTermRetentionServerName The name of the server
+     * @param longTermRetentionDatabaseName The name of the database
      * @param backupName The backup name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
