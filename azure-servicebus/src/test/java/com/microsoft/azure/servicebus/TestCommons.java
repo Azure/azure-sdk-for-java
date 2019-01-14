@@ -196,7 +196,7 @@ public class TestCommons {
 		{
 			message.setSessionId(sessionId);
 		}
-		HashMap<String, String> messageProps = new HashMap<>();
+		HashMap<String, Object> messageProps = new HashMap<>();
 		messageProps.put("key1", "value1");
 		messageProps.put("key2", null); // Some customers are using it this way
 		message.setProperties(messageProps);
@@ -205,7 +205,7 @@ public class TestCommons {
 		IMessage receivedMessage = receiver.receive();
 		Assert.assertNotNull("Message not received", receivedMessage);
 		Assert.assertEquals("Message Id did not match", messageId, receivedMessage.getMessageId());
-		Map<String, String> receivedProps = receivedMessage.getProperties();
+		Map<String, Object> receivedProps = receivedMessage.getProperties();
 		Assert.assertEquals("All sent properties not recieved", "value1", receivedProps.get("key1"));
 		Assert.assertNull("Property with null value not received",  receivedProps.get("key2"));
 		receiver.complete(receivedMessage.getLockToken());

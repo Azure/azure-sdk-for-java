@@ -13,7 +13,7 @@
 		<proton-j-version>0.31.0</proton-j-version>
 	  	<junit-version>4.12</junit-version>
 		<slf4j-version>1.7.0</slf4j-version>
-		<client-current-version>2.0.0-PREVIEW-8-SNAPSHOT</client-current-version>
+		<client-current-version>2.0.0</client-current-version>
 		<qpid-proton-j-extensions-version>1.0.0</qpid-proton-j-extensions-version>
 	</properties>
 
