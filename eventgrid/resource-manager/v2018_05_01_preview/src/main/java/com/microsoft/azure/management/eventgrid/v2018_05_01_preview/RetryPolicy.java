@@ -27,7 +27,7 @@ public class RetryPolicy {
     private Integer eventTimeToLiveInMinutes;
 
     /**
-     * Get the maxDeliveryAttempts value.
+     * Get maximum number of delivery retry attempts for events.
      *
      * @return the maxDeliveryAttempts value
      */
@@ -36,7 +36,7 @@ public class RetryPolicy {
     }
 
     /**
-     * Set the maxDeliveryAttempts value.
+     * Set maximum number of delivery retry attempts for events.
      *
      * @param maxDeliveryAttempts the maxDeliveryAttempts value to set
      * @return the RetryPolicy object itself.
@@ -47,7 +47,7 @@ public class RetryPolicy {
     }
 
     /**
-     * Get the eventTimeToLiveInMinutes value.
+     * Get time To Live (in minutes) for events.
      *
      * @return the eventTimeToLiveInMinutes value
      */
@@ -56,7 +56,7 @@ public class RetryPolicy {
     }
 
     /**
-     * Set the eventTimeToLiveInMinutes value.
+     * Set time To Live (in minutes) for events.
      *
      * @param eventTimeToLiveInMinutes the eventTimeToLiveInMinutes value to set
      * @return the RetryPolicy object itself.

@@ -35,7 +35,7 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
     private String blobContainerName;
 
     /**
-     * Get the resourceId value.
+     * Get the Azure Resource ID of the storage account that is the destination of the deadletter events.
      *
      * @return the resourceId value
      */
@@ -44,7 +44,7 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
     }
 
     /**
-     * Set the resourceId value.
+     * Set the Azure Resource ID of the storage account that is the destination of the deadletter events.
      *
      * @param resourceId the resourceId value to set
      * @return the StorageBlobDeadLetterDestination object itself.
@@ -55,7 +55,7 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
     }
 
     /**
-     * Get the blobContainerName value.
+     * Get the name of the Storage blob container that is the destination of the deadletter events.
      *
      * @return the blobContainerName value
      */
@@ -64,7 +64,7 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
     }
 
     /**
-     * Set the blobContainerName value.
+     * Set the name of the Storage blob container that is the destination of the deadletter events.
      *
      * @param blobContainerName the blobContainerName value to set
      * @return the StorageBlobDeadLetterDestination object itself.

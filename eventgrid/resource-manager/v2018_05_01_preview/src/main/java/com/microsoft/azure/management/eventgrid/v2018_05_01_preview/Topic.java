@@ -10,12 +10,12 @@ package com.microsoft.azure.management.eventgrid.v2018_05_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.eventgrid.v2018_05_01_preview.implementation.EventGridManager;
 import com.microsoft.azure.management.eventgrid.v2018_05_01_preview.implementation.TopicInner;
@@ -67,21 +67,25 @@ public interface Topic extends HasInner<TopicInner>, Resource, GroupableResource
         }
 
         /**
-         * The stage of the topic update allowing to specify InputSchema.
+         * The stage of the topic definition allowing to specify InputSchema.
          */
         interface WithInputSchema {
             /**
              * Specifies inputSchema.
+             * @param inputSchema This determines the format that Event Grid should expect for incoming events published to the topic. Possible values include: 'EventGridSchema', 'CustomEventSchema', 'CloudEventV01Schema'
+             * @return the next definition stage
              */
             WithCreate withInputSchema(InputSchema inputSchema);
         }
 
         /**
-         * The stage of the topic update allowing to specify InputSchemaMapping.
+         * The stage of the topic definition allowing to specify InputSchemaMapping.
          */
         interface WithInputSchemaMapping {
             /**
              * Specifies inputSchemaMapping.
+             * @param inputSchemaMapping This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of a source schema to various required properties of the EventGridEvent schema
+             * @return the next definition stage
              */
             WithCreate withInputSchemaMapping(InputSchemaMapping inputSchemaMapping);
         }
@@ -105,21 +109,25 @@ public interface Topic extends HasInner<TopicInner>, Resource, GroupableResource
      */
     interface UpdateStages {
         /**
-         * The stage of the topic {0} allowing to specify InputSchema.
+         * The stage of the topic update allowing to specify InputSchema.
          */
         interface WithInputSchema {
             /**
              * Specifies inputSchema.
+             * @param inputSchema This determines the format that Event Grid should expect for incoming events published to the topic. Possible values include: 'EventGridSchema', 'CustomEventSchema', 'CloudEventV01Schema'
+             * @return the next update stage
              */
             Update withInputSchema(InputSchema inputSchema);
         }
 
         /**
-         * The stage of the topic {0} allowing to specify InputSchemaMapping.
+         * The stage of the topic update allowing to specify InputSchemaMapping.
          */
         interface WithInputSchemaMapping {
             /**
              * Specifies inputSchemaMapping.
+             * @param inputSchemaMapping This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of a source schema to various required properties of the EventGridEvent schema
+             * @return the next update stage
              */
             Update withInputSchemaMapping(InputSchemaMapping inputSchemaMapping);
         }

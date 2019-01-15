@@ -50,7 +50,9 @@ public class EventSubscriptionFilter {
     private Boolean isSubjectCaseSensitive;
 
     /**
-     * Get the subjectBeginsWith value.
+     * Get an optional string to filter events for an event subscription based on a resource path prefix.
+     The format of this depends on the publisher of the events.
+     Wildcard characters are not supported in this path.
      *
      * @return the subjectBeginsWith value
      */
@@ -59,7 +61,9 @@ public class EventSubscriptionFilter {
     }
 
     /**
-     * Set the subjectBeginsWith value.
+     * Set an optional string to filter events for an event subscription based on a resource path prefix.
+     The format of this depends on the publisher of the events.
+     Wildcard characters are not supported in this path.
      *
      * @param subjectBeginsWith the subjectBeginsWith value to set
      * @return the EventSubscriptionFilter object itself.
@@ -70,7 +74,8 @@ public class EventSubscriptionFilter {
     }
 
     /**
-     * Get the subjectEndsWith value.
+     * Get an optional string to filter events for an event subscription based on a resource path suffix.
+     Wildcard characters are not supported in this path.
      *
      * @return the subjectEndsWith value
      */
@@ -79,7 +84,8 @@ public class EventSubscriptionFilter {
     }
 
     /**
-     * Set the subjectEndsWith value.
+     * Set an optional string to filter events for an event subscription based on a resource path suffix.
+     Wildcard characters are not supported in this path.
      *
      * @param subjectEndsWith the subjectEndsWith value to set
      * @return the EventSubscriptionFilter object itself.
@@ -90,7 +96,8 @@ public class EventSubscriptionFilter {
     }
 
     /**
-     * Get the includedEventTypes value.
+     * Get a list of applicable event types that need to be part of the event subscription.
+     If it is desired to subscribe to all event types, the string "all" needs to be specified as an element in this list.
      *
      * @return the includedEventTypes value
      */
@@ -99,7 +106,8 @@ public class EventSubscriptionFilter {
     }
 
     /**
-     * Set the includedEventTypes value.
+     * Set a list of applicable event types that need to be part of the event subscription.
+     If it is desired to subscribe to all event types, the string "all" needs to be specified as an element in this list.
      *
      * @param includedEventTypes the includedEventTypes value to set
      * @return the EventSubscriptionFilter object itself.
@@ -110,7 +118,8 @@ public class EventSubscriptionFilter {
     }
 
     /**
-     * Get the isSubjectCaseSensitive value.
+     * Get specifies if the SubjectBeginsWith and SubjectEndsWith properties of the filter
+     should be compared in a case sensitive manner.
      *
      * @return the isSubjectCaseSensitive value
      */
@@ -119,7 +128,8 @@ public class EventSubscriptionFilter {
     }
 
     /**
-     * Set the isSubjectCaseSensitive value.
+     * Set specifies if the SubjectBeginsWith and SubjectEndsWith properties of the filter
+     should be compared in a case sensitive manner.
      *
      * @param isSubjectCaseSensitive the isSubjectCaseSensitive value to set
      * @return the EventSubscriptionFilter object itself.
