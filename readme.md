@@ -61,7 +61,7 @@ It pulls the required versions of Event Hubs, Azure Storage and GSon libraries.
    	<dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs-eph</artifactId> 
-   		<version>2.3.0</version>
+   		<version>2.4.0</version>
    	</dependency>
 ```  
 
