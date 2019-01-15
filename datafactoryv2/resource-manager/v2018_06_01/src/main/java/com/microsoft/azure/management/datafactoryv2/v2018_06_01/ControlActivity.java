@@ -21,10 +21,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "AppendVariable", value = AppendVariableActivity.class),
     @JsonSubTypes.Type(name = "SetVariable", value = SetVariableActivity.class),
     @JsonSubTypes.Type(name = "Filter", value = FilterActivity.class),
+    @JsonSubTypes.Type(name = "Validation", value = ValidationActivity.class),
     @JsonSubTypes.Type(name = "Until", value = UntilActivity.class),
     @JsonSubTypes.Type(name = "Wait", value = WaitActivity.class),
     @JsonSubTypes.Type(name = "ForEach", value = ForEachActivity.class),
     @JsonSubTypes.Type(name = "IfCondition", value = IfConditionActivity.class),
+    @JsonSubTypes.Type(name = "WebHook", value = WebHookActivity.class),
     @JsonSubTypes.Type(name = "ExecutePipeline", value = ExecutePipelineActivity.class)
 })
 public class ControlActivity extends Activity {
