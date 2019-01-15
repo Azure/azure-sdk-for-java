@@ -26,6 +26,7 @@ class FrontendIPConfigurationImpl extends IndexableRefreshableWrapperImpl<Fronte
     FrontendIPConfigurationImpl(FrontendIPConfigurationInner inner,  NetworkManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.loadBalancerName = IdParsingUtils.getValueFromIdByName(inner.id(), "loadBalancers");
         this.frontendIPConfigurationName = IdParsingUtils.getValueFromIdByName(inner.id(), "frontendIPConfigurations");

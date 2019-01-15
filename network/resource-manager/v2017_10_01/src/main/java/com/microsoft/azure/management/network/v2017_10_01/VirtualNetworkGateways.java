@@ -14,7 +14,6 @@ import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
 import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
-import rx.Completable;
 import com.microsoft.azure.management.network.v2017_10_01.implementation.VirtualNetworkGatewaysInner;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworkGatewayConnectionListEntity;
@@ -42,7 +41,7 @@ public interface VirtualNetworkGateways extends SupportsCreating<VirtualNetworkG
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable generatevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
+    Observable<String> generatevpnclientpackageAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
      * Generates VPN profile for P2S client of the virtual network gateway in the specified resource group. Used for IKEV2 and radius based authentication.
@@ -53,7 +52,7 @@ public interface VirtualNetworkGateways extends SupportsCreating<VirtualNetworkG
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable generateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
+    Observable<String> generateVpnProfileAsync(String resourceGroupName, String virtualNetworkGatewayName, VpnClientParameters parameters);
 
     /**
      * Gets pre-generated VPN profile for P2S client of the virtual network gateway in the specified resource group. The profile needs to be generated first using generateVpnProfile.
@@ -63,7 +62,7 @@ public interface VirtualNetworkGateways extends SupportsCreating<VirtualNetworkG
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getVpnProfilePackageUrlAsync(String resourceGroupName, String virtualNetworkGatewayName);
+    Observable<String> getVpnProfilePackageUrlAsync(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * The GetBgpPeerStatus operation retrieves the status of all BGP peers.
@@ -83,7 +82,7 @@ public interface VirtualNetworkGateways extends SupportsCreating<VirtualNetworkG
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable supportedVpnDevicesAsync(String resourceGroupName, String virtualNetworkGatewayName);
+    Observable<String> supportedVpnDevicesAsync(String resourceGroupName, String virtualNetworkGatewayName);
 
     /**
      * This operation retrieves a list of routes the virtual network gateway has learned, including routes learned from BGP peers.
@@ -125,6 +124,6 @@ public interface VirtualNetworkGateways extends SupportsCreating<VirtualNetworkG
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable vpnDeviceConfigurationScriptAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnDeviceScriptParameters parameters);
+    Observable<String> vpnDeviceConfigurationScriptAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, VpnDeviceScriptParameters parameters);
 
 }

@@ -8,10 +8,10 @@ package com.microsoft.azure.management.profile_2018_03_01_hybrid;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureResponseBuilder;
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
-import com.microsoft.azure.arm.utils.ResourceManagerThrottlingInterceptor;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.appservice.v2016_03_01.BillingMeters;
 import com.microsoft.azure.management.appservice.v2016_03_01.Certificates;
@@ -22,8 +22,8 @@ import com.microsoft.azure.management.appservice.v2016_03_01.ResourceHealthMetad
 import com.microsoft.azure.management.appservice.v2016_08_01.WebApps;
 import com.microsoft.azure.management.appservice.v2016_09_01.AppServiceEnvironments;
 import com.microsoft.azure.management.appservice.v2016_09_01.AppServicePlans;
-import com.microsoft.azure.management.policy.v2016_12_01.PolicyAssignments;
-import com.microsoft.azure.management.policy.v2016_12_01.PolicyDefinitions;
+import com.microsoft.azure.management.authorization.v2015_07_01.RoleAssignments;
+import com.microsoft.azure.management.authorization.v2015_07_01.RoleDefinitions;
 import com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySets;
 import com.microsoft.azure.management.compute.v2017_03_30.Disks;
 import com.microsoft.azure.management.compute.v2017_03_30.Images;
@@ -42,6 +42,7 @@ import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachines;
 import com.microsoft.azure.management.dns.v2016_04_01.RecordSets;
 import com.microsoft.azure.management.dns.v2016_04_01.Zones;
+import com.microsoft.azure.management.keyvault.v2016_10_01.Vaults;
 import com.microsoft.azure.management.network.v2017_10_01.ApplicationGateways;
 import com.microsoft.azure.management.network.v2017_10_01.ApplicationSecurityGroups;
 import com.microsoft.azure.management.network.v2017_10_01.AvailableEndpointServices;
@@ -78,7 +79,11 @@ import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworkGatewayC
 import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworkGateways;
 import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworkPeerings;
 import com.microsoft.azure.management.network.v2017_10_01.VirtualNetworks;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
+import com.microsoft.azure.management.policy.v2016_12_01.PolicyAssignments;
+import com.microsoft.azure.management.policy.v2016_12_01.PolicyDefinitions;
+import com.microsoft.azure.management.resources.v2016_06_01.Subscription;
+import com.microsoft.azure.management.resources.v2016_06_01.Subscriptions;
+import com.microsoft.azure.management.resources.v2016_06_01.Tenants;
 import com.microsoft.azure.management.resources.v2018_02_01.DeploymentOperations;
 import com.microsoft.azure.management.resources.v2018_02_01.Deployments;
 import com.microsoft.azure.management.resources.v2018_02_01.Providers;
@@ -88,6 +93,8 @@ import com.microsoft.azure.management.resources.v2018_02_01.Tags;
 import com.microsoft.azure.management.storage.v2016_01_01.StorageAccounts;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+
+import java.io.IOException;
 
 /**
  * Entry point to Azure ContainerService resource management.
@@ -99,9 +106,12 @@ public final class Azure {
     private com.microsoft.azure.management.network.v2017_10_01.implementation.NetworkManager networkManager20171001;
     private com.microsoft.azure.management.dns.v2016_04_01.implementation.NetworkManager dnsManager20160401;
     private com.microsoft.azure.management.storage.v2016_01_01.implementation.StorageManager storageManager20160101;
+    private com.microsoft.azure.management.keyvault.v2016_10_01.implementation.KeyVaultManager keyVaultManager20161001;
     private com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager appServiceManager20160301;
     private com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager appServiceManager20160801;
     private com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager appServiceManager20160901;
+    private final String subscriptionId;
+    private final Authenticated authenticated;
 
     /**
      * Get a Configurable instance that can be used to create Azure with optional configuration.
@@ -111,43 +121,32 @@ public final class Azure {
     public static Configurable configure() {
         return new Azure.ConfigurableImpl();
     }
+
     /**
-     * Creates an instance of Azure that exposes ContainerService resource management API entry points.
+     * Creates an instance of Azure.Authenticated that exposes subscription, tenant, and authorization API entry points.
      *
      * @param credentials the credentials to use
-     * @param subscriptionId the subscription UUID
-     * @return the Azure
+     * @return the Azure.Authenticated
      */
-    public static Azure authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new Azure(new RestClient.Builder()
+    public static Authenticated authenticate(AzureTokenCredentials credentials) {
+        return new AuthenticatedImpl(new RestClient.Builder()
                 .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .build(), subscriptionId);
-    }
-
-    public static Azure authenticate(ApplicationTokenCredentials credentials, String subscriptionId) {
-        return new Azure(new RestClient.Builder()
-                .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredentials(credentials)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-                .withInterceptor(new ResourceManagerThrottlingInterceptor())
-                .build(), subscriptionId);
+                .build());
     }
 
     /**
      * Creates an instance of Azure that exposes ContainerService resource management API entry points.
      *
      * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription UUID
-     * @return the Azure
+     * @return the Azure.Authenticated
      */
-    public static Azure authenticate(RestClient restClient, String subscriptionId) {
-        return new Azure(restClient, subscriptionId);
+    public static Authenticated authenticate(RestClient restClient) {
+        return new AuthenticatedImpl(restClient);
     }
+
     /**
      * The interface allowing configurations to be set.
      */
@@ -160,6 +159,124 @@ public final class Azure {
          * @return the interface exposing ContainerService management API entry points that work across subscriptions
          */
         Azure authenticate(AzureTokenCredentials credentials, String subscriptionId);
+    }
+
+    /**
+     * Provides authenticated access to a subset of Azure APIs that do not require a specific subscription.
+     * <p>
+     * To access the subscription-specific APIs, use {@link Authenticated#withSubscription(String)},
+     * or withDefaultSubscription() if a default subscription has already been previously specified
+     * (for example, in a previously specified authentication file).
+     */
+    public interface Authenticated {
+        /**
+         * Entry point to subscription management APIs.
+         *
+         * @return Subscriptions interface providing access to subscription management
+         */
+        Subscriptions subscriptions();
+
+        /**
+         * Entry point to tenant management APIs.
+         *
+         * @return Tenants interface providing access to tenant management
+         */
+        Tenants tenants();
+
+        /**
+         * Selects a specific subscription for the APIs to work with.
+         * <p>
+         * Most Azure APIs require a specific subscription to be selected.
+         * @param subscriptionId the ID of the subscription
+         * @return an authenticated Azure client configured to work with the specified subscription
+         */
+        Azure withSubscription(String subscriptionId);
+
+        /**
+         * Selects the default subscription as the subscription for the APIs to work with.
+         * <p>
+         * The default subscription can be specified inside the authentication file using {@link Azure#authenticate(AzureTokenCredentials)}.
+         * If no default subscription has been previously provided, the first subscription as
+         * returned by {@link Authenticated#subscriptions()} will be selected.
+         * @return an authenticated Azure client configured to work with the default subscription
+         * @throws CloudException exception thrown from Azure
+         * @throws IOException exception thrown from serialization/deserialization
+         */
+        Azure withDefaultSubscription() throws CloudException, IOException;
+
+        /**
+         * Entry point to role definition management APIs.
+         *
+         * @return RoleDefinitions interface providing access to tenant management
+         */
+        RoleDefinitions roleDefinitions();
+
+        /**
+         * Entry point to role assignment management APIs.
+         *
+         * @return RoleAssignments interface providing access to tenant management
+         */
+        RoleAssignments roleAssignments();
+    }
+
+    /**
+     * The implementation for the Authenticated interface.
+     */
+    private static final class AuthenticatedImpl implements Authenticated {
+        private final RestClient restClient;
+        private final com.microsoft.azure.management.resources.v2016_06_01.implementation.Manager subscriptionManager20160601;
+        private final com.microsoft.azure.management.authorization.v2015_07_01.implementation.AuthorizationManager authorizationManager20150701;
+        private String defaultSubscription;
+
+        private AuthenticatedImpl(RestClient restClient) {
+            this.subscriptionManager20160601 = com.microsoft.azure.management.resources.v2016_06_01.implementation.Manager.authenticate(restClient);
+            this.authorizationManager20150701 = com.microsoft.azure.management.authorization.v2015_07_01.implementation.AuthorizationManager.authenticate(restClient, null);
+            this.restClient = restClient;
+        }
+
+        private AuthenticatedImpl withDefaultSubscription(String subscriptionId) {
+            this.defaultSubscription = subscriptionId;
+            return this;
+        }
+
+        @Override
+        public Subscriptions subscriptions() {
+            return subscriptionManager20160601.subscriptions();
+        }
+
+        @Override
+        public Tenants tenants() {
+            return subscriptionManager20160601.tenants();
+        }
+
+        @Override
+        public RoleDefinitions roleDefinitions() {
+            return authorizationManager20150701.roleDefinitions();
+        }
+
+        @Override
+        public RoleAssignments roleAssignments() {
+            return authorizationManager20150701.roleAssignments();
+        }
+
+        @Override
+        public Azure withSubscription(String subscriptionId) {
+            return new Azure(restClient, subscriptionId, this);
+        }
+
+        @Override
+        public Azure withDefaultSubscription() throws CloudException, IOException {
+            if (this.defaultSubscription != null) {
+                return withSubscription(this.defaultSubscription);
+            } else {
+                PagedList<Subscription> subs = this.subscriptions().list();
+                if (!subs.isEmpty()) {
+                    return withSubscription(subs.get(0).subscriptionId());
+                } else {
+                    return withSubscription(null);
+                }
+            }
+        }
     }
 
     /**
@@ -618,6 +735,13 @@ public final class Azure {
     }
 
     /**
+     * @return Entry point to manage key vaults.
+     */
+    public Vaults keyVaults() {
+        return this.keyVaultManager20161001.vaults();
+    }
+
+    /**
      * @return Entry point to manage Certificates.
      */
     public Certificates certificates() {
@@ -692,11 +816,11 @@ public final class Azure {
      */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
         public Azure authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-            return Azure.authenticate(buildRestClient(credentials), subscriptionId);
+            return Azure.authenticate(buildRestClient(credentials)).withSubscription(subscriptionId);
         }
     }
 
-    private Azure(RestClient restClient, String subscriptionId) {
+    private Azure(RestClient restClient, String subscriptionId, Authenticated authenticated) {
         this.computeManager20170330 = com.microsoft.azure.management.compute.v2017_03_30.implementation.ComputeManager.authenticate(restClient, subscriptionId);
         this.resourceManager20180201 = com.microsoft.azure.management.resources.v2018_02_01.implementation.ResourcesManager.authenticate(restClient, subscriptionId);
         this.authorizationManager20161201 = com.microsoft.azure.management.policy.v2016_12_01.implementation.PolicyManager.authenticate(restClient, subscriptionId);
@@ -706,5 +830,8 @@ public final class Azure {
         this.appServiceManager20160301 = com.microsoft.azure.management.appservice.v2016_03_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
         this.appServiceManager20160801 = com.microsoft.azure.management.appservice.v2016_08_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
         this.appServiceManager20160901 = com.microsoft.azure.management.appservice.v2016_09_01.implementation.AppServiceManager.authenticate(restClient, subscriptionId);
+        this.keyVaultManager20161001 = com.microsoft.azure.management.keyvault.v2016_10_01.implementation.KeyVaultManager.authenticate(restClient, subscriptionId);
+        this.subscriptionId = subscriptionId;
+        this.authenticated = authenticated;
     }
 }

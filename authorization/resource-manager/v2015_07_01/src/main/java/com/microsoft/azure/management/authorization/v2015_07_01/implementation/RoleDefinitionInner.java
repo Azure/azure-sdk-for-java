@@ -40,7 +40,7 @@ public class RoleDefinitionInner {
     private RoleDefinitionProperties properties;
 
     /**
-     * Get the id value.
+     * Get the role definition ID.
      *
      * @return the id value
      */
@@ -49,7 +49,7 @@ public class RoleDefinitionInner {
     }
 
     /**
-     * Get the name value.
+     * Get the role definition name.
      *
      * @return the name value
      */
@@ -58,7 +58,7 @@ public class RoleDefinitionInner {
     }
 
     /**
-     * Get the type value.
+     * Get the role definition type.
      *
      * @return the type value
      */
@@ -67,7 +67,7 @@ public class RoleDefinitionInner {
     }
 
     /**
-     * Get the properties value.
+     * Get role definition properties.
      *
      * @return the properties value
      */
@@ -76,7 +76,7 @@ public class RoleDefinitionInner {
     }
 
     /**
-     * Set the properties value.
+     * Set role definition properties.
      *
      * @param properties the properties value to set
      * @return the RoleDefinitionInner object itself.

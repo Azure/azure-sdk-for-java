@@ -30,6 +30,10 @@ import retrofit2.http.Query;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -770,7 +774,7 @@ public class PacketCapturesInner {
         }
         final String apiVersion = "2017-10-01";
         Observable<Response<ResponseBody>> observable = service.getStatus(resourceGroupName, networkWatcherName, packetCaptureName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<PacketCaptureQueryStatusResultInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.LOCATION), new TypeToken<PacketCaptureQueryStatusResultInner>() { }.getType());
     }
 
     /**
