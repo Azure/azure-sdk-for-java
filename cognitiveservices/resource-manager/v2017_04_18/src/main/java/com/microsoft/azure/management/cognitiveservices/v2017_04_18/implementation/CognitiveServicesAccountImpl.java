@@ -74,6 +74,11 @@ class CognitiveServicesAccountImpl extends GroupableResourceCoreImpl<CognitiveSe
     }
 
     @Override
+    public String customSubDomainName() {
+        return this.inner().customSubDomainName();
+    }
+
+    @Override
     public String endpoint() {
         return this.inner().endpoint();
     }

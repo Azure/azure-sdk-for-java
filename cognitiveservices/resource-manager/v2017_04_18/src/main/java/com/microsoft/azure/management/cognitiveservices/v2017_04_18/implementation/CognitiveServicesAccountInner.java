@@ -53,6 +53,12 @@ public class CognitiveServicesAccountInner extends Resource {
     private String internalId;
 
     /**
+     * Optional subdomain name used for token-based authentication.
+     */
+    @JsonProperty(value = "properties.customSubDomainName")
+    private String customSubDomainName;
+
+    /**
      * The SKU of Cognitive Services account.
      */
     @JsonProperty(value = "sku")
@@ -144,6 +150,26 @@ public class CognitiveServicesAccountInner extends Resource {
      */
     public CognitiveServicesAccountInner withInternalId(String internalId) {
         this.internalId = internalId;
+        return this;
+    }
+
+    /**
+     * Get optional subdomain name used for token-based authentication.
+     *
+     * @return the customSubDomainName value
+     */
+    public String customSubDomainName() {
+        return this.customSubDomainName;
+    }
+
+    /**
+     * Set optional subdomain name used for token-based authentication.
+     *
+     * @param customSubDomainName the customSubDomainName value to set
+     * @return the CognitiveServicesAccountInner object itself.
+     */
+    public CognitiveServicesAccountInner withCustomSubDomainName(String customSubDomainName) {
+        this.customSubDomainName = customSubDomainName;
         return this;
     }
 

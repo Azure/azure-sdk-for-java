@@ -26,6 +26,11 @@ import com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementati
  */
 public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAccountInner>, Resource, GroupableResourceCore<CognitiveServicesManager, CognitiveServicesAccountInner>, HasResourceGroup, Refreshable<CognitiveServicesAccount>, Updatable<CognitiveServicesAccount.Update>, HasManager<CognitiveServicesManager> {
     /**
+     * @return the customSubDomainName value.
+     */
+    String customSubDomainName();
+
+    /**
      * @return the endpoint value.
      */
     String endpoint();
