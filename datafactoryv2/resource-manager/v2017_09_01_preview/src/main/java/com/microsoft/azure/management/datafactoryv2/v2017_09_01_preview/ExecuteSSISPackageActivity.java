@@ -47,6 +47,12 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
     private String environmentPath;
 
     /**
+     * The package execution credential.
+     */
+    @JsonProperty(value = "typeProperties.executionCredential")
+    private Map<String, SSISExecutionCredential> executionCredential;
+
+    /**
      * The integration runtime reference.
      */
     @JsonProperty(value = "typeProperties.connectVia", required = true)
@@ -159,6 +165,26 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
      */
     public ExecuteSSISPackageActivity withEnvironmentPath(String environmentPath) {
         this.environmentPath = environmentPath;
+        return this;
+    }
+
+    /**
+     * Get the package execution credential.
+     *
+     * @return the executionCredential value
+     */
+    public Map<String, SSISExecutionCredential> executionCredential() {
+        return this.executionCredential;
+    }
+
+    /**
+     * Set the package execution credential.
+     *
+     * @param executionCredential the executionCredential value to set
+     * @return the ExecuteSSISPackageActivity object itself.
+     */
+    public ExecuteSSISPackageActivity withExecutionCredential(Map<String, SSISExecutionCredential> executionCredential) {
+        this.executionCredential = executionCredential;
         return this;
     }
 
