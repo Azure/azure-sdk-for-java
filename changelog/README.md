@@ -3,7 +3,7 @@
 
 * Fix handling very large query responses.
 * Fix resource token handling when instantiating client.
-* Upgraded vulnerable dependency jackson-databind.
+* Upgraded vulnerable dependency jackson-databind ([github #77](https://github.com/Azure/azure-cosmosdb-java/pull/77)). 
 
 ### 2.3.0
 
