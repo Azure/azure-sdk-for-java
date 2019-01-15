@@ -55,6 +55,12 @@ public class IntegrationRuntimeComputeProperties {
     private IntegrationRuntimeVNetProperties vNetProperties;
 
     /**
+     * VNet properties for managed integration runtime.
+     */
+    @JsonProperty(value = "virtualNetwork")
+    private IntegrationRuntimeVirtualNetworkProperties virtualNetwork;
+
+    /**
      * Get unmatched properties from the message are deserialized this collection.
      *
      * @return the additionalProperties value
@@ -171,6 +177,26 @@ public class IntegrationRuntimeComputeProperties {
      */
     public IntegrationRuntimeComputeProperties withVNetProperties(IntegrationRuntimeVNetProperties vNetProperties) {
         this.vNetProperties = vNetProperties;
+        return this;
+    }
+
+    /**
+     * Get vNet properties for managed integration runtime.
+     *
+     * @return the virtualNetwork value
+     */
+    public IntegrationRuntimeVirtualNetworkProperties virtualNetwork() {
+        return this.virtualNetwork;
+    }
+
+    /**
+     * Set vNet properties for managed integration runtime.
+     *
+     * @param virtualNetwork the virtualNetwork value to set
+     * @return the IntegrationRuntimeComputeProperties object itself.
+     */
+    public IntegrationRuntimeComputeProperties withVirtualNetwork(IntegrationRuntimeVirtualNetworkProperties virtualNetwork) {
+        this.virtualNetwork = virtualNetwork;
         return this;
     }
 
