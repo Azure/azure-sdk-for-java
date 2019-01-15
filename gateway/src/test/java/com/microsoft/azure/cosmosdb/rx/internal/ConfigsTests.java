@@ -38,6 +38,6 @@ public class ConfigsTests {
     @Test(groups = { "unit" })
     public void maxHttpBodyLength() {
         Configs config = Configs.getInstance();
-        assertThat(config.getMaxHttpBodyLength()).isEqualTo(2 * 1024 * 1024);
+        assertThat(config.getMaxHttpBodyLength()).isEqualTo(6 * 1024 * 1024);
     }
 }

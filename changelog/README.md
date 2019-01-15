@@ -1,4 +1,9 @@
 ## Changelog
+### 2.3.1
+
+* Fix handling very large query responses.
+* Fix resource token handling when instantiating client.
+* Upgraded vulnerable dependency jackson-databind.
 
 ### 2.3.0
 

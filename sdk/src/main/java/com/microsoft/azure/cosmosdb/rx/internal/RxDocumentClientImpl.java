@@ -146,6 +146,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
     private final boolean hasAuthKeyResourceToken;
+    private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
+    private boolean initiallizeboolean = false;
     /**
      * Compatibility mode: Allows to specify compatibility mode used by client when
      * making query requests. Should be removed when application/sql is no longer
@@ -206,6 +208,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         key, partitionKey != null ? partitionKey.toString() : null, permission.getToken());
 
             }
+
+            if(this.resourceTokensMap.isEmpty()) {
+                throw new IllegalArgumentException("permissionFeed");
+            }
+
+            String firstToken = permissionFeed.get(0).getToken();
+            if(ResourceTokenAuthorizationHelper.isResourceToken(firstToken)) {
+                this.firstResourceTokenFromPermissionFeed = firstToken;
+            }
+            this.globalEndpointManager.init();
         }
     }
 
@@ -271,7 +283,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.gatewayProxy = createRxGatewayProxy(this.connectionPolicy, consistencyLevel, this.queryCompatibilityMode,
                 this.masterKeyOrResourceToken, this.resourceTokensMap, userAgentContainer, this.globalEndpointManager, this.rxClient);
 
-        this.globalEndpointManager.init();
+        if(hasAuthKeyResourceToken || this.authorizationTokenProvider != null) {
+            this.globalEndpointManager.init();
+        }
 
         this.collectionCache = new RxClientCollectionCache(this.gatewayProxy, this, this.retryPolicy);
 
@@ -1054,6 +1068,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return masterKeyOrResourceToken;
         } else {
             assert resourceTokensMap != null;
+            if(resourceType.equals(ResourceType.DatabaseAccount)) {
+                return this.firstResourceTokenFromPermissionFeed;
+            }
             return ResourceTokenAuthorizationHelper.getAuthorizationTokenUsingResourceTokens(resourceTokensMap,
                     resourcePath, requestVerb, resourceName, headers);
         }
