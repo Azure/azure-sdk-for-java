@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The status of the last successfull slot swap operation.
+ * The status of the last successful slot swap operation.
  */
 public class SlotSwapStatus {
     /**

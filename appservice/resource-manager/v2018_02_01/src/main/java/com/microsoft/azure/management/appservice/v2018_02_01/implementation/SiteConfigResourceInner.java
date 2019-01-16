@@ -247,7 +247,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     private SiteLoadBalancing loadBalancing;
 
     /**
-     * This is work around for polymophic types.
+     * This is work around for polymorphic types.
      */
     @JsonProperty(value = "properties.experiments")
     private Experiments experiments;
@@ -1022,7 +1022,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get this is work around for polymophic types.
+     * Get this is work around for polymorphic types.
      *
      * @return the experiments value
      */
@@ -1031,7 +1031,7 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set this is work around for polymophic types.
+     * Set this is work around for polymorphic types.
      *
      * @param experiments the experiments value to set
      * @return the SiteConfigResourceInner object itself.

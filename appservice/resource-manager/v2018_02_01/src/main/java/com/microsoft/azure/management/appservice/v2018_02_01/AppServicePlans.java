@@ -60,8 +60,8 @@ public interface AppServicePlans {
     Observable<AppServicePlan> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Get all App Service plans for a subcription.
-     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subscription.
+     * Get all App Service plans for a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -91,8 +91,8 @@ public interface AppServicePlans {
     Completable restartWebAppsAsync(String resourceGroupName, String name);
 
     /**
-     * Gets all selectable sku's for a given App Service Plan.
-     * Gets all selectable sku's for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
+     * Gets all selectable SKUs for a given App Service Plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of App Service Plan
@@ -198,8 +198,8 @@ public interface AppServicePlans {
     Observable<ServerfarmResourceMetricDefinition> listMetricDefintionsAsync(final String resourceGroupName, final String name);
 
     /**
-     * Get metrics for an App Serice plan.
-     * Get metrics for an App Serice plan.
+     * Get metrics for an App Service plan.
+     * Get metrics for an App Service plan.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service plan.

@@ -70,7 +70,7 @@ public class CertificateInner extends Resource {
     private DateTime issueDate;
 
     /**
-     * Certificate expriration date.
+     * Certificate expiration date.
      */
     @JsonProperty(value = "properties.expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime expirationDate;
@@ -243,7 +243,7 @@ public class CertificateInner extends Resource {
     }
 
     /**
-     * Get certificate expriration date.
+     * Get certificate expiration date.
      *
      * @return the expirationDate value
      */

@@ -16181,8 +16181,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
@@ -16202,8 +16202,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
@@ -16224,8 +16224,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
@@ -16243,8 +16243,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
@@ -16266,8 +16266,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
     ServiceResponse<PageImpl<SiteExtensionInfoInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteExtensionInfoInner>> * @param name Site name.
@@ -31760,8 +31760,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
@@ -31782,8 +31782,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
@@ -31805,8 +31805,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
@@ -31825,8 +31825,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
@@ -31849,8 +31849,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
     ServiceResponse<PageImpl<SiteExtensionInfoInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
     ServiceResponse<PageImpl<SiteExtensionInfoInner>> * @param name Site name.
@@ -41420,8 +41420,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -41440,8 +41440,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -41462,8 +41462,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -41480,8 +41480,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -41502,8 +41502,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
     ServiceResponse<PageImpl<SiteExtensionInfoInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -43864,8 +43864,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -43884,8 +43884,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -43906,8 +43906,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -43924,8 +43924,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -43946,8 +43946,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
     ServiceResponse<PageImpl<SiteExtensionInfoInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
