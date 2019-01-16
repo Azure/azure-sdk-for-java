@@ -155,6 +155,14 @@ public class ServicesInner {
         @GET("providers/Microsoft.ADHybridHealthService/services/{serviceName}/TenantWhitelisting/{featureName}")
         Observable<Response<ResponseBody>> getTenantWhitelisting(@Path("serviceName") String serviceName, @Path("featureName") String featureName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.adhybridhealthservice.Services listAllRiskyIpDownloadReport" })
+        @GET("providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/GetAllBlobUri")
+        Observable<Response<ResponseBody>> listAllRiskyIpDownloadReport(@Path("serviceName") String serviceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.adhybridhealthservice.Services listCurrentRiskyIpDownloadReport" })
+        @GET("providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/GetBlobUri")
+        Observable<Response<ResponseBody>> listCurrentRiskyIpDownloadReport(@Path("serviceName") String serviceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.adhybridhealthservice.Services listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -3144,6 +3152,168 @@ public class ServicesInner {
     private ServiceResponse<ResultInner> getTenantWhitelistingDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<ResultInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all the blob uris for the Risky IP reports requested for a given service in the last 7 days.
+     *
+     * @param serviceName The name of the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;RiskyIPBlobUriInner&gt; object if successful.
+     */
+    public List<RiskyIPBlobUriInner> listAllRiskyIpDownloadReport(String serviceName) {
+        return listAllRiskyIpDownloadReportWithServiceResponseAsync(serviceName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets all the blob uris for the Risky IP reports requested for a given service in the last 7 days.
+     *
+     * @param serviceName The name of the service.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RiskyIPBlobUriInner>> listAllRiskyIpDownloadReportAsync(String serviceName, final ServiceCallback<List<RiskyIPBlobUriInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listAllRiskyIpDownloadReportWithServiceResponseAsync(serviceName), serviceCallback);
+    }
+
+    /**
+     * Gets all the blob uris for the Risky IP reports requested for a given service in the last 7 days.
+     *
+     * @param serviceName The name of the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;RiskyIPBlobUriInner&gt; object
+     */
+    public Observable<List<RiskyIPBlobUriInner>> listAllRiskyIpDownloadReportAsync(String serviceName) {
+        return listAllRiskyIpDownloadReportWithServiceResponseAsync(serviceName).map(new Func1<ServiceResponse<List<RiskyIPBlobUriInner>>, List<RiskyIPBlobUriInner>>() {
+            @Override
+            public List<RiskyIPBlobUriInner> call(ServiceResponse<List<RiskyIPBlobUriInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets all the blob uris for the Risky IP reports requested for a given service in the last 7 days.
+     *
+     * @param serviceName The name of the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;RiskyIPBlobUriInner&gt; object
+     */
+    public Observable<ServiceResponse<List<RiskyIPBlobUriInner>>> listAllRiskyIpDownloadReportWithServiceResponseAsync(String serviceName) {
+        if (serviceName == null) {
+            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listAllRiskyIpDownloadReport(serviceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RiskyIPBlobUriInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<RiskyIPBlobUriInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<RiskyIPBlobUriInner>> result = listAllRiskyIpDownloadReportDelegate(response);
+                        List<RiskyIPBlobUriInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<RiskyIPBlobUriInner>> clientResponse = new ServiceResponse<List<RiskyIPBlobUriInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<RiskyIPBlobUriInner>> listAllRiskyIpDownloadReportDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<RiskyIPBlobUriInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<RiskyIPBlobUriInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Initiate the generation of a new Risky IP report. Returns the URI for the new one, along with all the blob uris for the Risky IP reports requested in the last 7 days.
+     *
+     * @param serviceName The name of the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;RiskyIPBlobUriInner&gt; object if successful.
+     */
+    public List<RiskyIPBlobUriInner> listCurrentRiskyIpDownloadReport(String serviceName) {
+        return listCurrentRiskyIpDownloadReportWithServiceResponseAsync(serviceName).toBlocking().single().body();
+    }
+
+    /**
+     * Initiate the generation of a new Risky IP report. Returns the URI for the new one, along with all the blob uris for the Risky IP reports requested in the last 7 days.
+     *
+     * @param serviceName The name of the service.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RiskyIPBlobUriInner>> listCurrentRiskyIpDownloadReportAsync(String serviceName, final ServiceCallback<List<RiskyIPBlobUriInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listCurrentRiskyIpDownloadReportWithServiceResponseAsync(serviceName), serviceCallback);
+    }
+
+    /**
+     * Initiate the generation of a new Risky IP report. Returns the URI for the new one, along with all the blob uris for the Risky IP reports requested in the last 7 days.
+     *
+     * @param serviceName The name of the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;RiskyIPBlobUriInner&gt; object
+     */
+    public Observable<List<RiskyIPBlobUriInner>> listCurrentRiskyIpDownloadReportAsync(String serviceName) {
+        return listCurrentRiskyIpDownloadReportWithServiceResponseAsync(serviceName).map(new Func1<ServiceResponse<List<RiskyIPBlobUriInner>>, List<RiskyIPBlobUriInner>>() {
+            @Override
+            public List<RiskyIPBlobUriInner> call(ServiceResponse<List<RiskyIPBlobUriInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Initiate the generation of a new Risky IP report. Returns the URI for the new one, along with all the blob uris for the Risky IP reports requested in the last 7 days.
+     *
+     * @param serviceName The name of the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;RiskyIPBlobUriInner&gt; object
+     */
+    public Observable<ServiceResponse<List<RiskyIPBlobUriInner>>> listCurrentRiskyIpDownloadReportWithServiceResponseAsync(String serviceName) {
+        if (serviceName == null) {
+            throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listCurrentRiskyIpDownloadReport(serviceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RiskyIPBlobUriInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<RiskyIPBlobUriInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<RiskyIPBlobUriInner>> result = listCurrentRiskyIpDownloadReportDelegate(response);
+                        List<RiskyIPBlobUriInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<RiskyIPBlobUriInner>> clientResponse = new ServiceResponse<List<RiskyIPBlobUriInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<RiskyIPBlobUriInner>> listCurrentRiskyIpDownloadReportDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<RiskyIPBlobUriInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<RiskyIPBlobUriInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
