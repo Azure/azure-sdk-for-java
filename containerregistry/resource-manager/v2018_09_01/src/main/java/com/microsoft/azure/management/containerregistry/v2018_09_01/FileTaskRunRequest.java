@@ -58,7 +58,7 @@ public class FileTaskRunRequest extends RunRequest {
 
     /**
      * The URL(absolute or relative) of the source context. It can be an URL to
-     * a tar or git repoistory.
+     * a tar or git repository.
      * If it is relative URL, the relative path should be obtained from calling
      * listBuildSourceUploadUrl API.
      */
@@ -193,7 +193,7 @@ public class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Get the URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+     * Get the URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
      If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      *
      * @return the sourceLocation value
@@ -203,7 +203,7 @@ public class FileTaskRunRequest extends RunRequest {
     }
 
     /**
-     * Set the URL(absolute or relative) of the source context. It can be an URL to a tar or git repoistory.
+     * Set the URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
      If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      *
      * @param sourceLocation the sourceLocation value to set
