@@ -1,3 +1,10 @@
+variables:
+  - group: KeyVault Test Secrets
+  - name: ARM_CLIENTID
+    value: $(java-keyvault-test-arm-client-id)
+  - name: ARM_CLIENTKEY
+    value: $(java-keyvault-test-arm-client-key)
+
 resources:
 - repo: self
 queue:
@@ -10,5 +17,9 @@ steps:
   env:
     ARM_CLIENTID: $(ARM_CLIENTID)
     ARM_CLIENTKEY: $(ARM_CLIENTKEY)
+    AZURE_TEST_MODE: RECORD
+    KEYVAULT_VAULTURI: https://azure-keyvault-1.vault.azure.net
+    KEYVAULT_VAULTURI_ALT: https://azure-keyvault-2.vault.azure.net
+    
 
 
