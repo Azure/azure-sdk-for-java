@@ -22,7 +22,7 @@ public class SourceUpdateParameters {
     private SourceControlType sourceControlType;
 
     /**
-     * The full URL to the source code repository.
+     * The full URL to the source code respository.
      */
     @JsonProperty(value = "repositoryUrl")
     private String repositoryUrl;
@@ -62,7 +62,7 @@ public class SourceUpdateParameters {
     }
 
     /**
-     * Get the full URL to the source code repository.
+     * Get the full URL to the source code respository.
      *
      * @return the repositoryUrl value
      */
@@ -71,7 +71,7 @@ public class SourceUpdateParameters {
     }
 
     /**
-     * Set the full URL to the source code repository.
+     * Set the full URL to the source code respository.
      *
      * @param repositoryUrl the repositoryUrl value to set
      * @return the SourceUpdateParameters object itself.
