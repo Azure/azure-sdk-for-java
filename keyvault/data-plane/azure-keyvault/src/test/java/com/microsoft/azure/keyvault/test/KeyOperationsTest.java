@@ -23,6 +23,7 @@ import javax.crypto.Cipher;
 
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.joda.time.DateTime;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Assume;
 import org.junit.Test;
@@ -53,6 +54,22 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     private static final String KEY_NAME = "javaKey";
     private static final int MAX_KEYS = 4;
     private static final int PAGELIST_MAX_KEYS = 3;
+
+
+    @AfterClass
+    public static void afterClass() {
+        if (isRecordMode()) {
+            List<DeletedKeyItem> deletedKeys = keyVaultClient.getDeletedKeys(getVaultUri());
+            for (DeletedKeyItem key : deletedKeys) {
+                keyVaultClient.purgeDeletedKey(getVaultUri(), getKeyName(key.recoveryId()));
+            }
+        }
+    }
+
+    private static String getKeyName(String recoveryId) {
+        String[] idParts = recoveryId.split("/");
+        return idParts[idParts.length-1];
+    }
 
     @Test
     public void transparentAuthenticationForKeyOperationsTest() throws Exception {

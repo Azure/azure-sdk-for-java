@@ -111,12 +111,7 @@
 			<artifactId>adal4j</artifactId>
 			<scope>test</scope>
 		</dependency>
-    <dependency>
-			<groupId>com.microsoft.azure</groupId>
-			<artifactId>azure</artifactId>
-			<scope>test</scope>
-		</dependency>
-    
+
     <!-- Other Dependencies -->
     <dependency>
       <groupId>junit</groupId>

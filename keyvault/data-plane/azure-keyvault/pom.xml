@@ -201,7 +201,7 @@ the MIT License. See License.txt in the project root for license information. --
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>	
+	</dependencies>
 		
 		
 

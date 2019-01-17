@@ -84,7 +84,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 		keyVaultClient.deleteKeyAsync(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name(), null).get();
 		pollOnKeyDeletion(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
 		keyVaultClient.purgeDeletedKey(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
-		SdkContext.sleep(20000);
+		SdkContext.sleep(40000);
 
 		KeyBundle restoreResult = keyVaultClient.restoreKeyAsync(vault, backupResult.value(), null).get();
 		Assert.assertNotNull(restoreResult);
@@ -144,7 +144,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 	public void secretAsyncForAsyncOperationsTest() throws Exception {
 
 		String vault = getVaultUri();
-		String secretname = "mySecret";
+		String secretname = "mySecret2";
 		String password = "password";
 
 		SetSecretRequest setSecretRequest = new SetSecretRequest.Builder(vault, secretname, password).build();
@@ -187,7 +187,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 	public void certificateAsyncForAsyncOperationsTest() throws Exception {
 
 		String vault = getVaultUri();
-		String certificateName = "myCertificate";
+		String certificateName = "tempCertificate2";
 
 		CreateCertificateRequest createCertificateRequest = new CreateCertificateRequest.Builder(vault, certificateName)
 				.withPolicy(new CertificatePolicy()
