@@ -215,7 +215,7 @@ public class SiteConfig {
     private SiteLoadBalancing loadBalancing;
 
     /**
-     * This is work around for polymophic types.
+     * This is work around for polymorphic types.
      */
     @JsonProperty(value = "experiments")
     private Experiments experiments;
@@ -912,7 +912,7 @@ public class SiteConfig {
     }
 
     /**
-     * Get this is work around for polymophic types.
+     * Get this is work around for polymorphic types.
      *
      * @return the experiments value
      */
@@ -921,7 +921,7 @@ public class SiteConfig {
     }
 
     /**
-     * Set this is work around for polymophic types.
+     * Set this is work around for polymorphic types.
      *
      * @param experiments the experiments value to set
      * @return the SiteConfig object itself.

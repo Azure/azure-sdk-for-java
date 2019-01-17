@@ -1348,6 +1348,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshots")
         Observable<Response<ResponseBody>> listSnapshotsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshotsFromDRSecondarySlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshotsdr")
+        Observable<Response<ResponseBody>> listSnapshotsFromDRSecondarySlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getSourceControlSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web")
         Observable<Response<ResponseBody>> getSourceControlSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1479,6 +1483,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshots" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshots")
         Observable<Response<ResponseBody>> listSnapshots(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshotsFromDRSecondary" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshotsdr")
+        Observable<Response<ResponseBody>> listSnapshotsFromDRSecondary(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getSourceControl" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web")
@@ -1776,6 +1784,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET
         Observable<Response<ResponseBody>> listSnapshotsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshotsFromDRSecondarySlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSnapshotsFromDRSecondarySlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listTriggeredWebJobsSlotNext" })
         @GET
         Observable<Response<ResponseBody>> listTriggeredWebJobsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1799,6 +1811,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshotsNext" })
         @GET
         Observable<Response<ResponseBody>> listSnapshotsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSnapshotsFromDRSecondaryNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSnapshotsFromDRSecondaryNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listTriggeredWebJobsNext" })
         @GET
@@ -36472,6 +36488,142 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param slot Website Slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SnapshotInner&gt; object if successful.
+     */
+    public PagedList<SnapshotInner> listSnapshotsFromDRSecondarySlot(final String resourceGroupName, final String name, final String slot) {
+        ServiceResponse<Page<SnapshotInner>> response = listSnapshotsFromDRSecondarySlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
+        return new PagedList<SnapshotInner>(response.body()) {
+            @Override
+            public Page<SnapshotInner> nextPage(String nextPageLink) {
+                return listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param slot Website Slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsFromDRSecondarySlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSnapshotsFromDRSecondarySlotSinglePageAsync(resourceGroupName, name, slot),
+            new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(String nextPageLink) {
+                    return listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param slot Website Slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<Page<SnapshotInner>> listSnapshotsFromDRSecondarySlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return listSnapshotsFromDRSecondarySlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
+                @Override
+                public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param slot Website Slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondarySlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
+        return listSnapshotsFromDRSecondarySlotSinglePageAsync(resourceGroupName, name, slot)
+            .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSnapshotsFromDRSecondarySlotNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+    ServiceResponse<PageImpl<SnapshotInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<SnapshotInner>> * @param name Website Name.
+    ServiceResponse<PageImpl<SnapshotInner>> * @param slot Website Slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondarySlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSnapshotsFromDRSecondarySlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsFromDRSecondarySlotDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsFromDRSecondarySlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Gets the source control configuration of an app.
      * Gets the source control configuration of an app.
      *
@@ -40361,6 +40513,134 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SnapshotInner&gt; object if successful.
+     */
+    public PagedList<SnapshotInner> listSnapshotsFromDRSecondary(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<SnapshotInner>> response = listSnapshotsFromDRSecondarySinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<SnapshotInner>(response.body()) {
+            @Override
+            public Page<SnapshotInner> nextPage(String nextPageLink) {
+                return listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsFromDRSecondaryAsync(final String resourceGroupName, final String name, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSnapshotsFromDRSecondarySinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(String nextPageLink) {
+                    return listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<Page<SnapshotInner>> listSnapshotsFromDRSecondaryAsync(final String resourceGroupName, final String name) {
+        return listSnapshotsFromDRSecondaryWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
+                @Override
+                public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondaryWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return listSnapshotsFromDRSecondarySinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSnapshotsFromDRSecondaryNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+    ServiceResponse<PageImpl<SnapshotInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<SnapshotInner>> * @param name Website Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondarySinglePageAsync(final String resourceGroupName, final String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSnapshotsFromDRSecondary(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsFromDRSecondaryDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsFromDRSecondaryDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
@@ -48828,6 +49108,122 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SnapshotInner&gt; object if successful.
+     */
+    public PagedList<SnapshotInner> listSnapshotsFromDRSecondarySlotNext(final String nextPageLink) {
+        ServiceResponse<Page<SnapshotInner>> response = listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SnapshotInner>(response.body()) {
+            @Override
+            public Page<SnapshotInner> nextPage(String nextPageLink) {
+                return listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsFromDRSecondarySlotNextAsync(final String nextPageLink, final ServiceFuture<List<SnapshotInner>> serviceFuture, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(String nextPageLink) {
+                    return listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<Page<SnapshotInner>> listSnapshotsFromDRSecondarySlotNextAsync(final String nextPageLink) {
+        return listSnapshotsFromDRSecondarySlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
+                @Override
+                public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondarySlotNextWithServiceResponseAsync(final String nextPageLink) {
+        return listSnapshotsFromDRSecondarySlotNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSnapshotsFromDRSecondarySlotNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+    ServiceResponse<PageImpl<SnapshotInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondarySlotNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSnapshotsFromDRSecondarySlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsFromDRSecondarySlotNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsFromDRSecondarySlotNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * List triggered web jobs for an app, or a deployment slot.
      * List triggered web jobs for an app, or a deployment slot.
      *
@@ -49518,6 +49914,122 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SnapshotInner&gt; object if successful.
+     */
+    public PagedList<SnapshotInner> listSnapshotsFromDRSecondaryNext(final String nextPageLink) {
+        ServiceResponse<Page<SnapshotInner>> response = listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SnapshotInner>(response.body()) {
+            @Override
+            public Page<SnapshotInner> nextPage(String nextPageLink) {
+                return listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SnapshotInner>> listSnapshotsFromDRSecondaryNextAsync(final String nextPageLink, final ServiceFuture<List<SnapshotInner>> serviceFuture, final ListOperationCallback<SnapshotInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(String nextPageLink) {
+                    return listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<Page<SnapshotInner>> listSnapshotsFromDRSecondaryNextAsync(final String nextPageLink) {
+        return listSnapshotsFromDRSecondaryNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SnapshotInner>>, Page<SnapshotInner>>() {
+                @Override
+                public Page<SnapshotInner> call(ServiceResponse<Page<SnapshotInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SnapshotInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondaryNextWithServiceResponseAsync(final String nextPageLink) {
+        return listSnapshotsFromDRSecondaryNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SnapshotInner>>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(ServiceResponse<Page<SnapshotInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSnapshotsFromDRSecondaryNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+    ServiceResponse<PageImpl<SnapshotInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SnapshotInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SnapshotInner>>> listSnapshotsFromDRSecondaryNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSnapshotsFromDRSecondaryNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SnapshotInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SnapshotInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SnapshotInner>> result = listSnapshotsFromDRSecondaryNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SnapshotInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SnapshotInner>> listSnapshotsFromDRSecondaryNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SnapshotInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SnapshotInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)

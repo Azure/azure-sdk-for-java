@@ -60,6 +60,12 @@ public class DeletedSiteInner extends ProxyOnlyResource {
     private String deletedSiteKind;
 
     /**
+     * Geo Region of the deleted site.
+     */
+    @JsonProperty(value = "properties.geoRegionName", access = JsonProperty.Access.WRITE_ONLY)
+    private String geoRegionName;
+
+    /**
      * Get numeric id for the deleted site.
      *
      * @return the deletedSiteId value
@@ -120,6 +126,15 @@ public class DeletedSiteInner extends ProxyOnlyResource {
      */
     public String deletedSiteKind() {
         return this.deletedSiteKind;
+    }
+
+    /**
+     * Get geo Region of the deleted site.
+     *
+     * @return the geoRegionName value
+     */
+    public String geoRegionName() {
+        return this.geoRegionName;
     }
 
 }

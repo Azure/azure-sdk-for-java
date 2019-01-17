@@ -75,23 +75,8 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     }
 
     @Override
-    public String appServicePlanKind() {
-        return this.inner().appServicePlanKind();
-    }
-
-    @Override
     public String appServicePlanName() {
         return this.inner().appServicePlanName();
-    }
-
-    @Override
-    public Integer currentNumberOfWorkers() {
-        return this.inner().currentNumberOfWorkers();
-    }
-
-    @Override
-    public String currentWorkerSize() {
-        return this.inner().currentWorkerSize();
     }
 
     @Override
@@ -120,18 +105,8 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     }
 
     @Override
-    public String mdmId() {
-        return this.inner().mdmId();
-    }
-
-    @Override
     public Integer numberOfSites() {
         return this.inner().numberOfSites();
-    }
-
-    @Override
-    public Integer numberOfWorkers() {
-        return this.inner().numberOfWorkers();
     }
 
     @Override
@@ -182,11 +157,6 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     @Override
     public Integer targetWorkerSizeId() {
         return this.inner().targetWorkerSizeId();
-    }
-
-    @Override
-    public String workerSize() {
-        return this.inner().workerSize();
     }
 
     @Override

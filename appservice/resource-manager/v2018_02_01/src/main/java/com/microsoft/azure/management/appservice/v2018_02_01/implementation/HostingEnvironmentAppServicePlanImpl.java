@@ -39,21 +39,6 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     }
 
     @Override
-    public String appServicePlanKind() {
-        return this.inner().appServicePlanKind();
-    }
-
-    @Override
-    public Integer currentNumberOfWorkers() {
-        return this.inner().currentNumberOfWorkers();
-    }
-
-    @Override
-    public String currentWorkerSize() {
-        return this.inner().currentWorkerSize();
-    }
-
-    @Override
     public DateTime freeOfferExpirationTime() {
         return this.inner().freeOfferExpirationTime();
     }
@@ -109,11 +94,6 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     }
 
     @Override
-    public String mdmId() {
-        return this.inner().mdmId();
-    }
-
-    @Override
     public String name() {
         return this.inner().name();
     }
@@ -121,11 +101,6 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     @Override
     public Integer numberOfSites() {
         return this.inner().numberOfSites();
-    }
-
-    @Override
-    public Integer numberOfWorkers() {
-        return this.inner().numberOfWorkers();
     }
 
     @Override
@@ -186,11 +161,6 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
     @Override
     public String type() {
         return this.inner().type();
-    }
-
-    @Override
-    public String workerSize() {
-        return this.inner().workerSize();
     }
 
     @Override

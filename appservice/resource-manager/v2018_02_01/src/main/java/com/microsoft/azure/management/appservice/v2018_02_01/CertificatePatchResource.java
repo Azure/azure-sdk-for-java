@@ -67,7 +67,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     private DateTime issueDate;
 
     /**
-     * Certificate expriration date.
+     * Certificate expiration date.
      */
     @JsonProperty(value = "properties.expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime expirationDate;
@@ -234,7 +234,7 @@ public class CertificatePatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get certificate expriration date.
+     * Get certificate expiration date.
      *
      * @return the expirationDate value
      */

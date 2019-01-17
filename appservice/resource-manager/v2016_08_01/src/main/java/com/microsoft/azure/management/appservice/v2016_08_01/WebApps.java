@@ -2715,8 +2715,8 @@ public interface WebApps {
     Observable<SiteExtensionInfo> getSiteExtensionAsync(String resourceGroupName, String name, String siteExtensionId);
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
@@ -2738,8 +2738,8 @@ public interface WebApps {
     Completable deleteSiteExtensionAsync(String resourceGroupName, String name, String siteExtensionId);
 
     /**
-     * Get list of siteextensions for a web site, or a deployment slot.
-     * Get list of siteextensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
+     * Get list of site extensions for a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.

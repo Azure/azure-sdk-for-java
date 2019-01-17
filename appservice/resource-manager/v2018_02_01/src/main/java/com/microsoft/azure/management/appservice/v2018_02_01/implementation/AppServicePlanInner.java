@@ -156,42 +156,6 @@ public class AppServicePlanInner extends Resource {
     private ProvisioningState provisioningState;
 
     /**
-     * Kind of resource.
-     */
-    @JsonProperty(value = "properties.kind", access = JsonProperty.Access.WRITE_ONLY)
-    private String appServicePlanKind;
-
-    /**
-     * MDM ID of the App Service plan.
-     */
-    @JsonProperty(value = "properties.mdmId", access = JsonProperty.Access.WRITE_ONLY)
-    private String mdmId;
-
-    /**
-     * Current worker count.
-     */
-    @JsonProperty(value = "properties.currentNumberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer currentNumberOfWorkers;
-
-    /**
-     * Current worker size.
-     */
-    @JsonProperty(value = "properties.currentWorkerSize", access = JsonProperty.Access.WRITE_ONLY)
-    private String currentWorkerSize;
-
-    /**
-     * Worker count.
-     */
-    @JsonProperty(value = "properties.numberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer numberOfWorkers;
-
-    /**
-     * Worker size.
-     */
-    @JsonProperty(value = "properties.workerSize", access = JsonProperty.Access.WRITE_ONLY)
-    private String workerSize;
-
-    /**
      * The sku property.
      */
     @JsonProperty(value = "sku")
@@ -526,60 +490,6 @@ public class AppServicePlanInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Get kind of resource.
-     *
-     * @return the appServicePlanKind value
-     */
-    public String appServicePlanKind() {
-        return this.appServicePlanKind;
-    }
-
-    /**
-     * Get mDM ID of the App Service plan.
-     *
-     * @return the mdmId value
-     */
-    public String mdmId() {
-        return this.mdmId;
-    }
-
-    /**
-     * Get current worker count.
-     *
-     * @return the currentNumberOfWorkers value
-     */
-    public Integer currentNumberOfWorkers() {
-        return this.currentNumberOfWorkers;
-    }
-
-    /**
-     * Get current worker size.
-     *
-     * @return the currentWorkerSize value
-     */
-    public String currentWorkerSize() {
-        return this.currentWorkerSize;
-    }
-
-    /**
-     * Get worker count.
-     *
-     * @return the numberOfWorkers value
-     */
-    public Integer numberOfWorkers() {
-        return this.numberOfWorkers;
-    }
-
-    /**
-     * Get worker size.
-     *
-     * @return the workerSize value
-     */
-    public String workerSize() {
-        return this.workerSize;
     }
 
     /**

@@ -32,6 +32,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.Operation;
 import com.microsoft.azure.management.appservice.v2018_02_01.NetworkTrace;
 import com.microsoft.azure.management.appservice.v2018_02_01.SitePhpErrorLogFlag;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotDifference;
+import com.microsoft.azure.management.appservice.v2018_02_01.Snapshot;
 import com.microsoft.azure.management.appservice.v2018_02_01.CsmSlotEntity;
 import com.microsoft.azure.management.appservice.v2018_02_01.StorageMigrationOptions;
 import com.microsoft.azure.management.appservice.v2018_02_01.MigrateMySqlRequest;
@@ -45,7 +46,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SiteLogsConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.User;
 import com.microsoft.azure.management.appservice.v2018_02_01.PushSettings;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotConfigNamesResource;
-import com.microsoft.azure.management.appservice.v2018_02_01.Snapshot;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfigurationSnapshotInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.ContinuousWebJob;
 import com.microsoft.azure.management.appservice.v2018_02_01.Deployment;
@@ -959,6 +959,24 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Completable swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity) {
         WebAppsInner client = this.inner();
         return client.swapSlotWithProductionAsync(resourceGroupName, name, slotSwapEntity).toCompletable();
+    }
+
+    @Override
+    public Observable<Snapshot> listSnapshotsFromDRSecondaryAsync(final String resourceGroupName, final String name) {
+        WebAppsInner client = this.inner();
+        return client.listSnapshotsFromDRSecondaryAsync(resourceGroupName, name)
+        .flatMapIterable(new Func1<Page<SnapshotInner>, Iterable<SnapshotInner>>() {
+            @Override
+            public Iterable<SnapshotInner> call(Page<SnapshotInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<SnapshotInner, Snapshot>() {
+            @Override
+            public Snapshot call(SnapshotInner inner) {
+                return new SnapshotImpl(inner, manager());
+            }
+        });
     }
 
     @Override
@@ -3761,6 +3779,24 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     public Completable swapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity) {
         WebAppsInner client = this.inner();
         return client.swapSlotSlotAsync(resourceGroupName, name, slot, slotSwapEntity).toCompletable();
+    }
+
+    @Override
+    public Observable<Snapshot> listSnapshotsFromDRSecondarySlotAsync(final String resourceGroupName, final String name, final String slot) {
+        WebAppsInner client = this.inner();
+        return client.listSnapshotsFromDRSecondarySlotAsync(resourceGroupName, name, slot)
+        .flatMapIterable(new Func1<Page<SnapshotInner>, Iterable<SnapshotInner>>() {
+            @Override
+            public Iterable<SnapshotInner> call(Page<SnapshotInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<SnapshotInner, Snapshot>() {
+            @Override
+            public Snapshot call(SnapshotInner inner) {
+                return new SnapshotImpl(inner, manager());
+            }
+        });
     }
 
     @Override

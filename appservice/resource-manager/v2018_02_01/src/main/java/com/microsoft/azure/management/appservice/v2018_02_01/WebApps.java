@@ -689,6 +689,17 @@ public interface WebApps {
     Completable swapSlotWithProductionAsync(String resourceGroupName, String name, CsmSlotEntity slotSwapEntity);
 
     /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Snapshot> listSnapshotsFromDRSecondaryAsync(final String resourceGroupName, final String name);
+
+    /**
      * Starts an app (or deployment slot, if specified).
      * Starts an app (or deployment slot, if specified).
      *
@@ -3636,6 +3647,18 @@ public interface WebApps {
      * @return the observable for the request
      */
     Completable swapSlotSlotAsync(String resourceGroupName, String name, String slot, CsmSlotEntity slotSwapEntity);
+
+    /**
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     * Returns all Snapshots to the user from DRSecondary endpoint.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Website Name.
+     * @param slot Website Slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Snapshot> listSnapshotsFromDRSecondarySlotAsync(final String resourceGroupName, final String name, final String slot);
 
     /**
      * Starts an app (or deployment slot, if specified).

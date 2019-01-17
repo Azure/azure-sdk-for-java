@@ -31,24 +31,9 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
     String adminSiteName();
 
     /**
-     * @return the appServicePlanKind value.
-     */
-    String appServicePlanKind();
-
-    /**
      * @return the appServicePlanName value.
      */
     String appServicePlanName();
-
-    /**
-     * @return the currentNumberOfWorkers value.
-     */
-    Integer currentNumberOfWorkers();
-
-    /**
-     * @return the currentWorkerSize value.
-     */
-    String currentWorkerSize();
 
     /**
      * @return the geoRegion value.
@@ -76,19 +61,9 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
     Integer maximumNumberOfWorkers();
 
     /**
-     * @return the mdmId value.
-     */
-    String mdmId();
-
-    /**
      * @return the numberOfSites value.
      */
     Integer numberOfSites();
-
-    /**
-     * @return the numberOfWorkers value.
-     */
-    Integer numberOfWorkers();
 
     /**
      * @return the perSiteScaling value.
@@ -139,11 +114,6 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
      * @return the targetWorkerSizeId value.
      */
     Integer targetWorkerSizeId();
-
-    /**
-     * @return the workerSize value.
-     */
-    String workerSize();
 
     /**
      * @return the workerTierName value.
