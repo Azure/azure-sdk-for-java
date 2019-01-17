@@ -18,8 +18,6 @@ steps:
     ARM_CLIENTID: $(ARM_CLIENTID)
     ARM_CLIENTKEY: $(ARM_CLIENTKEY)
     AZURE_TEST_MODE: RECORD
-    KEYVAULT_VAULTURI: https://azure-keyvault-1.vault.azure.net
-    KEYVAULT_VAULTURI_ALT: https://azure-keyvault-2.vault.azure.net
     
 
 

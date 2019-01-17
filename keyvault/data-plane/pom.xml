@@ -290,19 +290,6 @@
             <goals>
                 <goal>set-system-properties</goal>
             </goals>
-            <configuration>
-                <properties>
-                    <property>
-                          <name>KEYVAULT_VAULTURI</name>
-                          <value>https://azure-keyvault-3.vault.azure.net</value>
-                    </property>
-
-                    <property>
-                          <name>KEYVAULT_VAULTURI_ALT</name>
-                          <value>https://azure-keyvault-3.vault.azure.net</value>
-                    </property>
-                </properties>
-            </configuration>
         </execution>
     </executions>
 </plugin>
