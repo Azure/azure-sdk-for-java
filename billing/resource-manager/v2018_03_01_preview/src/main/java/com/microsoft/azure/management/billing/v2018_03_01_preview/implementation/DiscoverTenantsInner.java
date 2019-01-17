@@ -52,7 +52,7 @@ public class DiscoverTenantsInner {
      */
     interface DiscoverTenantsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_03_01_preview.DiscoverTenants get" })
-        @GET("providers/Microsoft.Billing/discoverTenants")
+        @GET("providers/Microsoft.Billing/billingProfiles/{billingProfileId}/discoverTenants")
         Observable<Response<ResponseBody>> get(@Path("billingProfileId") String billingProfileId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }

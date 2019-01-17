@@ -9,13 +9,11 @@
 package com.microsoft.azure.management.billing.v2018_03_01_preview;
 
 import rx.Observable;
-import com.microsoft.azure.management.billing.v2018_03_01_preview.implementation.DiscoverTenantsInner;
-import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing DiscoverTenants.
  */
-public interface DiscoverTenants extends HasInner<DiscoverTenantsInner> {
+public interface DiscoverTenants {
     /**
      * Gets a Tenant Properties.
      *
