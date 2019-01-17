@@ -20,7 +20,7 @@ steps:
   inputs:
     mavenPomFile: $(pomFile)
     options: '--batch-mode'  #hides dependencies download progress from CI output
-    mavenOptions: '-Xmx3072m -Dhttp.keepAlive=false -Dsurefire.rerunFailingTestsCount=3 -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+    mavenOptions: '-Xmx3072m -DARM_CLIENTID=$(ARM_CLIENTID) -DARM_CLIENTKEY=$(ARM_CLIENTKEY) -DAZURE_TEST_MODE=$(AZURE_TEST_MODE) -DKEYVAULT_VAULTURI=$(KEYVAULT_VAULTURI) -DKEYVAULT_VAULTURI_ALT=$(KEYVAULT_VAULTURI_ALT) -Dhttp.keepAlive=false -Dsurefire.rerunFailingTestsCount=3 -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
