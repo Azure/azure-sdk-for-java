@@ -22,7 +22,7 @@ public class TopicUpdateParameters {
     private Map<String, String> tags;
 
     /**
-     * Get the tags value.
+     * Get tags of the resource.
      *
      * @return the tags value
      */
@@ -31,7 +31,7 @@ public class TopicUpdateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set tags of the resource.
      *
      * @param tags the tags value to set
      * @return the TopicUpdateParameters object itself.

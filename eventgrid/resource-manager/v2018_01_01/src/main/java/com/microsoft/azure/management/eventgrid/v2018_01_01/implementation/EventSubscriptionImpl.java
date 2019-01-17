@@ -39,10 +39,10 @@ class EventSubscriptionImpl extends CreatableUpdatableImpl<EventSubscription, Ev
         this.manager = manager;
         // Set resource name
         this.eventSubscriptionName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.eventSubscriptionName = IdParsingUtils.getValueFromIdByName(inner.id(), "eventSubscriptions");
         this.scope = IdParsingUtils.getValueFromIdByPosition(inner.id(), 0);
-        //
+        // set other parameters for create and update
         this.updateParameter = new EventSubscriptionUpdateParameters();
     }
 

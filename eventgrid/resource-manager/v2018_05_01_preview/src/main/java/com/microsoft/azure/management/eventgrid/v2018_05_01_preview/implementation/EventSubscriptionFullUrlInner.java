@@ -22,7 +22,7 @@ public class EventSubscriptionFullUrlInner {
     private String endpointUrl;
 
     /**
-     * Get the endpointUrl value.
+     * Get the URL that represents the endpoint of the destination of an event subscription.
      *
      * @return the endpointUrl value
      */
@@ -31,7 +31,7 @@ public class EventSubscriptionFullUrlInner {
     }
 
     /**
-     * Set the endpointUrl value.
+     * Set the URL that represents the endpoint of the destination of an event subscription.
      *
      * @param endpointUrl the endpointUrl value to set
      * @return the EventSubscriptionFullUrlInner object itself.
