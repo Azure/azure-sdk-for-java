@@ -52,13 +52,7 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
      * The package execution credential.
      */
     @JsonProperty(value = "typeProperties.executionCredential")
-    private Map<String, SSISExecutionCredential> executionCredential;
-
-    /**
-     * The package execution credential.
-     */
-    @JsonProperty(value = "typeProperties.executionCredential")
-    private Map<String, SSISExecutionCredential> executionCredential;
+    private SSISExecutionCredential executionCredential;
 
     /**
      * The integration runtime reference.
@@ -181,7 +175,7 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
      *
      * @return the executionCredential value
      */
-    public Map<String, SSISExecutionCredential> executionCredential() {
+    public SSISExecutionCredential executionCredential() {
         return this.executionCredential;
     }
 
@@ -191,7 +185,7 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
      * @param executionCredential the executionCredential value to set
      * @return the ExecuteSSISPackageActivity object itself.
      */
-    public ExecuteSSISPackageActivity withExecutionCredential(Map<String, SSISExecutionCredential> executionCredential) {
+    public ExecuteSSISPackageActivity withExecutionCredential(SSISExecutionCredential executionCredential) {
         this.executionCredential = executionCredential;
         return this;
     }
