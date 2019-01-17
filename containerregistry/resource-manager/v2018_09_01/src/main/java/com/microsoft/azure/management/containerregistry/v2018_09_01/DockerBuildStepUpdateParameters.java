@@ -53,7 +53,7 @@ public class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
     private List<Argument> arguments;
 
     /**
-     * Gets or sets the name of the target build stage for the docker build.
+     * The name of the target build stage for the docker build.
      */
     @JsonProperty(value = "target")
     private String target;
@@ -159,7 +159,7 @@ public class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
     }
 
     /**
-     * Get gets or sets the name of the target build stage for the docker build.
+     * Get the name of the target build stage for the docker build.
      *
      * @return the target value
      */
@@ -168,7 +168,7 @@ public class DockerBuildStepUpdateParameters extends TaskStepUpdateParameters {
     }
 
     /**
-     * Set gets or sets the name of the target build stage for the docker build.
+     * Set the name of the target build stage for the docker build.
      *
      * @param target the target value to set
      * @return the DockerBuildStepUpdateParameters object itself.

@@ -46,7 +46,7 @@ public class DockerBuildStep extends TaskStepProperties {
     private String dockerFilePath;
 
     /**
-     * Gets or sets the name of the target build stage for the docker build.
+     * The name of the target build stage for the docker build.
      */
     @JsonProperty(value = "target")
     private String target;
@@ -139,7 +139,7 @@ public class DockerBuildStep extends TaskStepProperties {
     }
 
     /**
-     * Get gets or sets the name of the target build stage for the docker build.
+     * Get the name of the target build stage for the docker build.
      *
      * @return the target value
      */
@@ -148,7 +148,7 @@ public class DockerBuildStep extends TaskStepProperties {
     }
 
     /**
-     * Set gets or sets the name of the target build stage for the docker build.
+     * Set the name of the target build stage for the docker build.
      *
      * @param target the target value to set
      * @return the DockerBuildStep object itself.

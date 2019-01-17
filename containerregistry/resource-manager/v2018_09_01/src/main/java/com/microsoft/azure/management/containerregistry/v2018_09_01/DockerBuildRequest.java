@@ -46,7 +46,7 @@ public class DockerBuildRequest extends RunRequest {
     private String dockerFilePath;
 
     /**
-     * Gets or sets the name of the target build stage for the docker build.
+     * The name of the target build stage for the docker build.
      */
     @JsonProperty(value = "target")
     private String target;
@@ -172,7 +172,7 @@ public class DockerBuildRequest extends RunRequest {
     }
 
     /**
-     * Get gets or sets the name of the target build stage for the docker build.
+     * Get the name of the target build stage for the docker build.
      *
      * @return the target value
      */
@@ -181,7 +181,7 @@ public class DockerBuildRequest extends RunRequest {
     }
 
     /**
-     * Set gets or sets the name of the target build stage for the docker build.
+     * Set the name of the target build stage for the docker build.
      *
      * @param target the target value to set
      * @return the DockerBuildRequest object itself.
