@@ -100,6 +100,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithScope {
            /**
             * Specifies scope.
+            * @param scope The identifier of the resource to which the event subscription needs to be created or updated. The scope can be a subscription, or a resource group, or a top level resource belonging to a resource provider namespace, or an EventGrid topic. For example, use '/subscriptions/{subscriptionId}/' for a subscription, '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}' for a resource, and '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}' for an EventGrid topic
+            * @return the next definition stage
             */
             WithCreate withScope(String scope);
         }
@@ -110,6 +112,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithDeadLetterDestination {
             /**
              * Specifies deadLetterDestination.
+             * @param deadLetterDestination The DeadLetter destination of the event subscription
+             * @return the next definition stage
              */
             WithCreate withDeadLetterDestination(DeadLetterDestination deadLetterDestination);
         }
@@ -120,6 +124,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithDestination {
             /**
              * Specifies destination.
+             * @param destination Information about the destination where events have to be delivered for the event subscription
+             * @return the next definition stage
              */
             WithCreate withDestination(EventSubscriptionDestination destination);
         }
@@ -130,6 +136,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithEventDeliverySchema {
             /**
              * Specifies eventDeliverySchema.
+             * @param eventDeliverySchema The event delivery schema for the event subscription. Possible values include: 'EventGridSchema', 'InputEventSchema', 'CloudEventV01Schema'
+             * @return the next definition stage
              */
             WithCreate withEventDeliverySchema(EventDeliverySchema eventDeliverySchema);
         }
@@ -140,6 +148,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithFilter {
             /**
              * Specifies filter.
+             * @param filter Information about the filter for the event subscription
+             * @return the next definition stage
              */
             WithCreate withFilter(EventSubscriptionFilter filter);
         }
@@ -150,6 +160,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithLabels {
             /**
              * Specifies labels.
+             * @param labels List of user defined labels
+             * @return the next definition stage
              */
             WithCreate withLabels(List<String> labels);
         }
@@ -160,6 +172,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithRetryPolicy {
             /**
              * Specifies retryPolicy.
+             * @param retryPolicy The retry policy for events. This can be used to configure maximum number of delivery attempts and time to live for events
+             * @return the next definition stage
              */
             WithCreate withRetryPolicy(RetryPolicy retryPolicy);
         }
@@ -188,6 +202,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithDeadLetterDestination {
             /**
              * Specifies deadLetterDestination.
+             * @param deadLetterDestination The DeadLetter destination of the event subscription
+             * @return the next update stage
              */
             Update withDeadLetterDestination(DeadLetterDestination deadLetterDestination);
         }
@@ -198,6 +214,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithDestination {
             /**
              * Specifies destination.
+             * @param destination Information about the destination where events have to be delivered for the event subscription
+             * @return the next update stage
              */
             Update withDestination(EventSubscriptionDestination destination);
         }
@@ -208,6 +226,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithEventDeliverySchema {
             /**
              * Specifies eventDeliverySchema.
+             * @param eventDeliverySchema The event delivery schema for the event subscription. Possible values include: 'EventGridSchema', 'InputEventSchema', 'CloudEventV01Schema'
+             * @return the next update stage
              */
             Update withEventDeliverySchema(EventDeliverySchema eventDeliverySchema);
         }
@@ -218,6 +238,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithFilter {
             /**
              * Specifies filter.
+             * @param filter Information about the filter for the event subscription
+             * @return the next update stage
              */
             Update withFilter(EventSubscriptionFilter filter);
         }
@@ -228,6 +250,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithLabels {
             /**
              * Specifies labels.
+             * @param labels List of user defined labels
+             * @return the next update stage
              */
             Update withLabels(List<String> labels);
         }
@@ -238,6 +262,8 @@ public interface EventSubscription extends HasInner<EventSubscriptionInner>, Ind
         interface WithRetryPolicy {
             /**
              * Specifies retryPolicy.
+             * @param retryPolicy The retry policy for events. This can be used to configure maximum number of delivery attempts and time to live for events
+             * @return the next update stage
              */
             Update withRetryPolicy(RetryPolicy retryPolicy);
         }

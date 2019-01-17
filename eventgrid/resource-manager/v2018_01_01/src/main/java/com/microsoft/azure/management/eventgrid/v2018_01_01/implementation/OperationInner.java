@@ -40,7 +40,7 @@ public class OperationInner {
     private Object properties;
 
     /**
-     * Get the name value.
+     * Get name of the operation.
      *
      * @return the name value
      */
@@ -49,7 +49,7 @@ public class OperationInner {
     }
 
     /**
-     * Set the name value.
+     * Set name of the operation.
      *
      * @param name the name value to set
      * @return the OperationInner object itself.
@@ -60,7 +60,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the display value.
+     * Get display name of the operation.
      *
      * @return the display value
      */
@@ -69,7 +69,7 @@ public class OperationInner {
     }
 
     /**
-     * Set the display value.
+     * Set display name of the operation.
      *
      * @param display the display value to set
      * @return the OperationInner object itself.
@@ -80,7 +80,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the origin value.
+     * Get origin of the operation.
      *
      * @return the origin value
      */
@@ -89,7 +89,7 @@ public class OperationInner {
     }
 
     /**
-     * Set the origin value.
+     * Set origin of the operation.
      *
      * @param origin the origin value to set
      * @return the OperationInner object itself.
@@ -100,7 +100,7 @@ public class OperationInner {
     }
 
     /**
-     * Get the properties value.
+     * Get properties of the operation.
      *
      * @return the properties value
      */
@@ -109,7 +109,7 @@ public class OperationInner {
     }
 
     /**
-     * Set the properties value.
+     * Set properties of the operation.
      *
      * @param properties the properties value to set
      * @return the OperationInner object itself.
