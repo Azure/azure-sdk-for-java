@@ -4,22 +4,28 @@ variables:
     value: $(java-keyvault-test-arm-client-id)
   - name: ARM_CLIENTKEY
     value: $(java-keyvault-test-arm-client-key)
-
-resources:
-- repo: self
+  - name: AZURE_TEST_MODE
+    value: RECORD
+  - name: KEYVAULT_VAULTURI
+    value: https://azure-keyvault-1.vault.azure.net
+  - name: KEYVAULT_VAULTURI_ALT 
+    value: https://azure-keyvault-2.vault.azure.net
+    
 queue:
   name: Hosted VS2017
 steps:
-- bash: |
-   LOG_PARAMS='-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-   mvn test -Dhttp.keepAlive=false -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -f pom.client.build.xml 
-  displayName: 'Bash Script'
-  env:
-    ARM_CLIENTID: $(ARM_CLIENTID)
-    ARM_CLIENTKEY: $(ARM_CLIENTKEY)
-    AZURE_TEST_MODE: RECORD
-    KEYVAULT_VAULTURI: https://azure-keyvault-1.vault.azure.net
-    KEYVAULT_VAULTURI_ALT: https://azure-keyvault-2.vault.azure.net
-    
+
+- task: Maven@3
+  displayName: 'Run Live Tests'
+  inputs:
+    mavenPomFile: $(pomFile)
+    options: '--batch-mode'  #hides dependencies download progress from CI output
+    mavenOptions: '-Xmx3072m -Dhttp.keepAlive=false -Dsurefire.rerunFailingTestsCount=3 -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn -f pom.client.build.xml'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    goals: 'test'
 
 
