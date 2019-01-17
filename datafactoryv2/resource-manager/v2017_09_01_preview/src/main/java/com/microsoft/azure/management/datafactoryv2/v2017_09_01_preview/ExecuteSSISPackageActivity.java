@@ -28,23 +28,31 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
     private SSISPackageLocation packageLocation;
 
     /**
-     * Specifies the runtime to execute SSIS package. Possible values include:
-     * 'x64', 'x86'.
+     * Specifies the runtime to execute SSIS package. The value should be "x86"
+     * or "x64". Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.runtime")
-    private SSISExecutionRuntime runtime;
+    private Object runtime;
 
     /**
-     * The logging level of SSIS package execution.
+     * The logging level of SSIS package execution. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "typeProperties.loggingLevel")
-    private String loggingLevel;
+    private Object loggingLevel;
 
     /**
-     * The environment path to execute the SSIS package.
+     * The environment path to execute the SSIS package. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.environmentPath")
-    private String environmentPath;
+    private Object environmentPath;
+
+    /**
+     * The package execution credential.
+     */
+    @JsonProperty(value = "typeProperties.executionCredential")
+    private SSISExecutionCredential executionCredential;
 
     /**
      * The integration runtime reference.
@@ -103,62 +111,82 @@ public class ExecuteSSISPackageActivity extends ExecutionActivity {
     }
 
     /**
-     * Get specifies the runtime to execute SSIS package. Possible values include: 'x64', 'x86'.
+     * Get specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression with resultType string).
      *
      * @return the runtime value
      */
-    public SSISExecutionRuntime runtime() {
+    public Object runtime() {
         return this.runtime;
     }
 
     /**
-     * Set specifies the runtime to execute SSIS package. Possible values include: 'x64', 'x86'.
+     * Set specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression with resultType string).
      *
      * @param runtime the runtime value to set
      * @return the ExecuteSSISPackageActivity object itself.
      */
-    public ExecuteSSISPackageActivity withRuntime(SSISExecutionRuntime runtime) {
+    public ExecuteSSISPackageActivity withRuntime(Object runtime) {
         this.runtime = runtime;
         return this;
     }
 
     /**
-     * Get the logging level of SSIS package execution.
+     * Get the logging level of SSIS package execution. Type: string (or Expression with resultType string).
      *
      * @return the loggingLevel value
      */
-    public String loggingLevel() {
+    public Object loggingLevel() {
         return this.loggingLevel;
     }
 
     /**
-     * Set the logging level of SSIS package execution.
+     * Set the logging level of SSIS package execution. Type: string (or Expression with resultType string).
      *
      * @param loggingLevel the loggingLevel value to set
      * @return the ExecuteSSISPackageActivity object itself.
      */
-    public ExecuteSSISPackageActivity withLoggingLevel(String loggingLevel) {
+    public ExecuteSSISPackageActivity withLoggingLevel(Object loggingLevel) {
         this.loggingLevel = loggingLevel;
         return this;
     }
 
     /**
-     * Get the environment path to execute the SSIS package.
+     * Get the environment path to execute the SSIS package. Type: string (or Expression with resultType string).
      *
      * @return the environmentPath value
      */
-    public String environmentPath() {
+    public Object environmentPath() {
         return this.environmentPath;
     }
 
     /**
-     * Set the environment path to execute the SSIS package.
+     * Set the environment path to execute the SSIS package. Type: string (or Expression with resultType string).
      *
      * @param environmentPath the environmentPath value to set
      * @return the ExecuteSSISPackageActivity object itself.
      */
-    public ExecuteSSISPackageActivity withEnvironmentPath(String environmentPath) {
+    public ExecuteSSISPackageActivity withEnvironmentPath(Object environmentPath) {
         this.environmentPath = environmentPath;
+        return this;
+    }
+
+    /**
+     * Get the package execution credential.
+     *
+     * @return the executionCredential value
+     */
+    public SSISExecutionCredential executionCredential() {
+        return this.executionCredential;
+    }
+
+    /**
+     * Set the package execution credential.
+     *
+     * @param executionCredential the executionCredential value to set
+     * @return the ExecuteSSISPackageActivity object itself.
+     */
+    public ExecuteSSISPackageActivity withExecutionCredential(SSISExecutionCredential executionCredential) {
+        this.executionCredential = executionCredential;
         return this;
     }
 

@@ -28,7 +28,8 @@ public class AzureFunctionActivity extends ExecutionActivity {
     private AzureFunctionActivityMethod method;
 
     /**
-     * Name of the Function that the Azure Function Activity will call.
+     * Name of the Function that the Azure Function Activity will call. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.functionName", required = true)
     private Object functionName;
@@ -71,7 +72,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     }
 
     /**
-     * Get name of the Function that the Azure Function Activity will call.
+     * Get name of the Function that the Azure Function Activity will call. Type: string (or Expression with resultType string).
      *
      * @return the functionName value
      */
@@ -80,7 +81,7 @@ public class AzureFunctionActivity extends ExecutionActivity {
     }
 
     /**
-     * Set name of the Function that the Azure Function Activity will call.
+     * Set name of the Function that the Azure Function Activity will call. Type: string (or Expression with resultType string).
      *
      * @param functionName the functionName value to set
      * @return the AzureFunctionActivity object itself.
