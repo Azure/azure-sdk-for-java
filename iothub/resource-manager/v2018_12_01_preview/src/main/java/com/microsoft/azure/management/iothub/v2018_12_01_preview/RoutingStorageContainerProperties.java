@@ -73,7 +73,8 @@ public class RoutingStorageContainerProperties {
 
     /**
      * Encoding that is used to serialize messages to blobs. Supported values
-     * are 'avro' and 'avrodeflate'. Default value is 'avro'.
+     * are 'avro', 'avrodeflate', and 'JSON'. Default value is 'avro'. Possible
+     * values include: 'Avro', 'AvroDeflate', 'JSON'.
      */
     @JsonProperty(value = "encoding")
     private String encoding;
@@ -239,7 +240,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Get encoding that is used to serialize messages to blobs. Supported values are 'avro' and 'avrodeflate'. Default value is 'avro'.
+     * Get encoding that is used to serialize messages to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'. Default value is 'avro'. Possible values include: 'Avro', 'AvroDeflate', 'JSON'.
      *
      * @return the encoding value
      */
@@ -248,7 +249,7 @@ public class RoutingStorageContainerProperties {
     }
 
     /**
-     * Set encoding that is used to serialize messages to blobs. Supported values are 'avro' and 'avrodeflate'. Default value is 'avro'.
+     * Set encoding that is used to serialize messages to blobs. Supported values are 'avro', 'avrodeflate', and 'JSON'. Default value is 'avro'. Possible values include: 'Avro', 'AvroDeflate', 'JSON'.
      *
      * @param encoding the encoding value to set
      * @return the RoutingStorageContainerProperties object itself.
