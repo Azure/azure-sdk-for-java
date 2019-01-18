@@ -26,7 +26,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "Wait", value = WaitActivity.class),
     @JsonSubTypes.Type(name = "ForEach", value = ForEachActivity.class),
     @JsonSubTypes.Type(name = "IfCondition", value = IfConditionActivity.class),
-    @JsonSubTypes.Type(name = "WebHook", value = WebHookActivity.class),
     @JsonSubTypes.Type(name = "ExecutePipeline", value = ExecutePipelineActivity.class)
 })
 public class ControlActivity extends Activity {
