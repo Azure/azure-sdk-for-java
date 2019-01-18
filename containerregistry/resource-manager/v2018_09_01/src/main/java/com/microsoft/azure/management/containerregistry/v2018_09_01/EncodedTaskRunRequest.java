@@ -66,6 +66,13 @@ public class EncodedTaskRunRequest extends RunRequest {
     private String sourceLocation;
 
     /**
+     * The properties that describes a set of credentials that will be used
+     * when this run is invoked.
+     */
+    @JsonProperty(value = "credentials")
+    private Credentials credentials;
+
+    /**
      * Get base64 encoded value of the template/definition file content.
      *
      * @return the encodedTaskContent value
@@ -204,6 +211,26 @@ public class EncodedTaskRunRequest extends RunRequest {
      */
     public EncodedTaskRunRequest withSourceLocation(String sourceLocation) {
         this.sourceLocation = sourceLocation;
+        return this;
+    }
+
+    /**
+     * Get the properties that describes a set of credentials that will be used when this run is invoked.
+     *
+     * @return the credentials value
+     */
+    public Credentials credentials() {
+        return this.credentials;
+    }
+
+    /**
+     * Set the properties that describes a set of credentials that will be used when this run is invoked.
+     *
+     * @param credentials the credentials value to set
+     * @return the EncodedTaskRunRequest object itself.
+     */
+    public EncodedTaskRunRequest withCredentials(Credentials credentials) {
+        this.credentials = credentials;
         return this;
     }
 
