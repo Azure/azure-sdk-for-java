@@ -419,6 +419,32 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner object to access its operations.
+     */
+    private ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies;
+
+    /**
+     * Gets the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner object to access its operations.
+     * @return the ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner object.
+     */
+    public ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies() {
+        return this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies;
+    }
+
+    /**
+     * The RestorableDroppedManagedDatabasesInner object to access its operations.
+     */
+    private RestorableDroppedManagedDatabasesInner restorableDroppedManagedDatabases;
+
+    /**
+     * Gets the RestorableDroppedManagedDatabasesInner object to access its operations.
+     * @return the RestorableDroppedManagedDatabasesInner object.
+     */
+    public RestorableDroppedManagedDatabasesInner restorableDroppedManagedDatabases() {
+        return this.restorableDroppedManagedDatabases;
+    }
+
+    /**
      * The RestorePointsInner object to access its operations.
      */
     private RestorePointsInner restorePoints;
@@ -553,6 +579,8 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.backupLongTermRetentionPolicies = new BackupLongTermRetentionPoliciesInner(restClient().retrofit(), this);
         this.managedBackupShortTermRetentionPolicies = new ManagedBackupShortTermRetentionPoliciesInner(restClient().retrofit(), this);
         this.managedDatabases = new ManagedDatabasesInner(restClient().retrofit(), this);
+        this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies = new ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesInner(restClient().retrofit(), this);
+        this.restorableDroppedManagedDatabases = new RestorableDroppedManagedDatabasesInner(restClient().retrofit(), this);
         this.restorePoints = new RestorePointsInner(restClient().retrofit(), this);
         this.serverAutomaticTunings = new ServerAutomaticTuningsInner(restClient().retrofit(), this);
         this.serverDnsAliases = new ServerDnsAliasesInner(restClient().retrofit(), this);

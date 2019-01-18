@@ -38,6 +38,8 @@ import com.microsoft.azure.management.sql.v2017_03_01_preview.LongTermRetentionB
 import com.microsoft.azure.management.sql.v2017_03_01_preview.BackupLongTermRetentionPolicies;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedBackupShortTermRetentionPolicies;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedDatabases;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.RestorableDroppedManagedDatabases;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.RestorePoints;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ServerAutomaticTunings;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ServerDnsAliases;
@@ -73,6 +75,8 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private BackupLongTermRetentionPolicies backupLongTermRetentionPolicies;
     private ManagedBackupShortTermRetentionPolicies managedBackupShortTermRetentionPolicies;
     private ManagedDatabases managedDatabases;
+    private ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies;
+    private RestorableDroppedManagedDatabases restorableDroppedManagedDatabases;
     private RestorePoints restorePoints;
     private ServerAutomaticTunings serverAutomaticTunings;
     private ServerDnsAliases serverDnsAliases;
@@ -344,6 +348,26 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.managedDatabases = new ManagedDatabasesImpl(this);
         }
         return this.managedDatabases;
+    }
+
+    /**
+     * @return Entry point to manage ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies.
+     */
+    public ManagedRestorableDroppedDatabaseBackupShortTermRetentionPolicies managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies() {
+        if (this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies == null) {
+            this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies = new ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesImpl(this);
+        }
+        return this.managedRestorableDroppedDatabaseBackupShortTermRetentionPolicies;
+    }
+
+    /**
+     * @return Entry point to manage RestorableDroppedManagedDatabases.
+     */
+    public RestorableDroppedManagedDatabases restorableDroppedManagedDatabases() {
+        if (this.restorableDroppedManagedDatabases == null) {
+            this.restorableDroppedManagedDatabases = new RestorableDroppedManagedDatabasesImpl(this);
+        }
+        return this.restorableDroppedManagedDatabases;
     }
 
     /**
