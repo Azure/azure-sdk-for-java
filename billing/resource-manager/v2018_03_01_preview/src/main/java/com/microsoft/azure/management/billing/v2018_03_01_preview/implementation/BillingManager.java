@@ -18,7 +18,6 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.EnrollmentAccounts;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.BillingPeriods;
-import com.microsoft.azure.management.billing.v2018_03_01_preview.DiscoverTenants;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.Invoices;
 import com.microsoft.azure.management.billing.v2018_03_01_preview.Operations;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
@@ -30,7 +29,6 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class BillingManager extends ManagerCore<BillingManager, BillingManagementClientImpl> {
     private EnrollmentAccounts enrollmentAccounts;
     private BillingPeriods billingPeriods;
-    private DiscoverTenants discoverTenants;
     private Invoices invoices;
     private Operations operations;
     /**
@@ -98,16 +96,6 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.billingPeriods = new BillingPeriodsImpl(this);
         }
         return this.billingPeriods;
-    }
-
-    /**
-     * @return Entry point to manage DiscoverTenants.
-     */
-    public DiscoverTenants discoverTenants() {
-        if (this.discoverTenants == null) {
-            this.discoverTenants = new DiscoverTenantsImpl(this);
-        }
-        return this.discoverTenants;
     }
 
     /**

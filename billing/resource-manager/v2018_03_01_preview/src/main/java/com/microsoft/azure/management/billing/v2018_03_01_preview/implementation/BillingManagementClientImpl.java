@@ -159,19 +159,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The DiscoverTenantsInner object to access its operations.
-     */
-    private DiscoverTenantsInner discoverTenants;
-
-    /**
-     * Gets the DiscoverTenantsInner object to access its operations.
-     * @return the DiscoverTenantsInner object.
-     */
-    public DiscoverTenantsInner discoverTenants() {
-        return this.discoverTenants;
-    }
-
-    /**
      * The InvoicesInner object to access its operations.
      */
     private InvoicesInner invoices;
@@ -234,7 +221,6 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.enrollmentAccounts = new EnrollmentAccountsInner(restClient().retrofit(), this);
         this.billingPeriods = new BillingPeriodsInner(restClient().retrofit(), this);
-        this.discoverTenants = new DiscoverTenantsInner(restClient().retrofit(), this);
         this.invoices = new InvoicesInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
