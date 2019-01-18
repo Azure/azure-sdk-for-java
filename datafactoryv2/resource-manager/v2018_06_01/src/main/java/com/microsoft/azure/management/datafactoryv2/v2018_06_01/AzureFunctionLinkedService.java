@@ -32,7 +32,7 @@ public class AzureFunctionLinkedService extends LinkedServiceInner {
      * Function or Host key for Azure Function App.
      */
     @JsonProperty(value = "typeProperties.functionKey")
-    private Object functionKey;
+    private SecretBase functionKey;
 
     /**
      * The encrypted credential used for authentication. Credentials are
@@ -67,7 +67,7 @@ public class AzureFunctionLinkedService extends LinkedServiceInner {
      *
      * @return the functionKey value
      */
-    public Object functionKey() {
+    public SecretBase functionKey() {
         return this.functionKey;
     }
 
@@ -77,7 +77,7 @@ public class AzureFunctionLinkedService extends LinkedServiceInner {
      * @param functionKey the functionKey value to set
      * @return the AzureFunctionLinkedService object itself.
      */
-    public AzureFunctionLinkedService withFunctionKey(Object functionKey) {
+    public AzureFunctionLinkedService withFunctionKey(SecretBase functionKey) {
         this.functionKey = functionKey;
         return this;
     }
