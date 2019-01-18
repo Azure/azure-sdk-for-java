@@ -274,6 +274,16 @@ class SiteConfigResourceImpl extends WrapperImpl<SiteConfigResourceInner> implem
     }
 
     @Override
+    public List<IpSecurityRestriction> scmIpSecurityRestrictions() {
+        return this.inner().scmIpSecurityRestrictions();
+    }
+
+    @Override
+    public Boolean scmIpSecurityRestrictionsUseMain() {
+        return this.inner().scmIpSecurityRestrictionsUseMain();
+    }
+
+    @Override
     public ScmType scmType() {
         return this.inner().scmType();
     }

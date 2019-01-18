@@ -308,10 +308,22 @@ public class SiteConfig {
     private Integer xManagedServiceIdentityId;
 
     /**
-     * IP security restrictions.
+     * IP security restrictions for main.
      */
     @JsonProperty(value = "ipSecurityRestrictions")
     private List<IpSecurityRestriction> ipSecurityRestrictions;
+
+    /**
+     * IP security restrictions for scm.
+     */
+    @JsonProperty(value = "scmIpSecurityRestrictions")
+    private List<IpSecurityRestriction> scmIpSecurityRestrictions;
+
+    /**
+     * IP security restrictions for scm to use main.
+     */
+    @JsonProperty(value = "scmIpSecurityRestrictionsUseMain")
+    private Boolean scmIpSecurityRestrictionsUseMain;
 
     /**
      * Http20Enabled: configures a web site to allow clients to connect over
@@ -1251,7 +1263,7 @@ public class SiteConfig {
     }
 
     /**
-     * Get iP security restrictions.
+     * Get iP security restrictions for main.
      *
      * @return the ipSecurityRestrictions value
      */
@@ -1260,13 +1272,53 @@ public class SiteConfig {
     }
 
     /**
-     * Set iP security restrictions.
+     * Set iP security restrictions for main.
      *
      * @param ipSecurityRestrictions the ipSecurityRestrictions value to set
      * @return the SiteConfig object itself.
      */
     public SiteConfig withIpSecurityRestrictions(List<IpSecurityRestriction> ipSecurityRestrictions) {
         this.ipSecurityRestrictions = ipSecurityRestrictions;
+        return this;
+    }
+
+    /**
+     * Get iP security restrictions for scm.
+     *
+     * @return the scmIpSecurityRestrictions value
+     */
+    public List<IpSecurityRestriction> scmIpSecurityRestrictions() {
+        return this.scmIpSecurityRestrictions;
+    }
+
+    /**
+     * Set iP security restrictions for scm.
+     *
+     * @param scmIpSecurityRestrictions the scmIpSecurityRestrictions value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withScmIpSecurityRestrictions(List<IpSecurityRestriction> scmIpSecurityRestrictions) {
+        this.scmIpSecurityRestrictions = scmIpSecurityRestrictions;
+        return this;
+    }
+
+    /**
+     * Get iP security restrictions for scm to use main.
+     *
+     * @return the scmIpSecurityRestrictionsUseMain value
+     */
+    public Boolean scmIpSecurityRestrictionsUseMain() {
+        return this.scmIpSecurityRestrictionsUseMain;
+    }
+
+    /**
+     * Set iP security restrictions for scm to use main.
+     *
+     * @param scmIpSecurityRestrictionsUseMain the scmIpSecurityRestrictionsUseMain value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withScmIpSecurityRestrictionsUseMain(Boolean scmIpSecurityRestrictionsUseMain) {
+        this.scmIpSecurityRestrictionsUseMain = scmIpSecurityRestrictionsUseMain;
         return this;
     }
 

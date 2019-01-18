@@ -44,6 +44,11 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
     String id();
 
     /**
+     * @return the isSwift value.
+     */
+    Boolean isSwift();
+
+    /**
      * @return the kind value.
      */
     String kind();
@@ -120,6 +125,16 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
         }
 
         /**
+         * The stage of the sitevnetinfo definition allowing to specify IsSwift.
+         */
+        interface WithIsSwift {
+            /**
+             * Specifies isSwift.
+             */
+            WithCreate withIsSwift(Boolean isSwift);
+        }
+
+        /**
          * The stage of the sitevnetinfo definition allowing to specify Kind.
          */
         interface WithKind {
@@ -144,13 +159,13 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<SiteVnetInfo>, DefinitionStages.WithCertBlob, DefinitionStages.WithDnsServers, DefinitionStages.WithKind, DefinitionStages.WithVnetResourceId {
+        interface WithCreate extends Creatable<SiteVnetInfo>, DefinitionStages.WithCertBlob, DefinitionStages.WithDnsServers, DefinitionStages.WithIsSwift, DefinitionStages.WithKind, DefinitionStages.WithVnetResourceId {
         }
     }
     /**
      * The template for a SiteVnetInfo update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SiteVnetInfo>, UpdateStages.WithCertBlob, UpdateStages.WithDnsServers, UpdateStages.WithKind, UpdateStages.WithVnetResourceId {
+    interface Update extends Appliable<SiteVnetInfo>, UpdateStages.WithCertBlob, UpdateStages.WithDnsServers, UpdateStages.WithIsSwift, UpdateStages.WithKind, UpdateStages.WithVnetResourceId {
     }
 
     /**
@@ -175,6 +190,16 @@ public interface SiteVnetInfo extends HasInner<VnetInfoInner>, Indexable, Refres
              * Specifies dnsServers.
              */
             Update withDnsServers(String dnsServers);
+        }
+
+        /**
+         * The stage of the sitevnetinfo update allowing to specify IsSwift.
+         */
+        interface WithIsSwift {
+            /**
+             * Specifies isSwift.
+             */
+            Update withIsSwift(Boolean isSwift);
         }
 
         /**
