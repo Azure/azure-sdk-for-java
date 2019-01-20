@@ -22,7 +22,7 @@ import com.microsoft.azure.ProxyResource;
 public class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource {
     /**
      * Specifies the state of the policy, whether it is enabled or disabled or
-     * a policy has not been applied yet on the specific resource. Possible
+     * a policy has not been applied yet on the specific database. Possible
      * values include: 'New', 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.state", required = true)
@@ -76,7 +76,7 @@ public class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource {
     private DateTime creationTime;
 
     /**
-     * Get specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific resource. Possible values include: 'New', 'Enabled', 'Disabled'.
+     * Get specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. Possible values include: 'New', 'Enabled', 'Disabled'.
      *
      * @return the state value
      */
@@ -85,7 +85,7 @@ public class ManagedDatabaseSecurityAlertPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific resource. Possible values include: 'New', 'Enabled', 'Disabled'.
+     * Set specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. Possible values include: 'New', 'Enabled', 'Disabled'.
      *
      * @param state the state value to set
      * @return the ManagedDatabaseSecurityAlertPolicyInner object itself.
