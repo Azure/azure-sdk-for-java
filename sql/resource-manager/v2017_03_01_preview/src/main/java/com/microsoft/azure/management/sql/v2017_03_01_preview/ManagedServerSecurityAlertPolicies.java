@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.sql.v2017_03_01_preview;
 
 import rx.Observable;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedServerSecurityAlertPolicy;
 
 /**
  * Type representing ManagedServerSecurityAlertPolicies.
@@ -30,5 +31,15 @@ public interface ManagedServerSecurityAlertPolicies {
      * @return the observable for the request
      */
     Observable<ManagedServerSecurityAlertPolicy> getAsync(String resourceGroupName, String managedInstanceName);
+
+    /**
+     * Get the managed server's threat detection policies.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ManagedServerSecurityAlertPolicy> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName);
 
 }
