@@ -9,24 +9,23 @@ package com.microsoft.azure.batch;
 import com.microsoft.azure.batch.protocol.models.*;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class JobScheduleTests extends BatchTestBase {
+public class JobScheduleTests extends BatchIntegrationTestBase {
     static CloudPool livePool;
 
     @BeforeClass
     public static void setup() throws Exception {
-        createClient(AuthMode.SharedKey);
-        String poolId = getStringWithUserNamePrefix("-testpool");
-        livePool = createIfNotExistPaaSPool(poolId);
-        Assert.assertNotNull(livePool);
+        if(isRecordMode()) {
+            createClientDirect(AuthMode.SharedKey);
+            String poolId = getStringIdWithUserNamePrefix("-testpool");
+            livePool = createIfNotExistPaaSPool(poolId);
+            Assert.assertNotNull(livePool);
+        }
     }
 
     @AfterClass
@@ -42,10 +41,12 @@ public class JobScheduleTests extends BatchTestBase {
     @Test
     public void canCRUDJobSchedule() throws Exception {
         // CREATE
-        String jobScheduleId = getStringWithUserNamePrefix("-JobSchedule-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-canCRUD");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(livePool.id());
+        }
         Schedule schedule = new Schedule().withDoNotRunUntil(DateTime.now()).withDoNotRunAfter(DateTime.now().plusHours(5)).withStartWindow(Period.days(5));
         JobSpecification spec = new JobSpecification().withPriority(100).withPoolInfo(poolInfo);
         batchClient.jobScheduleOperations().createJobSchedule(jobScheduleId, schedule, spec);
@@ -100,10 +101,12 @@ public class JobScheduleTests extends BatchTestBase {
     @Test
     public void canUpdateJobScheduleState() throws Exception {
         // CREATE
-        String jobScheduleId = getStringWithUserNamePrefix("-JobSchedule-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-updateJobScheduleState");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(livePool.id());
+        }
         JobSpecification spec = new JobSpecification().withPriority(100).withPoolInfo(poolInfo);
         Schedule schedule = new Schedule().withDoNotRunUntil(DateTime.now()).withDoNotRunAfter(DateTime.now().plusHours(5)).withStartWindow(Period.days(5));
         batchClient.jobScheduleOperations().createJobSchedule(jobScheduleId, schedule, spec);
@@ -148,5 +151,4 @@ public class JobScheduleTests extends BatchTestBase {
             }
         }
     }
-
 }

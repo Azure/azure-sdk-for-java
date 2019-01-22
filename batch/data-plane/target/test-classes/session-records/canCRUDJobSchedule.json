@@ -1,0 +1,204 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://servbatch.centralus.batch.azure.com/jobschedules?api-version=2018-12-01.8.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:dfac00283846b3e4d5f766f0042900bf2f206f5efe6d5334a8c3a78c3f79e46e Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 22 Jan 2019 17:32:13 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "transfer-encoding" : "chunked",
+      "dataserviceid" : "https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD",
+      "retry-after" : "0",
+      "request-id" : "84993a2d-270e-4fa5-9ddb-b65e4972aae1",
+      "StatusCode" : "201",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 22 Jan 2019 17:32:14 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "8e4a0495-ed1d-4374-9257-914b0810f0bf",
+      "etag" : "0x8D6808F8C9002BD",
+      "location" : "https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD",
+      "dataserviceversion" : "3.0",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD?api-version=2018-12-01.8.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:dfac00283846b3e4d5f766f0042900bf2f206f5efe6d5334a8c3a78c3f79e46e Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 22 Jan 2019 17:32:13 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "transfer-encoding" : "chunked",
+      "retry-after" : "0",
+      "request-id" : "2e78bda2-f3eb-437e-bc6e-88845fcbb1c9",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 22 Jan 2019 17:32:14 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "f522c132-2f9b-4d9d-aa37-02a410176e6f",
+      "etag" : "0x8D6808F8C9002BD",
+      "dataserviceversion" : "3.0",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD?api-version=2018-12-01.8.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:dfac00283846b3e4d5f766f0042900bf2f206f5efe6d5334a8c3a78c3f79e46e Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 22 Jan 2019 17:32:13 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "transfer-encoding" : "chunked",
+      "retry-after" : "0",
+      "request-id" : "a72dec55-6d13-433c-ad67-9ff8bbcbb7ad",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 22 Jan 2019 17:32:14 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "e9f92cc5-e161-4146-b2d4-8268db21027d",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8D6808F8C9002BD",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://servbatch.centralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"vinaygera-JobSchedule-canCRUD\",\"url\":\"https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD\",\"eTag\":\"0x8D6808F8C9002BD\",\"lastModified\":\"2019-01-22T17:32:14.6430653Z\",\"creationTime\":\"2019-01-22T17:32:14.6430653Z\",\"state\":\"active\",\"stateTransitionTime\":\"2019-01-22T17:32:14.6430653Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2019-01-22T17:32:14.256Z\",\"doNotRunAfter\":\"2019-01-22T22:32:14.256Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"vinaygera-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://servbatch.centralus.batch.azure.com/jobs/vinaygera-JobSchedule-canCRUD:job-1\",\"id\":\"vinaygera-JobSchedule-canCRUD:job-1\"\r\n    }\r\n  }\r\n}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://servbatch.centralus.batch.azure.com/jobschedules?api-version=2018-12-01.8.0&%24filter=id%20eq%20%27vinaygera-JobSchedule-canCRUD%27",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:dfac00283846b3e4d5f766f0042900bf2f206f5efe6d5334a8c3a78c3f79e46e Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 22 Jan 2019 17:32:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "transfer-encoding" : "chunked",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "1e16c46c-5c36-40b3-b458-1b21e407f4b1",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "retry-after" : "0",
+      "request-id" : "8d5aec28-3130-4b82-9e26-13f4e35b9811",
+      "StatusCode" : "200",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://servbatch.centralus.batch.azure.com/$metadata#jobschedules\",\"value\":[\r\n    {\r\n      \"id\":\"vinaygera-JobSchedule-canCRUD\",\"url\":\"https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD\",\"eTag\":\"0x8D6808F8C9002BD\",\"lastModified\":\"2019-01-22T17:32:14.6430653Z\",\"creationTime\":\"2019-01-22T17:32:14.6430653Z\",\"state\":\"active\",\"stateTransitionTime\":\"2019-01-22T17:32:14.6430653Z\",\"schedule\":{\r\n        \"doNotRunUntil\":\"2019-01-22T17:32:14.256Z\",\"doNotRunAfter\":\"2019-01-22T22:32:14.256Z\",\"startWindow\":\"P5D\"\r\n      },\"jobSpecification\":{\r\n        \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n          \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n        },\"poolInfo\":{\r\n          \"poolId\":\"vinaygera-testpool\"\r\n        }\r\n      },\"executionInfo\":{\r\n        \"recentJob\":{\r\n          \"url\":\"https://servbatch.centralus.batch.azure.com/jobs/vinaygera-JobSchedule-canCRUD:job-1\",\"id\":\"vinaygera-JobSchedule-canCRUD:job-1\"\r\n        }\r\n      }\r\n    }\r\n  ]\r\n}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD?api-version=2018-12-01.8.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:dfac00283846b3e4d5f766f0042900bf2f206f5efe6d5334a8c3a78c3f79e46e Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 22 Jan 2019 17:32:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "transfer-encoding" : "chunked",
+      "dataserviceid" : "https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD",
+      "retry-after" : "0",
+      "request-id" : "8332776c-833e-45fb-9d63-7110b3b946f8",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 22 Jan 2019 17:32:15 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "6035ac9a-5f0e-421b-a088-c6ee9f3d931e",
+      "etag" : "0x8D6808F8CDC6FC8",
+      "dataserviceversion" : "3.0",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD?api-version=2018-12-01.8.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:dfac00283846b3e4d5f766f0042900bf2f206f5efe6d5334a8c3a78c3f79e46e Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 22 Jan 2019 17:32:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "transfer-encoding" : "chunked",
+      "retry-after" : "0",
+      "request-id" : "84cb1800-aa0c-48dd-bbdc-05fd087d2730",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 22 Jan 2019 17:32:15 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "6fabedc5-a525-4736-b2f6-3d32ed4cf131",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8D6808F8CDC6FC8",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://servbatch.centralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"vinaygera-JobSchedule-canCRUD\",\"url\":\"https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD\",\"eTag\":\"0x8D6808F8CDC6FC8\",\"lastModified\":\"2019-01-22T17:32:15.1439304Z\",\"creationTime\":\"2019-01-22T17:32:14.6430653Z\",\"state\":\"active\",\"stateTransitionTime\":\"2019-01-22T17:32:14.6430653Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2019-01-22T17:32:14.256Z\",\"doNotRunAfter\":\"2019-01-22T22:32:14.256Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"vinaygera-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://servbatch.centralus.batch.azure.com/jobs/vinaygera-JobSchedule-canCRUD:job-1\",\"id\":\"vinaygera-JobSchedule-canCRUD:job-1\"\r\n    }\r\n  },\"metadata\":[\r\n    {\r\n      \"name\":\"key1\",\"value\":\"value1\"\r\n    }\r\n  ]\r\n}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD?api-version=2018-12-01.8.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:dfac00283846b3e4d5f766f0042900bf2f206f5efe6d5334a8c3a78c3f79e46e Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 22 Jan 2019 17:32:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "transfer-encoding" : "chunked",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "cc9fd966-b750-4a10-a673-4b33afc607b1",
+      "retry-after" : "0",
+      "request-id" : "14aa77d3-ec85-482e-a20c-1414f0e94ccd",
+      "StatusCode" : "202",
+      "dataserviceversion" : "3.0",
+      "Body" : "",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD?api-version=2018-12-01.8.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:dfac00283846b3e4d5f766f0042900bf2f206f5efe6d5334a8c3a78c3f79e46e Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 22 Jan 2019 17:32:15 GMT",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "transfer-encoding" : "chunked",
+      "retry-after" : "0",
+      "request-id" : "d9fd93f1-6986-4731-a39a-4d5cff5a01e0",
+      "StatusCode" : "200",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "last-modified" : "Tue, 22 Jan 2019 17:32:15 GMT",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "7a2a6464-6fc6-4dc6-abbe-995314746e80",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "etag" : "0x8D6808F8CDC6FC8",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://servbatch.centralus.batch.azure.com/$metadata#jobschedules/@Element\",\"id\":\"vinaygera-JobSchedule-canCRUD\",\"url\":\"https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD\",\"eTag\":\"0x8D6808F8CDC6FC8\",\"lastModified\":\"2019-01-22T17:32:15.1439304Z\",\"creationTime\":\"2019-01-22T17:32:14.6430653Z\",\"state\":\"deleting\",\"stateTransitionTime\":\"2019-01-22T17:32:15.3009699Z\",\"previousState\":\"active\",\"previousStateTransitionTime\":\"2019-01-22T17:32:14.6430653Z\",\"schedule\":{\r\n    \"doNotRunUntil\":\"2019-01-22T17:32:14.256Z\",\"doNotRunAfter\":\"2019-01-22T22:32:14.256Z\",\"startWindow\":\"P5D\"\r\n  },\"jobSpecification\":{\r\n    \"priority\":100,\"usesTaskDependencies\":false,\"onAllTasksComplete\":\"noaction\",\"onTaskFailure\":\"noaction\",\"constraints\":{\r\n      \"maxWallClockTime\":\"P10675199DT2H48M5.4775807S\",\"maxTaskRetryCount\":0\r\n    },\"poolInfo\":{\r\n      \"poolId\":\"vinaygera-testpool\"\r\n    }\r\n  },\"executionInfo\":{\r\n    \"recentJob\":{\r\n      \"url\":\"https://servbatch.centralus.batch.azure.com/jobs/vinaygera-JobSchedule-canCRUD:job-1\",\"id\":\"vinaygera-JobSchedule-canCRUD:job-1\"\r\n    }\r\n  },\"metadata\":[\r\n    {\r\n      \"name\":\"key1\",\"value\":\"value1\"\r\n    }\r\n  ]\r\n}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://servbatch.centralus.batch.azure.com/jobschedules/vinaygera-JobSchedule-canCRUD?api-version=2018-12-01.8.0",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Mac OS X/10.12 MacAddressHash:dfac00283846b3e4d5f766f0042900bf2f206f5efe6d5334a8c3a78c3f79e46e Java:1.8.0_191 (BatchServiceClient, 2018-12-01.8.0)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Tue, 22 Jan 2019 17:32:16 GMT",
+      "content-length" : "389",
+      "server" : "Microsoft-HTTPAPI/2.0",
+      "x-content-type-options" : "nosniff",
+      "client-request-id" : "16821211-b367-408b-80b6-60adad8848b4",
+      "content-type" : "application/json;odata=minimalmetadata",
+      "retry-after" : "0",
+      "request-id" : "380027b5-0337-42d3-89c3-21900decfc2f",
+      "StatusCode" : "409",
+      "dataserviceversion" : "3.0",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://servbatch.centralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"JobScheduleBeingDeleted\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The specified job schedule has been marked for deletion and is being reclaimed.\\nRequestId:380027b5-0337-42d3-89c3-21900decfc2f\\nTime:2019-01-22T17:32:16.4906661Z\"\r\n  }\r\n}",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
+    }
+  } ],
+  "variables" : [ ]
+}
