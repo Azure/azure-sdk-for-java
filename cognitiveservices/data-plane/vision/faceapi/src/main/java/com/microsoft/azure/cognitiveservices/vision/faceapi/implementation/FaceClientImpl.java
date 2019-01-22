@@ -18,6 +18,7 @@ import com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroupPers
 import com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroupPersons;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.Snapshots;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
@@ -220,6 +221,19 @@ public class FaceClientImpl extends AzureServiceClient implements FaceClient {
     }
 
     /**
+     * The Snapshots object to access its operations.
+     */
+    private Snapshots snapshots;
+
+    /**
+     * Gets the Snapshots object to access its operations.
+     * @return the Snapshots object.
+     */
+    public Snapshots snapshots() {
+        return this.snapshots;
+    }
+
+    /**
      * Initializes an instance of FaceClient client.
      *
      * @param credentials the management credentials for Azure
@@ -260,6 +274,7 @@ public class FaceClientImpl extends AzureServiceClient implements FaceClient {
         this.largePersonGroupPersons = new LargePersonGroupPersonsImpl(restClient().retrofit(), this);
         this.largePersonGroups = new LargePersonGroupsImpl(restClient().retrofit(), this);
         this.largeFaceLists = new LargeFaceListsImpl(restClient().retrofit(), this);
+        this.snapshots = new SnapshotsImpl(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

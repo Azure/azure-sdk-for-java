@@ -137,4 +137,10 @@ public interface FaceClient {
      */
     LargeFaceLists largeFaceLists();
 
+    /**
+     * Gets the Snapshots object to access its operations.
+     * @return the Snapshots object.
+     */
+    Snapshots snapshots();
+
 }
