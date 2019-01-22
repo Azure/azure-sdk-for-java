@@ -18,7 +18,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
     /**
-     * Porperties of Sku.
+     * Properties of Sku.
      */
     @JsonProperty(value = "sku")
     private SBSku sku;
@@ -54,7 +54,7 @@ public class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
     private String metricId;
 
     /**
-     * Get porperties of Sku.
+     * Get properties of Sku.
      *
      * @return the sku value
      */
@@ -63,7 +63,7 @@ public class SBNamespaceUpdateParameters extends ResourceNamespacePatch {
     }
 
     /**
-     * Set porperties of Sku.
+     * Set properties of Sku.
      *
      * @param sku the sku value to set
      * @return the SBNamespaceUpdateParameters object itself.

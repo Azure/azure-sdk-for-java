@@ -24,7 +24,7 @@ public interface DisasterRecoveryConfigs extends SupportsCreating<ArmDisasterRec
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
-     * @param name The Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * @param name The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -42,7 +42,7 @@ public interface DisasterRecoveryConfigs extends SupportsCreating<ArmDisasterRec
     Completable breakPairingAsync(String resourceGroupName, String namespaceName, String alias);
 
     /**
-     * envokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
+     * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
@@ -90,7 +90,7 @@ public interface DisasterRecoveryConfigs extends SupportsCreating<ArmDisasterRec
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param alias The Disaster Recovery configuration name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -113,7 +113,7 @@ public interface DisasterRecoveryConfigs extends SupportsCreating<ArmDisasterRec
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param alias The Disaster Recovery configuration name
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

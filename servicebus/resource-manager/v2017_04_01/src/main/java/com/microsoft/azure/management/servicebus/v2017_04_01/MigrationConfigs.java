@@ -19,7 +19,7 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface MigrationConfigs extends SupportsCreating<MigrationConfigProperties.DefinitionStages.Blank>, HasInner<MigrationConfigsInner> {
     /**
-     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any enties created after the operation will be under Premium Namespace. CompleteMigration operation will fail when entity migration is in-progress.
+     * This operation Completes Migration of entities by pointing the connection strings to Premium namespace and any entities created after the operation will be under Premium Namespace. CompleteMigration operation will fail when entity migration is in-progress.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name

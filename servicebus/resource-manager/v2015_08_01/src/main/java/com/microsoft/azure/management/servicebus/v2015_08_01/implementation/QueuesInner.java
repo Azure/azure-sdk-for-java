@@ -667,7 +667,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -684,7 +684,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param parameters The shared access authorization rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -700,7 +700,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
@@ -720,7 +720,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param parameters The shared access authorization rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
@@ -775,7 +775,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -791,7 +791,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -806,7 +806,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
      */
@@ -825,7 +825,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
      */
@@ -875,7 +875,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -890,7 +890,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -905,7 +905,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -924,7 +924,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -975,7 +975,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -991,7 +991,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1006,7 +1006,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
      */
@@ -1025,7 +1025,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SharedAccessAuthorizationRuleResourceInner object
      */
@@ -1075,7 +1075,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1091,7 +1091,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1106,7 +1106,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
@@ -1125,7 +1125,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
@@ -1175,7 +1175,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1191,7 +1191,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -1206,7 +1206,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
@@ -1225,7 +1225,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
      */
@@ -1271,7 +1271,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1288,7 +1288,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1304,7 +1304,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object
@@ -1324,7 +1324,7 @@ public class QueuesInner {
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name
      * @param queueName The queue name.
-     * @param authorizationRuleName The authorizationrule name.
+     * @param authorizationRuleName The authorization rule name.
      * @param policykey Key that needs to be regenerated. Possible values include: 'PrimaryKey', 'SecondaryKey'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ResourceListKeysInner object

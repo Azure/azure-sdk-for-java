@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CheckNameAvailability {
     /**
-     * The Name to check the namespce name availability and The namespace name
+     * The Name to check the namespace name availability and The namespace name
      * can contain only letters, numbers, and hyphens. The namespace must start
      * with a letter, and it must end with a letter or number.
      */
@@ -23,7 +23,7 @@ public class CheckNameAvailability {
     private String name;
 
     /**
-     * Get the Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * Get the Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
      *
      * @return the name value
      */
@@ -32,7 +32,7 @@ public class CheckNameAvailability {
     }
 
     /**
-     * Set the Name to check the namespce name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
+     * Set the Name to check the namespace name availability and The namespace name can contain only letters, numbers, and hyphens. The namespace must start with a letter, and it must end with a letter or number.
      *
      * @param name the name value to set
      * @return the CheckNameAvailability object itself.

@@ -53,7 +53,7 @@ public class SBTopicInner extends ProxyResource {
     private Integer subscriptionCount;
 
     /**
-     * Message count deatils.
+     * Message count details.
      */
     @JsonProperty(value = "properties.countDetails", access = JsonProperty.Access.WRITE_ONLY)
     private MessageCountDetails countDetails;
@@ -176,7 +176,7 @@ public class SBTopicInner extends ProxyResource {
     }
 
     /**
-     * Get message count deatils.
+     * Get message count details.
      *
      * @return the countDetails value
      */

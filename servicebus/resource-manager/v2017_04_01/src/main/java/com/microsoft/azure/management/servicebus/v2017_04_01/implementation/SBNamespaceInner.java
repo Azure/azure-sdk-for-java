@@ -20,7 +20,7 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class SBNamespaceInner extends Resource {
     /**
-     * Porperties of Sku.
+     * Properties of Sku.
      */
     @JsonProperty(value = "sku")
     private SBSku sku;
@@ -56,7 +56,7 @@ public class SBNamespaceInner extends Resource {
     private String metricId;
 
     /**
-     * Get porperties of Sku.
+     * Get properties of Sku.
      *
      * @return the sku value
      */
@@ -65,7 +65,7 @@ public class SBNamespaceInner extends Resource {
     }
 
     /**
-     * Set porperties of Sku.
+     * Set properties of Sku.
      *
      * @param sku the sku value to set
      * @return the SBNamespaceInner object itself.
