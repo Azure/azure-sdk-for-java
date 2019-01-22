@@ -67,10 +67,10 @@
     </dependency>
     
     <!-- Other Microsoft Azure Dependencies -->
-    <dependency>
+    <!--dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-    </dependency>
+    </dependency-->
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
@@ -118,11 +118,11 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
+    <!--dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15on</artifactId>
       <scope>test</scope>
-    </dependency>
+    </dependency-->
     <dependency>
     	<groupId>org.mockito</groupId>
     	<artifactId>mockito-core</artifactId>

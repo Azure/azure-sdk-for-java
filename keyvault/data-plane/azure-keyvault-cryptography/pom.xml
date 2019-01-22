@@ -84,6 +84,6 @@
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcprov-jdk15on</artifactId>
         <scope>test</scope>
-      </dependency>  
+      </dependency>
     </dependencies>
 </project>
