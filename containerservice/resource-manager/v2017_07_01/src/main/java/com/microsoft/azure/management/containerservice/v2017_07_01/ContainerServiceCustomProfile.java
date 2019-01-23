@@ -21,7 +21,7 @@ public class ContainerServiceCustomProfile {
     private String orchestrator;
 
     /**
-     * Get the orchestrator value.
+     * Get the name of the custom orchestrator to use.
      *
      * @return the orchestrator value
      */
@@ -30,7 +30,7 @@ public class ContainerServiceCustomProfile {
     }
 
     /**
-     * Set the orchestrator value.
+     * Set the name of the custom orchestrator to use.
      *
      * @param orchestrator the orchestrator value to set
      * @return the ContainerServiceCustomProfile object itself.

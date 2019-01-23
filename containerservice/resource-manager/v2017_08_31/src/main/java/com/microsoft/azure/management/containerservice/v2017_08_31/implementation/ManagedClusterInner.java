@@ -35,7 +35,7 @@ public class ManagedClusterInner extends Resource {
     private String dnsPrefix;
 
     /**
-     * FDQN for the master pool.
+     * FQDN for the master pool.
      */
     @JsonProperty(value = "properties.fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
@@ -67,7 +67,7 @@ public class ManagedClusterInner extends Resource {
     private ContainerServiceServicePrincipalProfile servicePrincipalProfile;
 
     /**
-     * Get the provisioningState value.
+     * Get the current deployment or provisioning state, which only appears in the response.
      *
      * @return the provisioningState value
      */
@@ -76,7 +76,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the dnsPrefix value.
+     * Get dNS prefix specified when creating the managed cluster.
      *
      * @return the dnsPrefix value
      */
@@ -85,7 +85,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the dnsPrefix value.
+     * Set dNS prefix specified when creating the managed cluster.
      *
      * @param dnsPrefix the dnsPrefix value to set
      * @return the ManagedClusterInner object itself.
@@ -96,7 +96,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the fqdn value.
+     * Get fQDN for the master pool.
      *
      * @return the fqdn value
      */
@@ -105,7 +105,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the kubernetesVersion value.
+     * Get version of Kubernetes specified when creating the managed cluster.
      *
      * @return the kubernetesVersion value
      */
@@ -114,7 +114,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the kubernetesVersion value.
+     * Set version of Kubernetes specified when creating the managed cluster.
      *
      * @param kubernetesVersion the kubernetesVersion value to set
      * @return the ManagedClusterInner object itself.
@@ -125,7 +125,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the agentPoolProfiles value.
+     * Get properties of the agent pool.
      *
      * @return the agentPoolProfiles value
      */
@@ -134,7 +134,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the agentPoolProfiles value.
+     * Set properties of the agent pool.
      *
      * @param agentPoolProfiles the agentPoolProfiles value to set
      * @return the ManagedClusterInner object itself.
@@ -145,7 +145,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the linuxProfile value.
+     * Get profile for Linux VMs in the container service cluster.
      *
      * @return the linuxProfile value
      */
@@ -154,7 +154,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the linuxProfile value.
+     * Set profile for Linux VMs in the container service cluster.
      *
      * @param linuxProfile the linuxProfile value to set
      * @return the ManagedClusterInner object itself.
@@ -165,7 +165,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the servicePrincipalProfile value.
+     * Get information about a service principal identity for the cluster to use for manipulating Azure APIs. Either secret or keyVaultSecretRef must be specified.
      *
      * @return the servicePrincipalProfile value
      */
@@ -174,7 +174,7 @@ public class ManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the servicePrincipalProfile value.
+     * Set information about a service principal identity for the cluster to use for manipulating Azure APIs. Either secret or keyVaultSecretRef must be specified.
      *
      * @param servicePrincipalProfile the servicePrincipalProfile value to set
      * @return the ManagedClusterInner object itself.
