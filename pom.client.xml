@@ -106,6 +106,7 @@
       <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
       <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
       <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
+      <maven-shade-plugin.version>2.4.1</maven-shade-plugin.version>
    </properties>
 
    <dependencyManagement>
@@ -302,20 +303,7 @@
 
          <plugins>
 
-            <!--plugin>
-               <groupId>org.codehaus.mojo</groupId>
-               <artifactId>properties-maven-plugin</artifactId>
-               <version>${properties-maven-plugin.version}</version>
-               <executions>
-                  <execution>
-                     <goals>
-                        <goal>set-system-properties</goal>
-                     </goals>
-                  </execution>
-               </executions>
-            </plugin-->
-
-            <!-- This plugin is used to generate javadocs for the specified project -->
+            <!-- This plugin is used to generate javadocs for the specified project. -->
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-javadoc-plugin</artifactId>
@@ -356,11 +344,13 @@
                </configuration>
             </plugin>
 
-            <!--plugin>
+            <!-- This plugin is used to prepare and perform a release for the project with Maven.
+                  It has no influence on Maven build itself. -->
+            <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-release-plugin</artifactId>
                <version>${maven-release-plugin.version}</version>
-            </plugin-->
+            </plugin>
 
             <!-- This plugin used to remove files generated at build-time. -->
             <plugin>
@@ -384,7 +374,9 @@
                </configuration>
             </plugin>
 
-            <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+            <!--This plugin's configuration is used to store Eclipse m2e settings only.
+                It has no influence on the Maven build itself.-->
+
             <plugin>
                <groupId>org.eclipse.m2e</groupId>
                <artifactId>lifecycle-mapping</artifactId>
@@ -410,8 +402,8 @@
                </configuration>
             </plugin>
 
-            <!-- This plugin is used to run integration tests -->
-            <!--plugin>
+            <!-- This plugin is used to run integration tests. -->
+            <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-failsafe-plugin</artifactId>
                <version>${maven-failsafe-plugin.version}</version>
@@ -423,7 +415,7 @@
                      </goals>
                   </execution>
                </executions>
-            </plugin-->
+            </plugin>
 
             <!-- This compiler is used to compile the sources of your project. -->
             <plugin>
@@ -439,7 +431,7 @@
                </configuration>
             </plugin>
 
-            <!-- This plugin is used for rapid playback testing -->
+            <!-- This plugin is used for rapid playback testing. -->
             <plugin>
                <groupId>org.eclipse.jetty</groupId>
                <artifactId>jetty-maven-plugin</artifactId>
@@ -472,10 +464,11 @@
 
             <plugins>
 
+               <!-- This plug in is used to package the artifact in an uber jar. -->
                <plugin>
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-shade-plugin</artifactId>
-                  <version>2.4.1</version>
+                  <version>${maven-shade-plugin.version}</version>
                   <configuration>
                   </configuration>
                   <executions>
