@@ -98,6 +98,8 @@
       <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>
       <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
       <maven-clean-plugin.version>3.0.0</maven-clean-plugin.version>
+      <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
+      <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
    </properties>
 
    <dependencyManagement>
@@ -283,18 +285,6 @@
                </execution>
             </executions>
          </plugin>
-         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>${maven-compiler-plugin.version}</version>
-            <configuration>
-               <source>1.7</source>
-               <target>1.7</target>
-               <showWarnings>true</showWarnings>
-               <showDeprecation>true</showDeprecation>
-               <compilerArgument>-Xlint:unchecked</compilerArgument>
-            </configuration>
-         </plugin>
       </plugins>
       <pluginManagement>
          <plugins>
@@ -388,7 +378,7 @@
             <plugin>
                <groupId>org.eclipse.m2e</groupId>
                <artifactId>lifecycle-mapping</artifactId>
-               <version>1.0.0</version>
+               <version>${lifecycle-mapping.version}</version>
                <configuration>
                   <lifecycleMappingMetadata>
                      <pluginExecutions>
@@ -412,7 +402,7 @@
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-failsafe-plugin</artifactId>
-               <version>2.18.1</version>
+               <version>${maven-failsafe-plugin.version}</version>
                <executions>
                   <execution>
                      <goals>
@@ -425,7 +415,7 @@
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-compiler-plugin</artifactId>
-               <version>3.1</version>
+               <version>${maven-compiler-plugin.version}</version>
                <configuration>
                   <source>1.7</source>
                   <target>1.7</target>
@@ -437,7 +427,7 @@
             <plugin>
                <groupId>org.eclipse.jetty</groupId>
                <artifactId>jetty-maven-plugin</artifactId>
-               <version>9.2.22.v20170606</version>
+               <version>${jetty-maven-plugin.version}</version>
                <configuration>
                   <scanIntervalSeconds>0</scanIntervalSeconds>
                   <stopPort>11079</stopPort>
