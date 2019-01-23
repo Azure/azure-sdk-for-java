@@ -142,7 +142,7 @@ public interface IntegrationRuntimes extends SupportsCreating<IntegrationRuntime
     Observable<IntegrationRuntimeStatusResponse> createLinkedIntegrationRuntimeAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest);
 
     /**
-     * Enable interactive query for an Auzre-VNet integration runtime.
+     * Enable interactive query for an Azure-VNet integration runtime.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.

@@ -145,6 +145,10 @@ public class IntegrationRuntimesInner {
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/enableInteractiveQuery")
         Observable<Response<ResponseBody>> enableIntegrationRuntimeInteractiveQuery(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body EnableInteractiveQueryForIntegrationRuntimeRequest enableInteractiveQueryForIntegrationRuntimeRequest, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimes beginEnableIntegrationRuntimeInteractiveQuery" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/enableInteractiveQuery")
+        Observable<Response<ResponseBody>> beginEnableIntegrationRuntimeInteractiveQuery(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body EnableInteractiveQueryForIntegrationRuntimeRequest enableInteractiveQueryForIntegrationRuntimeRequest, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.IntegrationRuntimes disableIntegrationRuntimeInteractiveQuery" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes/{integrationRuntimeName}/disableInteractiveQuery")
         Observable<Response<ResponseBody>> disableIntegrationRuntimeInteractiveQuery(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -2146,7 +2150,7 @@ public class IntegrationRuntimesInner {
     }
 
     /**
-     * Enable interactive query for an Auzre-VNet integration runtime.
+     * Enable interactive query for an Azure-VNet integration runtime.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -2156,11 +2160,11 @@ public class IntegrationRuntimesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void enableIntegrationRuntimeInteractiveQuery(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        enableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).toBlocking().single().body();
+        enableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).toBlocking().last().body();
     }
 
     /**
-     * Enable interactive query for an Auzre-VNet integration runtime.
+     * Enable interactive query for an Azure-VNet integration runtime.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -2174,13 +2178,13 @@ public class IntegrationRuntimesInner {
     }
 
     /**
-     * Enable interactive query for an Auzre-VNet integration runtime.
+     * Enable interactive query for an Azure-VNet integration runtime.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<Void> enableIntegrationRuntimeInteractiveQueryAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         return enableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).map(new Func1<ServiceResponse<Void>, Void>() {
@@ -2192,13 +2196,13 @@ public class IntegrationRuntimesInner {
     }
 
     /**
-     * Enable interactive query for an Auzre-VNet integration runtime.
+     * Enable interactive query for an Azure-VNet integration runtime.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> enableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
         if (this.client.subscriptionId() == null) {
@@ -2219,22 +2223,11 @@ public class IntegrationRuntimesInner {
         final Long autoTerminationMinutes = null;
         EnableInteractiveQueryForIntegrationRuntimeRequest enableInteractiveQueryForIntegrationRuntimeRequest = new EnableInteractiveQueryForIntegrationRuntimeRequest();
         enableInteractiveQueryForIntegrationRuntimeRequest.withAutoTerminationMinutes(null);
-        return service.enableIntegrationRuntimeInteractiveQuery(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), enableInteractiveQueryForIntegrationRuntimeRequest, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = enableIntegrationRuntimeInteractiveQueryDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Observable<Response<ResponseBody>> observable = service.enableIntegrationRuntimeInteractiveQuery(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), enableInteractiveQueryForIntegrationRuntimeRequest, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
-
     /**
-     * Enable interactive query for an Auzre-VNet integration runtime.
+     * Enable interactive query for an Azure-VNet integration runtime.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -2245,11 +2238,11 @@ public class IntegrationRuntimesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void enableIntegrationRuntimeInteractiveQuery(String resourceGroupName, String factoryName, String integrationRuntimeName, Long autoTerminationMinutes) {
-        enableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, autoTerminationMinutes).toBlocking().single().body();
+        enableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, autoTerminationMinutes).toBlocking().last().body();
     }
 
     /**
-     * Enable interactive query for an Auzre-VNet integration runtime.
+     * Enable interactive query for an Azure-VNet integration runtime.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -2264,14 +2257,14 @@ public class IntegrationRuntimesInner {
     }
 
     /**
-     * Enable interactive query for an Auzre-VNet integration runtime.
+     * Enable interactive query for an Azure-VNet integration runtime.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param autoTerminationMinutes the number of minutes that the resource will be reserved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<Void> enableIntegrationRuntimeInteractiveQueryAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, Long autoTerminationMinutes) {
         return enableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, autoTerminationMinutes).map(new Func1<ServiceResponse<Void>, Void>() {
@@ -2283,14 +2276,14 @@ public class IntegrationRuntimesInner {
     }
 
     /**
-     * Enable interactive query for an Auzre-VNet integration runtime.
+     * Enable interactive query for an Azure-VNet integration runtime.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
      * @param autoTerminationMinutes the number of minutes that the resource will be reserved.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> enableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, Long autoTerminationMinutes) {
         if (this.client.subscriptionId() == null) {
@@ -2310,12 +2303,90 @@ public class IntegrationRuntimesInner {
         }
         EnableInteractiveQueryForIntegrationRuntimeRequest enableInteractiveQueryForIntegrationRuntimeRequest = new EnableInteractiveQueryForIntegrationRuntimeRequest();
         enableInteractiveQueryForIntegrationRuntimeRequest.withAutoTerminationMinutes(autoTerminationMinutes);
-        return service.enableIntegrationRuntimeInteractiveQuery(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), enableInteractiveQueryForIntegrationRuntimeRequest, this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.enableIntegrationRuntimeInteractiveQuery(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), enableInteractiveQueryForIntegrationRuntimeRequest, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Enable interactive query for an Azure-VNet integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginEnableIntegrationRuntimeInteractiveQuery(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        beginEnableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).toBlocking().single().body();
+    }
+
+    /**
+     * Enable interactive query for an Azure-VNet integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginEnableIntegrationRuntimeInteractiveQueryAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginEnableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName), serviceCallback);
+    }
+
+    /**
+     * Enable interactive query for an Azure-VNet integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginEnableIntegrationRuntimeInteractiveQueryAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        return beginEnableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enable interactive query for an Azure-VNet integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginEnableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (integrationRuntimeName == null) {
+            throw new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final Long autoTerminationMinutes = null;
+        EnableInteractiveQueryForIntegrationRuntimeRequest enableInteractiveQueryForIntegrationRuntimeRequest = new EnableInteractiveQueryForIntegrationRuntimeRequest();
+        enableInteractiveQueryForIntegrationRuntimeRequest.withAutoTerminationMinutes(null);
+        return service.beginEnableIntegrationRuntimeInteractiveQuery(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), enableInteractiveQueryForIntegrationRuntimeRequest, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = enableIntegrationRuntimeInteractiveQueryDelegate(response);
+                        ServiceResponse<Void> clientResponse = beginEnableIntegrationRuntimeInteractiveQueryDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2324,7 +2395,98 @@ public class IntegrationRuntimesInner {
             });
     }
 
-    private ServiceResponse<Void> enableIntegrationRuntimeInteractiveQueryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    /**
+     * Enable interactive query for an Azure-VNet integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param autoTerminationMinutes the number of minutes that the resource will be reserved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginEnableIntegrationRuntimeInteractiveQuery(String resourceGroupName, String factoryName, String integrationRuntimeName, Long autoTerminationMinutes) {
+        beginEnableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, autoTerminationMinutes).toBlocking().single().body();
+    }
+
+    /**
+     * Enable interactive query for an Azure-VNet integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param autoTerminationMinutes the number of minutes that the resource will be reserved.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginEnableIntegrationRuntimeInteractiveQueryAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, Long autoTerminationMinutes, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginEnableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, autoTerminationMinutes), serviceCallback);
+    }
+
+    /**
+     * Enable interactive query for an Azure-VNet integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param autoTerminationMinutes the number of minutes that the resource will be reserved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginEnableIntegrationRuntimeInteractiveQueryAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, Long autoTerminationMinutes) {
+        return beginEnableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, autoTerminationMinutes).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enable interactive query for an Azure-VNet integration runtime.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @param autoTerminationMinutes the number of minutes that the resource will be reserved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginEnableIntegrationRuntimeInteractiveQueryWithServiceResponseAsync(String resourceGroupName, String factoryName, String integrationRuntimeName, Long autoTerminationMinutes) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (integrationRuntimeName == null) {
+            throw new IllegalArgumentException("Parameter integrationRuntimeName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        EnableInteractiveQueryForIntegrationRuntimeRequest enableInteractiveQueryForIntegrationRuntimeRequest = new EnableInteractiveQueryForIntegrationRuntimeRequest();
+        enableInteractiveQueryForIntegrationRuntimeRequest.withAutoTerminationMinutes(autoTerminationMinutes);
+        return service.beginEnableIntegrationRuntimeInteractiveQuery(this.client.subscriptionId(), resourceGroupName, factoryName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), enableInteractiveQueryForIntegrationRuntimeRequest, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginEnableIntegrationRuntimeInteractiveQueryDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginEnableIntegrationRuntimeInteractiveQueryDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)

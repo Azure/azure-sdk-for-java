@@ -17,7 +17,7 @@ public class EnableInteractiveQueryForIntegrationRuntimeRequest {
     /**
      * the number of minutes that the resource will be reserved.
      */
-    @JsonProperty(value = "AutoTerminationMinutes")
+    @JsonProperty(value = "autoTerminationMinutes")
     private Long autoTerminationMinutes;
 
     /**
