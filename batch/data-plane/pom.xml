@@ -171,6 +171,9 @@
           <configLocation>checkstyle.xml</configLocation>
           <suppressionsLocation>suppressions.xml</suppressionsLocation>
           <consoleOutput>true</consoleOutput>
+          <!-- TODO soon - enable these failure modes -->
+          <failsOnError>false</failsOnError>
+          <failOnViolation>false</failOnViolation>
         </configuration>
       </plugin>
 
