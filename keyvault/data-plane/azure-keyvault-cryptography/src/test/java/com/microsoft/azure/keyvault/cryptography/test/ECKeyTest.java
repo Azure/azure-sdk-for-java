@@ -83,7 +83,7 @@ public class ECKeyTest {
     public static void setUpBeforeClass() throws Exception {
     	setProvider(Security.getProvider("SunEC"));
     	EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", _provider);
-    	
+
     	Path byte_location = Paths.get(ECKeyTest.class.getProtectionDomain().getClassLoader().getResource("byte_array.bin").getPath());
         CEK = Files.readAllBytes(byte_location);
 
