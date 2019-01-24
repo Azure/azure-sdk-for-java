@@ -6,8 +6,7 @@
    <packaging>pom</packaging>
    <version>1.0.0-SNAPSHOT</version>
    <name>Microsoft Azure SDK Build</name>
-   <description>This package contains the parent module of Microsoft Azure Java SDK.
-      It bundles all the Azure Java SDK components.</description>
+   <description>This package bundles all the SDKs in a multi-module for build/CI purposes.</description>
    <url>https://github.com/Azure/azure-sdk-for-java</url>
 
    <parent>
@@ -99,6 +98,7 @@
 
       <!-- Maven Tool Versions -->
       <maven-build-tools.version>1.0.1-SNAPSHOT</maven-build-tools.version>
+      <maven-javadoc.version>3.0.1</maven-javadoc.version>
       <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
       <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
       <jetty-maven-plugin.version>9.2.22.v20170606</jetty-maven-plugin.version>
@@ -109,6 +109,7 @@
       <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
       <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
       <maven-shade-plugin.version>2.4.1</maven-shade-plugin.version>
+      <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
    </properties>
 
    <dependencyManagement>
@@ -206,6 +207,27 @@
       <pluginManagement>
 
          <plugins>
+
+            <!-- This plugin adds sample code as tests for easier editing in IDEs -->
+            <plugin>
+               <groupId>org.codehaus.mojo</groupId>
+               <artifactId>build-helper-maven-plugin</artifactId>
+               <version>${build-helper-maven-plugin.version}</version>
+               <executions>
+                  <execution>
+                     <id>compile-samples-source</id>
+                     <phase>generate-test-sources</phase>
+                     <goals>
+                        <goal>add-test-source</goal>
+                     </goals>
+                     <configuration>
+                        <sources>
+                           <source>src/samples/java</source>
+                        </sources>
+                     </configuration>
+                  </execution>
+               </executions>
+            </plugin>
 
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>

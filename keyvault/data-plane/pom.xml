@@ -13,6 +13,7 @@
   </parent>
 
   <version>1.2.0</version>
+  <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-keyvault-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -75,28 +76,6 @@
     </dependencies>
   </dependencyManagement>
 
-  <build>
-  <pluginManagement>
-
-      <plugins>
-
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>${maven-compiler-plugin.version}</version>
-          <configuration>
-            <source>1.7</source>
-            <target>1.7</target>
-            <showWarnings>true</showWarnings>
-            <showDeprecation>true</showDeprecation>
-            <compilerArgument>-Xlint:unchecked</compilerArgument>
-          </configuration>
-        </plugin>
-
-      </plugins>
-
-    </pluginManagement>
-  </build>
 
   <developers>
     <developer>
