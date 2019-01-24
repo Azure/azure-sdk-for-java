@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ConnectionMonitorQueryResultInner {
     /**
-     * Status of connection monitor source. Possible values include: 'Uknown',
+     * Status of connection monitor source. Possible values include: 'Unknown',
      * 'Active', 'Inactive'.
      */
     @JsonProperty(value = "sourceStatus")
@@ -31,7 +31,7 @@ public class ConnectionMonitorQueryResultInner {
     private List<ConnectionStateSnapshot> states;
 
     /**
-     * Get status of connection monitor source. Possible values include: 'Uknown', 'Active', 'Inactive'.
+     * Get status of connection monitor source. Possible values include: 'Unknown', 'Active', 'Inactive'.
      *
      * @return the sourceStatus value
      */
@@ -40,7 +40,7 @@ public class ConnectionMonitorQueryResultInner {
     }
 
     /**
-     * Set status of connection monitor source. Possible values include: 'Uknown', 'Active', 'Inactive'.
+     * Set status of connection monitor source. Possible values include: 'Unknown', 'Active', 'Inactive'.
      *
      * @param sourceStatus the sourceStatus value to set
      * @return the ConnectionMonitorQueryResultInner object itself.

@@ -16,8 +16,8 @@ import com.microsoft.rest.ExpandableStringEnum;
  * Defines values for ConnectionMonitorSourceStatus.
  */
 public final class ConnectionMonitorSourceStatus extends ExpandableStringEnum<ConnectionMonitorSourceStatus> {
-    /** Static value Uknown for ConnectionMonitorSourceStatus. */
-    public static final ConnectionMonitorSourceStatus UKNOWN = fromString("Uknown");
+    /** Static value Unknown for ConnectionMonitorSourceStatus. */
+    public static final ConnectionMonitorSourceStatus UNKNOWN = fromString("Unknown");
 
     /** Static value Active for ConnectionMonitorSourceStatus. */
     public static final ConnectionMonitorSourceStatus ACTIVE = fromString("Active");
