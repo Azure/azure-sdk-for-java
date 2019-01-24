@@ -37,7 +37,6 @@
 
   <properties>
     <azure-keyvault.version>1.2.0</azure-keyvault.version>
-    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -75,6 +74,27 @@
 
     </dependencies>
   </dependencyManagement>
+
+  <build>
+
+      <plugins>
+
+        <!-- This plugin is used to compile the sources of your project. -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.7</source>
+            <target>1.7</target>
+            <showWarnings>true</showWarnings>
+            <showDeprecation>true</showDeprecation>
+            <compilerArgument>-Xlint:unchecked</compilerArgument>
+          </configuration>
+        </plugin>
+
+      </plugins>
+
+  </build>
 
 
   <developers>

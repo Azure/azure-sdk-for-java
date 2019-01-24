@@ -95,6 +95,10 @@
       <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
       <azure-mgmt-keyvault.version>1.11.1</azure-mgmt-keyvault.version>
       <azure-mgmt-resources.version>1.3.0</azure-mgmt-resources.version>
+      <azure-mgmt-resources-test.version>1.3.1-SNAPSHOT</azure-mgmt-resources-test.version>
+      <azure-mgmt-graph-rbac.version>1.3.0</azure-mgmt-graph-rbac.version>
+      <azure-mgmt-storage.version>1.3.0</azure-mgmt-storage.version>
+      <azure-storage.version>4.4.0</azure-storage.version>
 
       <!-- Maven Tool Versions -->
       <maven-build-tools.version>1.0.1-SNAPSHOT</maven-build-tools.version>
@@ -110,13 +114,14 @@
       <maven-failsafe-plugin.version>2.18.1</maven-failsafe-plugin.version>
       <maven-shade-plugin.version>2.4.1</maven-shade-plugin.version>
       <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
+      <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+      <azure-client-authentication.version>1.6.3</azure-client-authentication.version>
    </properties>
 
    <dependencyManagement>
       <dependencies>
 
          <!-- Other Microsoft Azure Dependencies -->
-         <!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-keyvault -->
          <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-runtime</artifactId>
@@ -153,16 +158,19 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons-lang3.version}</version>
          </dependency>
+
          <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>${commons-codec.version}</version>
          </dependency>
+
          <dependency>
             <groupId>io.reactivex</groupId>
             <artifactId>rxjava</artifactId>
             <version>${rxjava.version}</version>
          </dependency>
+
          <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -171,34 +179,75 @@
 
          <!-- Test dependencies -->
          <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-mgmt-storage</artifactId>
+            <version>${azure-mgmt-storage.version}</version>
+            <scope>test</scope>
+         </dependency>
+
+         <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-mgmt-graph-rbac</artifactId>
+            <version>${azure-mgmt-graph-rbac.version}</version>
+            <scope>test</scope>
+         </dependency>
+
+         <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-mgmt-resources</artifactId>
+            <version>${azure-mgmt-resources-test.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+         </dependency>
+
+         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
          </dependency>
+
+         <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-client-authentication</artifactId>
+            <version>${azure-client-authentication.version}</version>
+            <scope>test</scope>
+         </dependency>
+
          <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>adal4j</artifactId>
             <version>${adal4j.version}</version>
             <scope>test</scope>
          </dependency>
+
          <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
             <version>${bcprov-jdk15on.version}</version>
          </dependency>
+
          <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-keyvault</artifactId>
             <version>${azure-mgmt-keyvault.version}</version>
             <scope>test</scope>
          </dependency>
+
          <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-resources</artifactId>
             <version>${azure-mgmt-resources.version}</version>
             <scope>test</scope>
          </dependency>
+
+         <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-storage</artifactId>
+            <version>${azure-storage.version}</version>
+            <scope>test</scope>
+         </dependency>
+
       </dependencies>
    </dependencyManagement>
 
@@ -229,6 +278,7 @@
                </executions>
             </plugin>
 
+            <!-- This plugin is used to copy resources of your project. -->
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-resources-plugin</artifactId>
@@ -287,7 +337,6 @@
 
             <!--This plugin's configuration is used to store Eclipse m2e settings only.
                 It has no influence on the Maven build itself.-->
-
             <plugin>
                <groupId>org.eclipse.m2e</groupId>
                <artifactId>lifecycle-mapping</artifactId>
@@ -328,7 +377,7 @@
                </executions>
             </plugin>
 
-            <!-- This compiler is used to compile the sources of your project. -->
+            <!-- This plugin is used to compile the sources of the project. -->
             <plugin>
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-compiler-plugin</artifactId>
@@ -354,6 +403,13 @@
                   <waitForChild>false</waitForChild>
                   <jettyXml>./jetty.xml</jettyXml>
                </configuration>
+            </plugin>
+
+            <!-- This plugin provides the capability to build jars. -->
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-jar-plugin</artifactId>
+               <version>${maven-jar-plugin.version}</version>
             </plugin>
 
          </plugins>
