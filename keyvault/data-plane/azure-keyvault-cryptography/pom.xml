@@ -87,4 +87,21 @@
         <scope>test</scope>
       </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>${basedir}/target/test-classes</outputDirectory>
+                    <resources>
+                        <resource>
+                            <directory>${basedir}/src/test/resources</directory>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
