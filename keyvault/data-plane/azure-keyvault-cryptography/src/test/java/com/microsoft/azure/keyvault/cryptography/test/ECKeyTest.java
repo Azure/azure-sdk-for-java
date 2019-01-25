@@ -83,7 +83,7 @@ public class ECKeyTest {
     	setProvider(Security.getProvider("SunEC"));
     	EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", _provider);
 
-    	Path byte_location = Paths.get(ECKeyTest.class.getClassLoader().getResource("byte_array.bin").getPath());
+    	Path byte_location = Paths.get(getPath("byte_array.bin"));
         CEK = Files.readAllBytes(byte_location);
 
     	FACTORY = KeyFactory.getInstance("EC", _provider);
@@ -219,15 +219,19 @@ public class ECKeyTest {
     }
     
     private void testFromFile(String keyType, MessageDigest digest, String algorithm) throws Exception {
-        String privateKeyPath = ECKeyTest.class.getClassLoader().getResource(keyType+"keynew.pem").getPath();
-        String publicKeyPath = ECKeyTest.class.getClassLoader().getResource(keyType+"keypubnew.pem").getPath();
+        String privateKeyPath = getPath(keyType+"keynew.pem");
+        String publicKeyPath = getPath(keyType+"keypubnew.pem");
         
         EcKey newKey = new EcKey("akey", getKeyFromFile(privateKeyPath, publicKeyPath));
         
-        Path signatureLocation = Paths.get(ECKeyTest.class.getClassLoader().getResource(keyType+"sig.der").getPath());
+        Path signatureLocation = Paths.get(getPath(keyType+"sig.der"));
         byte[] signature = SignatureEncoding.fromAsn1Der(Files.readAllBytes(signatureLocation), algorithm);
 
         doVerify(newKey, digest, signature);
+    }
+
+    private static String getPath(String filename){
+        return ECKeyTest.class.getClassLoader().getResource(filename).getPath().replaceFirst(":","");
     }
     
     @Test
