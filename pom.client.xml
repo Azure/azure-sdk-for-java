@@ -6,7 +6,7 @@
    <packaging>pom</packaging>
    <version>1.0.0-SNAPSHOT</version>
    <name>Microsoft Azure SDK Build</name>
-   <description>This package bundles all the SDKs in a multi-module for build/CI purposes.</description>
+   <description>Parent POM for Microsoft Azure SDK for Java</description>
    <url>https://github.com/Azure/azure-sdk-for-java</url>
 
    <parent>
