@@ -8,7 +8,7 @@
   <packaging>pom</packaging>
 
   <name>Microsoft Azure SDK Build</name>
-  <description>This package bundles all the SDKs in a multi-module for build/CI purposes.</description>
+  <description>Parent POM for Microsoft Azure SDK for Java</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <build>
