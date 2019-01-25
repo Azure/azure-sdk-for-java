@@ -10,6 +10,7 @@ package com.microsoft.azure.management.signalr.v2018_10_01;
 
 import rx.Observable;
 import rx.Completable;
+import java.util.List;
 
 /**
  * Type representing SignalRs.
@@ -85,6 +86,16 @@ public interface SignalRs {
     Observable<SignalRResource> updateAsync(String resourceGroupName, String resourceName);
 
     /**
+     * Operation to restart a SignalR service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable restartAsync(String resourceGroupName, String resourceName);
+
+    /**
      * Handles requests to list all resources in a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -100,5 +111,28 @@ public interface SignalRs {
      * @return the observable for the request
      */
     Observable<SignalRResource> listByResourceGroupAsync(final String resourceGroupName);
+
+    /**
+     * Switch on/off SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param features List of features.
+    If certain feature is not present, SignalR service will remain it unchanged or use the global default value.
+    Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SignalRFeatureList> switchFeaturesAsync(String resourceGroupName, String resourceName, List<SignalRFeature> features);
+
+    /**
+     * List SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<SignalRFeatureList> listFeaturesAsync(String resourceGroupName, String resourceName);
 
 }

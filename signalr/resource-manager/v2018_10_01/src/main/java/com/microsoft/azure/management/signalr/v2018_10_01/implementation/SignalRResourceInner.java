@@ -56,14 +56,14 @@ public class SignalRResourceInner extends Resource {
     private String hostName;
 
     /**
-     * The publicly accessibly port of the SignalR service which is designed
+     * The publicly accessible port of the SignalR service which is designed
      * for browser/client side usage.
      */
     @JsonProperty(value = "properties.publicPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer publicPort;
 
     /**
-     * The publicly accessibly port of the SignalR service which is designed
+     * The publicly accessible port of the SignalR service which is designed
      * for customer server side usage.
      */
     @JsonProperty(value = "properties.serverPort", access = JsonProperty.Access.WRITE_ONLY)
@@ -146,7 +146,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the publicly accessibly port of the SignalR service which is designed for browser/client side usage.
+     * Get the publicly accessible port of the SignalR service which is designed for browser/client side usage.
      *
      * @return the publicPort value
      */
@@ -155,7 +155,7 @@ public class SignalRResourceInner extends Resource {
     }
 
     /**
-     * Get the publicly accessibly port of the SignalR service which is designed for customer server side usage.
+     * Get the publicly accessible port of the SignalR service which is designed for customer server side usage.
      *
      * @return the serverPort value
      */

@@ -20,6 +20,8 @@ import com.microsoft.azure.management.signalr.v2018_10_01.KeyType;
 import com.microsoft.azure.management.signalr.v2018_10_01.NameAvailabilityParameters;
 import com.microsoft.azure.management.signalr.v2018_10_01.RegenerateKeyParameters;
 import com.microsoft.azure.management.signalr.v2018_10_01.SignalRCreateParameters;
+import com.microsoft.azure.management.signalr.v2018_10_01.SignalRFeature;
+import com.microsoft.azure.management.signalr.v2018_10_01.SignalRFeaturesParameters;
 import com.microsoft.azure.management.signalr.v2018_10_01.SignalRUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -122,6 +124,26 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.signalr.v2018_10_01.SignalRs beginUpdate" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}")
         Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Body SignalRUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.signalr.v2018_10_01.SignalRs restart" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}/restart")
+        Observable<Response<ResponseBody>> restart(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.signalr.v2018_10_01.SignalRs beginRestart" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}/restart")
+        Observable<Response<ResponseBody>> beginRestart(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.signalr.v2018_10_01.SignalRs switchFeatures" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}/switchFeatures")
+        Observable<Response<ResponseBody>> switchFeatures(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SignalRFeaturesParameters parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.signalr.v2018_10_01.SignalRs beginSwitchFeatures" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}/switchFeatures")
+        Observable<Response<ResponseBody>> beginSwitchFeatures(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body SignalRFeaturesParameters parameters, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.signalr.v2018_10_01.SignalRs listFeatures" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/SignalR/{resourceName}/listFeatures")
+        Observable<Response<ResponseBody>> listFeatures(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("resourceName") String resourceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.signalr.v2018_10_01.SignalRs listNext" })
         @GET
@@ -1790,6 +1812,437 @@ public class SignalRsInner implements InnerSupportsGet<SignalRResourceInner>, In
         return this.client.restClient().responseBuilderFactory().<SignalRResourceInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SignalRResourceInner>() { }.getType())
                 .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Operation to restart a SignalR service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void restart(String resourceGroupName, String resourceName) {
+        restartWithServiceResponseAsync(resourceGroupName, resourceName).toBlocking().last().body();
+    }
+
+    /**
+     * Operation to restart a SignalR service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> restartAsync(String resourceGroupName, String resourceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(restartWithServiceResponseAsync(resourceGroupName, resourceName), serviceCallback);
+    }
+
+    /**
+     * Operation to restart a SignalR service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> restartAsync(String resourceGroupName, String resourceName) {
+        return restartWithServiceResponseAsync(resourceGroupName, resourceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Operation to restart a SignalR service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> restartWithServiceResponseAsync(String resourceGroupName, String resourceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.restart(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Operation to restart a SignalR service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginRestart(String resourceGroupName, String resourceName) {
+        beginRestartWithServiceResponseAsync(resourceGroupName, resourceName).toBlocking().single().body();
+    }
+
+    /**
+     * Operation to restart a SignalR service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginRestartAsync(String resourceGroupName, String resourceName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginRestartWithServiceResponseAsync(resourceGroupName, resourceName), serviceCallback);
+    }
+
+    /**
+     * Operation to restart a SignalR service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginRestartAsync(String resourceGroupName, String resourceName) {
+        return beginRestartWithServiceResponseAsync(resourceGroupName, resourceName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Operation to restart a SignalR service.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginRestartWithServiceResponseAsync(String resourceGroupName, String resourceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginRestart(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginRestartDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginRestartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Switch on/off SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param features List of features.
+     If certain feature is not present, SignalR service will remain it unchanged or use the global default value.
+     Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SignalRFeatureListInner object if successful.
+     */
+    public SignalRFeatureListInner switchFeatures(String resourceGroupName, String resourceName, List<SignalRFeature> features) {
+        return switchFeaturesWithServiceResponseAsync(resourceGroupName, resourceName, features).toBlocking().last().body();
+    }
+
+    /**
+     * Switch on/off SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param features List of features.
+     If certain feature is not present, SignalR service will remain it unchanged or use the global default value.
+     Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SignalRFeatureListInner> switchFeaturesAsync(String resourceGroupName, String resourceName, List<SignalRFeature> features, final ServiceCallback<SignalRFeatureListInner> serviceCallback) {
+        return ServiceFuture.fromResponse(switchFeaturesWithServiceResponseAsync(resourceGroupName, resourceName, features), serviceCallback);
+    }
+
+    /**
+     * Switch on/off SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param features List of features.
+     If certain feature is not present, SignalR service will remain it unchanged or use the global default value.
+     Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<SignalRFeatureListInner> switchFeaturesAsync(String resourceGroupName, String resourceName, List<SignalRFeature> features) {
+        return switchFeaturesWithServiceResponseAsync(resourceGroupName, resourceName, features).map(new Func1<ServiceResponse<SignalRFeatureListInner>, SignalRFeatureListInner>() {
+            @Override
+            public SignalRFeatureListInner call(ServiceResponse<SignalRFeatureListInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Switch on/off SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param features List of features.
+     If certain feature is not present, SignalR service will remain it unchanged or use the global default value.
+     Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<SignalRFeatureListInner>> switchFeaturesWithServiceResponseAsync(String resourceGroupName, String resourceName, List<SignalRFeature> features) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (features == null) {
+            throw new IllegalArgumentException("Parameter features is required and cannot be null.");
+        }
+        Validator.validate(features);
+        SignalRFeaturesParameters parameters = new SignalRFeaturesParameters();
+        parameters.withFeatures(features);
+        Observable<Response<ResponseBody>> observable = service.switchFeatures(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<SignalRFeatureListInner>() { }.getType());
+    }
+
+    /**
+     * Switch on/off SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param features List of features.
+     If certain feature is not present, SignalR service will remain it unchanged or use the global default value.
+     Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SignalRFeatureListInner object if successful.
+     */
+    public SignalRFeatureListInner beginSwitchFeatures(String resourceGroupName, String resourceName, List<SignalRFeature> features) {
+        return beginSwitchFeaturesWithServiceResponseAsync(resourceGroupName, resourceName, features).toBlocking().single().body();
+    }
+
+    /**
+     * Switch on/off SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param features List of features.
+     If certain feature is not present, SignalR service will remain it unchanged or use the global default value.
+     Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SignalRFeatureListInner> beginSwitchFeaturesAsync(String resourceGroupName, String resourceName, List<SignalRFeature> features, final ServiceCallback<SignalRFeatureListInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginSwitchFeaturesWithServiceResponseAsync(resourceGroupName, resourceName, features), serviceCallback);
+    }
+
+    /**
+     * Switch on/off SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param features List of features.
+     If certain feature is not present, SignalR service will remain it unchanged or use the global default value.
+     Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SignalRFeatureListInner object
+     */
+    public Observable<SignalRFeatureListInner> beginSwitchFeaturesAsync(String resourceGroupName, String resourceName, List<SignalRFeature> features) {
+        return beginSwitchFeaturesWithServiceResponseAsync(resourceGroupName, resourceName, features).map(new Func1<ServiceResponse<SignalRFeatureListInner>, SignalRFeatureListInner>() {
+            @Override
+            public SignalRFeatureListInner call(ServiceResponse<SignalRFeatureListInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Switch on/off SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param features List of features.
+     If certain feature is not present, SignalR service will remain it unchanged or use the global default value.
+     Note that, default value doesn't mean "false". It varies in terms of different FeatureFlags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SignalRFeatureListInner object
+     */
+    public Observable<ServiceResponse<SignalRFeatureListInner>> beginSwitchFeaturesWithServiceResponseAsync(String resourceGroupName, String resourceName, List<SignalRFeature> features) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (features == null) {
+            throw new IllegalArgumentException("Parameter features is required and cannot be null.");
+        }
+        Validator.validate(features);
+        SignalRFeaturesParameters parameters = new SignalRFeaturesParameters();
+        parameters.withFeatures(features);
+        return service.beginSwitchFeatures(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SignalRFeatureListInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SignalRFeatureListInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SignalRFeatureListInner> clientResponse = beginSwitchFeaturesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SignalRFeatureListInner> beginSwitchFeaturesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SignalRFeatureListInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SignalRFeatureListInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * List SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the SignalRFeatureListInner object if successful.
+     */
+    public SignalRFeatureListInner listFeatures(String resourceGroupName, String resourceName) {
+        return listFeaturesWithServiceResponseAsync(resourceGroupName, resourceName).toBlocking().single().body();
+    }
+
+    /**
+     * List SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<SignalRFeatureListInner> listFeaturesAsync(String resourceGroupName, String resourceName, final ServiceCallback<SignalRFeatureListInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listFeaturesWithServiceResponseAsync(resourceGroupName, resourceName), serviceCallback);
+    }
+
+    /**
+     * List SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SignalRFeatureListInner object
+     */
+    public Observable<SignalRFeatureListInner> listFeaturesAsync(String resourceGroupName, String resourceName) {
+        return listFeaturesWithServiceResponseAsync(resourceGroupName, resourceName).map(new Func1<ServiceResponse<SignalRFeatureListInner>, SignalRFeatureListInner>() {
+            @Override
+            public SignalRFeatureListInner call(ServiceResponse<SignalRFeatureListInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List SignalR resource features.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceName The name of the SignalR resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the SignalRFeatureListInner object
+     */
+    public Observable<ServiceResponse<SignalRFeatureListInner>> listFeaturesWithServiceResponseAsync(String resourceGroupName, String resourceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listFeatures(this.client.subscriptionId(), resourceGroupName, resourceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SignalRFeatureListInner>>>() {
+                @Override
+                public Observable<ServiceResponse<SignalRFeatureListInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<SignalRFeatureListInner> clientResponse = listFeaturesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<SignalRFeatureListInner> listFeaturesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SignalRFeatureListInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SignalRFeatureListInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

@@ -18,6 +18,9 @@ import com.microsoft.azure.management.signalr.v2018_10_01.SignalRKeys;
 import rx.Completable;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.signalr.v2018_10_01.SignalRResource;
+import com.microsoft.azure.management.signalr.v2018_10_01.SignalRFeatureList;
+import java.util.List;
+import com.microsoft.azure.management.signalr.v2018_10_01.SignalRFeature;
 
 class SignalRsImpl extends WrapperImpl<SignalRsInner> implements SignalRs {
     private final SignalRServiceManager manager;
@@ -110,6 +113,12 @@ class SignalRsImpl extends WrapperImpl<SignalRsInner> implements SignalRs {
     }
 
     @Override
+    public Completable restartAsync(String resourceGroupName, String resourceName) {
+        SignalRsInner client = this.inner();
+        return client.restartAsync(resourceGroupName, resourceName).toCompletable();
+    }
+
+    @Override
     public Observable<SignalRResource> listAsync() {
         SignalRsInner client = this.inner();
         return client.listAsync()
@@ -141,6 +150,30 @@ class SignalRsImpl extends WrapperImpl<SignalRsInner> implements SignalRs {
             @Override
             public SignalRResource call(SignalRResourceInner inner) {
                 return new SignalRResourceImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<SignalRFeatureList> switchFeaturesAsync(String resourceGroupName, String resourceName, List<SignalRFeature> features) {
+        SignalRsInner client = this.inner();
+        return client.switchFeaturesAsync(resourceGroupName, resourceName, features)
+        .map(new Func1<SignalRFeatureListInner, SignalRFeatureList>() {
+            @Override
+            public SignalRFeatureList call(SignalRFeatureListInner inner) {
+                return new SignalRFeatureListImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<SignalRFeatureList> listFeaturesAsync(String resourceGroupName, String resourceName) {
+        SignalRsInner client = this.inner();
+        return client.listFeaturesAsync(resourceGroupName, resourceName)
+        .map(new Func1<SignalRFeatureListInner, SignalRFeatureList>() {
+            @Override
+            public SignalRFeatureList call(SignalRFeatureListInner inner) {
+                return new SignalRFeatureListImpl(inner, manager());
             }
         });
     }

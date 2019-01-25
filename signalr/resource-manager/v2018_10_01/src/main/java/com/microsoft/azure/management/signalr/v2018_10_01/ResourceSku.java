@@ -23,8 +23,8 @@ public class ResourceSku {
 
     /**
      * Optional tier of this particular SKU. `Basic` is deprecated, use
-     * `Standard` instead for Basic tier. Possible values include: 'Free',
-     * 'Basic', 'Standard', 'Premium'.
+     * `Standard` instead. Possible values include: 'Free', 'Basic',
+     * 'Standard', 'Premium'.
      */
     @JsonProperty(value = "tier")
     private SignalRSkuTier tier;
@@ -72,7 +72,7 @@ public class ResourceSku {
     }
 
     /**
-     * Get optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead for Basic tier. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'.
+     * Get optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'.
      *
      * @return the tier value
      */
@@ -81,7 +81,7 @@ public class ResourceSku {
     }
 
     /**
-     * Set optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead for Basic tier. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'.
+     * Set optional tier of this particular SKU. `Basic` is deprecated, use `Standard` instead. Possible values include: 'Free', 'Basic', 'Standard', 'Premium'.
      *
      * @param tier the tier value to set
      * @return the ResourceSku object itself.
