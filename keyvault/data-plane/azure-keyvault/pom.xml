@@ -161,15 +161,6 @@ the MIT License. See License.txt in the project root for license information. --
 
 	    <plugin>
 		  <groupId>org.apache.maven.plugins</groupId>
-		  <artifactId>maven-compiler-plugin</artifactId>
-		  <configuration>
-		    <source>1.7</source>
-		    <target>1.7</target>
-		  </configuration>
-		</plugin>
-
-	    <plugin>
-		  <groupId>org.apache.maven.plugins</groupId>
 		  <artifactId>maven-failsafe-plugin</artifactId>
 		  <configuration>
 		    <additionalClasspathElements>

@@ -46,7 +46,6 @@ import com.microsoft.azure.keyvault.cryptography.SignatureEncoding;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
-import pem.PemFile;
 
 public class ECKeyTest {
 	
@@ -84,7 +83,7 @@ public class ECKeyTest {
     	setProvider(Security.getProvider("SunEC"));
     	EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", _provider);
 
-    	Path byte_location = Paths.get(ECKeyTest.class.getProtectionDomain().getClassLoader().getResource("byte_array.bin").getPath());
+    	Path byte_location = Paths.get(ECKeyTest.class.getClassLoader().getResource("byte_array.bin").getPath());
         CEK = Files.readAllBytes(byte_location);
 
     	FACTORY = KeyFactory.getInstance("EC", _provider);
