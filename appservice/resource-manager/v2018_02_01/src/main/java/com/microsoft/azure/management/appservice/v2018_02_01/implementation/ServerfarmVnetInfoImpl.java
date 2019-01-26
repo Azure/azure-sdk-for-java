@@ -63,6 +63,11 @@ class ServerfarmVnetInfoImpl extends IndexableRefreshableWrapperImpl<ServerfarmV
     }
 
     @Override
+    public Boolean isSwift() {
+        return this.inner().isSwift();
+    }
+
+    @Override
     public String kind() {
         return this.inner().kind();
     }

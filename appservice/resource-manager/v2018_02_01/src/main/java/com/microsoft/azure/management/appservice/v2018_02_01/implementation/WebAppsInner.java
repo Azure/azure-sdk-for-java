@@ -231,19 +231,19 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         Observable<Response<ResponseBody>> updateSlotConfigurationNames(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SlotConfigNamesResourceInner slotConfigNames, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getSwiftVirtualNetworkConnection" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/virtualNetwork")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork")
         Observable<Response<ResponseBody>> getSwiftVirtualNetworkConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps createOrUpdateSwiftVirtualNetworkConnection" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/virtualNetwork")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork")
         Observable<Response<ResponseBody>> createOrUpdateSwiftVirtualNetworkConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteSwiftVirtualNetwork" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/virtualNetwork", method = "DELETE", hasBody = true)
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteSwiftVirtualNetwork(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateSwiftVirtualNetworkConnection" })
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/virtualNetwork")
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork")
         Observable<Response<ResponseBody>> updateSwiftVirtualNetworkConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getConfiguration" })
@@ -860,19 +860,19 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         Observable<Response<ResponseBody>> listSitePushSettingsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getSwiftVirtualNetworkConnectionSlot" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/virtualNetwork")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork")
         Observable<Response<ResponseBody>> getSwiftVirtualNetworkConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps createOrUpdateSwiftVirtualNetworkConnectionSlot" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/virtualNetwork")
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork")
         Observable<Response<ResponseBody>> createOrUpdateSwiftVirtualNetworkConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteSwiftVirtualNetworkSlot" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/virtualNetwork", method = "DELETE", hasBody = true)
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteSwiftVirtualNetworkSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps updateSwiftVirtualNetworkConnectionSlot" })
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/virtualNetwork")
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork")
         Observable<Response<ResponseBody>> updateSwiftVirtualNetworkConnectionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body SwiftVirtualNetworkInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getConfigurationSlot" })

@@ -95,6 +95,11 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
     }
 
     @Override
+    public Boolean isSwift() {
+        return this.inner().isSwift();
+    }
+
+    @Override
     public String kind() {
         return this.inner().kind();
     }
@@ -147,6 +152,12 @@ class SiteVnetInfoImpl extends CreatableUpdatableImpl<SiteVnetInfo, VnetInfoInne
     @Override
     public SiteVnetInfoImpl withDnsServers(String dnsServers) {
         this.inner().withDnsServers(dnsServers);
+        return this;
+    }
+
+    @Override
+    public SiteVnetInfoImpl withIsSwift(Boolean isSwift) {
+        this.inner().withIsSwift(isSwift);
         return this;
     }
 
