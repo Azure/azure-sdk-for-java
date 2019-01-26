@@ -1,4 +1,4 @@
-package com.microsoft.azure.keyvault.cryptography.test.resources;
+package com.microsoft.azure.keyvault.cryptography.test;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

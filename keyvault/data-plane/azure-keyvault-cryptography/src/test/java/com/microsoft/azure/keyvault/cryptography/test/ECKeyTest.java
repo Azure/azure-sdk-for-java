@@ -43,7 +43,6 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Es256k;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es384;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es512;
 import com.microsoft.azure.keyvault.cryptography.SignatureEncoding;
-import com.microsoft.azure.keyvault.cryptography.test.resources.PemFile;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
@@ -83,8 +82,8 @@ public class ECKeyTest {
     public static void setUpBeforeClass() throws Exception {
     	setProvider(Security.getProvider("SunEC"));
     	EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", _provider);
-    	
-        Path byte_location = Paths.get("src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/byte_array.bin");
+
+    	Path byte_location = Paths.get(getPath("byte_array.bin"));
         CEK = Files.readAllBytes(byte_location);
 
     	FACTORY = KeyFactory.getInstance("EC", _provider);
@@ -220,15 +219,24 @@ public class ECKeyTest {
     }
     
     private void testFromFile(String keyType, MessageDigest digest, String algorithm) throws Exception {
-        String privateKeyPath = "src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "keynew.pem";
-        String publicKeyPath = "src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "keypubnew.pem";
+        String privateKeyPath = getPath(keyType+"keynew.pem");
+        String publicKeyPath = getPath(keyType+"keypubnew.pem");
         
         EcKey newKey = new EcKey("akey", getKeyFromFile(privateKeyPath, publicKeyPath));
         
-        Path signatureLocation = Paths.get("src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "sig.der");
+        Path signatureLocation = Paths.get(getPath(keyType+"sig.der"));
         byte[] signature = SignatureEncoding.fromAsn1Der(Files.readAllBytes(signatureLocation), algorithm);
 
         doVerify(newKey, digest, signature);
+    }
+
+    private static String getPath(String filename){
+
+        String path =  ECKeyTest.class.getClassLoader().getResource(filename).getPath();
+        if(path.contains(":")){
+            path = path.substring(1);
+        }
+        return path;
     }
     
     @Test
