@@ -73,6 +73,11 @@ class HanaInstanceImpl extends GroupableResourceCoreImpl<HanaInstance, HanaInsta
     }
 
     @Override
+    public String proximityPlacementGroup() {
+        return this.inner().proximityPlacementGroup();
+    }
+
+    @Override
     public StorageProfile storageProfile() {
         return this.inner().storageProfile();
     }

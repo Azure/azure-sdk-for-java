@@ -49,6 +49,11 @@ public interface HanaInstance extends HasInner<HanaInstanceInner>, Resource, Gro
     HanaInstancePowerStateEnum powerState();
 
     /**
+     * @return the proximityPlacementGroup value.
+     */
+    String proximityPlacementGroup();
+
+    /**
      * @return the storageProfile value.
      */
     StorageProfile storageProfile();
