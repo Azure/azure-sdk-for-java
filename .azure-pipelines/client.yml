@@ -34,7 +34,7 @@ jobs:
     displayName: 'Publish'
 
 - job: 'Test'
-  
+
   dependsOn:
   - 'Build'
 
@@ -49,13 +49,13 @@ jobs:
       Windows:
         os.name: 'Windows'
         os.vmImage: 'vs2017-win2016'
-         
+
   pool:
     vmImage: $(os.vmImage)
 
   steps:
     - script: |
-        mvn jetty:run-forked -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --batch-mode -f $pomFile
+        mvn jetty:run-forked -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --batch-mode -f $(pomFile)
       displayName: 'Start Jetty'
 
     - task: Maven@3
