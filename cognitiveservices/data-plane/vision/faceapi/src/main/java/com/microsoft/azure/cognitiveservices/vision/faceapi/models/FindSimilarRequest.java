@@ -28,7 +28,7 @@ public class FindSimilarRequest {
      * An existing user-specified unique candidate face list, created in Face
      * List - Create a Face List. Face list contains a set of persistedFaceIds
      * which are persisted and will never expire. Parameter faceListId,
-     * largeFaceListId and faceIds should not be provided at the same time。.
+     * largeFaceListId and faceIds should not be provided at the same time.
      */
     @JsonProperty(value = "faceListId")
     private String faceListId;
@@ -86,7 +86,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Get an existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time。.
+     * Get an existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
      *
      * @return the faceListId value
      */
@@ -95,7 +95,7 @@ public class FindSimilarRequest {
     }
 
     /**
-     * Set an existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time。.
+     * Set an existing user-specified unique candidate face list, created in Face List - Create a Face List. Face list contains a set of persistedFaceIds which are persisted and will never expire. Parameter faceListId, largeFaceListId and faceIds should not be provided at the same time.
      *
      * @param faceListId the faceListId value to set
      * @return the FindSimilarRequest object itself.
