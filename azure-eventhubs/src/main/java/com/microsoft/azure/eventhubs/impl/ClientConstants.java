@@ -20,6 +20,7 @@ public final class ClientConstants {
     public final static Symbol STORE_LOCK_LOST_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":store-lock-lost");
     public final static Symbol PUBLISHER_REVOKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":publisher-revoked");
     public final static Symbol TIMEOUT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
+    public final static Symbol PROTON_IO_ERROR = Symbol.getSymbol(AmqpConstants.PROTON + ":io");
     public final static Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":tracking-id");
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     public static final int MAX_FRAME_SIZE_BYTES = 64 * 1024;
@@ -76,6 +77,9 @@ public final class ClientConstants {
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
     public static final String HTTPS_URI_FORMAT = "https://%s:%s";
     public static final int MAX_RECEIVER_NAME_LENGTH = 64;
+    
+    public static final String COMMUNICATION_EXCEPTION_GENERIC_MESSAGE = "A communication error has occurred. " +
+    		"This may be due to an incorrect host name in your connection string or a problem with your network connection.";
 
     /**
      * This is a constant defined to represent the start of a partition stream in EventHub.
