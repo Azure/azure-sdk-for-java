@@ -62,6 +62,12 @@ public class HanaInstanceInner extends Resource {
     private HanaInstancePowerStateEnum powerState;
 
     /**
+     * Resource proximity placement group.
+     */
+    @JsonProperty(value = "properties.proximityPlacementGroup", access = JsonProperty.Access.WRITE_ONLY)
+    private String proximityPlacementGroup;
+
+    /**
      * Get specifies the hardware settings for the HANA instance.
      *
      * @return the hardwareProfile value
@@ -157,6 +163,15 @@ public class HanaInstanceInner extends Resource {
      */
     public HanaInstancePowerStateEnum powerState() {
         return this.powerState;
+    }
+
+    /**
+     * Get resource proximity placement group.
+     *
+     * @return the proximityPlacementGroup value
+     */
+    public String proximityPlacementGroup() {
+        return this.proximityPlacementGroup;
     }
 
 }
