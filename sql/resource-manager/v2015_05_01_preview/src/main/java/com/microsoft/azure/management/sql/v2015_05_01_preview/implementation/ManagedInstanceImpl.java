@@ -107,6 +107,16 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
+    public String proxyOverride() {
+        return this.inner().proxyOverride();
+    }
+
+    @Override
+    public Boolean publicDataEndpointEnabled() {
+        return this.inner().publicDataEndpointEnabled();
+    }
+
+    @Override
     public Sku sku() {
         return this.inner().sku();
     }
@@ -183,6 +193,26 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
             this.inner().withLicenseType(licenseType);
         } else {
             this.updateParameter.withLicenseType(licenseType);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withProxyOverride(String proxyOverride) {
+        if (isInCreateMode()) {
+            this.inner().withProxyOverride(proxyOverride);
+        } else {
+            this.updateParameter.withProxyOverride(proxyOverride);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withPublicDataEndpointEnabled(Boolean publicDataEndpointEnabled) {
+        if (isInCreateMode()) {
+            this.inner().withPublicDataEndpointEnabled(publicDataEndpointEnabled);
+        } else {
+            this.updateParameter.withPublicDataEndpointEnabled(publicDataEndpointEnabled);
         }
         return this;
     }
