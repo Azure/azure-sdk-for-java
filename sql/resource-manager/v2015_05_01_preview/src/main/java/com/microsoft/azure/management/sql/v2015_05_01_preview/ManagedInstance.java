@@ -65,6 +65,16 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
     String licenseType();
 
     /**
+     * @return the proxyOverride value.
+     */
+    String proxyOverride();
+
+    /**
+     * @return the publicDataEndpointEnabled value.
+     */
+    Boolean publicDataEndpointEnabled();
+
+    /**
      * @return the sku value.
      */
     Sku sku();
@@ -172,6 +182,26 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
         }
 
         /**
+         * The stage of the managedinstance update allowing to specify ProxyOverride.
+         */
+        interface WithProxyOverride {
+            /**
+             * Specifies proxyOverride.
+             */
+            WithCreate withProxyOverride(String proxyOverride);
+        }
+
+        /**
+         * The stage of the managedinstance update allowing to specify PublicDataEndpointEnabled.
+         */
+        interface WithPublicDataEndpointEnabled {
+            /**
+             * Specifies publicDataEndpointEnabled.
+             */
+            WithCreate withPublicDataEndpointEnabled(Boolean publicDataEndpointEnabled);
+        }
+
+        /**
          * The stage of the managedinstance update allowing to specify Sku.
          */
         interface WithSku {
@@ -216,13 +246,13 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ManagedInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdministratorLogin, DefinitionStages.WithAdministratorLoginPassword, DefinitionStages.WithCollation, DefinitionStages.WithDnsZonePartner, DefinitionStages.WithIdentity, DefinitionStages.WithLicenseType, DefinitionStages.WithSku, DefinitionStages.WithStorageSizeInGB, DefinitionStages.WithSubnetId, DefinitionStages.WithVCores {
+        interface WithCreate extends Creatable<ManagedInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdministratorLogin, DefinitionStages.WithAdministratorLoginPassword, DefinitionStages.WithCollation, DefinitionStages.WithDnsZonePartner, DefinitionStages.WithIdentity, DefinitionStages.WithLicenseType, DefinitionStages.WithProxyOverride, DefinitionStages.WithPublicDataEndpointEnabled, DefinitionStages.WithSku, DefinitionStages.WithStorageSizeInGB, DefinitionStages.WithSubnetId, DefinitionStages.WithVCores {
         }
     }
     /**
      * The template for a ManagedInstance update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ManagedInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLogin, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithCollation, UpdateStages.WithDnsZonePartner, UpdateStages.WithLicenseType, UpdateStages.WithSku, UpdateStages.WithStorageSizeInGB, UpdateStages.WithSubnetId, UpdateStages.WithVCores {
+    interface Update extends Appliable<ManagedInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLogin, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithCollation, UpdateStages.WithDnsZonePartner, UpdateStages.WithLicenseType, UpdateStages.WithProxyOverride, UpdateStages.WithPublicDataEndpointEnabled, UpdateStages.WithSku, UpdateStages.WithStorageSizeInGB, UpdateStages.WithSubnetId, UpdateStages.WithVCores {
     }
 
     /**
@@ -277,6 +307,26 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
              * Specifies licenseType.
              */
             Update withLicenseType(String licenseType);
+        }
+
+        /**
+         * The stage of the managedinstance {0} allowing to specify ProxyOverride.
+         */
+        interface WithProxyOverride {
+            /**
+             * Specifies proxyOverride.
+             */
+            Update withProxyOverride(String proxyOverride);
+        }
+
+        /**
+         * The stage of the managedinstance {0} allowing to specify PublicDataEndpointEnabled.
+         */
+        interface WithPublicDataEndpointEnabled {
+            /**
+             * Specifies publicDataEndpointEnabled.
+             */
+            Update withPublicDataEndpointEnabled(Boolean publicDataEndpointEnabled);
         }
 
         /**

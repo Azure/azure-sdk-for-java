@@ -102,6 +102,18 @@ public class ManagedInstanceInner extends Resource {
     private String dnsZonePartner;
 
     /**
+     * Whether or not the public data endpoint is enabled.
+     */
+    @JsonProperty(value = "properties.publicDataEndpointEnabled")
+    private Boolean publicDataEndpointEnabled;
+
+    /**
+     * Proxy override of the managed instance.
+     */
+    @JsonProperty(value = "properties.proxyOverride")
+    private String proxyOverride;
+
+    /**
      * Get the Azure Active Directory identity of the managed instance.
      *
      * @return the identity value
@@ -325,6 +337,46 @@ public class ManagedInstanceInner extends Resource {
      */
     public ManagedInstanceInner withDnsZonePartner(String dnsZonePartner) {
         this.dnsZonePartner = dnsZonePartner;
+        return this;
+    }
+
+    /**
+     * Get whether or not the public data endpoint is enabled.
+     *
+     * @return the publicDataEndpointEnabled value
+     */
+    public Boolean publicDataEndpointEnabled() {
+        return this.publicDataEndpointEnabled;
+    }
+
+    /**
+     * Set whether or not the public data endpoint is enabled.
+     *
+     * @param publicDataEndpointEnabled the publicDataEndpointEnabled value to set
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withPublicDataEndpointEnabled(Boolean publicDataEndpointEnabled) {
+        this.publicDataEndpointEnabled = publicDataEndpointEnabled;
+        return this;
+    }
+
+    /**
+     * Get proxy override of the managed instance.
+     *
+     * @return the proxyOverride value
+     */
+    public String proxyOverride() {
+        return this.proxyOverride;
+    }
+
+    /**
+     * Set proxy override of the managed instance.
+     *
+     * @param proxyOverride the proxyOverride value to set
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withProxyOverride(String proxyOverride) {
+        this.proxyOverride = proxyOverride;
         return this;
     }
 
