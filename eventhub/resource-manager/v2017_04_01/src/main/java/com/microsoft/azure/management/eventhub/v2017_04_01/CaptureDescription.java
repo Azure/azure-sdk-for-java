@@ -51,6 +51,12 @@ public class CaptureDescription {
     private Destination destination;
 
     /**
+     * A value that indicates whether to Skip Empty Archives.
+     */
+    @JsonProperty(value = "skipEmptyArchives")
+    private Boolean skipEmptyArchives;
+
+    /**
      * Get a value that indicates whether capture description is enabled.
      *
      * @return the enabled value
@@ -147,6 +153,26 @@ public class CaptureDescription {
      */
     public CaptureDescription withDestination(Destination destination) {
         this.destination = destination;
+        return this;
+    }
+
+    /**
+     * Get a value that indicates whether to Skip Empty Archives.
+     *
+     * @return the skipEmptyArchives value
+     */
+    public Boolean skipEmptyArchives() {
+        return this.skipEmptyArchives;
+    }
+
+    /**
+     * Set a value that indicates whether to Skip Empty Archives.
+     *
+     * @param skipEmptyArchives the skipEmptyArchives value to set
+     * @return the CaptureDescription object itself.
+     */
+    public CaptureDescription withSkipEmptyArchives(Boolean skipEmptyArchives) {
+        this.skipEmptyArchives = skipEmptyArchives;
         return this;
     }
 
