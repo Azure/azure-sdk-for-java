@@ -19,14 +19,14 @@ public class EntireDetectResponse {
      * Frequency extracted from the series, zero means no recurrent pattern has
      * been found.
      */
-    @JsonProperty(value = "Period", required = true)
+    @JsonProperty(value = "period", required = true)
     private int periodProperty;
 
     /**
      * ExpectedValues contain expected value for each input point. The index of
      * the array is consistent with the input series.
      */
-    @JsonProperty(value = "ExpectedValues", required = true)
+    @JsonProperty(value = "expectedValues", required = true)
     private List<Double> expectedValues;
 
     /**
@@ -37,7 +37,7 @@ public class EntireDetectResponse {
      * significant anomalies can be filtered in client side. The index of the
      * array is consistent with the input series.
      */
-    @JsonProperty(value = "UpperMargins", required = true)
+    @JsonProperty(value = "upperMargins", required = true)
     private List<Double> upperMargins;
 
     /**
@@ -47,7 +47,7 @@ public class EntireDetectResponse {
      * normal ones in client side. The index of the array is consistent with
      * the input series.
      */
-    @JsonProperty(value = "LowerMargins", required = true)
+    @JsonProperty(value = "lowerMargins", required = true)
     private List<Double> lowerMargins;
 
     /**
@@ -55,7 +55,7 @@ public class EntireDetectResponse {
      * an anomaly either negative or positive has been detected. The index of
      * the array is consistent with the input series.
      */
-    @JsonProperty(value = "IsAnomaly", required = true)
+    @JsonProperty(value = "isAnomaly", required = true)
     private List<Boolean> isAnomaly;
 
     /**
@@ -65,7 +65,7 @@ public class EntireDetectResponse {
      * smaller than the expected one. The index of the array is consistent with
      * the input series.
      */
-    @JsonProperty(value = "IsNegativeAnomaly", required = true)
+    @JsonProperty(value = "isNegativeAnomaly", required = true)
     private List<Boolean> isNegativeAnomaly;
 
     /**
@@ -75,7 +75,7 @@ public class EntireDetectResponse {
      * larger than the expected one. The index of the array is consistent with
      * the input series.
      */
-    @JsonProperty(value = "IsPositiveAnomaly", required = true)
+    @JsonProperty(value = "isPositiveAnomaly", required = true)
     private List<Boolean> isPositiveAnomaly;
 
     /**

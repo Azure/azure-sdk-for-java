@@ -19,13 +19,13 @@ public class Point {
      * Timestamp of a data point. Please make sure it aligns with the midnight,
      * and use a UTC date time string, e.g., 2017-08-01T00:00:00Z.
      */
-    @JsonProperty(value = "Timestamp", required = true)
+    @JsonProperty(value = "timestamp", required = true)
     private DateTime timestamp;
 
     /**
      * The measurement of that point, should be float.
      */
-    @JsonProperty(value = "Value", required = true)
+    @JsonProperty(value = "value", required = true)
     private double value;
 
     /**

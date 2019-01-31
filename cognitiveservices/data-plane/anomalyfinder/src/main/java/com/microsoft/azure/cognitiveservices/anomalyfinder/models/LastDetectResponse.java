@@ -18,19 +18,19 @@ public class LastDetectResponse {
      * Frequency extracted from the series, zero means no recurrent pattern has
      * been found.
      */
-    @JsonProperty(value = "Period")
+    @JsonProperty(value = "period")
     private Integer periodProperty;
 
     /**
      * Suggested input series points needed for detecting the latest point.
      */
-    @JsonProperty(value = "SuggestedWindow")
+    @JsonProperty(value = "suggestedWindow")
     private Integer suggestedWindow;
 
     /**
      * Expected value of the latest point.
      */
-    @JsonProperty(value = "ExpectedValue")
+    @JsonProperty(value = "expectedValue")
     private Double expectedValue;
 
     /**
@@ -41,7 +41,7 @@ public class LastDetectResponse {
      * adjusting sensitivity value, anomaly status of latest point can be
      * changed.
      */
-    @JsonProperty(value = "UpperMargin")
+    @JsonProperty(value = "upperMargin")
     private Double upperMargin;
 
     /**
@@ -49,14 +49,14 @@ public class LastDetectResponse {
      * lowerBoundary, which equals to expectedValue - (100 -
      * sensitivity)*lowerMargin.
      */
-    @JsonProperty(value = "LowerMargin")
+    @JsonProperty(value = "lowerMargin")
     private Double lowerMargin;
 
     /**
      * Anomaly status of the latest point, true means the latest point is an
      * anomaly either in negative direction or positive direction.
      */
-    @JsonProperty(value = "IsAnomaly")
+    @JsonProperty(value = "isAnomaly")
     private Boolean isAnomaly;
 
     /**
@@ -64,7 +64,7 @@ public class LastDetectResponse {
      * latest point is an anoamly and its real value is smaller than the
      * expected one.
      */
-    @JsonProperty(value = "IsNegativeAnomaly")
+    @JsonProperty(value = "isNegativeAnomaly")
     private Boolean isNegativeAnomaly;
 
     /**
@@ -72,7 +72,7 @@ public class LastDetectResponse {
      * latest point is an anomaly and its real value is larger than the
      * expected one.
      */
-    @JsonProperty(value = "IsPositiveAnomaly")
+    @JsonProperty(value = "isPositiveAnomaly")
     private Boolean isPositiveAnomaly;
 
     /**

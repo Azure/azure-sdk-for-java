@@ -21,7 +21,7 @@ public class Request {
      * not sorted correctly or there is duplicated timestamp, the API will not
      * work. In such case, an error message will be returned.
      */
-    @JsonProperty(value = "Series", required = true)
+    @JsonProperty(value = "series", required = true)
     private List<Point> series;
 
     /**
@@ -30,29 +30,29 @@ public class Request {
      * values include: 'yearly', 'monthly', 'weekly', 'daily', 'hourly',
      * 'minutely'.
      */
-    @JsonProperty(value = "Granularity", required = true)
+    @JsonProperty(value = "granularity", required = true)
     private Granularity granularity;
 
     /**
      * Custom Interval is used to set non-standard time interval, for example,
      * if the series is 5 minutes, request can be set as
-     * {"Granularity":"minutely", "CustomInterval":5}.
+     * {"granularity":"minutely", "customInterval":5}.
      */
-    @JsonProperty(value = "CustomInterval")
+    @JsonProperty(value = "customInterval")
     private Integer customInterval;
 
     /**
      * Optional argument, periodic value of a time series. If the value is null
      * or does not present, the API will determine the period automatically.
      */
-    @JsonProperty(value = "Period")
+    @JsonProperty(value = "period")
     private Integer periodProperty;
 
     /**
      * Optional argument, advanced model parameter, max anomaly ratio in a time
      * series. Must be between 0 and 0.5 (exclusive).
      */
-    @JsonProperty(value = "MaxAnomalyRatio")
+    @JsonProperty(value = "maxAnomalyRatio")
     private Double maxAnomalyRatio;
 
     /**
@@ -60,7 +60,7 @@ public class Request {
      * value is, the larger the margin value will be which means less anomalies
      * will be accepted. Must be between 0 and 99 (inclusive).
      */
-    @JsonProperty(value = "Sensitivity")
+    @JsonProperty(value = "sensitivity")
     private Double sensitivity;
 
     /**
@@ -104,7 +104,7 @@ public class Request {
     }
 
     /**
-     * Get custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"Granularity":"minutely", "CustomInterval":5}.
+     * Get custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @return the customInterval value
      */
@@ -113,7 +113,7 @@ public class Request {
     }
 
     /**
-     * Set custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"Granularity":"minutely", "CustomInterval":5}.
+     * Set custom Interval is used to set non-standard time interval, for example, if the series is 5 minutes, request can be set as {"granularity":"minutely", "customInterval":5}.
      *
      * @param customInterval the customInterval value to set
      * @return the Request object itself.
