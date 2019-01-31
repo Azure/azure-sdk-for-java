@@ -9,4 +9,7 @@
   <suppress checks="Javadoc" files=".*Test[s]?Base\.java"/>
   <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
   <suppress checks="Header" files=".*package-info.java"/>
+  <suppress checks="Header" files=".*package-info.java"/>
+  <suppress checks="Header" files=".*package-info.java"/>
+
 </suppressions>
