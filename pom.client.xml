@@ -111,6 +111,8 @@
       <maven-shade-plugin.version>2.4.1</maven-shade-plugin.version>
       <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
       <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+      <maven-build-tools.version>1.0.0</maven-build-tools.version>
+
    </properties>
 
    <dependencyManagement>
@@ -219,6 +221,73 @@
    </dependencyManagement>
 
    <build>
+
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <dependencies>
+               <dependency>
+                  <groupId>com.microsoft.azure</groupId>
+                  <artifactId>build-tools-azure</artifactId>
+                  <version>${maven-build-tools.version}</version>
+               </dependency>
+            </dependencies>
+            <configuration>
+               <configLocation>checkstyle/checkstyle.xml</configLocation>
+               <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+               <headerLocation>checkstyle/java.header</headerLocation>
+               <propertyExpansion>samedir=runtimes/build-tools/src/main/resources</propertyExpansion>
+               <encoding>UTF-8</encoding>
+               <consoleOutput>true</consoleOutput>
+               <includeTestSourceDirectory>false</includeTestSourceDirectory>
+               <linkXRef>false</linkXRef>
+
+               <!-- TODO soon - enable these failure modes -->
+               <failsOnError>false</failsOnError>
+               <failOnViolation>false</failOnViolation>
+            </configuration>
+            <executions>
+               <execution>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>check</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+         <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <dependencies>
+               <dependency>
+                  <groupId>com.microsoft.azure</groupId>
+                  <artifactId>build-tools-azure</artifactId>
+                  <version>${maven-build-tools.version}</version>
+               </dependency>
+            </dependencies>
+            <configuration>
+               <effort>Max</effort>
+               <threshold>Low</threshold>
+               <xmlOutput>true</xmlOutput>
+               <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+               <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+
+               <!-- TODO soon - enable this failure mode -->
+               <failOnError>false</failOnError>
+            </configuration>
+            <executions>
+               <execution>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>check</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+      </plugins>
 
       <pluginManagement>
 
