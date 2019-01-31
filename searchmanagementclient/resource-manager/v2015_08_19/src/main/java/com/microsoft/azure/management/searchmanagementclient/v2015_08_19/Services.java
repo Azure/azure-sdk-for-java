@@ -14,13 +14,14 @@ import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
 import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
+import com.microsoft.azure.arm.collection.SupportsListing;
 import com.microsoft.azure.management.searchmanagementclient.v2015_08_19.implementation.ServicesInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing Services.
  */
-public interface Services extends SupportsCreating<SearchService.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<SearchService>, SupportsListingByResourceGroup<SearchService>, HasInner<ServicesInner> {
+public interface Services extends SupportsCreating<SearchService.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<SearchService>, SupportsListingByResourceGroup<SearchService>, SupportsListing<SearchService>, HasInner<ServicesInner> {
     /**
      * Checks whether or not the given Search service name is available for use. Search service names must be globally unique since they are part of the service URI (https://&lt;name&gt;.search.windows.net).
      *

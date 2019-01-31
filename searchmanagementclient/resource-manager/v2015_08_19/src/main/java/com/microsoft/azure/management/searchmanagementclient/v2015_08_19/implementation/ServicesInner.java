@@ -10,6 +10,7 @@ package com.microsoft.azure.management.searchmanagementclient.v2015_08_19.implem
 
 import com.microsoft.azure.arm.collection.InnerSupportsGet;
 import com.microsoft.azure.arm.collection.InnerSupportsDelete;
+import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
@@ -43,7 +44,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Services.
  */
-public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, InnerSupportsDelete<Void> {
+public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, InnerSupportsDelete<Void>, InnerSupportsListing<SearchServiceInner> {
     /** The Retrofit service to perform REST calls. */
     private ServicesService service;
     /** The service client containing this operation class. */
@@ -88,6 +89,10 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.searchmanagementclient.v2015_08_19.Services listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.searchmanagementclient.v2015_08_19.Services list" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Search/searchServices")
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-client-request-id") UUID clientRequestId, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.searchmanagementclient.v2015_08_19.Services checkNameAvailability" })
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.Search/checkNameAvailability")
@@ -1170,6 +1175,172 @@ public class ServicesInner implements InnerSupportsGet<SearchServiceInner>, Inne
     }
 
     private ServiceResponse<PageImpl<SearchServiceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SearchServiceInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SearchServiceInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of all Search services in the given subscription.
+     *
+     * @return the PagedList<SearchServiceInner> object if successful.
+     */
+    public PagedList<SearchServiceInner> list() {
+        PageImpl<SearchServiceInner> page = new PageImpl<>();
+        page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<SearchServiceInner>(page) {
+            @Override
+            public Page<SearchServiceInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all Search services in the given subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SearchServiceInner>> listAsync(final ServiceCallback<List<SearchServiceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * Gets a list of all Search services in the given subscription.
+     *
+     * @return the observable to the List&lt;SearchServiceInner&gt; object
+     */
+    public Observable<Page<SearchServiceInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<SearchServiceInner>>, Page<SearchServiceInner>>() {
+            @Override
+            public Page<SearchServiceInner> call(ServiceResponse<List<SearchServiceInner>> response) {
+                PageImpl<SearchServiceInner> page = new PageImpl<>();
+                page.setItems(response.body());
+                return page;
+            }
+        });
+    }
+
+    /**
+     * Gets a list of all Search services in the given subscription.
+     *
+     * @return the observable to the List&lt;SearchServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<SearchServiceInner>>> listWithServiceResponseAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final SearchManagementRequestOptions searchManagementRequestOptions = null;
+        UUID clientRequestId = null;
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SearchServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<SearchServiceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SearchServiceInner>> result = listDelegate(response);
+                        List<SearchServiceInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<SearchServiceInner>> clientResponse = new ServiceResponse<List<SearchServiceInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all Search services in the given subscription.
+     *
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @return the PagedList<SearchServiceInner> object if successful.
+     */
+    public PagedList<SearchServiceInner> list(SearchManagementRequestOptions searchManagementRequestOptions) {
+        PageImpl<SearchServiceInner> page = new PageImpl<>();
+        page.setItems(listWithServiceResponseAsync(searchManagementRequestOptions).toBlocking().single().body());
+        page.setNextPageLink(null);
+        return new PagedList<SearchServiceInner>(page) {
+            @Override
+            public Page<SearchServiceInner> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all Search services in the given subscription.
+     *
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SearchServiceInner>> listAsync(SearchManagementRequestOptions searchManagementRequestOptions, final ServiceCallback<List<SearchServiceInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(searchManagementRequestOptions), serviceCallback);
+    }
+
+    /**
+     * Gets a list of all Search services in the given subscription.
+     *
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @return the observable to the List&lt;SearchServiceInner&gt; object
+     */
+    public Observable<Page<SearchServiceInner>> listAsync(SearchManagementRequestOptions searchManagementRequestOptions) {
+        return listWithServiceResponseAsync(searchManagementRequestOptions).map(new Func1<ServiceResponse<List<SearchServiceInner>>, Page<SearchServiceInner>>() {
+            @Override
+            public Page<SearchServiceInner> call(ServiceResponse<List<SearchServiceInner>> response) {
+                PageImpl<SearchServiceInner> page = new PageImpl<>();
+                page.setItems(response.body());
+                return page;
+            }
+        });
+    }
+
+    /**
+     * Gets a list of all Search services in the given subscription.
+     *
+     * @param searchManagementRequestOptions Additional parameters for the operation
+     * @return the observable to the List&lt;SearchServiceInner&gt; object
+     */
+    public Observable<ServiceResponse<List<SearchServiceInner>>> listWithServiceResponseAsync(SearchManagementRequestOptions searchManagementRequestOptions) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(searchManagementRequestOptions);
+        UUID clientRequestId = null;
+        if (searchManagementRequestOptions != null) {
+            clientRequestId = searchManagementRequestOptions.clientRequestId();
+        }
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), clientRequestId, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SearchServiceInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<SearchServiceInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SearchServiceInner>> result = listDelegate(response);
+                        List<SearchServiceInner> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<SearchServiceInner>> clientResponse = new ServiceResponse<List<SearchServiceInner>>(items, result.response());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SearchServiceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<SearchServiceInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<SearchServiceInner>>() { }.getType())
                 .registerError(CloudException.class)

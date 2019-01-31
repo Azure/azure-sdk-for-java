@@ -98,6 +98,30 @@ class ServicesImpl extends GroupableResourcesCoreImpl<SearchService, SearchServi
     }
 
     @Override
+    public PagedList<SearchService> list() {
+        ServicesInner client = this.inner();
+        return this.wrapList(client.list());
+    }
+
+    @Override
+    public Observable<SearchService> listAsync() {
+        ServicesInner client = this.inner();
+        return client.listAsync()
+        .flatMap(new Func1<Page<SearchServiceInner>, Observable<SearchServiceInner>>() {
+            @Override
+            public Observable<SearchServiceInner> call(Page<SearchServiceInner> innerPage) {
+                return Observable.from(innerPage.items());
+            }
+        })
+        .map(new Func1<SearchServiceInner, SearchService>() {
+            @Override
+            public SearchService call(SearchServiceInner inner) {
+                return wrapModel(inner);
+            }
+        });
+    }
+
+    @Override
     public SearchServiceImpl define(String name) {
         return wrapModel(name);
     }
