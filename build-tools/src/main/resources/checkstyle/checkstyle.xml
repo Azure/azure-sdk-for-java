@@ -16,7 +16,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
     </module>
     
     <module name="Header">
-        <property name="header" value="/**\n * Copyright (c) Microsoft Corporation. All rights reserved.\n * Licensed under the MIT License. See License.txt in the project root for\n * license information.\n"/>
+        <property name="header" value="// Copyright (c) Microsoft Corporation. All rights reserved.\n// Licensed under the MIT License."/>
         <property name="fileExtensions" value="java"/>
     </module>
 
@@ -131,12 +131,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <property name="severity" value="warning"/>
         </module>
 
-        <module name="FinalLocalVariable">
-            <!-- Checks that local variables that never have their values changed are declared final. -->
-            <property name="tokens" value="VARIABLE_DEF"/>
-            <property name="validateEnhancedForLoopVariable" value="true"/>
-        </module>
-
         <!-- LENGTH and CODING CHECKS -->
         <module name="LeftCurly">
             <!-- Checks for placement of the left curly brace ('{'). -->
@@ -195,14 +189,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <property name="throwsIndent" value="4"/>
             <property name="lineWrappingIndentation" value="4"/>
             <property name="arrayInitIndent" value="4"/>
-        </module>
-
-        <module name="CustomImportOrder">
-            <property name="customImportOrderRules" value="THIRD_PARTY_PACKAGE###SPECIAL_IMPORTS###STANDARD_JAVA_PACKAGE###STATIC"/>
-            <property name="specialImportsRegExp" value="^javax\."/>
-            <property name="standardPackageRegExp" value="^java\."/>
-            <property name="sortImportsInGroupAlphabetically" value="true"/>
-            <property name="separateLineBetweenGroups" value="false"/>
         </module>
 
         <!-- Checks for whitespace                               -->
