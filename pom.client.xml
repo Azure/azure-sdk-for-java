@@ -113,6 +113,8 @@
       <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
       <maven-build-tools.version>1.0.0</maven-build-tools.version>
 
+      <spotbugs.version>3.1.11</spotbugs.version>
+      <xml-maven-plugin.version>1.0</xml-maven-plugin.version>
    </properties>
 
    <dependencyManagement>
@@ -222,14 +224,15 @@
 
    <build>
 
+      <!-- This plugin scans checkstyle issues in the code -->
       <plugins>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
             <dependencies>
                <dependency>
-                  <groupId>com.microsoft.azure</groupId>
-                  <artifactId>build-tools-azure</artifactId>
+                  <groupId>com.azure</groupId>
+                  <artifactId>sdk-build-tools</artifactId>
                   <version>${maven-build-tools.version}</version>
                </dependency>
             </dependencies>
@@ -257,13 +260,14 @@
             </executions>
          </plugin>
 
+         <!-- This plugin scans reports spotbugs  in the code -->
          <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
             <dependencies>
                <dependency>
-                  <groupId>com.microsoft.azure</groupId>
-                  <artifactId>build-tools-azure</artifactId>
+                  <groupId>com.azure</groupId>
+                  <artifactId>sdk-build-tools</artifactId>
                   <version>${maven-build-tools.version}</version>
                </dependency>
             </dependencies>
@@ -285,6 +289,47 @@
                   </goals>
                </execution>
             </executions>
+         </plugin>
+
+         <!-- This plugin exports spotbugs reports in html form -->
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>xml-maven-plugin</artifactId>
+            <version>${xml-maven-plugin.version}</version>
+            <executions>
+               <execution>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>transform</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <transformationSets>
+                  <transformationSet>
+                     <dir>${project.build.directory}/spotbugs</dir>
+                     <outputDir>${project.build.directory}/spotbugs</outputDir>
+                     <stylesheet>fancy-hist.xsl</stylesheet>
+                     <!--<stylesheet>default.xsl</stylesheet>-->
+                     <!--<stylesheet>plain.xsl</stylesheet>-->
+                     <!--<stylesheet>fancy.xsl</stylesheet>-->
+                     <!--<stylesheet>summary.xsl</stylesheet>-->
+                     <fileMappers>
+                        <fileMapper
+                                implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                           <targetExtension>.html</targetExtension>
+                        </fileMapper>
+                     </fileMappers>
+                  </transformationSet>
+               </transformationSets>
+            </configuration>
+            <dependencies>
+               <dependency>
+                  <groupId>com.github.spotbugs</groupId>
+                  <artifactId>spotbugs</artifactId>
+                  <version>${spotbugs.version}</version>
+               </dependency>
+            </dependencies>
          </plugin>
 
       </plugins>
