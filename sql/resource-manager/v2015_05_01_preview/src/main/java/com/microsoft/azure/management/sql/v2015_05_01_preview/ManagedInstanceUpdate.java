@@ -100,10 +100,11 @@ public class ManagedInstanceUpdate {
     private Boolean publicDataEndpointEnabled;
 
     /**
-     * Proxy override of the managed instance.
+     * Connection type used for connecting to the instance. Possible values
+     * include: 'Proxy', 'Redirect', 'Default'.
      */
     @JsonProperty(value = "properties.proxyOverride")
-    private String proxyOverride;
+    private ManagedInstanceProxyOverride proxyOverride;
 
     /**
      * Resource tags.
@@ -339,21 +340,21 @@ public class ManagedInstanceUpdate {
     }
 
     /**
-     * Get proxy override of the managed instance.
+     * Get connection type used for connecting to the instance. Possible values include: 'Proxy', 'Redirect', 'Default'.
      *
      * @return the proxyOverride value
      */
-    public String proxyOverride() {
+    public ManagedInstanceProxyOverride proxyOverride() {
         return this.proxyOverride;
     }
 
     /**
-     * Set proxy override of the managed instance.
+     * Set connection type used for connecting to the instance. Possible values include: 'Proxy', 'Redirect', 'Default'.
      *
      * @param proxyOverride the proxyOverride value to set
      * @return the ManagedInstanceUpdate object itself.
      */
-    public ManagedInstanceUpdate withProxyOverride(String proxyOverride) {
+    public ManagedInstanceUpdate withProxyOverride(ManagedInstanceProxyOverride proxyOverride) {
         this.proxyOverride = proxyOverride;
         return this;
     }

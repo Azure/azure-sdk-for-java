@@ -67,7 +67,7 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
     /**
      * @return the proxyOverride value.
      */
-    String proxyOverride();
+    ManagedInstanceProxyOverride proxyOverride();
 
     /**
      * @return the publicDataEndpointEnabled value.
@@ -188,7 +188,7 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
             /**
              * Specifies proxyOverride.
              */
-            WithCreate withProxyOverride(String proxyOverride);
+            WithCreate withProxyOverride(ManagedInstanceProxyOverride proxyOverride);
         }
 
         /**
@@ -316,7 +316,7 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
             /**
              * Specifies proxyOverride.
              */
-            Update withProxyOverride(String proxyOverride);
+            Update withProxyOverride(ManagedInstanceProxyOverride proxyOverride);
         }
 
         /**
