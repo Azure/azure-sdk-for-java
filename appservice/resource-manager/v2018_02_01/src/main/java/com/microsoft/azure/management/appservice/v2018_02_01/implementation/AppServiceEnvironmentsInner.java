@@ -125,6 +125,10 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/diagnostics/{diagnosticsName}")
         Observable<Response<ResponseBody>> getDiagnosticsItem(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("diagnosticsName") String diagnosticsName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments getInboundNetworkDependenciesEndpoints" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/inboundnetworkdependenciesendpoints")
+        Observable<Response<ResponseBody>> getInboundNetworkDependenciesEndpoints(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments listMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/metricdefinitions")
         Observable<Response<ResponseBody>> listMetricDefinitions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -180,6 +184,10 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments listOperations" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/operations")
         Observable<Response<ResponseBody>> listOperations(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments getOutboundNetworkDependenciesEndpoints" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/outboundnetworkdependenciesendpoints")
+        Observable<Response<ResponseBody>> getOutboundNetworkDependenciesEndpoints(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments reboot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/reboot")
@@ -1979,6 +1987,96 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
     private ServiceResponse<HostingEnvironmentDiagnosticsInner> getDiagnosticsItemDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<HostingEnvironmentDiagnosticsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<HostingEnvironmentDiagnosticsInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the network endpoints of all inbound dependencies of an ase.
+     * Get the network endpoints of all inbound dependencies of an ase.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;InboundEnvironmentEndpointInner&gt; object if successful.
+     */
+    public List<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpoints(String resourceGroupName, String name) {
+        return getInboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Get the network endpoints of all inbound dependencies of an ase.
+     * Get the network endpoints of all inbound dependencies of an ase.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name, final ServiceCallback<List<InboundEnvironmentEndpointInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(getInboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Get the network endpoints of all inbound dependencies of an ase.
+     * Get the network endpoints of all inbound dependencies of an ase.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;InboundEnvironmentEndpointInner&gt; object
+     */
+    public Observable<List<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name) {
+        return getInboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<InboundEnvironmentEndpointInner>>, List<InboundEnvironmentEndpointInner>>() {
+            @Override
+            public List<InboundEnvironmentEndpointInner> call(ServiceResponse<List<InboundEnvironmentEndpointInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get the network endpoints of all inbound dependencies of an ase.
+     * Get the network endpoints of all inbound dependencies of an ase.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;InboundEnvironmentEndpointInner&gt; object
+     */
+    public Observable<ServiceResponse<List<InboundEnvironmentEndpointInner>>> getInboundNetworkDependenciesEndpointsWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getInboundNetworkDependenciesEndpoints(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<InboundEnvironmentEndpointInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<InboundEnvironmentEndpointInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<InboundEnvironmentEndpointInner>> clientResponse = getInboundNetworkDependenciesEndpointsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<InboundEnvironmentEndpointInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<InboundEnvironmentEndpointInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -3993,6 +4091,96 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
     private ServiceResponse<List<OperationInner>> listOperationsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<OperationInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<OperationInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the network endpoints of all outbound dependencies of an ase.
+     * Get the network endpoints of all outbound dependencies of an ase.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;OutboundEnvironmentEndpointInner&gt; object if successful.
+     */
+    public List<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpoints(String resourceGroupName, String name) {
+        return getOutboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Get the network endpoints of all outbound dependencies of an ase.
+     * Get the network endpoints of all outbound dependencies of an ase.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name, final ServiceCallback<List<OutboundEnvironmentEndpointInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(getOutboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Get the network endpoints of all outbound dependencies of an ase.
+     * Get the network endpoints of all outbound dependencies of an ase.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;OutboundEnvironmentEndpointInner&gt; object
+     */
+    public Observable<List<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name) {
+        return getOutboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<OutboundEnvironmentEndpointInner>>, List<OutboundEnvironmentEndpointInner>>() {
+            @Override
+            public List<OutboundEnvironmentEndpointInner> call(ServiceResponse<List<OutboundEnvironmentEndpointInner>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get the network endpoints of all outbound dependencies of an ase.
+     * Get the network endpoints of all outbound dependencies of an ase.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;OutboundEnvironmentEndpointInner&gt; object
+     */
+    public Observable<ServiceResponse<List<OutboundEnvironmentEndpointInner>>> getOutboundNetworkDependenciesEndpointsWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getOutboundNetworkDependenciesEndpoints(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<OutboundEnvironmentEndpointInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<OutboundEnvironmentEndpointInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<OutboundEnvironmentEndpointInner>> clientResponse = getOutboundNetworkDependenciesEndpointsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<OutboundEnvironmentEndpointInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<OutboundEnvironmentEndpointInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
