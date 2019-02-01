@@ -10,6 +10,7 @@ package com.microsoft.azure.management.policyinsights.v2018_07_01_preview.implem
 
 import java.util.Map;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyEvaluationDetails;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -192,6 +193,18 @@ public class PolicyStateInner {
      */
     @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
+
+    /**
+     * Compliance state of the resource.
+     */
+    @JsonProperty(value = "complianceState")
+    private String complianceState;
+
+    /**
+     * Policy evaluation details.
+     */
+    @JsonProperty(value = "policyEvaluationDetails")
+    private PolicyEvaluationDetails policyEvaluationDetails;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -750,6 +763,46 @@ public class PolicyStateInner {
      */
     public PolicyStateInner withPolicyDefinitionReferenceId(String policyDefinitionReferenceId) {
         this.policyDefinitionReferenceId = policyDefinitionReferenceId;
+        return this;
+    }
+
+    /**
+     * Get compliance state of the resource.
+     *
+     * @return the complianceState value
+     */
+    public String complianceState() {
+        return this.complianceState;
+    }
+
+    /**
+     * Set compliance state of the resource.
+     *
+     * @param complianceState the complianceState value to set
+     * @return the PolicyStateInner object itself.
+     */
+    public PolicyStateInner withComplianceState(String complianceState) {
+        this.complianceState = complianceState;
+        return this;
+    }
+
+    /**
+     * Get policy evaluation details.
+     *
+     * @return the policyEvaluationDetails value
+     */
+    public PolicyEvaluationDetails policyEvaluationDetails() {
+        return this.policyEvaluationDetails;
+    }
+
+    /**
+     * Set policy evaluation details.
+     *
+     * @param policyEvaluationDetails the policyEvaluationDetails value to set
+     * @return the PolicyStateInner object itself.
+     */
+    public PolicyStateInner withPolicyEvaluationDetails(PolicyEvaluationDetails policyEvaluationDetails) {
+        this.policyEvaluationDetails = policyEvaluationDetails;
         return this;
     }
 
