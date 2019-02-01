@@ -101,7 +101,7 @@ public class OperationsInner {
      * @return the observable to the OperationsListResultsInner object
      */
     public Observable<ServiceResponse<OperationsListResultsInner>> listWithServiceResponseAsync() {
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         return service.list(apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationsListResultsInner>>>() {
                 @Override

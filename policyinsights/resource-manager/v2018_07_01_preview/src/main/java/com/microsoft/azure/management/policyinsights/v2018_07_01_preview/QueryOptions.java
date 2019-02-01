@@ -64,6 +64,13 @@ public class QueryOptions {
     private String apply;
 
     /**
+     * The $expand query parameter. For example, to expand
+     * policyEvaluationDetails, use $expand=policyEvaluationDetails.
+     */
+    @JsonProperty(value = "")
+    private String expand;
+
+    /**
      * Get maximum number of records to return.
      *
      * @return the top value
@@ -200,6 +207,26 @@ public class QueryOptions {
      */
     public QueryOptions withApply(String apply) {
         this.apply = apply;
+        return this;
+    }
+
+    /**
+     * Get the $expand query parameter. For example, to expand policyEvaluationDetails, use $expand=policyEvaluationDetails.
+     *
+     * @return the expand value
+     */
+    public String expand() {
+        return this.expand;
+    }
+
+    /**
+     * Set the $expand query parameter. For example, to expand policyEvaluationDetails, use $expand=policyEvaluationDetails.
+     *
+     * @param expand the expand value to set
+     * @return the QueryOptions object itself.
+     */
+    public QueryOptions withExpand(String expand) {
+        this.expand = expand;
         return this;
     }
 

@@ -82,7 +82,7 @@ public class PolicyStatesInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyStates listQueryResultsForResource" })
         @POST("{resourceId}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesResource}/queryResults")
-        Observable<Response<ResponseBody>> listQueryResultsForResource(@Path("policyStatesResource") PolicyStatesResource policyStatesResource1, @Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$top") Integer top, @Query("$orderby") String orderBy, @Query("$select") String select, @Query("$from") DateTime from, @Query("$to") DateTime to, @Query("$filter") String filter, @Query("$apply") String apply, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listQueryResultsForResource(@Path("policyStatesResource") PolicyStatesResource policyStatesResource1, @Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$top") Integer top, @Query("$orderby") String orderBy, @Query("$select") String select, @Query("$from") DateTime from, @Query("$to") DateTime to, @Query("$filter") String filter, @Query("$apply") String apply, @Query("$expand") String expand, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.policyinsights.v2018_07_01_preview.PolicyStates summarizeForResource" })
         @POST("{resourceId}/providers/Microsoft.PolicyInsights/policyStates/{policyStatesSummaryResource}/summarize")
@@ -186,7 +186,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter managementGroupName is required and cannot be null.");
         }
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -274,7 +274,7 @@ public class PolicyStatesInner {
         }
         Validator.validate(queryOptions);
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -378,7 +378,7 @@ public class PolicyStatesInner {
         }
         final String policyStatesSummaryResource = "latest";
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         DateTime from = null;
@@ -457,7 +457,7 @@ public class PolicyStatesInner {
         Validator.validate(queryOptions);
         final String policyStatesSummaryResource = "latest";
         final String managementGroupsNamespace = "Microsoft.Management";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -554,7 +554,7 @@ public class PolicyStatesInner {
         if (subscriptionId == null) {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -641,7 +641,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         Validator.validate(queryOptions);
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -744,7 +744,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter subscriptionId is required and cannot be null.");
         }
         final String policyStatesSummaryResource = "latest";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         DateTime from = null;
@@ -822,7 +822,7 @@ public class PolicyStatesInner {
         }
         Validator.validate(queryOptions);
         final String policyStatesSummaryResource = "latest";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -926,7 +926,7 @@ public class PolicyStatesInner {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -1020,7 +1020,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         Validator.validate(queryOptions);
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1130,7 +1130,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
         final String policyStatesSummaryResource = "latest";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         DateTime from = null;
@@ -1215,7 +1215,7 @@ public class PolicyStatesInner {
         }
         Validator.validate(queryOptions);
         final String policyStatesSummaryResource = "latest";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1312,7 +1312,7 @@ public class PolicyStatesInner {
         if (resourceId == null) {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -1321,7 +1321,8 @@ public class PolicyStatesInner {
         DateTime to = null;
         String filter = null;
         String apply = null;
-        return service.listQueryResultsForResource(policyStatesResource, resourceId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        String expand = null;
+        return service.listQueryResultsForResource(policyStatesResource, resourceId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, expand, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyStatesQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyStatesQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -1399,7 +1400,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
         Validator.validate(queryOptions);
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1428,7 +1429,11 @@ public class PolicyStatesInner {
         if (queryOptions != null) {
             apply = queryOptions.apply();
         }
-        return service.listQueryResultsForResource(policyStatesResource, resourceId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, this.client.userAgent())
+        String expand = null;
+        if (queryOptions != null) {
+            expand = queryOptions.expand();
+        }
+        return service.listQueryResultsForResource(policyStatesResource, resourceId, apiVersion, this.client.acceptLanguage(), top, orderBy, select, from, to, filter, apply, expand, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyStatesQueryResultsInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyStatesQueryResultsInner>> call(Response<ResponseBody> response) {
@@ -1502,7 +1507,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
         final String policyStatesSummaryResource = "latest";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         DateTime from = null;
@@ -1580,7 +1585,7 @@ public class PolicyStatesInner {
         }
         Validator.validate(queryOptions);
         final String policyStatesSummaryResource = "latest";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1685,7 +1690,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter policySetDefinitionName is required and cannot be null.");
         }
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -1780,7 +1785,7 @@ public class PolicyStatesInner {
         }
         Validator.validate(queryOptions);
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -1891,7 +1896,7 @@ public class PolicyStatesInner {
         }
         final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         DateTime from = null;
@@ -1977,7 +1982,7 @@ public class PolicyStatesInner {
         Validator.validate(queryOptions);
         final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -2082,7 +2087,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -2177,7 +2182,7 @@ public class PolicyStatesInner {
         }
         Validator.validate(queryOptions);
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -2288,7 +2293,7 @@ public class PolicyStatesInner {
         }
         final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         DateTime from = null;
@@ -2374,7 +2379,7 @@ public class PolicyStatesInner {
         Validator.validate(queryOptions);
         final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -2479,7 +2484,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -2574,7 +2579,7 @@ public class PolicyStatesInner {
         }
         Validator.validate(queryOptions);
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -2685,7 +2690,7 @@ public class PolicyStatesInner {
         }
         final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         DateTime from = null;
@@ -2771,7 +2776,7 @@ public class PolicyStatesInner {
         Validator.validate(queryOptions);
         final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -2883,7 +2888,7 @@ public class PolicyStatesInner {
             throw new IllegalArgumentException("Parameter policyAssignmentName is required and cannot be null.");
         }
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         String orderBy = null;
@@ -2985,7 +2990,7 @@ public class PolicyStatesInner {
         }
         Validator.validate(queryOptions);
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -3103,7 +3108,7 @@ public class PolicyStatesInner {
         }
         final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         final QueryOptions queryOptions = null;
         Integer top = null;
         DateTime from = null;
@@ -3196,7 +3201,7 @@ public class PolicyStatesInner {
         Validator.validate(queryOptions);
         final String policyStatesSummaryResource = "latest";
         final String authorizationNamespace = "Microsoft.Authorization";
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         Integer top = null;
         if (queryOptions != null) {
             top = queryOptions.top();
@@ -3286,7 +3291,7 @@ public class PolicyStatesInner {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
-        final String apiVersion = "2018-04-04";
+        final String apiVersion = "2018-07-01-preview";
         return service.getMetadata(scope, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
                 @Override
