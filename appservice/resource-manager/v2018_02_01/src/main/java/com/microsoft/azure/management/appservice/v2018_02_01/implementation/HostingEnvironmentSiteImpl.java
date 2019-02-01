@@ -14,10 +14,13 @@ import rx.Observable;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteAvailabilityState;
 import com.microsoft.azure.management.appservice.v2018_02_01.CloningInfo;
 import java.util.List;
+import com.microsoft.azure.management.appservice.v2018_02_01.GeoDistribution;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostNameSslState;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
+import java.util.UUID;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.appservice.v2018_02_01.RedundancyMode;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
 import java.util.Map;
@@ -54,6 +57,11 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     }
 
     @Override
+    public String clientCertExclusionPaths() {
+        return this.inner().clientCertExclusionPaths();
+    }
+
+    @Override
     public CloningInfo cloningInfo() {
         return this.inner().cloningInfo();
     }
@@ -81,6 +89,11 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     @Override
     public List<String> enabledHostNames() {
         return this.inner().enabledHostNames();
+    }
+
+    @Override
+    public List<GeoDistribution> geoDistributions() {
+        return this.inner().geoDistributions();
     }
 
     @Override
@@ -121,6 +134,11 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     @Override
     public ManagedServiceIdentity identity() {
         return this.inner().identity();
+    }
+
+    @Override
+    public UUID inProgressOperationId() {
+        return this.inner().inProgressOperationId();
     }
 
     @Override
@@ -166,6 +184,11 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     @Override
     public String possibleOutboundIpAddresses() {
         return this.inner().possibleOutboundIpAddresses();
+    }
+
+    @Override
+    public RedundancyMode redundancyMode() {
+        return this.inner().redundancyMode();
     }
 
     @Override

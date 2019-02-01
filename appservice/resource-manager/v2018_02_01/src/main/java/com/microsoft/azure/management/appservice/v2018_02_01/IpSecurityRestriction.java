@@ -20,7 +20,7 @@ public class IpSecurityRestriction {
      * CIDR notation such as ipv4/mask (leading bit match). For CIDR,
      * SubnetMask property must not be specified.
      */
-    @JsonProperty(value = "ipAddress", required = true)
+    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /**
@@ -28,6 +28,24 @@ public class IpSecurityRestriction {
      */
     @JsonProperty(value = "subnetMask")
     private String subnetMask;
+
+    /**
+     * Virtual network resource id.
+     */
+    @JsonProperty(value = "vnetSubnetResourceId")
+    private String vnetSubnetResourceId;
+
+    /**
+     * (internal) Vnet traffic tag.
+     */
+    @JsonProperty(value = "vnetTrafficTag")
+    private Integer vnetTrafficTag;
+
+    /**
+     * (internal) Subnet traffic tag.
+     */
+    @JsonProperty(value = "subnetTrafficTag")
+    private Integer subnetTrafficTag;
 
     /**
      * Allow or Deny access for this IP range.
@@ -103,6 +121,66 @@ public class IpSecurityRestriction {
      */
     public IpSecurityRestriction withSubnetMask(String subnetMask) {
         this.subnetMask = subnetMask;
+        return this;
+    }
+
+    /**
+     * Get virtual network resource id.
+     *
+     * @return the vnetSubnetResourceId value
+     */
+    public String vnetSubnetResourceId() {
+        return this.vnetSubnetResourceId;
+    }
+
+    /**
+     * Set virtual network resource id.
+     *
+     * @param vnetSubnetResourceId the vnetSubnetResourceId value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withVnetSubnetResourceId(String vnetSubnetResourceId) {
+        this.vnetSubnetResourceId = vnetSubnetResourceId;
+        return this;
+    }
+
+    /**
+     * Get (internal) Vnet traffic tag.
+     *
+     * @return the vnetTrafficTag value
+     */
+    public Integer vnetTrafficTag() {
+        return this.vnetTrafficTag;
+    }
+
+    /**
+     * Set (internal) Vnet traffic tag.
+     *
+     * @param vnetTrafficTag the vnetTrafficTag value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withVnetTrafficTag(Integer vnetTrafficTag) {
+        this.vnetTrafficTag = vnetTrafficTag;
+        return this;
+    }
+
+    /**
+     * Get (internal) Subnet traffic tag.
+     *
+     * @return the subnetTrafficTag value
+     */
+    public Integer subnetTrafficTag() {
+        return this.subnetTrafficTag;
+    }
+
+    /**
+     * Set (internal) Subnet traffic tag.
+     *
+     * @param subnetTrafficTag the subnetTrafficTag value to set
+     * @return the IpSecurityRestriction object itself.
+     */
+    public IpSecurityRestriction withSubnetTrafficTag(Integer subnetTrafficTag) {
+        this.subnetTrafficTag = subnetTrafficTag;
         return this;
     }
 

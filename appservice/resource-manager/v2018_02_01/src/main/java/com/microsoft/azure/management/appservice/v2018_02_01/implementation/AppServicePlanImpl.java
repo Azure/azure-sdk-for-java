@@ -70,11 +70,6 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     }
 
     @Override
-    public String adminSiteName() {
-        return this.inner().adminSiteName();
-    }
-
-    @Override
     public DateTime freeOfferExpirationTime() {
         return this.inner().freeOfferExpirationTime();
     }
@@ -182,16 +177,6 @@ class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppSe
     @Override
     public AppServicePlanImpl withSku(SkuDescription sku) {
         this.inner().withSku(sku);
-        return this;
-    }
-
-    @Override
-    public AppServicePlanImpl withAdminSiteName(String adminSiteName) {
-        if (isInCreateMode()) {
-            this.inner().withAdminSiteName(adminSiteName);
-        } else {
-            this.updateParameter.withAdminSiteName(adminSiteName);
-        }
         return this;
     }
 

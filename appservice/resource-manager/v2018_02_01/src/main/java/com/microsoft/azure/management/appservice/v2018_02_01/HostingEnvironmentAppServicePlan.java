@@ -20,11 +20,6 @@ import java.util.Map;
  */
 public interface HostingEnvironmentAppServicePlan extends HasInner<AppServicePlanInner>, HasManager<CertificateRegistrationManager> {
     /**
-     * @return the adminSiteName value.
-     */
-    String adminSiteName();
-
-    /**
      * @return the freeOfferExpirationTime value.
      */
     DateTime freeOfferExpirationTime();
