@@ -66,6 +66,12 @@ public class ImageAnalysis {
     private List<DetectedObject> objects;
 
     /**
+     * Array of brands detected in the image.
+     */
+    @JsonProperty(value = "brands")
+    private List<DetectedBrand> brands;
+
+    /**
      * Id of the REST API request.
      */
     @JsonProperty(value = "requestId")
@@ -234,6 +240,26 @@ public class ImageAnalysis {
      */
     public ImageAnalysis withObjects(List<DetectedObject> objects) {
         this.objects = objects;
+        return this;
+    }
+
+    /**
+     * Get array of brands detected in the image.
+     *
+     * @return the brands value
+     */
+    public List<DetectedBrand> brands() {
+        return this.brands;
+    }
+
+    /**
+     * Set array of brands detected in the image.
+     *
+     * @param brands the brands value to set
+     * @return the ImageAnalysis object itself.
+     */
+    public ImageAnalysis withBrands(List<DetectedBrand> brands) {
+        this.brands = brands;
         return this;
     }
 
