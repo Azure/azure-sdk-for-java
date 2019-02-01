@@ -37,8 +37,8 @@ public class LastDetectResponse {
      * Upper margin of the latest point. UpperMargin is used to calculate
      * upperBoundary, which equals to expectedValue + (100 -
      * sensitivity)*upperMargin. If the value of latest point is between
-     * upperBoudary and lowerBoudary, it should be treated as normal value. By
-     * adjusting sensitivity value, anomaly status of latest point can be
+     * upperBoundary and lowerBoundary, it should be treated as normal value.
+     * By adjusting sensitivity value, anomaly status of latest point can be
      * changed.
      */
     @JsonProperty(value = "upperMargin")
@@ -61,7 +61,7 @@ public class LastDetectResponse {
 
     /**
      * Anomaly status in negative direction of the latest point. True means the
-     * latest point is an anoamly and its real value is smaller than the
+     * latest point is an anomaly and its real value is smaller than the
      * expected one.
      */
     @JsonProperty(value = "isNegativeAnomaly")
@@ -136,7 +136,7 @@ public class LastDetectResponse {
     }
 
     /**
-     * Get upper margin of the latest point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - sensitivity)*upperMargin. If the value of latest point is between upperBoudary and lowerBoudary, it should be treated as normal value. By adjusting sensitivity value, anomaly status of latest point can be changed.
+     * Get upper margin of the latest point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - sensitivity)*upperMargin. If the value of latest point is between upperBoundary and lowerBoundary, it should be treated as normal value. By adjusting sensitivity value, anomaly status of latest point can be changed.
      *
      * @return the upperMargin value
      */
@@ -145,7 +145,7 @@ public class LastDetectResponse {
     }
 
     /**
-     * Set upper margin of the latest point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - sensitivity)*upperMargin. If the value of latest point is between upperBoudary and lowerBoudary, it should be treated as normal value. By adjusting sensitivity value, anomaly status of latest point can be changed.
+     * Set upper margin of the latest point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue + (100 - sensitivity)*upperMargin. If the value of latest point is between upperBoundary and lowerBoundary, it should be treated as normal value. By adjusting sensitivity value, anomaly status of latest point can be changed.
      *
      * @param upperMargin the upperMargin value to set
      * @return the LastDetectResponse object itself.
@@ -196,7 +196,7 @@ public class LastDetectResponse {
     }
 
     /**
-     * Get anomaly status in negative direction of the latest point. True means the latest point is an anoamly and its real value is smaller than the expected one.
+     * Get anomaly status in negative direction of the latest point. True means the latest point is an anomaly and its real value is smaller than the expected one.
      *
      * @return the isNegativeAnomaly value
      */
@@ -205,7 +205,7 @@ public class LastDetectResponse {
     }
 
     /**
-     * Set anomaly status in negative direction of the latest point. True means the latest point is an anoamly and its real value is smaller than the expected one.
+     * Set anomaly status in negative direction of the latest point. True means the latest point is an anomaly and its real value is smaller than the expected one.
      *
      * @param isNegativeAnomaly the isNegativeAnomaly value to set
      * @return the LastDetectResponse object itself.

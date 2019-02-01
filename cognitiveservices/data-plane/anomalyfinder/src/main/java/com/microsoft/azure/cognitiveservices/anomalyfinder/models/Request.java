@@ -50,7 +50,7 @@ public class Request {
 
     /**
      * Optional argument, advanced model parameter, max anomaly ratio in a time
-     * series. Must be between 0 and 0.5 (exclusive).
+     * series.
      */
     @JsonProperty(value = "maxAnomalyRatio")
     private Double maxAnomalyRatio;
@@ -58,7 +58,7 @@ public class Request {
     /**
      * Optional argument, advanced model parameter, between 0-99, the lower the
      * value is, the larger the margin value will be which means less anomalies
-     * will be accepted. Must be between 0 and 99 (inclusive).
+     * will be accepted.
      */
     @JsonProperty(value = "sensitivity")
     private Double sensitivity;
@@ -144,7 +144,7 @@ public class Request {
     }
 
     /**
-     * Get optional argument, advanced model parameter, max anomaly ratio in a time series. Must be between 0 and 0.5 (exclusive).
+     * Get optional argument, advanced model parameter, max anomaly ratio in a time series.
      *
      * @return the maxAnomalyRatio value
      */
@@ -153,7 +153,7 @@ public class Request {
     }
 
     /**
-     * Set optional argument, advanced model parameter, max anomaly ratio in a time series. Must be between 0 and 0.5 (exclusive).
+     * Set optional argument, advanced model parameter, max anomaly ratio in a time series.
      *
      * @param maxAnomalyRatio the maxAnomalyRatio value to set
      * @return the Request object itself.
@@ -164,7 +164,7 @@ public class Request {
     }
 
     /**
-     * Get optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted. Must be between 0 and 99 (inclusive).
+     * Get optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted.
      *
      * @return the sensitivity value
      */
@@ -173,7 +173,7 @@ public class Request {
     }
 
     /**
-     * Set optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted. Must be between 0 and 99 (inclusive).
+     * Set optional argument, advanced model parameter, between 0-99, the lower the value is, the larger the margin value will be which means less anomalies will be accepted.
      *
      * @param sensitivity the sensitivity value to set
      * @return the Request object itself.
