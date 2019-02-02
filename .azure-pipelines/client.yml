@@ -51,6 +51,13 @@ jobs:
     vmImage: 'ubuntu-16.04'
 
   steps:
+      # sudo is required for pip install, as a console_entrypoint shim needs to be placed in bin
+    - script: |
+        pip install setuptools wheel
+        sudo pip install doc-warden
+        ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
+      displayName: 'Verify Readmes'
+
     - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
       # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
       # builds should be sufficient.
