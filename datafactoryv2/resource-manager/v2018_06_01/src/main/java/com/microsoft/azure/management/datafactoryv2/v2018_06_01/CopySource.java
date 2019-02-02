@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CopySource")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "SapOpenHubSource", value = SapOpenHubSource.class),
     @JsonSubTypes.Type(name = "AmazonRedshiftSource", value = AmazonRedshiftSource.class),
     @JsonSubTypes.Type(name = "ResponsysSource", value = ResponsysSource.class),
     @JsonSubTypes.Type(name = "SalesforceMarketingCloudSource", value = SalesforceMarketingCloudSource.class),
