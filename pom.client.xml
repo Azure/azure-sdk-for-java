@@ -553,6 +553,5 @@
    <modules>
       <module>./template/client</module>
       <module>./keyvault/data-plane</module>
-      <module>./build-tools</module>
    </modules>
 </project>
