@@ -1,4 +1,12 @@
 ## Changelog
+### 2.4.0-beta1
+
+* Added support for Direct Https.
+* Changed the APIs accepting java.util.Collection for which order is important to accept java.util.List instead.
+  Now ConnectionPolicy#getPreferredLocations(), JsonSerialization, and PartitionKey(.) accept List. 
+* Fixed a Session bug for Document query in Gateway mode.
+* Upgraded dependencies (netty 0.4.20, RxJava 1.3.8).
+
 ### 2.3.1
 
 * Fix handling very large query responses.
