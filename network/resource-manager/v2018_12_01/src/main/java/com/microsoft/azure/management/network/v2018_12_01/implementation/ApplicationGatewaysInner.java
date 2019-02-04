@@ -1764,7 +1764,12 @@ public class ApplicationGatewaysInner implements InnerSupportsGet<ApplicationGat
                 @Override
                 public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<String>> clientResponse = listAvailableServerVariablesDelegate(response);
+                        ServiceResponse<<String>> result = listAvailableServerVariablesDelegate(response);
+                        List<String> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<String>> clientResponse = new ServiceResponse<List<String>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1773,9 +1778,9 @@ public class ApplicationGatewaysInner implements InnerSupportsGet<ApplicationGat
             });
     }
 
-    private ServiceResponse<List<String>> listAvailableServerVariablesDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<String>, ErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<String>>() { }.getType())
+    private ServiceResponse<<String>> listAvailableServerVariablesDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<<String>, ErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<<String>>() { }.getType())
                 .registerError(ErrorException.class)
                 .build(response);
     }
@@ -1834,7 +1839,12 @@ public class ApplicationGatewaysInner implements InnerSupportsGet<ApplicationGat
                 @Override
                 public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<String>> clientResponse = listAvailableRequestHeadersDelegate(response);
+                        ServiceResponse<<String>> result = listAvailableRequestHeadersDelegate(response);
+                        List<String> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<String>> clientResponse = new ServiceResponse<List<String>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1843,9 +1853,9 @@ public class ApplicationGatewaysInner implements InnerSupportsGet<ApplicationGat
             });
     }
 
-    private ServiceResponse<List<String>> listAvailableRequestHeadersDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<String>, ErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<String>>() { }.getType())
+    private ServiceResponse<<String>> listAvailableRequestHeadersDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<<String>, ErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<<String>>() { }.getType())
                 .registerError(ErrorException.class)
                 .build(response);
     }
@@ -1904,7 +1914,12 @@ public class ApplicationGatewaysInner implements InnerSupportsGet<ApplicationGat
                 @Override
                 public Observable<ServiceResponse<List<String>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<String>> clientResponse = listAvailableResponseHeadersDelegate(response);
+                        ServiceResponse<<String>> result = listAvailableResponseHeadersDelegate(response);
+                        List<String> items = null;
+                        if (result.body() != null) {
+                            items = result.body().items();
+                        }
+                        ServiceResponse<List<String>> clientResponse = new ServiceResponse<List<String>>(items, result.response());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1913,9 +1928,9 @@ public class ApplicationGatewaysInner implements InnerSupportsGet<ApplicationGat
             });
     }
 
-    private ServiceResponse<List<String>> listAvailableResponseHeadersDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<String>, ErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<String>>() { }.getType())
+    private ServiceResponse<<String>> listAvailableResponseHeadersDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<<String>, ErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<<String>>() { }.getType())
                 .registerError(ErrorException.class)
                 .build(response);
     }
