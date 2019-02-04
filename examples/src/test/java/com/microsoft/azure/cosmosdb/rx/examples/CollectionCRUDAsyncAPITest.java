@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -21,22 +21,6 @@
  * SOFTWARE.
  */
 package com.microsoft.azure.cosmosdb.rx.examples;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
@@ -52,76 +36,81 @@ import com.microsoft.azure.cosmosdb.IndexingPolicy;
 import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.SqlParameter;
-import com.microsoft.azure.cosmosdb.SqlParameterCollection;
-import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-import com.microsoft.azure.cosmosdb.rx.examples.TestConfigurations;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.observable.ListenableFutureObservable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+
+import javax.net.ssl.SSLException;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+
 /**
  * This integration test class demonstrates how to use Async API to create,
  * delete, replace, and update Document Collections.
- * 
+ * <p>
  * NOTE: you can use rxJava based async api with java8 lambda expression. Use of
  * rxJava based async APIs with java8 lambda expressions is much prettier.
- * 
+ * <p>
  * You can also use the async API without java8 lambda expression support.
- * 
+ * <p>
  * For example
  * <ul>
- * <li>{@link #testCreateCollection_MultiPartition_Async()} demonstrates how to use async api
+ * <li>{@link #createCollection_MultiPartition_Async()} demonstrates how to use async api
  * with java8 lambda expression.
- * 
- * <li>{@link #testCreateCollection_Async_withoutLambda()} demonstrates how to
+ *
+ * <li>{@link #createCollection_Async_withoutLambda()} demonstrates how to
  * do the same thing without lambda expression.
  * </ul>
- * 
+ * <p>
  * Also if you need to work with Future or ListenableFuture it is possible to
  * transform an observable to ListenableFuture. Please see
- * {@link #testTransformObservableToGoogleGuavaListenableFuture()}
- * 
+ * {@link #transformObservableToGoogleGuavaListenableFuture()}
+ * <p>
  * To Modify the Collection's throughput after it has been created, you need to
  * update the corresponding Offer. Please see
  * {@see com.microsoft.azure.cosmosdb.rx.examples.OfferCRUDAsyncAPITest#testUpdateOffer()}
  */
 public class CollectionCRUDAsyncAPITest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(CollectionCRUDAsyncAPITest.class);
-
-    private static final String DATABASE_ID = Utils.getDatabaseId(CollectionCRUDAsyncAPITest.class);
-    private Database createdDatabase;
+    private final static int TIMEOUT = 120000;
+    private static Database createdDatabase;
+    private static AsyncDocumentClient asyncClient;
     private DocumentCollection collectionDefinition;
 
-    private AsyncDocumentClient asyncClient;
-
-    @Before
-    public void setUp() throws DocumentClientException {
-
+    @BeforeClass(groups = "samples", timeOut = TIMEOUT)
+    public void setUp() {
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
 
-        // Clean up before setting up
-        this.cleanUpGeneratedDatabases();
+        createdDatabase = Utils.createDatabaseForTest(asyncClient);
+    }
 
-        createdDatabase = new Database();
-        createdDatabase.setId(DATABASE_ID);
-        createdDatabase = asyncClient.createDatabase(createdDatabase, null).toBlocking().single().getResource();
-
+    @BeforeMethod(groups = "samples", timeOut = TIMEOUT)
+    public void before() {
         collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
     }
 
-    @After
-    public void shutdown() throws DocumentClientException {
-        Utils.safeclean(asyncClient, DATABASE_ID);
+    @AfterClass(groups = "samples", timeOut = TIMEOUT)
+    public void shutdown() {
+        Utils.safeClean(asyncClient, createdDatabase);
+        Utils.safeClose(asyncClient);
     }
 
     /**
@@ -130,29 +119,30 @@ public class CollectionCRUDAsyncAPITest {
      * the only way to do so is to create a single partition collection with lower
      * throughput (400) and then increase the throughput.
      */
-    @Test
-    public void testCreateCollection_SinglePartition_Async() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createCollection_SinglePartition_Async() throws Exception {
         RequestOptions singlePartitionRequestOptions = new RequestOptions();
         singlePartitionRequestOptions.setOfferThroughput(400);
         Observable<ResourceResponse<DocumentCollection>> createCollectionObservable = asyncClient
                 .createCollection(getDatabaseLink(), collectionDefinition, singlePartitionRequestOptions);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         createCollectionObservable.single() // We know there is only single result
                 .subscribe(collectionResourceResponse -> {
                     System.out.println(collectionResourceResponse.getActivityId());
-                    successfulCompletionLatch.countDown();
+                    countDownLatch.countDown();
                 }, error -> {
                     System.err.println(
                             "an error occurred while creating the collection: actual cause: " + error.getMessage());
+                    countDownLatch.countDown();
                 });
 
         // Wait till collection creation completes
-        successfulCompletionLatch.await();
+        countDownLatch.await();
     }
 
-    /** 
+    /**
      * Create a document collection using async api.
      * This test uses java8 lambda expression.
      * See testCreateCollection_Async_withoutLambda for usage without lambda
@@ -160,45 +150,46 @@ public class CollectionCRUDAsyncAPITest {
      * Set the throughput to be > 10,000 RU/s
      * to create a multi partition collection.
      */
-    @Test
-    public void testCreateCollection_MultiPartition_Async() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createCollection_MultiPartition_Async() throws Exception {
         RequestOptions multiPartitionRequestOptions = new RequestOptions();
         multiPartitionRequestOptions.setOfferThroughput(20000);
 
         Observable<ResourceResponse<DocumentCollection>> createCollectionObservable = asyncClient.createCollection(
                 getDatabaseLink(), getMultiPartitionCollectionDefinition(), multiPartitionRequestOptions);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         createCollectionObservable.single() // We know there is only single result
                 .subscribe(collectionResourceResponse -> {
                     System.out.println(collectionResourceResponse.getActivityId());
-                    successfulCompletionLatch.countDown();
+                    countDownLatch.countDown();
                 }, error -> {
                     System.err.println(
                             "an error occurred while creating the collection: actual cause: " + error.getMessage());
+                    countDownLatch.countDown();
                 });
 
         // Wait till collection creation completes
-        successfulCompletionLatch.await();
+        countDownLatch.await();
     }
 
     /**
      * Create a document Collection using async api, without java8 lambda expressions
      */
-    @Test
-    public void testCreateCollection_Async_withoutLambda() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createCollection_Async_withoutLambda() throws Exception {
         Observable<ResourceResponse<DocumentCollection>> createCollectionObservable = asyncClient
                 .createCollection(getDatabaseLink(), collectionDefinition, null);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
         Action1<ResourceResponse<DocumentCollection>> onCollectionCreationAction = new Action1<ResourceResponse<DocumentCollection>>() {
 
             @Override
             public void call(ResourceResponse<DocumentCollection> resourceResponse) {
                 // Collection is created
                 System.out.println(resourceResponse.getActivityId());
-                successfulCompletionLatch.countDown();
+                countDownLatch.countDown();
             }
         };
 
@@ -207,6 +198,7 @@ public class CollectionCRUDAsyncAPITest {
             public void call(Throwable error) {
                 System.err.println(
                         "an error occurred while creating the collection: actual cause: " + error.getMessage());
+                countDownLatch.countDown();
             }
         };
 
@@ -214,14 +206,14 @@ public class CollectionCRUDAsyncAPITest {
                 .subscribe(onCollectionCreationAction, onError);
 
         // Wait till collection creation completes
-        successfulCompletionLatch.await();
+        countDownLatch.await();
     }
 
     /**
      * Create a collection in a blocking manner
      */
-    @Test
-    public void testCreateCollection_toBlocking() throws DocumentClientException {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createCollection_toBlocking() {
         Observable<ResourceResponse<DocumentCollection>> createCollectionObservable = asyncClient
                 .createCollection(getDatabaseLink(), collectionDefinition, null);
 
@@ -237,8 +229,8 @@ public class CollectionCRUDAsyncAPITest {
      *     - Converts the Observable to blocking using Observable.toBlocking() api
      *     - Catch already exist failure (409)
      */
-    @Test
-    public void testCreateCollection_toBlocking_CollectionAlreadyExists_Fails() throws DocumentClientException {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createCollection_toBlocking_CollectionAlreadyExists_Fails() {
         asyncClient.createCollection(getDatabaseLink(), collectionDefinition, null).toBlocking().single();
 
         // Create the collection for test.
@@ -261,8 +253,8 @@ public class CollectionCRUDAsyncAPITest {
      * of Java's Future which allows registering listener callbacks:
      * https://github.com/google/guava/wiki/ListenableFutureExplained
      */
-    @Test
-    public void testTransformObservableToGoogleGuavaListenableFuture() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void transformObservableToGoogleGuavaListenableFuture() throws Exception {
         Observable<ResourceResponse<DocumentCollection>> createCollectionObservable = asyncClient
                 .createCollection(getDatabaseLink(), collectionDefinition, null);
         ListenableFuture<ResourceResponse<DocumentCollection>> future = ListenableFutureObservable
@@ -277,8 +269,8 @@ public class CollectionCRUDAsyncAPITest {
     /**
      * Read a Collection in an Async manner
      */
-    @Test
-    public void testCreateAndReadCollection() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createAndReadCollection() throws Exception {
         // Create a Collection
         DocumentCollection documentCollection = asyncClient
                 .createCollection(getDatabaseLink(), collectionDefinition, null).toBlocking().single()
@@ -288,26 +280,27 @@ public class CollectionCRUDAsyncAPITest {
         Observable<ResourceResponse<DocumentCollection>> readCollectionObservable = asyncClient
                 .readCollection(getCollectionLink(documentCollection), null);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         readCollectionObservable.single() // We know there is only single result
                 .subscribe(collectionResourceResponse -> {
                     System.out.println(collectionResourceResponse.getActivityId());
-                    successfulCompletionLatch.countDown();
+                    countDownLatch.countDown();
                 }, error -> {
                     System.err.println(
                             "an error occurred while reading the collection: actual cause: " + error.getMessage());
+                    countDownLatch.countDown();
                 });
 
         // Wait till read collection completes
-        successfulCompletionLatch.await();
+        countDownLatch.await();
     }
 
     /**
      * Delete a Collection in an Async manner
      */
-    @Test
-    public void testCreateAndDeleteCollection() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createAndDeleteCollection() throws Exception {
         // Create a Collection
         DocumentCollection documentCollection = asyncClient
                 .createCollection(getDatabaseLink(), collectionDefinition, null).toBlocking().single()
@@ -317,26 +310,27 @@ public class CollectionCRUDAsyncAPITest {
         Observable<ResourceResponse<DocumentCollection>> deleteCollectionObservable = asyncClient
                 .deleteCollection(getCollectionLink(documentCollection), null);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         deleteCollectionObservable.single() // We know there is only single result
                 .subscribe(collectionResourceResponse -> {
                     System.out.println(collectionResourceResponse.getActivityId());
-                    successfulCompletionLatch.countDown();
+                    countDownLatch.countDown();
                 }, error -> {
                     System.err.println(
                             "an error occurred while deleting the collection: actual cause: " + error.getMessage());
+                    countDownLatch.countDown();
                 });
 
         // Wait till collection deletion completes
-        successfulCompletionLatch.await();
+        countDownLatch.await();
     }
 
     /**
      * Query a Collection in an Async manner
      */
-    @Test
-    public void testCollectionCreateAndQuery() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void collectionCreateAndQuery() throws Exception {
         // Create a Collection
         DocumentCollection collection = asyncClient
                 .createCollection(getDatabaseLink(), collectionDefinition, null).toBlocking().single()
@@ -347,7 +341,7 @@ public class CollectionCRUDAsyncAPITest {
                 getDatabaseLink(), String.format("SELECT * FROM r where r.id = '%s'", collection.getId()),
                 null);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
 
         queryCollectionObservable.toList().subscribe(collectionFeedResponseList -> {
             // toList() should return a list of size 1
@@ -362,13 +356,14 @@ public class CollectionCRUDAsyncAPITest {
             assertThat(foundCollection.getId(), equalTo(collection.getId()));
 
             System.out.println(collectionFeedResponse.getActivityId());
-            successfulCompletionLatch.countDown();
+            countDownLatch.countDown();
         }, error -> {
             System.err.println("an error occurred while querying the collection: actual cause: " + error.getMessage());
+            countDownLatch.countDown();
         });
 
         // Wait till collection query completes
-        successfulCompletionLatch.await();
+        countDownLatch.await();
     }
 
     private String getDatabaseLink() {
@@ -386,7 +381,7 @@ public class CollectionCRUDAsyncAPITest {
         // Set the partitionKeyDefinition for a partitioned collection.
         // Here, we are setting the partitionKey of the Collection to be /city
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        Collection<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         paths.add("/city");
         partitionKeyDefinition.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDefinition);
@@ -410,28 +405,5 @@ public class CollectionCRUDAsyncAPITest {
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
         return collectionDefinition;
-    }
-
-    private void cleanUpGeneratedDatabases() throws DocumentClientException {
-        LOGGER.info("cleanup databases invoked");
-
-        String[] allDatabaseIds = { DATABASE_ID };
-
-        for (String id : allDatabaseIds) {
-            try {
-                List<FeedResponse<Database>> feedResponsePages = asyncClient
-                        .queryDatabases(new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                                new SqlParameterCollection(new SqlParameter("@id", id))), null)
-                        .toList().toBlocking().single();
-
-                if (!feedResponsePages.get(0).getResults().isEmpty()) {
-                    Database res = feedResponsePages.get(0).getResults().get(0);
-                    LOGGER.info("deleting a database " + feedResponsePages.get(0));
-                    asyncClient.deleteDatabase("dbs/" + res.getId(), null).toBlocking().single();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

@@ -29,6 +29,7 @@ import java.util.concurrent.CountDownLatch;
 
 import com.microsoft.azure.cosmosdb.BridgeInternal;
 import org.mockito.Mockito;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
@@ -40,6 +41,7 @@ import com.microsoft.azure.cosmosdb.FeedResponse;
 
 import rx.Observable;
 import rx.Subscriber;
+
 
 public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
 
@@ -74,7 +76,7 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedExceptionHandlingTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -103,7 +105,12 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
     }
     
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws DocumentClientException {
+    public void beforeClass() {
         client = clientBuilder.build();
+    }
+
+    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        safeClose(this.client);
     }
 }

@@ -52,6 +52,7 @@ import com.microsoft.azure.cosmosdb.StoredProcedureResponse;
 import com.microsoft.azure.cosmosdb.Trigger;
 import com.microsoft.azure.cosmosdb.User;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
+import com.microsoft.azure.cosmosdb.rx.internal.Configs;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentClientImpl;
 
 import rx.Observable;
@@ -63,7 +64,7 @@ import rx.Observable;
  * 
  * <p>
  * {@link AsyncDocumentClient} async APIs return <a href="https://github.com/ReactiveX/RxJava">rxJava</a>'s {@code
- * Observable}, and so you can use rxJava {@link Observable} functionalities.
+ * Observable}, and so you can use rxJava {@link Observable} functionality.
  * <STRONG>The async {@link Observable} based APIs perform the requested operation only after
  * subscription.</STRONG>
  * 
@@ -102,13 +103,13 @@ public interface AsyncDocumentClient {
      */
     class Builder {
 
-        String masterKeyOrResourceToken;
+        Configs configs = new Configs();
         ConnectionPolicy connectionPolicy;
         ConsistencyLevel desiredConsistencyLevel;
-        URI serviceEndpoint;
         List<Permission> permissionFeed;
+        String masterKeyOrResourceToken;
+        URI serviceEndpoint;
         int eventLoopSize = -1;
-        boolean enableExperimentalDirectMode = false;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -177,22 +178,16 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        Builder withConfigs(Configs configs) {
+            this.configs = configs;
+            return this;
+        }
+
         public Builder withConnectionPolicy(ConnectionPolicy connectionPolicy) {
             this.connectionPolicy = connectionPolicy;
             return this;
         }
 
-        /**
-         * This method is "not" public only internal for direct mode dev.
-         * If this is not set, and ConnectionPolicy.DirectHttps is set
-         * we will throw exception.
-         * @return
-         */
-        Builder withExperimentalDirectModeEnabled(boolean enableExperimentalDirectMode) {
-            this.enableExperimentalDirectMode = enableExperimentalDirectMode;
-            return this;
-        }
-        
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -206,14 +201,15 @@ public interface AsyncDocumentClient {
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty()),
                     "cannot build client without masterKey or resource token");
 
-            if (!this.enableExperimentalDirectMode &&
-                this.connectionPolicy != null && this.connectionPolicy.getConnectionMode() == ConnectionMode.DirectHttps) {
-                // not supported
-                throw new UnsupportedOperationException("Direct Https is not supported");
-            }
-
-            return new RxDocumentClientImpl(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, desiredConsistencyLevel,
-                eventLoopSize);
+            RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
+                                                                   masterKeyOrResourceToken,
+                                                                   permissionFeed,
+                                                                   connectionPolicy,
+                                                                   desiredConsistencyLevel,
+                                                                   configs,
+                                                                   eventLoopSize);
+            client.init();
+            return client;
         }
     }
 

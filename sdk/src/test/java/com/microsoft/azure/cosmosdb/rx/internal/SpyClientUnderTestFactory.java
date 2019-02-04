@@ -22,17 +22,26 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
+import com.google.common.reflect.Reflection;
+import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
+import com.microsoft.azure.cosmosdb.ISessionContainer;
 import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
 import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyAndResourceTokenPair;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.SpyClientBuilder;
 import io.netty.buffer.ByteBuf;
+import io.netty.util.internal.ReflectionUtil;
 import io.reactivex.netty.client.RxClient;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
+import io.reactivex.netty.protocol.http.client.HttpClientResponse;
+import io.reactivex.netty.protocol.http.client.HttpRequestHeaders;
+import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -42,6 +51,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.doAnswer;
 
@@ -52,11 +64,12 @@ public class SpyClientUnderTestFactory {
         private RxGatewayStoreModel origRxGatewayStoreModel;
         private RxGatewayStoreModel spyRxGatewayStoreModel;
 
-        List<RxDocumentServiceRequest> requests =
-                Collections.synchronizedList(new ArrayList<>());
+        private List<RxDocumentServiceRequest> requests;
 
-        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, -1);
+
+        ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, -1);
+            init();
         }
 
         public List<RxDocumentServiceRequest> getCapturedRequests() {
@@ -64,25 +77,22 @@ public class SpyClientUnderTestFactory {
         }
 
         @Override
-        RxGatewayStoreModel createRxGatewayProxy(ConnectionPolicy connectionPolicy,
+        RxGatewayStoreModel createRxGatewayProxy(ISessionContainer sessionContainer,
                                                  ConsistencyLevel consistencyLevel,
                                                  QueryCompatibilityMode queryCompatibilityMode,
-                                                 String masterKey, Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap,
                                                  UserAgentContainer userAgentContainer,
                                                  GlobalEndpointManager globalEndpointManager,
                                                  CompositeHttpClient<ByteBuf, ByteBuf> rxClient) {
             this.origRxGatewayStoreModel = super.createRxGatewayProxy(
-                    connectionPolicy,
+                    sessionContainer,
                     consistencyLevel,
                     queryCompatibilityMode,
-                    masterKey,
-                    resourceTokensMap,
                     userAgentContainer,
                     globalEndpointManager,
                     rxClient);
-
+            this.requests = Collections.synchronizedList(new ArrayList<>());
             this.spyRxGatewayStoreModel = Mockito.spy(this.origRxGatewayStoreModel);
-
+            this.initRequestCapture();
             return this.spyRxGatewayStoreModel;
         }
 
@@ -91,14 +101,10 @@ public class SpyClientUnderTestFactory {
                 @Override
                 public Object answer(InvocationOnMock invocationOnMock)  {
                     RxDocumentServiceRequest req = invocationOnMock.getArgumentAt(0, RxDocumentServiceRequest.class);
-
+                    requests.add(req);
                     return ClientWithGatewaySpy.this.origRxGatewayStoreModel.processMessage(req);
                 }
             }).when(ClientWithGatewaySpy.this.spyRxGatewayStoreModel).processMessage(Mockito.any(RxDocumentServiceRequest.class));
-        }
-
-        public void stubCaptureRequest() {
-            initRequestCapture();
         }
 
         public void clearCapturedRequests() {
@@ -116,18 +122,22 @@ public class SpyClientUnderTestFactory {
 
     public static class ClientUnderTest extends RxDocumentClientImpl {
 
-        private volatile boolean captureRequest = false;
         CompositeHttpClient<ByteBuf, ByteBuf> origHttpClient;
         CompositeHttpClient<ByteBuf, ByteBuf> spyHttpClient;
-        List<HttpClientRequest<ByteBuf>> requests =
-                Collections.synchronizedList(new ArrayList<HttpClientRequest<ByteBuf>>());
+        List<Pair<HttpClientRequest<ByteBuf>, Future<HttpResponseHeaders>>> requestsResponsePairs =
+                Collections.synchronizedList(new ArrayList<Pair<HttpClientRequest<ByteBuf>, Future<HttpResponseHeaders>>>());
 
-        ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, -1);
+        ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, -1);
+            init();
+        }
+
+        public List<Pair<HttpClientRequest<ByteBuf>, Future<HttpResponseHeaders>>> capturedRequestResponseHeaderPairs() {
+            return requestsResponsePairs;
         }
 
         public List<HttpClientRequest<ByteBuf>> getCapturedRequests() {
-            return requests;
+            return requestsResponsePairs.stream().map(pair -> pair.getLeft()).collect(Collectors.toList());
         }
 
         void initRequestCapture(CompositeHttpClient<ByteBuf, ByteBuf> spyClient) {
@@ -137,24 +147,31 @@ public class SpyClientUnderTestFactory {
                 public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
                     RxClient.ServerInfo serverInfo = invocationOnMock.getArgumentAt(0, RxClient.ServerInfo.class);
                     HttpClientRequest<ByteBuf> httpReq = invocationOnMock.getArgumentAt(1, HttpClientRequest.class);
-                    if (captureRequest) {
-                        requests.add(httpReq);
-                    }
-                    return origHttpClient.submit(serverInfo, httpReq);
+
+                    CompletableFuture<HttpResponseHeaders> f = new CompletableFuture<>();
+                    requestsResponsePairs.add(Pair.of(httpReq, f));
+
+                    return origHttpClient.submit(serverInfo, httpReq)
+                            .doOnNext(
+                                    res -> f.complete(res.getHeaders())
+                            ).doOnError(
+                                    e -> f.completeExceptionally(e)
+                            );
+
                 }
             }).when(spyClient).submit(Mockito.any(RxClient.ServerInfo.class), Mockito.any(HttpClientRequest.class));
         }
 
-        public void startCaptureRequests() {
-            captureRequest = true;
-        }
-
         public void clearCapturedRequests() {
-            requests.clear();
+            requestsResponsePairs.clear();
         }
 
-        public void stopCaptureRequests() {
-            captureRequest = false;
+        public ISessionContainer getSessionContainer() {
+            try {
+                return (ISessionContainer) FieldUtils.readField(this, "sessionContainer", true);
+            } catch (Exception e){
+                throw new RuntimeException(e);
+            }
         }
 
         public CompositeHttpClient<ByteBuf, ByteBuf> getSpyHttpClient() {
@@ -162,32 +179,95 @@ public class SpyClientUnderTestFactory {
         }
     }
 
+    public static class DirectHttpsClientUnderTest extends RxDocumentClientImpl {
+
+        CompositeHttpClient<ByteBuf, ByteBuf> origHttpClient;
+        CompositeHttpClient<ByteBuf, ByteBuf> spyHttpClient;
+        List<Pair<HttpClientRequest<ByteBuf>, Future<HttpResponseHeaders>>> requestsResponsePairs =
+                Collections.synchronizedList(new ArrayList<Pair<HttpClientRequest<ByteBuf>, Future<HttpResponseHeaders>>>());
+
+        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel) {
+            // TODO: DANOBLE: ensure the configs instance instantiated here specifies Protocol.Https
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, new Configs(), -1);
+            assert connectionPolicy.getConnectionMode() == ConnectionMode.Direct;
+            init();
+        }
+
+        public List<Pair<HttpClientRequest<ByteBuf>, Future<HttpResponseHeaders>>> capturedRequestResponseHeaderPairs() {
+            return requestsResponsePairs;
+        }
+
+        public List<HttpClientRequest<ByteBuf>> getCapturedRequests() {
+            return requestsResponsePairs.stream().map(pair -> pair.getLeft()).collect(Collectors.toList());
+        }
+
+        void initRequestCapture(CompositeHttpClient<ByteBuf, ByteBuf> spyClient) {
+
+            doAnswer(new Answer() {
+                @Override
+                public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+                    RxClient.ServerInfo serverInfo = invocationOnMock.getArgumentAt(0, RxClient.ServerInfo.class);
+                    HttpClientRequest<ByteBuf> httpReq = invocationOnMock.getArgumentAt(1, HttpClientRequest.class);
+
+                    CompletableFuture<HttpResponseHeaders> f = new CompletableFuture<>();
+                    requestsResponsePairs.add(Pair.of(httpReq, f));
+
+                    return origHttpClient.submit(serverInfo, httpReq)
+                            .doOnNext(
+                                    res -> f.complete(res.getHeaders())
+                            ).doOnError(
+                                    e -> f.completeExceptionally(e)
+                            );
+
+                }
+            }).when(spyClient).submit(Mockito.any(RxClient.ServerInfo.class), Mockito.any(HttpClientRequest.class));
+        }
+
+        public void clearCapturedRequests() {
+            requestsResponsePairs.clear();
+        }
+
+        public ISessionContainer getSessionContainer() {
+            try {
+                return (ISessionContainer) FieldUtils.readField(this, "sessionContainer", true);
+            } catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        }
+
+        public CompositeHttpClient<ByteBuf, ByteBuf> getSpyHttpClient() {
+            return spyHttpClient;
+        }
+    }
+
+
     public static ClientWithGatewaySpy createClientWithGatewaySpy(AsyncDocumentClient.Builder builder) {
         return new SpyClientBuilder(builder).buildWithGatewaySpy();
     }
 
     public static ClientWithGatewaySpy createClientWithGatewaySpy(URI serviceEndpoint,
-                                                        String masterKey,
-                                                        ConnectionPolicy connectionPolicy,
-                                                        ConsistencyLevel consistencyLevel) {
-        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel);
+                                                                  String masterKey,
+                                                                  ConnectionPolicy connectionPolicy,
+                                                                  ConsistencyLevel consistencyLevel,
+                                                                  Configs configs) {
+        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs);
     }
 
-    public ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {
+    public static ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {
         return new SpyClientBuilder(builder).build();
     }
 
     public static ClientUnderTest createClientUnderTest(URI serviceEndpoint,
                                                         String masterKey,
                                                         ConnectionPolicy connectionPolicy,
-                                                        ConsistencyLevel consistencyLevel) {
-        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel) {
+                                                        ConsistencyLevel consistencyLevel,
+                                                        Configs configs) {
+        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs) {
 
             @Override
-            RxGatewayStoreModel createRxGatewayProxy(ConnectionPolicy connectionPolicy,
+            RxGatewayStoreModel createRxGatewayProxy(ISessionContainer sessionContainer,
                                                      ConsistencyLevel consistencyLevel,
                                                      QueryCompatibilityMode queryCompatibilityMode,
-                                                     String masterKey, Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap,
                                                      UserAgentContainer userAgentContainer,
                                                      GlobalEndpointManager globalEndpointManager,
                                                      CompositeHttpClient<ByteBuf, ByteBuf> rxClient) {
@@ -200,16 +280,13 @@ public class SpyClientUnderTestFactory {
                 this.initRequestCapture(spyHttpClient);
 
                 return super.createRxGatewayProxy(
-                        connectionPolicy,
+                        sessionContainer,
                         consistencyLevel,
                         queryCompatibilityMode,
-                        masterKey,
-                        resourceTokensMap,
                         userAgentContainer,
                         globalEndpointManager,
                         spyClient);
             }
         };
     }
-
 }

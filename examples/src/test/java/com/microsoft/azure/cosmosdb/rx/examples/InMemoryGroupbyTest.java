@@ -22,62 +22,47 @@
  */
 package com.microsoft.azure.cosmosdb.rx.examples;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.UUID;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
-import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.SqlParameter;
 import com.microsoft.azure.cosmosdb.SqlParameterCollection;
 import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 import rx.Observable;
 import rx.observables.GroupedObservable;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.UUID;
+
 public class InMemoryGroupbyTest {
+    private final static int TIMEOUT = 60000;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryGroupbyTest.class);
-    private static final String DATABASE_ID = Utils.getDatabaseId(InMemoryGroupbyTest.class);
+    private static AsyncDocumentClient asyncClient;
+    private static Database createdDatabase;
+    private static DocumentCollection createdCollection;
 
-    private AsyncDocumentClient asyncClient;
-    private Database createdDatabase;
-    private DocumentCollection createdCollection;
-
-    @Before
-    public void setUp() throws Exception {
-
+    @BeforeClass(groups = "samples", timeOut = TIMEOUT)
+    public static void setUp() throws Exception {
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
 
-        // Clean up the database.
-        this.cleanUpGeneratedDatabases();
-
-        Database databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID);
+        // Create database
+        createdDatabase = Utils.createDatabaseForTest(asyncClient);
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
-
-        // Create database
-        createdDatabase = asyncClient.createDatabase(databaseDefinition, null).toBlocking().single().getResource();
 
         // Create collection
         createdCollection = asyncClient
@@ -107,9 +92,10 @@ public class InMemoryGroupbyTest {
         System.out.println("finished inserting documents");
     }
 
-    @After
-    public void shutdown() throws DocumentClientException {
-        Utils.safeclean(asyncClient, DATABASE_ID);
+    @AfterClass(groups = "samples", timeOut = TIMEOUT)
+    public static void shutdown() {
+        Utils.safeClean(asyncClient, createdDatabase);
+        asyncClient.close();
     }
 
     /**
@@ -117,8 +103,8 @@ public class InMemoryGroupbyTest {
      * If you want to understand the steps in more details see {@link #groupByInMemory_MoreDetail()}
      * @throws Exception
      */
-    @Test
-    public void groupByInMemory() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void groupByInMemory() {
         // If you want to understand the steps in more details see groupByInMemoryMoreDetail()
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
@@ -149,8 +135,8 @@ public class InMemoryGroupbyTest {
      * This does the same thing as {@link #groupByInMemory_MoreDetail()} but with pedagogical details
      * @throws Exception
      */
-    @Test
-    public void groupByInMemory_MoreDetail() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void groupByInMemory_MoreDetail() {
 
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
@@ -182,30 +168,7 @@ public class InMemoryGroupbyTest {
         }
     }
 
-    private String getCollectionLink() {
+    private static  String getCollectionLink() {
         return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
-    }
-
-    private void cleanUpGeneratedDatabases() throws DocumentClientException {
-        LOGGER.info("cleanup databases invoked");
-
-        String[] allDatabaseIds = { DATABASE_ID };
-
-        for (String id : allDatabaseIds) {
-            try {
-                List<FeedResponse<Database>> feedResponsePages = asyncClient
-                        .queryDatabases(new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                                new SqlParameterCollection(new SqlParameter("@id", id))), null)
-                        .toList().toBlocking().single();
-
-                if (!feedResponsePages.get(0).getResults().isEmpty()) {
-                    Database res = feedResponsePages.get(0).getResults().get(0);
-                    LOGGER.info("deleting a database " + feedResponsePages.get(0));
-                    asyncClient.deleteDatabase("dbs/" + res.getId(), null).toBlocking().single();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

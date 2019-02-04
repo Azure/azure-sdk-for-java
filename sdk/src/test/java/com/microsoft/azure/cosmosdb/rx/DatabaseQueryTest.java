@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -37,15 +38,14 @@ import org.testng.annotations.Test;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
 
 public class DatabaseQueryTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID1 = getDatabaseId(DatabaseQueryTest.class) + "1";
-    public final static String DATABASE_ID2 = getDatabaseId(DatabaseQueryTest.class) + "2";
+    public final String databaseId1 = DatabaseForTest.generateId();
+    public final String databaseId2 = DatabaseForTest.generateId();
 
     private List<Database> createdDatabases = new ArrayList<>();
 
@@ -59,14 +59,14 @@ public class DatabaseQueryTest extends TestSuiteBase {
     
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDatabaseWithFilter() throws Exception {
-        String query = String.format("SELECT * from c where c.id = '%s'", DATABASE_ID1);
+        String query = String.format("SELECT * from c where c.id = '%s'", databaseId1);
 
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
         Observable<FeedResponse<Database>> queryObservable = client.queryDatabases(query, options);
 
         List<Database> expectedDatabases = createdDatabases.stream()
-                .filter(d -> StringUtils.equals(DATABASE_ID1, d.getId()) ).collect(Collectors.toList());
+                .filter(d -> StringUtils.equals(databaseId1, d.getId()) ).collect(Collectors.toList());
 
         assertThat(expectedDatabases).isNotEmpty();
 
@@ -86,9 +86,9 @@ public class DatabaseQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryAllDatabase() throws Exception {
 
-        String query = String.format("SELECT * from c where c.id in ('%s', '%s')", 
-                DATABASE_ID1,
-                DATABASE_ID2);
+        String query = String.format("SELECT * from c where c.id in ('%s', '%s')",
+                                     databaseId1,
+                                     databaseId2);
 
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
@@ -133,19 +133,18 @@ public class DatabaseQueryTest extends TestSuiteBase {
         client = clientBuilder.build();
 
         Database d1 = new Database();
-        d1.setId(DATABASE_ID1);
-        createdDatabases.add(safeCreateDatabase(client, d1));
+        d1.setId(databaseId1);
+        createdDatabases.add(createDatabase(client, d1));
 
         Database d2 = new Database();
-        d2.setId(DATABASE_ID2);
-        safeCreateDatabase(client, d2);
-        createdDatabases.add(safeCreateDatabase(client, d2));
+        d2.setId(databaseId2);
+        createdDatabases.add(createDatabase(client, d2));
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, DATABASE_ID1);
-        safeDeleteDatabase(client, DATABASE_ID2);
+        safeDeleteDatabase(client, databaseId1);
+        safeDeleteDatabase(client, databaseId2);
 
         safeClose(client);
     }

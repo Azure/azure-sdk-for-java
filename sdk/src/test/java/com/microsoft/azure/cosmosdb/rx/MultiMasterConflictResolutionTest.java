@@ -26,6 +26,7 @@ import com.microsoft.azure.cosmosdb.BridgeUtils;
 import com.microsoft.azure.cosmosdb.ConflictResolutionMode;
 import com.microsoft.azure.cosmosdb.ConflictResolutionPolicy;
 import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.Resource;
@@ -36,6 +37,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,9 +45,9 @@ import static org.assertj.core.api.Assertions.fail;
 
 // assumes multi master is enabled in endpoint
 public class MultiMasterConflictResolutionTest extends TestSuiteBase {
-    private final static String DATABASE_ID = getDatabaseId(MultiMasterConflictResolutionTest.class);
-
     private static final int TIMEOUT = 40000;
+
+    private final String databaseId = DatabaseForTest.generateId();
     private final AsyncDocumentClient.Builder clientBuilder;
 
     private AsyncDocumentClient client;
@@ -198,17 +200,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
         // set up the client
 
         client = clientBuilder.build();
-
-        Database databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID);
-
-        try {
-            client.deleteDatabase(Utils.getDatabaseLink(databaseDefinition, true), null).toBlocking().single();
-        } catch (Exception e) {
-            // ignore failure if it doesn't exist
-        }
-
-        database = client.createDatabase(databaseDefinition, null).toBlocking().single().getResource();
+        database = createDatabase(client, databaseId);
     }
 
     private <T extends Resource> T getResource(Observable<ResourceResponse<T>> obs) {
@@ -217,7 +209,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
 
     @AfterClass(groups = {"multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        client.deleteDatabase(database.getSelfLink(), null).toBlocking().single();
+        safeDeleteDatabase(client, database);
         safeClose(client);
     }
 }

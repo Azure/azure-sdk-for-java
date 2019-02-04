@@ -32,7 +32,7 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 /**
  * Used internally in request routing in the Azure Cosmos DB database service.
  */
-public interface CollectionRoutingMap<TPartitionInfo> {
+public interface CollectionRoutingMap {
     List<PartitionKeyRange> getOrderedPartitionKeyRanges();
 
     PartitionKeyRange getRangeByEffectivePartitionKey(String effectivePartitionKeyValue);
@@ -45,11 +45,11 @@ public interface CollectionRoutingMap<TPartitionInfo> {
 
     PartitionKeyRange tryGetRangeByPartitionKeyRangeId(String partitionKeyRangeId);
 
-    TPartitionInfo tryGetInfoByPartitionKeyRangeId(String partitionKeyRangeId);
+    IServerIdentity tryGetInfoByPartitionKeyRangeId(String partitionKeyRangeId);
 
     boolean IsGone(String partitionKeyRangeId);
 
     String getCollectionUniqueId();
 
-    CollectionRoutingMap tryCombine(List<ImmutablePair<PartitionKeyRange, TPartitionInfo>> ranges);
+    CollectionRoutingMap tryCombine(List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges);
 }

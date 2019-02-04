@@ -119,5 +119,5 @@ public class PartitionKeyRange extends Resource {
      * Used internally to indicate the ID of the parent range
      * @return a list partition key range ID
      */
-    public List<String> getParents() { return (List<String>) this.getCollection(Constants.Properties.PARENTS, String.class); }
+    public List<String> getParents() { return this.getList(Constants.Properties.PARENTS, String.class); }
 }

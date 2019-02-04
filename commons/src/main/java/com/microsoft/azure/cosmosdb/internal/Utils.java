@@ -105,7 +105,7 @@ public final class Utils {
         }
 
         // Splitting the link(separated by "/") into parts
-        String[] parts = link.split("/");
+        String[] parts = StringUtils.split(link, "/");
 
         // First part should be "dbs"
         if (parts.length == 0 || StringUtils.isEmpty(parts[0])
@@ -154,7 +154,7 @@ public final class Utils {
         link = trimBeginingAndEndingSlashes(link);
 
         // Splitting the link(separated by "/") into parts
-        String[] parts = link.split("/");
+        String[] parts = StringUtils.split(link, "/");
 
         if (parts.length != 2) {
             return false;
@@ -196,7 +196,7 @@ public final class Utils {
         case Paths.TRIGGERS_PATH_SEGMENT:
         case Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT:
         case Paths.CONFLICTS_PATH_SEGMENT:
-        case Paths.PARTITION_KEY_RANGE_PATH_SEGMENT:
+        case Paths.PARTITION_KEY_RANGES_PATH_SEGMENT:
             return true;
 
         default:

@@ -26,6 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
+import com.microsoft.azure.cosmosdb.Permission;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -34,14 +36,15 @@ import org.testng.annotations.Test;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.User;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
+
+import javax.net.ssl.SSLException;
 
 
 public class UserCrudTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(UserCrudTest.class);
+    public final String databaseId = DatabaseForTest.generateId();
 
     private Database createdDatabase;
     
@@ -53,7 +56,7 @@ public class UserCrudTest extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createUser() throws Exception {
         //create user
         User user = new User();
@@ -69,7 +72,7 @@ public class UserCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readUser() throws Exception {
  
         //create user
@@ -90,7 +93,7 @@ public class UserCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteUser() throws Exception {
         //create user
         User user = new User();
@@ -107,10 +110,13 @@ public class UserCrudTest extends TestSuiteBase {
                 .build();
         validateSuccess(deleteObservable, validator);
 
-        //TODO validate after deletion the resource is actually deleted (not found)
+        // attempt to read the user which was deleted
+        Observable<ResourceResponse<User>> readObservable = client.readUser(readBackUser.getSelfLink(), null);
+        FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
+        validateFailure(readObservable, notFoundValidator);
     }
     
-    @Test(groups = { "simple" }, timeOut = 30000)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void upsertUser() throws Exception {
 
         //create user
@@ -157,7 +163,7 @@ public class UserCrudTest extends TestSuiteBase {
         }); 
     }
     
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void replaceUser() throws Exception {
 
         //create user
@@ -191,15 +197,15 @@ public class UserCrudTest extends TestSuiteBase {
         validateSuccess(updateObservable, validatorForUpdate);  
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
         Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
+        d.setId(databaseId);
+        createdDatabase = createDatabase(client, d);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);

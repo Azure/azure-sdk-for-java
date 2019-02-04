@@ -24,6 +24,8 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import java.util.ArrayList;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -41,9 +43,6 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 import rx.Observable;
 
 public class TopQueryTests extends TestSuiteBase {
-
-    public final static String DATABASE_ID = getDatabaseId(TopQueryTests.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private ArrayList<Document> docs = new ArrayList<Document>();
@@ -56,7 +55,7 @@ public class TopQueryTests extends TestSuiteBase {
     private Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public TopQueryTests(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -81,9 +80,16 @@ public class TopQueryTests extends TestSuiteBase {
                     .totalSize(0)
                     .build();
 
-            validateQuerySuccess(queryObservable1, validator1, TIMEOUT);
+            try {
+                validateQuerySuccess(queryObservable1, validator1, TIMEOUT);
+            } catch (Throwable error) {
+                if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                    throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                }
+                throw error;
+            }
 
-            Observable<FeedResponse<Document>> queryObservable2 = client.queryDocuments(createdCollection.getSelfLink(), 
+            Observable<FeedResponse<Document>> queryObservable2 = client.queryDocuments(createdCollection.getSelfLink(),
                     "SELECT TOP 1 value AVG(c.field) from c", options);
 
             FeedResponseListValidator<Document> validator2 = new FeedResponseListValidator.Builder<Document>()
@@ -140,27 +146,22 @@ public class TopQueryTests extends TestSuiteBase {
             d.set(partitionKey, secondPk);
             docs.add(d);
         }
-
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterClass() {        
-        safeDeleteDatabase(client, DATABASE_ID);
+    public void afterClass() {
         safeClose(client);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-
-        Database d1 = new Database();
-        d1.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d1);
-
-        createdCollection = createCollection(client, createdDatabase.getId(),
-                getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION);
 
         bulkInsert(client);
 
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 }

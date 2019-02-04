@@ -27,6 +27,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import javax.net.ssl.SSLException;
+
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
@@ -37,20 +39,18 @@ import rx.Observable;
 
 public class ReadFeedPkrTests extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(ReadFeedPkrTests.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
     
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedPkrTests(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = FEED_TIMEOUT)
     public void readPartitionKeyRanges() throws Exception {
 
         FeedOptions options = new FeedOptions();
@@ -65,19 +65,18 @@ public class ReadFeedPkrTests extends TestSuiteBase {
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = createCollection(createdDatabase.getId(),
+                                             getCollectionDefinition(),
+                                             null);
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(),
-                getCollectionDefinition());
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
+        safeDeleteCollection(client, createdCollection);
         safeClose(client);
     }
 

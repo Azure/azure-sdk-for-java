@@ -65,7 +65,7 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
 
     public List<Range<String>> getQueryRanges() {
         return this.queryRanges != null ? this.queryRanges
-                : (this.queryRanges = (List<Range<String>>) super.getCollection(
+                : (this.queryRanges = super.getList(
                         PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY, QUERY_RANGES_CLASS));
     }
 }

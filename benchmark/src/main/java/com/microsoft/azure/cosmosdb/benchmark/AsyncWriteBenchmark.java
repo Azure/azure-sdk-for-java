@@ -36,9 +36,9 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
-class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
+import javax.net.ssl.SSLException;
 
-    private static final int NANOS_TO_MILLIS = 1000000;
+class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
 
     private final String uuid;
     private final String dataFieldValue;
@@ -48,7 +48,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
         Timer.Context context;
         Subscriber<T> subscriber;
 
-        public LatencySubscriber(Subscriber<T> subscriber) {
+        LatencySubscriber(Subscriber<T> subscriber) {
             this.subscriber = subscriber;
         }
 
@@ -70,7 +70,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
         }
     }
 
-    public AsyncWriteBenchmark(Configuration cfg) {
+    AsyncWriteBenchmark(Configuration cfg) {
         super(cfg);
         uuid = UUID.randomUUID().toString();
         dataFieldValue = RandomStringUtils.randomAlphabetic(configuration.getDocumentDataFieldSize());
@@ -96,7 +96,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
         if (configuration.getOperationType() == Operation.WriteThroughput) {
             obs.subscribeOn(Schedulers.computation()).subscribe(subs);
         } else {
-            LatencySubscriber<ResourceResponse<Document>> latencySubscriber = new LatencySubscriber<ResourceResponse<Document>>(
+            LatencySubscriber<ResourceResponse<Document>> latencySubscriber = new LatencySubscriber<>(
                     subs);
             latencySubscriber.context = latency.time();
             obs.subscribeOn(Schedulers.computation()).subscribe(latencySubscriber);

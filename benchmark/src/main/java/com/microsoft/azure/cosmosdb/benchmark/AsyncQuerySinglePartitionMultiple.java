@@ -32,13 +32,15 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
+import javax.net.ssl.SSLException;
+
 class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Document>> {
 
     private static final String SQL_QUERY = "Select * from c where c.pk = \"pk\"";
     private FeedOptions options;
     private int pageCount = 0;
 
-    public AsyncQuerySinglePartitionMultiple(Configuration cfg) {
+    AsyncQuerySinglePartitionMultiple(Configuration cfg) {
         super(cfg);
         options = new FeedOptions();
         options.setPartitionKey(new PartitionKey("pk"));
@@ -52,9 +54,9 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Docu
             if (pageCount == 0) {
                 return;
             }
-            System.out.println("total pages so far: " + pageCount);
+            logger.info("total pages so far: {}", pageCount);
         }
-    };
+    }
 
     @Override
     protected void performWorkload(Subscriber<FeedResponse<Document>> subs, long i) throws InterruptedException {

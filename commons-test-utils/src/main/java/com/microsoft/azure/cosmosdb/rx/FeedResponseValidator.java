@@ -51,7 +51,18 @@ public interface FeedResponseValidator<T extends Resource> {
                 }
             };
         }
-        
+
+        public Builder<T> pageSizeIsLessThanOrEqualTo(final int maxPageSize) {
+
+            validators.add(new FeedResponseValidator<T>() {
+                @Override
+                public void validate(FeedResponse<T> feedPage) {
+                    assertThat(feedPage.getResults().size()).isLessThanOrEqualTo(maxPageSize);
+                }
+            });
+            return this;
+        }
+
         public Builder<T> pageSizeOf(final int expectedCount) {
 
             validators.add(new FeedResponseValidator<T>() {

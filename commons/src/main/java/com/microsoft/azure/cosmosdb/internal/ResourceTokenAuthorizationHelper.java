@@ -97,8 +97,6 @@ public class ResourceTokenAuthorizationHelper {
      * @param resourceTokensMap
      *            It contains the resource link and its partition key and resource
      *            token list .
-     * @param resourcePath
-     *            Resource request link .
      * @param headers
      *            Header information of the request .
      * @param resourceAddress
@@ -108,9 +106,8 @@ public class ResourceTokenAuthorizationHelper {
      */
     public static String getAuthorizationTokenUsingResourceTokens(
             Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap,
-            String resourcePath,
             String requestVerb,
-            String resourceName,
+            String resourceAddress,
             Map<String, String> headers) {
         PartitionKeyInternal partitionKey = PartitionKeyInternal.Empty;
         String partitionKeyString = headers.get(HttpConstants.HttpHeaders.PARTITION_KEY);
@@ -118,14 +115,10 @@ public class ResourceTokenAuthorizationHelper {
             partitionKey = PartitionKeyInternal.fromJsonString(partitionKeyString);
         }
 
-        if (resourcePath.startsWith(Constants.Properties.PATH_SEPARATOR)) {
-            resourcePath = resourcePath.substring(1);
-        }
-
-        if (PathsHelper.isNameBased(resourcePath)) {
+        if (PathsHelper.isNameBased(resourceAddress)) {
             String resourceToken = null;
             for (int index = 2; index < ResourceId.MAX_PATH_FRAGMENT; index = index + 2) {
-                String resourceParent = PathsHelper.getParentByIndex(resourcePath, index);
+                String resourceParent = PathsHelper.getParentByIndex(resourceAddress, index);
                 if (resourceParent == null)
                     break;
                 resourceToken = getResourceToken(resourceTokensMap, resourceParent, partitionKey);
@@ -134,12 +127,12 @@ public class ResourceTokenAuthorizationHelper {
             }
 
             // Get or Head for collection can be done with any child token
-            if (resourceToken == null && PathsHelper.getCollectionPath(resourcePath).equalsIgnoreCase(resourcePath)
+            if (resourceToken == null && PathsHelper.getCollectionPath(resourceAddress).equalsIgnoreCase(resourceAddress)
                     && HttpConstants.HttpMethods.GET.equalsIgnoreCase(requestVerb)
                     || HttpConstants.HttpMethods.HEAD.equalsIgnoreCase(requestVerb)) {
-                String resourceAddressWithSlash = resourcePath.endsWith(Constants.Properties.PATH_SEPARATOR)
-                        ? resourcePath
-                        : resourcePath + Constants.Properties.PATH_SEPARATOR;
+                String resourceAddressWithSlash = resourceAddress.endsWith(Constants.Properties.PATH_SEPARATOR)
+                        ? resourceAddress
+                        : resourceAddress + Constants.Properties.PATH_SEPARATOR;
                 for (String key : resourceTokensMap.keySet()) {
                     if (key.startsWith(resourceAddressWithSlash)) {
                         if (resourceTokensMap.get(key) != null && resourceTokensMap.get(key).size() > 0)
@@ -153,17 +146,17 @@ public class ResourceTokenAuthorizationHelper {
                 throw new IllegalArgumentException(RMResources.ResourceTokenNotFound);
             }
 
-            logger.debug("returned token for  is  resourcePath [{}] , resourceAddress [{}] = [{}] ", resourcePath,
-                    resourceName, resourceToken);
+            logger.debug("returned token for resourceAddress [{}] = [{}]",
+                    resourceAddress, resourceToken);
             return resourceToken;
         } else {
             String resourceToken = null;
-            ResourceId resourceId = ResourceId.parse(resourceName);
+            ResourceId resourceId = ResourceId.parse(resourceAddress);
             if (resourceId.getAttachment() != 0 || resourceId.getPermission() != 0
                     || resourceId.getStoredProcedure() != 0 || resourceId.getTrigger() != 0
                     || resourceId.getUserDefinedFunction() != 0) {
                 // Use the leaf ID - attachment/permission/sproc/trigger/udf
-                resourceToken = getResourceToken(resourceTokensMap, resourceName, partitionKey);
+                resourceToken = getResourceToken(resourceTokensMap, resourceAddress, partitionKey);
             }
 
             if (resourceToken == null && (resourceId.getAttachment() != 0 || resourceId.getDocument() != 0)) {
@@ -190,17 +183,19 @@ public class ResourceTokenAuthorizationHelper {
                 resourceToken = getResourceToken(resourceTokensMap, resourceId.getDatabaseId().toString(),
                         partitionKey);
             }
-
-            if (resourceToken == null && resourceId.getDocument() != 0
+            // Get or Head for collection can be done with any child token
+            if (resourceToken == null && resourceId.getDocumentCollection() != 0
                     && (HttpConstants.HttpMethods.GET.equalsIgnoreCase(requestVerb)
-                            || HttpConstants.HttpMethods.POST.equalsIgnoreCase(requestVerb))) {
+                            || HttpConstants.HttpMethods.HEAD.equalsIgnoreCase(requestVerb))) {
                 for (String key : resourceTokensMap.keySet()) {
                     ResourceId tokenRid;
                     Pair<Boolean, ResourceId> pair = ResourceId.tryParse(key);
+                    ResourceId test1= pair.getRight().getDocumentCollectionId();
+                    boolean test = test1.equals(resourceId);
                     if (!PathsHelper.isNameBased(key) && pair.getLeft()
                             && pair.getRight().getDocumentCollectionId().equals(resourceId)) {
                         if (resourceTokensMap.get(key) != null && resourceTokensMap.get(key).size() > 0) {
-                            resourceTokensMap.get(key).get(0).getResourceToken();
+                            resourceToken = resourceTokensMap.get(key).get(0).getResourceToken();
                         }
                     }
                 }
@@ -211,8 +206,8 @@ public class ResourceTokenAuthorizationHelper {
                 throw new IllegalArgumentException(RMResources.ResourceTokenNotFound);
             }
 
-            logger.debug("returned token for  is  resourcePath [{}] , resourceAddress [{}] = [{}] ", resourcePath,
-                    resourceName, resourceToken);
+            logger.debug("returned token for resourceAddress [{}] = [{}]",
+                    resourceAddress, resourceToken);
             return resourceToken;
         }
     }

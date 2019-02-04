@@ -41,9 +41,9 @@ import com.microsoft.azure.cosmosdb.UserDefinedFunction;
 
 import rx.Observable;
 
-public class ReadFeedUdfsTest extends TestSuiteBase {
+import javax.net.ssl.SSLException;
 
-    public final static String DATABASE_ID = getDatabaseId(ReadFeedUdfsTest.class);
+public class ReadFeedUdfsTest extends TestSuiteBase {
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -52,7 +52,7 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedUdfsTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -82,32 +82,25 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws DocumentClientException {
+    public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(),
-                getCollectionDefinitionSinglePartition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
 
         for(int i = 0; i < 5; i++) {
             createdUserDefinedFunctions.add(createUserDefinedFunctions(client));
         }
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 
-    private static DocumentCollection getCollectionDefinitionSinglePartition() {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-        return collectionDefinition;
-    }
-
-    public UserDefinedFunction createUserDefinedFunctions(AsyncDocumentClient client) throws DocumentClientException {
+    public UserDefinedFunction createUserDefinedFunctions(AsyncDocumentClient client) {
          UserDefinedFunction udf = new UserDefinedFunction();
          udf.setId(UUID.randomUUID().toString());
          udf.setBody("function() {var x = 10;}");

@@ -47,6 +47,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +57,6 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doAnswer;
 
 public class RetryCreateDocumentTest extends TestSuiteBase {
-    private final static String DATABASE_ID = getDatabaseId(RetryCreateDocumentTest.class);
     private final AsyncDocumentClient.Builder clientBuilder;
     
     private SpyClientUnderTestFactory.ClientWithGatewaySpy client;
@@ -69,7 +69,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "internal" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void retryDocumentCreate() throws Exception {
         // create a document to ensure collection is cached
         client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).toBlocking().single();
@@ -107,7 +107,7 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "internal" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocument_noRetryOnNonRetriableFailure() throws Exception {
 
         AtomicInteger count = new AtomicInteger();
@@ -148,12 +148,10 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         validateFailure(createObservable, validator, TIMEOUT);
     }
 
-    @Test(groups = { "internal" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocument_failImmediatelyOnNonRetriable() throws Exception {
         // create a document to ensure collection is cached
         client.createDocument(collection.getSelfLink(),  getDocumentDefinition(), null, false).toBlocking().single();
-
-
         AtomicInteger count = new AtomicInteger();
 
         doAnswer(new Answer< Observable<RxDocumentServiceResponse>>() {
@@ -186,21 +184,18 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         validateFailure(createObservable.timeout(100, TimeUnit.MILLISECONDS), validator);
     }
     
-    @BeforeMethod(groups = { "internal" })
+    @BeforeMethod(groups = { "simple" })
     public void beforeMethod() {
         Mockito.reset(client.getSpyGatewayStoreModel());
     }
 
-    @BeforeClass(groups = { "internal" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         // set up the client        
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(clientBuilder);
 
-        Database databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID);
-
-        database = safeCreateDatabase(client, databaseDefinition);
-        collection = safeCreateCollection(client, database.getId(), getCollectionDefinition(), null);
+        database = SHARED_DATABASE;
+        collection = SHARED_SINGLE_PARTITION_COLLECTION;
     }
 
     private Document getDocumentDefinition() {
@@ -214,9 +209,8 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
         return doc;
     }
 
-    @AfterClass(groups = { "internal" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, database.getId());
         safeClose(client);
     }
 }

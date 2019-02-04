@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.cosmosdb.internal;
 
+import java.net.URI;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
@@ -36,12 +37,16 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.HttpUtils;
+import com.microsoft.azure.cosmosdb.rx.internal.RMResources;
+
 /**
  * This class is used internally by both client (for generating the auth header with master/system key) and by the Gateway when
  * verifying the auth header in the Azure Cosmos DB database service.
  */
 public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvider {
 
+    private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
     private final String masterKey;
     private final Mac macInstance;
 
@@ -57,7 +62,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         }
     }
 
-    private static String getResourceSegement(ResourceType resourceType) {
+    private static String getResourceSegment(ResourceType resourceType) {
         switch (resourceType) {
         case Attachment:
             return Paths.ATTACHMENTS_PATH_SEGMENT;
@@ -82,7 +87,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         case User:
             return Paths.USERS_PATH_SEGMENT;
         case PartitionKeyRange:
-            return Paths.PARTITION_KEY_RANGE_PATH_SEGMENT;
+            return Paths.PARTITION_KEY_RANGES_PATH_SEGMENT;
         case Media:
             return Paths.MEDIA_PATH_SEGMENT;
         case DatabaseAccount:
@@ -106,7 +111,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             ResourceType resourceType,
             Map<String, String> headers) {
         return this.generateKeyAuthorizationSignature(verb, resourceIdOrFullName,
-                BaseAuthorizationTokenProvider.getResourceSegement(resourceType).toLowerCase(), headers);
+                BaseAuthorizationTokenProvider.getResourceSegment(resourceType).toLowerCase(), headers);
     }
 
     /**
@@ -147,22 +152,25 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         }
 
         // Skipping lower casing of resourceId since it may now contain "ID" of the resource as part of the FullName
-        String body = String.format("%s\n%s\n%s\n",
-                verb.toLowerCase(),
-                resourceSegment,
-                resourceIdOrFullName);
+        StringBuilder body = new StringBuilder();
+        body.append(verb.toLowerCase())
+                .append('\n')
+                .append(resourceSegment)
+                .append('\n')
+                .append(resourceIdOrFullName)
+                .append('\n');
 
         if (headers.containsKey(HttpConstants.HttpHeaders.X_DATE)) {
-            body += headers.get(HttpConstants.HttpHeaders.X_DATE).toLowerCase();
+            body.append(headers.get(HttpConstants.HttpHeaders.X_DATE).toLowerCase());
         }
 
-        body += '\n';
+        body.append('\n');
 
         if (headers.containsKey(HttpConstants.HttpHeaders.HTTP_DATE)) {
-            body += headers.get(HttpConstants.HttpHeaders.HTTP_DATE).toLowerCase();
+            body.append(headers.get(HttpConstants.HttpHeaders.HTTP_DATE).toLowerCase());
         }
 
-        body += '\n';
+        body.append('\n');
 
         Mac mac = null;
         try {
@@ -171,13 +179,11 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             throw new IllegalStateException(e);
         }
 
-        byte[] digest = mac.doFinal(body.getBytes());
+        byte[] digest = mac.doFinal(body.toString().getBytes());
 
         String auth = Utils.encodeBase64String(digest);
 
-        String authtoken = "type=master&ver=1.0&sig=" + auth;
-
-        return authtoken;
+        return AUTH_PREFIX + auth;
     }
 
     /**
@@ -204,7 +210,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             }
         } else {
             // Get the last resource id from the path and use that to find the corresponding token.
-            String[] pathParts = path.split("/");
+            String[] pathParts = StringUtils.split(path, "/");
             String[] resourceTypes = {"dbs", "colls", "docs", "sprocs", "udfs", "triggers", "users", "permissions",
                     "attachments", "media", "conflicts"};
             HashSet<String> resourceTypesSet = new HashSet<String>();
@@ -219,5 +225,149 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
         }
 
         return resourceToken;
+    }
+    public String generateKeyAuthorizationSignature(String verb, URI uri, Map<String, String> headers) {
+        if (StringUtils.isEmpty(verb)) {
+            throw new IllegalArgumentException(String.format(RMResources.StringArgumentNullOrEmpty, "verb"));
+        }
+
+        if (uri == null) {
+            throw new IllegalArgumentException("uri");
+        }
+
+        if (headers == null) {
+            throw new IllegalArgumentException("headers");
+        }
+        PathInfo pathInfo = new PathInfo(false, StringUtils.EMPTY, StringUtils.EMPTY, false);
+        getResourceTypeAndIdOrFullName(uri, pathInfo);
+        return generateKeyAuthorizationSignatureNew(verb, pathInfo.resourceIdOrFullName, pathInfo.resourcePath,
+                headers);
+    }
+
+    public String generateKeyAuthorizationSignatureNew(String verb, String resourceIdValue, String resourceType,
+            Map<String, String> headers) {
+        if (StringUtils.isEmpty(verb)) {
+            throw new IllegalArgumentException(String.format(RMResources.StringArgumentNullOrEmpty, "verb"));
+        }
+
+        if (resourceType == null) {
+            throw new IllegalArgumentException(String.format(RMResources.StringArgumentNullOrEmpty, "resourceType")); // can be empty
+        }
+
+        if (headers == null) {
+            throw new IllegalArgumentException("headers");
+        }
+        // Order of the values included in the message payload is a protocol that
+        // clients/BE need to follow exactly.
+        // More headers can be added in the future.
+        // If any of the value is optional, it should still have the placeholder value
+        // of ""
+        // OperationType -> ResourceType -> ResourceId/OwnerId -> XDate -> Date
+        String verbInput = verb;
+        String resourceIdInput = resourceIdValue;
+        String resourceTypeInput = resourceType;
+
+        String authResourceId = getAuthorizationResourceIdOrFullName(resourceTypeInput, resourceIdInput);
+        String payLoad = generateMessagePayload(verbInput, authResourceId, resourceTypeInput, headers);
+        Mac mac = null;
+        try {
+            mac = (Mac) this.macInstance.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new IllegalStateException(e);
+        }
+        byte[] digest = mac.doFinal(payLoad.getBytes());
+        String authorizationToken = Utils.encodeBase64String(digest);
+        String authtoken = AUTH_PREFIX + authorizationToken;
+        return HttpUtils.urlEncode(authtoken);
+    }
+
+    private String generateMessagePayload(String verb, String resourceId, String resourceType,
+            Map<String, String> headers) {
+        String xDate = headers.get(HttpConstants.HttpHeaders.X_DATE);
+        String date = headers.get(HttpConstants.HttpHeaders.HTTP_DATE);
+        // At-least one of date header should present
+        // https://docs.microsoft.com/en-us/rest/api/documentdb/access-control-on-documentdb-resources
+        if (StringUtils.isEmpty(xDate) && (StringUtils.isEmpty(date) || StringUtils.isWhitespace(date))) {
+            headers.put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
+            xDate = Utils.nowAsRFC1123();
+        }
+
+        // for name based, it is case sensitive, we won't use the lower case
+        if (!PathsHelper.isNameBased(resourceId)) {
+            resourceId = resourceId.toLowerCase();
+        }
+
+        StringBuilder payload = new StringBuilder();
+        payload.append(verb.toLowerCase())
+                .append('\n')
+                .append(resourceType.toLowerCase())
+                .append('\n')
+                .append(resourceId)
+                .append('\n')
+                .append(xDate.toLowerCase())
+                .append('\n')
+                .append(StringUtils.isEmpty(xDate) ? date.toLowerCase() : "")
+                .append('\n');
+
+        return payload.toString();
+    }
+
+    private String getAuthorizationResourceIdOrFullName(String resourceType, String resourceIdOrFullName) {
+        if (StringUtils.isEmpty(resourceType) || StringUtils.isEmpty(resourceIdOrFullName)) {
+            return resourceIdOrFullName;
+        }
+        if (PathsHelper.isNameBased(resourceIdOrFullName)) {
+            // resource fullname is always end with name (not type segment like docs/colls).
+            return resourceIdOrFullName;
+        }
+
+        if (resourceType.equalsIgnoreCase(Paths.OFFERS_PATH_SEGMENT)
+                || resourceType.equalsIgnoreCase(Paths.PARTITIONS_PATH_SEGMENT)
+                || resourceType.equalsIgnoreCase(Paths.TOPOLOGY_PATH_SEGMENT)
+                || resourceType.equalsIgnoreCase(Paths.RID_RANGE_PATH_SEGMENT)) {
+            return resourceIdOrFullName;
+        }
+
+        ResourceId parsedRId = ResourceId.parse(resourceIdOrFullName);
+        if (resourceType.equalsIgnoreCase(Paths.DATABASES_PATH_SEGMENT)) {
+            return parsedRId.getDatabaseId().toString();
+        } else if (resourceType.equalsIgnoreCase(Paths.USERS_PATH_SEGMENT)) {
+            return parsedRId.getUserId().toString();
+        } else if (resourceType.equalsIgnoreCase(Paths.COLLECTIONS_PATH_SEGMENT)) {
+            return parsedRId.getDocumentCollectionId().toString();
+        } else if (resourceType.equalsIgnoreCase(Paths.DOCUMENTS_PATH_SEGMENT)) {
+            return parsedRId.getDocumentId().toString();
+        } else {
+            // leaf node
+            return resourceIdOrFullName;
+        }
+    }
+
+    private void getResourceTypeAndIdOrFullName(URI uri, PathInfo pathInfo) {
+        if (uri == null) {
+            throw new IllegalArgumentException("uri");
+        }
+
+        pathInfo.resourcePath = StringUtils.EMPTY;
+        pathInfo.resourceIdOrFullName = StringUtils.EMPTY;
+
+        String[] segments = StringUtils.split(uri.toString(), Constants.Properties.PATH_SEPARATOR);
+        if (segments == null || segments.length < 1) {
+            throw new IllegalArgumentException(RMResources.InvalidUrl);
+        }
+        // Authorization code is fine with Uri not having resource id and path.
+        // We will just return empty in that case
+        String pathAndQuery = StringUtils.EMPTY ;
+        if(StringUtils.isNotEmpty(uri.getPath())) {
+            pathAndQuery+= uri.getPath();
+        }
+        if(StringUtils.isNotEmpty(uri.getQuery())) {
+            pathAndQuery+="?";
+            pathAndQuery+= uri.getQuery();
+        }
+        if (!PathsHelper.tryParsePathSegments(pathAndQuery, pathInfo, null)) {
+            pathInfo.resourcePath = StringUtils.EMPTY;
+            pathInfo.resourceIdOrFullName = StringUtils.EMPTY;
+        }
     }
 }

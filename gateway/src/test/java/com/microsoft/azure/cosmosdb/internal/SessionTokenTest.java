@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class SessionTokenTest {
 
-    @Test
+    @Test(groups = "unit")
     public void validateSuccessfulSessionTokenParsing() {
         // valid session token
         String sessionToken = "1#100#1=20#2=5#3=30";
@@ -40,21 +40,21 @@ public class SessionTokenTest {
         assertThat(VectorSessionToken.tryCreate(sessionToken, parsedSessionToken)).isTrue();
     }
 
-    @Test
+    @Test(groups = "unit")
     public void validateSessionTokenParsingWithInvalidVersion() {
         String sessionToken = "foo#100#1=20#2=5#3=30";
         ValueHolder<ISessionToken> parsedSessionToken = new ValueHolder<>(null);
         assertThat(VectorSessionToken.tryCreate(sessionToken, parsedSessionToken)).isFalse();
     }
 
-    @Test
+    @Test(groups = "unit")
     public void validateSessionTokenParsingWithInvalidGlobalLsn() {
         String sessionToken = "1#foo#1=20#2=5#3=30";
         ValueHolder<ISessionToken> parsedSessionToken = new ValueHolder<>(null);
         assertThat(VectorSessionToken.tryCreate(sessionToken, parsedSessionToken)).isFalse();
     }
 
-    @Test
+    @Test(groups = "unit")
     public void validateSessionTokenParsingWithInvalidRegionProgress() {
         String sessionToken = "1#100#1=20#2=x#3=30";
         ValueHolder<ISessionToken> parsedSessionToken = new ValueHolder<>(null);
@@ -62,21 +62,21 @@ public class SessionTokenTest {
 
     }
 
-    @Test
+    @Test(groups = "unit")
     public void validateSessionTokenParsingWithInvalidFormat() {
         String sessionToken = "1;100#1=20#2=40";
         ValueHolder<ISessionToken> parsedSessionToken = new ValueHolder<>(null);
         assertThat(VectorSessionToken.tryCreate(sessionToken, parsedSessionToken)).isFalse();
     }
 
-    @Test
+    @Test(groups = "unit")
     public void validateSessionTokenParsingFromEmptyString() {
         String sessionToken = "";
         ValueHolder<ISessionToken> parsedSessionToken = new ValueHolder<>(null);
         assertThat(VectorSessionToken.tryCreate(sessionToken, parsedSessionToken)).isFalse();
     }
 
-    @Test
+    @Test(groups = "unit")
     public void validateSessionTokenComparison() throws Exception {
         // valid session token
         ValueHolder<ISessionToken> sessionToken1 = new ValueHolder<>(null);

@@ -50,8 +50,6 @@ import rx.Observable;
 
 public class TriggerQueryTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(TriggerQueryTest.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private List<Trigger> createdTriggers = new ArrayList<>();
@@ -63,14 +61,7 @@ public class TriggerQueryTest extends TestSuiteBase {
         return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    static protected DocumentCollection getCollectionDefinition() {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-
-        return collectionDefinition;
-    }
-
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public TriggerQueryTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -163,7 +154,7 @@ public class TriggerQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    public Trigger createTrigger(AsyncDocumentClient client) throws DocumentClientException {
+    public Trigger createTrigger(AsyncDocumentClient client) {
         Trigger storedProcedure = getTriggerDef();
         return client.createTrigger(getCollectionLink(), storedProcedure, null).toBlocking().single().getResource();
     }
@@ -171,19 +162,19 @@ public class TriggerQueryTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
 
         for(int i = 0; i < 5; i++) {
             createdTriggers.add(createTrigger(client));
         }
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterClass() {        
-        safeDeleteDatabase(client, createdDatabase.getId());
+    public void afterClass() {
         safeClose(client);
     }
 

@@ -54,4 +54,9 @@ public final class TestConfigurations {
                     StringUtils.defaultString(Strings.emptyToNull(
                             System.getenv().get("ACCOUNT_HOST")),
                             "https://localhost:443/"));
+
+    public static String CONSISTENCY =
+            System.getProperty("ACCOUNT_CONSISTENCY",
+                               StringUtils.defaultString(Strings.emptyToNull(
+                                       System.getenv().get("ACCOUNT_CONSISTENCY")), "Strong"));
 }

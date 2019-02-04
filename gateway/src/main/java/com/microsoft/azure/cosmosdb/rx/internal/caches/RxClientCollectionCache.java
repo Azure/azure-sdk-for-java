@@ -93,14 +93,13 @@ public class RxClientCollectionCache extends RxCollectionCache {
 
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
 
-        String resourceName = request.getResourceFullName();
+        String resourceName = request.getResourceAddress();
         String authorizationToken = tokenProvider.getUserAuthorizationToken(
                 resourceName,
                 request.getResourceType(),
                 HttpConstants.HttpMethods.GET,
                 request.getHeaders(),
-                AuthorizationTokenType.PrimaryMasterKey,
-                request.getPath());
+                AuthorizationTokenType.PrimaryMasterKey);
 
         try {
             authorizationToken = URLEncoder.encode(authorizationToken, "UTF-8");

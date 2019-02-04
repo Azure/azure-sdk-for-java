@@ -48,8 +48,6 @@ import rx.Observable;
 
 public class UserDefinedFunctionQueryTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(UserDefinedFunctionQueryTest.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private List<UserDefinedFunction> createdUDF = new ArrayList<>();
@@ -61,14 +59,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
         return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    static protected DocumentCollection getCollectionDefinition() {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-
-        return collectionDefinition;
-    }
-
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public UserDefinedFunctionQueryTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -161,7 +152,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    public UserDefinedFunction createUserDefinedFunction(AsyncDocumentClient client) throws DocumentClientException {
+    public UserDefinedFunction createUserDefinedFunction(AsyncDocumentClient client) {
         UserDefinedFunction storedProcedure = getUserDefinedFunctionDef();
         return client.createUserDefinedFunction(getCollectionLink(), storedProcedure, null).toBlocking().single().getResource();
     }
@@ -169,19 +160,19 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
 
         for(int i = 0; i < 5; i++) {
             createdUDF.add(createUserDefinedFunction(client));
         }
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 

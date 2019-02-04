@@ -23,8 +23,22 @@
 
 package com.microsoft.azure.cosmosdb.rx.examples;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import com.microsoft.azure.cosmosdb.ConnectionPolicy;
+import com.microsoft.azure.cosmosdb.ConsistencyLevel;
+import com.microsoft.azure.cosmosdb.DataType;
+import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.IncludedPath;
+import com.microsoft.azure.cosmosdb.Index;
+import com.microsoft.azure.cosmosdb.IndexingPolicy;
+import com.microsoft.azure.cosmosdb.Offer;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
+import com.microsoft.azure.cosmosdb.RequestOptions;
+import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,29 +46,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.net.ssl.SSLException;
 
-import com.microsoft.azure.cosmosdb.ConnectionPolicy;
-import com.microsoft.azure.cosmosdb.ConsistencyLevel;
-import com.microsoft.azure.cosmosdb.DataType;
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.IncludedPath;
-import com.microsoft.azure.cosmosdb.Index;
-import com.microsoft.azure.cosmosdb.IndexingPolicy;
-import com.microsoft.azure.cosmosdb.Offer;
-import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
-import com.microsoft.azure.cosmosdb.RequestOptions;
-import com.microsoft.azure.cosmosdb.SqlParameter;
-import com.microsoft.azure.cosmosdb.SqlParameterCollection;
-import com.microsoft.azure.cosmosdb.SqlQuerySpec;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * This integration test class demonstrates how to use Async API to query and
@@ -62,43 +57,35 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
  * 
  */
 public class OfferCRUDAsyncAPITest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(OfferCRUDAsyncAPITest.class);
-
-    private static final String DATABASE_ID = Utils.getDatabaseId(OfferCRUDAsyncAPITest.class);
+    private final static int TIMEOUT = 60000;
     private Database createdDatabase;
-
     private AsyncDocumentClient asyncClient;
 
-    @Before
-    public void setUp() throws DocumentClientException {
-
+    @BeforeClass(groups = "samples", timeOut = TIMEOUT)
+    public void setUp() {
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
 
-        // Clean up before setting up
-        this.cleanUpGeneratedDatabases();
-
         // Create database
-        createdDatabase = new Database();
-        createdDatabase.setId(DATABASE_ID);
-        createdDatabase = asyncClient.createDatabase(createdDatabase, null).toBlocking().single().getResource();
+        createdDatabase = Utils.createDatabaseForTest(asyncClient);
     }
 
-    @After
-    public void shutdown() throws DocumentClientException {
-        Utils.safeclean(asyncClient, DATABASE_ID);
+    @AfterClass(groups = "samples", timeOut = TIMEOUT)
+    public void shutdown() {
+        Utils.safeClean(asyncClient, createdDatabase);
+        Utils.safeClose(asyncClient);
     }
 
     /**
      * Query for all the offers existing in the database account.
      * Replace the required offer so that it has a higher throughput.
      */
-    @Test
-    public void testUpdateOffer() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void updateOffer() throws Exception {
 
         int initialThroughput = 10200;
         int newThroughput = 10300;
@@ -136,13 +123,13 @@ public class OfferCRUDAsyncAPITest {
                     return asyncClient.replaceOffer(offer);
                 }).subscribe(offerResourceResponse -> {
                     Offer offer = offerResourceResponse.getResource();
-                    int curentThroughput = offer.getThroughput();
+                    int currentThroughput = offer.getThroughput();
 
                     // The current throughput of the offer must be equal to the new throughput value
                     assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.getResourceId()));
-                    assertThat(curentThroughput, equalTo(newThroughput));
+                    assertThat(currentThroughput, equalTo(newThroughput));
 
-                    System.out.println("updated throughput: " + curentThroughput);
+                    System.out.println("updated throughput: " + currentThroughput);
                     successfulCompletionLatch.countDown();
                 }, error -> {
                     System.err
@@ -159,7 +146,7 @@ public class OfferCRUDAsyncAPITest {
         // Set the partitionKeyDefinition for a partitioned collection
         // Here, we are setting the partitionKey of the Collection to be /city
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        Collection<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<String>();
         paths.add("/city");
         partitionKeyDefinition.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDefinition);
@@ -183,28 +170,5 @@ public class OfferCRUDAsyncAPITest {
         collectionDefinition.setIndexingPolicy(indexingPolicy);
 
         return collectionDefinition;
-    }
-
-    private void cleanUpGeneratedDatabases() throws DocumentClientException {
-        LOGGER.info("cleanup databases invoked");
-
-        String[] allDatabaseIds = { DATABASE_ID };
-
-        for (String id : allDatabaseIds) {
-            try {
-                List<FeedResponse<Database>> feedResponsePages = asyncClient
-                        .queryDatabases(new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                                new SqlParameterCollection(new SqlParameter("@id", id))), null)
-                        .toList().toBlocking().single();
-
-                if (!feedResponsePages.get(0).getResults().isEmpty()) {
-                    Database res = feedResponsePages.get(0).getResults().get(0);
-                    LOGGER.info("deleting a database " + feedResponsePages.get(0));
-                    asyncClient.deleteDatabase("dbs/" + res.getId(), null).toBlocking().single();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

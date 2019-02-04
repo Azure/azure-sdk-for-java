@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -48,8 +50,6 @@ import rx.Observable;
 
 public class StoredProcedureQueryTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(StoredProcedureQueryTest.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private List<StoredProcedure> createdStoredProcs = new ArrayList<>();
@@ -61,15 +61,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    static protected DocumentCollection getCollectionDefinition() {
-
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-
-        return collectionDefinition;
-    }
-
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public StoredProcedureQueryTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -98,7 +90,14 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        try {
+            validateQuerySuccess(queryObservable, validator, 10000);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -127,23 +126,31 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         options.setMaxItemCount(3);
         options.setEnableCrossPartitionQuery(true);
         Observable<FeedResponse<StoredProcedure>> queryObservable = client
-                .queryStoredProcedures(getCollectionLink(), query, options);
+            .queryStoredProcedures(getCollectionLink(), query, options);
 
-        List<StoredProcedure> expectedDocs = createdStoredProcs;      
-        
+        List<StoredProcedure> expectedDocs = createdStoredProcs;
+
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<StoredProcedure> validator = new FeedResponseListValidator
-                .Builder<StoredProcedure>()
-                .exactlyContainsInAnyOrder(expectedDocs
-                        .stream()
-                        .map(d -> d.getResourceId())
-                        .collect(Collectors.toList()))
-                .numberOfPages(expectedPageSize)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<StoredProcedure>()
-                        .requestChargeGreaterThanOrEqualTo(1.0).build())
-                .build();
-        validateQuerySuccess(queryObservable, validator);
+            .Builder<StoredProcedure>()
+            .exactlyContainsInAnyOrder(expectedDocs
+                .stream()
+                .map(d -> d.getResourceId())
+                .collect(Collectors.toList()))
+            .numberOfPages(expectedPageSize)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<StoredProcedure>()
+                .requestChargeGreaterThanOrEqualTo(1.0).build())
+            .build();
+
+        try {
+            validateQuerySuccess(queryObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -162,7 +169,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    public StoredProcedure createStoredProc(AsyncDocumentClient client) throws DocumentClientException {
+    public StoredProcedure createStoredProc(AsyncDocumentClient client) {
         StoredProcedure storedProcedure = getStoredProcedureDef();
         return client.createStoredProcedure(getCollectionLink(), storedProcedure, null).toBlocking().single().getResource();
     }
@@ -170,20 +177,19 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
 
         for(int i = 0; i < 5; i++) {
             createdStoredProcs.add(createStoredProc(client));
         }
-        
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 

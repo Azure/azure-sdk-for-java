@@ -34,6 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.print.Doc;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -75,24 +76,23 @@ public class VectorSessionToken implements ISessionToken {
                     localLsnByRegion.
                             entrySet()
                             .stream()
-                            .map(kvp -> String.format("%s%s%s",
-                                    kvp.getKey(), VectorSessionToken.RegionProgressSeparator, kvp.getValue()))
+                            .map(kvp -> new StringBuilder().append(kvp.getKey()).append(VectorSessionToken.RegionProgressSeparator).append(kvp.getValue()))
                             .collect(Collectors.toList()));
 
             if (Strings.isNullOrEmpty(regionProgress)) {
-                this.sessionToken = String.format(
-                        "%s%s%s",
-                        this.version,
-                        VectorSessionToken.SegmentSeparator,
-                        this.globalLsn);
+                StringBuilder sb = new StringBuilder();
+                sb.append(this.version)
+                        .append(VectorSessionToken.SegmentSeparator)
+                        .append(this.globalLsn);
+                this.sessionToken = sb.toString();
             } else {
-                this.sessionToken = String.format(
-                        "%s%s%s%s%s",
-                        this.version,
-                        VectorSessionToken.SegmentSeparator,
-                        this.globalLsn,
-                        VectorSessionToken.SegmentSeparator,
-                        regionProgress);
+                StringBuilder sb = new StringBuilder();
+                sb.append(this.version)
+                        .append(VectorSessionToken.SegmentSeparator)
+                        .append(this.globalLsn)
+                        .append(VectorSessionToken.SegmentSeparator)
+                        .append(regionProgress);
+                this.sessionToken = sb.toString();
             }
         }
     }

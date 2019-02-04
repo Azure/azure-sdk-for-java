@@ -67,7 +67,7 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
 
     public List<Range<PartitionKeyInternal>> getQueryRanges() {
         return this.queryRanges != null ? this.queryRanges
-                : (this.queryRanges = (List<Range<PartitionKeyInternal>>) super.getCollection(QUERY_RANGES_PROPERTY, QUERY_RANGE_CLASS));
+                : (this.queryRanges = super.getList(QUERY_RANGES_PROPERTY, QUERY_RANGE_CLASS));
     }
 
     public void setQueryRanges(List<Range<PartitionKeyInternal>> queryRanges) {

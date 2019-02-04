@@ -22,13 +22,16 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.Error;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.HttpUtils;
 import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -43,6 +46,12 @@ public class BadRequestException extends DocumentClientException {
 
     public BadRequestException() {
         this(RMResources.BadRequest);
+    }
+
+    public BadRequestException(Error error, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.BADREQUEST, error, responseHeaders);
+        BridgeInternal.setLSN(this, lsn);
+        BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
     }
 
     public BadRequestException(String message) {

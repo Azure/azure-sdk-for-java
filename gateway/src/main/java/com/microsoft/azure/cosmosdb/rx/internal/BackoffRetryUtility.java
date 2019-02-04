@@ -22,6 +22,11 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
+import java.time.Duration;
+
+
+import com.microsoft.azure.cosmosdb.internal.Quadruple;
+
 import rx.Observable;
 import rx.Single;
 import rx.functions.Action1;
@@ -33,9 +38,12 @@ import rx.functions.Func1;
  * This is meant to be internally used only by our sdk.
  */
 public class BackoffRetryUtility {
-    
+
     // transforms a retryFunc to a function which can be used by Observable.retryWhen(.)
     // also it invokes preRetryCallback prior to doing retry.
+    public static final Quadruple<Boolean, Boolean, Duration, Integer> InitialArgumentValuePolicyArg = Quadruple.with(false, false,
+            Duration.ofSeconds(60), 0);
+
     static Func1<Observable<? extends Throwable>, Observable<Long>> toRetryWhenFunc(
             Func1<Exception, Single<Long>> retryFunc, Action1<Exception> preRetryCallback) {
 
@@ -94,6 +102,18 @@ public class BackoffRetryUtility {
             return callbackMethod.call();
         }).retryWhen(RetryUtils.toRetryWhenFunc(retryPolicy));
     }
+
+    static public <T> Single<T> executeAsync(
+            Func1<Quadruple<Boolean, Boolean, Duration, Integer>, Single<T>> callbackMethod, IRetryPolicy retryPolicy,
+            Func1<Quadruple<Boolean, Boolean, Duration, Integer>, Single<T>> inBackoffAlternateCallbackMethod,
+            Duration minBackoffForInBackoffCallback) {
+        Quadruple<Boolean, Boolean, Duration, Integer> policyArg1 = InitialArgumentValuePolicyArg;
         
-    private BackoffRetryUtility() {}
+        return Single.defer(() -> {
+            // TODO: is defer required?
+            return callbackMethod.call(policyArg1).onErrorResumeNext(
+                    RetryUtils.toRetryWithAlternateFunc(callbackMethod,retryPolicy, inBackoffAlternateCallbackMethod,minBackoffForInBackoffCallback));
+        });
+    }
+
 }

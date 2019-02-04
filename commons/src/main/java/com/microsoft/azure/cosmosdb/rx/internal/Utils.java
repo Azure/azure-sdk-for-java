@@ -39,10 +39,6 @@ public class Utils {
         return val != null ? val.intValue() : defaultValue;
     }
 
-    // TODO: the pattern in RX is to treat exception as first class citizen.
-    //       So in Rx we should return errors instead of throwing exception.
-    //       Think about if we need both methods with throwing exception and returning exception. and change the implementation to use the proper one
-
     public static void checkStateOrThrow(boolean value, String argumentName, String message) throws IllegalArgumentException {
 
         IllegalArgumentException t = checkStateOrReturnException(value, argumentName, message);

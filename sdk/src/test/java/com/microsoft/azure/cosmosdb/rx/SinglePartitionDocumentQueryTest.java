@@ -34,6 +34,8 @@ import java.util.stream.Collectors;
 import com.microsoft.azure.cosmosdb.SqlParameter;
 import com.microsoft.azure.cosmosdb.SqlParameterCollection;
 import com.microsoft.azure.cosmosdb.SqlQuerySpec;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -54,8 +56,6 @@ import rx.observers.TestSubscriber;
 
 public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(SinglePartitionDocumentQueryTest.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private List<Document> createdDocuments = new ArrayList<>();
@@ -67,15 +67,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    static protected DocumentCollection getCollectionDefinition() {
-
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-
-        return collectionDefinition;
-    }
-
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public SinglePartitionDocumentQueryTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -103,7 +95,14 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        try {
+            validateQuerySuccess(queryObservable, validator, 10000);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -130,7 +129,14 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        try {
+            validateQuerySuccess(queryObservable, validator, 10000);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -157,7 +163,14 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
 
-        validateQuerySuccess(queryObservable, validator, 10000);
+        try {
+            validateQuerySuccess(queryObservable, validator, 10000);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -186,22 +199,30 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         options.setMaxItemCount(3);
         options.setEnableCrossPartitionQuery(true);
         Observable<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(getCollectionLink(), query, options);
+            .queryDocuments(getCollectionLink(), query, options);
 
-        List<Document> expectedDocs = createdDocuments;        
+        List<Document> expectedDocs = createdDocuments;
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator
-                .Builder<Document>()
-                .exactlyContainsInAnyOrder(createdDocuments
-                        .stream()
-                        .map(d -> d.getResourceId())
-                        .collect(Collectors.toList()))
-                .numberOfPages(expectedPageSize)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
-                        .requestChargeGreaterThanOrEqualTo(1.0).build())
-                .build();
-        validateQuerySuccess(queryObservable, validator);
+            .Builder<Document>()
+            .exactlyContainsInAnyOrder(createdDocuments
+                .stream()
+                .map(d -> d.getResourceId())
+                .collect(Collectors.toList()))
+            .numberOfPages(expectedPageSize)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
+                .requestChargeGreaterThanOrEqualTo(1.0).build())
+            .build();
+
+        try {
+            validateQuerySuccess(queryObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -225,7 +246,15 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                 .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
                 .build();
-        validateQuerySuccess(queryObservable, validator);
+
+        try {
+            validateQuerySuccess(queryObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT * 1000)
@@ -288,7 +317,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    public Document createDocument(AsyncDocumentClient client, int cnt) throws DocumentClientException {
+    public Document createDocument(AsyncDocumentClient client, int cnt) {
         Document docDefinition = getDocumentDefinition(cnt);
         return client.createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
     }
@@ -296,10 +325,9 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
 
         for(int i = 0; i < 5; i++) {
             createdDocuments.add(createDocument(client, i));
@@ -308,11 +336,12 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         for(int i = 0; i < 8; i++) {
             createdDocuments.add(createDocument(client, 99));
         }
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 

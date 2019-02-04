@@ -26,7 +26,7 @@ package com.microsoft.azure.cosmosdb;
 import java.net.InetSocketAddress;
 import java.util.Collection;
 import java.util.Collections;
-
+import java.util.List;
 
 /**
  * Represents the Connection policy associated with a DocumentClient in the Azure Cosmos DB database service.
@@ -51,22 +51,24 @@ public final class ConnectionPolicy {
     private String userAgentSuffix;
     private RetryOptions retryOptions;
     private boolean enableEndpointDiscovery = true;
-    private Collection<String> preferredLocations;
+    private List<String> preferredLocations;
     private boolean usingMultipleWriteLocations;
     private InetSocketAddress inetSocketProxyAddress;
+    private Boolean enableReadRequestsFallback;
 
     /**
      * Constructor.
      */
     public ConnectionPolicy() {
-        this.requestTimeoutInMillis = ConnectionPolicy.DEFAULT_REQUEST_TIMEOUT_IN_MILLIS;
-        this.mediaRequestTimeoutInMillis = ConnectionPolicy.DEFAULT_MEDIA_REQUEST_TIMEOUT_IN_MILLIS;
         this.connectionMode = ConnectionMode.Gateway;
-        this.mediaReadMode = MediaReadMode.Buffered;
-        this.maxPoolSize = DEFAULT_MAX_POOL_SIZE;
+        this.enableReadRequestsFallback = null;
         this.idleConnectionTimeoutInMillis = DEFAULT_IDLE_CONNECTION_TIMEOUT_IN_MILLIS;
-        this.userAgentSuffix = "";
+        this.maxPoolSize = DEFAULT_MAX_POOL_SIZE;
+        this.mediaReadMode = MediaReadMode.Buffered;
+        this.mediaRequestTimeoutInMillis = ConnectionPolicy.DEFAULT_MEDIA_REQUEST_TIMEOUT_IN_MILLIS;
+        this.requestTimeoutInMillis = ConnectionPolicy.DEFAULT_REQUEST_TIMEOUT_IN_MILLIS;
         this.retryOptions = new RetryOptions();
+        this.userAgentSuffix = "";
     }
 
     /**
@@ -285,6 +287,22 @@ public final class ConnectionPolicy {
     }
 
     /**
+     * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
+     *
+     * Default value is null.
+     *
+     * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
+     * The default is false for Bounded Staleness.
+     * 1. {@link #enableEndpointDiscovery} is true
+     * 2. the Azure Cosmos DB account has more than one region
+     *
+     * @return flag to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
+     */
+    public Boolean isEnableReadRequestsFallback() {
+        return this.enableReadRequestsFallback;
+    }
+
+    /**
      * Sets the flag to enable writes on any locations (regions) for geo-replicated database accounts in the Azure Cosmos DB service.
      *
      * When the value of this property is true, the SDK will direct write operations to
@@ -303,11 +321,27 @@ public final class ConnectionPolicy {
     }
 
     /**
+     * Sets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
+     *
+     * Default value is null.
+     *
+     * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
+     * The default is false for Bounded Staleness.
+     * 1. {@link #enableEndpointDiscovery} is true
+     * 2. the Azure Cosmos DB account has more than one region
+     *
+     * @param enableReadRequestsFallback flag to enable reads to go to multiple regions configured on an account of Azure Cosmos DB service.
+     */
+    public void setEnableReadRequestsFallback(Boolean enableReadRequestsFallback) {
+        this.enableReadRequestsFallback = enableReadRequestsFallback;
+    }
+
+    /**
      * Gets the preferred locations for geo-replicated database accounts
      *
      * @return the list of preferred location.
      */
-    public Collection<String> getPreferredLocations() {
+    public List<String> getPreferredLocations() {
         return this.preferredLocations != null ? preferredLocations : Collections.emptyList();
     }
 
@@ -323,7 +357,7 @@ public final class ConnectionPolicy {
      *
      * @param preferredLocations the list of preferred locations.
      */
-    public void setPreferredLocations(Collection<String> preferredLocations) {
+    public void setPreferredLocations(List<String> preferredLocations) {
         this.preferredLocations = preferredLocations;
     }
 

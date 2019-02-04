@@ -24,6 +24,7 @@ package com.microsoft.azure.cosmosdb.rx.internal;
 
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
+import com.microsoft.azure.cosmosdb.ISessionContainer;
 import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
 import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyAndResourceTokenPair;
@@ -48,7 +49,7 @@ import static org.mockito.Mockito.doAnswer;
 
 /**
  * This class in conjunction with {@link com.microsoft.azure.cosmosdb.rx.ClientUnderTestBuilder}
- * provides the functionality for spying the client behavoiur and the http requests sent.
+ * provides the functionality for spying the client behavior and the http requests sent.
  */
 public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
 
@@ -62,15 +63,16 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      String masterKey,
                                      ConnectionPolicy connectionPolicy,
                                      ConsistencyLevel consistencyLevel,
+                                     Configs configs,
                                      int eventLoopSize) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, eventLoopSize);
+        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, eventLoopSize);
+        init();
     }
 
     RxGatewayStoreModel createRxGatewayProxy(
-            ConnectionPolicy connectionPolicy,
+            ISessionContainer sessionContainer,
             ConsistencyLevel consistencyLevel,
             QueryCompatibilityMode queryCompatibilityMode,
-            String masterKey,Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
             CompositeHttpClient<ByteBuf, ByteBuf> rxOrigClient) {
@@ -95,11 +97,9 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
         }).when(spyHttpClient).submit( anyObject(),
                 (HttpClientRequest) anyObject());
 
-        return super.createRxGatewayProxy(connectionPolicy,
+        return super.createRxGatewayProxy(sessionContainer,
                 consistencyLevel,
                 queryCompatibilityMode,
-                masterKey,
-                resourceTokensMap,
                 userAgentContainer,
                 globalEndpointManager,
                 spyHttpClient);

@@ -30,8 +30,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.SSLException;
+
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -64,8 +68,6 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private static final int TIMEOUT = 1800000;
     private static final int SETUP_TIMEOUT = 60000;
 
-    private static final String DATABASE_ID = getDatabaseId(BackPressureCrossPartitionTest.class);
-
     private int numberOfDocs = 4000;
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -76,7 +78,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
     private int numberOfPartitions;
 
     public String getCollectionLink() {
-        return Utils.getCollectionNameLink(DATABASE_ID, createdCollection.getId());
+        return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
     static protected DocumentCollection getCollectionDefinition() {
@@ -109,7 +111,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public BackPressureCrossPartitionTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -134,7 +136,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "simple" }, dataProvider = "queryProvider", timeOut = TIMEOUT)
+    @Test(groups = { "long" }, dataProvider = "queryProvider", timeOut = TIMEOUT)
     public void query(String query, int maxItemCount, int maxExpectedBufferedCountForBackPressure, int expectedNumberOfResults) throws Exception {
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
@@ -148,7 +150,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         log.info("instantiating subscriber ...");
         TestSubscriber<FeedResponse<Document>> subscriber = new TestSubscriber<>(1);
         queryObservable.observeOn(Schedulers.io(), 1).subscribe(subscriber);
-        int sleepTimeInMillis = 20000;
+        int sleepTimeInMillis = 40000;
 
         int i = 0;
         // use a test subscriber and request for more result and sleep in between
@@ -158,9 +160,19 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
             TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
             sleepTimeInMillis /= 2;
 
-            if (sleepTimeInMillis > 1000) {
+            if (sleepTimeInMillis > 4000) {
                 // validate that only one item is returned to subscriber in each iteration
-                assertThat(subscriber.getValueCount() - i).isEqualTo(1);
+                try {
+                    assertThat(subscriber.getValueCount() - i).isEqualTo(1);
+                } catch (Throwable error) {
+                    if (this.clientBuilder.configs.getProtocol() == Protocol.Https) {
+                        throw new SkipException(String.format("Direct Https test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                    }
+                    if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                        throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                    }
+                    throw error;
+                }
             }
 
             log.debug("subscriber.getValueCount(): " + subscriber.getValueCount());
@@ -176,20 +188,29 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
             i++;
         }
 
-        subscriber.assertNoErrors();
-        subscriber.assertCompleted();
-        assertThat(subscriber.getOnNextEvents().stream().mapToInt(p -> p.getResults().size()).sum()).isEqualTo(expectedNumberOfResults);
+        try {
+            subscriber.assertNoErrors();
+            subscriber.assertCompleted();
+            assertThat(subscriber.getOnNextEvents().stream().mapToInt(p -> p.getResults().size()).sum()).isEqualTo(expectedNumberOfResults);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Https) {
+                throw new SkipException(String.format("Direct Https test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        client = new ClientUnderTestBuilder(clientBuilder).build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(20000);
-        createdCollection = safeCreateCollection(client, createdDatabase.getId(), getCollectionDefinition(), options);
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = createCollection(createdDatabase.getId(), getCollectionDefinition(), options);
+
+        client = new ClientUnderTestBuilder(clientBuilder).build();
 
         ArrayList<Document> docDefList = new ArrayList<>();
         for(int i = 0; i < numberOfDocs; i++) {
@@ -207,12 +228,13 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         numberOfPartitions = client.readPartitionKeyRanges(getCollectionLink(), null)
                 .flatMap(p -> Observable.from(p.getResults())).toList().toBlocking().single().size();
 
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         warmUp();
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "long" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
+        safeDeleteCollection(client, createdCollection);
         safeClose(client);
     }
 

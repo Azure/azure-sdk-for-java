@@ -23,14 +23,14 @@
 
 package com.microsoft.azure.cosmosdb.internal;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Arrays;
-
+import com.microsoft.azure.cosmosdb.DocumentClientException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.microsoft.azure.cosmosdb.DocumentClientException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 /**
  * Used internally to represents a Resource ID in the Azure Cosmos DB database service.
@@ -78,14 +78,31 @@ public class ResourceId {
         return pair.getValue();
     }
 
+    public static byte[] parse(ResourceType type, String id) {
+        if (ResourceId.hasNonHierarchicalResourceId(type)) {
+            return id.getBytes(StandardCharsets.UTF_8);
+        }
+        return ResourceId.parse(id).getValue();
+    }
+
+    private static boolean hasNonHierarchicalResourceId(ResourceType type) {
+        switch (type) {
+            case MasterPartition:
+            case ServerPartition:
+            case RidRange:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     public static ResourceId newDatabaseId(int dbid) {
         ResourceId resourceId = new ResourceId();
         resourceId.database = dbid;
         return resourceId;
     }
 
-    public static ResourceId newDocumentCollectionId(String databaseId, int collectionId)
-            throws DocumentClientException {
+    public static ResourceId newDocumentCollectionId(String databaseId, int collectionId) {
         ResourceId dbId = ResourceId.parse(databaseId);
 
         ResourceId collectionResourceId = new ResourceId();
@@ -95,7 +112,7 @@ public class ResourceId {
         return collectionResourceId;
     }
 
-    public static ResourceId newUserId(String databaseId, int userId) throws DocumentClientException {
+    public static ResourceId newUserId(String databaseId, int userId) {
         ResourceId dbId = ResourceId.parse(databaseId);
 
         ResourceId userResourceId = new ResourceId();
@@ -105,7 +122,7 @@ public class ResourceId {
         return userResourceId;
     }
 
-    public static ResourceId newPermissionId(String userId, long permissionId) throws DocumentClientException {
+    public static ResourceId newPermissionId(String userId, long permissionId) {
         ResourceId usrId = ResourceId.parse(userId);
 
         ResourceId permissionResourceId = new ResourceId();
@@ -115,7 +132,7 @@ public class ResourceId {
         return permissionResourceId;
     }
 
-    public static ResourceId newAttachmentId(String documentId, int attachmentId) throws DocumentClientException {
+    public static ResourceId newAttachmentId(String documentId, int attachmentId) {
         ResourceId docId = ResourceId.parse(documentId);
 
         ResourceId attachmentResourceId = new ResourceId();
@@ -498,6 +515,14 @@ public class ResourceId {
 
     public String toString() {
         return ResourceId.toBase64String(this.getValue());
+    }
+
+    public boolean equals(ResourceId other) {
+        if (other == null) {
+            return false;
+        }
+
+        return Arrays.equals(this.getValue(), other.getValue());
     }
 
     // Using a byte however, we only need nibble here.

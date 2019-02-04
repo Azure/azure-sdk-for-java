@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -60,8 +61,6 @@ import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import rx.Observable;
 
 public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
-    public final static String DATABASE_ID = getDatabaseId(DocumentQuerySpyWireContentTest.class);
-
     private Database createdDatabase;
     private DocumentCollection createdSinglePartitionCollection;
     private DocumentCollection createdMultiPartitionCollection;
@@ -78,35 +77,6 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
     public String getMultiPartitionCollectionLink() {
         return Utils.getCollectionNameLink(createdDatabase.getId(), createdMultiPartitionCollection.getId());
-    }
-
-    static protected DocumentCollection getCollectionDefinition() {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-
-        IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<IncludedPath> includedPaths = new ArrayList<>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<>();
-        Index stringIndex = Index.Range(DataType.String);
-        stringIndex.set("precision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.Range(DataType.Number);
-        numberIndex.set("precision", -1);
-        indexes.add(numberIndex);
-        includedPath.setIndexes(indexes);
-        includedPaths.add(includedPath);
-        indexingPolicy.setIncludedPaths(includedPaths);
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-        collectionDefinition.setPartitionKey(partitionKeyDef);
-        collectionDefinition.setIndexingPolicy(indexingPolicy);
-
-        return collectionDefinition;
     }
 
     @Factory(dataProvider = "clientBuilders")
@@ -161,8 +131,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         }
 
         client.clearCapturedRequests();
-        client.startCaptureRequests();
-        
+
         Observable<FeedResponse<Document>> queryObservable = client
                 .queryDocuments(collectionLink, query, options);
 
@@ -193,7 +162,7 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
         }
     }
 
-    public Document createDocument(AsyncDocumentClient client, String collectionLink, int cnt) throws DocumentClientException {
+    public Document createDocument(AsyncDocumentClient client, String collectionLink, int cnt) {
 
         Document docDefinition = getDocumentDefinition(cnt);
         return client
@@ -203,16 +172,12 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = new SpyClientBuilder(clientBuilder).build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        RequestOptions options1 = new RequestOptions();
-        options1.setOfferThroughput(400);
-        createdSinglePartitionCollection = safeCreateCollection(client, createdDatabase.getId(), getCollectionDefinition(), options1);
+        createdDatabase = SHARED_DATABASE;
+        createdSinglePartitionCollection = SHARED_SINGLE_PARTITION_COLLECTION;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION);
 
-        RequestOptions options2 = new RequestOptions();
-        options2.setOfferThroughput(10100);
-        createdMultiPartitionCollection = safeCreateCollection(client, createdDatabase.getId(), getCollectionDefinition(), options2);
+        createdMultiPartitionCollection = SHARED_MULTI_PARTITION_COLLECTION;
+        truncateCollection(SHARED_MULTI_PARTITION_COLLECTION);
 
         for(int i = 0; i < 3; i++) {
             createdDocumentsInSinglePartitionCollection.add(createDocument(client, getCollectionLink(createdSinglePartitionCollection), i));
@@ -223,7 +188,10 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
             createdDocumentsInSinglePartitionCollection.add(createDocument(client, getCollectionLink(createdSinglePartitionCollection), 99));
             createdDocumentsInMultiPartitionCollection.add(createDocument(client, getCollectionLink(createdMultiPartitionCollection), 99));
         }
-        
+
+        // wait for catch up
+        TimeUnit.SECONDS.sleep(1);
+
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         
@@ -238,7 +206,6 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 

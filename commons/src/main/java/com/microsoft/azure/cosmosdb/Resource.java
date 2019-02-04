@@ -27,18 +27,42 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
  * Represents the base resource in the Azure Cosmos DB database service.
  */
 public class Resource extends JsonSerializable {
+    private String altLink;
+
+    /**
+     * Copy constructor.
+     * @param resource resource to by copied.
+     */
+    protected Resource(Resource resource) {
+        this.setId(resource.getId());
+        this.setResourceId(resource.getResourceId());
+        this.setSelfLink(resource.getSelfLink());
+        this.setAltLink(resource.getAltLink());
+        this.setTimestamp(resource.getTimestamp());
+        this.setETag(resource.getETag());
+    }
 
     /**
      * Constructor.
      */
     protected Resource() {
         super();
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the {@link JsonSerializable}
+     */
+    Resource(ObjectNode objectNode) {
+        super(objectNode);
     }
 
     /**
@@ -151,5 +175,20 @@ public class Resource extends JsonSerializable {
      */
     void setETag(String eTag) {
         super.set(Constants.Properties.E_TAG, eTag);
+    }
+
+    /**
+     * Sets the alt-link associated with the resource from the Azure Cosmos DB service.
+     * @param altLink
+     */
+    void setAltLink(String altLink) {
+        this.altLink = altLink;
+    }
+
+    /**
+     * Gets the alt-link associated with the resource from the Azure Cosmos DB service.
+     */
+    String getAltLink() {
+        return this.altLink;
     }
 }

@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -45,9 +46,11 @@ import com.microsoft.azure.cosmosdb.User;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 public class PermissionQueryTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(PermissionQueryTest.class);
+    public final String databaseId = DatabaseForTest.generateId();
 
     private Database createdDatabase;
     private User createdUser;
@@ -147,22 +150,23 @@ public class PermissionQueryTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws DocumentClientException {
+    public void beforeClass() {
         client = clientBuilder.build();
         Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
+        d.setId(databaseId);
+        createdDatabase = createDatabase(client, d);
         createdUser = safeCreateUser(client, createdDatabase.getId(), getUserDefinition());
 
         for(int i = 0; i < 5; i++) {
             createdPermissions.add(createPermissions(client, i));
         }
 
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
+        safeDeleteDatabase(client, createdDatabase);
         safeClose(client);
     }
 
@@ -172,7 +176,7 @@ public class PermissionQueryTest extends TestSuiteBase {
         return user;
     }
 
-    public Permission createPermissions(AsyncDocumentClient client, int index) throws DocumentClientException {
+    public Permission createPermissions(AsyncDocumentClient client, int index) {
         DocumentCollection collection = new DocumentCollection();
         collection.setId(UUID.randomUUID().toString());
         

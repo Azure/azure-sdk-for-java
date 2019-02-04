@@ -40,7 +40,6 @@ public interface ISessionToken {
      * @param other Session token to validate
      * @return true if this instance of session  token is valid with respect to <code>other</code> session token;
      * false otherwise
-     * @throws DocumentClientException
      */
     boolean isValid(ISessionToken other) throws DocumentClientException;
 
@@ -50,7 +49,6 @@ public interface ISessionToken {
      *
      * @param other Other session token to merge
      * @return Instance of merged session token
-     * @throws DocumentClientException
      */
     ISessionToken merge(ISessionToken other) throws DocumentClientException;
 

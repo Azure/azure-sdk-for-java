@@ -23,15 +23,19 @@
 
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
-import java.io.InputStream;
-import java.util.List;
-import java.util.Map.Entry;
-
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 /**
  * Used internally to represents a response from the store.
@@ -87,7 +91,7 @@ public class StoreResponse {
     }
 
     public String getResponseBody() {
-        return content;
+        return this.content;
     }
 
     public InputStream getResponseStream() {

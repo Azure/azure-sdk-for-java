@@ -23,7 +23,9 @@
 
 package com.microsoft.azure.cosmosdb.internal;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.Error;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.HttpUtils;
 import com.microsoft.azure.cosmosdb.rx.internal.RMResources;
 import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
@@ -45,6 +47,12 @@ public class InternalServerErrorException extends DocumentClientException {
         this(RMResources.InternalServerError);
     }
 
+    public InternalServerErrorException(Error error, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR, error, responseHeaders);
+        BridgeInternal.setLSN(this, lsn);
+        BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
+    }
+
     public InternalServerErrorException(String message) {
         this(message, (Exception) null, (Map<String, String>) null, (String) null);
     }
@@ -55,7 +63,7 @@ public class InternalServerErrorException extends DocumentClientException {
     }
 
     public InternalServerErrorException(Exception innerException) {
-        this(RMResources.Gone, innerException, (HttpResponseHeaders) null, (String) null);
+        this(RMResources.InternalServerError, innerException, (HttpResponseHeaders) null, (String) null);
     }
     
     public InternalServerErrorException(String message, HttpResponseHeaders headers, URI requestUri) {

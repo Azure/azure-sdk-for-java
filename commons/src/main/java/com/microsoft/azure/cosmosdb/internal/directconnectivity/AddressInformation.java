@@ -23,23 +23,27 @@
 
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
-import com.microsoft.azure.cosmosdb.internal.Utils;
+import java.util.Objects;
 
 /**
  * Used internally to encapsulate a physical address information in the Azure Cosmos DB database service.
  */
 public class AddressInformation {
-    private String protocol;
+    private Protocol protocol;
     private boolean isPublic;
     private boolean isPrimary;
     private String physicalUri;
 
-    public AddressInformation(boolean isPublic, boolean isPrimary, String physicalUri, String protocol) {
+    public AddressInformation(boolean isPublic, boolean isPrimary, String physicalUri, Protocol protocol) {
+        Objects.requireNonNull(protocol);
+        this.protocol = protocol;
         this.isPublic = isPublic;
         this.isPrimary = isPrimary;
-        this.physicalUri = physicalUri != null ? Utils.trimBeginingAndEndingSlashes(physicalUri) + "/" : null;
         this.physicalUri = physicalUri;
-        this.protocol = protocol;
+    }
+
+    public AddressInformation(boolean isPublic, boolean isPrimary, String physicalUri, String protocolScheme) {
+        this(isPublic, isPrimary, physicalUri, scheme2protocol(protocolScheme));
     }
 
     public boolean isPublic() {
@@ -54,8 +58,16 @@ public class AddressInformation {
         return physicalUri;
     }
 
-    public String getProtocol() {
+    public Protocol getProtocol() {
         return this.protocol;
+    }
+
+    public String getProtocolName() {
+        return this.protocol.name();
+    }
+
+    public String getProtocolScheme() {
+        return this.protocol.scheme();
     }
 
     @Override
@@ -66,5 +78,19 @@ public class AddressInformation {
                 ", isPrimary=" + isPrimary +
                 ", physicalUri='" + physicalUri + '\'' +
                 '}';
+    }
+
+    private static Protocol scheme2protocol(String scheme) {
+
+        Objects.requireNonNull(scheme, "scheme");
+
+        switch (scheme.toLowerCase()) {
+            case "https":
+                return Protocol.Https;
+            case "rntbd":
+                return Protocol.Tcp;
+            default:
+                throw new IllegalArgumentException(String.format("scheme: %s", scheme));
+        }
     }
 }

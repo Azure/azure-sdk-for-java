@@ -48,6 +48,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -93,7 +94,9 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     public void init() {
-        startRefreshLocationTimerAsync(true);
+        // TODO: add support for openAsync
+        // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
+        startRefreshLocationTimerAsync(true).toCompletable().await();
     }
 
     public UnmodifiableList<URL> getReadEndpoints() {
@@ -106,7 +109,7 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.locationCache.getWriteEndpoints();
     }
 
-    static Single<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
+    public static Single<DatabaseAccount> getDatabaseAccountFromAnyLocationsAsync(
             URL defaultEndpoint, List<String> locations, Func1<URL, Single<DatabaseAccount>> getDatabaseAccountFn) {
 
         return getDatabaseAccountFn.call(defaultEndpoint).onErrorResumeNext(
@@ -149,7 +152,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     public void close() {
         this.isClosed = true;
         this.executor.shutdown();
-        logger.info("GlobalEndpointManager closed.");
+        logger.debug("GlobalEndpointManager closed.");
     }
 
     public Completable refreshLocationAsync(DatabaseAccount databaseAccount) {
@@ -208,14 +211,15 @@ public class GlobalEndpointManager implements AutoCloseable {
     }
 
     private void startRefreshLocationTimerAsync() {
-        startRefreshLocationTimerAsync(false);
+        startRefreshLocationTimerAsync(false).subscribe();
     }
 
-    private void startRefreshLocationTimerAsync(boolean initialization) {
+    private Observable startRefreshLocationTimerAsync(boolean initialization) {
 
         if (this.isClosed) {
-            logger.info("startRefreshLocationTimerAsync: nothing to do, it is closed");
-            return;
+            logger.debug("startRefreshLocationTimerAsync: nothing to do, it is closed");
+            // if client is already closed, nothing to be done, just return.
+            return Observable.empty();
         }
 
         logger.debug("registering a refresh in [{}] ms", this.backgroundRefreshLocationTimeIntervalInMS);
@@ -223,12 +227,13 @@ public class GlobalEndpointManager implements AutoCloseable {
 
         int delayInMillis = initialization ? 0: this.backgroundRefreshLocationTimeIntervalInMS;
 
-        Observable.timer(delayInMillis, TimeUnit.MILLISECONDS)
+        return Observable.timer(delayInMillis, TimeUnit.MILLISECONDS)
                 .toSingle().flatMapCompletable(
                         t -> {
                             if (this.isClosed) {
                                 logger.warn("client already closed");
-                                return Completable.error(new IllegalStateException("Client already closed"));
+                                // if client is already closed, nothing to be done, just return.
+                                return Completable.complete();
                             }
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
@@ -244,7 +249,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     this.startRefreshLocationTimerAsync();
                     return Completable.complete();
-                }).toObservable().subscribeOn(scheduler).toBlocking().toFuture();
+                }).toObservable().subscribeOn(scheduler);
     }
 
     private Single<DatabaseAccount> getDatabaseAccountAsync(URL serviceEndpoint) {

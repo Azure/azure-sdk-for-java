@@ -55,7 +55,7 @@ public class HttpProxyServer {
                         .childHandler(httpProxyChannelInitializer)
                  .bind(port).sync().channel().closeFuture().sync();
             } catch (InterruptedException e) {
-                logger.error("Error occured", e);
+                logger.error("Error occurred", e);
             }
         }).start();
     }
@@ -68,6 +68,5 @@ public class HttpProxyServer {
         if(!bossGroup.isShutdown()) {
             bossGroup.shutdownGracefully();
         }
-
     }
 }

@@ -91,6 +91,5 @@ public class Main {
             System.err.println("Try '-help' for more information.");
             System.exit(1);
         }
-        System.exit(0);
     }
 }

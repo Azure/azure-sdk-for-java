@@ -41,15 +41,16 @@ import rx.Single;
  * This is meant to be internally used only by our sdk.
  * 
  *  Client policy is combination of endpoint change retry + throttling retry.
-        */
+ */
 public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
 
     private final static Logger logger = LoggerFactory.getLogger(ClientRetryPolicy.class);
 
-    private final static int RetryIntervalInMS = 1000; //Once we detect failover wait for 1 second before retrying request.
-    private final static int MaxRetryCount = 120;
+    final static int RetryIntervalInMS = 1000; //Once we detect failover wait for 1 second before retrying request.
+    final static int MaxRetryCount = 120;
 
     private final IDocumentClientRetryPolicy throttlingRetry;
+    private final ConnectionPoolExhaustedRetry rxNettyConnectionPoolExhaustedRetry;
     private final GlobalEndpointManager globalEndpointManager;
     private final boolean enableEndpointDiscovery;
     private int failoverRetryCount;
@@ -67,7 +68,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         this.throttlingRetry = new ResourceThrottleRetryPolicy(
                 retryOptions.getMaxRetryAttemptsOnThrottledRequests(),
                 retryOptions.getMaxRetryWaitTimeInSeconds());
-
+        this.rxNettyConnectionPoolExhaustedRetry = new ConnectionPoolExhaustedRetry();
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
         this.enableEndpointDiscovery = enableEndpointDiscovery;
@@ -77,6 +78,10 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
 
     @Override
     public Single<ShouldRetryResult> shouldRetry(Exception e) {
+        if (ConnectionPoolExhaustedRetry.isConnectionPoolExhaustedException(e)) {
+            return rxNettyConnectionPoolExhaustedRetry.shouldRetry(e);
+        }
+
         this.retryContext = null;
         // Received 403.3 on write region, initiate the endpoint re-discovery
         DocumentClientException clientException = Utils.as(e, DocumentClientException.class);
@@ -169,7 +174,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
 
         Duration retryDelay = Duration.ZERO;
         if (!this.isReadRequest) {
-            logger.debug("Failover happening. retryCount {0}",  this.failoverRetryCount);
+            logger.debug("Failover happening. retryCount {}",  this.failoverRetryCount);
             if (this.failoverRetryCount > 1) {
                 //if retried both endpoints, follow regular retry interval.
                 retryDelay = Duration.ofMillis(ClientRetryPolicy.RetryIntervalInMS);

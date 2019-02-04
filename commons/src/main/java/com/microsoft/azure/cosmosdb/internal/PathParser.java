@@ -25,6 +25,7 @@ package com.microsoft.azure.cosmosdb.internal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Provide functionality to parse resource paths in the Azure Cosmos DB database service.
@@ -33,7 +34,7 @@ public final class PathParser {
 
     private static final char segmentSeparator = '/';
 
-    public static Collection<String> getPathParts(String path) {
+    public static List<String> getPathParts(String path) {
         ArrayList<String> tokens = new ArrayList<String>();
         int currentIndex = 0;
 

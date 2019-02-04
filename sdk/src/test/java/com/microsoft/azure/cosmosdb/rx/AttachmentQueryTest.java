@@ -48,8 +48,6 @@ import rx.Observable;
 
 public class AttachmentQueryTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(AttachmentQueryTest.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private List<Attachment> createdAttachments = new ArrayList<>();
@@ -59,19 +57,12 @@ public class AttachmentQueryTest extends TestSuiteBase {
     private Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    public  String getCollectionLink() {
+    public String getCollectionLink() {
         return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
     
     public String getDocumentLink() {
         return createdDocument.getSelfLink();
-    }
-
-    static protected DocumentCollection getCollectionDefinition() {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-
-        return collectionDefinition;
     }
 
     @Factory(dataProvider = "clientBuilders")
@@ -156,7 +147,7 @@ public class AttachmentQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         Observable<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(getDocumentLink(), query, options);
+                .queryDocuments(getCollectionLink(), query, options);
 
         FailureValidator validator = new FailureValidator.Builder()
                 .instanceOf(DocumentClientException.class)
@@ -166,25 +157,22 @@ public class AttachmentQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    public Attachment createAttachment(AsyncDocumentClient client) throws DocumentClientException {
+    public Attachment createAttachment(AsyncDocumentClient client) {
         Attachment attachment = getAttachmentDefinition();
         return client.createAttachment(getDocumentLink(), attachment, null).toBlocking().single().getResource();
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
 
         Document docDef = new Document();
         docDef.setId(UUID.randomUUID().toString());
@@ -194,6 +182,8 @@ public class AttachmentQueryTest extends TestSuiteBase {
         for(int i = 0; i < 5; i++) {
             createdAttachments.add(createAttachment(client));
         }
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     private static Attachment getAttachmentDefinition() {

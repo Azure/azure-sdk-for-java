@@ -40,15 +40,13 @@ import rx.Observable;
 
 public class UserDefinedFunctionCrudTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(UserDefinedFunctionCrudTest.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public UserDefinedFunctionCrudTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -79,7 +77,9 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
         udf.setBody("function() {var x = 10;}");
         UserDefinedFunction readBackUdf = client.createUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
 
+
         // read udf
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         Observable<ResourceResponse<UserDefinedFunction>> readObservable = client.readUserDefinedFunction(readBackUdf.getSelfLink(), null);
 
         //validate udf read
@@ -107,22 +107,17 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
                 .nullResource()
                 .build();
         validateSuccess(deleteObservable, validator);
-
-        //TODO validate after deletion the resource is actually deleted (not found)
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 

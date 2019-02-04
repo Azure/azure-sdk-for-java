@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Completable;
 
+import javax.net.ssl.SSLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -72,11 +73,11 @@ public class MultiMasterScenario {
         for (String region : regions) {
             ConnectionPolicy policy = new ConnectionPolicy();
             policy.setUsingMultipleWriteLocations(true);
-            policy.setPreferredLocations(Collections.singleton(region));
+            policy.setPreferredLocations(Collections.singletonList(region));
 
             AsyncDocumentClient client =
                     new AsyncDocumentClient.Builder()
-                            .withMasterKey(this.accountKey)
+                            .withMasterKeyOrResourceToken(this.accountKey)
                             .withServiceEndpoint(this.accountEndpoint)
                             .withConsistencyLevel(ConsistencyLevel.Eventual)
                             .withConnectionPolicy(policy).build();

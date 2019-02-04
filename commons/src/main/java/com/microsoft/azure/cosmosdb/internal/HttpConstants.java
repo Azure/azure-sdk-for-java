@@ -121,6 +121,10 @@ public class HttpConstants {
         public static final String ENABLE_SCAN_IN_QUERY = "x-ms-documentdb-query-enable-scan";
         public static final String EMIT_VERBOSE_TRACES_IN_QUERY = "x-ms-documentdb-query-emit-traces";
 
+        // target lsn for head requests
+        public static final String TARGET_LSN = "x-ms-target-lsn";
+        public static final String TARGET_GLOBAL_COMMITTED_LSN = "x-ms-target-global-committed-lsn";
+
         //Request validation
         public static final String REQUEST_VALIDATION_FAILURE = "x-ms-request-validation-failure";
 
@@ -213,6 +217,46 @@ public class HttpConstants {
         // ChangeFeed
         public static final String A_IM = "A-IM";
         public static final String ALLOW_TENTATIVE_WRITES = "x-ms-cosmos-allow-tentative-writes";
+
+        // TODO: DANOBLE: Integrate these settings into the fold
+        // These settings were added to support RNTBD and they've been added here to reduce merge conflicts
+
+        public static final String CAN_CHARGE = "x-ms-cancharge";
+        public static final String CAN_OFFER_REPLACE_COMPLETE = "x-ms-can-offer-replace-complete";
+        public static final String CAN_THROTTLE = "x-ms-canthrottle";
+        public static final String CLIENT_RETRY_ATTEMPT_COUNT = "x-ms-client-retry-attempt-count";
+        public static final String COLLECTION_INDEX_TRANSFORMATION_PROGRESS = "x-ms-documentdb-collection-index-transformation-progress";
+        public static final String COLLECTION_LAZY_INDEXING_PROGRESS = "x-ms-documentdb-collection-lazy-indexing-progress";
+        public static final String COLLECTION_REMOTE_STORAGE_SECURITY_IDENTIFIER = "x-ms-collection-security-identifier";
+        public static final String CONTENT_SERIALIZATION_FORMAT = "x-ms-documentdb-content-serialization-format";
+        public static final String DISABLE_RNTBD_CHANNEL = "x-ms-disable-rntbd-channel";
+        public static final String DISABLE_RU_PER_MINUTE_USAGE = "x-ms-documentdb-disable-ru-per-minute-usage";
+        public static final String ENABLE_LOGGING = "x-ms-documentdb-script-enable-logging";
+        public static final String ENABLE_LOW_PRECISION_ORDER_BY = "x-ms-documentdb-query-enable-low-precision-order-by";
+        public static final String END_EPK = "x-ms-end-epk";
+        public static final String END_ID = "x-ms-end-id";
+        public static final String ENUMERATION_DIRECTION = "x-ms-enumeration-direction";
+        public static final String FILTER_BY_SCHEMA_RESOURCE_ID = "x-ms-documentdb-filterby-schema-rid";
+        public static final String FORCE_QUERY_SCAN = "x-ms-documentdb-force-query-scan";
+        public static final String GATEWAY_SIGNATURE = "x-ms-gateway-signature";
+        public static final String IS_AUTO_SCALE_REQUEST = "x-ms-is-auto-scale";
+        public static final String IS_READ_ONLY_SCRIPT = "x-ms-is-readonly-script";
+        public static final String LOG_RESULTS = "x-ms-documentdb-script-log-results";
+        public static final String MIGRATE_COLLECTION_DIRECTIVE = "x-ms-migratecollection-directive";
+        public static final String POPULATE_COLLECTION_THROUGHPUT_INFO = "x-ms-documentdb-populatecollectionthroughputinfo";
+        public static final String POPULATE_PARTITION_STATISTICS = "x-ms-documentdb-populatepartitionstatistics";
+        public static final String POPULATE_QUERY_METRICS = "x-ms-documentdb-populatequerymetrics";
+        public static final String PROFILE_REQUEST = "x-ms-profile-request";
+        public static final String READ_FEED_KEY_TYPE = "x-ms-read-key-type";
+        public static final String REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST = "x-ms-remaining-time-in-ms-on-client";
+        public static final String RESTORE_METADATA_FILTER = "x-ms-restore-metadata-filter";
+        public static final String SHARED_OFFER_THROUGHPUT = "x-ms-cosmos-shared-offer-throughput";
+        public static final String START_EPK = "x-ms-start-epk";
+        public static final String START_ID = "x-ms-start-id";
+        public static final String SUPPORT_SPATIAL_LEGACY_COORDINATES = "x-ms-documentdb-supportspatiallegacycoordinates";
+        public static final String TRANSPORT_REQUEST_ID = "x-ms-transport-request-id";
+        public static final String USE_POLYGONS_SMALLER_THAN_AHEMISPHERE = "x-ms-documentdb-usepolygonssmallerthanahemisphere";
+        public static final String API_TYPE = "x-ms-cosmos-apitype";
     }
 
     public static class A_IMHeaderValues {
@@ -224,7 +268,7 @@ public class HttpConstants {
 
         // TODO: FIXME we can use maven plugin for generating a version file
         // @see https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
-        public static final String SDK_VERSION = "2.3.2-SNAPSHOT";
+        public static final String SDK_VERSION = "2.4.0-beta-1";
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }
 

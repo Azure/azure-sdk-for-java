@@ -28,7 +28,7 @@ import java.util.Collection;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 

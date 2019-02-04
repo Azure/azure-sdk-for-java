@@ -31,6 +31,5 @@ public interface IAuthorizationTokenProvider {
             ResourceType resourceType,
             String requestVerb,
             Map<String, String> headers,
-            AuthorizationTokenType tokenType,
-            String resourcePath);
+            AuthorizationTokenType tokenType);
 }

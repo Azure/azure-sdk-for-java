@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -40,9 +41,10 @@ import com.microsoft.azure.cosmosdb.FeedResponse;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 public class ReadFeedDatabasesTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(ReadFeedDatabasesTest.class);
     private List<Database> createdDatabases = new ArrayList<>();
     private List<Database> allDatabases = new ArrayList<>();
 
@@ -75,7 +77,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws URISyntaxException, DocumentClientException {
+    public void beforeClass() throws URISyntaxException {
         client = clientBuilder.build();
         allDatabases = client.readDatabases(null)
                              .map(frp -> frp.getResults())
@@ -89,7 +91,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         allDatabases.addAll(createdDatabases);
     }
 
-    public Database createDatabase(AsyncDocumentClient client) throws DocumentClientException {
+    public Database createDatabase(AsyncDocumentClient client) {
         Database db = new Database();
         db.setId(UUID.randomUUID().toString());
         return client.createDatabase(db, null).toBlocking().single().getResource();

@@ -28,6 +28,7 @@ import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentClientUnderTest;
 public class ClientUnderTestBuilder extends Builder {
 
     public ClientUnderTestBuilder(Builder builder) {
+        this.configs = builder.configs;
         this.connectionPolicy = builder.connectionPolicy;
         this.desiredConsistencyLevel = builder.desiredConsistencyLevel;
         this.eventLoopSize = builder.eventLoopSize;
@@ -38,10 +39,11 @@ public class ClientUnderTestBuilder extends Builder {
     @Override
     public RxDocumentClientUnderTest build() {
         return new RxDocumentClientUnderTest(
-                serviceEndpoint,
-                masterKeyOrResourceToken,
-                connectionPolicy,
-                desiredConsistencyLevel,
-                eventLoopSize);
+            this.serviceEndpoint,
+            this.masterKeyOrResourceToken,
+            this.connectionPolicy,
+            this.desiredConsistencyLevel,
+            this.configs,
+            this.eventLoopSize);
     }
 }

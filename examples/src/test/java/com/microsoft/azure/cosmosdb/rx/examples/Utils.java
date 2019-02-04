@@ -23,11 +23,57 @@
 
 package com.microsoft.azure.cosmosdb.rx.examples;
 
+import com.microsoft.azure.cosmosdb.ConnectionMode;
+import com.microsoft.azure.cosmosdb.ConnectionPolicy;
+import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
+import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.FeedResponse;
+import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.RetryOptions;
+import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmosdb.rx.TestConfigurations;
+import org.testng.annotations.AfterSuite;
+import rx.Observable;
 
 public class Utils {
 
-    public static void safeclean(AsyncDocumentClient client, String databaseId) {
+    @AfterSuite(groups = "samples")
+    public void cleanupStaleDatabase() {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        connectionPolicy.setConnectionMode(ConnectionMode.Gateway);
+        RetryOptions options = new RetryOptions();
+        connectionPolicy.setRetryOptions(options);
+        AsyncDocumentClient client = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
+            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+            .withConnectionPolicy(connectionPolicy)
+            .build();
+        safeCleanDatabases(client);
+        client.close();
+    }
+
+    public static String getCollectionLink(Database db, DocumentCollection collection) {
+        return "dbs/" + db.getId() + "/colls/" + collection;
+    }
+
+    public static Database createDatabaseForTest(AsyncDocumentClient client) {
+        return DatabaseForTest.create(DatabaseManagerImpl.getInstance(client)).createdDatabase;
+    }
+
+    private static void safeCleanDatabases(AsyncDocumentClient client) {
+        if (client != null) {
+            DatabaseForTest.cleanupStaleTestDatabases(DatabaseManagerImpl.getInstance(client));
+        }
+    }
+
+    public static void safeClean(AsyncDocumentClient client, Database database) {
+        if (database != null) {
+            safeClean(client, database.getId());
+        }
+    }
+
+    public static void safeClean(AsyncDocumentClient client, String databaseId) {
         if (client != null) {
             if (databaseId != null) {
                 try {
@@ -35,12 +81,45 @@ public class Utils {
                 } catch (Exception e) {
                 }
             }
+        }
+    }
 
+    public static String generateDatabaseId() {
+        return DatabaseForTest.generateId();
+    }
+
+    public static void safeClose(AsyncDocumentClient client) {
+        if (client != null) {
             client.close();
         }
     }
 
-    public static String getDatabaseId(Class<?> klass) {
-        return String.format("java.rx.examples.%s", klass.getName());
+    private static class DatabaseManagerImpl implements DatabaseForTest.DatabaseManager {
+        public static DatabaseManagerImpl getInstance(AsyncDocumentClient client) {
+            return new DatabaseManagerImpl(client);
+        }
+
+        private final AsyncDocumentClient client;
+
+        private DatabaseManagerImpl(AsyncDocumentClient client) {
+            this.client = client;
+        }
+
+        @Override
+        public Observable<FeedResponse<Database>> queryDatabases(SqlQuerySpec query) {
+            return client.queryDatabases(query, null);
+        }
+
+        @Override
+        public Observable<ResourceResponse<Database>> createDatabase(Database databaseDefinition) {
+            return client.createDatabase(databaseDefinition, null);
+        }
+
+        @Override
+        public Observable<ResourceResponse<Database>> deleteDatabase(String id) {
+
+            return client.deleteDatabase("dbs/" + id, null);
+        }
     }
+
 }

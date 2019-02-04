@@ -25,13 +25,12 @@ package com.microsoft.azure.cosmosdb.rx.internal.caches;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.internal.routing.IServerIdentity;
 import com.microsoft.azure.cosmosdb.rx.internal.NotFoundException;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -187,8 +186,8 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
 
         return rangesObs.flatMap(ranges -> {
 
-            List<ImmutablePair<PartitionKeyRange, Boolean>> rangesTuples =
-                    ranges.stream().map(range -> new  ImmutablePair<>(range, true)).collect(Collectors.toList());
+            List<ImmutablePair<PartitionKeyRange, IServerIdentity>> rangesTuples =
+                    ranges.stream().map(range -> new  ImmutablePair<>(range, (IServerIdentity) null)).collect(Collectors.toList());
 
 
             CollectionRoutingMap routingMap;
@@ -203,7 +202,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
             }
             else
             {
-                routingMap = previousRoutingMap.tryCombine(ranges);
+                routingMap = previousRoutingMap.tryCombine(rangesTuples);
             }
 
             if (routingMap == null)

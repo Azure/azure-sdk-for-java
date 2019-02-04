@@ -23,8 +23,16 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.microsoft.azure.cosmosdb.internal.Constants;
+import com.microsoft.azure.cosmosdb.internal.Utils;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Represents a database account in the Azure Cosmos DB database service.
@@ -35,6 +43,8 @@ public class DatabaseAccount extends Resource {
     private long maxMediaStorageUsageInMB;
     private long mediaStorageUsageInMB;
     private ReplicationPolicy replicationPolicy;
+    private ReplicationPolicy systemReplicationPolicy;
+    private Map<String, Object> queryEngineConfiguration;
 
     /**
      * Constructor.
@@ -159,7 +169,7 @@ public class DatabaseAccount extends Resource {
      */
     public ReplicationPolicy getReplicationPolicy() {
         if (this.replicationPolicy == null) {
-            this.replicationPolicy = super.getObject(Constants.Properties.REPLICATION_POLICY,
+            this.replicationPolicy = super.getObject(Constants.Properties.USER_REPLICATION_POLICY,
                     ReplicationPolicy.class);
 
             if (this.replicationPolicy == null) {
@@ -168,6 +178,51 @@ public class DatabaseAccount extends Resource {
         }
 
         return this.replicationPolicy;
+    }
+
+    /**
+     * Gets the SystemReplicationPolicy settings.
+     *
+     * @return the system replication policy.
+     */
+    ReplicationPolicy getSystemReplicationPolicy() {
+        if (this.systemReplicationPolicy == null) {
+            this.systemReplicationPolicy = super.getObject(Constants.Properties.SYSTEM_REPLICATION_POLICY,
+                    ReplicationPolicy.class);
+
+            if (this.systemReplicationPolicy == null) {
+                this.systemReplicationPolicy = new ReplicationPolicy();
+            }
+        }
+
+        return this.systemReplicationPolicy;
+    }
+
+    /**
+     * Gets the QueryEngineConfiuration settings.
+     *
+     * @return the query engine configuration.
+     */
+    Map<String, Object> getQueryEngineConfiuration() {
+        if (this.queryEngineConfiguration == null) {
+            String queryEngineConfigurationJsonString = super.getObject(Constants.Properties.QUERY_ENGINE_CONFIGURATION,
+                    String.class);
+            if (StringUtils.isNotEmpty(queryEngineConfigurationJsonString)) {
+                TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
+                };
+                try {
+                    this.queryEngineConfiguration = Utils.getSimpleObjectMapper()
+                            .readValue(queryEngineConfigurationJsonString, typeRef);
+                } catch (IOException e) {
+                    throw new IllegalArgumentException(e);
+                }
+                if (this.queryEngineConfiguration == null) {
+                    this.queryEngineConfiguration = new HashMap<>();
+                }
+            }
+        }
+
+        return this.queryEngineConfiguration;
     }
 
     /**
