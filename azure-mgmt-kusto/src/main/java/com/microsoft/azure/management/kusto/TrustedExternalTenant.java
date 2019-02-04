@@ -11,7 +11,7 @@ package com.microsoft.azure.management.kusto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Repersents a tenant ID that is trusted by the cluster.
+ * Represents a tenant ID that is trusted by the cluster.
  */
 public class TrustedExternalTenant {
     /**
