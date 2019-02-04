@@ -192,7 +192,7 @@ and add the following dependency to your project maven dependencies:
 <dependency>
   <groupId>io.netty</groupId>
   <artifactId>netty-tcnative</artifactId>
-  <version>2.0.7.Final</version>
+  <version>2.0.20.Final</version>
   <classifier>linux-x86_64</classifier>
 </dependency>
 ```
