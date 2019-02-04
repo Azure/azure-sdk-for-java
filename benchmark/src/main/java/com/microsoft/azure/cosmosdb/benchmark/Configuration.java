@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -94,13 +94,13 @@ class Configuration {
     @Parameter(names = "-numberOfPreCreatedDocuments", description = "Total Number Of Documents To pre create for a read workload to use")
     private int numberOfPreCreatedDocuments = 1000;
 
-    @Parameter(names = { "-h", "-help", "--help" }, description = "Help", help = true)
+    @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
 
     enum Operation {
         ReadThroughput, WriteThroughput, ReadLatency, WriteLatency, QueryCross, QuerySingle, QuerySingleMany, QueryParallel, QueryOrderby, QueryAggregate, QueryAggregateTopOrderby, QueryTopOrderby, Mixed;
 
-        public static Operation fromString(String code) {
+        static Operation fromString(String code) {
 
             for (Operation output : Operation.values()) {
                 if (output.toString().equalsIgnoreCase(code)) {
@@ -111,11 +111,11 @@ class Configuration {
             return null;
         }
 
-        public static class OperationTypeConverter implements IStringConverter<Operation> {
+        static class OperationTypeConverter implements IStringConverter<Operation> {
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see com.beust.jcommander.IStringConverter#convert(java.lang.String)
              */
             @Override
@@ -123,14 +123,14 @@ class Configuration {
                 Operation ret = fromString(value);
                 if (ret == null) {
                     throw new ParameterException("Value " + value + " can not be converted to ClientType. "
-                            + "Available values are: " + Arrays.toString(Operation.values()));
+                                                         + "Available values are: " + Arrays.toString(Operation.values()));
                 }
                 return ret;
             }
         }
     }
 
-    public static ConsistencyLevel fromString(String code) {
+    private static ConsistencyLevel fromString(String code) {
         for (ConsistencyLevel output : ConsistencyLevel.values()) {
             if (output.toString().equalsIgnoreCase(code)) {
                 return output;
@@ -139,11 +139,11 @@ class Configuration {
         return null;
     }
 
-    public static class ConsistencyLevelConverter implements IStringConverter<ConsistencyLevel> {
+    static class ConsistencyLevelConverter implements IStringConverter<ConsistencyLevel> {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.beust.jcommander.IStringConverter#convert(java.lang.String)
          */
         @Override
@@ -151,64 +151,64 @@ class Configuration {
             ConsistencyLevel ret = fromString(value);
             if (ret == null) {
                 throw new ParameterException("Value " + value + " can not be converted to ClientType. "
-                        + "Available values are: " + Arrays.toString(Operation.values()));
+                                                     + "Available values are: " + Arrays.toString(Operation.values()));
             }
             return ret;
         }
     }
 
-    public Operation getOperationType() {
+    Operation getOperationType() {
         return operation;
     }
 
-    public int getNumberOfOperations() {
+    int getNumberOfOperations() {
         return numberOfOperations;
     }
 
-    public String getServiceEndpoint() {
+    String getServiceEndpoint() {
         return serviceEndpoint;
     }
 
-    public String getMasterKey() {
+    String getMasterKey() {
         return masterKey;
     }
 
-    public boolean isHelp() {
+    boolean isHelp() {
         return help;
     }
 
-    public int getDocumentDataFieldSize() {
+    int getDocumentDataFieldSize() {
         return documentDataFieldSize;
     }
 
-    public ConnectionPolicy getConnectionPolicy() {
+    ConnectionPolicy getConnectionPolicy() {
         ConnectionPolicy policy = new ConnectionPolicy();
         policy.setConnectionMode(connectionMode);
         policy.setMaxPoolSize(maxConnectionPoolSize);
         return policy;
     }
 
-    public ConsistencyLevel getConsistencyLevel() {
+    ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
-    public String getDatabaseId() {
+    String getDatabaseId() {
         return databaseId;
     }
 
-    public String getCollectionId() {
+    String getCollectionId() {
         return collectionId;
     }
 
-    public int getNumberOfPreCreatedDocuments() {
+    int getNumberOfPreCreatedDocuments() {
         return numberOfPreCreatedDocuments;
     }
 
-    public int getPrintingInterval() {
+    int getPrintingInterval() {
         return printingInterval;
     }
 
-    public int getConcurrency() {
+    int getConcurrency() {
         if (this.concurrency != null) {
             return concurrency;
         } else {
@@ -220,39 +220,39 @@ class Configuration {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
-    public void tryGetValuesFromSystem() {
+    void tryGetValuesFromSystem() {
         serviceEndpoint = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("SERVICE_END_POINT")),
-                serviceEndpoint);
+                                                    serviceEndpoint);
 
         masterKey = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("MASTER_KEY")), masterKey);
 
         databaseId = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("DATABASE_ID")), databaseId);
 
         collectionId = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("COLLECTION_ID")),
-                collectionId);
+                                                 collectionId);
 
         documentDataFieldSize = Integer.parseInt(
                 StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("DOCUMENT_DATA_FIELD_SIZE")),
-                        Integer.toString(documentDataFieldSize)));
+                                          Integer.toString(documentDataFieldSize)));
 
         maxConnectionPoolSize = Integer.parseInt(
                 StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("MAX_CONNECTION_POOL_SIZE")),
-                        Integer.toString(maxConnectionPoolSize)));
+                                          Integer.toString(maxConnectionPoolSize)));
 
         ConsistencyLevelConverter consistencyLevelConverter = new ConsistencyLevelConverter();
         consistencyLevel = consistencyLevelConverter.convert(StringUtils
-                .defaultString(Strings.emptyToNull(System.getenv().get("CONSISTENCY_LEVEL")), consistencyLevel.name()));
+                                                                     .defaultString(Strings.emptyToNull(System.getenv().get("CONSISTENCY_LEVEL")), consistencyLevel.name()));
 
         OperationTypeConverter operationTypeConverter = new OperationTypeConverter();
         operation = operationTypeConverter.convert(
                 StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("OPERATION")), operation.name()));
 
         String concurrencyValue = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("CONCURRENCY")),
-                concurrency == null ? null : Integer.toString(concurrency));
+                                                            concurrency == null ? null : Integer.toString(concurrency));
         concurrency = concurrencyValue == null ? null : Integer.parseInt(concurrencyValue);
 
         String numberOfOperationsValue = StringUtils.defaultString(
                 Strings.emptyToNull(System.getenv().get("NUMBER_OF_OPERATIONS")), Integer.toString(numberOfOperations));
-        numberOfOperations = numberOfOperationsValue == null ? null : Integer.parseInt(numberOfOperationsValue);
+        numberOfOperations = Integer.parseInt(numberOfOperationsValue);
     }
 }

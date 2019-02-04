@@ -145,10 +145,12 @@ class DocumentProducer<T extends Resource> {
         return sourceFeedResponseObservable.onErrorResumeNext( t -> {
             DocumentClientException dce = Utils.as(t, DocumentClientException.class);
             if (dce == null || !isSplit(dce)) {
+                logger.error("Unexpected failure", t);
                 return Observable.error(t);
             }
 
             // we are dealing with Split
+            logger.info("DocumentProducer handling a partition split in [{}], detail:[{}]", targetRange, dce);
             Single<List<PartitionKeyRange>> replacementRangesObs = getReplacementRanges(targetRange.toRange());
 
             // Since new DocumentProducers are instantiated for the new replacement ranges, if for the new
@@ -157,7 +159,7 @@ class DocumentProducer<T extends Resource> {
             Observable<DocumentProducer<T>> replacementProducers = replacementRangesObs.toObservable().flatMap(
                     partitionKeyRanges ->  {
                         if (logger.isDebugEnabled()) {
-                            logger.info("Cross Partition Query Execution detected partition [{}] split into [{} partitions,"
+                            logger.info("Cross Partition Query Execution detected partition [{}] split into [{}] partitions,"
                                     + " last continuation token is [{}].",
                                     targetRange.toJson(),
                                     String.join(", ", partitionKeyRanges.stream()

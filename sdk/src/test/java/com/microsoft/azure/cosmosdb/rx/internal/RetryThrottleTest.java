@@ -62,8 +62,6 @@ import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
 import rx.Observable;
 
 public class RetryThrottleTest extends TestSuiteBase {
-    private final static String DATABASE_ID = getDatabaseId(RetryThrottleTest.class);
-    private final static int COLLECTION_THROUGHPUT = 400;
     private final static int TIMEOUT = 10000;
     private final static int TOTAL_DOCS = 500;
     private final static int LARGE_TIMEOUT = 30000;
@@ -71,9 +69,8 @@ public class RetryThrottleTest extends TestSuiteBase {
     private SpyClientUnderTestFactory.ClientWithGatewaySpy client;
     private Database database;
     private DocumentCollection collection;
-    private AsyncDocumentClient houseKeepingClient;
 
-    @Test(groups = { "internal" }, timeOut = LARGE_TIMEOUT )
+    @Test(groups = { "long" }, timeOut = LARGE_TIMEOUT )
     public void retryCreateDocumentsOnSpike() throws Exception {
         ConnectionPolicy policy = new ConnectionPolicy();
         RetryOptions retryOptions = new RetryOptions();
@@ -121,7 +118,7 @@ public class RetryThrottleTest extends TestSuiteBase {
         System.out.println("total count is " + totalCount.get());
     }
     
-    @Test(groups = { "internal" }, timeOut = TIMEOUT)
+    @Test(groups = { "long" }, timeOut = TIMEOUT)
     public void retryDocumentCreate() throws Exception {
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createGatewayRxDocumentClient());
 
@@ -156,24 +153,16 @@ public class RetryThrottleTest extends TestSuiteBase {
         validateSuccess(createObservable, validator, TIMEOUT);
     }
 
-    @AfterMethod(groups = { "internal" })
+    @AfterMethod(groups = { "long" })
     private void afterMethod() {
         safeClose(client);
     }
     
-    @BeforeClass(groups = { "internal" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         // set up the client
-        houseKeepingClient = createGatewayRxDocumentClient().build();
-
-        Database databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID);
-
-        database = safeCreateDatabase(houseKeepingClient, databaseDefinition);
-
-        RequestOptions ops = new RequestOptions();
-        ops.setOfferThroughput(COLLECTION_THROUGHPUT);
-        collection = houseKeepingClient.createCollection(getDatabaseLink(database), getCollectionDefinition(), ops).toBlocking().single().getResource();
+        database = SHARED_DATABASE;
+        collection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
     }
 
     private Document getDocumentDefinition() {
@@ -187,9 +176,7 @@ public class RetryThrottleTest extends TestSuiteBase {
         return doc;
     }
 
-    @AfterClass(groups = { "internal" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "long" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {        
-        houseKeepingClient.deleteDatabase(database.getSelfLink(), null).toBlocking().single();
-        safeClose(houseKeepingClient);
     }
 }

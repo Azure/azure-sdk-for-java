@@ -34,16 +34,16 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
-class AsyncReadBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
+import javax.net.ssl.SSLException;
 
-    private static final int NANOS_TO_MILLIS = 1000000;
+class AsyncReadBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
 
     class LatencySubscriber<T> extends Subscriber<T> {
 
         Timer.Context context;
         Subscriber<T> subscriber;
 
-        public LatencySubscriber(Subscriber<T> subscriber) {
+        LatencySubscriber(Subscriber<T> subscriber) {
             this.subscriber = subscriber;
         }
 
@@ -65,7 +65,7 @@ class AsyncReadBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
         }
     }
 
-    public AsyncReadBenchmark(Configuration cfg) {
+    AsyncReadBenchmark(Configuration cfg) {
         super(cfg);
     }
 
@@ -82,7 +82,7 @@ class AsyncReadBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
         if (configuration.getOperationType() == Operation.ReadThroughput) {
             obs.subscribeOn(Schedulers.computation()).subscribe(subs);
         } else {
-            LatencySubscriber<ResourceResponse<Document>> latencySubscriber = new LatencySubscriber<ResourceResponse<Document>>(
+            LatencySubscriber<ResourceResponse<Document>> latencySubscriber = new LatencySubscriber<>(
                     subs);
             latencySubscriber.context = latency.time();
             obs.subscribeOn(Schedulers.computation()).subscribe(latencySubscriber);

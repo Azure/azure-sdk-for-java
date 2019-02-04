@@ -33,14 +33,11 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.StoredProcedure;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 
 
 public class StoredProcedureCrudTest extends TestSuiteBase {
-
-    public final static String DATABASE_ID = getDatabaseId(StoredProcedureCrudTest.class);
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -48,7 +45,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public StoredProcedureCrudTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -81,8 +78,8 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         StoredProcedure storedProcedure = client.createStoredProcedure(getCollectionLink(), storedProcedureDef, null).toBlocking().single().getResource();
 
         // read stored procedure
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         Observable<ResourceResponse<StoredProcedure>> readObservable = client.readStoredProcedure(storedProcedure.getSelfLink(), null);
-
 
         ResourceResponseValidator<StoredProcedure> validator = new ResourceResponseValidator.Builder<StoredProcedure>()
                 .withId(storedProcedureDef.getId())
@@ -109,21 +106,23 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
                 .build();
         validateSuccess(deleteObservable, validator);
 
-        //TODO validate after deletion the resource is actually deleted (not found)
+        // attempt to read stored procedure which was deleted
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
+
+        Observable<ResourceResponse<StoredProcedure>> readObservable = client.readStoredProcedure(storedProcedure.getSelfLink(), null);
+        FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
+        validateFailure(readObservable, notFoundValidator);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION;
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 

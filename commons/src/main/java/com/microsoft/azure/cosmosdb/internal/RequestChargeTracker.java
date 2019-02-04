@@ -33,11 +33,11 @@ public final class RequestChargeTracker {
     private final AtomicLong totalRUs = new AtomicLong();
 
     public double getTotalRequestCharge() {
-        return (double) this.totalRUs.get() / NUMBER_OF_DECIMAL_POINT_TO_RESERVE_FACTOR;
+        return ((double) this.totalRUs.get()) / NUMBER_OF_DECIMAL_POINT_TO_RESERVE_FACTOR;
     }
 
     public void addCharge(double ruUsage) {
-        this.totalRUs.addAndGet((long) ruUsage * NUMBER_OF_DECIMAL_POINT_TO_RESERVE_FACTOR);
+        this.totalRUs.addAndGet((long) (ruUsage * NUMBER_OF_DECIMAL_POINT_TO_RESERVE_FACTOR));
     }
 
     public double getAndResetCharge() {

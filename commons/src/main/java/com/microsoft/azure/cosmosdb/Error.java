@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -34,6 +35,15 @@ public class Error extends Resource {
      */
     public Error() {
         super();
+    }
+
+    /**
+     * Initialize a new instance of the Error object from a JSON string.
+     *
+     * @param objectNode the {@link ObjectNode} that represents the error.
+     */
+    Error(ObjectNode objectNode) {
+        super(objectNode);
     }
 
     /**

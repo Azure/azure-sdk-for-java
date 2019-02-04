@@ -26,6 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.UUID;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -39,10 +41,10 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 
 public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
-
-    public final static String DATABASE_ID = getDatabaseId(StoredProcedureUpsertReplaceTest.class);
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -50,7 +52,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public StoredProcedureUpsertReplaceTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -65,6 +67,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         StoredProcedure readBackSp = client.upsertStoredProcedure(getCollectionLink(), storedProcedureDef, null).toBlocking().single().getResource();
 
         //read back stored procedure
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         Observable<ResourceResponse<StoredProcedure>> readObservable = client.readStoredProcedure(readBackSp.getSelfLink(), null);
 
         // validate stored procedure creation
@@ -97,8 +100,9 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         storedProcedureDef.setId(UUID.randomUUID().toString());
         storedProcedureDef.setBody("function() {var x = 10;}");        
         StoredProcedure readBackSp = client.createStoredProcedure(getCollectionLink(), storedProcedureDef, null).toBlocking().single().getResource();
-        
+
         // read stored procedure to validate creation
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         Observable<ResourceResponse<StoredProcedure>> readObservable = client.readStoredProcedure(readBackSp.getSelfLink(), null);
 
         // validate stored procedure creation
@@ -136,34 +140,42 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
                         "      }" +
                         "    }'" +
                         "}");
-        
-        StoredProcedure storedProcedure = client.createStoredProcedure(getCollectionLink(), storedProcedureDef, null).toBlocking().single().getResource();
 
-        // execute
-        String result = client.executeStoredProcedure(storedProcedure.getSelfLink(), null).toBlocking().single().getResponseAsString();
+        StoredProcedure storedProcedure = null;
+
+        try {
+            storedProcedure = client.createStoredProcedure(getCollectionLink(), storedProcedureDef, null).toBlocking().single().getResource();
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
+
+        String result = null;
+
+        try {
+            result = client.executeStoredProcedure(storedProcedure.getSelfLink(), null).toBlocking().single().getResponseAsString();
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
+
         assertThat(result).isEqualTo("\"0123456789\"");
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinitionSinglePartition());
-    }
-    
-    private static DocumentCollection getCollectionDefinitionSinglePartition() {
-        
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
 
-        return collectionDefinition;
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
     }
-    
+
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 

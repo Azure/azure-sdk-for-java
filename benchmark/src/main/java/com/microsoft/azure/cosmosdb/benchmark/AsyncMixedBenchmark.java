@@ -26,6 +26,7 @@ package com.microsoft.azure.cosmosdb.benchmark;
 import java.util.Random;
 import java.util.UUID;
 
+import com.microsoft.azure.cosmosdb.ResourceResponse;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import com.microsoft.azure.cosmosdb.Document;
@@ -37,12 +38,14 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
+import javax.net.ssl.SSLException;
+
 class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
 
     private final String uuid;
     private final String dataFieldValue;
 
-    public AsyncMixedBenchmark(Configuration cfg) {
+    AsyncMixedBenchmark(Configuration cfg) {
         super(cfg);
         uuid = UUID.randomUUID().toString();
         dataFieldValue = RandomStringUtils.randomAlphabetic(configuration.getDocumentDataFieldSize());
@@ -50,7 +53,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
 
     @Override
     protected void performWorkload(Subscriber<Document> subs, long i) throws InterruptedException {
-        Observable<Document> obs = null;
+        Observable<Document> obs;
         if (i % 10 == 0 && i % 100 != 0) {
 
             String idString = uuid + i;
@@ -62,7 +65,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
             newDoc.set("dataField3", dataFieldValue);
             newDoc.set("dataField4", dataFieldValue);
             newDoc.set("dataField5", dataFieldValue);
-            obs = client.createDocument(collection.getSelfLink(), newDoc, null, false).map(rr -> rr.getResource());
+            obs = client.createDocument(collection.getSelfLink(), newDoc, null, false).map(ResourceResponse::getResource);
 
         } else if (i % 100 == 0) {
 
@@ -81,7 +84,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(docsToRead.get(index).getId()));
 
-            obs = client.readDocument(docsToRead.get(index).getSelfLink(), options).map(rr -> rr.getResource());
+            obs = client.readDocument(docsToRead.get(index).getSelfLink(), options).map(ResourceResponse::getResource);
         }
 
         concurrencyControlSemaphore.acquire();

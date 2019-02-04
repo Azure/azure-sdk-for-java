@@ -27,9 +27,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.apache.commons.lang3.text.WordUtils;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
+import org.apache.commons.text.WordUtils;
 
 /**
  * Represents the indexing policy configuration for a collection in the Azure Cosmos DB database service.

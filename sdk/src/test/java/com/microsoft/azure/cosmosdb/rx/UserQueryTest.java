@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -39,22 +40,21 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.User;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
 
 public class UserQueryTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(UserQueryTest.class);
+    public final String databaseId = DatabaseForTest.generateId();
 
     private List<User> createdUsers = new ArrayList<>();
 
     private Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    private static String getDatabaseLink() {
-        return Utils.getDatabaseNameLink(DATABASE_ID);
+    private String getDatabaseLink() {
+        return Utils.getDatabaseNameLink(databaseId);
     }
     
     @Factory(dataProvider = "clientBuilders")
@@ -97,7 +97,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
-        String databaseLink = Utils.getDatabaseNameLink(DATABASE_ID);
+        String databaseLink = Utils.getDatabaseNameLink(databaseId);
         Observable<FeedResponse<User>> queryObservable = client.queryUsers(databaseLink, query, options);
 
         List<User> expectedUsers = createdUsers;
@@ -138,19 +138,21 @@ public class UserQueryTest extends TestSuiteBase {
         client = clientBuilder.build();
 
         Database d1 = new Database();
-        d1.setId(DATABASE_ID);
-        safeCreateDatabase(client, d1);
+        d1.setId(databaseId);
+        createDatabase(client, d1);
 
         for(int i = 0; i < 5; i++) {
             User user = new User();
             user.setId(UUID.randomUUID().toString());
-            createdUsers.add(createUser(client, DATABASE_ID, user));
+            createdUsers.add(createUser(client, databaseId, user));
         }
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, DATABASE_ID);
+        safeDeleteDatabase(client, databaseId);
         safeClose(client);
     }
 }

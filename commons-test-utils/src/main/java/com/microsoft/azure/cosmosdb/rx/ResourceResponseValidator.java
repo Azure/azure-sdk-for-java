@@ -24,7 +24,11 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.assertj.core.api.Condition;
@@ -44,6 +48,10 @@ import com.microsoft.azure.cosmosdb.TriggerType;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
 
 public interface ResourceResponseValidator<T extends Resource> {
+
+    static <T extends Resource> ResourceResponseValidator.Builder builder() {
+        return new Builder();
+    }
 
     void validate(ResourceResponse<T> resourceResponse);
 
@@ -107,6 +115,36 @@ public interface ResourceResponseValidator<T extends Resource> {
                     assertThat(resourceResponse.getResource()).isNotNull();
                     assertThat(resourceResponse.getResource().get(propertyName)).isEqualTo(value);
 
+                }
+            });
+            return this;
+        }
+
+
+        public Builder<T> withTimestampIsAfterOrEqualTo(Instant time) {
+            validators.add(new ResourceResponseValidator<T>() {
+
+                @Override
+                public void validate(ResourceResponse<T> resourceResponse) {
+                    assertThat(resourceResponse.getResource()).isNotNull();
+                    assertThat(resourceResponse.getResource().getTimestamp()).isNotNull();
+                    Date d = resourceResponse.getResource().getTimestamp();
+                    System.out.println(d.toString());
+                    assertThat(d.toInstant()).isAfterOrEqualTo(time);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> withTimestampIsBeforeOrEqualTo(Instant time) {
+            validators.add(new ResourceResponseValidator<T>() {
+
+                @Override
+                public void validate(ResourceResponse<T> resourceResponse) {
+                    assertThat(resourceResponse.getResource()).isNotNull();
+                    assertThat(resourceResponse.getResource().getTimestamp()).isNotNull();
+                    Date d = resourceResponse.getResource().getTimestamp();
+                    assertThat(d.toInstant()).isBeforeOrEqualTo(time);
                 }
             });
             return this;

@@ -35,7 +35,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.microsoft.azure.cosmosdb.ISessionContainer;
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.internal.OperationType;
+import com.microsoft.azure.cosmosdb.internal.PathsHelper;
+import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
+import com.microsoft.azure.cosmosdb.internal.ResourceType;
+import com.microsoft.azure.cosmosdb.internal.RuntimeConstants;
+import com.microsoft.azure.cosmosdb.internal.SessionContainer;
+import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,11 +53,6 @@ import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.Error;
-import com.microsoft.azure.cosmosdb.internal.HttpConstants;
-import com.microsoft.azure.cosmosdb.internal.OperationType;
-import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
-import com.microsoft.azure.cosmosdb.internal.RuntimeConstants;
-import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreResponse;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyAndResourceTokenPair;
 
@@ -61,6 +66,9 @@ import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
 import rx.Observable;
+import rx.Single;
+import rx.functions.Func0;
+import rx.functions.Func1;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -76,16 +84,17 @@ class RxGatewayStoreModel implements RxStoreModel {
     private final CompositeHttpClient<ByteBuf, ByteBuf> httpClient;
     private final QueryCompatibilityMode queryCompatibilityMode;
     private final GlobalEndpointManager globalEndpointManager;
+    private ConsistencyLevel defaultConsistencyLevel;
+    private ISessionContainer sessionContainer;
 
-    public RxGatewayStoreModel(ConnectionPolicy connectionPolicy,
-            ConsistencyLevel consistencyLevel,
+    public RxGatewayStoreModel(
+            ISessionContainer sessionContainer,
+            ConsistencyLevel defaultConsistencyLevel,
             QueryCompatibilityMode queryCompatibilityMode,
-            String masterKey,
-            Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap,
             UserAgentContainer userAgentContainer,
             GlobalEndpointManager globalEndpointManager,
             CompositeHttpClient<ByteBuf, ByteBuf> httpClient) {
-        this.defaultHeaders = new HashMap<String, String>();
+        this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
                 "no-cache");
         this.defaultHeaders.put(HttpConstants.HttpHeaders.VERSION,
@@ -97,15 +106,17 @@ class RxGatewayStoreModel implements RxStoreModel {
 
         this.defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
 
-        if (consistencyLevel != null) {
+        if (defaultConsistencyLevel != null) {
             this.defaultHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
-                    consistencyLevel.toString());
+                                    defaultConsistencyLevel.toString());
         }
 
+        this.defaultConsistencyLevel = defaultConsistencyLevel;
         this.globalEndpointManager = globalEndpointManager;
         this.queryCompatibilityMode = queryCompatibilityMode;
 
         this.httpClient = httpClient;
+        this.sessionContainer = sessionContainer;
     }
 
     private Observable<RxDocumentServiceResponse> doCreate(RxDocumentServiceRequest request) {
@@ -196,7 +207,10 @@ class RxGatewayStoreModel implements RxStoreModel {
     private void fillHttpRequestBaseWithHeaders(Map<String, String> headers, HttpClientRequest<ByteBuf> req) {
         // Add default headers.
         for (Map.Entry<String, String> entry : this.defaultHeaders.entrySet()) {
-            req.withHeader(entry.getKey(), entry.getValue());
+            if (!headers.containsKey(entry.getKey())) {
+                // populate default header only if there is no overwrite by the request header
+                req.withHeader(entry.getKey(), entry.getValue());
+            }
         }
         
         // Add override headers.
@@ -223,17 +237,22 @@ class RxGatewayStoreModel implements RxStoreModel {
             }
         }
 
+        String path = PathsHelper.generatePath(request.getResourceType(), request, request.isFeed);
+        if(request.getResourceType().equals(ResourceType.DatabaseAccount)) {
+            path = StringUtils.EMPTY;
+        }
+
         URI uri = new URI("https",
                 null,
                 rootUri.getHost(),
                 rootUri.getPort(),
-                ensureSlashPrefixed(request.getPath()),
+                ensureSlashPrefixed(path),
                 null,  // Query string not used.
                 null);
 
         return uri;
     }
-    
+
     private String ensureSlashPrefixed(String path) {
         if (path == null) {
             return path;
@@ -413,8 +432,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         }
     }
 
-    @Override
-    public Observable<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request)  {
+    private Observable<RxDocumentServiceResponse> invokeAsyncInternal(RxDocumentServiceRequest request)  {
         switch (request.getOperationType()) {
         case Create:
             return this.doCreate(request);
@@ -435,6 +453,93 @@ class RxGatewayStoreModel implements RxStoreModel {
             return this.query(request);
         default:
             throw new IllegalStateException("Unknown operation type " + request.getOperationType());
+        }
+    }
+
+    private Observable<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
+        Func0<Single<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).toSingle();
+        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy()).toObservable();
+    }
+
+    @Override
+    public Observable<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
+        this.applySessionToken(request);
+
+        Observable<RxDocumentServiceResponse> responseObs = invokeAsync(request);
+
+        return responseObs.onErrorResumeNext(
+                e -> {
+                    DocumentClientException dce = Utils.as(e, DocumentClientException.class);
+
+                    if (dce == null) {
+                        logger.error("unexpected failure {}", e.getMessage(), e);
+                        return Observable.error(e);
+                    }
+
+                    if (request.getIsNameBased() && dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND &&
+                            Exceptions.isSubStatusCode(dce, HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE) &&
+                            request.clearSessionTokenOnSessionReadFailure) {
+                        // Clear the session token, because the collection name might be reused.
+                        logger.warn("Clear the the token for named base request {}", request.getResourceAddress());
+
+                        this.sessionContainer.clearToken(null, request.getResourceAddress(), dce.getResponseHeaders());
+                    } else {
+                        if ((!ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) &&
+                                (dce.getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED ||
+                                        dce.getStatusCode() == HttpConstants.StatusCodes.CONFLICT ||
+                                        (
+                                                dce.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND &&
+                                                        !Exceptions.isSubStatusCode(dce,
+                                                                                    HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE)))) {
+                            this.captureSessionToken(request, dce.getResponseHeaders());
+                        }
+                    }
+
+                    return Observable.error(dce);
+                }
+        ).map(response ->
+              {
+                  this.captureSessionToken(request, response.getResponseHeaders());
+                  return response;
+              }
+        );
+    }
+
+    private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
+        if (request.getResourceType() == ResourceType.DocumentCollection && request.getOperationType() == OperationType.Delete) {
+            this.sessionContainer.clearToken(request, responseHeaders);
+        } else {
+            this.sessionContainer.setSessionToken(request, responseHeaders);
+        }
+    }
+
+    private void applySessionToken(RxDocumentServiceRequest request) {
+        Map<String, String> headers = request.getHeaders();
+
+        if (headers != null &&
+                !Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            if (ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+                request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            }
+            return; //User is explicitly controlling the session.
+        }
+
+        String requestConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+
+        boolean sessionConsistency =
+                this.defaultConsistencyLevel == ConsistencyLevel.Session ||
+                        (!Strings.isNullOrEmpty(requestConsistencyLevel)
+                                && Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.Session.name()));
+
+        if (!sessionConsistency || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+            return; // Only apply the session token in case of session consistency and when resource is not a master resource
+        }
+
+        //Apply the ambient session.
+        String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+        if (!Strings.isNullOrEmpty(sessionToken)) {
+            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
         }
     }
 }

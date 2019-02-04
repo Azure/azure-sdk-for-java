@@ -50,10 +50,10 @@ public class RoutingMapProviderHelperTest {
         private final CollectionRoutingMap routingMap;
 
         public MockRoutingMapProvider(Collection<PartitionKeyRange> ranges) {
-            List<ImmutablePair<PartitionKeyRange, Boolean>> pairs = new ArrayList<ImmutablePair<PartitionKeyRange, Boolean>>(
+            List<ImmutablePair<PartitionKeyRange, IServerIdentity>> pairs = new ArrayList<>(
                     ranges.size());
             for (PartitionKeyRange range : ranges) {
-                pairs.add(new ImmutablePair<PartitionKeyRange, Boolean>(range, true));
+                pairs.add(new ImmutablePair<>(range, null));
             }
 
             this.routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(pairs, StringUtils.EMPTY);

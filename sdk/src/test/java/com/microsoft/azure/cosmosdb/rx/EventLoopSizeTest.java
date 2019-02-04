@@ -35,26 +35,25 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 
 public class EventLoopSizeTest extends TestSuiteBase {
-    private final static String DATABASE_ID = getDatabaseId(EventLoopSizeTest.class);
-    
+
     private AsyncDocumentClient client;
     private Database database;
     private DocumentCollection collection;
     
     @Test(groups = { "simple" }, timeOut = TIMEOUT, expectedExceptions = { IllegalArgumentException.class }, enabled = false)
-    public void invalidBuilder() throws Exception {
-        
+    public void invalidBuilder() {
         ConnectionPolicy cp = new ConnectionPolicy();
-        cp.setConnectionMode(ConnectionMode.DirectHttps);
+        cp.setConnectionMode(ConnectionMode.Direct);
         new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .withWorkers(2)
@@ -62,11 +61,11 @@ public class EventLoopSizeTest extends TestSuiteBase {
     }
     
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocument() throws Exception {
+    public void createDocument() {
         
         AsyncDocumentClient newClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .withWorkers(2)
@@ -93,22 +92,13 @@ public class EventLoopSizeTest extends TestSuiteBase {
         // set up the client        
         client = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
-        
-        Database databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID);
-        
-        try {
-            client.deleteDatabase(Utils.getDatabaseLink(databaseDefinition, true), null).toBlocking().single();
-        } catch (Exception e) {
-           // ignore failure if it doesn't exist
-        }
-        
-        database = client.createDatabase(databaseDefinition, null).toBlocking().single().getResource();
-        collection = client.createCollection(database.getSelfLink(), getCollectionDefinition(), null).toBlocking().single().getResource();
+
+        database = SHARED_DATABASE;
+        collection = SHARED_SINGLE_PARTITION_COLLECTION;
     }
     
     private Document getDocumentDefinition() {
@@ -124,7 +114,6 @@ public class EventLoopSizeTest extends TestSuiteBase {
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        client.deleteDatabase(database.getSelfLink(), null).toBlocking().single();
         safeClose(client);
     }
 }

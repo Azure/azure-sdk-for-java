@@ -35,11 +35,13 @@ import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
+import javax.net.ssl.SSLException;
+
 class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
 
     private int pageCount = 0;
 
-    public AsyncQueryBenchmark(Configuration cfg) {
+    AsyncQueryBenchmark(Configuration cfg) {
         super(cfg);
     }
 
@@ -50,14 +52,14 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
             if (pageCount == 0) {
                 return;
             }
-            System.out.println("total pages so far: " + pageCount);
+            logger.info("total pages so far: {}", pageCount);
         }
-    };
+    }
 
     @Override
     protected void performWorkload(Subscriber<FeedResponse<Document>> subs, long i) throws InterruptedException {
 
-        Observable<FeedResponse<Document>> obs = null;
+        Observable<FeedResponse<Document>> obs;
         Random r = new Random();
         FeedOptions options = new FeedOptions();
 
@@ -102,8 +104,9 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<Document>> {
             options.setEnableCrossPartitionQuery(true);
             String sqlQuery = "Select top 1000 * from c order by c._ts";
             obs = client.queryDocuments(collection.getSelfLink(), sqlQuery, options);
+        } else {
+            throw new IllegalArgumentException("Unsupported Operation: " + configuration.getOperationType());
         }
-
         concurrencyControlSemaphore.acquire();
 
         obs.subscribeOn(Schedulers.computation()).subscribe(subs);

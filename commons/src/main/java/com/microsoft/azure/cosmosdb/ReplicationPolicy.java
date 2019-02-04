@@ -32,7 +32,7 @@ public class ReplicationPolicy extends JsonSerializable {
     private static final int DEFAULT_MAX_REPLICA_SET_SIZE = 4;
     private static final int DEFAULT_MIN_REPLICA_SET_SIZE = 3;
 
-    ReplicationPolicy() {
+    public ReplicationPolicy() {
     }
 
     /**
@@ -51,6 +51,11 @@ public class ReplicationPolicy extends JsonSerializable {
         }
 
         return maxReplicaSetSize;
+    }
+
+    void setMaxReplicaSetSize(int value) {
+        Integer maxReplicaSetSize = super.getInt(Constants.Properties.MAX_REPLICA_SET_SIZE);
+        super.set(Constants.Properties.MAX_REPLICA_SET_SIZE, value);
     }
 
     public int getMinReplicaSetSize() {

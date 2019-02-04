@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -40,13 +41,15 @@ import com.microsoft.azure.cosmosdb.FeedResponse;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 public class ReadFeedCollectionsTest extends TestSuiteBase {
 
     protected static final int FEED_TIMEOUT = 60000;
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 20000;
 
-    public final static String DATABASE_ID = getDatabaseId(ReadFeedCollectionsTest.class);
+    public final String databaseId = DatabaseForTest.generateId();
 
     private Database createdDatabase;
     private List<DocumentCollection> createdCollections = new ArrayList<>();
@@ -82,11 +85,9 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws DocumentClientException {
+    public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
+        createdDatabase = createDatabase(client, databaseId);
 
         for(int i = 0; i < 3; i++) {
             createdCollections.add(createCollections(client));
@@ -95,11 +96,11 @@ public class ReadFeedCollectionsTest extends TestSuiteBase {
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
+        safeDeleteDatabase(client, createdDatabase);
         safeClose(client);
     }
 
-    public DocumentCollection createCollections(AsyncDocumentClient client) throws DocumentClientException {
+    public DocumentCollection createCollections(AsyncDocumentClient client) {
         DocumentCollection collection = new DocumentCollection();
         collection.setId(UUID.randomUUID().toString());
         return client.createCollection(getDatabaseLink(), collection, null).toBlocking().single().getResource();

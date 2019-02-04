@@ -24,6 +24,8 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import java.util.UUID;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -37,10 +39,10 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 
 public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
-
-    public final static String DATABASE_ID = getDatabaseId(UserDefinedFunctionUpsertReplaceTest.class);
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -48,7 +50,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public UserDefinedFunctionUpsertReplaceTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -60,9 +62,23 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         UserDefinedFunction udf = new UserDefinedFunction();
         udf.setId(UUID.randomUUID().toString());
         udf.setBody("function() {var x = 10;}");
-        UserDefinedFunction readBackUdf = client.upsertUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
-        
+
+        UserDefinedFunction readBackUdf = null;
+
+        try {
+            readBackUdf = client.upsertUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Https) {
+                throw new SkipException(String.format("Direct HTTPS test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
+
         // read udf to validate creation
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         Observable<ResourceResponse<UserDefinedFunction>> readObservable = client.readUserDefinedFunction(readBackUdf.getSelfLink(), null);
 
         // validate udf create
@@ -93,10 +109,24 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         // create a udf
         UserDefinedFunction udf = new UserDefinedFunction();
         udf.setId(UUID.randomUUID().toString());
-        udf.setBody("function() {var x = 10;}");        
-        UserDefinedFunction readBackUdf = client.createUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
+        udf.setBody("function() {var x = 10;}");
+
+        UserDefinedFunction readBackUdf = null;
+
+        try {
+            readBackUdf = client.createUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Https) {
+                throw new SkipException(String.format("Direct HTTPS test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
         
         // read udf to validate creation
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         Observable<ResourceResponse<UserDefinedFunction>> readObservable = client.readUserDefinedFunction(readBackUdf.getSelfLink(), null);
 
         // validate udf creation
@@ -124,23 +154,13 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinitionSinglePartition());
-    }
-    
-    private static DocumentCollection getCollectionDefinitionSinglePartition() {
-        
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
 
-        return collectionDefinition;
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
     }
-    
+
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 

@@ -22,6 +22,7 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -36,10 +37,14 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
 
-public class DatabaseCrudTest extends TestSuiteBase {
-    private final static String PRE_EXISTING_DATABASE_ID = getDatabaseId(DatabaseCrudTest.class) + "1";
-    private final static String DATABASE_ID2 = getDatabaseId(DatabaseCrudTest.class) + "2";
+import javax.net.ssl.SSLException;
 
+import java.util.ArrayList;
+import java.util.List;
+
+public class DatabaseCrudTest extends TestSuiteBase {
+    private final String preExistingDatabaseId = DatabaseForTest.generateId();
+    private final List<String> databases = new ArrayList<>();
     private AsyncDocumentClient client;
     private Builder clientBuilder;
 
@@ -48,10 +53,11 @@ public class DatabaseCrudTest extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createDatabase() throws Exception {
         Database databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID2);
+        databaseDefinition.setId(DatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
 
         // create the database
         Observable<ResourceResponse<Database>> createObservable = client.createDatabase(databaseDefinition, null);
@@ -62,10 +68,11 @@ public class DatabaseCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createDatabase_AlreadyExists() throws Exception {
         Database databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID2);
+        databaseDefinition.setId(DatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
 
         client.createDatabase(databaseDefinition, null).toBlocking().single();
 
@@ -77,19 +84,19 @@ public class DatabaseCrudTest extends TestSuiteBase {
         validateFailure(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readDatabase() throws Exception {
         // read database
         Observable<ResourceResponse<Database>> readObservable = client
-                .readDatabase(Utils.getDatabaseNameLink(PRE_EXISTING_DATABASE_ID), null);
+                .readDatabase(Utils.getDatabaseNameLink(preExistingDatabaseId), null);
 
         // validate
         ResourceResponseValidator<Database> validator = new ResourceResponseValidator.Builder<Database>()
-                .withId(PRE_EXISTING_DATABASE_ID).build();
+                .withId(preExistingDatabaseId).build();
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readDatabase_DoesntExist() throws Exception {
         // read database
         Observable<ResourceResponse<Database>> readObservable = client
@@ -101,20 +108,25 @@ public class DatabaseCrudTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteDatabase() throws Exception {
+        // create the database
+        Database databaseDefinition = new Database();
+        databaseDefinition.setId(DatabaseForTest.generateId());
+        databases.add(databaseDefinition.getId());
+        client.createDatabase(databaseDefinition, null).toCompletable().await();
+
         // delete the database
         Observable<ResourceResponse<Database>> deleteObservable = client
-                .deleteDatabase(Utils.getDatabaseNameLink(PRE_EXISTING_DATABASE_ID), null);
+                .deleteDatabase(Utils.getDatabaseNameLink(databaseDefinition.getId()), null);
 
         // validate
         ResourceResponseValidator<Database> validator = new ResourceResponseValidator.Builder<Database>()
                 .nullResource().build();
         validateSuccess(deleteObservable, validator);
-        //TODO validate after deletion the resource is actually deleted (not found)
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteDatabase_DoesntExist() throws Exception {
         // delete the database
         Observable<ResourceResponse<Database>> deleteObservable = client
@@ -125,24 +137,18 @@ public class DatabaseCrudTest extends TestSuiteBase {
         validateFailure(deleteObservable, validator);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
+        createDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
+        safeDeleteDatabase(client, preExistingDatabaseId);
+        for(String dbId: databases) {
+            safeDeleteDatabase(client, dbId);
+        }
         safeClose(client);
-    }
-
-    @AfterMethod(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT)
-    public void afterMethod() {
-        safeDeleteDatabase(client, PRE_EXISTING_DATABASE_ID);
-        safeDeleteDatabase(client, DATABASE_ID2);
-    }
-
-    @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeMethod() {
-        createDatabase(client, PRE_EXISTING_DATABASE_ID);
     }
 }

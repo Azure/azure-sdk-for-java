@@ -22,12 +22,15 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.Error;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.HttpUtils;
 import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
 
 import java.net.URI;
+import java.util.Map;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -36,13 +39,22 @@ import java.net.URI;
 public class NotFoundException extends DocumentClientException {
     private static final long serialVersionUID = 1L;
 
-
     public NotFoundException() {
         this(RMResources.NotFound);
     }
 
+    public NotFoundException(Error error, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.NOTFOUND, error, responseHeaders);
+        BridgeInternal.setLSN(this, lsn);
+        BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
+    }
+
     public NotFoundException(String message) {
         this(message, (Exception) null, (HttpResponseHeaders) null, null);
+    }
+
+    public NotFoundException(String message, Map<String, String> headers, String requestUri) {
+        this(message, null, headers, requestUri);
     }
 
     public NotFoundException(String message, HttpResponseHeaders headers, String requestUri) {
@@ -54,17 +66,24 @@ public class NotFoundException extends DocumentClientException {
     }
 
     public NotFoundException(Exception innerException) {
-        this(RMResources.NotFound, innerException, null, null);
+        this(RMResources.NotFound, innerException, (Map) null, null);
     }
 
     public NotFoundException(String message,
                                  Exception innerException,
                                  HttpResponseHeaders headers,
                                  String requestUri) {
+        this(message, innerException, HttpUtils.asMap(headers), requestUri);
+    }
+
+    public NotFoundException(String message,
+                             Exception innerException,
+                             Map<String, String> headers,
+                             String requestUri) {
         super(String.format("%s: %s", RMResources.NotFound, message),
-                innerException,
-                HttpUtils.asMap(headers),
-                HttpConstants.StatusCodes.NOTFOUND,
-                requestUri != null ? requestUri.toString() : null);
+              innerException,
+              headers,
+              HttpConstants.StatusCodes.NOTFOUND,
+              requestUri);
     }
 }

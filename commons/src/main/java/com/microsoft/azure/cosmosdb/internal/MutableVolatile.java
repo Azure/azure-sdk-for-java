@@ -24,5 +24,11 @@
 package com.microsoft.azure.cosmosdb.internal;
 
 public class MutableVolatile<T> {
+
+    public MutableVolatile(T initValue){
+        v = initValue;
+    }
+
+    public MutableVolatile() {}
     public volatile T v;
 }

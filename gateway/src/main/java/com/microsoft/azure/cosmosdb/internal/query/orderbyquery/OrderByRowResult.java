@@ -46,7 +46,7 @@ public final class OrderByRowResult<T> extends Document {
 
     public List<QueryItem> getOrderByItems() {
         return this.orderByItems != null ? this.orderByItems
-                : (this.orderByItems = (List<QueryItem>) super.getCollection("orderByItems", QueryItem.class));
+                : (this.orderByItems = super.getList("orderByItems", QueryItem.class));
     }
 
     public T getPayload() {

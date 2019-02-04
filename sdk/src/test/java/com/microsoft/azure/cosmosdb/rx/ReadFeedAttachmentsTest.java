@@ -50,8 +50,9 @@ import com.microsoft.azure.cosmosdb.ResourceResponse;
 import rx.Observable;
 import rx.observers.TestSubscriber;
 
+import javax.net.ssl.SSLException;
+
 public class ReadFeedAttachmentsTest extends TestSuiteBase {
-    public final static String DATABASE_ID = getDatabaseId(ReadFeedAttachmentsTest.class);
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -61,7 +62,7 @@ public class ReadFeedAttachmentsTest extends TestSuiteBase {
     private AsyncDocumentClient client;
 
     private PartitionKey pk;
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedAttachmentsTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -75,7 +76,8 @@ public class ReadFeedAttachmentsTest extends TestSuiteBase {
         for(int i = 0; i < 5; i++) {
             createdAttachments.add(createAttachments(client));
         }
-        
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
+
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
         options.setPartitionKey(pk);
@@ -98,7 +100,7 @@ public class ReadFeedAttachmentsTest extends TestSuiteBase {
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
     }
 
-    @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
+    //@Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readAndUpdateEmbededAttachments() throws Exception {
         createdDocument = createDocument(client, createdDatabase.getId(),
                 createdCollection.getId(), getDocumentDefinition());
@@ -131,18 +133,14 @@ public class ReadFeedAttachmentsTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws DocumentClientException {
+    public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(),
-                getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION;
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 
@@ -206,7 +204,7 @@ public class ReadFeedAttachmentsTest extends TestSuiteBase {
         return createdDocument.getId();
     }
 
-    public Attachment createAttachments(AsyncDocumentClient client) throws DocumentClientException {
+    public Attachment createAttachments(AsyncDocumentClient client) {
         Attachment attachment = getAttachmentDefinition();
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(pk);

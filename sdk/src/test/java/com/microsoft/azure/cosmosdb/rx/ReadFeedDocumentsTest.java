@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -41,72 +43,98 @@ import com.microsoft.azure.cosmosdb.FeedResponse;
 
 import rx.Observable;
 
-public class ReadFeedDocumentsTest extends TestSuiteBase {
+import javax.net.ssl.SSLException;
 
-    public final static String DATABASE_ID = getDatabaseId(ReadFeedDocumentsTest.class);
+public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
-    private List<Document> createdDocuments = new ArrayList<>();
+    private List<Document> createdDocuments;
 
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedDocumentsTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
-    public void readDocuments() throws Exception {
-
+    public void readDocuments() {
+        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+            throw new SkipException("RNTBD");
+        }
         FeedOptions options = new FeedOptions();
+        options.setEnableCrossPartitionQuery(true);
         options.setMaxItemCount(2);
 
         Observable<FeedResponse<Document>> feedObservable = client.readDocuments(getCollectionLink(), options);
-
-        int expectedPageSize = (createdDocuments.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
-
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(createdDocuments.size())
-                .numberOfPages(expectedPageSize)
+                .numberOfPagesIsGreaterThanOrEqualTo(1)
                 .exactlyContainsInAnyOrder(createdDocuments.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
-                        .requestChargeGreaterThanOrEqualTo(1.0).build())
+                        .requestChargeGreaterThanOrEqualTo(1.0)
+                                         .pageSizeIsLessThanOrEqualTo(options.getMaxItemCount())
+                                         .build())
                 .build();
         validateQuerySuccess(feedObservable, validator, FEED_TIMEOUT);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws DocumentClientException {
-        client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(),
-                getCollectionDefinitionSinglePartition());
-        
-        for(int i = 0; i < 5; i++) {
-            createdDocuments.add(createDocuments(client));
+    @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
+    public void readDocuments_withoutEnableCrossPartitionQuery() {
+        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+            throw new SkipException("RNTBD");
         }
+        FeedOptions options = new FeedOptions();
+        options.setMaxItemCount(2);
+
+        Observable<FeedResponse<Document>> feedObservable = client.readDocuments(getCollectionLink(), options);
+        FailureValidator validator = FailureValidator.builder().instanceOf(DocumentClientException.class)
+                .statusCode(400)
+                .errorMessageContains("Cross partition query is required but disabled." +
+                                              " Please set x-ms-documentdb-query-enablecrosspartition to true," +
+                                              " specify x-ms-documentdb-partitionkey," +
+                                              " or revise your query to avoid this exception.")
+                .build();
+        validateQueryFailure(feedObservable, validator, FEED_TIMEOUT);
+    }
+
+    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    public void beforeClass() {
+        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+            // FIXME skip TCP
+            return;
+        }
+        client = clientBuilder.build();
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
+
+        truncateCollection(SHARED_MULTI_PARTITION_COLLECTION);
+        List<Document> docDefList = new ArrayList<>();
+
+        for(int i = 0; i < 100; i++) {
+            docDefList.add(getDocumentDefinition());
+        }
+
+        createdDocuments = bulkInsertBlocking(client, getCollectionLink(), docDefList);
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 
-    private static DocumentCollection getCollectionDefinitionSinglePartition() {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-        return collectionDefinition;
-    }
-
-    public Document createDocuments(AsyncDocumentClient client) throws DocumentClientException {
-        Document doc = new Document();
-        doc.setId(UUID.randomUUID().toString());
-        return client.createDocument(getCollectionLink(), doc, null, false).toBlocking().single().getResource();
+    private Document getDocumentDefinition() {
+        String uuid = UUID.randomUUID().toString();
+        Document doc = new Document(String.format("{ "
+                                                          + "\"id\": \"%s\", "
+                                                          + "\"mypk\": \"%s\", "
+                                                          + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                                                          + "}"
+                , uuid, uuid));
+        return doc;
     }
 
     public String getCollectionLink() {

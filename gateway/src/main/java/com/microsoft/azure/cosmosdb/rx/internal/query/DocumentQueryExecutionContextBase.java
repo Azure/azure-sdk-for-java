@@ -41,7 +41,7 @@ import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.RuntimeConstants.MediaTypes;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyRangeIdentity;
-import com.microsoft.azure.cosmosdb.rx.internal.ReplicatedResourceClient;
+import com.microsoft.azure.cosmosdb.rx.internal.ReplicatedResourceClientUtils;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceResponse;
 import com.microsoft.azure.cosmosdb.rx.internal.Strings;
@@ -147,10 +147,10 @@ implements IDocumentQueryExecutionContext<T> {
     public Map<String, String> createCommonHeadersAsync(FeedOptions feedOptions) {
         Map<String, String> requestHeaders = new HashMap<>();
 
+        ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
+        ConsistencyLevel desiredConsistencyLevel = this.client.getDesiredConsistencyLevelAsync();
         if (!Strings.isNullOrEmpty(feedOptions.getSessionToken())
-                && !ReplicatedResourceClient.isReadingFromMaster(this.resourceTypeEnum, OperationType.ReadFeed)) {
-            ConsistencyLevel defaultConsistencyLevel = this.client.getDefaultConsistencyLevelAsync();
-            ConsistencyLevel desiredConsistencyLevel = this.client.getDesiredConsistencyLevelAsync();
+                && !ReplicatedResourceClientUtils.isReadingFromMaster(this.resourceTypeEnum, OperationType.ReadFeed)) {
             if (defaultConsistencyLevel == ConsistencyLevel.Session
                     || (desiredConsistencyLevel == ConsistencyLevel.Session)) {
                 // Query across partitions is not supported today. Master resources (for e.g.,
@@ -197,6 +197,10 @@ implements IDocumentQueryExecutionContext<T> {
         if (this.feedOptions.getResponseContinuationTokenLimitInKb() > 0) {
             requestHeaders.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
                     Strings.toString(feedOptions.getResponseContinuationTokenLimitInKb()));
+        }
+
+        if (desiredConsistencyLevel != null) {
+            requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, desiredConsistencyLevel.name());
         }
 
         return requestHeaders;

@@ -26,8 +26,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
+import org.apache.commons.lang3.StringUtils;
+
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -52,7 +56,7 @@ import rx.Observable;
  *
  */
 public class ResourceTokenTest extends TestSuiteBase {
-    public final static String DATABASE_ID = getDatabaseId(ResourceTokenTest.class);
+    public final String databaseId = DatabaseForTest.generateId();
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -62,11 +66,18 @@ public class ResourceTokenTest extends TestSuiteBase {
     private Document createdDocumentWithPartitionKey2;
     private User createdUser;
     private Permission createdCollPermission;
+    private Permission createdCollPermissionWithName;
     private Permission createdDocPermission;
+    private Permission createdDocPermissionWithName;
     private Permission createdDocPermissionWithPartitionKey;
+    private Permission createdDocPermissionWithPartitionKeyWithName;
     private Permission createdDocPermissionWithPartitionKey2;
+    private Permission createdDocPermissionWithPartitionKey2WithName;
     private Permission createdColPermissionWithPartitionKey;
+    private Permission createdColPermissionWithPartitionKeyWithName;
     private Permission createdColPermissionWithPartitionKey2;
+    private Permission createdColPermissionWithPartitionKey2WithName;
+
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
@@ -84,7 +95,9 @@ public class ResourceTokenTest extends TestSuiteBase {
             + "    'permissionMode': 'read'," + "    'resource': '%s'," + "    'resourcePartitionKey': ['%s']" + "}";
     private static final String USER_NAME = "TestUser";
     private static final String PERMISSION_FOR_COLL = "PermissionForColl";
+    private static final String PERMISSION_FOR_COLL_WITH_NAME = "PermissionForCollWithName";
     private static final String PERMISSION_FOR_DOC = "PermissionForDoc";
+    private static final String PERMISSION_FOR_DOC_WITH_NAME = "PermissionForDocWithName";
 
     @Factory(dataProvider = "clientBuilders")
     public ResourceTokenTest(AsyncDocumentClient.Builder clientBuilder) {
@@ -95,8 +108,8 @@ public class ResourceTokenTest extends TestSuiteBase {
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
         Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
+        d.setId(databaseId);
+        createdDatabase = createDatabase(client, d);
         // Create collection
         createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
         // Create document
@@ -114,44 +127,138 @@ public class ResourceTokenTest extends TestSuiteBase {
         // Create permission for collection
         createdCollPermission = client.createPermission(getUserLink(), getCollPermission(), null).toBlocking().single()
                 .getResource();
+        createdCollPermissionWithName = client.createPermission(getUserLink(), getCollPermissionWithName(), null).toBlocking().single()
+                .getResource();
         // Create permission for document
         createdDocPermission = client.createPermission(getUserLink(), getDocPermission(), null).toBlocking().single()
+                .getResource();
+        createdDocPermissionWithName = client.createPermission(getUserLink(), getDocPermissionWithName(), null).toBlocking().single()
                 .getResource();
         // Create permission for document with partition key
         createdDocPermissionWithPartitionKey = client
                 .createPermission(getUserLink(), getDocPermissionWithPartitionKey(), null).toBlocking().single()
                 .getResource();
+        createdDocPermissionWithPartitionKeyWithName = client
+                .createPermission(getUserLink(), getDocPermissionWithPartitionKeyWithName(), null).toBlocking().single()
+                .getResource();
         // Create permission for document with partition key 2
         createdDocPermissionWithPartitionKey2 = client
                 .createPermission(getUserLink(), getDocPermissionWithPartitionKey2(), null).toBlocking().single()
+                .getResource();
+        createdDocPermissionWithPartitionKey2WithName = client
+                .createPermission(getUserLink(), getDocPermissionWithPartitionKey2WithName(), null).toBlocking().single()
                 .getResource();
         // Create permission for collection with partition key
         createdColPermissionWithPartitionKey = client
                 .createPermission(getUserLink(), getColPermissionWithPartitionKey(), null).toBlocking().single()
                 .getResource();
+        createdColPermissionWithPartitionKeyWithName = client
+                .createPermission(getUserLink(), getColPermissionWithPartitionKeyWithName(), null).toBlocking().single()
+                .getResource();
         // Create permission for collection with partition key
         createdColPermissionWithPartitionKey2 = client
                 .createPermission(getUserLink(), getColPermissionWithPartitionKey2(), null).toBlocking().single()
                 .getResource();
+        createdColPermissionWithPartitionKey2WithName = client
+                .createPermission(getUserLink(), getColPermissionWithPartitionKey2WithName(), null).toBlocking().single()
+                .getResource();
+    }
+
+    @DataProvider(name = "collectionAndPermissionData")
+    public Object[][] collectionAndPermissionData() {
+        return new Object[][]{
+                //This test will try to read collection from its own permission and validate it, both with request Id and name.
+                {createdCollection.getSelfLink(), createdCollPermission},
+                {Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()), createdDocPermissionWithName},
+        };
+    }
+
+    @DataProvider(name = "documentAndPermissionData")
+    public Object[][] documentAndPermissionData() {
+        return new Object[][]{
+                 //These tests will try to read document from its own permission and validate it, both with request Id and name.
+                {createdDocument.getSelfLink(), createdDocPermission, createdDocument.getId(), null},
+                {Utils.getDocumentNameLink(createdDatabase.getId(), createdCollection.getId(), createdDocument.getId()), createdDocPermissionWithName, createdDocument.getId(), null},
+
+                //These tests will try to read document from its permission having partition key 1 and validate it, both with request Id and name.
+                {createdDocumentWithPartitionKey.getSelfLink(), createdDocPermissionWithPartitionKey, createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
+                {Utils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()), createdDocPermissionWithPartitionKeyWithName
+                        , createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
+
+                //These tests will try to read document from its permission having partition key 2 and validate it, both with request Id and name.
+                {createdDocumentWithPartitionKey2.getSelfLink(), createdDocPermissionWithPartitionKey2, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2},
+                {Utils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()),
+                        createdDocPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2},
+
+                // These tests will try to read document from its parent collection permission and validate it, both with request Id and name.
+                {createdDocument.getSelfLink(), createdCollPermission, createdDocument.getId(), null},
+                {Utils.getDocumentNameLink(createdDatabase.getId(), createdCollection.getId(), createdDocument.getId()), createdCollPermissionWithName, createdDocument.getId(), null},
+
+                //This test will try to read document from collection permission having partition key 1 and validate it, both with request Id and name.
+                {createdDocumentWithPartitionKey.getSelfLink(), createdColPermissionWithPartitionKey, createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
+                {Utils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()), createdColPermissionWithPartitionKeyWithName, createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
+
+                //This test will try to read document from collection permission having partition key 2 and validate it, both with request Id and name.
+                {createdDocumentWithPartitionKey2.getSelfLink(), createdColPermissionWithPartitionKey2, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2},
+                {Utils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()), createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2}
+
+        };
+    }
+
+    @DataProvider(name = "documentAndPermissionDataForResourceNotFound")
+    public Object[][] documentAndPermissionDataForResourceNotFound() {
+        return new Object[][]{
+                //This test will try to read document from its resource token directly and validate it.
+                {createdDocumentWithPartitionKey2.getSelfLink(), createdColPermissionWithPartitionKey, PARTITION_KEY_VALUE},
+                //This test will try to read document from its parent collection resource token directly and validate it.
+                {Utils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()),
+                        createdColPermissionWithPartitionKeyWithName, PARTITION_KEY_VALUE}
+        };
+    }
+
+    @DataProvider(name = "documentAndMultipleCollPermissionData")
+    public Object[][] documentAndMultipleCollPermissionData() {
+        return new Object[][]{
+                //These tests will try to read document from partition 1 with two collection permissions having different partition keys and validate it, both with request Id and name.
+                {createdDocumentWithPartitionKey.getSelfLink(), createdColPermissionWithPartitionKey, createdColPermissionWithPartitionKey2, createdDocumentWithPartitionKey.getId(),
+                PARTITION_KEY_VALUE},
+                {Utils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()), createdColPermissionWithPartitionKeyWithName
+                        , createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey.getId(), PARTITION_KEY_VALUE},
+
+                //These tests will try to read document from partition 1 with two collection permissions having different partition keys and validate it, both with request Id and name.
+                {createdDocumentWithPartitionKey2.getSelfLink(), createdColPermissionWithPartitionKey, createdColPermissionWithPartitionKey2, createdDocumentWithPartitionKey2.getId(),
+                        PARTITION_KEY_VALUE_2},
+                {Utils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey2.getId()), createdColPermissionWithPartitionKeyWithName
+                        , createdColPermissionWithPartitionKey2WithName, createdDocumentWithPartitionKey2.getId(), PARTITION_KEY_VALUE_2}
+        };
+    }
+
+    @DataProvider(name = "resourceToken")
+    public Object[][] resourceToken() {
+        return new Object[][]{
+                //This test will try to read document from its resource token directly and validate it.
+                {createdDocPermission.getToken()},
+                //This test will try to read document from its parent collection resource token directly and validate it.
+                {createdCollPermission.getToken()}
+        };
     }
 
     /**
-     * This test will try to read collection from its own permission and validate it
-     * .
-     * 
+     * This test will try to read collection from permission and validate it.
+     *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readCollectionFromPermissionFeed() throws Exception {
+    @Test(groups = { "simple" }, dataProvider = "collectionAndPermissionData", timeOut = TIMEOUT)
+    public void readCollectionFromPermissionFeed(String collectionUrl, Permission permission) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null ;
         try {
             List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(createdCollPermission);
+            permissionFeed.add(permission);
             asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                     .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
                     .withConsistencyLevel(ConsistencyLevel.Session).build();
             Observable<ResourceResponse<DocumentCollection>> readObservable = asyncClientResourceToken
-                    .readCollection(createdCollection.getSelfLink(), null);
+                    .readCollection(collectionUrl, null);
 
             ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                    .withId(createdCollection.getId()).build();
@@ -162,27 +269,28 @@ public class ResourceTokenTest extends TestSuiteBase {
     }
 
     /**
-     * This test will try to read document from its own permission and validate it.
-     * 
+     * This test will try to read document from permission and validate it.
+     *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentFromPermissionFeed() throws Exception {
+    @Test(groups = { "simple" }, dataProvider = "documentAndPermissionData", timeOut = TIMEOUT)
+    public void readDocumentFromPermissionFeed(String documentUrl, Permission permission, String documentId, String partitionKey) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
             List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(createdDocPermission);
+            permissionFeed.add(permission);
             asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                     .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
                     .withConsistencyLevel(ConsistencyLevel.Session).build();
+            RequestOptions options = null;
+            if(StringUtils.isNotEmpty(partitionKey)) {
+                options = new RequestOptions();
+                options.setPartitionKey(new PartitionKey(partitionKey));
+            }
             Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocument.getSelfLink(), null);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed)
-                    .withConnectionPolicy(ConnectionPolicy.GetDefault())
-                    .withConsistencyLevel(ConsistencyLevel.Session).build();
+                    .readDocument(documentUrl, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(createdDocument.getId()).build();
+                    .withId(documentId).build();
             validateSuccess(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
@@ -190,44 +298,16 @@ public class ResourceTokenTest extends TestSuiteBase {
     }
 
     /**
-     * This test will try to read document from its parent collection permission and
-     * validate it.
-     * 
+     * This test will try to read document from resource token directly and validate it.
+     *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentFromCollPermissionFeed() throws Exception {
-        AsyncDocumentClient asyncClientResourceToken = null;
-        try {
-            List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(createdCollPermission);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
-                    .withConsistencyLevel(ConsistencyLevel.Session).build();
-            RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(createdDocument.get("mypk")));
-            Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocument.getSelfLink(), null);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(createdDocument.getId()).build();
-            validateSuccess(readObservable, validator);
-        } finally {
-            safeClose(asyncClientResourceToken);
-        }
-    }
-
-    /**
-     * This test will try to read document from its resource token directly and validate
-     * it.
-     * 
-     * @throws Exception
-     */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentFromDocResouceToken() throws Exception {
+    @Test(groups = { "simple" }, dataProvider = "resourceToken", timeOut = TIMEOUT)
+    public void readDocumentFromResouceToken(String resourceToken) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
             asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withMasterKeyOrResourceToken(createdDocPermission.getToken())
+                    .withMasterKeyOrResourceToken(resourceToken)
                     .withConnectionPolicy(ConnectionPolicy.GetDefault()).withConsistencyLevel(ConsistencyLevel.Session)
                     .build();
             Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
@@ -241,187 +321,26 @@ public class ResourceTokenTest extends TestSuiteBase {
     }
 
     /**
-     * This test will try to read document from its parent collection resource token and
-     * validate it.
-     * 
-     * @throws Exception
-     */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentFromCollResouceToken() throws Exception {
-        AsyncDocumentClient asyncClientResourceToken = null;
-        try {
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withMasterKeyOrResourceToken(createdDocPermission.getToken())
-                    .withConnectionPolicy(ConnectionPolicy.GetDefault()).withConsistencyLevel(ConsistencyLevel.Session)
-                    .build();
-            Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocument.getSelfLink(), null);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(createdDocument.getId()).build();
-            validateSuccess(readObservable, validator);
-        } finally {
-            safeClose(asyncClientResourceToken);
-        }
-    }
-
-    /**
-     * This test will try to read document from its permission having partition key 1 and
-     * validate it.
-     * 
-     * @throws Exception
-     */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentFromPermissionWithPartitionKey() throws Exception {
-        AsyncDocumentClient asyncClientResourceToken = null;
-        try {
-            List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(createdDocPermissionWithPartitionKey);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
-                    .withConsistencyLevel(ConsistencyLevel.Session).build();
-            RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE));
-            Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(createdDocumentWithPartitionKey.getId()).build();
-            validateSuccess(readObservable, validator);
-        } finally {
-            safeClose(asyncClientResourceToken);
-        }
-    }
-
-    /**
-     * This test will try to read document from its permission having partition key 2 and
-     * validate it.
-     * 
-     * @throws Exception
-     */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentFromPermissionWithPartitionKey2() throws Exception {
-        AsyncDocumentClient asyncClientResourceToken = null;
-        try {
-            List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(createdDocPermissionWithPartitionKey2);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
-                    .withConsistencyLevel(ConsistencyLevel.Session).build();
-            RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE_2));
-            Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocumentWithPartitionKey2.getSelfLink(), options);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(createdDocumentWithPartitionKey2.getId()).build();
-            validateSuccess(readObservable, validator);
-        } finally {
-            safeClose(asyncClientResourceToken);
-        }
-    }
-
-    /**
-     * This test will try to read document from collection permission having partition
-     * key 1 and validate it.
-     * 
-     * @throws Exception
-     */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentFromCollPermissionWithPartitionKey() throws Exception {
-        AsyncDocumentClient asyncClientResourceToken = null;
-        try {
-            List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(createdColPermissionWithPartitionKey);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
-                    .withConsistencyLevel(ConsistencyLevel.Session).build();
-            RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE));
-            Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(createdDocumentWithPartitionKey.getId()).build();
-            validateSuccess(readObservable, validator);
-        } finally {
-            safeClose(asyncClientResourceToken);
-        }
-    }
-
-    /**
-     * This test will try to read document from collection permission having partition
-     * key 2 and validate it.
-     * 
-     * @throws Exception
-     */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentFromCollPermissionWithPartitionKey2() throws Exception {
-        AsyncDocumentClient asyncClientResourceToken = null;
-        try {
-            List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(createdColPermissionWithPartitionKey2);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
-                    .withConsistencyLevel(ConsistencyLevel.Session).build();
-            RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE_2));
-            Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocumentWithPartitionKey2.getSelfLink(), options);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(createdDocumentWithPartitionKey2.getId()).build();
-            validateSuccess(readObservable, validator);
-        } finally {
-            safeClose(asyncClientResourceToken);
-        }
-    }
-
-    /**
-     * This test will try to read document from partition 1 with two collection permissions having different partition
-     * keys and validate it.
+     * This test will try to read document from multiple collection permissions having different keys and validate it.
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentOfParKey1FromTwoCollPermissionWithDiffPartitionKeys() throws Exception {
+    @Test(groups = {"simple"}, dataProvider = "documentAndMultipleCollPermissionData", timeOut = TIMEOUT)
+    public void readDocumentOfParKeyFromTwoCollPermissionWithDiffPartitionKeys(String documentUrl, Permission collPermission1, Permission collPermission2, String documentId, String partitionKey) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
             List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(createdColPermissionWithPartitionKey);
-            permissionFeed.add(createdColPermissionWithPartitionKey2);
+            permissionFeed.add(collPermission1);
+            permissionFeed.add(collPermission2);
             asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                     .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
                     .withConsistencyLevel(ConsistencyLevel.Session).build();
             RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE));
+            options.setPartitionKey(new PartitionKey(partitionKey));
             Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocumentWithPartitionKey.getSelfLink(), options);
+                    .readDocument(documentUrl, options);
             ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(createdDocumentWithPartitionKey.getId()).build();
-            validateSuccess(readObservable, validator);
-        } finally {
-            safeClose(asyncClientResourceToken);
-        }
-    }
-
-    /**
-     * This test will try to read document from partition 2 with two collection permissions having different partition
-     * keys and validate it.
-     *
-     * @throws Exception
-     */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentOfParKey2FromTwoCollPermissionWithDiffPartitionKeys() throws Exception {
-        AsyncDocumentClient asyncClientResourceToken = null;
-        try {
-            List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(createdColPermissionWithPartitionKey);
-            permissionFeed.add(createdColPermissionWithPartitionKey2);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
-                    .withConsistencyLevel(ConsistencyLevel.Session).build();
-            RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE_2));
-            Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocumentWithPartitionKey2.getSelfLink(), options);
-            ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                    .withId(createdDocumentWithPartitionKey2.getId()).build();
+                    .withId(documentId).build();
             validateSuccess(readObservable, validator);
         } finally {
             safeClose(asyncClientResourceToken);
@@ -434,19 +353,19 @@ public class ResourceTokenTest extends TestSuiteBase {
      *
      * @throws Exception
      */
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentFromCollPermissionWithDiffPartitionKey_ResourceNotFound() throws Exception {
+    @Test(groups = { "simple" },dataProvider = "documentAndPermissionDataForResourceNotFound", timeOut = TIMEOUT)
+    public void readDocumentFromCollPermissionWithDiffPartitionKey_ResourceNotFound(String documentUrl, Permission permission, String partitionKey) throws Exception {
         AsyncDocumentClient asyncClientResourceToken = null;
         try {
             List<Permission> permissionFeed = new ArrayList<>();
-            permissionFeed.add(createdColPermissionWithPartitionKey);
+            permissionFeed.add(permission);
             asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                     .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
                     .withConsistencyLevel(ConsistencyLevel.Session).build();
             RequestOptions options = new RequestOptions();
-            options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE));
+            options.setPartitionKey(new PartitionKey(partitionKey));
             Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
-                    .readDocument(createdDocumentWithPartitionKey2.getSelfLink(), options);
+                    .readDocument(documentUrl, options);
             FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
             validateFailure(readObservable, validator);
         } finally {
@@ -466,9 +385,12 @@ public class ResourceTokenTest extends TestSuiteBase {
         try {
             List<Permission> permissionFeed = new ArrayList<>();
             permissionFeed.add(createdColPermissionWithPartitionKey);
-            asyncClientResourceToken = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                    .withPermissionFeed(permissionFeed).withConnectionPolicy(ConnectionPolicy.GetDefault())
-                    .withConsistencyLevel(ConsistencyLevel.Session).build();
+            asyncClientResourceToken = new AsyncDocumentClient.Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withConnectionPolicy(ConnectionPolicy.GetDefault())
+                .withConsistencyLevel(ConsistencyLevel.Session)
+                .withPermissionFeed(permissionFeed)
+                .build();
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(PARTITION_KEY_VALUE_2));
             Observable<ResourceResponse<Document>> readObservable = asyncClientResourceToken
@@ -482,7 +404,7 @@ public class ResourceTokenTest extends TestSuiteBase {
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
+        safeDeleteDatabase(client, databaseId);
         safeClose(client);
     }
 
@@ -505,11 +427,26 @@ public class ResourceTokenTest extends TestSuiteBase {
         return permission;
     }
 
+    private Permission getCollPermissionWithName() {
+        Permission permission = new Permission();
+        permission.setId(PERMISSION_FOR_COLL_WITH_NAME);
+        permission.setPermissionMode(PermissionMode.Read);
+        permission.setResourceLink(Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId()));
+        return permission;
+    }
+
     private Permission getDocPermission() {
         Permission permission = new Permission();
         permission.setId(PERMISSION_FOR_DOC);
         permission.setPermissionMode(PermissionMode.Read);
         permission.setResourceLink(createdDocument.getSelfLink());
+        return permission;
+    }
+    private Permission getDocPermissionWithName() {
+        Permission permission = new Permission();
+        permission.setId(PERMISSION_FOR_DOC_WITH_NAME);
+        permission.setPermissionMode(PermissionMode.Read);
+        permission.setResourceLink(Utils.getDocumentNameLink(createdDatabase.getId(),createdCollection.getId(),createdDocument.getId()));
         return permission;
     }
 
@@ -519,11 +456,28 @@ public class ResourceTokenTest extends TestSuiteBase {
         Permission permission = new Permission(permissionStr);
         return permission;
     }
+
+    private Permission getDocPermissionWithPartitionKeyWithName() {
+        String permissionStr = String.format(PERMISSION_DEFINITION, Utils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()),
+                PARTITION_KEY_VALUE);
+        Permission permission = new Permission(permissionStr);
+        permission.setId("PermissionForDocWithPartitionKeyWithName");
+        return permission;
+    }
+
     private Permission getDocPermissionWithPartitionKey2() {
         String permissionStr = String.format(PERMISSION_DEFINITION, createdDocumentWithPartitionKey2.getSelfLink(),
                 PARTITION_KEY_VALUE_2);
         Permission permission = new Permission(permissionStr);
         permission.setId("PermissionForDocWithPartitionKey2");
+        return permission;
+    }
+
+    private Permission getDocPermissionWithPartitionKey2WithName() {
+        String permissionStr = String.format(PERMISSION_DEFINITION, Utils.getDocumentNameLink(createdDatabase.getId(),createdCollectionWithPartitionKey.getId(),createdDocumentWithPartitionKey2.getId()),
+                PARTITION_KEY_VALUE_2);
+        Permission permission = new Permission(permissionStr);
+        permission.setId("PermissionForDocWithPartitionKey2WithName");
         return permission;
     }
 
@@ -533,6 +487,15 @@ public class ResourceTokenTest extends TestSuiteBase {
         Permission permission = new Permission(permissionStr);
         return permission;
     }
+
+    private Permission getColPermissionWithPartitionKeyWithName() {
+        String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, Utils.getCollectionNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId()),
+                PARTITION_KEY_VALUE);
+        Permission permission = new Permission(permissionStr);
+        permission.setId("PermissionForColWithPartitionKeyWithName");
+        return permission;
+    }
+
     private Permission getColPermissionWithPartitionKey2() {
         String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, createdCollectionWithPartitionKey.getSelfLink(),
                 PARTITION_KEY_VALUE_2);
@@ -540,6 +503,15 @@ public class ResourceTokenTest extends TestSuiteBase {
         permission.setId("PermissionForColWithPartitionKey2");
         return permission;
     }
+
+    private Permission getColPermissionWithPartitionKey2WithName() {
+        String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, Utils.getCollectionNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId()),
+                PARTITION_KEY_VALUE_2);
+        Permission permission = new Permission(permissionStr);
+        permission.setId("PermissionForColWithPartitionKey2WithName");
+        return permission;
+    }
+
     private String getUserLink() {
         return createdUser.getSelfLink();
     }

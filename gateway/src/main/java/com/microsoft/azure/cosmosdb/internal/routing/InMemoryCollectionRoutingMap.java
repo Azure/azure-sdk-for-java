@@ -24,7 +24,6 @@
 package com.microsoft.azure.cosmosdb.internal.routing;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,8 +44,8 @@ import org.apache.commons.lang3.tuple.Pair;
 /**
  * Used internally to cache partition key ranges of a collection in the Azure Cosmos DB database service.
  */
-public class InMemoryCollectionRoutingMap<TPartitionInfo> implements CollectionRoutingMap<TPartitionInfo> {
-    private final Map<String, ImmutablePair<PartitionKeyRange, TPartitionInfo>> rangeById;
+public class InMemoryCollectionRoutingMap implements CollectionRoutingMap {
+    private final Map<String, ImmutablePair<PartitionKeyRange, IServerIdentity>> rangeById;
     private final List<PartitionKeyRange> orderedPartitionKeyRanges;
     private final List<Range<String>> orderedRanges;
 
@@ -54,7 +53,7 @@ public class InMemoryCollectionRoutingMap<TPartitionInfo> implements CollectionR
 
     private String collectionUniqueId;
 
-    private InMemoryCollectionRoutingMap(Map<String, ImmutablePair<PartitionKeyRange, TPartitionInfo>> rangeById,
+    private InMemoryCollectionRoutingMap(Map<String, ImmutablePair<PartitionKeyRange, IServerIdentity>> rangeById,
                                          List<PartitionKeyRange> orderedPartitionKeyRanges,
                                          String collectionUniqueId) {
         this.rangeById = rangeById;
@@ -72,18 +71,18 @@ public class InMemoryCollectionRoutingMap<TPartitionInfo> implements CollectionR
 
     }
 
-    public static <TPartitionInfo> InMemoryCollectionRoutingMap<TPartitionInfo> tryCreateCompleteRoutingMap(
-            Iterable<ImmutablePair<PartitionKeyRange, TPartitionInfo>> ranges, String collectionUniqueId) {
+    public static InMemoryCollectionRoutingMap tryCreateCompleteRoutingMap(
+            Iterable<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges, String collectionUniqueId) {
 
-        Map<String, ImmutablePair<PartitionKeyRange, TPartitionInfo>> rangeById =
-            new HashMap<String, ImmutablePair<PartitionKeyRange, TPartitionInfo>>();
+        Map<String, ImmutablePair<PartitionKeyRange, IServerIdentity>> rangeById =
+            new HashMap<>();
 
-        for (ImmutablePair<PartitionKeyRange, TPartitionInfo> range: ranges) {
+        for (ImmutablePair<PartitionKeyRange, IServerIdentity> range: ranges) {
             rangeById.put(range.left.getId(), range);
         }
 
-        List<ImmutablePair<PartitionKeyRange, TPartitionInfo>> sortedRanges = new ArrayList<>(rangeById.values());
-        Collections.sort(sortedRanges, new MinPartitionKeyPairComparator<>());
+        List<ImmutablePair<PartitionKeyRange, IServerIdentity>> sortedRanges = new ArrayList<>(rangeById.values());
+        Collections.sort(sortedRanges, new MinPartitionKeyPairComparator());
         List<PartitionKeyRange> orderedRanges = sortedRanges.stream().map(range -> range.left).collect(Collectors.toList());
 
         if (!isCompleteSetOfRanges(orderedRanges)) {
@@ -152,7 +151,7 @@ public class InMemoryCollectionRoutingMap<TPartitionInfo> implements CollectionR
 
     @Override
     public PartitionKeyRange getRangeByPartitionKeyRangeId(String partitionKeyRangeId) {
-        ImmutablePair<PartitionKeyRange, TPartitionInfo> pair = this.rangeById.get(partitionKeyRangeId);
+        ImmutablePair<PartitionKeyRange, IServerIdentity> pair = this.rangeById.get(partitionKeyRangeId);
         return pair == null ? null : pair.left;
     }
 
@@ -196,7 +195,7 @@ public class InMemoryCollectionRoutingMap<TPartitionInfo> implements CollectionR
     @Override
     public PartitionKeyRange tryGetRangeByPartitionKeyRangeId(String partitionKeyRangeId)
     {
-        Pair<PartitionKeyRange, TPartitionInfo> addresses;
+        Pair<PartitionKeyRange, IServerIdentity> addresses;
         addresses = this.rangeById.get(partitionKeyRangeId);
         if (addresses != null) {
             return addresses.getLeft();
@@ -206,9 +205,9 @@ public class InMemoryCollectionRoutingMap<TPartitionInfo> implements CollectionR
     }
 
     @Override
-    public TPartitionInfo tryGetInfoByPartitionKeyRangeId(String partitionKeyRangeId)
+    public IServerIdentity tryGetInfoByPartitionKeyRangeId(String partitionKeyRangeId)
     {
-        Pair<PartitionKeyRange, TPartitionInfo> addresses;
+        Pair<PartitionKeyRange, IServerIdentity> addresses;
         addresses = this.rangeById.get(partitionKeyRangeId);
         if (addresses != null) {
             return addresses.getRight();
@@ -222,31 +221,31 @@ public class InMemoryCollectionRoutingMap<TPartitionInfo> implements CollectionR
         return this.goneRanges.contains(partitionKeyRangeId);
     }
 
-    private static class MinPartitionKeyPairComparator<TPartitionInfo>
-            implements Comparator<ImmutablePair<PartitionKeyRange, TPartitionInfo>> {
-        public int compare(ImmutablePair<PartitionKeyRange, TPartitionInfo> pair1,
-                           ImmutablePair<PartitionKeyRange, TPartitionInfo> pair2) {
+    private static class MinPartitionKeyPairComparator
+            implements Comparator<ImmutablePair<PartitionKeyRange, IServerIdentity>> {
+        public int compare(ImmutablePair<PartitionKeyRange, IServerIdentity> pair1,
+                           ImmutablePair<PartitionKeyRange, IServerIdentity> pair2) {
             return pair1.left.getMinInclusive().compareTo(pair2.left.getMinInclusive());
         }
     }
 
 
     public CollectionRoutingMap tryCombine(
-        List<ImmutablePair<PartitionKeyRange, TPartitionInfo>> ranges) {
+        List<ImmutablePair<PartitionKeyRange, IServerIdentity>> ranges) {
         Set<String> newGoneRanges = new HashSet<>(ranges.stream().flatMap(tuple -> CollectionUtils.emptyIfNull(tuple.getLeft().getParents()).stream()).collect(Collectors.toSet()));
         newGoneRanges.addAll(this.goneRanges);
 
-        Map<String, ImmutablePair<PartitionKeyRange, TPartitionInfo>> newRangeById =
+        Map<String, ImmutablePair<PartitionKeyRange, IServerIdentity>> newRangeById =
             this.rangeById.values().stream().filter(tuple -> !newGoneRanges.contains(tuple.left.getId())).collect(Collectors.
                 toMap(tuple -> tuple.left.getId(), tuple -> tuple));
 
-        for (ImmutablePair<PartitionKeyRange, TPartitionInfo> tuple : ranges.stream().filter(tuple -> !newGoneRanges.contains(tuple.getLeft().getId())).collect(Collectors.toList())) {
+        for (ImmutablePair<PartitionKeyRange, IServerIdentity> tuple : ranges.stream().filter(tuple -> !newGoneRanges.contains(tuple.getLeft().getId())).collect(Collectors.toList())) {
             newRangeById.put(tuple.getLeft().getId(), tuple);
         }
 
-        List<ImmutablePair<PartitionKeyRange, TPartitionInfo>> sortedRanges = newRangeById.values().stream().collect(Collectors.toList());
+        List<ImmutablePair<PartitionKeyRange, IServerIdentity>> sortedRanges = newRangeById.values().stream().collect(Collectors.toList());
 
-        Collections.sort(sortedRanges, new MinPartitionKeyPairComparator<>());
+        Collections.sort(sortedRanges, new MinPartitionKeyPairComparator());
 
         List<PartitionKeyRange> newOrderedRanges = sortedRanges.stream().map(range -> range.left).collect(Collectors.toList());
 

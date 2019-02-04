@@ -22,15 +22,16 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.microsoft.azure.cosmosdb.BridgeInternal;
+import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.Error;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.WFConstants;
+import com.microsoft.azure.cosmosdb.rx.internal.RMResources;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.microsoft.azure.cosmosdb.BridgeInternal;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.Error;
-import com.microsoft.azure.cosmosdb.rx.internal.RMResources;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public interface FailureValidator {
 
@@ -61,6 +62,48 @@ public interface FailureValidator {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(DocumentClientException.class);
                     assertThat(((DocumentClientException) t).getStatusCode()).isEqualTo(statusCode);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder lsnGreaterThan(long quorumAckedLSN) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(DocumentClientException.class);
+                    assertThat(BridgeInternal.getLSN((DocumentClientException) t) > quorumAckedLSN).isTrue();
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder lsnGreaterThanEqualsTo(long quorumAckedLSN) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(DocumentClientException.class);
+                    assertThat(BridgeInternal.getLSN((DocumentClientException) t) >= quorumAckedLSN).isTrue();
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder exceptionQuorumAckedLSNInNotNull() {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(DocumentClientException.class);
+                    DocumentClientException documentClientException = (DocumentClientException) t;
+                    long exceptionQuorumAckedLSN = -1;
+                    if (documentClientException.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN) != null) {
+                        exceptionQuorumAckedLSN = Long.parseLong((String) documentClientException.getResponseHeaders().get(WFConstants.BackendHeaders.QUORUM_ACKED_LSN));
+
+                    }
+                    assertThat(exceptionQuorumAckedLSN).isNotEqualTo(-1);
                 }
             });
             return this;
@@ -114,13 +157,25 @@ public interface FailureValidator {
             return this;
         }
         
-        public <T extends Throwable> Builder subStatusCode(int substatusCode) {
+        public <T extends Throwable> Builder subStatusCode(Integer substatusCode) {
             validators.add(new FailureValidator() {
                 @Override
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(DocumentClientException.class);
                     assertThat(((DocumentClientException) t).getSubStatusCode()).isEqualTo(substatusCode);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder nullSubStatusCode() {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(DocumentClientException.class);
+                    assertThat(((DocumentClientException) t).getSubStatusCode()).isNull();
                 }
             });
             return this;
@@ -183,6 +238,16 @@ public interface FailureValidator {
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(cls);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder sameAs(Exception exception) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isSameAs(exception);
                 }
             });
             return this;

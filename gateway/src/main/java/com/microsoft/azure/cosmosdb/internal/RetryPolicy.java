@@ -29,7 +29,7 @@ import com.microsoft.azure.cosmosdb.DocumentClientException;
  * Used internally to define the interface for retry policy in the Azure Cosmos DB database service Java SDK.
  */
 public interface RetryPolicy {
-    boolean shouldRetry(DocumentClientException exception) throws DocumentClientException;
+    boolean shouldRetry(DocumentClientException exception) ;
 
     long getRetryAfterInMilliseconds();
 }

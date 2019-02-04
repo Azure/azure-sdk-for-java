@@ -3,7 +3,7 @@ package com.microsoft.azure.cosmosdb;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 import com.microsoft.azure.cosmosdb.rx.internal.Strings;
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 
 
 /**

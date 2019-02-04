@@ -44,4 +44,9 @@ public class Exceptions {
         return isStatusCode(e, HttpConstants.StatusCodes.GONE)
                 && isSubStatusCode(e, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
     }
+
+    public static boolean isNameCacheStale(DocumentClientException e) {
+        return isStatusCode(e, HttpConstants.StatusCodes.GONE)
+                && isSubStatusCode(e, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE);
+    }
 }

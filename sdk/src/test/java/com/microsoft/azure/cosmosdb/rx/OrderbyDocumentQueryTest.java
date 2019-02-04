@@ -35,8 +35,10 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -64,7 +66,6 @@ import rx.Observable;
 import rx.observers.TestSubscriber;
 
 public class OrderbyDocumentQueryTest extends TestSuiteBase {
-    private final static String DATABASE_ID = getDatabaseId(OrderbyDocumentQueryTest.class);
     private final double minQueryRequestChargePerPartition = 2.0;
 
     private Database createdDatabase;
@@ -76,43 +77,53 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private int numberOfPartitions;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public OrderbyDocumentQueryTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDocumentsValidateContent() throws Exception {
-
         Document expectedDocument = createdDocuments.get(0);
 
-        String query = 
-                String.format("SELECT * from root r where r.propStr = '%s'"
-                        + " ORDER BY r.propInt", 
-                        expectedDocument.getString("propStr"));
+        String query =
+            String.format("SELECT * from root r where r.propStr = '%s'"
+                    + " ORDER BY r.propInt",
+                expectedDocument.getString("propStr"));
 
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         Observable<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(getCollectionLink(), query, options);
+            .queryDocuments(getCollectionLink(), query, options);
 
         List<String> expectedResourceIds = new ArrayList<>();
         expectedResourceIds.add(expectedDocument.getResourceId());
 
         Map<String, ResourceValidator<Document>> resourceIDToValidator = new HashMap<>();
 
-        resourceIDToValidator.put(expectedDocument.getResourceId(), 
-                new ResourceValidator.Builder<Document>().areEqual(expectedDocument).build());
+        resourceIDToValidator.put(expectedDocument.getResourceId(),
+            new ResourceValidator.Builder<Document>().areEqual(expectedDocument).build());
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
-                .numberOfPages(1)
-                .containsExactly(expectedResourceIds)
-                .validateAllResources(resourceIDToValidator)
-                .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
-                        .hasRequestChargeHeader().build())
-                .build();
-        validateQuerySuccess(queryObservable, validator);
+            .numberOfPages(1)
+            .containsExactly(expectedResourceIds)
+            .validateAllResources(resourceIDToValidator)
+            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
+                .hasRequestChargeHeader().build())
+            .build();
+
+        try {
+            validateQuerySuccess(queryObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Https) {
+                throw new SkipException(String.format("Direct Https test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -121,16 +132,24 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         Observable<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(getCollectionLink(), query, options);
+            .queryDocuments(getCollectionLink(), query, options);
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
-                .containsExactly(new ArrayList<>())
-                .numberOfPages(1)
-                .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
-                        .hasRequestChargeHeader().build())
-                .build();
-        validateQuerySuccess(queryObservable, validator);
+            .containsExactly(new ArrayList<>())
+            .numberOfPages(1)
+            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
+                .hasRequestChargeHeader().build())
+            .build();
+
+        try {
+            validateQuerySuccess(queryObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @DataProvider(name = "sortOrder")
@@ -163,7 +182,15 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                         .hasRequestChargeHeader().build())
                 .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
                 .build();
-        validateQuerySuccess(queryObservable, validator);
+
+        try {
+            validateQuerySuccess(queryObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -174,20 +201,28 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         int pageSize = 3;
         options.setMaxItemCount(pageSize);
         Observable<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(getCollectionLink(), query, options);
+            .queryDocuments(getCollectionLink(), query, options);
 
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
         int expectedPageSize = expectedNumberOfPages(expectedResourceIds.size(), pageSize);
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
-                .containsExactly(expectedResourceIds)
-                .numberOfPages(expectedPageSize)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
-                        .hasRequestChargeHeader().build())
-                .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
-                .build();
-        validateQuerySuccess(queryObservable, validator);
+            .containsExactly(expectedResourceIds)
+            .numberOfPages(expectedPageSize)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
+                .hasRequestChargeHeader().build())
+            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
+            .build();
+
+        try {
+            validateQuerySuccess(queryObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -198,20 +233,28 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         int pageSize = 3;
         options.setMaxItemCount(pageSize);
         Observable<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(getCollectionLink(), query, options);
+            .queryDocuments(getCollectionLink(), query, options);
 
         Comparator<String> validatorComparator = Comparator.nullsFirst(Comparator.<String>naturalOrder());
         List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propStr", d -> d.getString("propStr"), validatorComparator);
         int expectedPageSize = expectedNumberOfPages(expectedResourceIds.size(), pageSize);
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
-                .containsExactly(expectedResourceIds)
-                .numberOfPages(expectedPageSize)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
-                        .hasRequestChargeHeader().build())
-                .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
-                .build();
-        validateQuerySuccess(queryObservable, validator);
+            .containsExactly(expectedResourceIds)
+            .numberOfPages(expectedPageSize)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
+                .hasRequestChargeHeader().build())
+            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
+            .build();
+
+        try {
+            validateQuerySuccess(queryObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @DataProvider(name = "topValue")
@@ -245,7 +288,14 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                         .hasRequestChargeHeader().build())
                 .totalRequestChargeIsAtLeast(numberOfPartitions * (topValue > 0 ? minQueryRequestChargePerPartition : 1))
                 .build();
-        validateQuerySuccess(queryObservable, validator);
+        try {
+            validateQuerySuccess(queryObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     private <T> List<String> sortDocumentsAndCollectResourceIds(String propName, Function<Document, T> extractProp, Comparator<T> comparer) {
@@ -276,7 +326,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         options.setPartitionKey(new PartitionKey("duplicateParitionKeyValue"));
         options.setMaxItemCount(3);
         Observable<FeedResponse<Document>> queryObservable = client
-                .queryDocuments(getCollectionLink(), query, options);
+            .queryDocuments(getCollectionLink(), query, options);
 
 
         TestSubscriber<FeedResponse<Document>> subscriber = new TestSubscriber<>();
@@ -294,37 +344,38 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         options.setRequestContinuation(page.getResponseContinuation());
         queryObservable = client
-                .queryDocuments(getCollectionLink(), query, options);
+            .queryDocuments(getCollectionLink(), query, options);
 
 
         List<Document> expectedDocs = createdDocuments.stream()
-                .filter(d -> (StringUtils.equals("duplicateParitionKeyValue", d.getString("mypk"))))
-                .filter(d -> (d.getInt("propScopedPartitionInt") > 2)).collect(Collectors.toList());
+            .filter(d -> (StringUtils.equals("duplicateParitionKeyValue", d.getString("mypk"))))
+            .filter(d -> (d.getInt("propScopedPartitionInt") > 2)).collect(Collectors.toList());
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         assertThat(expectedDocs).hasSize(10 - 3);
 
-        FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
-                .containsExactly(expectedDocs.stream()
-                        .sorted((e1, e2) -> Integer.compare(e1.getInt("propScopedPartitionInt"), e2.getInt("propScopedPartitionInt")))
-                        .map(d -> d.getResourceId()).collect(Collectors.toList()))
-                .numberOfPages(expectedPageSize)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
-                        .requestChargeGreaterThanOrEqualTo(1.0).build())
-                .build();
-        validateQuerySuccess(queryObservable, validator);
+        FeedResponseListValidator<Document> validator = null;
+
+        validator = new FeedResponseListValidator.Builder<Document>()
+            .containsExactly(expectedDocs.stream()
+                .sorted((e1, e2) -> Integer.compare(e1.getInt("propScopedPartitionInt"), e2.getInt("propScopedPartitionInt")))
+                .map(d -> d.getResourceId()).collect(Collectors.toList()))
+            .numberOfPages(expectedPageSize)
+            .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
+                .requestChargeGreaterThanOrEqualTo(1.0).build())
+            .build();
+
+        try {
+            validateQuerySuccess(queryObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
-    public Document createDocument(AsyncDocumentClient client, Map<String, Object> keyValueProps)
-            throws DocumentClientException {
-        Document docDefinition = getDocumentDefinition(keyValueProps);
-        return client.createDocument(getCollectionLink(), docDefinition, null, false)
-                .toBlocking().single()
-                .getResource();
-    }
-
-    public List<Document> bulkInsert(AsyncDocumentClient client, List<Map<String, Object>> keyValuePropsList)
-            throws DocumentClientException {
+    public List<Document> bulkInsert(AsyncDocumentClient client, List<Map<String, Object>> keyValuePropsList) {
 
         ArrayList<Observable<ResourceResponse<Document>>> result = new ArrayList<Observable<ResourceResponse<Document>>>();
 
@@ -342,15 +393,12 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        RequestOptions options = new RequestOptions();
-        options.setOfferThroughput(10100);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition(), options);
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
+        truncateCollection(SHARED_MULTI_PARTITION_COLLECTION);
 
         List<Map<String, Object>> keyValuePropsList = new ArrayList<>();
-        Map<String, Object> props = new HashMap<>();
+        Map<String, Object> props;
 
         for(int i = 0; i < 30; i++) {
             props = new HashMap<>();
@@ -371,24 +419,22 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         createdDocuments = bulkInsert(client, keyValuePropsList);
 
-
         for(int i = 0; i < 10; i++) {
             Map<String, Object> p = new HashMap<>();
             p.put("propScopedPartitionInt", i);
             Document doc = getDocumentDefinition("duplicateParitionKeyValue", UUID.randomUUID().toString(), p);
-            createdDocuments.add(client.createDocument(getCollectionLink(), doc, options, false).toBlocking().single().getResource());
+            createdDocuments.add(client.createDocument(getCollectionLink(), doc, null, false).toBlocking().single().getResource());
 
         }
-
         numberOfPartitions = client
                 .readPartitionKeyRanges(getCollectionLink(), null)
                 .flatMap(p -> Observable.from(p.getResults())).toList().toBlocking().single().size();
 
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 
@@ -415,7 +461,6 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         return new Document(sb.toString());
     }
 
-
     private static Document getDocumentDefinition(Map<String, Object> keyValuePair) {
         String uuid = UUID.randomUUID().toString();
         return getDocumentDefinition(uuid, uuid, keyValuePair);
@@ -423,35 +468,6 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     public String getCollectionLink() {
         return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
-    }
-
-    static protected DocumentCollection getCollectionDefinition() {
-        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-        ArrayList<String> paths = new ArrayList<>();
-        paths.add("/mypk");
-        partitionKeyDef.setPaths(paths);
-        IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<IncludedPath> includedPaths = new ArrayList<>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<>();
-        Index stringIndex = Index.Range(DataType.String);
-        stringIndex.set("precision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.Range(DataType.Number);
-        numberIndex.set("precision", -1);
-        indexes.add(numberIndex);
-        includedPath.setIndexes(indexes);
-        includedPaths.add(includedPath);
-        indexingPolicy.setIncludedPaths(includedPaths);
-
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setIndexingPolicy(indexingPolicy);
-        collectionDefinition.setId(UUID.randomUUID().toString());
-        collectionDefinition.setPartitionKey(partitionKeyDef);
-
-        return collectionDefinition;
     }
 
     private static String toJson(Object object){

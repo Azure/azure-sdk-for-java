@@ -23,34 +23,10 @@
 
 package com.microsoft.azure.cosmosdb.rx.examples;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.core.Is.is;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
-import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.SqlParameter;
-import com.microsoft.azure.cosmosdb.SqlParameterCollection;
-import com.microsoft.azure.cosmosdb.SqlQuerySpec;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.DataType;
 import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.IncludedPath;
 import com.microsoft.azure.cosmosdb.Index;
@@ -60,52 +36,63 @@ import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.StoredProcedure;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+
+import javax.net.ssl.SSLException;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.Is.is;
 
 /**
  * This integration test class demonstrates how to use Async API to create
  * and execute Stored Procedures.
  */
 public class StoredProcedureAsyncAPITest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StoredProcedureAsyncAPITest.class);
+    private final static int TIMEOUT = 60000;
 
-    private static final String DATABASE_ID = Utils.getDatabaseId(StoredProcedureAsyncAPITest.class);
     private Database createdDatabase;
     private DocumentCollection createdCollection;
-
     private AsyncDocumentClient asyncClient;
 
-    @Before
-    public void setUp() throws DocumentClientException {
-
+    @BeforeClass(groups = "samples", timeOut = TIMEOUT)
+    public void setUp() {
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
 
-        // Clean up before setting up
-        this.cleanUpGeneratedDatabases();
-
-        createdDatabase = new Database();
-        createdDatabase.setId(DATABASE_ID);
-        createdDatabase = asyncClient.createDatabase(createdDatabase, null).toBlocking().single().getResource();
+        createdDatabase = Utils.createDatabaseForTest(asyncClient);
 
         createdCollection = asyncClient
                 .createCollection("dbs/" + createdDatabase.getId(), getMultiPartitionCollectionDefinition(), null)
                 .toBlocking().single().getResource();
     }
 
-    @After
-    public void shutdown() throws DocumentClientException {
-        Utils.safeclean(asyncClient, DATABASE_ID);
+    @AfterClass(groups = "samples", timeOut = TIMEOUT)
+    public void shutdown() {
+        Utils.safeClean(asyncClient, createdDatabase);
+        Utils.safeClose(asyncClient);
     }
 
     /**
      * Execute Stored Procedure and retrieve the Script Log
      */
-    @Test
-    public void testScriptConsoleLogEnabled() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void scriptConsoleLogEnabled() throws Exception {
         // Create a stored procedure
         StoredProcedure storedProcedure = new StoredProcedure( 
                 "{" +
@@ -157,8 +144,8 @@ public class StoredProcedureAsyncAPITest {
     /**
      * Execute Stored Procedure that takes arguments
      */
-    @Test
-    public void testExecuteStoredProcWithArgs() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void executeStoredProcWithArgs() throws Exception {
         // Create stored procedure
         StoredProcedure storedProcedure = new StoredProcedure(
                 "{" +
@@ -197,8 +184,8 @@ public class StoredProcedureAsyncAPITest {
     /**
      * Execute Stored Procedure that takes arguments, passing a Pojo object
      */
-    @Test
-    public void testExecuteStoredProcWithPojoArgs() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void executeStoredProcWithPojoArgs() throws Exception {
         // create stored procedure
         StoredProcedure storedProcedure = new StoredProcedure(
                 "{" +
@@ -240,14 +227,14 @@ public class StoredProcedureAsyncAPITest {
         successfulCompletionLatch.await();
     }
 
-    private DocumentCollection getMultiPartitionCollectionDefinition() {
+    private static DocumentCollection getMultiPartitionCollectionDefinition() {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
 
         // Set the partitionKeyDefinition for a partitioned collection
         // Here, we are setting the partitionKey of the Collection to be /city
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        Collection<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<String>();
         paths.add("/city");
         partitionKeyDefinition.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDefinition);
@@ -279,28 +266,5 @@ public class StoredProcedureAsyncAPITest {
 
     private String getSprocLink(StoredProcedure sproc) {
         return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/sprocs/" + sproc.getId();
-    }
-
-    private void cleanUpGeneratedDatabases() throws DocumentClientException {
-        LOGGER.info("cleanup databases invoked");
-
-        String[] allDatabaseIds = { DATABASE_ID };
-
-        for (String id : allDatabaseIds) {
-            try {
-                List<FeedResponse<Database>> feedResponsePages = asyncClient
-                        .queryDatabases(new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                                new SqlParameterCollection(new SqlParameter("@id", id))), null)
-                        .toList().toBlocking().single();
-
-                if (!feedResponsePages.get(0).getResults().isEmpty()) {
-                    Database res = feedResponsePages.get(0).getResults().get(0);
-                    LOGGER.info("deleting a database " + feedResponsePages.get(0));
-                    asyncClient.deleteDatabase("dbs/" + res.getId(), null).toBlocking().single();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 }

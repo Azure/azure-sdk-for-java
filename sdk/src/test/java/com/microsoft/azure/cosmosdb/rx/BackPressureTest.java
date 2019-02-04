@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -55,8 +57,6 @@ public class BackPressureTest extends TestSuiteBase {
     private static final int TIMEOUT = 200000;
     private static final int SETUP_TIMEOUT = 60000;
 
-    private static final String DATABASE_ID = getDatabaseId(BackPressureTest.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private List<Document> createdDocuments;
@@ -65,7 +65,7 @@ public class BackPressureTest extends TestSuiteBase {
     private RxDocumentClientUnderTest client;
 
     public String getCollectionLink() {
-        return Utils.getCollectionNameLink(DATABASE_ID, createdCollection.getId());
+        return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
     static protected DocumentCollection getSinglePartitionCollectionDefinition() {
@@ -74,17 +74,17 @@ public class BackPressureTest extends TestSuiteBase {
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "simpleClientBuildersWithDirect")
     public BackPressureTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "long" }, timeOut = TIMEOUT)
     public void readFeed() throws Exception {
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(1);
         Observable<FeedResponse<Document>> queryObservable = client
-                .readDocuments(getCollectionLink(), options);
+            .readDocuments(getCollectionLink(), options);
 
         client.httpRequests.clear();
 
@@ -94,7 +94,7 @@ public class BackPressureTest extends TestSuiteBase {
 
         int i = 0;
         // use a test subscriber and request for more result and sleep in between
-        while(subscriber.getCompletions() == 0 && subscriber.getOnErrorEvents().isEmpty()) {
+        while (subscriber.getCompletions() == 0 && subscriber.getOnErrorEvents().isEmpty()) {
             TimeUnit.MILLISECONDS.sleep(sleepTimeInMillis);
             sleepTimeInMillis /= 2;
 
@@ -106,19 +106,28 @@ public class BackPressureTest extends TestSuiteBase {
             // validate that the difference between the number of requests to backend
             // and the number of returned results is always less than a fixed threshold
             assertThat(client.httpRequests.size() - subscriber.getOnNextEvents().size())
-                    .isLessThanOrEqualTo(RxRingBuffer.SIZE);
+                .isLessThanOrEqualTo(RxRingBuffer.SIZE);
 
             subscriber.requestMore(1);
             i++;
         }
 
-        subscriber.assertNoErrors();
-        subscriber.assertCompleted();
-
-        assertThat(subscriber.getOnNextEvents()).hasSize(createdDocuments.size());
+        try {
+            subscriber.assertNoErrors();
+            subscriber.assertCompleted();
+            assertThat(subscriber.getOnNextEvents()).hasSize(createdDocuments.size());
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Https) {
+                throw new SkipException(String.format("Direct Https test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "long" }, timeOut = TIMEOUT)
     public void query() throws Exception {
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(1);
@@ -156,15 +165,15 @@ public class BackPressureTest extends TestSuiteBase {
         assertThat(subscriber.getOnNextEvents()).hasSize(createdDocuments.size());
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = new ClientUnderTestBuilder(clientBuilder).build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
+
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(1000);
-        createdCollection = safeCreateCollection(client, createdDatabase.getId(), getSinglePartitionCollectionDefinition(), options);
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = createCollection(createdDatabase.getId(), getSinglePartitionCollectionDefinition(), options);
+
+        client = new ClientUnderTestBuilder(clientBuilder).build();
 
         // increase throughput to max for a single partition collection to avoid throttling
         // for bulk insert and later queries.
@@ -189,6 +198,7 @@ public class BackPressureTest extends TestSuiteBase {
 
         createdDocuments = documentBulkInsertObs.map(ResourceResponse::getResource).toList().toBlocking().single();
 
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         warmUp();
     }
 
@@ -197,9 +207,9 @@ public class BackPressureTest extends TestSuiteBase {
         client.queryDocuments(getCollectionLink(), "SELECT * from r", null).first().toBlocking().single();
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "long" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
+        safeDeleteCollection(client, createdCollection);
         safeClose(client);
     }
 

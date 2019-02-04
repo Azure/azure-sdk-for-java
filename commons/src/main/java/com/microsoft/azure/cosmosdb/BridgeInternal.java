@@ -23,17 +23,19 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import static com.microsoft.azure.cosmosdb.internal.Constants.QueryExecutionContext.INCREMENTAL_FEED_HEADER_VALUE;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceResponse;
+import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 
+import java.net.URI;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.cosmosdb.internal.HttpConstants;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceResponse;
-import com.microsoft.azure.cosmosdb.rx.internal.Strings;
+import static com.microsoft.azure.cosmosdb.internal.Constants.QueryExecutionContext.INCREMENTAL_FEED_HEADER_VALUE;
 
 
 /**
@@ -41,6 +43,10 @@ import com.microsoft.azure.cosmosdb.rx.internal.Strings;
  * com.microsoft.azure.cosmosdb
  **/
 public class BridgeInternal {
+
+    public static Error createError(ObjectNode objectNode) {
+        return new Error(objectNode);
+    }
 
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.FromObject(document, mapper);
@@ -198,4 +204,37 @@ public class BridgeInternal {
     public static void setUseMultipleWriteLocations(ConnectionPolicy policy, boolean value) {
         policy.setUsingMultipleWriteLocations(value);
     }
+
+    public static <E extends  DocumentClientException> URI getRequestUri(DocumentClientException documentClientException) {
+        return documentClientException.requestUri;
+    }
+
+    public static Map<String, Object> getQueryEngineConfiuration(DatabaseAccount databaseAccount) {
+        return databaseAccount.getQueryEngineConfiuration();
+    }
+
+    public static ReplicationPolicy getReplicationPolicy(DatabaseAccount databaseAccount) {
+        return databaseAccount.getReplicationPolicy();
+    }
+
+    public static ReplicationPolicy getSystemReplicationPolicy(DatabaseAccount databaseAccount) {
+        return databaseAccount.getSystemReplicationPolicy();
+    }
+
+    public static ConsistencyPolicy getConsistencyPolicy(DatabaseAccount databaseAccount) {
+        return databaseAccount.getConsistencyPolicy();
+    }
+
+    public static String getAltLink(Resource resource) {
+        return resource.getAltLink();
+    }
+
+    public static void setAltLink(Resource resource, String altLink) {
+        resource.setAltLink(altLink);
+    }
+
+    public static void setMaxReplicaSetSize(ReplicationPolicy replicationPolicy, int value) {
+        replicationPolicy.setMaxReplicaSetSize(value);
+    }
+
 }

@@ -30,10 +30,13 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import javax.net.ssl.SSLException;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
@@ -61,18 +64,17 @@ import rx.Observable;
 import rx.observers.TestSubscriber;
 
 public class UniqueIndexTest extends TestSuiteBase {
-    private final static String DATABASE_ID = getDatabaseId(UniqueIndexTest.class);
-
-    protected static final int TIMEOUT = 20000;
+    protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 20000;
     protected static final int SHUTDOWN_TIMEOUT = 20000;
 
+    private final String databaseId = DatabaseForTest.generateId();
     private AsyncDocumentClient client;
     private Database database;
 
     private DocumentCollection collection;
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "long" }, timeOut = TIMEOUT)
     public void insertWithUniqueIndex() throws Exception {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
@@ -120,7 +122,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         client.createDocument(getCollectionLink(collection), doc3, null, false).toBlocking().single();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "long" }, timeOut = TIMEOUT)
     public void replaceAndDeleteWithUniqueIndex() throws Exception {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
@@ -161,8 +163,8 @@ public class UniqueIndexTest extends TestSuiteBase {
         client.deleteDocument(doc1Inserted.getSelfLink(), null).toBlocking().single();
         client.createDocument(getCollectionLink(collection), doc1, null, false).toBlocking().single();
     }
-    
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+
+    @Test(groups = { "long" }, timeOut = TIMEOUT)
     public void uniqueKeySerializationDeserialization() {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
@@ -214,29 +216,26 @@ public class UniqueIndexTest extends TestSuiteBase {
     private String getDatabaseLink() {
         return database.getSelfLink();
     }
-    
+
     public String getCollectionLink() {
         return "dbs/" + database.getId() + "/colls/" + collection.getId();
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         // set up the client
         client = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session).build();
 
-        Database databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID);
-
-        database = safeCreateDatabase(client, databaseDefinition);
+        database = createDatabase(client, databaseId);
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "long" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, DATABASE_ID);
+        safeDeleteDatabase(client, databaseId);
         safeClose(client);
     }
 }

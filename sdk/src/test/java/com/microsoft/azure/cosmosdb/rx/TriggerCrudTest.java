@@ -39,18 +39,17 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 
 public class TriggerCrudTest extends TestSuiteBase {
-
-    public final static String DATABASE_ID = getDatabaseId(TriggerCrudTest.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public TriggerCrudTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -88,6 +87,7 @@ public class TriggerCrudTest extends TestSuiteBase {
         Trigger readBackTrigger = client.createTrigger(getCollectionLink(), trigger, null).toBlocking().single().getResource();
 
         // read trigger
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         Observable<ResourceResponse<Trigger>> readObservable = client.readTrigger(readBackTrigger.getSelfLink(), null);
 
         // validate read trigger
@@ -118,23 +118,18 @@ public class TriggerCrudTest extends TestSuiteBase {
                 .nullResource()
                 .build();
         validateSuccess(deleteObservable, validator);
-
-        //TODO validate after deletion the resource is actually deleted (not found)
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
-   
+
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 

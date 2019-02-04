@@ -24,6 +24,8 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import java.util.UUID;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -40,9 +42,9 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 
-public class AttachmentCrudTest extends TestSuiteBase {
+import javax.net.ssl.SSLException;
 
-    public final static String DATABASE_ID = getDatabaseId(AttachmentCrudTest.class);
+public class AttachmentCrudTest extends TestSuiteBase {
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -51,13 +53,16 @@ public class AttachmentCrudTest extends TestSuiteBase {
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public AttachmentCrudTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createAttachment() throws Exception {
+        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+            throw new SkipException("RNTBD");
+        }
 
         // create an Attachment
         String uuid = UUID.randomUUID().toString();
@@ -78,7 +83,10 @@ public class AttachmentCrudTest extends TestSuiteBase {
     
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAttachment() throws Exception {
-        
+        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+            throw new SkipException("RNTBD");
+        }
+
         // create an Attachment
         String uuid = UUID.randomUUID().toString();
         Attachment attachment = getAttachmentDefinition(uuid, "application/text");
@@ -86,6 +94,8 @@ public class AttachmentCrudTest extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(createdDocument.getId()));
         Attachment readBackAttachment = client.createAttachment(getDocumentLink(), attachment, options).toBlocking().single().getResource();
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
 
         // read attachment
         Observable<ResourceResponse<Attachment>> readObservable = client.readAttachment(readBackAttachment.getSelfLink(), options);
@@ -101,6 +111,10 @@ public class AttachmentCrudTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteAttachment() throws Exception {
+        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+            throw new SkipException("RNTBD");
+        }
+
         // create an Attachment
         String uuid = UUID.randomUUID().toString();
         Attachment attachment = getAttachmentDefinition(uuid, "application/text");
@@ -117,13 +131,14 @@ public class AttachmentCrudTest extends TestSuiteBase {
                 .nullResource()
                 .build();
         validateSuccess(deleteObservable, validator);
-
-        //TODO validate after deletion the resource is actually deleted (not found)
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void upsertAttachment() throws Exception {
-        
+        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+            throw new SkipException("RNTBD");
+        }
+
         // create an Attachment
         String uuid = UUID.randomUUID().toString();
         Attachment attachment = getAttachmentDefinition(uuid, "application/text");
@@ -133,6 +148,7 @@ public class AttachmentCrudTest extends TestSuiteBase {
         Attachment readBackAttachment = client.upsertAttachment(getDocumentLink(), attachment, options).toBlocking().single().getResource();
 
         // read attachment
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         Observable<ResourceResponse<Attachment>> readObservable = client.readAttachment(readBackAttachment.getSelfLink(), options);
 
         // validate attachment read
@@ -159,7 +175,10 @@ public class AttachmentCrudTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceAttachment() throws Exception {
-        
+        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+            throw new SkipException("RNTBD");
+        }
+
         // create an Attachment
         String uuid = UUID.randomUUID().toString();
         Attachment attachment = getAttachmentDefinition(uuid, "application/text");
@@ -168,7 +187,9 @@ public class AttachmentCrudTest extends TestSuiteBase {
         options.setPartitionKey(new PartitionKey(createdDocument.getId()));
         Attachment readBackAttachment = client.createAttachment(getDocumentLink(), attachment, options).toBlocking().single().getResource();
 
+
         // read attachment
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
         Observable<ResourceResponse<Attachment>> readObservable = client.readAttachment(readBackAttachment.getSelfLink(), options);
 
         // validate attachment read
@@ -195,17 +216,18 @@ public class AttachmentCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
+        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+            // FIXME skip TCP
+            return;
+        }
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
         createdDocument = createDocument(client, createdDatabase.getId(), createdCollection.getId(), getDocumentDefinition());
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
     

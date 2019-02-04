@@ -54,7 +54,7 @@ public class Address extends Resource {
         super.set(Constants.Properties.IS_PRIMARY, isPrimary);
     }
 
-    public String getProtocol() {
+    public String getProtocolScheme() {
         return super.getString(Constants.Properties.PROTOCOL);
     }
 

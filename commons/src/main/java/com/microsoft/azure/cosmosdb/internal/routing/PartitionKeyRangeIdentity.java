@@ -23,6 +23,8 @@
 
 package com.microsoft.azure.cosmosdb.internal.routing;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Used internally to represents the identity of a partition key range in the Azure Cosmos DB database service.
  */
@@ -62,7 +64,7 @@ public final class PartitionKeyRangeIdentity {
     }
 
     public static PartitionKeyRangeIdentity fromHeader(String header) {
-        String[] parts = header.split(",");
+        String[] parts = StringUtils.split(header,",");
         if (parts.length == 2) {
             return new PartitionKeyRangeIdentity(parts[0], parts[1]);
         } else if (parts.length == 1) {

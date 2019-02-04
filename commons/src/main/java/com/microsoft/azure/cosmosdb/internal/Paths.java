@@ -53,5 +53,9 @@ public class Paths {
     public static final String MEDIA_PATH_SEGMENT = "media";
     public static final String MEDIA_ROOT = ROOT + MEDIA_PATH_SEGMENT;
     public static final String SCHEMAS_PATH_SEGMENT = "schemas";
-    public static final String PARTITION_KEY_RANGE_PATH_SEGMENT = "pkranges";
+    public static final String PARTITION_KEY_RANGES_PATH_SEGMENT = "pkranges";
+
+    public static final String USER_DEFINED_TYPES_PATH_SEGMENT = "udts";
+
+    public static final String RID_RANGE_PATH_SEGMENT = "ridranges";
 }

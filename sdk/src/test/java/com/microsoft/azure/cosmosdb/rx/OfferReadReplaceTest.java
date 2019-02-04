@@ -24,8 +24,7 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import java.util.List;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.microsoft.azure.cosmosdb.internal.Utils;
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -35,13 +34,14 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.Offer;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 public class OfferReadReplaceTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(OfferReadReplaceTest.class);
+    public final String databaseId = DatabaseForTest.generateId();
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -54,8 +54,8 @@ public class OfferReadReplaceTest extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readAndReplaceOffer() throws Exception {
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void readAndReplaceOffer() {
 
         client.readOffers(null).toBlocking().subscribe((offersFeed) -> {
             try {
@@ -100,19 +100,17 @@ public class OfferReadReplaceTest extends TestSuiteBase {
         });
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
+        createdDatabase = createDatabase(client, databaseId);
         createdCollection = createCollection(client, createdDatabase.getId(),
                 getCollectionDefinition());
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
+        safeDeleteDatabase(client, createdDatabase);
         safeClose(client);
     }
 

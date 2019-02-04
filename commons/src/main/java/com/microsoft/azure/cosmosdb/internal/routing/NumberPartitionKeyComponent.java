@@ -54,9 +54,7 @@ public class NumberPartitionKeyComponent implements IPartitionKeyComponent {
     private static long EncodeDoubleAsUInt64(double value) {
         long rawLongBits = Double.doubleToRawLongBits(value);
         long mask = 0x8000000000000000L;
-        BigInteger longValue = new BigInteger(Long.toBinaryString(rawLongBits), 2);
-        BigInteger maskLongValue = new BigInteger(Long.toBinaryString(mask), 2);
-        return (longValue.compareTo(maskLongValue) < 0)
+        return Long.compareUnsigned(rawLongBits, mask) < 0
                 ? rawLongBits ^ mask
                 : (~rawLongBits) + 1;
     }

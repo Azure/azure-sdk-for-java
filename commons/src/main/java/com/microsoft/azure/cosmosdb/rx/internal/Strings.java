@@ -29,6 +29,11 @@ import org.apache.commons.lang3.StringUtils;
  * This is meant to be internally used only by our sdk.
  */
 public class Strings {
+    public static final String Emtpy = "";
+
+    public static boolean isNullOrWhiteSpace(String str) {
+        return StringUtils.isEmpty(str) || StringUtils.isWhitespace(str);
+    }
     public static boolean isNullOrEmpty(String str) {
         return StringUtils.isEmpty(str);
     }

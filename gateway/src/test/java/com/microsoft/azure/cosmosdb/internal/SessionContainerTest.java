@@ -130,7 +130,7 @@ public class SessionContainerTest {
         respHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, partitionKeyRangeId + ":" + sessionToken);
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_FULL_NAME, collectionName);
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_ID, collectionRid);
-        sessionContainer.setSessionToken(request1, resp);
+        sessionContainer.setSessionToken(request1, resp.getResponseHeaders());
 
         assertThat(nameToRid).hasSize(1);
         assertThat(ridToSessionToken).hasSize(1);
@@ -173,7 +173,7 @@ public class SessionContainerTest {
         respHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, partitionKeyRangeId + ":" + newSessionTokenInServerResponse);
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_FULL_NAME, collectionName);
         respHeaders.put(HttpConstants.HttpHeaders.OWNER_ID, collectionRid);
-        sessionContainer.setSessionToken(request1, resp);
+        sessionContainer.setSessionToken(request1, resp.getResponseHeaders());
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document,
             collectionName + "/docs", IOUtils.toInputStream("", "UTF-8"), new HashMap<>());

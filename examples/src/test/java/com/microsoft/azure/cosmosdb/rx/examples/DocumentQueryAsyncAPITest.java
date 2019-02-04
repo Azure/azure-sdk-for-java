@@ -22,10 +22,29 @@
  */
 package com.microsoft.azure.cosmosdb.rx.examples;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.microsoft.azure.cosmosdb.ConnectionPolicy;
+import com.microsoft.azure.cosmosdb.ConsistencyLevel;
+import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.Document;
+import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.FeedOptions;
+import com.microsoft.azure.cosmosdb.FeedResponse;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
+import com.microsoft.azure.cosmosdb.RequestOptions;
+import com.microsoft.azure.cosmosdb.SqlParameterCollection;
+import com.microsoft.azure.cosmosdb.SqlQuerySpec;
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import rx.Observable;
+import rx.Subscriber;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.observable.ListenableFutureObservable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,36 +54,12 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.net.ssl.SSLException;
 
-import com.google.common.util.concurrent.ListenableFuture;
-import com.microsoft.azure.cosmosdb.ConnectionPolicy;
-import com.microsoft.azure.cosmosdb.ConsistencyLevel;
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.FeedOptions;
-import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
-import com.microsoft.azure.cosmosdb.RequestOptions;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.SqlParameter;
-import com.microsoft.azure.cosmosdb.SqlParameterCollection;
-import com.microsoft.azure.cosmosdb.SqlQuerySpec;
-import com.microsoft.azure.cosmosdb.internal.HttpConstants;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-
-import rx.Observable;
-import rx.Subscriber;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.observable.ListenableFutureObservable;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 
 /**
  * This integration test class demonstrates how to use Async API to query for
@@ -77,55 +72,40 @@ import rx.observable.ListenableFutureObservable;
  * 
  * For example
  * <ul>
- * <li>{@link #testQueryDocuments_Async()} demonstrates how to use async api
+ * <li>{@link #queryDocuments_Async()} demonstrates how to use async api
  * with java8 lambda expression.
  * 
- * <li>{@link #testQueryDocuments_Async_withoutLambda()} demonstrates how to do
+ * <li>{@link #queryDocuments_Async_withoutLambda()} demonstrates how to do
  * the same thing without lambda expression.
  * </ul>
  * 
  * Also if you need to work with Future or ListenableFuture it is possible to
  * transform an observable to ListenableFuture. Please see
- * {@link #testTransformObservableToGoogleGuavaListenableFuture()}
+ * {@link #transformObservableToGoogleGuavaListenableFuture()}
  * 
  */
 public class DocumentQueryAsyncAPITest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DocumentQueryAsyncAPITest.class);
-
-    private static final String DATABASE_ID = Utils.getDatabaseId(DocumentQueryAsyncAPITest.class);
-
+    private final static int TIMEOUT = 60000;
     private AsyncDocumentClient asyncClient;
-
     private DocumentCollection createdCollection;
     private Database createdDatabase;
-
     private int numberOfDocuments;
 
-    @Before
-    public void setUp() throws DocumentClientException {
-
+    @BeforeClass(groups = "samples", timeOut = TIMEOUT)
+    public void setUp() {
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
-
-        // Clean up the database.
-        this.cleanUpGeneratedDatabases();
-
-        Database databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID);
 
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
 
         // Create database
-        ResourceResponse<Database> databaseCreationResponse = asyncClient.createDatabase(databaseDefinition, null)
-                .toBlocking().single();
 
-        createdDatabase = databaseCreationResponse.getResource();
+        createdDatabase = Utils.createDatabaseForTest(asyncClient);
 
         // Create collection
         createdCollection = asyncClient
@@ -140,9 +120,10 @@ public class DocumentQueryAsyncAPITest {
         }
     }
 
-    @After
-    public void shutdown() throws DocumentClientException {
-        Utils.safeclean(asyncClient, DATABASE_ID);
+    @AfterClass(groups = "samples", timeOut = TIMEOUT)
+    public void shutdown() {
+        Utils.safeClean(asyncClient, createdDatabase);
+        Utils.safeClose(asyncClient);
     }
 
     /**
@@ -150,8 +131,8 @@ public class DocumentQueryAsyncAPITest {
      * Creates a document query observable and verifies the async behavior
      * of document query observable
      */
-    @Test
-    public void testQueryDocuments_Async() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void queryDocuments_Async() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
@@ -196,8 +177,8 @@ public class DocumentQueryAsyncAPITest {
      * NOTE: does the same thing as testQueryDocuments_Async without java8 lambda
      * expression
      */
-    @Test
-    public void testQueryDocuments_Async_withoutLambda() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void queryDocuments_Async_withoutLambda() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
@@ -245,8 +226,8 @@ public class DocumentQueryAsyncAPITest {
     /**
      * Queries for documents and sum up the total request charge
      */
-    @Test
-    public void testQueryDocuments_findTotalRequestCharge() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void queryDocuments_findTotalRequestCharge() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
@@ -270,8 +251,8 @@ public class DocumentQueryAsyncAPITest {
     /**
      * Subscriber unsubscribes after first page
      */
-    @Test
-    public void testQueryDocuments_unsubscribeAfterFirstPage() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void queryDocuments_unsubscribeAfterFirstPage() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
@@ -314,8 +295,8 @@ public class DocumentQueryAsyncAPITest {
     /**
      * Queries for documents and filter out the fetched results
      */
-    @Test
-    public void testQueryDocuments_filterFetchedResults() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void queryDocuments_filterFetchedResults() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
@@ -372,8 +353,8 @@ public class DocumentQueryAsyncAPITest {
      * Converts the document query observable to blocking observable and
      * uses that to find all documents
      */
-    @Test
-    public void testQueryDocuments_toBlocking_toIterator() throws DocumentClientException {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void queryDocuments_toBlocking_toIterator() {
         // Query for documents
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
@@ -406,8 +387,8 @@ public class DocumentQueryAsyncAPITest {
     /**
      * Queries for documents using an Orderby query.
      */
-    @Test
-    public void testOrderBy_Async() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void qrderBy_Async() throws Exception {
         // Create a partitioned collection
         String collectionId = UUID.randomUUID().toString();
         DocumentCollection multiPartitionCollection = createMultiPartitionCollection("dbs/" + createdDatabase.getId(),
@@ -462,8 +443,8 @@ public class DocumentQueryAsyncAPITest {
      * of Java's Future which allows registering listener callbacks:
      * https://github.com/google/guava/wiki/ListenableFutureExplained
      */
-    @Test
-    public void testTransformObservableToGoogleGuavaListenableFuture() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void transformObservableToGoogleGuavaListenableFuture() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
@@ -490,31 +471,8 @@ public class DocumentQueryAsyncAPITest {
         return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
     }
 
-    private void cleanUpGeneratedDatabases() throws DocumentClientException {
-        LOGGER.info("cleanup databases invoked");
-
-        String[] allDatabaseIds = { DATABASE_ID };
-
-        for (String id : allDatabaseIds) {
-            try {
-                List<FeedResponse<Database>> feedResponsePages = asyncClient
-                        .queryDatabases(new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                                new SqlParameterCollection(new SqlParameter("@id", id))), null)
-                        .toList().toBlocking().single();
-
-                if (!feedResponsePages.get(0).getResults().isEmpty()) {
-                    Database res = feedResponsePages.get(0).getResults().get(0);
-                    LOGGER.info("deleting a database " + feedResponsePages.get(0));
-                    asyncClient.deleteDatabase("dbs/" + res.getId(), null).toBlocking().single();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private DocumentCollection createMultiPartitionCollection(String databaseLink, String collectionId,
-            String partitionKeyPath) throws DocumentClientException {
+            String partitionKeyPath) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add(partitionKeyPath);

@@ -23,6 +23,8 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import java.net.URI;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -52,6 +54,7 @@ public class DocumentClientException extends Exception {
     private Map<String, String> responseHeaders;
     String resourceAddress;
     String partitionKeyRangeId;
+    URI requestUri;
     long lsn;
 
     /**
@@ -74,6 +77,7 @@ public class DocumentClientException extends Exception {
         error.set(Constants.Properties.MESSAGE, errorMessage);
         this.statusCode = statusCode;
         this.error = error;
+        this.responseHeaders = new HashMap<>();
     }
 
     /**
@@ -85,6 +89,7 @@ public class DocumentClientException extends Exception {
     public DocumentClientException(int statusCode, Exception innerException) {
         super(innerException);
         this.statusCode = statusCode;
+        this.responseHeaders = new HashMap<>();
     }
 
     /**
@@ -108,11 +113,13 @@ public class DocumentClientException extends Exception {
      */
 
     public DocumentClientException(String resourceAddress, int statusCode, Error errorResource, Map<String, String> responseHeaders) {
-        super(errorResource.getMessage());
+
+        super(errorResource == null ? null : errorResource.getMessage());
+
+        this.responseHeaders = responseHeaders == null ? null : new HashMap<>(responseHeaders);
         this.resourceAddress = resourceAddress;
         this.statusCode = statusCode;
         this.error = errorResource;
-        this.responseHeaders = responseHeaders;
     }
 
     /** Creates a new instance of the DocumentClientException class.
@@ -123,11 +130,12 @@ public class DocumentClientException extends Exception {
      * @param resourceAddress the address of the resource the request is associated with.
      */
     public DocumentClientException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode, String resourceAddress) {
+
         super(message, exception);
-        this.statusCode = statusCode;
+
+        this.responseHeaders = responseHeaders == null ? null : new HashMap<>(responseHeaders);
         this.resourceAddress = resourceAddress;
         this.statusCode = statusCode;
-        this.responseHeaders = responseHeaders;
     }
 
     /**
@@ -230,12 +238,21 @@ public class DocumentClientException extends Exception {
 
     @Override
     public String toString() {
-        return "DocumentClientException{" +
+        return getClass().getSimpleName() + "{" +
                 "error=" + error +
                 ", resourceAddress='" + resourceAddress + '\'' +
                 ", statusCode=" + statusCode +
                 ", message=" + getMessage() +
+                ", getCauseInfo=" + getCauseInfo() +
                 ", responseHeaders=" + responseHeaders +
                 '}';
+    }
+
+    private String getCauseInfo() {
+        Throwable cause = getCause();
+        if (cause != null) {
+            return String.format("[class: %s, message: %s]", cause.getClass(), cause.getMessage());
+        }
+        return null;
     }
 }

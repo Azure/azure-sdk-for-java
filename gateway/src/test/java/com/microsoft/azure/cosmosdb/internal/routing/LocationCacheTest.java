@@ -109,7 +109,7 @@ public class LocationCacheTest {
         return list.toArray(new Object[][]{});
     }
 
-    @Test(groups = "internal", dataProvider = "paramsProvider")
+    @Test(groups = "long", dataProvider = "paramsProvider")
     public void validateAsync(boolean useMultipleWriteEndpoints,
                               boolean endpointDiscoveryEnabled,
                               boolean isPreferredListEmpty) throws Exception {
@@ -118,7 +118,7 @@ public class LocationCacheTest {
                 isPreferredListEmpty);
     }
 
-    @Test(groups = "internal")
+    @Test(groups = "long")
     public void validateWriteEndpointOrderWithClientSideDisableMultipleWriteLocation()  throws Exception {
         this.initialize(false, true, false);
         assertThat(this.cache.getWriteEndpoints().get(0)).isEqualTo(LocationCacheTest.Location1Endpoint);

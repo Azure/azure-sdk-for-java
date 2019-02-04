@@ -59,19 +59,14 @@ import java.util.concurrent.TimeUnit;
 public class HttpClientFactory {
     private final static String NETWORK_LOG_CATEGORY = "com.microsoft.azure.cosmosdb.netty-network";
 
-    private Configs configs;
+    private final Configs configs;
     private Integer maxPoolSize;
     private Integer maxIdleConnectionTimeoutInMillis;
     private Integer requestTimeoutInMillis;
     private InetSocketAddress proxy;
-    private LogLevel logLevel;
 
-    public HttpClientFactory() {
-    }
-
-    public HttpClientFactory withConfig(Configs configs) {
+    public HttpClientFactory(Configs configs) {
         this.configs = configs;
-        return this;
     }
 
     public HttpClientFactory withPoolSize(int maxPoolSize) {
@@ -81,11 +76,6 @@ public class HttpClientFactory {
 
     public HttpClientFactory withHttpProxy(InetSocketAddress proxy) {
         this.proxy = proxy;
-        return this;
-    }
-
-    public HttpClientFactory withNettyLogLevel(LogLevel logLevel) {
-        this.logLevel = logLevel;
         return this;
     }
 
@@ -99,18 +89,11 @@ public class HttpClientFactory {
         return this;
     }
 
-    // TODO: perf we should share the same instance of SSLContext for all http clients and rntbd client
-    // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/308360
     class DefaultSSLEngineFactory implements SSLEngineFactory {
         private final SslContext sslContext;
 
         private DefaultSSLEngineFactory() {
-            try {
-                SslProvider sslProvider = SslContext.defaultClientProvider();
-                sslContext = SslContextBuilder.forClient().sslProvider(sslProvider).build();
-            } catch (SSLException e) {
-                throw new IllegalStateException("Failed to create default SSL context", e);
-            }
+            this.sslContext = configs.getSslContext();
         }
 
         @Override
@@ -166,7 +149,7 @@ public class HttpClientFactory {
                 pipeline.addFirst(Constants.Properties.HTTP_PROXY_HANDLER_NAME, new HttpProxyHandler(proxy));
             }
         })
-        .appendPipelineConfigurator(new SslPipelineConfiguratorUsedWithProxy<HttpClientResponse<ByteBuf>,HttpClientRequest<ByteBuf>>(defaultSSLEngineFactory))
+        .appendPipelineConfigurator(new SslPipelineConfiguratorUsedWithProxy<>(defaultSSLEngineFactory))
         .appendPipelineConfigurator(createClientPipelineConfigurator(configs));
 
         if (requestTimeoutInMillis != null) {
@@ -176,18 +159,6 @@ public class HttpClientFactory {
         }
 
         return builder;
-    }
-
-    public static CompositeHttpClientBuilder<ByteBuf, ByteBuf> httpClientBuilder(Configs configs,
-                                                                                 int maxPoolSize,
-                                                                                 int maxIdleConnectionTimeoutInMillis,
-                                                                                 int requestTimeoutInMillis) {
-        HttpClientFactory httpBuilder = new HttpClientFactory();
-
-        return httpBuilder.withConfig(configs)
-                .withPoolSize(maxPoolSize)
-                .withMaxIdleConnectionTimeoutInMillis(maxIdleConnectionTimeoutInMillis)
-                .withRequestTimeoutInMillis(requestTimeoutInMillis).toHttpClientBuilder();
     }
 
     private static PipelineConfigurator createClientPipelineConfigurator(Configs config) {

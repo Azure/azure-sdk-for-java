@@ -45,8 +45,6 @@ import rx.Observable;
 
 public class ReadFeedTriggersTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(ReadFeedTriggersTest.class);
-
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private List<Trigger> createdTriggers = new ArrayList<>();
@@ -54,7 +52,7 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedTriggersTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -84,32 +82,26 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws DocumentClientException {
-        client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(),
-                getCollectionDefinitionSinglePartition());
+    public void beforeClass() {
+
+        this.client = clientBuilder.build();
+        this.createdDatabase = SHARED_DATABASE;
+        this.createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        this.truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
 
         for(int i = 0; i < 5; i++) {
-            createdTriggers.add(createTriggers(client));
+            this.createdTriggers.add(this.createTriggers(client));
         }
+
+        this.waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 
-    private static DocumentCollection getCollectionDefinitionSinglePartition() {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-        return collectionDefinition;
-    }
-
-    public Trigger createTriggers(AsyncDocumentClient client) throws DocumentClientException {
+    public Trigger createTriggers(AsyncDocumentClient client) {
         Trigger trigger = new Trigger();
         trigger.setId(UUID.randomUUID().toString());
         trigger.setBody("function() {var x = 10;}");

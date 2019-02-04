@@ -28,6 +28,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
 
     public SpyClientBuilder(AsyncDocumentClient.Builder builder) {
         super();
+        super.configs = builder.configs;
         super.connectionPolicy = builder.connectionPolicy;
         super.desiredConsistencyLevel = builder.desiredConsistencyLevel;
         super.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
@@ -39,7 +40,8 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
                 serviceEndpoint,
                 masterKeyOrResourceToken,
                 connectionPolicy,
-                desiredConsistencyLevel);
+                desiredConsistencyLevel,
+                configs);
     }
 
     public SpyClientUnderTestFactory.ClientWithGatewaySpy buildWithGatewaySpy() {
@@ -47,6 +49,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
                 serviceEndpoint,
                 masterKeyOrResourceToken,
                 connectionPolicy,
-                desiredConsistencyLevel);
+                desiredConsistencyLevel,
+                configs);
     }
 }

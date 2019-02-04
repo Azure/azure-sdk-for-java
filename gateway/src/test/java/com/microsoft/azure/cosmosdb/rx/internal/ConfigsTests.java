@@ -25,19 +25,32 @@ package com.microsoft.azure.cosmosdb.rx.internal;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import org.testng.annotations.Test;
 
 public class ConfigsTests {
 
     @Test(groups = { "unit" })
     public void maxHttpHeaderSize() {
-        Configs config = Configs.getInstance();
+        Configs config = new Configs();
         assertThat(config.getMaxHttpHeaderSize()).isEqualTo(32 * 1024);
     }
 
     @Test(groups = { "unit" })
     public void maxHttpBodyLength() {
-        Configs config = Configs.getInstance();
+        Configs config = new Configs();
         assertThat(config.getMaxHttpBodyLength()).isEqualTo(6 * 1024 * 1024);
+    }
+
+    @Test(groups = { "unit" })
+    public void getProtocol() {
+        Configs config = new Configs();
+        assertThat(config.getProtocol()).isEqualTo(Protocol.valueOf(System.getProperty("COSMOS.PROTOCOL", "Https")));
+    }
+
+    @Test(groups = { "unit" })
+    public void getDirectHttpsMaxConnectionLimit() {
+        Configs config = new Configs();
+        assertThat(config.getDirectHttpsMaxConnectionLimit()).isEqualTo(Runtime.getRuntime().availableProcessors() * 500);
     }
 }

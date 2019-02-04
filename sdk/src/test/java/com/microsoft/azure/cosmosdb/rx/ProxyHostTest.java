@@ -24,6 +24,7 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import java.io.StringWriter;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
@@ -63,9 +64,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * go through that particular host. 
  *
  */
-public class ProxyHostTest extends TestSuiteBase{
+public class ProxyHostTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(DocumentCrudTest.class);
     private static Database createdDatabase;
     private static DocumentCollection createdCollection;
 
@@ -75,20 +75,19 @@ public class ProxyHostTest extends TestSuiteBase{
     private final int PROXY_PORT = 8080;
     private HttpProxyServer httpProxyServer;
 
-    @Factory(dataProvider = "clientBuilders")
-    public ProxyHostTest(AsyncDocumentClient.Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+    public ProxyHostTest() {
+        this.clientBuilder = createGatewayRxDocumentClient();
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() {
+    public void beforeClass() throws Exception {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION;
         httpProxyServer = new HttpProxyServer();
         httpProxyServer.start();
+        // wait for proxy server to be ready
+        TimeUnit.SECONDS.sleep(1);
     }
 
     /**
@@ -156,10 +155,11 @@ public class ProxyHostTest extends TestSuiteBase{
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
+    public void afterClass() throws Exception {
         safeClose(client);
         httpProxyServer.shutDown();
+        // wait for proxy server to be shutdown
+        TimeUnit.SECONDS.sleep(1);
 
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
@@ -171,7 +171,7 @@ public class ProxyHostTest extends TestSuiteBase{
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }
 
-    @AfterMethod(groups = { "simple" }, alwaysRun = true)
+    @AfterMethod(groups = { "simple" })
     public void afterMethod() {
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));

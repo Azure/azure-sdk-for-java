@@ -58,25 +58,19 @@ public class LogLevelTest extends TestSuiteBase {
     public final static String LOG_PATTERN_3 = "USER_EVENT: SslHandshakeCompletionEvent(SUCCESS)";
     public final static String LOG_PATTERN_4 = "CONNECT: ";
 
-    public final static String DATABASE_ID = getDatabaseId(DocumentCrudTest.class);
     private static Database createdDatabase;
     private static DocumentCollection createdCollection;
 
-    private AsyncDocumentClient houseKeepingClient;
     private Builder clientBuilder;
 
-    @Factory(dataProvider = "clientBuilders")
-    public LogLevelTest(AsyncDocumentClient.Builder clientBuilder) {
-        this.clientBuilder = clientBuilder;
+    public LogLevelTest() {
+        this.clientBuilder = createGatewayRxDocumentClient();
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        houseKeepingClient = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(houseKeepingClient, d);
-        createdCollection = createCollection(houseKeepingClient, createdDatabase.getId(), getCollectionDefinition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
     }
 
     /**
@@ -87,12 +81,12 @@ public class LogLevelTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithDebugLevel() throws Exception {
         LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.DEBUG);
+        StringWriter consoleWriter = new StringWriter();
+        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
+        LogManager.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
+
         AsyncDocumentClient client = clientBuilder.build();
         try {
-            StringWriter consoleWriter = new StringWriter();
-            WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-            LogManager.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
-
             Document docDefinition = getDocumentDefinition();
             Observable<ResourceResponse<Document>> createObservable = client
                     .createDocument(getCollectionLink(), docDefinition, null, false);
@@ -117,13 +111,12 @@ public class LogLevelTest extends TestSuiteBase {
     public void createDocumentWithWarningLevel() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
         LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.WARN);
+        StringWriter consoleWriter = new StringWriter();
+        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
+        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
         AsyncDocumentClient client = clientBuilder.build();
         try {
-            StringWriter consoleWriter = new StringWriter();
-            WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-            Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
-
             Document docDefinition = getDocumentDefinition();
             Observable<ResourceResponse<Document>> createObservable = client
                     .createDocument(getCollectionLink(), docDefinition, null, false);
@@ -147,14 +140,12 @@ public class LogLevelTest extends TestSuiteBase {
     public void createDocumentWithTraceLevel() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
         LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.TRACE);
+        StringWriter consoleWriter = new StringWriter();
+        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
+        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
         AsyncDocumentClient client = clientBuilder.build();
-
         try {
-            StringWriter consoleWriter = new StringWriter();
-            WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-            Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
-
             Document docDefinition = getDocumentDefinition();
             Observable<ResourceResponse<Document>> createObservable = client
                     .createDocument(getCollectionLink(), docDefinition, null, false);
@@ -173,19 +164,16 @@ public class LogLevelTest extends TestSuiteBase {
         }
     }
 
-
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocumentWithTraceLevelAtRoot() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
         LogManager.getLogger(COSMOS_DB_LOGGING_CATEGORY).setLevel(Level.TRACE);
+        StringWriter consoleWriter = new StringWriter();
+        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
+        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
         AsyncDocumentClient client = clientBuilder.build();
-
         try {
-            StringWriter consoleWriter = new StringWriter();
-            WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-            Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
-
             Document docDefinition = getDocumentDefinition();
             Observable<ResourceResponse<Document>> createObservable = client
                     .createDocument(getCollectionLink(), docDefinition, null, false);
@@ -207,14 +195,12 @@ public class LogLevelTest extends TestSuiteBase {
     public void createDocumentWithDebugLevelAtRoot() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
         LogManager.getLogger(COSMOS_DB_LOGGING_CATEGORY).setLevel(Level.DEBUG);
+        StringWriter consoleWriter = new StringWriter();
+        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
+        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
         AsyncDocumentClient client = clientBuilder.build();
-
         try {
-            StringWriter consoleWriter = new StringWriter();
-            WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-            Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
-
             Document docDefinition = getDocumentDefinition();
             Observable<ResourceResponse<Document>> createObservable = client
                     .createDocument(getCollectionLink(), docDefinition, null, false);
@@ -238,13 +224,12 @@ public class LogLevelTest extends TestSuiteBase {
     public void createDocumentWithErrorClient() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
         LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.ERROR);
+        StringWriter consoleWriter = new StringWriter();
+        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
+        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
         AsyncDocumentClient client = clientBuilder.build();
         try {
-            StringWriter consoleWriter = new StringWriter();
-            WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-            Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
-
             Document docDefinition = getDocumentDefinition();
             Observable<ResourceResponse<Document>> createObservable = client
                     .createDocument(getCollectionLink(), docDefinition, null, false);
@@ -268,13 +253,12 @@ public class LogLevelTest extends TestSuiteBase {
     public void createDocumentWithInfoLevel() throws Exception {
         LogManager.getRootLogger().setLevel(Level.INFO);
         LogManager.getLogger(NETWORK_LOGGING_CATEGORY).setLevel(Level.INFO);
+        StringWriter consoleWriter = new StringWriter();
+        WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
+        Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
 
         AsyncDocumentClient client = clientBuilder.build();
         try {
-            StringWriter consoleWriter = new StringWriter();
-            WriterAppender appender = new WriterAppender(new PatternLayout(), consoleWriter);
-            Logger.getLogger(NETWORK_LOGGING_CATEGORY).addAppender(appender);
-
             Document docDefinition = getDocumentDefinition();
             Observable<ResourceResponse<Document>> createObservable = client
                     .createDocument(getCollectionLink(), docDefinition, null, false);
@@ -306,17 +290,14 @@ public class LogLevelTest extends TestSuiteBase {
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }
 
-    @AfterMethod(groups = { "simple" }, alwaysRun = true)
+    @AfterMethod(groups = { "simple" })
     public void afterMethod() {
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT)
     public void afterClass() {
-        safeDeleteDatabase(houseKeepingClient, createdDatabase.getId());
-        safeClose(houseKeepingClient);
-
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }

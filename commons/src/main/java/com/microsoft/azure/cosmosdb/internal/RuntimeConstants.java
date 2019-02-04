@@ -42,8 +42,9 @@ public class RuntimeConstants {
         public static final String XML = "application/xml";
     }
 
-    public static class Protocols {
+    public static class ProtocolScheme {
         public static final String HTTPS = "https";
+        public static final String TCP = "rntbd";
     }
 
     static class Separators {

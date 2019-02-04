@@ -37,7 +37,7 @@ import com.microsoft.azure.cosmosdb.internal.ResourceId;
 public class ResourceIdTests {
 
     @Test(groups = { "unit" })
-    public void resourceIdTryParsing() throws DocumentClientException {
+    public void resourceIdTryParsing() {
         HashMap<String, Boolean> cases = new HashMap<>();
         cases.put("testDb", false);
         cases.put("db", false);
@@ -81,7 +81,7 @@ public class ResourceIdTests {
     }
 
     @Test(groups = { "unit" })
-    public void resourceIdParsingRoundTrip() throws DocumentClientException {
+    public void resourceIdParsingRoundTrip() {
         Random rnd = new Random(System.currentTimeMillis());
 
         ResourceId dbRid = ResourceId.newDatabaseId(randomNextIntForTest(rnd, true));

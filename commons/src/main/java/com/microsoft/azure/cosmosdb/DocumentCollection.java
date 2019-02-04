@@ -37,6 +37,7 @@ import org.apache.commons.lang3.StringUtils;
 public final class DocumentCollection extends Resource {
     private IndexingPolicy indexingPolicy;
     private UniqueKeyPolicy uniqueKeyPolicy;
+    private PartitionKeyDefinition partitionKeyDefinition;
 
     /**
      * Initialize a document collection object.
@@ -90,13 +91,16 @@ public final class DocumentCollection extends Resource {
      * @return the partition key definition.
      */
     public PartitionKeyDefinition getPartitionKey() {
-        if (super.has(Constants.Properties.PARTITION_KEY)) {
-            return super.getObject(Constants.Properties.PARTITION_KEY, PartitionKeyDefinition.class);
+        if (this.partitionKeyDefinition == null) {
+
+            if (super.has(Constants.Properties.PARTITION_KEY)) {
+                this.partitionKeyDefinition = super.getObject(Constants.Properties.PARTITION_KEY, PartitionKeyDefinition.class);
+            } else {
+                this.partitionKeyDefinition = new PartitionKeyDefinition();
+            }
         }
 
-        this.setPartitionKey(new PartitionKeyDefinition());
-
-        return this.getPartitionKey();
+        return this.partitionKeyDefinition;
     }
 
     /**
@@ -109,7 +113,7 @@ public final class DocumentCollection extends Resource {
             throw new IllegalArgumentException("partitionKey cannot be null.");
         }
 
-        super.set(Constants.Properties.PARTITION_KEY, partitionKey);
+        this.partitionKeyDefinition = partitionKey;
     }
 
     /**
@@ -264,6 +268,12 @@ public final class DocumentCollection extends Resource {
         if (this.uniqueKeyPolicy == null) {
             this.getUniqueKeyPolicy();
         }
+
+        if (this.partitionKeyDefinition != null) {
+            this.partitionKeyDefinition.populatePropertyBag();
+            super.set(Constants.Properties.PARTITION_KEY, this.partitionKeyDefinition);
+        }
+
         this.indexingPolicy.populatePropertyBag();
         this.uniqueKeyPolicy.populatePropertyBag();
         super.set(Constants.Properties.INDEXING_POLICY, this.indexingPolicy);

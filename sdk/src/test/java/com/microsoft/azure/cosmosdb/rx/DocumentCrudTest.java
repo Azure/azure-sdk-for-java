@@ -27,7 +27,12 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.microsoft.azure.cosmosdb.FeedOptions;
+import com.microsoft.azure.cosmosdb.StoredProcedure;
+import com.microsoft.azure.cosmosdb.Undefined;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import org.apache.commons.lang3.StringUtils;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -45,26 +50,26 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 import static org.apache.commons.io.FileUtils.ONE_MB;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DocumentCrudTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(DocumentCrudTest.class);
-
-    private static Database createdDatabase;
-    private static DocumentCollection createdCollection;
+    private Database createdDatabase;
+    private DocumentCollection createdCollection;
 
     private Builder clientBuilder;
     private AsyncDocumentClient client;
     
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public DocumentCrudTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocument() throws Exception {
+    public void createDocument() {
         Document docDefinition = getDocumentDefinition();
 
         Observable<ResourceResponse<Document>> createObservable = client
@@ -78,7 +83,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createLargeDocument() throws Exception {
+    public void createLargeDocument() {
         Document docDefinition = getDocumentDefinition();
 
         //Keep size as ~ 1.5MB to account for size of other props
@@ -96,7 +101,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocumentWithVeryLargePartitionKey() throws Exception {
+    public void createDocumentWithVeryLargePartitionKey() {
         Document docDefinition = getDocumentDefinition();
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < 100; i++) {
@@ -115,7 +120,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocumentWithVeryLargePartitionKey() throws Exception {
+    public void readDocumentWithVeryLargePartitionKey() {
         Document docDefinition = getDocumentDefinition();
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < 100; i++) {
@@ -124,6 +129,8 @@ public class DocumentCrudTest extends TestSuiteBase {
         docDefinition.set("mypk", sb.toString());
 
         Document createdDocument = TestSuiteBase.createDocument(client, createdDatabase.getId(), createdCollection.getId(), docDefinition);
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
 
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(sb.toString()));
@@ -137,7 +144,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocument_AlreadyExists() throws Exception {
+    public void createDocument_AlreadyExists() {
         Document docDefinition = getDocumentDefinition();
 
         client.createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
@@ -150,7 +157,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createDocumentTimeout() throws Exception {
+    public void createDocumentTimeout() {
         Document docDefinition = getDocumentDefinition();
 
         Observable<ResourceResponse<Document>> createObservable = client
@@ -163,12 +170,13 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocument() throws Exception {
+    public void readDocument() {
         Document docDefinition = getDocumentDefinition();
 
         Document document = client
                 .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
 
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
 
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(document.get("mypk")));
@@ -188,6 +196,8 @@ public class DocumentCrudTest extends TestSuiteBase {
         Document document = client
                 .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
 
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
+
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(document.get("mypk")));
         Observable<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), options);
@@ -200,7 +210,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readDocument_DoesntExist() throws Exception {
+    public void readDocument_DoesntExist() {
         Document docDefinition = getDocumentDefinition();
 
         Document document = client
@@ -209,6 +219,8 @@ public class DocumentCrudTest extends TestSuiteBase {
         RequestOptions options = new RequestOptions();
         options.setPartitionKey(new PartitionKey(document.get("mypk")));
         client.deleteDocument(document.getSelfLink(), options).toBlocking().first();
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
 
         options.setPartitionKey(new PartitionKey("looloo"));
         Observable<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), options);
@@ -219,7 +231,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void deleteDocument() throws Exception {
+    public void deleteDocument() {
         Document docDefinition = getDocumentDefinition();
 
         Document document = client
@@ -234,11 +246,40 @@ public class DocumentCrudTest extends TestSuiteBase {
                 .nullResource().build();
         validateSuccess(deleteObservable, validator);
 
-        //TODO validate after deletion the resource is actually deleted (not found)
+        // attempt to read document which was deleted
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
+
+        Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(docDefinition.getId()), options);
+        FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
+        validateFailure(readObservable, notFoundValidator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void deleteDocument_DoesntExist() throws Exception {
+    public void deleteDocument_undefinedPK() {
+        Document docDefinition = new Document();
+        docDefinition.setId(UUID.randomUUID().toString());
+
+        Document document = client
+                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+
+        RequestOptions options = new RequestOptions();
+        options.setPartitionKey(new PartitionKey(Undefined.Value()));
+        Observable<ResourceResponse<Document>> deleteObservable = client.deleteDocument(document.getSelfLink(), options);
+
+        ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+                .nullResource().build();
+        validateSuccess(deleteObservable, validator);
+
+        // attempt to read document which was deleted
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
+
+        Observable<ResourceResponse<Document>> readObservable = client.readDocument(getDocumentLink(docDefinition.getId()), options);
+        FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
+        validateFailure(readObservable, notFoundValidator);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void deleteDocument_DoesntExist() {
         Document docDefinition = getDocumentDefinition();
 
         Document document = client
@@ -256,7 +297,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceDocument() throws Exception {
+    public void replaceDocument() {
         // create a document
         Document docDefinition = getDocumentDefinition();
 
@@ -276,7 +317,7 @@ public class DocumentCrudTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceDocument_UsingDocumentLink() throws Exception {
+    public void replaceDocument_UsingDocumentLink() {
         // create a document
         Document docDefinition = getDocumentDefinition();
 
@@ -294,25 +335,32 @@ public class DocumentCrudTest extends TestSuiteBase {
                 .withProperty("newProp", newPropValue).build();
         validateSuccess(readObservable, validator);
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void upsertDocument_CreateDocument() throws Exception {
+    public void upsertDocument_CreateDocument() {
         // create a document
         Document docDefinition = getDocumentDefinition();
 
 
         // replace document
-        Observable<ResourceResponse<Document>> upsertObservable = client.upsertDocument(getCollectionLink(), 
+        Observable<ResourceResponse<Document>> upsertObservable = client.upsertDocument(getCollectionLink(),
                 docDefinition, null, false);
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                 .withId(docDefinition.getId()).build();
+        try {
         validateSuccess(upsertObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void upsertDocument_ReplaceDocument() throws Exception {
+    public void upsertDocument_ReplaceDocument() {
         // create a document
         Document docDefinition = getDocumentDefinition();
 
@@ -329,28 +377,34 @@ public class DocumentCrudTest extends TestSuiteBase {
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                 .withProperty("newProp", newPropValue).build();
-        validateSuccess(readObservable, validator);
+        try {
+            validateSuccess(readObservable, validator);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            }
+            throw error;
+        }
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_MULTI_PARTITION_COLLECTION;
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        RequestOptions options = new RequestOptions();
-        options.setOfferThroughput(10100);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition(), options);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 
     private String getCollectionLink() {
         return createdCollection.getSelfLink();
+    }
+
+    private String getDocumentLink(String docId) {
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/docs/" + docId;
     }
 
     private Document getDocumentDefinition() {

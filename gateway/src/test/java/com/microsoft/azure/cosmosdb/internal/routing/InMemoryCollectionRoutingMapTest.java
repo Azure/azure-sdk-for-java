@@ -31,7 +31,6 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import com.google.common.collect.ImmutableList;
-import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.testng.annotations.Test;
@@ -39,17 +38,30 @@ import org.testng.annotations.Test;
 import com.microsoft.azure.cosmosdb.PartitionKeyRange;
 
 public class InMemoryCollectionRoutingMapTest {
+
+    static class ServerIdentityImp implements IServerIdentity {
+        private int value;
+        public ServerIdentityImp(int value) {
+            this.value = value;
+        }
+
+        static ServerIdentityImp of(int value) {
+            return new ServerIdentityImp(value);
+        }
+    }
+
     @Test(groups = { "unit" })
     public void collectionRoutingMap() {
-        InMemoryCollectionRoutingMap<Integer> routingMap = InMemoryCollectionRoutingMap
+        InMemoryCollectionRoutingMap routingMap = InMemoryCollectionRoutingMap
                 .tryCreateCompleteRoutingMap(Arrays.asList(
-                        new ImmutablePair<PartitionKeyRange, Integer>(
-                                new PartitionKeyRange("2", "0000000050", "0000000070"), 2),
-                        new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("0", "", "0000000030"), 0),
-                        new ImmutablePair<PartitionKeyRange, Integer>(
-                                new PartitionKeyRange("1", "0000000030", "0000000050"), 1),
-                        new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("3", "0000000070", "FF"),
-                                3)),
+                        new ImmutablePair<>(
+                                new PartitionKeyRange("2", "0000000050", "0000000070"), ServerIdentityImp.of(2)),
+                        new ImmutablePair<>(new PartitionKeyRange("0", "", "0000000030"),
+                                            ServerIdentityImp.of(0)),
+                        new ImmutablePair<>(
+                                new PartitionKeyRange("1", "0000000030", "0000000050"), ServerIdentityImp.of(1)),
+                        new ImmutablePair<>(new PartitionKeyRange("3", "0000000070", "FF"),
+                                            ServerIdentityImp.of(3))),
                         StringUtils.EMPTY);
 
         assertThat("0").isEqualTo(routingMap.getOrderedPartitionKeyRanges().get(0).getId());
@@ -99,27 +111,28 @@ public class InMemoryCollectionRoutingMapTest {
     @Test(groups = { "unit" }, expectedExceptions = IllegalStateException.class)
     public void invalidRoutingMap() {
         InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(Arrays.asList(
-                new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("1", "0000000020", "0000000030"),
-                        2),
-                new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("2", "0000000025", "0000000035"),
-                        2)),
+                new ImmutablePair<>(new PartitionKeyRange("1", "0000000020", "0000000030"),
+                                    ServerIdentityImp.of(2)),
+                new ImmutablePair<>(new PartitionKeyRange("2", "0000000025", "0000000035"),
+                                    ServerIdentityImp.of(2))),
                 StringUtils.EMPTY);
     }
 
     @Test(groups = { "unit" })
     public void incompleteRoutingMap() {
-        InMemoryCollectionRoutingMap<Integer> routingMap = InMemoryCollectionRoutingMap
+        InMemoryCollectionRoutingMap routingMap = InMemoryCollectionRoutingMap
                 .tryCreateCompleteRoutingMap(Arrays.asList(
-                        new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("2", "", "0000000030"), 2),
-                        new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("3", "0000000031", "FF"),
-                                2)),
+                        new ImmutablePair<>(new PartitionKeyRange("2", "", "0000000030"),
+                                            ServerIdentityImp.of(2)),
+                        new ImmutablePair<>(new PartitionKeyRange("3", "0000000031", "FF"),
+                                            ServerIdentityImp.of(2))),
                         StringUtils.EMPTY);
 
         assertThat(routingMap).isNull();
 
         routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(Arrays.asList(
-                new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("2", "", "0000000030"), 2),
-                new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("3", "0000000030", "FF"), 2)),
+                new ImmutablePair<>(new PartitionKeyRange("2", "", "0000000030"), ServerIdentityImp.of(2)),
+                new ImmutablePair<>(new PartitionKeyRange("3", "0000000030", "FF"), ServerIdentityImp.of(2))),
                 StringUtils.EMPTY);
 
         assertThat(routingMap).isNotNull();

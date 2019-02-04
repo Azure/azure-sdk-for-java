@@ -22,9 +22,18 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.lang3.time.StopWatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.microsoft.azure.cosmosdb.internal.Quadruple;
+import com.microsoft.azure.cosmosdb.rx.internal.IRetryPolicy.ShouldRetryResult;
+
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -32,12 +41,14 @@ import rx.functions.Func1;
  * This is meant to be internally used only by our sdk.
  */
 public class RetryUtils {
+    private final static Logger logger = LoggerFactory.getLogger(BackoffRetryUtility.class);
+
     public static Func1<Observable<? extends Throwable>, Observable<Long>> toRetryWhenFunc(IRetryPolicy policy) {
         return new Func1<Observable<? extends Throwable>, Observable<Long>>() {
 
             @Override
             public Observable<Long> call(Observable<? extends Throwable> throwableObs) {
-                return throwableObs.flatMap( t -> { 
+                return throwableObs.flatMap( t -> {
                     Exception e = Utils.as(t, Exception.class);
                     if (e == null) {
                         return Observable.error(t);
@@ -57,5 +68,106 @@ public class RetryUtils {
                 });
             }
         };
+    }
+
+    /**
+     * This method will be called after getting error on callbackMethod , and then keep trying between
+     * callbackMethod and inBackoffAlternateCallbackMethod until success or as stated in
+     * retry policy.
+     * @param callbackMethod The callbackMethod
+     * @param policy Retry policy
+     * @param inBackoffAlternateCallbackMethod The inBackoffAlternateCallbackMethod
+     * @param minBackoffForInBackoffCallback Minimum backoff for InBackoffCallbackMethod
+     * @return
+     */
+    static <T> Func1<Throwable, Single<T>> toRetryWithAlternateFunc(
+            Func1<Quadruple<Boolean, Boolean, Duration, Integer>, Single<T>> callbackMethod, IRetryPolicy policy,
+            Func1<Quadruple<Boolean, Boolean, Duration, Integer>, Single<T>> inBackoffAlternateCallbackMethod,
+            Duration minBackoffForInBackoffCallback) {
+        return new Func1<Throwable, Single<T>>() {
+
+            @Override
+            public Single<T> call(Throwable t) {
+                Exception e = Utils.as(t, Exception.class);
+                if (e == null) {
+                    return Single.error(t);
+                }
+
+                return policy.shouldRetry(e).flatMap(shouldRetryResult -> {
+                    if (!shouldRetryResult.shouldRetry) {
+                        if(shouldRetryResult.exception == null) {
+                            return Single.error(e);
+                        } else {
+                            return Single.error(shouldRetryResult.exception);
+                        }
+                    }
+
+                    if (inBackoffAlternateCallbackMethod != null
+                            && shouldRetryResult.backOffTime.compareTo(minBackoffForInBackoffCallback) > 0) {
+                        StopWatch stopwatch = new StopWatch();
+                        startStopWatch(stopwatch);
+                        return inBackoffAlternateCallbackMethod.call(shouldRetryResult.policyArg)
+                                .onErrorResumeNext(recurrsiveWithAlternateFunc(callbackMethod, policy,
+                                        inBackoffAlternateCallbackMethod, shouldRetryResult, stopwatch,
+                                        minBackoffForInBackoffCallback));
+                    } else {
+                        return recurrsiveFunc(callbackMethod, policy, inBackoffAlternateCallbackMethod,
+                                shouldRetryResult, minBackoffForInBackoffCallback)
+                                        .delaySubscription(Observable.timer(shouldRetryResult.backOffTime.toMillis(),
+                                                TimeUnit.MILLISECONDS));
+                    }
+                });
+            }
+        };
+
+    }
+
+    private static <T> Single<T> recurrsiveFunc(
+            Func1<Quadruple<Boolean, Boolean, Duration, Integer>, Single<T>> callbackMethod, IRetryPolicy policy,
+            Func1<Quadruple<Boolean, Boolean, Duration, Integer>, Single<T>> inBackoffAlternateCallbackMethod,
+            ShouldRetryResult shouldRetryResult, Duration minBackoffForInBackoffCallback) {
+        return callbackMethod.call(shouldRetryResult.policyArg).onErrorResumeNext(toRetryWithAlternateFunc(
+                callbackMethod, policy, inBackoffAlternateCallbackMethod, minBackoffForInBackoffCallback));
+
+    }
+
+    private static <T> Func1<Throwable, Single<T>> recurrsiveWithAlternateFunc(
+            Func1<Quadruple<Boolean, Boolean, Duration, Integer>, Single<T>> callbackMethod, IRetryPolicy policy,
+            Func1<Quadruple<Boolean, Boolean, Duration, Integer>, Single<T>> inBackoffAlternateCallbackMethod,
+            ShouldRetryResult shouldRetryResult, StopWatch stopwatch, Duration minBackoffForInBackoffCallback) {
+        return new Func1<Throwable, Single<T>>() {
+
+            @Override
+            public Single<T> call(Throwable t) {
+
+                Exception e = Utils.as(t, Exception.class);
+                if (e == null) {
+                    return Single.error(t);
+                }
+
+                stopStopWatch(stopwatch);
+                logger.info("Failed inBackoffAlternateCallback with {}, proceeding with retry. Time taken: {}ms",
+                        e.toString(), stopwatch.getTime());
+                Duration backoffTime = shouldRetryResult.backOffTime.toMillis() > stopwatch.getTime()
+                        ? Duration.ofMillis(shouldRetryResult.backOffTime.toMillis() - stopwatch.getTime())
+                        : Duration.ZERO;
+                return recurrsiveFunc(callbackMethod, policy, inBackoffAlternateCallbackMethod, shouldRetryResult,
+                        minBackoffForInBackoffCallback)
+                                .delaySubscription(Observable.timer(backoffTime.toMillis(), TimeUnit.MILLISECONDS));
+            }
+
+        };
+    }
+
+    private static void stopStopWatch(StopWatch stopwatch) {
+        synchronized (stopwatch) {
+            stopwatch.stop();
+        }
+    }
+
+    private static void startStopWatch(StopWatch stopwatch) {
+        synchronized (stopwatch) {
+            stopwatch.start();
+        }
     }
 }

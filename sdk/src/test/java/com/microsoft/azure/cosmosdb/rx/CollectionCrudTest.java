@@ -26,8 +26,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.UnknownHostException;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
@@ -41,18 +43,25 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 public class CollectionCrudTest extends TestSuiteBase {
-    private final static String DATABASE_ID = getDatabaseId(CollectionCrudTest.class);
-    
-    protected static final int TIMEOUT = 20000;
-    protected static final int SETUP_TIMEOUT = 20000;
-    protected static final int SHUTDOWN_TIMEOUT = 20000;
-    private static final String UNREACHABLE_HOST = "https://unreachable:443/";
+    private static final int TIMEOUT = 30000;
+    private static final int SETUP_TIMEOUT = 20000;
+    private static final int SHUTDOWN_TIMEOUT = 20000;
+    private final AsyncDocumentClient.Builder clientBuilder;
+    private final String databaseId = DatabaseForTest.generateId();
 
     private AsyncDocumentClient client;
     private Database database;
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Factory(dataProvider = "clientBuildersWithDirect")
+    public CollectionCrudTest(AsyncDocumentClient.Builder clientBuilder) {
+        this.clientBuilder = clientBuilder;
+        this.subscriberValidationTimeout = TIMEOUT;
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createCollection() throws Exception {
         DocumentCollection collectionDefinition = getCollectionDefinition();
         
@@ -65,7 +74,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readCollection() throws Exception {
         DocumentCollection collectionDefinition = getCollectionDefinition();
         
@@ -80,7 +89,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
     
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readCollection_NameBase() throws Exception {
         DocumentCollection collectionDefinition = getCollectionDefinition();
         
@@ -96,7 +105,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
     
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readCollection_DoesntExist() throws Exception {
 
         Observable<ResourceResponse<DocumentCollection>> readObservable = client
@@ -106,7 +115,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         validateFailure(readObservable, validator);
     }
     
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteCollection() throws Exception {
         DocumentCollection collectionDefinition = getCollectionDefinition();
         
@@ -119,12 +128,10 @@ public class CollectionCrudTest extends TestSuiteBase {
         ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                 .nullResource().build();
         validateSuccess(deleteObservable, validator);
-        
-        //TODO validate after deletion the resource is actually deleted (not found)
     }
     
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceCollection() throws Exception {
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void replaceCollection()  {
         // create a collection
         DocumentCollection collectionDefinition = getCollectionDefinition();
         Observable<ResourceResponse<DocumentCollection>> createObservable = client.createCollection(database.getSelfLink(), collectionDefinition, null);
@@ -144,50 +151,15 @@ public class CollectionCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createCollectionWithUnreachableHost() throws InterruptedException {
-        AsyncDocumentClient unreachableDocumentClient = null;
-        try {
-            unreachableDocumentClient = new AsyncDocumentClient.Builder().withServiceEndpoint(UNREACHABLE_HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY).withConnectionPolicy(ConnectionPolicy.GetDefault())
-                .withConsistencyLevel(ConsistencyLevel.Eventual).build();
-
-           DocumentCollection collectionDefinition = getCollectionDefinition();
-
-           Observable<ResourceResponse<DocumentCollection>> createObservable = unreachableDocumentClient
-                    .createCollection(database.getSelfLink(), collectionDefinition, null);
-           FailureValidator validator = new FailureValidator.Builder().instanceOf(UnknownHostException.class).build();
-           validateFailure(createObservable, validator);
-       } finally {
-            safeClose(unreachableDocumentClient);
-        }
-    }
-
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        // set up the client
-        
-        client = new AsyncDocumentClient.Builder()
-            .withServiceEndpoint(TestConfigurations.HOST)
-            .withMasterKey(TestConfigurations.MASTER_KEY)
-            .withConnectionPolicy(ConnectionPolicy.GetDefault())
-            .withConsistencyLevel(ConsistencyLevel.Session).build();
-
-        Database databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID);
-        
-        try {
-            client.deleteDatabase(Utils.getDatabaseLink(databaseDefinition, true), null).toBlocking().single();
-        } catch (Exception e) {
-           // ignore failure if it doesn't exist
-        }
-        
-        database = client.createDatabase(databaseDefinition, null).toBlocking().single().getResource();
+        client = clientBuilder.build();
+        database = createDatabase(client, databaseId);
     }
-    
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        client.deleteDatabase(database.getSelfLink(), null).toBlocking().single();
+        safeDeleteDatabase(client, databaseId);
         safeClose(client);
     }
 }

@@ -41,9 +41,9 @@ import com.microsoft.azure.cosmosdb.StoredProcedure;
 
 import rx.Observable;
 
-public class ReadFeedStoredProceduresTest extends TestSuiteBase {
+import javax.net.ssl.SSLException;
 
-    public final static String DATABASE_ID = getDatabaseId(ReadFeedStoredProceduresTest.class);
+public class ReadFeedStoredProceduresTest extends TestSuiteBase {
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -52,7 +52,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithDirect")
     public ReadFeedStoredProceduresTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -82,31 +82,25 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws DocumentClientException {
+    public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
-        createdCollection = createCollection(client, createdDatabase.getId(),
-                getCollectionDefinitionSinglePartition());
+        createdDatabase = SHARED_DATABASE;
+        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        truncateCollection(SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
+
         for(int i = 0; i < 5; i++) {
             createdStoredProcedures.add(createStoredProcedures(client));
         }
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 
-    private static DocumentCollection getCollectionDefinitionSinglePartition() {
-        DocumentCollection collectionDefinition = new DocumentCollection();
-        collectionDefinition.setId(UUID.randomUUID().toString());
-        return collectionDefinition;
-    }
-
-    public StoredProcedure createStoredProcedures(AsyncDocumentClient client) throws DocumentClientException {
+    public StoredProcedure createStoredProcedures(AsyncDocumentClient client) {
         StoredProcedure sproc = new StoredProcedure();
         sproc.setId(UUID.randomUUID().toString());
         sproc.setBody("function() {var x = 10;}");

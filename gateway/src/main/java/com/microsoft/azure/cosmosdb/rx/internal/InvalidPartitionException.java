@@ -22,13 +22,16 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.Error;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.HttpUtils;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.WFConstants;
 import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
 
 import java.net.URI;
+import java.util.Map;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -42,12 +45,20 @@ public class InvalidPartitionException extends DocumentClientException {
         this(RMResources.Gone);
     }
 
+    public InvalidPartitionException(Error error, long lsn, String partitionKeyRangeId, Map<String, String> responseHeaders) {
+        super(HttpConstants.StatusCodes.GONE, error, responseHeaders);
+        BridgeInternal.setLSN(this, lsn);
+        BridgeInternal.setPartitionKeyRangeId(this, partitionKeyRangeId);
+    }
+
     public InvalidPartitionException(String msg) {
         super(HttpConstants.StatusCodes.GONE, msg);
+        setSubStatus();
     }
 
     public InvalidPartitionException(String msg, String resourceAddress) {
         super(msg, null, null, HttpConstants.StatusCodes.GONE, resourceAddress);
+        setSubStatus();
     }
 
     public InvalidPartitionException(String message, HttpResponseHeaders headers, String requestUri) {
@@ -73,7 +84,7 @@ public class InvalidPartitionException extends DocumentClientException {
 
     private void setSubStatus() {
         this.getResponseHeaders().put(
-                WFConstants.BackendHeaders.SubStatus,
+                WFConstants.BackendHeaders.SUB_STATUS,
                 Integer.toString(HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE));
     }
 }

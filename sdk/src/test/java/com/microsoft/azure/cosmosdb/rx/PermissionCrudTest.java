@@ -24,6 +24,7 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import java.util.UUID;
 
+import com.microsoft.azure.cosmosdb.Document;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -38,9 +39,9 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 
-public class PermissionCrudTest extends TestSuiteBase {
+import javax.net.ssl.SSLException;
 
-    public final static String DATABASE_ID = getDatabaseId(PermissionCrudTest.class);
+public class PermissionCrudTest extends TestSuiteBase {
 
     private Database createdDatabase;
     private User createdUser;
@@ -121,7 +122,12 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .build();
         validateSuccess(deleteObservable, validator);
 
-        //TODO validate after deletion the resource is actually deleted (not found)
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
+
+        // attempt to read the permission which was deleted
+        Observable<ResourceResponse<Permission>> readObservable = client.readPermission(readBackPermission.getSelfLink(), null);
+        FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
+        validateFailure(readObservable, notFoundValidator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -201,18 +207,15 @@ public class PermissionCrudTest extends TestSuiteBase {
                 .build();
         validateSuccess(updateObservable, validatorForUpdate);   
     }
-    
+
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
+        createdDatabase = SHARED_DATABASE;
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, createdDatabase.getId());
         safeClose(client);
     }
 

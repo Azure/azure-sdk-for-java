@@ -23,6 +23,10 @@
 
 package com.microsoft.azure.cosmosdb.internal;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.microsoft.azure.cosmosdb.Attachment;
 import com.microsoft.azure.cosmosdb.Conflict;
 import com.microsoft.azure.cosmosdb.Database;
@@ -36,7 +40,8 @@ import com.microsoft.azure.cosmosdb.Trigger;
 import com.microsoft.azure.cosmosdb.User;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
 import com.microsoft.azure.cosmosdb.rx.internal.Strings;
-import org.apache.commons.lang3.StringEscapeUtils;
+
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -48,13 +53,11 @@ import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
  * Used internally to provide utility methods to work with the resource's path in the Azure Cosmos DB database service.
  */
 public class PathsHelper {
+    private final static Logger logger = LoggerFactory.getLogger(PathsHelper.class);
+
     public static String generatePath(ResourceType resourceType, RxDocumentServiceRequest request, boolean isFeed) {
         if (request.getIsNameBased()) {
-            return request.getResourceAddress();
-
-            // TODO: once https://msdata.visualstudio.com/CosmosDB/_workitems/edit/315281 is done
-            // we should wire this up against PathsHelper.generatePathForNameBased(.)
-            // return PathsHelper.generatePathForNameBased(resourceType, request.getResourceAddress(), isFeed);
+            return PathsHelper.generatePathForNameBased(resourceType, request.getResourceAddress(), isFeed);
         } else {
             return PathsHelper.generatePath(resourceType, request.getResourceId(), isFeed);
         }
@@ -130,7 +133,7 @@ public class PathsHelper {
         } else if (resourceType == ResourceType.Offer) {
             return resourceFullName + "/" + Paths.OFFERS_PATH_SEGMENT;
         } else if (resourceType == ResourceType.PartitionKeyRange) {
-            return resourceFullName + "/" + Paths.PARTITION_KEY_RANGE_PATH_SEGMENT;
+            return resourceFullName + "/" + Paths.PARTITION_KEY_RANGES_PATH_SEGMENT;
         } else if (resourceType == ResourceType.Schema) {
             resourcePath = resourceFullName + "/" + Paths.SCHEMAS_PATH_SEGMENT;
         } else {
@@ -151,6 +154,10 @@ public class PathsHelper {
             resourceType != ResourceType.DatabaseAccount &&
                 resourceType != ResourceType.Topology) {
             throw new IllegalStateException("Invalid resource type");
+        }
+
+        if(ownerOrResourceId == null) {
+            ownerOrResourceId = StringUtils.EMPTY;
         }
 
         if (isFeed && resourceType == ResourceType.Database) {
@@ -229,13 +236,13 @@ public class PathsHelper {
             return Paths.DATABASES_PATH_SEGMENT + "/" + documentCollectionId.getDatabaseId().toString() + "/" + 
                     Paths.COLLECTIONS_PATH_SEGMENT + "/" + 
                     documentCollectionId.getDocumentCollectionId().toString() + "/" + 
-                    Paths.PARTITION_KEY_RANGE_PATH_SEGMENT;
+                    Paths.PARTITION_KEY_RANGES_PATH_SEGMENT;
         } else if (resourceType == ResourceType.PartitionKeyRange) {
             ResourceId partitionKeyRangeId = ResourceId.parse(ownerOrResourceId);
 
             return Paths.DATABASES_PATH_SEGMENT + "/" + partitionKeyRangeId.getDatabaseId().toString() + "/" + 
                     Paths.COLLECTIONS_PATH_SEGMENT + "/" + partitionKeyRangeId.getDocumentCollectionId().toString() + "/" + 
-                    Paths.PARTITION_KEY_RANGE_PATH_SEGMENT + "/" + partitionKeyRangeId.getPartitionKeyRangeId().toString();
+                    Paths.PARTITION_KEY_RANGES_PATH_SEGMENT + "/" + partitionKeyRangeId.getPartitionKeyRangeId().toString();
         } else if (isFeed && resourceType == ResourceType.Attachment) {
             ResourceId documentCollectionId = ResourceId.parse(ownerOrResourceId);
 
@@ -356,6 +363,10 @@ public class PathsHelper {
      * @return
      */
     public static boolean tryParsePathSegments(String resourceUrl, PathInfo pathInfo, String clientVersion) {
+        pathInfo.resourcePath = StringUtils.EMPTY;
+        pathInfo.resourceIdOrFullName = StringUtils.EMPTY;
+        pathInfo.isFeed = false;
+        pathInfo.isNameBased = false;
         if (StringUtils.isEmpty(resourceUrl)) {
             return false;
         }
@@ -375,13 +386,16 @@ public class PathsHelper {
             if (Paths.MEDIA_PATH_SEGMENT.compareTo(segments[0]) != 0
                     && Paths.OFFERS_PATH_SEGMENT.compareTo(segments[0]) != 0
                     && Paths.PARTITIONS_PATH_SEGMENT.compareTo(segments[0]) != 0
-                    && Paths.DATABASE_ACCOUNT_PATH_SEGMENT.compareTo(segments[0]) != 0) {
+                    && Paths.DATABASE_ACCOUNT_PATH_SEGMENT.compareTo(segments[0]) != 0
+                    && Paths.TOPOLOGY_PATH_SEGMENT.compareTo(segments[0]) != 0
+                    && Paths.RID_RANGE_PATH_SEGMENT.compareTo(segments[0]) != 0) {
                 Pair<Boolean, ResourceId> result = ResourceId.tryParse(segments[1]);
                 if (!result.getLeft() || !result.getRight().isDatabaseId()) {
                     pathInfo.isNameBased = true;
                     return tryParseNameSegments(resourceUrl, segments, pathInfo);
                 }
             }
+        }
             // Feed paths have odd number of segments
             if ((uriSegmentsCount % 2 != 0) && PathsHelper.isResourceType(segmentOne)) {
                 pathInfo.isFeed = true;
@@ -415,7 +429,7 @@ public class PathsHelper {
             } else {
                 return false;
             }
-        }
+
         return true;
 
     }
@@ -428,7 +442,7 @@ public class PathsHelper {
      * @param pathInfo Path info object which will hold information
      * @return
      */
-    public static boolean tryParseNameSegments(String resourceUrl, String[] segments, PathInfo pathInfo) {
+    private static boolean tryParseNameSegments(String resourceUrl, String[] segments, PathInfo pathInfo) {
         pathInfo.isFeed = false;
         pathInfo.resourceIdOrFullName = "";
         pathInfo.resourcePath = "";
@@ -439,23 +453,20 @@ public class PathsHelper {
             // even number, assume it is individual resource
             if (isResourceType(segments[segments.length - 2])) {
                 pathInfo.resourcePath = segments[segments.length - 2];
-                pathInfo.resourceIdOrFullName = StringEscapeUtils
-                        .unescapeJava(StringUtils.strip(
-                                resourceUrl.substring(0,
-                                        StringUtils.removeEnd(resourceUrl, Paths.ROOT).lastIndexOf(Paths.ROOT)),
-                                Paths.ROOT));
+                pathInfo.resourceIdOrFullName = StringEscapeUtils.unescapeJava(StringUtils.removeEnd(
+                        StringUtils.removeStart(resourceUrl, Paths.ROOT), Paths.ROOT));
                 return true;
-            } else {
+            }
+        } else {
                 // odd number, assume it is feed request
                 if (isResourceType(segments[segments.length - 1])) {
                     pathInfo.isFeed = true;
                     pathInfo.resourcePath = segments[segments.length - 1];
-                    pathInfo.resourceIdOrFullName = StringEscapeUtils.unescapeJava(StringUtils.strip(
-                            resourceUrl.substring(0,
-                                    StringUtils.removeEnd(resourceUrl, Paths.ROOT).lastIndexOf(Paths.ROOT)),
-                            Paths.ROOT));
+                    String resourceIdOrFullName = resourceUrl.substring(0, StringUtils.removeEnd(resourceUrl,Paths.ROOT).lastIndexOf(Paths.ROOT));
+                    pathInfo.resourceIdOrFullName = StringEscapeUtils.unescapeJava(StringUtils.removeEnd(
+                            StringUtils.removeStart(resourceIdOrFullName, Paths.ROOT), Paths.ROOT));
+                    return true;
                 }
-            }
         }
         return false;
     }
@@ -507,7 +518,7 @@ public class PathsHelper {
             case Paths.PARTITIONS_PATH_SEGMENT:
             case Paths.DATABASE_ACCOUNT_PATH_SEGMENT:
             case Paths.TOPOLOGY_PATH_SEGMENT:
-            case Paths.PARTITION_KEY_RANGE_PATH_SEGMENT:
+            case Paths.PARTITION_KEY_RANGES_PATH_SEGMENT:
             case Paths.SCHEMAS_PATH_SEGMENT:
                 return true;
             default:
@@ -540,7 +551,7 @@ public class PathsHelper {
             case User:
                 return resourceOwnerFullName + "/" + Paths.USERS_PATH_SEGMENT + "/" + resourceName;
             case PartitionKeyRange:
-                return resourceOwnerFullName + "/" + Paths.PARTITION_KEY_RANGE_PATH_SEGMENT + "/" + resourceName;
+                return resourceOwnerFullName + "/" + Paths.PARTITION_KEY_RANGES_PATH_SEGMENT + "/" + resourceName;
             default:
                 return null;
         }
@@ -690,7 +701,7 @@ public class PathsHelper {
                 return Paths.PARTITIONS_PATH_SEGMENT;
 
             case PartitionKeyRange:
-                return Paths.PARTITION_KEY_RANGE_PATH_SEGMENT;
+                return Paths.PARTITION_KEY_RANGES_PATH_SEGMENT;
 
             case Media:
                 return Paths.MEDIA_ROOT;
@@ -709,4 +720,165 @@ public class PathsHelper {
                 throw new BadRequestException(errorMessage);
         }
     }
+
+    public static boolean validateResourceFullName(ResourceType resourceType, String resourceFullName) {
+        String[] segments = StringUtils.split(resourceFullName, '/');
+        String[] resourcePathArray = getResourcePathArray(resourceType);
+        if (resourcePathArray == null) {
+            return false;
+        }
+
+        if (segments.length != resourcePathArray.length * 2) {
+            return false;
+        }
+        for (int i = 0; i < resourcePathArray.length; i++) {
+            if(resourcePathArray[i].compareTo(segments[2 * i]) != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static String[] getResourcePathArray(ResourceType resourceType) {
+        List<String> segments = new ArrayList<String>();
+        segments.add(Paths.DATABASES_PATH_SEGMENT);
+
+        if (resourceType == ResourceType.Permission ||
+            resourceType == ResourceType.User) {
+            segments.add(Paths.USERS_PATH_SEGMENT);
+            if (resourceType == ResourceType.Permission) {
+                segments.add(Paths.PERMISSIONS_PATH_SEGMENT);
+            }
+        } else if (resourceType == ResourceType.DocumentCollection ||
+                    resourceType == ResourceType.StoredProcedure ||
+                    resourceType == ResourceType.UserDefinedFunction ||
+                    resourceType == ResourceType.Trigger ||
+                    resourceType == ResourceType.Conflict ||
+                    resourceType == ResourceType.Attachment ||
+                    resourceType == ResourceType.Document ||
+                    resourceType == ResourceType.PartitionKeyRange ||
+                    resourceType == ResourceType.Schema) {
+            segments.add(Paths.COLLECTIONS_PATH_SEGMENT);
+            if (resourceType == ResourceType.StoredProcedure) {
+                segments.add(Paths.STORED_PROCEDURES_PATH_SEGMENT);
+            } else if(resourceType == ResourceType.UserDefinedFunction) {
+                segments.add(Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT);
+            } else if(resourceType == ResourceType.Trigger) {
+                segments.add(Paths.TRIGGERS_PATH_SEGMENT);
+            } else if (resourceType == ResourceType.Conflict) {
+                segments.add(Paths.CONFLICTS_PATH_SEGMENT);
+            } else if (resourceType == ResourceType.Schema) {
+                segments.add(Paths.SCHEMAS_PATH_SEGMENT);
+            } else if(resourceType == ResourceType.Document ||
+                      resourceType == ResourceType.Attachment) {
+                segments.add(Paths.DOCUMENTS_PATH_SEGMENT);
+                if (resourceType == ResourceType.Attachment) {
+                    segments.add(Paths.ATTACHMENTS_PATH_SEGMENT);
+                }
+            } else if(resourceType == ResourceType.PartitionKeyRange) {
+                segments.add(Paths.PARTITION_KEY_RANGES_PATH_SEGMENT);
+            }
+        } else if (resourceType != ResourceType.Database) {
+            return null;
+        }
+        return segments.stream().toArray(String[]::new);
+    }
+
+    public static boolean validateResourceId(ResourceType resourceType, String resourceId) {
+        if (resourceType == ResourceType.Conflict) {
+            return PathsHelper.validateConflictId(resourceId);
+        } else if (resourceType == ResourceType.Database) {
+            return PathsHelper.validateDatabaseId(resourceId);
+        } else if (resourceType == ResourceType.DocumentCollection) {
+            return PathsHelper.validateDocumentCollectionId(resourceId);
+        } else if (resourceType == ResourceType.Document) {
+            return PathsHelper.validateDocumentId(resourceId);
+        } else if (resourceType == ResourceType.Permission) {
+            return PathsHelper.validatePermissionId(resourceId);
+        } else if (resourceType == ResourceType.StoredProcedure) {
+            return PathsHelper.validateStoredProcedureId(resourceId);
+        } else if (resourceType == ResourceType.Trigger) {
+            return PathsHelper.validateTriggerId(resourceId);
+        } else if (resourceType == ResourceType.UserDefinedFunction) {
+            return PathsHelper.validateUserDefinedFunctionId(resourceId);
+        } else if (resourceType == ResourceType.User) {
+            return PathsHelper.validateUserId(resourceId);
+        } else if (resourceType == ResourceType.Attachment) {
+            return PathsHelper.validateAttachmentId(resourceId);
+        } else {
+            logger.error(String.format("ValidateResourceId not implemented for Type %s in ResourceRequestHandler", resourceType.toString()));
+            return false;
+        }
+    }
+
+    public static boolean validateDatabaseId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getDatabase() != 0;
+    }
+
+    public static boolean validateDocumentCollectionId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getDocumentCollection() != 0;
+    }
+
+    public static boolean validateDocumentId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getDocument() != 0;
+    }
+
+    public static boolean validateConflictId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getConflict() != 0;
+    }
+
+    public static boolean validateAttachmentId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getAttachment() != 0;
+    }
+
+    public static boolean validatePermissionId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getPermission() != 0;
+    }
+
+    public static boolean validateStoredProcedureId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getStoredProcedure() != 0;
+    }
+
+    public static boolean validateTriggerId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getTrigger() != 0;
+    }
+
+    public static boolean validateUserDefinedFunctionId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getUserDefinedFunction() != 0;
+    }
+
+    public static boolean validateUserId(String resourceIdString) {
+        Pair<Boolean, ResourceId> pair = ResourceId.tryParse(resourceIdString);
+        return pair.getLeft() && pair.getRight().getUser() != 0;
+    }
+
+
+    public static boolean isPublicResource(Resource resourceType) {
+        if (resourceType instanceof Database ||
+                resourceType instanceof DocumentCollection ||
+                resourceType instanceof StoredProcedure ||
+                resourceType instanceof UserDefinedFunction ||
+                resourceType instanceof Trigger ||
+                resourceType instanceof Conflict ||
+                resourceType instanceof Attachment ||
+                resourceType instanceof User ||
+                resourceType instanceof Permission ||
+                resourceType instanceof Document ||
+                resourceType instanceof Offer
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

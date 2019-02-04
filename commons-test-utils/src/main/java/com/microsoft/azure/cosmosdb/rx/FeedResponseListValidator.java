@@ -130,6 +130,18 @@ public interface FeedResponseListValidator<T extends Resource> {
             return this;
         }
 
+        public Builder<T> numberOfPagesIsGreaterThanOrEqualTo(int leastNumber) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    assertThat(feedList.size())
+                            .describedAs("number of pages")
+                            .isGreaterThanOrEqualTo(leastNumber);
+                }
+            });
+            return this;
+        }
+
         public Builder<T> totalRequestChargeIsAtLeast(double minimumCharge) {
             validators.add(new FeedResponseListValidator<T>() {
                 @Override

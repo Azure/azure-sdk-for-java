@@ -55,7 +55,6 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     private static final int SETUP_TIMEOUT = 40000;
     private static final int TIMEOUT = 30000;
-    private static final String DATABASE_ID = getDatabaseId(ChangeFeedTest.class);
     private static final String PartitionKeyFieldName = "mypk";
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -65,7 +64,7 @@ public class ChangeFeedTest extends TestSuiteBase {
     private AsyncDocumentClient client;
 
     public String getCollectionLink() {
-        return Utils.getCollectionNameLink(DATABASE_ID, createdCollection.getId());
+        return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
     static protected DocumentCollection getCollectionDefinition() {
@@ -157,11 +156,14 @@ public class ChangeFeedTest extends TestSuiteBase {
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
         changeFeedOption.setPartitionKey(new PartitionKey(partitionKey));
 
-        FeedResponse<Document> changeFeedResults = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
+        List<FeedResponse<Document>> changeFeedResultsList = client.queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
+                .toList()
                 .toBlocking().single();
 
-        assertThat(changeFeedResults.getResults()).as("Change feed response should be empty").isEmpty();
-        assertThat(changeFeedResults.getResponseContinuation()).as("Response continuation should not be null").isNotNull();
+        FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder().totalSize(0).build();
+        validator.validate(changeFeedResultsList);
+        assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
+                getResponseContinuation()).as("Response continuation should not be null").isNotNull();
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -196,7 +198,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(changeFeedResults2.getResponseContinuation()).as("Response continuation should not be null").isNotNull();
     }
 
-    public void createDocument(AsyncDocumentClient client, String partitionKey) throws DocumentClientException {
+    public void createDocument(AsyncDocumentClient client, String partitionKey) {
         Document docDefinition = getDocumentDefinition(partitionKey);
 
         Document createdDocument = client
@@ -247,14 +249,11 @@ public class ChangeFeedTest extends TestSuiteBase {
     public void beforeClass() throws Exception {
         // set up the client        
         client = clientBuilder.build();
-        Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
+        createdDatabase = SHARED_DATABASE;
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, DATABASE_ID);
         safeClose(client);
     }
 

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -37,13 +38,14 @@ import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.User;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 
+import javax.net.ssl.SSLException;
+
 public class ReadFeedUsersTest extends TestSuiteBase {
 
-    public final static String DATABASE_ID = getDatabaseId(ReadFeedUsersTest.class);
+    public final String databaseId = DatabaseForTest.generateId();
     private Database createdDatabase;
 
     private AsyncDocumentClient.Builder clientBuilder;
@@ -76,15 +78,17 @@ public class ReadFeedUsersTest extends TestSuiteBase {
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws DocumentClientException {
+    public void beforeClass() {
         client = clientBuilder.build();
         Database d = new Database();
-        d.setId(DATABASE_ID);
-        createdDatabase = safeCreateDatabase(client, d);
+        d.setId(databaseId);
+        createdDatabase = createDatabase(client, d);
 
         for(int i = 0; i < 5; i++) {
             createdUsers.add(createUsers(client));
         }
+
+        waitIfNeededForReplicasToCatchUp(clientBuilder);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
@@ -93,7 +97,7 @@ public class ReadFeedUsersTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    public User createUsers(AsyncDocumentClient client) throws DocumentClientException {
+    public User createUsers(AsyncDocumentClient client) {
         User user = new User();
         user.setId(UUID.randomUUID().toString());
         return client.createUser(getDatabaseLink(), user, null).toBlocking().single().getResource();

@@ -23,21 +23,11 @@
 
 package com.microsoft.azure.cosmosdb.rx.internal;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.microsoft.azure.cosmosdb.internal.Utils;
-import org.apache.commons.lang3.StringUtils;
-
 import com.microsoft.azure.cosmosdb.Attachment;
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.Conflict;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
@@ -52,8 +42,19 @@ import com.microsoft.azure.cosmosdb.User;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.internal.PathsHelper;
+import com.microsoft.azure.cosmosdb.internal.Utils;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Address;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreResponse;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is core Transport/Connection agnostic response for the Azure Cosmos DB database service.
@@ -72,13 +73,9 @@ public class RxDocumentServiceResponse {
         // Gets status code.
         this.statusCode = response.getStatus();
 
-        // TODO: handle session token
-
         // Extracts headers.
         for (int i = 0; i < headerNames.length; i++) {
-            if (!headerNames[i].equals(HttpConstants.HttpHeaders.LSN)) {
-                this.headersMap.put(headerNames[i], headerValues[i]);
-            }
+            this.headersMap.put(headerNames[i], headerValues[i]);
         }
 
         this.storeResponse = response;
@@ -135,12 +132,18 @@ public class RxDocumentServiceResponse {
         if (StringUtils.isEmpty(responseBody))
             return null;
 
+        T resource = null;
         try {
-            return c.getConstructor(String.class).newInstance(responseBody);
+            resource =  c.getConstructor(String.class).newInstance(responseBody);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
                 | NoSuchMethodException | SecurityException e) {
             throw new IllegalStateException("Failed to instantiate class object.", e);
         }
+        if(PathsHelper.isPublicResource(resource)) {
+            BridgeInternal.setAltLink(resource, PathsHelper.generatePathForNameBased(resource, this.getOwnerFullName(),resource.getId()));
+        }
+
+        return resource;
     }
 
     public <T extends Resource> List<T> getQueryResponse(Class<T> c) {
@@ -206,6 +209,13 @@ public class RxDocumentServiceResponse {
         } catch (JsonProcessingException e) {
             throw new IllegalStateException("Can't serialize the object into the json string", e);
         }
+    }
+
+    private String getOwnerFullName() {
+        if (this.headersMap != null) {
+            return this.headersMap.get(HttpConstants.HttpHeaders.OWNER_FULL_NAME);
+        }
+        return null;
     }
 
     public InputStream getContentStream() {

@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -75,6 +76,15 @@ public class JsonSerializable {
      */
     protected JsonSerializable(String jsonString) {
         this.propertyBag = fromJson(jsonString);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the {@link ObjectNode} that represent the {@link JsonSerializable}
+     */
+    JsonSerializable(ObjectNode objectNode) {
+        this.propertyBag = objectNode;
     }
 
     protected ObjectMapper getMapper() {
@@ -315,15 +325,15 @@ public class JsonSerializable {
     }
 
     /**
-     * Gets an object collection.
-     * 
-     * @param <T>          the type of the objects in the collection.
+     * Gets an object List.
+     *
+     * @param <T>          the type of the objects in the List.
      * @param propertyName the property to get
      * @param c            the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
      *                     and a static one.
      * @return the object collection.
      */
-    public <T> Collection<T> getCollection(String propertyName, Class<T> c) {
+    public <T> List<T> getList(String propertyName, Class<T> c) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(propertyName);
             ArrayList<T> result = new ArrayList<T>();
@@ -351,7 +361,7 @@ public class JsonSerializable {
                 } else if (isEnumClass) {
                     try {
                         result.add(c.cast(c.getMethod("valueOf", String.class).invoke(null,
-                                String.class.cast(getValue(n)))));
+                                                                                      String.class.cast(getValue(n)))));
                     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                             | NoSuchMethodException | SecurityException e) {
                         throw new IllegalStateException("Failed to create enum.", e);
@@ -376,6 +386,19 @@ public class JsonSerializable {
             return result;
         }
         return null;
+    }
+
+    /**
+     * Gets an object collection.
+     * 
+     * @param <T>          the type of the objects in the collection.
+     * @param propertyName the property to get
+     * @param c            the class of the object. If c is a POJO class, it must be a member (and not an anonymous or local)
+     *                     and a static one.
+     * @return the object collection.
+     */
+    public <T> Collection<T> getCollection(String propertyName, Class<T> c) {
+        return getList(propertyName, c);
     }
 
     /**
@@ -417,7 +440,7 @@ public class JsonSerializable {
      * @param propertyNames that form the path to the the property to get.
      * @return the value of the property.
      */
-    public Object getObjectByPath(Collection<String> propertyNames) {
+    public Object getObjectByPath(List<String> propertyNames) {
         ObjectNode propBag = this.propertyBag;
         JsonNode value = null;
         String propertyName = null;

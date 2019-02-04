@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.assertj.core.util.Strings;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -40,7 +41,6 @@ import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.Offer;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
@@ -48,15 +48,15 @@ import rx.Observable;
 public class OfferQueryTest extends TestSuiteBase {
 
     public final static int SETUP_TIMEOUT = 40000;
-    public final static String DATABASE_ID = getDatabaseId(OfferQueryTest.class);
+    public final String databaseId = DatabaseForTest.generateId();
 
     private List<DocumentCollection> createdCollections = new ArrayList<>();
 
     private Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    private static String getDatabaseLink() {
-        return Utils.getDatabaseNameLink(DATABASE_ID);
+    private String getDatabaseLink() {
+        return Utils.getDatabaseNameLink(databaseId);
     }
 
     @Factory(dataProvider = "clientBuilders")
@@ -64,7 +64,7 @@ public class OfferQueryTest extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void queryOffersWithFilter() throws Exception {
         String collectionResourceId = createdCollections.get(0).getResourceId();
         String query = String.format("SELECT * from c where c.offerResourceId = '%s'", collectionResourceId);
@@ -91,7 +91,7 @@ public class OfferQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable, validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT * 100)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 100)
     public void queryOffersFilterMorePages() throws Exception {
         
         List<String> collectionResourceIds = createdCollections.stream().map(c -> c.getResourceId()).collect(Collectors.toList());
@@ -121,7 +121,7 @@ public class OfferQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable, validator, 10000);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void queryCollections_NoResults() throws Exception {
 
         String query = "SELECT * from root r where r.id = '2'";
@@ -137,24 +137,24 @@ public class OfferQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable, validator);
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         client = clientBuilder.build();
 
         Database d1 = new Database();
-        d1.setId(DATABASE_ID);
-        safeCreateDatabase(client, d1);
+        d1.setId(databaseId);
+        createDatabase(client, d1);
 
         for(int i = 0; i < 3; i++) {
             DocumentCollection collection = new DocumentCollection();
             collection.setId(UUID.randomUUID().toString());
-            createdCollections.add(createCollection(client, DATABASE_ID, collection));
+            createdCollections.add(createCollection(client, databaseId, collection));
         }        
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeDeleteDatabase(client, DATABASE_ID);
+        safeDeleteDatabase(client, databaseId);
         safeClose(client);
     }
 }

@@ -25,26 +25,41 @@
 package com.microsoft.azure.cosmosdb.rx.internal;
 
 import java.net.URL;
+import java.util.List;
 
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.PartitionKeyRange;
 import com.microsoft.azure.cosmosdb.internal.ISessionToken;
 import com.microsoft.azure.cosmosdb.internal.RequestChargeTracker;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreReadResult;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreResponse;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.TimeoutHelper;
+import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
 
-public class DocumentServiceRequestContext {
+public class DocumentServiceRequestContext implements Cloneable{
     public volatile boolean forceAddressRefresh;
+    public volatile boolean forceRefreshAddressCache;
     public volatile RequestChargeTracker requestChargeTracker;
+    public volatile TimeoutHelper timeoutHelper;
     public volatile String resolvedCollectionRid;
     public volatile ISessionToken sessionToken;
     public volatile long quorumSelectedLSN;
     public volatile long globalCommittedSelectedLSN;
-    public volatile long globalStrongWriteResponse;
+    public volatile StoreResponse globalStrongWriteResponse;
     public volatile ConsistencyLevel originalRequestConsistencyLevel;
     public volatile PartitionKeyRange resolvedPartitionKeyRange;
     public volatile Integer regionIndex;
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
     public volatile URL locationEndpointToRoute;
+    public volatile boolean performedBackgroundAddressRefresh;
+    public volatile boolean performLocalRefreshOnGoneException;
+    public volatile List<String> storeResponses;
+    public volatile StoreReadResult quorumSelectedStoreResponse;
+    public volatile PartitionKeyInternal effectivePartitionKey;
+
+    // TODO PRODUCT BACKLOG ITEM 258624
+    // public volatile ClientSideRequestStatistics ClientRequestStatistics;
 
     /**
      * Sets routing directive for GlobalEndpointManager to resolve the request
@@ -78,6 +93,31 @@ public class DocumentServiceRequestContext {
         this.locationIndexToRoute = null;
         this.locationEndpointToRoute = null;
         this.usePreferredLocations = null;
+    }
+
+    @Override
+    public DocumentServiceRequestContext clone() {
+        DocumentServiceRequestContext context = new DocumentServiceRequestContext();
+        context.forceAddressRefresh = this.forceAddressRefresh;
+        context.forceRefreshAddressCache = this.forceRefreshAddressCache;
+        context.requestChargeTracker = this.requestChargeTracker;
+        context.timeoutHelper = this.timeoutHelper;
+        context.resolvedCollectionRid = this.resolvedCollectionRid;
+        context.sessionToken = this.sessionToken;
+        context.quorumSelectedLSN = this.quorumSelectedLSN;
+        context.globalCommittedSelectedLSN = this.globalCommittedSelectedLSN;
+        context.globalStrongWriteResponse = this.globalStrongWriteResponse;
+        context.originalRequestConsistencyLevel = this.originalRequestConsistencyLevel;
+        context.resolvedPartitionKeyRange = this.resolvedPartitionKeyRange;
+        context.regionIndex = this.regionIndex;
+        context.usePreferredLocations = this.usePreferredLocations;
+        context.locationIndexToRoute = this.locationIndexToRoute;
+        context.locationEndpointToRoute = this.locationEndpointToRoute;
+        context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
+        context.effectivePartitionKey = this.effectivePartitionKey;
+        context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
+
+        return context;
     }
 }
 

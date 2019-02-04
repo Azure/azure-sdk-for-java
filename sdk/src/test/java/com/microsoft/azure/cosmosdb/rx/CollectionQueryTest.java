@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -39,27 +40,25 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
 
 public class CollectionQueryTest extends TestSuiteBase {
-
-    public final static String DATABASE_ID = getDatabaseId(CollectionQueryTest.class);
-
+    private final static int TIMEOUT = 30000;
+    private final String databaseId = DatabaseForTest.generateId();
     private List<DocumentCollection> createdCollections = new ArrayList<>();
-
     private Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    private static String getDatabaseLink() {
-        return Utils.getDatabaseNameLink(DATABASE_ID);
+    private String getDatabaseLink() {
+        return Utils.getDatabaseNameLink(databaseId);
     }
     
     @Factory(dataProvider = "clientBuilders")
     public CollectionQueryTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
+        this.subscriberValidationTimeout = TIMEOUT;
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -97,7 +96,7 @@ public class CollectionQueryTest extends TestSuiteBase {
 
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
-        String databaseLink = Utils.getDatabaseNameLink(DATABASE_ID);
+        String databaseLink = Utils.getDatabaseNameLink(databaseId);
         Observable<FeedResponse<DocumentCollection>> queryObservable = client.queryCollections(databaseLink, query, options);
 
         List<DocumentCollection> expectedCollections = createdCollections;
@@ -136,19 +135,17 @@ public class CollectionQueryTest extends TestSuiteBase {
     
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = clientBuilder.build();        
-        Database d1 = new Database();
-        d1.setId(DATABASE_ID);
-        safeCreateDatabase(client, d1);
+        client = clientBuilder.build();
+        createDatabase(client, databaseId);
 
         DocumentCollection collection = new DocumentCollection();
         collection.setId(UUID.randomUUID().toString());
-        createdCollections.add(createCollection(client, DATABASE_ID, collection));
+        createdCollections.add(createCollection(client, databaseId, collection));
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public  void afterClass() {
-        safeDeleteDatabase(client, DATABASE_ID);
+    public void afterClass() {
+        safeDeleteDatabase(client, databaseId);
         safeClose(client);
     }
 }

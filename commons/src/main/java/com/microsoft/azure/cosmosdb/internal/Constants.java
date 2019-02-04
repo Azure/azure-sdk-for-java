@@ -74,6 +74,7 @@ public final class Constants {
         public static final String PERMISSION_MODE = "permissionMode";
         public static final String RESOURCE_KEY = "key";
         public static final String TOKEN = "_token";
+        public static final String SQL_API_TYPE = "0x10";
 
         // Scripting
         public static final String BODY = "body";
@@ -103,6 +104,7 @@ public final class Constants {
         public static final String USER_CONSISTENCY_POLICY = "userConsistencyPolicy";
         public static final String SYSTEM_REPLICATION_POLICY = "systemReplicationPolicy";
         public static final String READ_POLICY = "readPolicy";
+        public static final String QUERY_ENGINE_CONFIGURATION = "queryEngineConfiguration";
 
         //ReplicationPolicy
         public static final String REPLICATION_POLICY = "replicationPolicy";
@@ -174,7 +176,6 @@ public final class Constants {
         public static final String DATABASE_ACCOUNT_ENDPOINT = "databaseAccountEndpoint";
 
       //Authorization
-        public static final String AUTHORIZATION_FORMAT = "type={0}&ver={1}&sig={2}";
         public static final String MASTER_TOKEN = "master";
         public static final String RESOURCE_TOKEN = "resource";
         public static final String TOKEN_VERSION = "1.0";

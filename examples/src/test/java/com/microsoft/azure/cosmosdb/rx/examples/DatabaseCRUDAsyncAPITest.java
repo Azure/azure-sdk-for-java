@@ -22,19 +22,6 @@
  */
 package com.microsoft.azure.cosmosdb.rx.examples;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
@@ -42,15 +29,25 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.SqlParameter;
-import com.microsoft.azure.cosmosdb.SqlParameterCollection;
-import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-import com.microsoft.azure.cosmosdb.rx.examples.TestConfigurations;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.observable.ListenableFutureObservable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
+import javax.net.ssl.SSLException;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
 
 /**
  * This integration test class demonstrates how to use Async API to create,
@@ -63,47 +60,49 @@ import rx.observable.ListenableFutureObservable;
  * 
  * For example
  * <ul>
- * <li>{@link #testCreateDatabase_Async()} demonstrates how to use async api
+ * <li>{@link #createDatabase_Async()} demonstrates how to use async api
  * with java8 lambda expression.
  * 
- * <li>{@link #testCreateDatabase_Async_withoutLambda()} demonstrates how to 
+ * <li>{@link #createDatabase_Async_withoutLambda()} demonstrates how to
  * do the same thing without lambda expression.
  * </ul>
  * 
  * Also if you need to work with Future or ListenableFuture it is possible to
  * transform an observable to ListenableFuture. Please see
- * {@link #testTransformObservableToGoogleGuavaListenableFuture()}
+ * {@link #transformObservableToGoogleGuavaListenableFuture()}
  * 
  */
 public class DatabaseCRUDAsyncAPITest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseCRUDAsyncAPITest.class);
-
-    private static final String DATABASE_ID = Utils.getDatabaseId(DatabaseCRUDAsyncAPITest.class);
-    private Database databaseDefinition;
+    private final static int TIMEOUT = 60000;
+    private final List<String> databaseIds = new ArrayList<>();
 
     private AsyncDocumentClient asyncClient;
 
-    @Before
-    public void setUp() throws DocumentClientException {
-
+    @BeforeClass(groups = "samples", timeOut = TIMEOUT)
+    public void setUp() {
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKey(TestConfigurations.MASTER_KEY)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
-
-        // Clean up before setting up
-        this.cleanUpGeneratedDatabases();
-
-        databaseDefinition = new Database();
-        databaseDefinition.setId(DATABASE_ID);
     }
 
-    @After
-    public void shutdown() throws DocumentClientException {
-        Utils.safeclean(asyncClient, DATABASE_ID);
+    public Database getDatabaseDefinition() {
+        Database databaseDefinition = new Database();
+        databaseDefinition.setId(Utils.generateDatabaseId());
+
+        databaseIds.add(databaseDefinition.getId());
+
+        return databaseDefinition;
+    }
+
+    @AfterClass(groups = "samples", timeOut = TIMEOUT)
+    public void shutdown() {
+        for(String id: databaseIds) {
+            Utils.safeClean(asyncClient, id);
+        }
+        Utils.safeClose(asyncClient);
     }
 
     /**
@@ -111,42 +110,43 @@ public class DatabaseCRUDAsyncAPITest {
      * This test uses java8 lambda expression.
      * See testCreateDatabase_Async_withoutLambda for usage without lambda.
      */
-    @Test
-    public void testCreateDatabase_Async() throws Exception {
-        Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(databaseDefinition,
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createDatabase_Async() throws Exception {
+        Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(getDatabaseDefinition(),
                 null);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch completionLatch = new CountDownLatch(1);
 
         createDatabaseObservable.single() // We know there is only single result
                 .subscribe(databaseResourceResponse -> {
                     System.out.println(databaseResourceResponse.getActivityId());
-                    successfulCompletionLatch.countDown();
+                    completionLatch.countDown();
                 }, error -> {
                     System.err.println(
                             "an error occurred while creating the database: actual cause: " + error.getMessage());
+                    completionLatch.countDown();
                 });
 
         // Wait till database creation completes
-        successfulCompletionLatch.await();
+        completionLatch.await();
     }
 
     /**
      * Create a database using async api, without java8 lambda expressions
      */
-    @Test
-    public void testCreateDatabase_Async_withoutLambda() throws Exception {
-        Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(databaseDefinition,
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createDatabase_Async_withoutLambda() throws Exception {
+        Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(getDatabaseDefinition(),
                 null);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch completionLatch = new CountDownLatch(1);
         Action1<ResourceResponse<Database>> onDatabaseCreationAction = new Action1<ResourceResponse<Database>>() {
 
             @Override
             public void call(ResourceResponse<Database> resourceResponse) {
                 // Database is created
                 System.out.println(resourceResponse.getActivityId());
-                successfulCompletionLatch.countDown();
+                completionLatch.countDown();
             }
         };
 
@@ -155,6 +155,7 @@ public class DatabaseCRUDAsyncAPITest {
             public void call(Throwable error) {
                 System.err
                         .println("an error occurred while creating the database: actual cause: " + error.getMessage());
+                completionLatch.countDown();
             }
         };
 
@@ -162,15 +163,15 @@ public class DatabaseCRUDAsyncAPITest {
                 .subscribe(onDatabaseCreationAction, onError);
 
         // Wait till database creation completes
-        successfulCompletionLatch.await();
+        completionLatch.await();
     }
 
     /**
      * Create a database in a blocking manner
      */
-    @Test
-    public void testCreateDatabase_toBlocking() throws DocumentClientException {
-        Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(databaseDefinition,
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createDatabase_toBlocking() {
+        Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(getDatabaseDefinition(),
                 null);
 
         // toBlocking() converts to a blocking observable.
@@ -185,8 +186,9 @@ public class DatabaseCRUDAsyncAPITest {
      * - Converts the Observable to blocking using Observable.toBlocking() api
      * - Catch already exist failure (409)
      */
-    @Test
-    public void testCreateDatabase_toBlocking_DatabaseAlreadyExists_Fails() throws DocumentClientException {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createDatabase_toBlocking_DatabaseAlreadyExists_Fails() {
+        Database databaseDefinition = getDatabaseDefinition();
         asyncClient.createDatabase(databaseDefinition, null).toBlocking().single();
 
         // Create the database for test.
@@ -209,9 +211,9 @@ public class DatabaseCRUDAsyncAPITest {
      * of Java's Future which allows registering listener callbacks:
      * https://github.com/google/guava/wiki/ListenableFutureExplained
      */
-    @Test
-    public void testTransformObservableToGoogleGuavaListenableFuture() throws Exception {
-        Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(databaseDefinition,
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void transformObservableToGoogleGuavaListenableFuture() throws Exception {
+        Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(getDatabaseDefinition(),
                 null);
         ListenableFuture<ResourceResponse<Database>> future = ListenableFutureObservable.to(createDatabaseObservable);
 
@@ -224,70 +226,73 @@ public class DatabaseCRUDAsyncAPITest {
     /**
      * Read a Database in an Async manner
      */
-    @Test
-    public void testCreateAndReadDatabase() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createAndReadDatabase() throws Exception {
         // Create a database
-        Database database = asyncClient.createDatabase(databaseDefinition, null).toBlocking().single().getResource();
+        Database database = asyncClient.createDatabase(getDatabaseDefinition(), null).toBlocking().single().getResource();
 
         // Read the created database using async api
         Observable<ResourceResponse<Database>> readDatabaseObservable = asyncClient.readDatabase("dbs/" + database.getId(),
                 null);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch completionLatch = new CountDownLatch(1);
 
         readDatabaseObservable.single() // We know there is only single result
                 .subscribe(databaseResourceResponse -> {
                     System.out.println(databaseResourceResponse.getActivityId());
-                    successfulCompletionLatch.countDown();
+                    completionLatch.countDown();
                 }, error -> {
                     System.err.println(
                             "an error occurred while reading the database: actual cause: " + error.getMessage());
+                    completionLatch.countDown();
                 });
 
         // Wait till read database completes
-        successfulCompletionLatch.await();
+        completionLatch.await();
     }
 
     /**
      * Delete a Database in an Async manner
      */
-    @Test
-    public void testCreateAndDeleteDatabase() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void createAndDeleteDatabase() throws Exception {
         // Create a database
-        Database database = asyncClient.createDatabase(databaseDefinition, null).toBlocking().single().getResource();
+        Database database = asyncClient.createDatabase(getDatabaseDefinition(), null).toBlocking().single().getResource();
 
         // Delete the created database using async api
         Observable<ResourceResponse<Database>> deleteDatabaseObservable = asyncClient
                 .deleteDatabase("dbs/" + database.getId(), null);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch completionLatch = new CountDownLatch(1);
 
         deleteDatabaseObservable.single() // We know there is only single result
                 .subscribe(databaseResourceResponse -> {
                     System.out.println(databaseResourceResponse.getActivityId());
-                    successfulCompletionLatch.countDown();
+                    completionLatch.countDown();
                 }, error -> {
                     System.err.println(
                             "an error occurred while deleting the database: actual cause: " + error.getMessage());
+                    completionLatch.countDown();
                 });
 
         // Wait till database deletion completes
-        successfulCompletionLatch.await();
+        completionLatch.await();
     }
 
     /**
      * Query a Database in an Async manner
      */
-    @Test
-    public void testDatabaseCreateAndQuery() throws Exception {
+    @Test(groups = "samples", timeOut = TIMEOUT)
+    public void databaseCreateAndQuery() throws Exception {
         // Create a database
+        Database databaseDefinition = getDatabaseDefinition();
         asyncClient.createDatabase(databaseDefinition, null).toBlocking().single().getResource();
 
         // Query the created database using async api
         Observable<FeedResponse<Database>> queryDatabaseObservable = asyncClient
                 .queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseDefinition.getId()), null);
 
-        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+        final CountDownLatch completionLatch = new CountDownLatch(1);
 
         queryDatabaseObservable.toList().subscribe(databaseFeedResponseList -> {
             // toList() should return a list of size 1
@@ -302,35 +307,13 @@ public class DatabaseCRUDAsyncAPITest {
             assertThat(foundDatabase.getId(), equalTo(databaseDefinition.getId()));
 
             System.out.println(databaseFeedResponse.getActivityId());
-            successfulCompletionLatch.countDown();
+            completionLatch.countDown();
         }, error -> {
             System.err.println("an error occurred while querying the database: actual cause: " + error.getMessage());
+            completionLatch.countDown();
         });
 
         // Wait till database query completes
-        successfulCompletionLatch.await();
-    }
-
-    private void cleanUpGeneratedDatabases() throws DocumentClientException {
-        LOGGER.info("cleanup databases invoked");
-
-        String[] allDatabaseIds = { DATABASE_ID };
-
-        for (String id : allDatabaseIds) {
-            try {
-                List<FeedResponse<Database>> feedResponsePages = asyncClient
-                        .queryDatabases(new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                                new SqlParameterCollection(new SqlParameter("@id", id))), null)
-                        .toList().toBlocking().single();
-
-                if (!feedResponsePages.get(0).getResults().isEmpty()) {
-                    Database res = feedResponsePages.get(0).getResults().get(0);
-                    LOGGER.info("deleting a database " + feedResponsePages.get(0));
-                    asyncClient.deleteDatabase("dbs/" + res.getId(), null).toBlocking().single();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        completionLatch.await();
     }
 }

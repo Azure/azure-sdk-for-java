@@ -29,12 +29,17 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.WFConstants;
+import org.apache.commons.lang3.StringUtils;
+
 import com.microsoft.azure.cosmosdb.Resource;
 import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.OperationType;
+import com.microsoft.azure.cosmosdb.internal.PathInfo;
 import com.microsoft.azure.cosmosdb.internal.PathsHelper;
 import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
+import com.microsoft.azure.cosmosdb.internal.ResourceId;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.Utils;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyRangeIdentity;
@@ -46,11 +51,13 @@ import rx.observables.StringObservable;
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
  */
 public class RxDocumentServiceRequest {
+    private static final char PREFER_HEADER_SEPERATOR = ';';
+    private static final String PREFER_HEADER_VALUE_FORMAT = "%s=%s";
+
     public volatile boolean forcePartitionKeyRangeRefresh;
     public volatile boolean forceCollectionRoutingMapRefresh;
     private String resourceId;
     private final ResourceType resourceType;
-    private final String path;
     private final Map<String, String> headers;
     private volatile String continuation;
     private boolean isMedia = false;
@@ -78,6 +85,12 @@ public class RxDocumentServiceRequest {
     public boolean UseGatewayMode;
     public boolean clearSessionTokenOnSessionReadFailure;
 
+    private volatile boolean isDisposed = false;
+    public volatile String entityId;
+    public volatile String queryString;
+    public volatile boolean isFeed;
+    public volatile AuthorizationTokenType authorizationTokenType;
+
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
                 || this.operationType == OperationType.ReadFeed
@@ -86,42 +99,117 @@ public class RxDocumentServiceRequest {
                 || this.operationType == OperationType.Query
                 || this.operationType == OperationType.SqlQuery;
     }
-    
+
+    public boolean isReadOnlyScript() {
+        String isReadOnlyScript = this.headers.get(HttpConstants.HttpHeaders.IS_READ_ONLY_SCRIPT);
+        if(StringUtils.isEmpty(isReadOnlyScript)) {
+            return false;
+        } else {
+            return this.operationType.equals(OperationType.ExecuteJavaScript) && isReadOnlyScript.equalsIgnoreCase(Boolean.TRUE.toString());
+        }
+    }
+
+    /**
+     * @param operationType          the operation type.
+     * @param resourceIdOrFullName   the request id or full name.
+     * @param resourceType           the resource type.
+     * @param byteContent            the byte content.
+     * @param headers                the headers.
+     * @param isNameBased            whether request is name based.
+     * @param authorizationTokenType the request authorizationTokenType.
+     */
+    private RxDocumentServiceRequest(OperationType operationType,
+                                     String resourceIdOrFullName,
+                                     ResourceType resourceType,
+                                     byte[] byteContent,
+                                     Map<String, String> headers,
+                                     boolean isNameBased,
+                                     AuthorizationTokenType authorizationTokenType) {
+        this.operationType = operationType;
+        this.forceNameCacheRefresh = false;
+        this.resourceType = resourceType;
+        this.byteContent = byteContent;
+        this.headers = headers != null ? headers : new HashMap<>();
+        this.activityId = Utils.randomUUID().toString();
+        this.isFeed = false;
+        this.isNameBased = isNameBased;
+        if (isNameBased) {
+            this.resourceAddress = resourceIdOrFullName;
+        } else {
+            this.resourceId = resourceIdOrFullName;
+            this.resourceAddress = resourceIdOrFullName;
+        }
+        this.authorizationTokenType = authorizationTokenType;
+        this.requestContext = new DocumentServiceRequestContext();
+        if (StringUtils.isNotEmpty(this.headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID)))
+            this.partitionKeyRangeIdentity = PartitionKeyRangeIdentity.fromHeader(this.headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID));
+    }
+
     /**
      * Creates a AbstractDocumentServiceRequest
      * 
      * @param operationType     the operation type.
-     * @param resourceId        the resource id.
-     * @param resourceType      the resource type.   
+     * @param resourceIdOrFullName        the request id or full name.
+     * @param resourceType      the resource type.
      * @param path              the path.
      * @param headers           the headers
      */
     private RxDocumentServiceRequest(OperationType operationType,
-            String resourceId,
+            String resourceIdOrFullName,
             ResourceType resourceType,
             String path,
             Map<String, String> headers) {
         this.requestContext = new DocumentServiceRequestContext();
         this.operationType = operationType;
         this.resourceType = resourceType;
-        this.path = path;
         this.requestContext.sessionToken = null;
         this.headers = headers != null ? headers : new HashMap<>();
-        this.isNameBased = Utils.isNameBased(path);
         this.activityId = Utils.randomUUID().toString();
-        if (!this.isNameBased) {
-            if (resourceType == ResourceType.Media) {
-                this.resourceId = getAttachmentIdFromMediaId(resourceId);
+        this.isFeed = false;
+        PathInfo pathInfo = new PathInfo(false, null, null, false);
+        if (StringUtils.isNotEmpty(path)) {
+            if (PathsHelper.tryParsePathSegments(path, pathInfo, null)) {
+                this.isNameBased = pathInfo.isNameBased;
+                this.isFeed = pathInfo.isFeed;
+                resourceIdOrFullName = pathInfo.resourceIdOrFullName;
+                if (!this.isNameBased) {
+                if (resourceType == ResourceType.Media) {
+                    this.resourceId = getAttachmentIdFromMediaId(resourceIdOrFullName);
+                } else {
+                    this.resourceId = resourceIdOrFullName;
+                }
+
+                this.resourceAddress = resourceIdOrFullName;
+
+                    // throw exception when the address parsing fail
+                    // do not parse address for offer resource
+                    if (StringUtils.isNotEmpty(this.resourceId) && !ResourceId.tryParse(this.resourceId).getLeft()
+                            && !resourceType.equals(ResourceType.Offer) && !resourceType.equals(ResourceType.Media)
+                            && !resourceType.equals(ResourceType.MasterPartition)
+                            && !resourceType.equals(ResourceType.ServerPartition)
+                            && !resourceType.equals(ResourceType.DatabaseAccount)
+                            && !resourceType.equals(ResourceType.RidRange)) {
+                        throw new IllegalArgumentException(
+                                String.format(RMResources.InvalidResourceUrlQuery, path, HttpConstants.QueryStrings.URL));
+                    }
+                } else {
+                    this.resourceAddress = resourceIdOrFullName;
+                    this.resourceId = null;
+                }
             } else {
-                this.resourceId = resourceId;
+                throw new IllegalArgumentException(RMResources.NotFound);
             }
-            this.resourceAddress = resourceId;
         } else {
-            this.resourceAddress = this.path;
-            this.resourceId = null;
+            this.isNameBased = false;
+            this.resourceAddress = resourceIdOrFullName;
+        }
+
+        if (StringUtils.isNotEmpty(this.headers.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID))) {
+            this.partitionKeyRangeIdentity = PartitionKeyRangeIdentity
+                    .fromHeader(this.headers.get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID));
         }
     }
-    
+
     /**
      * Creates a DocumentServiceRequest
      *
@@ -137,12 +225,14 @@ public class RxDocumentServiceRequest {
             Observable<byte[]> contentObservable,
             byte[] content,
             String path,
-            Map<String, String> headers) {
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
         this( operationType,
              resourceId,
              resourceType,
              path,
              headers);
+        this.authorizationTokenType = authorizationTokenType;
         this.byteContent = content;
         this.contentObservable = contentObservable;
     }
@@ -159,10 +249,11 @@ public class RxDocumentServiceRequest {
             ResourceType resourceType,
             String path,
             Observable<byte[]> contentObservable,
-            Map<String, String> headers) {
-        this(operationType, extractIdFromUri(path), resourceType, contentObservable, null, path, headers);
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
+        this(operationType, extractIdFromUri(path), resourceType, contentObservable, null, path, headers, authorizationTokenType);
     }
-    
+
     /**
      * Creates a DocumentServiceRequest with an HttpEntity.
      *
@@ -175,10 +266,11 @@ public class RxDocumentServiceRequest {
             ResourceType resourceType,
             String path,
             byte[] byteContent,
-            Map<String, String> headers) {
-        this(operationType, extractIdFromUri(path), resourceType, null, byteContent, path, headers);
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
+        this(operationType, extractIdFromUri(path), resourceType, null, byteContent, path, headers, authorizationTokenType);
     }
-    
+
     /**
      * Creates a DocumentServiceRequest with an HttpEntity.
      *
@@ -189,11 +281,11 @@ public class RxDocumentServiceRequest {
     private RxDocumentServiceRequest(OperationType operationType,
             ResourceType resourceType,
             String path,
-            Map<String, String> headers) {
-        this(operationType, extractIdFromUri(path), resourceType, null , null, path, headers);
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
+        this(operationType, extractIdFromUri(path), resourceType, null , null, path, headers, authorizationTokenType);
     }
-    
-    
+
     public void setContentBytes(byte[] bytes) {
         this.byteContent = bytes;
     }
@@ -213,11 +305,29 @@ public class RxDocumentServiceRequest {
             String relativePath,
             Observable<byte[]> content,
             Map<String, String> headers) {
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, content, headers);
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, content, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
-    
+
     /**
      * Creates a DocumentServiceRequest with a stream.
+     *
+     * @param operation    the operation type.
+     * @param resourceType the resource type.
+     * @param relativePath the relative URI path.
+     * @param content      the content observable
+     * @param headers      the request headers.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            ResourceType resourceType,
+            String relativePath,
+            Observable<byte[]> content,
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, content, headers, authorizationTokenType);
+    }
+
+    /** Creates a DocumentServiceRequest with a stream.
      *
      * @param operation    the operation type.
      * @param resourceType the resource type.
@@ -233,9 +343,30 @@ public class RxDocumentServiceRequest {
             Map<String, String> headers) {
         // StringObservable is mis-named. It doesn't make any assumptions on character set
         // and handles bytes only
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, StringObservable.from(inputStream), headers);
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, StringObservable.from(inputStream), headers, AuthorizationTokenType.PrimaryMasterKey);
     }
-    
+
+    /** Creates a DocumentServiceRequest with a stream.
+     *
+     * @param operation    the operation type.
+     * @param resourceType the resource type.
+     * @param relativePath the relative URI path.
+     * @param inputStream  the input stream.
+     * @param headers      the request headers.
+     * @param authorizationTokenType      the request authorizationTokenType.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            ResourceType resourceType,
+            String relativePath,
+            InputStream inputStream,
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
+        // StringObservable is mis-named. It doesn't make any assumptions on character set
+        // and handles bytes only
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, StringObservable.from(inputStream), headers, authorizationTokenType);
+    }
+
     /**
      * Creates a DocumentServiceRequest with a resource.
      *
@@ -254,7 +385,7 @@ public class RxDocumentServiceRequest {
 
         return new RxDocumentServiceRequest(operation, resourceType, relativePath,
                 // TODO: this re-encodes, can we improve performance here?
-                resource.toJson().getBytes(StandardCharsets.UTF_8), headers);
+                resource.toJson().getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
     /**
@@ -272,9 +403,29 @@ public class RxDocumentServiceRequest {
             String relativePath,
             String query,
             Map<String, String> headers) {
-        
         return new RxDocumentServiceRequest(operation, resourceType, relativePath,
-                query.getBytes(StandardCharsets.UTF_8), headers);
+                query.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
+    }
+
+    /**
+     * Creates a DocumentServiceRequest with a query.
+     *
+     * @param operation    the operation type.
+     * @param resourceType the resource type.
+     * @param relativePath the relative URI path.
+     * @param query        the query.
+     * @param headers      the request headers.
+     * @param authorizationTokenType      the request authorizationTokenType.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            ResourceType resourceType,
+            String relativePath,
+            String query,
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath,
+                query.getBytes(StandardCharsets.UTF_8), headers, authorizationTokenType);
     }
 
     /**
@@ -315,7 +466,7 @@ public class RxDocumentServiceRequest {
         }
 
         Observable<byte[]> body = StringObservable.encode(Observable.just(queryText), StandardCharsets.UTF_8);
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, body, headers);
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, body, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
     /**
@@ -331,7 +482,63 @@ public class RxDocumentServiceRequest {
             ResourceType resourceType,
             String relativePath,
             Map<String, String> headers) {
-        return new RxDocumentServiceRequest(operation, resourceType, relativePath, headers);
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, headers, AuthorizationTokenType.PrimaryMasterKey);
+    }
+
+    /**
+     * Creates a DocumentServiceRequest without body.
+     *
+     * @param operation    the operation type.
+     * @param resourceType the resource type.
+     * @param relativePath the relative URI path.
+     * @param headers      the request headers.
+     * @param authorizationTokenType      the request authorizationTokenType.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            ResourceType resourceType,
+            String relativePath,
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, headers, authorizationTokenType);
+    }
+
+    /**
+     * Creates a DocumentServiceRequest without body.
+     *
+     * @param operation    the operation type.
+     * @param resourceType the resource type.
+     * @param relativePath the relative URI path.
+     * @param headers      the request headers.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            Resource resource,
+            ResourceType resourceType,
+            String relativePath,
+            Map<String, String> headers) {
+        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, resourceContent, headers, AuthorizationTokenType.PrimaryMasterKey);
+    }
+
+    /**
+     * Creates a DocumentServiceRequest without body.
+     *
+     * @param operation    the operation type.
+     * @param resourceType the resource type.
+     * @param relativePath the relative URI path.
+     * @param headers      the request headers.
+     * @param authorizationTokenType      the request authorizationTokenType.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            Resource resource,
+            ResourceType resourceType,
+            String relativePath,
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
+        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        return new RxDocumentServiceRequest(operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
     }
 
     /**
@@ -347,8 +554,63 @@ public class RxDocumentServiceRequest {
             String resourceId,
             ResourceType resourceType,
             Map<String, String> headers) {
-        String path = PathsHelper.generatePath(resourceType, resourceId, Utils.isFeedRequest(operation));
-        return new RxDocumentServiceRequest(operation, resourceId, resourceType, null, null, path, headers);
+        return new RxDocumentServiceRequest(operation, resourceId,resourceType, null, headers, false, AuthorizationTokenType.PrimaryMasterKey) ;
+    }
+
+    /**
+     * Creates a DocumentServiceRequest with a resourceId.
+     *
+     * @param operation    the operation type.
+     * @param resourceId   the resource id.
+     * @param resourceType the resource type.
+     * @param headers      the request headers.
+     * @param authorizationTokenType      the request authorizationTokenType.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            String resourceId,
+            ResourceType resourceType,
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
+        return new RxDocumentServiceRequest(operation, resourceId, resourceType, null, headers, false, authorizationTokenType);
+    }
+
+    /**
+     * Creates a DocumentServiceRequest with a resourceId.
+     *
+     * @param operation    the operation type.
+     * @param resourceId   the resource id.
+     * @param resourceType the resource type.
+     * @param headers      the request headers.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            String resourceId,
+            ResourceType resourceType,
+            Resource resource,
+            Map<String, String> headers) {
+        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        return new RxDocumentServiceRequest(operation, resourceId, resourceType, resourceContent, headers, false, AuthorizationTokenType.PrimaryMasterKey);
+    }
+
+    /**
+     * Creates a DocumentServiceRequest with a resourceId.
+     *
+     * @param operation    the operation type.
+     * @param resourceId   the resource id.
+     * @param resourceType the resource type.
+     * @param headers      the request headers.
+     * @param authorizationTokenType      the request authorizationTokenType.
+     * @return the created document service request.
+     */
+    public static RxDocumentServiceRequest create(OperationType operation,
+            String resourceId,
+            ResourceType resourceType,
+            Resource resource,
+            Map<String, String> headers,
+            AuthorizationTokenType authorizationTokenType) {
+        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        return new RxDocumentServiceRequest(operation, resourceId, resourceType, resourceContent, headers, false, authorizationTokenType);
     }
 
     /**
@@ -366,13 +628,64 @@ public class RxDocumentServiceRequest {
             OperationType operationType,
             String resourceFullName,
             ResourceType resourceType) {
-        return  RxDocumentServiceRequest.create(
-            operationType,
-            resourceType,
-            resourceFullName,
-            new HashMap<>());
+        return new RxDocumentServiceRequest(operationType,
+                resourceFullName,
+                resourceType,
+                null,
+                new HashMap<>(),
+                true,
+                AuthorizationTokenType.PrimaryMasterKey
+        );
     }
-    
+
+    public static RxDocumentServiceRequest createFromName(
+            OperationType operationType,
+            String resourceFullName,
+            ResourceType resourceType,
+            AuthorizationTokenType authorizationTokenType) {
+        return new RxDocumentServiceRequest(operationType,
+                resourceFullName,
+                resourceType,
+                null,
+                new HashMap<>(),
+                true,
+                authorizationTokenType
+        );
+    }
+
+    public static RxDocumentServiceRequest createFromName(
+            OperationType operationType,
+            Resource resource,
+            String resourceFullName,
+            ResourceType resourceType) {
+        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        return new RxDocumentServiceRequest(operationType,
+                resourceFullName,
+                resourceType,
+                resourceContent,
+                new HashMap<>(),
+                true,
+                AuthorizationTokenType.PrimaryMasterKey
+        );
+    }
+
+    public static RxDocumentServiceRequest createFromName(
+            OperationType operationType,
+            Resource resource,
+            String resourceFullName,
+            ResourceType resourceType,
+            AuthorizationTokenType authorizationTokenType) {
+        byte[] resourceContent = resource.toJson().getBytes(StandardCharsets.UTF_8);
+        return new RxDocumentServiceRequest(operationType,
+                resourceFullName,
+                resourceType,
+                resourceContent,
+                new HashMap<>(),
+                true,
+                authorizationTokenType
+        );
+    }
+
     private static String extractIdFromUri(String path) {
         if (path.length() == 0) {
             return path;
@@ -400,7 +713,7 @@ public class RxDocumentServiceRequest {
         // ( at length -3 )
         // In the second case, to extract the resource type it will the element
         // before last ( at length -2 )
-        String[] pathParts = path.split("/");
+        String[] pathParts = StringUtils.split(path, "/");
         if (pathParts.length % 2 == 0) {
             // request in form /[resourceType]/[resourceId]/.
             return pathParts[pathParts.length - 2];
@@ -437,7 +750,7 @@ public class RxDocumentServiceRequest {
     public String getResourceId() {
         return this.resourceId;
     }
-    
+
     /**
      * Sets the resource id.
      *
@@ -453,15 +766,6 @@ public class RxDocumentServiceRequest {
      */
     public ResourceType getResourceType() {
         return this.resourceType;
-    }
-
-    /**
-     * Gets the path.
-     *
-     * @return the path.
-     */
-    public String getPath() {
-        return this.path;
     }
 
     /**
@@ -526,32 +830,6 @@ public class RxDocumentServiceRequest {
         return this.activityId;
     }
 
-    public String getResourceFullName() {
-        if (this.isNameBased) {
-            String trimmedPath = Utils.trimBeginingAndEndingSlashes(this.path);
-            String[] segments = trimmedPath.split("/");
-
-            if (segments.length % 2 == 0) {
-                // if path has even segments, it is the individual resource
-                // like dbs/db1/colls/coll1
-                if (Utils.IsResourceType(segments[segments.length - 2])) {
-                    this.resourceFullName = trimmedPath;
-                }
-            } else {
-                // if path has odd segments, get the parent(dbs/db1 from
-                // dbs/db1/colls)
-                if (Utils.IsResourceType(segments[segments.length - 1])) {
-                    this.resourceFullName = trimmedPath.substring(0, trimmedPath.lastIndexOf("/"));
-                }
-            }
-        } else {
-            this.resourceFullName = this.getResourceId();
-        }
-
-        return this.resourceFullName;
-    }
-
-
     public PartitionKeyRangeIdentity getPartitionKeyRangeIdentity() {
         return partitionKeyRangeIdentity;
     }
@@ -610,11 +888,114 @@ public class RxDocumentServiceRequest {
         return false;
     }
 
+    public boolean isValidAddress(ResourceType resourceType) {
+        ResourceType resourceTypeToValidate = ResourceType.Unknown;
+
+        if(resourceType != ResourceType.Unknown) {
+            resourceTypeToValidate = resourceType;
+        } else {
+            if(!this.isFeed) {
+                resourceTypeToValidate =this.resourceType;
+            } else {
+                if(this.resourceType == ResourceType.Database) {
+                    return true;
+                } else if(this.resourceType == ResourceType.DocumentCollection ||
+                          this.resourceType == ResourceType.User) {
+                    resourceTypeToValidate = ResourceType.Database;
+                } else if(this.resourceType == ResourceType.Permission) {
+                    resourceTypeToValidate = ResourceType.User;
+                } else if(this.resourceType == ResourceType.Document ||
+                        this.resourceType == ResourceType.StoredProcedure ||
+                        this.resourceType == ResourceType.UserDefinedFunction ||
+                        this.resourceType == ResourceType.Trigger ||
+                        this.resourceType == ResourceType.Conflict ||
+                        this.resourceType == ResourceType.PartitionKeyRange) {
+                  resourceTypeToValidate = ResourceType.DocumentCollection;
+              } else if(this.resourceType == ResourceType.Attachment) {
+                  resourceTypeToValidate = ResourceType.Document;
+              }  else {
+                  return false;
+              }
+            }
+        }
+
+        if (this.isNameBased) {
+            return PathsHelper.validateResourceFullName(resourceType != ResourceType.Unknown ? resourceType : resourceTypeToValidate, this.resourceAddress);
+        } else {
+            return PathsHelper.validateResourceId(resourceTypeToValidate, this.resourceId);
+        }
+    }
+
+    public void addPreferHeader(String preferHeaderName, String preferHeaderValue) {
+        String headerToAdd = String.format(PREFER_HEADER_VALUE_FORMAT, preferHeaderName, preferHeaderValue);
+        String preferHeader = this.headers.get(HttpConstants.HttpHeaders.PREFER);
+        if(StringUtils.isNotEmpty(preferHeader)) {
+            preferHeader += PREFER_HEADER_SEPERATOR + headerToAdd;
+        } else {
+            preferHeader = headerToAdd;
+        }
+        this.headers.put(HttpConstants.HttpHeaders.PREFER, preferHeader);
+    }
+
+    public static RxDocumentServiceRequest CreateFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
+        RxDocumentServiceRequest modifiedRequest;
+        if (!request.getIsNameBased()) {
+            modifiedRequest = RxDocumentServiceRequest.create(request.getOperationType(),
+                                                              request.getResourceId(),
+                                                              request.getResourceType(),
+                                                              modifiedResource,
+                                                              request.headers);
+        } else {
+            modifiedRequest = RxDocumentServiceRequest.createFromName(request.getOperationType(),
+                                                                      modifiedResource,
+                                                                      request.getResourceAddress(),
+                                                                      request.getResourceType());
+        }
+        return modifiedRequest;
+    }
+
+    public void clearRoutingHints() {
+        this.partitionKeyRangeIdentity = null;
+        this.requestContext.resolvedPartitionKeyRange = null;
+    }
+
     public Observable<byte[]> getContentObservable() {
         return contentObservable;
     }
-    
+
     public byte[] getContent() {
         return byteContent;
+    }
+
+    public RxDocumentServiceRequest clone() {
+        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
+        rxDocumentServiceRequest.setContentBytes(this.getContent());
+        rxDocumentServiceRequest.setContinuation(this.getContinuation());
+        rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());
+        rxDocumentServiceRequest.setEndpointOverride(this.getEndpointOverride());
+        rxDocumentServiceRequest.setForceNameCacheRefresh(this.isForceNameCacheRefresh());
+        rxDocumentServiceRequest.setIsMedia(this.getIsMedia());
+        rxDocumentServiceRequest.setOriginalSessionToken(this.getOriginalSessionToken());
+        rxDocumentServiceRequest.setPartitionKeyRangeIdentity(this.getPartitionKeyRangeIdentity());
+        rxDocumentServiceRequest.contentObservable = this.getContentObservable();
+        rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;
+        rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
+        rxDocumentServiceRequest.UseGatewayMode = this.UseGatewayMode;
+        rxDocumentServiceRequest.queryString = this.queryString;
+        rxDocumentServiceRequest.clearSessionTokenOnSessionReadFailure = this.clearSessionTokenOnSessionReadFailure;
+        rxDocumentServiceRequest.requestContext = this.requestContext;
+        return rxDocumentServiceRequest;
+    }
+
+    public void Dispose() {
+        if (this.isDisposed) {
+            return;
+        }
+
+        if (this.byteContent != null) {
+            this.byteContent = null;
+        }
+
+        this.isDisposed = true;
     }
 }
