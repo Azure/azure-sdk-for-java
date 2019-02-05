@@ -11,6 +11,24 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jetty-maven-plugin.version>9.2.22.v20170606</jetty-maven-plugin.version>
     </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty-maven-plugin.version}</version>
+                <configuration>
+                    <scanIntervalSeconds>0</scanIntervalSeconds>
+                    <stopPort>11079</stopPort>
+                    <stopKey>STOP</stopKey>
+                    <waitForChild>false</waitForChild>
+                    <jettyXml>./jetty.xml</jettyXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
