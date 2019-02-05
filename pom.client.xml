@@ -602,7 +602,7 @@
          <modules>
             <module>./template/client</module>
             <module>./keyvault/data-plane</module>
-            <module>./eng/spotbugs-reporting</module>
+            <module>./eng/spotbugs-aggregate-report</module>
          </modules>
       </profile>
 
@@ -611,7 +611,7 @@
    <modules>
       <module>./template/client</module>
       <module>./keyvault/data-plane</module>
-      <module>./build-tools</module>
+      <module>./eng/code-quality-reports</module>
    </modules>
 
 </project>
