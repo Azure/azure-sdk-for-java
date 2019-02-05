@@ -156,11 +156,11 @@ public class ServicesInner {
         Observable<Response<ResponseBody>> getTenantWhitelisting(@Path("serviceName") String serviceName, @Path("featureName") String featureName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.adhybridhealthservice.Services listAllRiskyIpDownloadReport" })
-        @GET("providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/GetAllBlobUri")
+        @GET("providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/blobUris")
         Observable<Response<ResponseBody>> listAllRiskyIpDownloadReport(@Path("serviceName") String serviceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.adhybridhealthservice.Services listCurrentRiskyIpDownloadReport" })
-        @GET("providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/GetBlobUri")
+        @POST("providers/Microsoft.ADHybridHealthService/services/{serviceName}/reports/riskyIp/blobUri")
         Observable<Response<ResponseBody>> listCurrentRiskyIpDownloadReport(@Path("serviceName") String serviceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.adhybridhealthservice.Services listNext" })
@@ -3157,7 +3157,7 @@ public class ServicesInner {
     }
 
     /**
-     * Gets all the blob uris for the Risky IP reports requested for a given service in the last 7 days.
+     * Gets all Risky IP report URIs for the last 7 days.
      *
      * @param serviceName The name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3170,7 +3170,7 @@ public class ServicesInner {
     }
 
     /**
-     * Gets all the blob uris for the Risky IP reports requested for a given service in the last 7 days.
+     * Gets all Risky IP report URIs for the last 7 days.
      *
      * @param serviceName The name of the service.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -3182,7 +3182,7 @@ public class ServicesInner {
     }
 
     /**
-     * Gets all the blob uris for the Risky IP reports requested for a given service in the last 7 days.
+     * Gets all Risky IP report URIs for the last 7 days.
      *
      * @param serviceName The name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3198,7 +3198,7 @@ public class ServicesInner {
     }
 
     /**
-     * Gets all the blob uris for the Risky IP reports requested for a given service in the last 7 days.
+     * Gets all Risky IP report URIs for the last 7 days.
      *
      * @param serviceName The name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3238,7 +3238,7 @@ public class ServicesInner {
     }
 
     /**
-     * Initiate the generation of a new Risky IP report. Returns the URI for the new one, along with all the blob uris for the Risky IP reports requested in the last 7 days.
+     * Initiate the generation of a new Risky IP report. Returns the URI for the new one.
      *
      * @param serviceName The name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3251,7 +3251,7 @@ public class ServicesInner {
     }
 
     /**
-     * Initiate the generation of a new Risky IP report. Returns the URI for the new one, along with all the blob uris for the Risky IP reports requested in the last 7 days.
+     * Initiate the generation of a new Risky IP report. Returns the URI for the new one.
      *
      * @param serviceName The name of the service.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -3263,7 +3263,7 @@ public class ServicesInner {
     }
 
     /**
-     * Initiate the generation of a new Risky IP report. Returns the URI for the new one, along with all the blob uris for the Risky IP reports requested in the last 7 days.
+     * Initiate the generation of a new Risky IP report. Returns the URI for the new one.
      *
      * @param serviceName The name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3279,7 +3279,7 @@ public class ServicesInner {
     }
 
     /**
-     * Initiate the generation of a new Risky IP report. Returns the URI for the new one, along with all the blob uris for the Risky IP reports requested in the last 7 days.
+     * Initiate the generation of a new Risky IP report. Returns the URI for the new one.
      *
      * @param serviceName The name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation
