@@ -5,7 +5,7 @@
 * Changed the APIs accepting java.util.Collection for which order is important to accept java.util.List instead.
   Now ConnectionPolicy#getPreferredLocations(), JsonSerialization, and PartitionKey(.) accept List. 
 * Fixed a Session bug for Document query in Gateway mode.
-* Upgraded dependencies (netty 0.4.20, RxJava 1.3.8).
+* Upgraded dependencies (netty 0.4.20 [github #79](https://github.com/Azure/azure-cosmosdb-java/issues/79), RxJava 1.3.8).
 
 ### 2.3.1
 
