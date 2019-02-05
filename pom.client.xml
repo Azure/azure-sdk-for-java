@@ -114,6 +114,8 @@
       <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
       <maven-build-tools.version>1.0.0</maven-build-tools.version>
       <xml-maven-plugin.version>1.0</xml-maven-plugin.version>
+      <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+      <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
    </properties>
 
    <dependencyManagement>
@@ -259,7 +261,7 @@
             </executions>
          </plugin>
 
-         <!-- This plugin scans reports spotbugs  in the code -->
+         <!-- This plugin scans reports spotbugs in the code -->
          <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
@@ -329,6 +331,39 @@
                   <version>${spotbugs.version}</version>
                </dependency>
             </dependencies>
+         </plugin>
+
+         <!-- This plugin scans javadoc issues in the project. -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+               <doctitle>Azure SDK for Java Reference Documentation</doctitle>
+               <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
+               <failOnError>true</failOnError>
+               <footer>Visit the &lt;a href="http://java.ms"&gt;Azure for Java Developers&lt;/a&gt; site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+               <linksource>false</linksource>
+               <excludePackageNames>
+               </excludePackageNames>
+               <groups>
+                  <group>
+                     <title>Azure Batch</title>
+                     <packages>com.microsoft.azure.batch*</packages>
+                  </group>
+                  <group>
+                     <title>Azure Key Vault</title>
+                     <packages>com.microsoft.azure.keyvault*</packages>
+                  </group>
+               </groups>
+            </configuration>
+            <executions>
+               <execution>
+                  <id>attach-javadocs</id>
+                  <goals>
+                     <goal>jar</goal>
+                  </goals>
+               </execution>
+            </executions>
          </plugin>
 
       </plugins>
@@ -490,6 +525,20 @@
                <version>${maven-jar-plugin.version}</version>
             </plugin>
 
+            <!-- This plugin is used to generate project's site and reports -->
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-site-plugin</artifactId>
+               <version>${maven-site-plugin.version}</version>
+            </plugin>
+
+            <!-- This plugin is used to generate reports information about the project. -->
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-project-info-reports-plugin</artifactId>
+               <version>${maven-project-info-reports-plugin.version}</version>
+            </plugin>
+
          </plugins>
 
       </pluginManagement>
@@ -548,10 +597,20 @@
 
       </profile>
 
+      <profile>
+         <id>spotbugs-reporting</id>
+         <modules>
+            <module>./template/client</module>
+            <module>./keyvault/data-plane</module>
+            <module>./eng/spotbugs-reporting</module>
+         </modules>
+      </profile>
+
    </profiles>
 
    <modules>
       <module>./template/client</module>
       <module>./keyvault/data-plane</module>
    </modules>
+
 </project>
