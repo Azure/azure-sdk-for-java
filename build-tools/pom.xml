@@ -16,6 +16,7 @@
 
     <build>
         <plugins>
+            <!-- Adding this plugin to ensure jetty plugin runs without errors on pom.client.xml. -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
