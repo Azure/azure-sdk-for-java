@@ -28,12 +28,13 @@ public class FlatteningSerializerTests {
         foo.qux.put("a.b", "c.d");
         foo.qux.put("bar.a", "ttyy");
         foo.qux.put("bar.b", "uuzz");
+        foo.moreProps = "hello";
 
         JacksonAdapter adapter = new JacksonAdapter();
 
         // serialization
         String serialized = adapter.serialize(foo);
-        Assert.assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}}}", serialized);
+        Assert.assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}},\"more.props\":\"hello\"}}", serialized);
 
         // deserialization
         Foo deserialized = adapter.deserialize(serialized, Foo.class);
@@ -44,6 +45,7 @@ public class FlatteningSerializerTests {
         Assert.assertEquals("c.d", deserialized.qux.get("a.b"));
         Assert.assertEquals("ttyy", deserialized.qux.get("bar.a"));
         Assert.assertEquals("uuzz", deserialized.qux.get("bar.b"));
+        Assert.assertEquals("hello", deserialized.moreProps);
     }
 
     @Test

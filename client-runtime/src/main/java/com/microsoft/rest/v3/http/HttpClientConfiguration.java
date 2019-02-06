@@ -8,29 +8,30 @@ package com.microsoft.rest.v3.http;
 
 import com.microsoft.rest.v3.annotations.Beta;
 
-import java.net.Proxy;
-
 /**
  * The set of parameters used to create an HTTP client.
  */
 public class HttpClientConfiguration {
-    private final Proxy proxy;
-    private SharedChannelPoolOptions poolOptions;
+    private ProxyOptions proxy;
+    private final SharedChannelPoolOptions poolOptions;
 
     /**
      * @return The optional proxy to use.
      */
-    public Proxy proxy() {
+    public ProxyOptions proxy() {
         return proxy;
     }
 
     /**
      * Creates an HttpClientConfiguration.
-     * @param proxy The optional proxy to use.
      */
-    public HttpClientConfiguration(Proxy proxy) {
-        this.proxy = proxy;
+    public HttpClientConfiguration() {
         this.poolOptions = new SharedChannelPoolOptions();
+    }
+
+    public HttpClientConfiguration withProxy(ProxyOptions proxyOptions) {
+        this.proxy = proxyOptions;
+        return this;
     }
 
     /**

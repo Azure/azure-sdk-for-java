@@ -123,7 +123,7 @@ public final class HttpResponseDecoder {
                 } catch (IOException e) {
                     throw new RestException("Deserialization Failed", response, e);
                 }
-            });
+            }).defaultIfEmpty(response.withDeserializedHeaders(deserializedHeaders));
         } else {
             result = Mono.just(response.withDeserializedHeaders(deserializedHeaders));
         }

@@ -173,13 +173,7 @@ public class FlatteningSerializer extends StdSerializer<Object> implements Resol
                 ObjectNode node = resCurrent;
                 String key = field.getKey();
                 JsonNode outNode = resCurrent.get(key);
-                if (key.matches(".*[^\\\\]\\\\..+")) {
-                    // Handle escaped map key
-                    //
-                    String originalKey = key.replaceAll("\\\\.", ".");
-                    resCurrent.remove(key);
-                    resCurrent.put(originalKey, outNode);
-                } else if (key.matches(".+[^\\\\]\\..+")) {
+                if (key.matches(".+[^\\\\]\\..+")) {
                     // Handle flattening properties
                     //
                     String[] values = key.split("((?<!\\\\))\\.");
@@ -200,6 +194,12 @@ public class FlatteningSerializer extends StdSerializer<Object> implements Resol
                     node.set(values[values.length - 1], resCurrent.get(key));
                     resCurrent.remove(key);
                     outNode = node.get(values[values.length - 1]);
+                } else if (key.matches(".*[^\\\\]\\\\..+")) {
+                    // Handle escaped map key
+                    //
+                    String originalKey = key.replaceAll("\\\\.", ".");
+                    resCurrent.remove(key);
+                    resCurrent.put(originalKey, outNode);
                 }
                 if (field.getValue() instanceof ObjectNode) {
                     source.add((ObjectNode) field.getValue());

@@ -31,6 +31,8 @@ public class Foo {
     public List<String> baz;
     @JsonProperty(value = "properties.props.q.qux")
     public Map<String, String> qux;
+    @JsonProperty(value = "properties.more\\.props")
+    public String moreProps;
     @JsonProperty(value = "props.empty")
     public Integer empty;
     @JsonProperty(value = "")

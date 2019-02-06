@@ -8,7 +8,6 @@ package com.microsoft.rest.v3.http;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpMethod;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
@@ -26,13 +25,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * An HttpClient that is implemented using Netty.
  */
 public final class NettyClient extends HttpClient {
-    private final HttpClientConfiguration configuration;
+    private reactor.netty.http.client.HttpClient httpClient;
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyClient.class);
 
     /**
@@ -42,7 +40,10 @@ public final class NettyClient extends HttpClient {
      *            the HTTP client configuration.
      */
     private NettyClient(HttpClientConfiguration configuration) {
-        this.configuration = configuration != null ? configuration : new HttpClientConfiguration(null);
+        this.httpClient = reactor.netty.http.client.HttpClient.create().wiretap(true);
+        if (configuration != null && configuration.proxy() != null) {
+            this.httpClient = httpClient.tcpConfiguration(tcpClient -> tcpClient.proxy(ts -> ts.type(configuration.proxy().type().value()).address(configuration.proxy().address())));
+        }
     }
 
     @Override
@@ -51,29 +52,13 @@ public final class NettyClient extends HttpClient {
         Objects.requireNonNull(request.url());
         Objects.requireNonNull(request.url().getProtocol());
         //
-        Mono<HttpResponse> response = reactor.netty.http.client.HttpClient.create()
-                .wiretap(true)
-                .headersWhen(headersDelegate(request))
+        Mono<HttpResponse> response = httpClient
                 .request(HttpMethod.valueOf(request.httpMethod().toString()))
                 .uri(request.url().toString())
                 .send(bodySendDelegate(request))
                 .responseConnection(responseDelegate(request))
-                .last();
+                .single();
         return response;
-    }
-
-    /**
-     * @param restRequest the Rest request contains the header to be sent
-     * @return a delegate upon invocation sets the request headers in reactor-netty request object
-     */
-    private static Function<HttpHeaders, Mono<? extends HttpHeaders>> headersDelegate(final HttpRequest restRequest) {
-        Function<HttpHeaders, Mono<? extends HttpHeaders>> headersDelegate = (HttpHeaders reactorNettyHeaders) -> {
-            for (HttpHeader header : restRequest.headers()) {
-                reactorNettyHeaders.set(header.name(), header.value());
-            }
-            return Mono.just(reactorNettyHeaders);
-        };
-        return headersDelegate;
     }
 
     /**
@@ -82,6 +67,9 @@ public final class NettyClient extends HttpClient {
      */
     private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(final HttpRequest restRequest) {
         BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> sendDelegate = (reactorNettyRequest, reactorNettyOutbound) -> {
+            for (HttpHeader header : restRequest.headers()) {
+                reactorNettyRequest.header(header.name(), header.value());
+            }
             if (restRequest.body() != null) {
                 Flux<ByteBuf> nettyByteBufFlux = restRequest.body().map(Unpooled::wrappedBuffer);
                 return reactorNettyOutbound.send(nettyByteBufFlux);
