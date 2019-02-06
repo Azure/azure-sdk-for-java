@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AzureSkuInner {
     /**
-     * SKU name. Possible values include: 'KC8', 'KC16', 'KS8', 'KS16',
-     * 'D13_v2', 'D14_v2', 'L8', 'L16', 'D11_v2', 'D12_v2', 'L4'.
+     * SKU name. Possible values include: 'D13_v2', 'D14_v2', 'L8', 'L16',
+     * 'D11_v2', 'D12_v2', 'L4'.
      */
     @JsonProperty(value = "name", required = true)
     private AzureSkuName name;
@@ -36,14 +36,14 @@ public class AzureSkuInner {
 
     /**
      * Creates an instance of AzureSkuInner class.
-     * @param name sKU name. Possible values include: 'KC8', 'KC16', 'KS8', 'KS16', 'D13_v2', 'D14_v2', 'L8', 'L16', 'D11_v2', 'D12_v2', 'L4'.
+     * @param name sKU name. Possible values include: 'D13_v2', 'D14_v2', 'L8', 'L16', 'D11_v2', 'D12_v2', 'L4'.
      */
     public AzureSkuInner() {
         tier = "Standard";
     }
 
     /**
-     * Get sKU name. Possible values include: 'KC8', 'KC16', 'KS8', 'KS16', 'D13_v2', 'D14_v2', 'L8', 'L16', 'D11_v2', 'D12_v2', 'L4'.
+     * Get sKU name. Possible values include: 'D13_v2', 'D14_v2', 'L8', 'L16', 'D11_v2', 'D12_v2', 'L4'.
      *
      * @return the name value
      */
@@ -52,7 +52,7 @@ public class AzureSkuInner {
     }
 
     /**
-     * Set sKU name. Possible values include: 'KC8', 'KC16', 'KS8', 'KS16', 'D13_v2', 'D14_v2', 'L8', 'L16', 'D11_v2', 'D12_v2', 'L4'.
+     * Set sKU name. Possible values include: 'D13_v2', 'D14_v2', 'L8', 'L16', 'D11_v2', 'D12_v2', 'L4'.
      *
      * @param name the name value to set
      * @return the AzureSkuInner object itself.
