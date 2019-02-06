@@ -523,6 +523,32 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The SensitivityLabelsInner object to access its operations.
+     */
+    private SensitivityLabelsInner sensitivityLabels;
+
+    /**
+     * Gets the SensitivityLabelsInner object to access its operations.
+     * @return the SensitivityLabelsInner object.
+     */
+    public SensitivityLabelsInner sensitivityLabels() {
+        return this.sensitivityLabels;
+    }
+
+    /**
+     * The RecommendedSensitivityLabelsInner object to access its operations.
+     */
+    private RecommendedSensitivityLabelsInner recommendedSensitivityLabels;
+
+    /**
+     * Gets the RecommendedSensitivityLabelsInner object to access its operations.
+     * @return the RecommendedSensitivityLabelsInner object.
+     */
+    public RecommendedSensitivityLabelsInner recommendedSensitivityLabels() {
+        return this.recommendedSensitivityLabels;
+    }
+
+    /**
      * Initializes an instance of SqlManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -587,6 +613,8 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesInner(restClient().retrofit(), this);
         this.managedDatabaseSecurityAlertPolicies = new ManagedDatabaseSecurityAlertPoliciesInner(restClient().retrofit(), this);
         this.managedServerSecurityAlertPolicies = new ManagedServerSecurityAlertPoliciesInner(restClient().retrofit(), this);
+        this.sensitivityLabels = new SensitivityLabelsInner(restClient().retrofit(), this);
+        this.recommendedSensitivityLabels = new RecommendedSensitivityLabelsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
