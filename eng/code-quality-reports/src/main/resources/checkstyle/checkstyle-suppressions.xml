@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+    "http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
+
+<suppressions>
+  <suppress checks="Javadoc" files="Test[s]?.*\.java"/>
+  <suppress checks="Javadoc" files=".*Test[s]?\.java"/>
+  <suppress checks="Javadoc" files=".*Test[s]?Base\.java"/>
+  <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
+  <suppress checks="Header" files=".*package-info.java"/>
+
+  <!-- Files licensed with alternate license in the header -->
+  <suppress checks="Header" files=".*AesKwBCProviderTest.java"/>
+  <suppress checks="Header" files=".*AesKwTest.java"/>
+  <suppress checks="Header" files=".*SymmetricKeyBCProviderTest.java"/>
+  <suppress checks="Header" files=".*SymmetricKeyTest.java"/>
+  <suppress checks="Header" files=".*CachingKeyResolverTest.java"/>
+  <suppress checks="Header" files=".*KeyVaultKeyResolverBCProviderTest.java"/>
+  <suppress checks="Header" files=".*KeyVaultKeyResolverDefaultProviderTest.java"/>
+
+</suppressions>

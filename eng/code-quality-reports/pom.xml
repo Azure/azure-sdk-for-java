@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.azure</groupId>
+    <artifactId>sdk-build-tools</artifactId>
+    <name>Maven Build Tools</name>
+    <version>1.0.0</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jetty-maven-plugin.version>9.2.22.v20170606</jetty-maven-plugin.version>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- Adding this plugin to ensure jetty plugin runs without errors on pom.client.xml. -->
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty-maven-plugin.version}</version>
+                <configuration>
+                    <scanIntervalSeconds>0</scanIntervalSeconds>
+                    <stopPort>11079</stopPort>
+                    <stopKey>STOP</stopKey>
+                    <waitForChild>false</waitForChild>
+                    <jettyXml>./jetty.xml</jettyXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
