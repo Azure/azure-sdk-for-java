@@ -46,6 +46,8 @@ import com.microsoft.azure.management.sql.v2017_03_01_preview.ServerDnsAliases;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ServerSecurityAlertPolicies;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedDatabaseSecurityAlertPolicies;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedServerSecurityAlertPolicies;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.SensitivityLabels;
+import com.microsoft.azure.management.sql.v2017_03_01_preview.RecommendedSensitivityLabels;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -83,6 +85,8 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private ServerSecurityAlertPolicies serverSecurityAlertPolicies;
     private ManagedDatabaseSecurityAlertPolicies managedDatabaseSecurityAlertPolicies;
     private ManagedServerSecurityAlertPolicies managedServerSecurityAlertPolicies;
+    private SensitivityLabels sensitivityLabels;
+    private RecommendedSensitivityLabels recommendedSensitivityLabels;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
     *
@@ -428,6 +432,26 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.managedServerSecurityAlertPolicies = new ManagedServerSecurityAlertPoliciesImpl(this);
         }
         return this.managedServerSecurityAlertPolicies;
+    }
+
+    /**
+     * @return Entry point to manage SensitivityLabels.
+     */
+    public SensitivityLabels sensitivityLabels() {
+        if (this.sensitivityLabels == null) {
+            this.sensitivityLabels = new SensitivityLabelsImpl(this);
+        }
+        return this.sensitivityLabels;
+    }
+
+    /**
+     * @return Entry point to manage RecommendedSensitivityLabels.
+     */
+    public RecommendedSensitivityLabels recommendedSensitivityLabels() {
+        if (this.recommendedSensitivityLabels == null) {
+            this.recommendedSensitivityLabels = new RecommendedSensitivityLabelsImpl(this);
+        }
+        return this.recommendedSensitivityLabels;
     }
 
     /**
