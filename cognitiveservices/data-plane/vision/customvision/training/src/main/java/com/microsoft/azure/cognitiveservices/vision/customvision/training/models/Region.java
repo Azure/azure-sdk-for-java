@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Region {
     /**
-     * The tagId property.
+     * Id of the tag associated with this region.
      */
     @JsonProperty(value = "tagId")
     private UUID tagId;
@@ -46,7 +46,7 @@ public class Region {
     private double height;
 
     /**
-     * Get the tagId value.
+     * Get id of the tag associated with this region.
      *
      * @return the tagId value
      */
@@ -55,7 +55,7 @@ public class Region {
     }
 
     /**
-     * Set the tagId value.
+     * Set id of the tag associated with this region.
      *
      * @param tagId the tagId value to set
      * @return the Region object itself.

@@ -64,7 +64,7 @@ public class Domain {
     }
 
     /**
-     * Get the type value.
+     * Get possible values include: 'Classification', 'ObjectDetection'.
      *
      * @return the type value
      */

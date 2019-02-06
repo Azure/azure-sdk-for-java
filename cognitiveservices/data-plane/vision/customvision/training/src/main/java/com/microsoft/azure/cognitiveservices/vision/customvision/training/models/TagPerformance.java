@@ -76,7 +76,7 @@ public class TagPerformance {
     }
 
     /**
-     * Get the precision value.
+     * Get gets the precision.
      *
      * @return the precision value
      */
@@ -85,7 +85,7 @@ public class TagPerformance {
     }
 
     /**
-     * Get the precisionStdDeviation value.
+     * Get gets the standard deviation for the precision.
      *
      * @return the precisionStdDeviation value
      */
@@ -94,7 +94,7 @@ public class TagPerformance {
     }
 
     /**
-     * Get the recall value.
+     * Get gets the recall.
      *
      * @return the recall value
      */
@@ -103,7 +103,7 @@ public class TagPerformance {
     }
 
     /**
-     * Get the recallStdDeviation value.
+     * Get gets the standard deviation for the recall.
      *
      * @return the recallStdDeviation value
      */
@@ -112,7 +112,7 @@ public class TagPerformance {
     }
 
     /**
-     * Get the averagePrecision value.
+     * Get gets the average precision when applicable.
      *
      * @return the averagePrecision value
      */

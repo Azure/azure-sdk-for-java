@@ -41,7 +41,7 @@ public class ImageRegionCreateResult {
     private DateTime created;
 
     /**
-     * The tagId property.
+     * Id of the tag associated with this region.
      */
     @JsonProperty(value = "tagId")
     private UUID tagId;
@@ -107,7 +107,7 @@ public class ImageRegionCreateResult {
     }
 
     /**
-     * Get the tagId value.
+     * Get id of the tag associated with this region.
      *
      * @return the tagId value
      */
@@ -116,7 +116,7 @@ public class ImageRegionCreateResult {
     }
 
     /**
-     * Set the tagId value.
+     * Set id of the tag associated with this region.
      *
      * @param tagId the tagId value to set
      * @return the ImageRegionCreateResult object itself.

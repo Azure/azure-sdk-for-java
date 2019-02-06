@@ -15,46 +15,50 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Export {
     /**
-     * Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'.
+     * Platform of the export. Possible values include: 'CoreML', 'TensorFlow',
+     * 'DockerFile', 'ONNX'.
      */
     @JsonProperty(value = "platform", access = JsonProperty.Access.WRITE_ONLY)
-    private ExportPlatform platform;
+    private ExportPlatformModel platform;
 
     /**
-     * Possible values include: 'Exporting', 'Failed', 'Done'.
+     * Status of the export. Possible values include: 'Exporting', 'Failed',
+     * 'Done'.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ExportStatusModel status;
 
     /**
-     * The downloadUri property.
+     * URI used to download the model.
      */
     @JsonProperty(value = "downloadUri", access = JsonProperty.Access.WRITE_ONLY)
     private String downloadUri;
 
     /**
-     * Possible values include: 'Linux', 'Windows'.
+     * Flavor of the export. Possible values include: 'Linux', 'Windows',
+     * 'ONNX10', 'ONNX12'.
      */
     @JsonProperty(value = "flavor", access = JsonProperty.Access.WRITE_ONLY)
-    private ExportFlavor flavor;
+    private ExportFlavorModel flavor;
 
     /**
-     * The newerVersionAvailable property.
+     * Indicates an updated version of the export package is available and
+     * should be re-exported for the latest changes.
      */
     @JsonProperty(value = "newerVersionAvailable", access = JsonProperty.Access.WRITE_ONLY)
     private boolean newerVersionAvailable;
 
     /**
-     * Get the platform value.
+     * Get platform of the export. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'.
      *
      * @return the platform value
      */
-    public ExportPlatform platform() {
+    public ExportPlatformModel platform() {
         return this.platform;
     }
 
     /**
-     * Get the status value.
+     * Get status of the export. Possible values include: 'Exporting', 'Failed', 'Done'.
      *
      * @return the status value
      */
@@ -63,7 +67,7 @@ public class Export {
     }
 
     /**
-     * Get the downloadUri value.
+     * Get uRI used to download the model.
      *
      * @return the downloadUri value
      */
@@ -72,16 +76,16 @@ public class Export {
     }
 
     /**
-     * Get the flavor value.
+     * Get flavor of the export. Possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12'.
      *
      * @return the flavor value
      */
-    public ExportFlavor flavor() {
+    public ExportFlavorModel flavor() {
         return this.flavor;
     }
 
     /**
-     * Get the newerVersionAvailable value.
+     * Get indicates an updated version of the export package is available and should be re-exported for the latest changes.
      *
      * @return the newerVersionAvailable value
      */

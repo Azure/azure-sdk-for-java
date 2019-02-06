@@ -34,13 +34,20 @@ public class Tag {
     private String description;
 
     /**
+     * Gets or sets the type of the tag. Possible values include: 'Regular',
+     * 'Negative'.
+     */
+    @JsonProperty(value = "type")
+    private TagType type;
+
+    /**
      * Gets the number of images with this tag.
      */
     @JsonProperty(value = "imageCount", access = JsonProperty.Access.WRITE_ONLY)
     private int imageCount;
 
     /**
-     * Get the id value.
+     * Get gets the Tag ID.
      *
      * @return the id value
      */
@@ -49,7 +56,7 @@ public class Tag {
     }
 
     /**
-     * Get the name value.
+     * Get gets or sets the name of the tag.
      *
      * @return the name value
      */
@@ -58,7 +65,7 @@ public class Tag {
     }
 
     /**
-     * Set the name value.
+     * Set gets or sets the name of the tag.
      *
      * @param name the name value to set
      * @return the Tag object itself.
@@ -69,7 +76,7 @@ public class Tag {
     }
 
     /**
-     * Get the description value.
+     * Get gets or sets the description of the tag.
      *
      * @return the description value
      */
@@ -78,7 +85,7 @@ public class Tag {
     }
 
     /**
-     * Set the description value.
+     * Set gets or sets the description of the tag.
      *
      * @param description the description value to set
      * @return the Tag object itself.
@@ -89,7 +96,27 @@ public class Tag {
     }
 
     /**
-     * Get the imageCount value.
+     * Get gets or sets the type of the tag. Possible values include: 'Regular', 'Negative'.
+     *
+     * @return the type value
+     */
+    public TagType type() {
+        return this.type;
+    }
+
+    /**
+     * Set gets or sets the type of the tag. Possible values include: 'Regular', 'Negative'.
+     *
+     * @param type the type value to set
+     * @return the Tag object itself.
+     */
+    public Tag withType(TagType type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
+     * Get gets the number of images with this tag.
      *
      * @return the imageCount value
      */

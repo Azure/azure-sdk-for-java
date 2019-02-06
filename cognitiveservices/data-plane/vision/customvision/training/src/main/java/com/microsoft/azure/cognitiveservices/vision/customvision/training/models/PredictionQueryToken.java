@@ -132,7 +132,7 @@ public class PredictionQueryToken {
     }
 
     /**
-     * Get the orderBy value.
+     * Get possible values include: 'Newest', 'Oldest', 'Suggested'.
      *
      * @return the orderBy value
      */
@@ -141,7 +141,7 @@ public class PredictionQueryToken {
     }
 
     /**
-     * Set the orderBy value.
+     * Set possible values include: 'Newest', 'Oldest', 'Suggested'.
      *
      * @param orderBy the orderBy value to set
      * @return the PredictionQueryToken object itself.

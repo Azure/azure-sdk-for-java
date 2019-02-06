@@ -60,7 +60,7 @@ public class Iteration {
     private DateTime trainedAt;
 
     /**
-     * Gets the project id of the iteration.
+     * Gets The project id. of the iteration.
      */
     @JsonProperty(value = "projectId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID projectId;
@@ -85,7 +85,7 @@ public class Iteration {
     private Classifier classificationType;
 
     /**
-     * Get the id value.
+     * Get gets the id of the iteration.
      *
      * @return the id value
      */
@@ -94,7 +94,7 @@ public class Iteration {
     }
 
     /**
-     * Get the name value.
+     * Get gets or sets the name of the iteration.
      *
      * @return the name value
      */
@@ -103,7 +103,7 @@ public class Iteration {
     }
 
     /**
-     * Set the name value.
+     * Set gets or sets the name of the iteration.
      *
      * @param name the name value to set
      * @return the Iteration object itself.
@@ -114,7 +114,7 @@ public class Iteration {
     }
 
     /**
-     * Get the isDefault value.
+     * Get gets or sets a value indicating whether the iteration is the default iteration for the project.
      *
      * @return the isDefault value
      */
@@ -123,7 +123,7 @@ public class Iteration {
     }
 
     /**
-     * Set the isDefault value.
+     * Set gets or sets a value indicating whether the iteration is the default iteration for the project.
      *
      * @param isDefault the isDefault value to set
      * @return the Iteration object itself.
@@ -134,7 +134,7 @@ public class Iteration {
     }
 
     /**
-     * Get the status value.
+     * Get gets the current iteration status.
      *
      * @return the status value
      */
@@ -143,7 +143,7 @@ public class Iteration {
     }
 
     /**
-     * Get the created value.
+     * Get gets the time this iteration was completed.
      *
      * @return the created value
      */
@@ -152,7 +152,7 @@ public class Iteration {
     }
 
     /**
-     * Get the lastModified value.
+     * Get gets the time this iteration was last modified.
      *
      * @return the lastModified value
      */
@@ -161,7 +161,7 @@ public class Iteration {
     }
 
     /**
-     * Get the trainedAt value.
+     * Get gets the time this iteration was last modified.
      *
      * @return the trainedAt value
      */
@@ -170,7 +170,7 @@ public class Iteration {
     }
 
     /**
-     * Get the projectId value.
+     * Get gets The project id. of the iteration.
      *
      * @return the projectId value
      */
@@ -179,7 +179,7 @@ public class Iteration {
     }
 
     /**
-     * Get the exportable value.
+     * Get whether the iteration can be exported to another format for download.
      *
      * @return the exportable value
      */
@@ -188,7 +188,7 @@ public class Iteration {
     }
 
     /**
-     * Get the domainId value.
+     * Get get or sets a guid of the domain the iteration has been trained on.
      *
      * @return the domainId value
      */
@@ -197,7 +197,7 @@ public class Iteration {
     }
 
     /**
-     * Get the classificationType value.
+     * Get gets the classification type of the project. Possible values include: 'Multiclass', 'Multilabel'.
      *
      * @return the classificationType value
      */

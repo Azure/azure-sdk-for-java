@@ -18,19 +18,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class StoredImagePrediction {
     /**
-     * The imageUri property.
+     * The URI to the (resized) prediction image.
      */
-    @JsonProperty(value = "imageUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String imageUri;
+    @JsonProperty(value = "resizedImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String resizedImageUri;
 
     /**
-     * The thumbnailUri property.
+     * The URI to the thumbnail of the original prediction image.
      */
     @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
 
     /**
-     * The domain property.
+     * The URI to the original prediction image.
+     */
+    @JsonProperty(value = "originalImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String originalImageUri;
+
+    /**
+     * Domain used for the prediction.
      */
     @JsonProperty(value = "domain", access = JsonProperty.Access.WRITE_ONLY)
     private UUID domain;
@@ -66,16 +72,16 @@ public class StoredImagePrediction {
     private List<Prediction> predictions;
 
     /**
-     * Get the imageUri value.
+     * Get the URI to the (resized) prediction image.
      *
-     * @return the imageUri value
+     * @return the resizedImageUri value
      */
-    public String imageUri() {
-        return this.imageUri;
+    public String resizedImageUri() {
+        return this.resizedImageUri;
     }
 
     /**
-     * Get the thumbnailUri value.
+     * Get the URI to the thumbnail of the original prediction image.
      *
      * @return the thumbnailUri value
      */
@@ -84,7 +90,16 @@ public class StoredImagePrediction {
     }
 
     /**
-     * Get the domain value.
+     * Get the URI to the original prediction image.
+     *
+     * @return the originalImageUri value
+     */
+    public String originalImageUri() {
+        return this.originalImageUri;
+    }
+
+    /**
+     * Get domain used for the prediction.
      *
      * @return the domain value
      */
