@@ -185,6 +185,19 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ElevateAccessInner object to access its operations.
+     */
+    private ElevateAccessInner elevateAccess;
+
+    /**
+     * Gets the ElevateAccessInner object to access its operations.
+     * @return the ElevateAccessInner object.
+     */
+    public ElevateAccessInner elevateAccess() {
+        return this.elevateAccess;
+    }
+
+    /**
      * The ClassicAdministratorsInner object to access its operations.
      */
     private ClassicAdministratorsInner classicAdministrators;
@@ -236,6 +249,7 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         this.providerOperationsMetadatas = new ProviderOperationsMetadatasInner(restClient().retrofit(), this);
         this.roleAssignments = new RoleAssignmentsInner(restClient().retrofit(), this);
         this.roleDefinitions = new RoleDefinitionsInner(restClient().retrofit(), this);
+        this.elevateAccess = new ElevateAccessInner(restClient().retrofit(), this);
         this.classicAdministrators = new ClassicAdministratorsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
