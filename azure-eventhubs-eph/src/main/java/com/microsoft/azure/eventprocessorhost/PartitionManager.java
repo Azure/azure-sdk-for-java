@@ -294,6 +294,9 @@ class PartitionManager extends Closable {
                 .whenCompleteAsync((didSteal, e) ->
                 {
                     TRACE_LOGGER.debug(this.hostContext.withHost("Scanning took " + (System.currentTimeMillis() - start)));
+                	if ((e != null) && !(e instanceof ClosingException)) {
+                		TRACE_LOGGER.warn(this.hostContext.withHost("Lease scanner got exception"), e);
+                	}
 
                     onPartitionCheckCompleteTestHook();
 
@@ -309,7 +312,7 @@ class PartitionManager extends Closable {
                         }
                         TRACE_LOGGER.debug(this.hostContext.withHost("Scheduling lease scanner in " + seconds));
                     } else {
-                        TRACE_LOGGER.debug(this.hostContext.withHost("Not scheduling lease scanner due to shutdown"));
+                        TRACE_LOGGER.warn(this.hostContext.withHost("Not scheduling lease scanner due to shutdown"));
                     }
                 }, this.hostContext.getExecutor());
 
