@@ -16,18 +16,6 @@ import com.microsoft.rest.ExpandableStringEnum;
  * Defines values for AzureSkuName.
  */
 public final class AzureSkuName extends ExpandableStringEnum<AzureSkuName> {
-    /** Static value KC8 for AzureSkuName. */
-    public static final AzureSkuName KC8 = fromString("KC8");
-
-    /** Static value KC16 for AzureSkuName. */
-    public static final AzureSkuName KC16 = fromString("KC16");
-
-    /** Static value KS8 for AzureSkuName. */
-    public static final AzureSkuName KS8 = fromString("KS8");
-
-    /** Static value KS16 for AzureSkuName. */
-    public static final AzureSkuName KS16 = fromString("KS16");
-
     /** Static value D13_v2 for AzureSkuName. */
     public static final AzureSkuName D13_V2 = fromString("D13_v2");
 
