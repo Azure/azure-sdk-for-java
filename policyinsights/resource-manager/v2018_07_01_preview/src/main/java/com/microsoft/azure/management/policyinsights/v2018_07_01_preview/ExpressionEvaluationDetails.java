@@ -27,7 +27,7 @@ public class ExpressionEvaluationDetails {
     private String expression;
 
     /**
-     * Property path if the expression is a field or an aliase.
+     * Property path if the expression is a field or an alias.
      */
     @JsonProperty(value = "path")
     private String path;
@@ -91,7 +91,7 @@ public class ExpressionEvaluationDetails {
     }
 
     /**
-     * Get property path if the expression is a field or an aliase.
+     * Get property path if the expression is a field or an alias.
      *
      * @return the path value
      */
@@ -100,7 +100,7 @@ public class ExpressionEvaluationDetails {
     }
 
     /**
-     * Set property path if the expression is a field or an aliase.
+     * Set property path if the expression is a field or an alias.
      *
      * @param path the path value to set
      * @return the ExpressionEvaluationDetails object itself.
