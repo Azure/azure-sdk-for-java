@@ -32,7 +32,8 @@ public class VaultProperties {
     /**
      * An array of 0 to 16 identities that have access to the key vault. All
      * identities in the array must use the same tenant ID as the key vault's
-     * tenant ID.
+     * tenant ID. When `createMode` is set to `recover`, access policies are
+     * not required. Otherwise, access policies are required.
      */
     @JsonProperty(value = "accessPolicies")
     private List<AccessPolicyEntry> accessPolicies;
@@ -133,7 +134,7 @@ public class VaultProperties {
     }
 
     /**
-     * Get an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+     * Get an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. When `createMode` is set to `recover`, access policies are not required. Otherwise, access policies are required.
      *
      * @return the accessPolicies value
      */
@@ -142,7 +143,7 @@ public class VaultProperties {
     }
 
     /**
-     * Set an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID.
+     * Set an array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. When `createMode` is set to `recover`, access policies are not required. Otherwise, access policies are required.
      *
      * @param accessPolicies the accessPolicies value to set
      * @return the VaultProperties object itself.
