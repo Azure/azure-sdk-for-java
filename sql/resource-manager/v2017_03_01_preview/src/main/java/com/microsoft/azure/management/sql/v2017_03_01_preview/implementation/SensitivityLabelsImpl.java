@@ -44,6 +44,18 @@ class SensitivityLabelsImpl extends WrapperImpl<SensitivityLabelsInner> implemen
     }
 
     @Override
+    public Completable enableRecommendationAsync(String resourceGroupName, String serverName, String databaseName, String schemaName, String tableName, String columnName) {
+        SensitivityLabelsInner client = this.inner();
+        return client.enableRecommendationAsync(resourceGroupName, serverName, databaseName, schemaName, tableName, columnName).toCompletable();
+    }
+
+    @Override
+    public Completable disableRecommendationAsync(String resourceGroupName, String serverName, String databaseName, String schemaName, String tableName, String columnName) {
+        SensitivityLabelsInner client = this.inner();
+        return client.disableRecommendationAsync(resourceGroupName, serverName, databaseName, schemaName, tableName, columnName).toCompletable();
+    }
+
+    @Override
     public Observable<SensitivityLabel> getAsync(String resourceGroupName, String serverName, String databaseName, String schemaName, String tableName, String columnName, SensitivityLabelSource sensitivityLabelSource) {
         SensitivityLabelsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName, schemaName, tableName, columnName, sensitivityLabelSource)

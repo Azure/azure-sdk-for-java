@@ -58,7 +58,7 @@ public class RecommendedSensitivityLabelsInner {
     interface RecommendedSensitivityLabelsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.RecommendedSensitivityLabels listByDatabase" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/recommendedSensitivityLabels")
-        Observable<Response<ResponseBody>> listByDatabase(@Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Query("$skipToken") String skipToken, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByDatabase(@Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("subscriptionId") String subscriptionId, @Query("includeDisabledRecommendations") Boolean includeDisabledRecommendations, @Query("$skipToken") String skipToken, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.sql.v2017_03_01_preview.RecommendedSensitivityLabels listByDatabaseNext" })
         @GET
@@ -176,9 +176,10 @@ public class RecommendedSensitivityLabelsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+        final Boolean includeDisabledRecommendations = null;
         final String skipToken = null;
         final String filter = null;
-        return service.listByDatabase(resourceGroupName, serverName, databaseName, this.client.subscriptionId(), skipToken, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByDatabase(resourceGroupName, serverName, databaseName, this.client.subscriptionId(), includeDisabledRecommendations, skipToken, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(Response<ResponseBody> response) {
@@ -198,6 +199,7 @@ public class RecommendedSensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
      * @param skipToken the String value
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -205,8 +207,8 @@ public class RecommendedSensitivityLabelsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;SensitivityLabelInner&gt; object if successful.
      */
-    public PagedList<SensitivityLabelInner> listByDatabase(final String resourceGroupName, final String serverName, final String databaseName, final String skipToken, final String filter) {
-        ServiceResponse<Page<SensitivityLabelInner>> response = listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, skipToken, filter).toBlocking().single();
+    public PagedList<SensitivityLabelInner> listByDatabase(final String resourceGroupName, final String serverName, final String databaseName, final Boolean includeDisabledRecommendations, final String skipToken, final String filter) {
+        ServiceResponse<Page<SensitivityLabelInner>> response = listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, includeDisabledRecommendations, skipToken, filter).toBlocking().single();
         return new PagedList<SensitivityLabelInner>(response.body()) {
             @Override
             public Page<SensitivityLabelInner> nextPage(String nextPageLink) {
@@ -221,15 +223,16 @@ public class RecommendedSensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
      * @param skipToken the String value
      * @param filter An OData filter expression that filters elements in the collection.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SensitivityLabelInner>> listByDatabaseAsync(final String resourceGroupName, final String serverName, final String databaseName, final String skipToken, final String filter, final ListOperationCallback<SensitivityLabelInner> serviceCallback) {
+    public ServiceFuture<List<SensitivityLabelInner>> listByDatabaseAsync(final String resourceGroupName, final String serverName, final String databaseName, final Boolean includeDisabledRecommendations, final String skipToken, final String filter, final ListOperationCallback<SensitivityLabelInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, skipToken, filter),
+            listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, includeDisabledRecommendations, skipToken, filter),
             new Func1<String, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(String nextPageLink) {
@@ -245,13 +248,14 @@ public class RecommendedSensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
      * @param skipToken the String value
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SensitivityLabelInner&gt; object
      */
-    public Observable<Page<SensitivityLabelInner>> listByDatabaseAsync(final String resourceGroupName, final String serverName, final String databaseName, final String skipToken, final String filter) {
-        return listByDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName, skipToken, filter)
+    public Observable<Page<SensitivityLabelInner>> listByDatabaseAsync(final String resourceGroupName, final String serverName, final String databaseName, final Boolean includeDisabledRecommendations, final String skipToken, final String filter) {
+        return listByDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName, includeDisabledRecommendations, skipToken, filter)
             .map(new Func1<ServiceResponse<Page<SensitivityLabelInner>>, Page<SensitivityLabelInner>>() {
                 @Override
                 public Page<SensitivityLabelInner> call(ServiceResponse<Page<SensitivityLabelInner>> response) {
@@ -266,13 +270,14 @@ public class RecommendedSensitivityLabelsInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
      * @param skipToken the String value
      * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;SensitivityLabelInner&gt; object
      */
-    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listByDatabaseWithServiceResponseAsync(final String resourceGroupName, final String serverName, final String databaseName, final String skipToken, final String filter) {
-        return listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, skipToken, filter)
+    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listByDatabaseWithServiceResponseAsync(final String resourceGroupName, final String serverName, final String databaseName, final Boolean includeDisabledRecommendations, final String skipToken, final String filter) {
+        return listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, includeDisabledRecommendations, skipToken, filter)
             .concatMap(new Func1<ServiceResponse<Page<SensitivityLabelInner>>, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(ServiceResponse<Page<SensitivityLabelInner>> page) {
@@ -291,12 +296,13 @@ public class RecommendedSensitivityLabelsInner {
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param serverName The name of the server.
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param databaseName The name of the database.
+    ServiceResponse<PageImpl<SensitivityLabelInner>> * @param includeDisabledRecommendations Specifies whether to include disabled recommendations or not.
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param skipToken the String value
     ServiceResponse<PageImpl<SensitivityLabelInner>> * @param filter An OData filter expression that filters elements in the collection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SensitivityLabelInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listByDatabaseSinglePageAsync(final String resourceGroupName, final String serverName, final String databaseName, final String skipToken, final String filter) {
+    public Observable<ServiceResponse<Page<SensitivityLabelInner>>> listByDatabaseSinglePageAsync(final String resourceGroupName, final String serverName, final String databaseName, final Boolean includeDisabledRecommendations, final String skipToken, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -312,7 +318,7 @@ public class RecommendedSensitivityLabelsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByDatabase(resourceGroupName, serverName, databaseName, this.client.subscriptionId(), skipToken, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByDatabase(resourceGroupName, serverName, databaseName, this.client.subscriptionId(), includeDisabledRecommendations, skipToken, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SensitivityLabelInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SensitivityLabelInner>>> call(Response<ResponseBody> response) {
