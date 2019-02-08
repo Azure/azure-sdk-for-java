@@ -85,6 +85,7 @@
       <azure-client-runtime.version>1.3.0</azure-client-runtime.version>
       <client-runtime.version>1.6.1</client-runtime.version>
       <commons-codec.version>1.10</commons-codec.version>
+      <spotbugs.version>3.1.11</spotbugs.version>
 
       <!-- Test Dependency Versions -->
       <adal4j.version>1.4.0</adal4j.version>
@@ -111,6 +112,10 @@
       <maven-shade-plugin.version>2.4.1</maven-shade-plugin.version>
       <build-helper-maven-plugin.version>3.0.0</build-helper-maven-plugin.version>
       <maven-jar-plugin.version>3.0.2</maven-jar-plugin.version>
+      <maven-build-tools.version>1.0.0</maven-build-tools.version>
+      <xml-maven-plugin.version>1.0</xml-maven-plugin.version>
+      <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
+      <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
    </properties>
 
    <dependencyManagement>
@@ -219,6 +224,149 @@
    </dependencyManagement>
 
    <build>
+
+      <!-- This plugin scans checkstyle issues in the code -->
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <dependencies>
+               <dependency>
+                  <groupId>com.azure</groupId>
+                  <artifactId>sdk-build-tools</artifactId>
+                  <version>${maven-build-tools.version}</version>
+               </dependency>
+            </dependencies>
+            <configuration>
+               <configLocation>checkstyle/checkstyle.xml</configLocation>
+               <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+               <headerLocation>checkstyle/java.header</headerLocation>
+               <propertyExpansion>samedir=runtimes/build-tools/src/main/resources</propertyExpansion>
+               <encoding>UTF-8</encoding>
+               <consoleOutput>true</consoleOutput>
+               <includeTestSourceDirectory>false</includeTestSourceDirectory>
+               <linkXRef>false</linkXRef>
+
+               <!-- TODO soon - enable these failure modes -->
+               <failsOnError>false</failsOnError>
+               <failOnViolation>false</failOnViolation>
+            </configuration>
+            <executions>
+               <execution>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>check</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+         <!-- This plugin scans reports spotbugs in the code -->
+         <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <dependencies>
+               <dependency>
+                  <groupId>com.azure</groupId>
+                  <artifactId>sdk-build-tools</artifactId>
+                  <version>${maven-build-tools.version}</version>
+               </dependency>
+            </dependencies>
+            <configuration>
+               <effort>Max</effort>
+               <threshold>Low</threshold>
+               <xmlOutput>true</xmlOutput>
+               <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+               <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+
+               <!-- TODO soon - enable this failure mode -->
+               <failOnError>false</failOnError>
+            </configuration>
+            <executions>
+               <execution>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>check</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+         <!-- This plugin exports spotbugs reports in html form -->
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>xml-maven-plugin</artifactId>
+            <version>${xml-maven-plugin.version}</version>
+            <executions>
+               <execution>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>transform</goal>
+                  </goals>
+               </execution>
+            </executions>
+            <configuration>
+               <transformationSets>
+                  <transformationSet>
+                     <dir>${project.build.directory}/spotbugs</dir>
+                     <outputDir>${project.build.directory}/spotbugs</outputDir>
+                     <stylesheet>fancy-hist.xsl</stylesheet>
+                     <!--<stylesheet>default.xsl</stylesheet>-->
+                     <!--<stylesheet>plain.xsl</stylesheet>-->
+                     <!--<stylesheet>fancy.xsl</stylesheet>-->
+                     <!--<stylesheet>summary.xsl</stylesheet>-->
+                     <fileMappers>
+                        <fileMapper
+                                implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                           <targetExtension>.html</targetExtension>
+                        </fileMapper>
+                     </fileMappers>
+                  </transformationSet>
+               </transformationSets>
+            </configuration>
+            <dependencies>
+               <dependency>
+                  <groupId>com.github.spotbugs</groupId>
+                  <artifactId>spotbugs</artifactId>
+                  <version>${spotbugs.version}</version>
+               </dependency>
+            </dependencies>
+         </plugin>
+
+         <!-- This plugin scans javadoc issues in the project. -->
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <configuration>
+               <doctitle>Azure SDK for Java Reference Documentation</doctitle>
+               <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
+               <failOnError>true</failOnError>
+               <footer>Visit the &lt;a href="http://java.ms"&gt;Azure for Java Developers&lt;/a&gt; site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+               <linksource>false</linksource>
+               <excludePackageNames>
+               </excludePackageNames>
+               <groups>
+                  <group>
+                     <title>Azure Batch</title>
+                     <packages>com.microsoft.azure.batch*</packages>
+                  </group>
+                  <group>
+                     <title>Azure Key Vault</title>
+                     <packages>com.microsoft.azure.keyvault*</packages>
+                  </group>
+               </groups>
+            </configuration>
+            <executions>
+               <execution>
+                  <id>attach-javadocs</id>
+                  <goals>
+                     <goal>jar</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+
+      </plugins>
 
       <pluginManagement>
 
@@ -377,6 +525,20 @@
                <version>${maven-jar-plugin.version}</version>
             </plugin>
 
+            <!-- This plugin is used to generate project's site and reports -->
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-site-plugin</artifactId>
+               <version>${maven-site-plugin.version}</version>
+            </plugin>
+
+            <!-- This plugin is used to generate reports information about the project. -->
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-project-info-reports-plugin</artifactId>
+               <version>${maven-project-info-reports-plugin.version}</version>
+            </plugin>
+
          </plugins>
 
       </pluginManagement>
@@ -435,10 +597,21 @@
 
       </profile>
 
+      <profile>
+         <id>spotbugs-reporting</id>
+         <modules>
+            <module>./template/client</module>
+            <module>./keyvault/data-plane</module>
+            <module>./eng/spotbugs-aggregate-report</module>
+         </modules>
+      </profile>
+
    </profiles>
 
    <modules>
       <module>./template/client</module>
       <module>./keyvault/data-plane</module>
+      <module>./eng/code-quality-reports</module>
    </modules>
+
 </project>

@@ -33,6 +33,19 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish'
 
+- job: 'Audit'
+
+  dependsOn:
+  - 'Build'
+  
+  pool:
+    vmImage: 'vs2017-win2016'
+
+  steps:
+    - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+      condition: and(always(), ne(variables['System.TeamProject'], 'public'))
+      displayName: 'Component Detection'
+
 - job: 'Test'
 
   dependsOn:
