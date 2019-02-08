@@ -25,7 +25,7 @@ public final class SignatureEncoding {
      * @param algorithm The algorithm used to produce the given ASN.1 DER encoded signature
      * @return The raw format of the given ASN.1 DER encoded signature in the form R|S
      */
-	public static byte[] fromAsn1Der(byte[] asn1DerSignature, String algorithm) throws NoSuchAlgorithmException {
+    public static byte[] fromAsn1Der(byte[] asn1DerSignature, String algorithm) throws NoSuchAlgorithmException {
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
 
         // verify the given algoritm could be resolved
