@@ -31,6 +31,4 @@ public final class KeyVaultClient extends KeyVaultClientCustomImpl implements Ke
         super(restClient);
         initializeService();
     }
-
-
 }
