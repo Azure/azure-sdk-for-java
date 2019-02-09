@@ -1,4 +1,10 @@
 ## Changelog
+
+### 2.4.0
+* Direct GA.
+* Added support for QueryMetrics.
+* Changed the APIs accepting java.util.Collection for which order is important to accept java.util.List instead. Now ConnectionPolicy#getPreferredLocations(), JsonSerialization, and PartitionKey(.) accept List.
+
 ### 2.4.0-beta1
 
 * Added support for Direct Https.
