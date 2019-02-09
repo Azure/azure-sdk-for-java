@@ -82,8 +82,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryDocumentsValidateContent() throws Exception {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    public void queryDocumentsValidateContent(boolean qmEnabled) throws Exception {
         Document expectedDocument = createdDocuments.get(0);
 
         String query =
@@ -105,13 +105,14 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             new ResourceValidator.Builder<Document>().areEqual(expectedDocument).build());
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
-            .numberOfPages(1)
-            .containsExactly(expectedResourceIds)
-            .validateAllResources(resourceIDToValidator)
-            .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
-            .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
-                .hasRequestChargeHeader().build())
-            .build();
+                .numberOfPages(1)
+                .containsExactly(expectedResourceIds)
+                .validateAllResources(resourceIDToValidator)
+                .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
+                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
+                        .hasRequestChargeHeader().build())
+                .hasValidQueryMetrics(qmEnabled)
+                .build();
 
         try {
             validateQuerySuccess(queryObservable, validator);

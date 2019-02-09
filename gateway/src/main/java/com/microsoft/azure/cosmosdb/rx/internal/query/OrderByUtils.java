@@ -23,6 +23,7 @@
 package com.microsoft.azure.cosmosdb.rx.internal.query;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.github.davidmoten.rx.Transformers;
@@ -30,6 +31,7 @@ import com.microsoft.azure.cosmosdb.Resource;
 import com.microsoft.azure.cosmosdb.internal.RequestChargeTracker;
 import com.microsoft.azure.cosmosdb.internal.query.orderbyquery.OrderByRowResult;
 import com.microsoft.azure.cosmosdb.internal.query.orderbyquery.OrderbyRowComparer;
+import com.microsoft.azure.cosmosdb.QueryMetrics;
 
 import rx.Observable;
 import rx.Observable.Transformer;
@@ -39,35 +41,47 @@ class OrderByUtils {
     public static <T extends Resource> Observable<OrderByRowResult<T>> orderedMerge(Class<T> klass, 
             OrderbyRowComparer<T> consumeComparer,
             RequestChargeTracker tracker, 
-            List<DocumentProducer<T>> documentProducers) {
-        return toOrderByQueryResultObservable(klass, documentProducers.get(0), tracker)
+            List<DocumentProducer<T>> documentProducers, Map<String, QueryMetrics> queryMetricsMap) {
+        return toOrderByQueryResultObservable(klass, documentProducers.get(0), tracker, queryMetricsMap)
                 .compose(
                         Transformers.orderedMergeWith(
                                 documentProducers.subList(1, documentProducers.size())
                                 .stream()
-                                .map(producer -> toOrderByQueryResultObservable(klass, producer, tracker))
+                                .map(producer -> toOrderByQueryResultObservable(klass, producer, tracker, queryMetricsMap))
                                 .collect(Collectors.toList()), consumeComparer, false, 1));
     }
 
     private static <T extends Resource> Observable<OrderByRowResult<T>> toOrderByQueryResultObservable(Class<T> klass,
-                                                                                               DocumentProducer<T> producer,
-                                                                                               RequestChargeTracker tracker) {
-        return producer.produceAsync().compose(
-                new OrderByUtils.PageToItemTransformer<T>(klass, tracker));
+                                                                                                       DocumentProducer<T> producer,
+                                                                                                       RequestChargeTracker tracker,
+                                                                                                       Map<String, QueryMetrics> queryMetricsMap) {
+        return producer
+                .produceAsync()
+                .compose(new OrderByUtils.PageToItemTransformer<T>(klass, tracker, queryMetricsMap));
     }
 
     private static class PageToItemTransformer<T extends Resource> implements Transformer<DocumentProducer<T>.DocumentProducerFeedResponse, OrderByRowResult<T>> {
         private final RequestChargeTracker tracker;
         private final Class<T> klass;
+        private final Map<String, QueryMetrics> queryMetricsMap;
 
-        public PageToItemTransformer(Class<T> klass, RequestChargeTracker tracker) {
+        public PageToItemTransformer(Class<T> klass, RequestChargeTracker tracker, Map<String, QueryMetrics> queryMetricsMap) {
             this.klass = klass;
             this.tracker = tracker;
+            this.queryMetricsMap = queryMetricsMap;
         }
 
         @Override
         public Observable<OrderByRowResult<T>> call(Observable<DocumentProducer<T>.DocumentProducerFeedResponse> source) {
             return source.flatMap(documentProducerFeedResponse -> {
+                for(String key : documentProducerFeedResponse.pageResult.getQueryMetrics().keySet()) {
+                    if (queryMetricsMap.containsKey(key)) {
+                        QueryMetrics qm = documentProducerFeedResponse.pageResult.getQueryMetrics().get(key);
+                        queryMetricsMap.get(key).add(qm);
+                    } else {
+                        queryMetricsMap.put(key, documentProducerFeedResponse.pageResult.getQueryMetrics().get(key));
+                    }
+                }
                 tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                 Observable<T> x = Observable.<T>from(documentProducerFeedResponse.pageResult.getResults());
 

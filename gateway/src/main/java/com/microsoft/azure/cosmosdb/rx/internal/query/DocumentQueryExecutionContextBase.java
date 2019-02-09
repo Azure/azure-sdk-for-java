@@ -203,6 +203,10 @@ implements IDocumentQueryExecutionContext<T> {
             requestHeaders.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, desiredConsistencyLevel.name());
         }
 
+        if(feedOptions.getPopulateQueryMetrics()){
+            requestHeaders.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.getPopulateQueryMetrics()));
+        }
+
         return requestHeaders;
     }
 

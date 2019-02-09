@@ -56,6 +56,7 @@ public class DocumentClientException extends Exception {
     String partitionKeyRangeId;
     URI requestUri;
     long lsn;
+    Map<String, String> requestHeaders;
 
     /**
      * Creates a new instance of the DocumentClientException class.
@@ -245,6 +246,7 @@ public class DocumentClientException extends Exception {
                 ", message=" + getMessage() +
                 ", getCauseInfo=" + getCauseInfo() +
                 ", responseHeaders=" + responseHeaders +
+                ", requestHeaders=" + requestHeaders +
                 '}';
     }
 

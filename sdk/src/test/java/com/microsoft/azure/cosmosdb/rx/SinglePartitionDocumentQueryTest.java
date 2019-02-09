@@ -72,13 +72,14 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryDocuments() throws Exception {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    public void queryDocuments(boolean queryMetricsEnabled) throws Exception {
 
         String query = "SELECT * from c where c.prop = 99";
 
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(5);
+        options.setPopulateQueryMetrics(queryMetricsEnabled);
         Observable<FeedResponse<Document>> queryObservable = client
                 .queryDocuments(getCollectionLink(), query, options);
 
@@ -93,6 +94,7 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<Document>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
+                .hasValidQueryMetrics(queryMetricsEnabled)
                 .build();
 
         try {

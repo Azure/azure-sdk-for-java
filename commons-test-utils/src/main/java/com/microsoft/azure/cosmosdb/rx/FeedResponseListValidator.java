@@ -24,13 +24,16 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.FeedResponse;
+import com.microsoft.azure.cosmosdb.QueryMetrics;
 import com.microsoft.azure.cosmosdb.Resource;
 
 public interface FeedResponseListValidator<T extends Resource> {
@@ -223,6 +226,35 @@ public interface FeedResponseListValidator<T extends Resource> {
                     assertThat(feedList).hasSize(pageLengths.length);
                     for (int i = 0; i < pageLengths.length; i++)
                         assertThat(feedList.get(i).getResults().size()).isEqualTo(pageLengths[i]);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> hasValidQueryMetrics(boolean shouldHaveMetrics) {
+            validators.add(new FeedResponseListValidator<T>() {
+                @Override
+                public void validate(List<FeedResponse<T>> feedList) {
+                    for(FeedResponse feedPage: feedList) {
+                        if (shouldHaveMetrics) {
+                            QueryMetrics queryMetrics = BridgeInternal.createQueryMetricsFromCollection(feedPage.getQueryMetrics().values());
+                            assertThat(queryMetrics.getIndexHitDocumentCount()).isGreaterThanOrEqualTo(0);
+                            assertThat(queryMetrics.getRetrievedDocumentSize()).isGreaterThan(0);
+                            assertThat(queryMetrics.getTotalQueryExecutionTime().compareTo(Duration.ZERO)).isGreaterThan(0);
+                            assertThat(queryMetrics.getOutputDocumentCount()).isGreaterThan(0);
+                            assertThat(queryMetrics.getRetrievedDocumentCount()).isGreaterThan(0);
+                            assertThat(queryMetrics.getDocumentLoadTime().compareTo(Duration.ZERO)).isGreaterThan(0);
+                            assertThat(queryMetrics.getDocumentWriteTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
+                            assertThat(queryMetrics.getVMExecutionTime().compareTo(Duration.ZERO)).isGreaterThan(0);
+                            assertThat(queryMetrics.getQueryPreparationTimes().getLogicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThan(0);
+                            assertThat(queryMetrics.getQueryPreparationTimes().getPhysicalPlanBuildTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
+                            assertThat(queryMetrics.getQueryPreparationTimes().getQueryCompilationTime().compareTo(Duration.ZERO)).isGreaterThan(0);
+                            assertThat(queryMetrics.getRuntimeExecutionTimes().getQueryEngineExecutionTime().compareTo(Duration.ZERO)).isGreaterThanOrEqualTo(0);
+                            assertThat(BridgeInternal.getClientSideMetrics(queryMetrics).getRequestCharge()).isGreaterThan(0);
+                        } else {
+                            assertThat(feedPage.getQueryMetrics().isEmpty());
+                        }
+                    }
                 }
             });
             return this;

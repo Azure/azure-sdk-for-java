@@ -26,17 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.ChangeFeedOptions;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
@@ -47,6 +41,15 @@ import com.microsoft.azure.cosmosdb.PartitionKey;
 import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
+import org.testng.SkipException;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
@@ -167,6 +170,43 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void changeFeed_fromStartDate() throws Exception {
+
+        //setStartDateTime is not currently supported in multimaster mode. So skipping the test
+        if(BridgeInternal.isEnableMultipleWriteLocations(client.getDatabaseAccount().toBlocking().single())){
+            throw new SkipException("StartTime/IfModifiedSince is not currently supported when EnableMultipleWriteLocations is set");
+        }
+
+        // Read change feed from current.
+        ChangeFeedOptions changeFeedOption = new ChangeFeedOptions();
+        String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
+
+        changeFeedOption.setPartitionKey(new PartitionKey(partitionKey));
+        ZonedDateTime befTime = ZonedDateTime.now();
+        // Waiting for at-least a second to ensure that new document is created after we took the time stamp
+        waitAtleastASecond(befTime);
+
+        ZonedDateTime dateTimeBeforeCreatingDoc = ZonedDateTime.now();
+        changeFeedOption.setStartDateTime(dateTimeBeforeCreatingDoc);
+
+        // Waiting for at-least a second to ensure that new document is created after we took the time stamp
+        waitAtleastASecond(dateTimeBeforeCreatingDoc);
+        client.createDocument(getCollectionLink(), getDocumentDefinition(partitionKey), null, true).toBlocking().single().getResource();
+
+        List<FeedResponse<Document>> changeFeedResultList = client.queryDocumentChangeFeed(getCollectionLink(),
+                changeFeedOption).toList()
+                .toBlocking().single();
+
+        int count = 0;
+        for(int i = 0; i < changeFeedResultList.size(); i++) {
+            FeedResponse<Document> changeFeedPage = changeFeedResultList.get(i);
+            count += changeFeedPage.getResults().size();
+            assertThat(changeFeedPage.getResponseContinuation()).as("Response continuation should not be null").isNotNull();
+        }
+        assertThat(count).as("Change feed should have one newly created document").isEqualTo(1);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void changesFromPartitionKey_AfterInsertingNewDocuments() throws Exception {
         ChangeFeedOptions changeFeedOption = new ChangeFeedOptions();
         changeFeedOption.setMaxItemCount(3);
@@ -221,7 +261,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             deleteCollection(client, getCollectionLink());
         }
     }
-    
+
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void populateDocuments() {
         partitionKeyToDocuments.clear();
@@ -247,7 +287,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        // set up the client        
+        // set up the client
         client = clientBuilder.build();
         createdDatabase = SHARED_DATABASE;
     }
@@ -264,5 +304,11 @@ public class ChangeFeedTest extends TestSuiteBase {
         doc.set("mypk", partitionKey);
         doc.set("prop", uuid);
         return doc;
+    }
+
+    private static void waitAtleastASecond(ZonedDateTime befTime) throws InterruptedException {
+        while (befTime.plusSeconds(1).isAfter(ZonedDateTime.now())) {
+            Thread.sleep(100);
+        }
     }
 }

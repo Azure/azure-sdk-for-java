@@ -85,6 +85,10 @@ class ChangeFeedQueryImpl<T extends Resource> {
             canUseStartFromBeginning = false;
         }
 
+        if(changeFeedOptions.getStartDateTime() != null){
+            canUseStartFromBeginning = false;
+        }
+
         if (canUseStartFromBeginning && !changeFeedOptions.isStartFromBeginning()) {
             initialNextIfNoneMatch = IfNonMatchAllHeaderValue;
         }
@@ -109,6 +113,11 @@ class ChangeFeedQueryImpl<T extends Resource> {
         if (options.getPartitionKey() != null) {
             PartitionKeyInternal partitionKey = options.getPartitionKey().getInternalPartitionKey();
             headers.put(HttpConstants.HttpHeaders.PARTITION_KEY, partitionKey.toJson());
+        }
+
+        if(options.getStartDateTime() != null){
+            String dateTimeInHttpFormat = Utils.zonedDateTimeAsUTCRFC1123(options.getStartDateTime());
+            headers.put(HttpConstants.HttpHeaders.IF_MODIFIED_SINCE, dateTimeInHttpFormat);
         }
 
         RxDocumentServiceRequest req = RxDocumentServiceRequest.create(

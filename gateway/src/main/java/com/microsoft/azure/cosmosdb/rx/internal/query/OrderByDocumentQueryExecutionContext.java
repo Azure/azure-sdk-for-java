@@ -26,6 +26,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.FeedOptions;
@@ -44,6 +46,7 @@ import com.microsoft.azure.cosmosdb.rx.internal.IDocumentClientRetryPolicy;
 import com.microsoft.azure.cosmosdb.rx.internal.IRetryPolicyFactory;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.Utils;
+import com.microsoft.azure.cosmosdb.QueryMetrics;
 
 import rx.Observable;
 import rx.Observable.Transformer;
@@ -62,6 +65,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
     private final OrderbyRowComparer<T> consumeComparer;
     private Observable<T> orderByObservable;
     private RequestChargeTracker tracker;
+    private ConcurrentMap<String, QueryMetrics> queryMetricMap;
 
     private OrderByDocumentQueryExecutionContext(
             IDocumentQueryClient client,
@@ -137,7 +141,8 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
                         querySpec.getParameters()));
 
         tracker = new RequestChargeTracker();
-        orderByObservable = OrderByUtils.orderedMerge(resourceType, consumeComparer, tracker, documentProducers)
+        queryMetricMap = new ConcurrentHashMap<>();
+        orderByObservable = OrderByUtils.orderedMerge(resourceType, consumeComparer, tracker, documentProducers, queryMetricMap)
                 .map(orderByQueryResult -> orderByQueryResult.getPayload());
     }
     
@@ -170,10 +175,12 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
         private final static int DEFAULT_PAGE_SIZE = 100;
         private final RequestChargeTracker tracker;
         private final int maxPageSize;
+        private final ConcurrentMap<String, QueryMetrics> queryMetricMap;
 
-        public ItemToPageTransformer(RequestChargeTracker tracker, int maxPageSize) {
+        public ItemToPageTransformer(RequestChargeTracker tracker, int maxPageSize, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
             this.tracker = tracker;
             this.maxPageSize = maxPageSize > 0 ? maxPageSize : DEFAULT_PAGE_SIZE;
+            this.queryMetricMap = queryMetricsMap;
         }
 
         private static Map<String, String> headerResponse(double requestCharge) {
@@ -190,9 +197,15 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
                     // flattens the observable<Observable<List<T>>> to Observable<List<T>>
                     .flatMap(resultListObs -> resultListObs, 1)
                     // translates Observable<List<T>> to Observable<FeedResponsePage<T>>>
-                    .map(resultList -> { 
-                        // construct a page from result of 
-                        return BridgeInternal.createFeedResponse(resultList, headerResponse(tracker.getAndResetCharge()));
+                    .map(resultList -> {
+                        // construct a page from result of
+                        FeedResponse<T> feedResponse = BridgeInternal.createFeedResponse(resultList, headerResponse(tracker.getAndResetCharge()));
+                        if(!queryMetricMap.isEmpty()) {
+                            for(String key: queryMetricMap.keySet()) {
+                                BridgeInternal.putQueryMetricsIntoMap(feedResponse, key, queryMetricMap.get(key));
+                            }
+                        }
+                        return feedResponse;
                     }).switchIfEmpty(
                             Observable.defer(() -> {
                                 // create an empty page if there is no result
@@ -206,7 +219,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
     @Override
     public Observable<FeedResponse<T>> drainAsync(int maxPageSize) {
         return orderByObservable
-                .compose(new ItemToPageTransformer<T>(tracker, pageSize));
+                .compose(new ItemToPageTransformer<T>(tracker, pageSize, queryMetricMap));
     }
 
     @Override

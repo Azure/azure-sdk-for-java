@@ -60,13 +60,14 @@ public class TopQueryTests extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryDocumentsWithTop() throws Exception {
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    public void queryDocumentsWithTop(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         options.setMaxItemCount(9);
         options.setMaxDegreeOfParallelism(2);
+        options.setPopulateQueryMetrics(qmEnabled);
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;
@@ -105,6 +106,7 @@ public class TopQueryTests extends TestSuiteBase {
                     .totalSize(expectedTotalSize)
                     .numberOfPages(expectedNumberOfPages)
                     .pageLengths(expectedPageLengths)
+                    .hasValidQueryMetrics(qmEnabled)
                     .build();
 
             validateQuerySuccess(queryObservable3, validator3, TIMEOUT);

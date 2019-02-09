@@ -29,6 +29,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -429,5 +430,9 @@ public final class Utils {
 
     public static UUID randomUUID() {
         return TimeUUIDGegerator.generate();
+    }
+
+    public static String zonedDateTimeAsUTCRFC1123(ZonedDateTime zonedDateTime){
+        return Utils.RFC_1123_DATE_TIME.format(zonedDateTime.withZoneSameInstant(GMT_ZONE_ID));
     }
 }

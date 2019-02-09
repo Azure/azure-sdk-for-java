@@ -26,10 +26,12 @@ package com.microsoft.azure.cosmosdb;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.internal.query.metrics.ClientSideMetrics;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceResponse;
 import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -149,6 +151,10 @@ public class BridgeInternal {
                 headers.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
                         Strings.toString(feedOptions.getResponseContinuationTokenLimitInKb()));
             }
+
+            if(feedOptions.getPopulateQueryMetrics()){
+                headers.put(HttpConstants.HttpHeaders.POPULATE_QUERY_METRICS, String.valueOf(feedOptions.getPopulateQueryMetrics()));
+            }
         }
 
         return headers;
@@ -209,6 +215,10 @@ public class BridgeInternal {
         return documentClientException.requestUri;
     }
 
+    public static <E extends  DocumentClientException> void setRequestHeaders(DocumentClientException documentClientException, Map<String, String> requestHeaders) {
+        documentClientException.requestHeaders = requestHeaders;
+    }
+
     public static Map<String, Object> getQueryEngineConfiuration(DatabaseAccount databaseAccount) {
         return databaseAccount.getQueryEngineConfiuration();
     }
@@ -237,4 +247,23 @@ public class BridgeInternal {
         replicationPolicy.setMaxReplicaSetSize(value);
     }
 
+    public static <T extends Resource> void putQueryMetricsIntoMap(FeedResponse<T> response,
+                                                                   String partitionKeyRangeId,
+                                                                   QueryMetrics queryMetrics){
+        response.getQueryMetricsMap().put(partitionKeyRangeId, queryMetrics);
+    }
+
+    public static QueryMetrics createQueryMetricsFromDelimitedStringAndClientSideMetrics(String queryMetricsDelimitedString,
+                                                                                         ClientSideMetrics clientSideMetrics,
+                                                                                         String activityId) {
+        return QueryMetrics.createFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString, clientSideMetrics, activityId);
+    }
+
+    public static QueryMetrics createQueryMetricsFromCollection(Collection<QueryMetrics> queryMetricsCollection) {
+        return QueryMetrics.createFromCollection(queryMetricsCollection);
+    }
+
+    public static ClientSideMetrics getClientSideMetrics(QueryMetrics queryMetrics){
+        return queryMetrics.getClientSideMetrics();
+    }
 }
