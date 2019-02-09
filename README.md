@@ -70,12 +70,16 @@ The SDK provide Reactive Extension Observable based async API. You can read more
 
 Code Sample for creating a Document:
 ```java
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmosdb.rx.*;
+import com.microsoft.azure.cosmosdb.*;
 
-asyncClient = new AsyncDocumentClient.Builder()
+ConnectionPolicy policy = new ConnectionPolicy();
+policy.setConnectionMode(ConnectionMode.Direct);
+
+AsyncDocumentClient asyncClient = new AsyncDocumentClient.Builder()
 				.withServiceEndpoint(HOST)
 				.withMasterKeyOrResourceToken(MASTER_KEY)
-				.withConnectionPolicy(ConnectionPolicy.GetDefault())
+				.withConnectionPolicy(policy)
 				.withConsistencyLevel(ConsistencyLevel.Eventual)
 				.build();
 
