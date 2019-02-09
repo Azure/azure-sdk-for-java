@@ -23,6 +23,7 @@
 package com.microsoft.azure.cosmosdb.rx.internal.query;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,6 +40,7 @@ import com.microsoft.azure.cosmosdb.rx.internal.RetryPolicy;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.Utils;
 
+import com.microsoft.azure.cosmosdb.QueryMetrics;
 import rx.Observable;
 import rx.functions.Func0;
 import rx.functions.Func1;
@@ -69,7 +71,8 @@ class OrderByDocumentProducer<T extends Resource> extends DocumentProducer<T> {
     protected Observable<DocumentProducerFeedResponse> produceOnSplit(Observable<DocumentProducer<T>> replacementProducers) {
         Observable<DocumentProducerFeedResponse> res = replacementProducers.toList().single().flatMap(documentProducers -> {
             RequestChargeTracker tracker = new RequestChargeTracker();
-            return OrderByUtils.orderedMerge(resourceType, consumeComparer, tracker, documentProducers)
+            Map<String, QueryMetrics> queryMetricsMap = new HashMap<>();
+            return OrderByUtils.orderedMerge(resourceType, consumeComparer, tracker, documentProducers, queryMetricsMap)
                     .map(orderByQueryResult -> resultPageFrom(tracker, orderByQueryResult));
         });
 

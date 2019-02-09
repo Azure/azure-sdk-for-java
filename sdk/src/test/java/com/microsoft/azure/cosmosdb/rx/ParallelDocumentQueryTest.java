@@ -26,14 +26,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
+import com.microsoft.azure.cosmosdb.QueryMetrics;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -67,12 +71,21 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryDocuments() {
+    @DataProvider(name = "queryMetricsArgProvider")
+    public Object[][] queryMetricsArgProvider() {
+        return new Object[][]{
+                {true},
+                {false},
+        };
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    public void queryDocuments(boolean qmEnabled) {
         String query = "SELECT * from c where c.prop = 99";
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(5);
         options.setEnableCrossPartitionQuery(true);
+        options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
         Observable<FeedResponse<Document>> queryObservable = client
                 .queryDocuments(getCollectionLink(), query, options);
@@ -85,6 +98,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
                 .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
+                .hasValidQueryMetrics(qmEnabled)
                 .build();
 
         try {
@@ -95,6 +109,47 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             }
             throw error;
         }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void queryMetricEquality() throws Exception {
+        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+            throw new SkipException("RNTBD");
+        }
+
+        String query = "SELECT * from c where c.prop = 99";
+        FeedOptions options = new FeedOptions();
+        options.setMaxItemCount(5);
+        options.setEnableCrossPartitionQuery(true);
+        options.setPopulateQueryMetrics(true);
+        options.setMaxDegreeOfParallelism(0);
+
+        Observable<FeedResponse<Document>> queryObservable = client
+                .queryDocuments(getCollectionLink(), query, options);
+        List<FeedResponse<Document>> resultList1 = queryObservable.toList().toBlocking().single();
+
+        options.setMaxDegreeOfParallelism(4);
+        Observable<FeedResponse<Document>> threadedQueryObs = client.queryDocuments(getCollectionLink(), query,
+                options);
+        List<FeedResponse<Document>> resultList2 = threadedQueryObs.toList().toBlocking().single();
+
+        assertThat(resultList1.size()).isEqualTo(resultList2.size());
+        for(int i = 0; i < resultList1.size(); i++){
+            compareQueryMetrics(resultList1.get(i).getQueryMetrics(), resultList2.get(i).getQueryMetrics());
+        }
+    }
+
+    private void compareQueryMetrics(Map<String, QueryMetrics> qm1, Map<String, QueryMetrics> qm2) {
+        assertThat(qm1.keySet().size()).isEqualTo(qm2.keySet().size());
+        QueryMetrics queryMetrics1 = BridgeInternal.createQueryMetricsFromCollection(qm1.values());
+        QueryMetrics queryMetrics2 = BridgeInternal.createQueryMetricsFromCollection(qm2.values());
+        assertThat(queryMetrics1.getRetrievedDocumentSize()).isEqualTo(queryMetrics2.getRetrievedDocumentSize());
+        assertThat(queryMetrics1.getRetrievedDocumentCount()).isEqualTo(queryMetrics2.getRetrievedDocumentCount());
+        assertThat(queryMetrics1.getIndexHitDocumentCount()).isEqualTo(queryMetrics2.getIndexHitDocumentCount());
+        assertThat(queryMetrics1.getOutputDocumentCount()).isEqualTo(queryMetrics2.getOutputDocumentCount());
+        assertThat(queryMetrics1.getOutputDocumentSize()).isEqualTo(queryMetrics2.getOutputDocumentSize());
+        assertThat(BridgeInternal.getClientSideMetrics(queryMetrics1).getRequestCharge())
+                .isEqualTo(BridgeInternal.getClientSideMetrics(queryMetrics1).getRequestCharge());
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

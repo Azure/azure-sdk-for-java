@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.Document;
@@ -43,6 +45,7 @@ import com.microsoft.azure.cosmosdb.internal.query.aggregation.CountAggregator;
 import com.microsoft.azure.cosmosdb.internal.query.aggregation.MaxAggregator;
 import com.microsoft.azure.cosmosdb.internal.query.aggregation.MinAggregator;
 import com.microsoft.azure.cosmosdb.internal.query.aggregation.SumAggregator;
+import com.microsoft.azure.cosmosdb.QueryMetrics;
 
 import rx.Observable;
 
@@ -50,7 +53,8 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
 
     private IDocumentQueryExecutionComponent<T> component;
     private Aggregator aggregator;
-    
+    private ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
+
     //QueryInfo class used in PipelinedDocumentQueryExecutionContext returns a Collection of AggregateOperators
     //while Multiple aggregates are allowed in queries targeted at a single partition, only a single aggregate is allowed in x-partition queries (currently)
     public AggregateDocumentQueryExecutionContext (IDocumentQueryExecutionComponent<T> component, Collection<AggregateOperator> aggregateOperators) {
@@ -103,6 +107,14 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                         requestCharge += page.getRequestCharge();
                         QueryItem values = new QueryItem(doc.toJson());
                         this.aggregator.aggregate(values.getItem());
+                        for(String key : page.getQueryMetrics().keySet()) {
+                            if (queryMetricsMap.containsKey(key)) {
+                                QueryMetrics qm = page.getQueryMetrics().get(key);
+                                queryMetricsMap.get(key).add(qm);
+                            } else {
+                                queryMetricsMap.put(key, page.getQueryMetrics().get(key));
+                            }
+                        }
                     }
                     
                     if (this.aggregator.getResult() == null || !this.aggregator.getResult().equals(Undefined.Value())) {
@@ -113,6 +125,11 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
 
                     headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
                     FeedResponse<Document> frp = BridgeInternal.createFeedResponse(aggregateResults, headers);
+                    if(!queryMetricsMap.isEmpty()) {
+                        for(String key: queryMetricsMap.keySet()) {
+                            BridgeInternal.putQueryMetricsIntoMap(frp, key, queryMetricsMap.get(key));
+                        }
+                    }
                     return (FeedResponse<T>) frp;
                 });
     }

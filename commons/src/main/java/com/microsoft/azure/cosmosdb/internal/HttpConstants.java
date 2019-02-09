@@ -257,6 +257,8 @@ public class HttpConstants {
         public static final String TRANSPORT_REQUEST_ID = "x-ms-transport-request-id";
         public static final String USE_POLYGONS_SMALLER_THAN_AHEMISPHERE = "x-ms-documentdb-usepolygonssmallerthanahemisphere";
         public static final String API_TYPE = "x-ms-cosmos-apitype";
+        public static final String QUERY_METRICS = "x-ms-documentdb-query-metrics";
+
     }
 
     public static class A_IMHeaderValues {
@@ -268,7 +270,7 @@ public class HttpConstants {
 
         // TODO: FIXME we can use maven plugin for generating a version file
         // @see https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
-        public static final String SDK_VERSION = "2.4.0-beta-1";
+        public static final String SDK_VERSION = "2.4.0";
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }
 

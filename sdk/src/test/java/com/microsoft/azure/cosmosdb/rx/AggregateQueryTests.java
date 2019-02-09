@@ -88,16 +88,16 @@ public class AggregateQueryTests extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-
     // TODO: DANOBLE: Tcp protocol performance or--maybe--a public emulator performance problem
     // I've seen this test time out in my development environment. I test against a debug instance of the public
     // emulator and so what I'm seeing could be the result of a public emulator performance issue. Of course, it
     // might also be the result of a Tcp protocol performance problem.
-    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
-    public void queryDocumentsWithAggregates() throws Exception {
+    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT, dataProvider = "queryMetricsArgProvider")
+    public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
+        options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : queryConfigs) {    
@@ -106,9 +106,10 @@ public class AggregateQueryTests extends TestSuiteBase {
                 .queryDocuments(createdCollection.getSelfLink(), queryConfig.query, options);
 
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
-                .withAggregateValue(queryConfig.expected)
-                .numberOfPages(1)
-                .build();
+                    .withAggregateValue(queryConfig.expected)
+                    .numberOfPages(1)
+                    .hasValidQueryMetrics(qmEnabled)
+                    .build();
 
             try {
                 validateQuerySuccess(queryObservable, validator);

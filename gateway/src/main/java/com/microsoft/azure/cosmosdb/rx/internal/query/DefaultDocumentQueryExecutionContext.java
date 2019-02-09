@@ -22,10 +22,12 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal.query;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.PartitionKeyRange;
@@ -46,8 +48,14 @@ import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxCollectionCache;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.IPartitionKeyRangeCache;
+import com.microsoft.azure.cosmosdb.internal.query.metrics.ClientSideMetrics;
+import com.microsoft.azure.cosmosdb.internal.query.metrics.FetchExecutionRangeAccumulator;
+import com.microsoft.azure.cosmosdb.QueryMetrics;
+import com.microsoft.azure.cosmosdb.internal.query.metrics.SchedulingStopwatch;
+import com.microsoft.azure.cosmosdb.internal.query.metrics.SchedulingTimeSpan;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
@@ -60,6 +68,11 @@ import rx.functions.Func2;
 public class DefaultDocumentQueryExecutionContext<T extends Resource> extends DocumentQueryExecutionContextBase<T> {
 
     private boolean isContinuationExpected;
+    private volatile int retries = -1;
+
+    private final SchedulingStopwatch fetchSchedulingMetrics;
+    private final FetchExecutionRangeAccumulator fetchExecutionRangeAccumulator;
+    private static final String DEFAULT_PARTITION_KEY_RANGE_ID = "0";
 
     public DefaultDocumentQueryExecutionContext(IDocumentQueryClient client, ResourceType resourceTypeEnum,
             Class<T> resourceType, SqlQuerySpec query, FeedOptions feedOptions, String resourceLink,
@@ -75,6 +88,9 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
                 correlatedActivityId);
 
         this.isContinuationExpected = isContinuationExpected;
+        this.fetchSchedulingMetrics = new SchedulingStopwatch();
+        this.fetchSchedulingMetrics.ready();
+        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(DEFAULT_PARTITION_KEY_RANGE_ID);
     }
 
     protected PartitionKeyInternal getPartitionKeyInternal() {
@@ -123,7 +139,32 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
 
         Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc = req -> {
             finalRetryPolicyInstance.onBeforeSendRequest(req);
-            return BackoffRetryUtility.executeRetry(() -> executeRequestAsync(req), finalRetryPolicyInstance).toObservable();
+            this.fetchExecutionRangeAccumulator.beginFetchRange();
+            this.fetchSchedulingMetrics.start();
+            return BackoffRetryUtility.executeRetry(() -> {
+                ++this.retries;
+                return executeRequestAsync(req);
+            }, finalRetryPolicyInstance).toObservable()
+                    .map(tFeedResponse -> {
+                        this.fetchSchedulingMetrics.stop();
+                        this.fetchExecutionRangeAccumulator.endFetchRange(tFeedResponse.getActivityId(),
+                                tFeedResponse.getResults().size(),
+                                this.retries);
+                        ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
+                                new ImmutablePair<>(DEFAULT_PARTITION_KEY_RANGE_ID, this.fetchSchedulingMetrics.getElapsedTime());
+                        if (!StringUtils.isEmpty(tFeedResponse.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS))) {
+                            QueryMetrics qm =
+                                    BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(tFeedResponse.getResponseHeaders()
+                                                    .get(HttpConstants.HttpHeaders.QUERY_METRICS),
+                                            new ClientSideMetrics(this.retries,
+                                                    tFeedResponse.getRequestCharge(),
+                                                    this.fetchExecutionRangeAccumulator.getExecutionRanges(),
+                                                    Arrays.asList(schedulingTimeSpanMap)),
+                                            tFeedResponse.getActivityId());
+                            BridgeInternal.putQueryMetricsIntoMap(tFeedResponse, DEFAULT_PARTITION_KEY_RANGE_ID, qm);
+                        }
+                        return tFeedResponse;
+                    });
         };
 
         return executeFunc;

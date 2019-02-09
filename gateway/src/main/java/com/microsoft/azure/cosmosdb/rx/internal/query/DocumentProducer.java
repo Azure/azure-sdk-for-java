@@ -23,13 +23,25 @@
 package com.microsoft.azure.cosmosdb.rx.internal.query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.cosmosdb.BridgeInternal;
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.rx.internal.IDocumentClientRetryPolicy;
 import com.microsoft.azure.cosmosdb.rx.internal.IRetryPolicyFactory;
 import com.microsoft.azure.cosmosdb.rx.internal.ObservableHelper;
+import com.microsoft.azure.cosmosdb.internal.query.metrics.ClientSideMetrics;
+import com.microsoft.azure.cosmosdb.internal.query.metrics.FetchExecutionRangeAccumulator;
+import com.microsoft.azure.cosmosdb.QueryMetrics;
+import com.microsoft.azure.cosmosdb.QueryMetricsConstants;
+import com.microsoft.azure.cosmosdb.internal.query.metrics.SchedulingStopwatch;
+import com.microsoft.azure.cosmosdb.internal.query.metrics.SchedulingTimeSpan;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +68,7 @@ import rx.functions.Func3;
  */
 class DocumentProducer<T extends Resource> {
     private static final Logger logger = LoggerFactory.getLogger(DocumentProducer.class);
+    private int retries;
 
     class DocumentProducerFeedResponse {
         FeedResponse<T> pageResult;
@@ -64,11 +77,30 @@ class DocumentProducer<T extends Resource> {
         DocumentProducerFeedResponse(FeedResponse<T> pageResult) {
             this.pageResult = pageResult;
             this.sourcePartitionKeyRange = DocumentProducer.this.targetRange;
+            populatePartitionedQueryMetrics();
         }
 
         DocumentProducerFeedResponse(FeedResponse<T> pageResult, PartitionKeyRange pkr) {
             this.pageResult = pageResult;
             this.sourcePartitionKeyRange = pkr;
+            populatePartitionedQueryMetrics();
+        }
+
+        void populatePartitionedQueryMetrics() {
+            String queryMetricsDelimitedString = pageResult.getResponseHeaders().get(HttpConstants.HttpHeaders.QUERY_METRICS);
+            if (!StringUtils.isEmpty(queryMetricsDelimitedString)) {
+                queryMetricsDelimitedString += String.format(";%s=%.2f", QueryMetricsConstants.RequestCharge, pageResult.getRequestCharge());
+                ImmutablePair<String, SchedulingTimeSpan> schedulingTimeSpanMap =
+                        new ImmutablePair<>(targetRange.getId(), fetchSchedulingMetrics.getElapsedTime());
+
+                QueryMetrics qm =BridgeInternal.createQueryMetricsFromDelimitedStringAndClientSideMetrics(queryMetricsDelimitedString,
+                        new ClientSideMetrics(retries,
+                                pageResult.getRequestCharge(),
+                                fetchExecutionRangeAccumulator.getExecutionRanges(),
+                                Arrays.asList(schedulingTimeSpanMap)
+                        ), pageResult.getActivityId());
+                BridgeInternal.putQueryMetricsIntoMap(pageResult, targetRange.getId(), qm);
+            }
         }
     }
 
@@ -85,6 +117,9 @@ class DocumentProducer<T extends Resource> {
     protected final UUID correlatedActivityId;
     public int top;
     private volatile String lastResponseContinuationToken;
+    private final SchedulingStopwatch fetchSchedulingMetrics;
+    private SchedulingStopwatch moveNextSchedulingMetrics;
+    private final FetchExecutionRangeAccumulator fetchExecutionRangeAccumulator;
 
     public DocumentProducer(
             IDocumentQueryClient client,
@@ -105,14 +140,24 @@ class DocumentProducer<T extends Resource> {
 
         this.createRequestFunc = createRequestFunc;
 
+        this.fetchSchedulingMetrics = new SchedulingStopwatch();
+        this.fetchSchedulingMetrics.ready();
+        this.fetchExecutionRangeAccumulator = new FetchExecutionRangeAccumulator(targetRange.getId());
+
         this.executeRequestFuncWithRetries = request -> {
+            retries = -1;
+            this.fetchSchedulingMetrics.start();
+            this.fetchExecutionRangeAccumulator.beginFetchRange();
             IDocumentClientRetryPolicy retryPolicy = null;
             if (createRetryPolicyFunc != null) {
                 retryPolicy = createRetryPolicyFunc.call();
                 retryPolicy.onBeforeSendRequest(request);
             }
             return ObservableHelper.inlineIfPossibleAsObs(
-                    () -> executeRequestFunc.call(request), retryPolicy);
+                    () -> {
+                        ++retries;
+                        return executeRequestFunc.call(request);
+                    }, retryPolicy);
         };
 
         this.correlatedActivityId = correlatedActivityId;
@@ -129,14 +174,18 @@ class DocumentProducer<T extends Resource> {
     }
 
     public Observable<DocumentProducerFeedResponse> produceAsync() {
-        Func2<String, Integer, RxDocumentServiceRequest> sourcePartitionCreateRequestFunc = 
+        Func2<String, Integer, RxDocumentServiceRequest> sourcePartitionCreateRequestFunc =
                 (token, maxItemCount) -> createRequestFunc.call(targetRange, token, maxItemCount);
 
         Observable<FeedResponse<T>> obs = Paginator.getPaginatedQueryResultAsObservable(feedOptions, sourcePartitionCreateRequestFunc,
                 executeRequestFuncWithRetries, resourceType, top, pageSize).map(rsp -> {
-                    lastResponseContinuationToken = rsp.getResponseContinuation();
-                    return rsp;
-                });
+            lastResponseContinuationToken = rsp.getResponseContinuation();
+            this.fetchExecutionRangeAccumulator.endFetchRange(rsp.getActivityId(),
+                    rsp.getResults().size(),
+                    this.retries);
+            this.fetchSchedulingMetrics.stop();
+            return rsp;
+        });
 
         return splitProof(obs.map(page -> new DocumentProducerFeedResponse(page)));
     }

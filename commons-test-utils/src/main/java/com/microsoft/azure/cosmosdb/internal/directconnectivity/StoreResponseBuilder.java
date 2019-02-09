@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
+import com.microsoft.azure.cosmosdb.Resource;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 
 import java.math.BigDecimal;
@@ -76,6 +77,26 @@ public class StoreResponseBuilder {
 
     public StoreResponseBuilder withItemLocalLSN(long itemLocalLsn) {
         headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.ITEM_LOCAL_LSN, Long.toString(itemLocalLsn)));
+        return this;
+    }
+
+    public StoreResponseBuilder withQuorumAckecdLsn(long quorumAckecdLsn) {
+        headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.QUORUM_ACKED_LSN, Long.toString(quorumAckecdLsn)));
+        return this;
+    }
+
+    public StoreResponseBuilder withQuorumAckecdLocalLsn(long quorumAckecdLocalLsn) {
+        headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN, Long.toString(quorumAckecdLocalLsn)));
+        return this;
+    }
+
+    public StoreResponseBuilder withGlobalCommittedLsn(long globalCommittedLsn) {
+        headerEntries.add(new AbstractMap.SimpleEntry(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN, Long.toString(globalCommittedLsn)));
+        return this;
+    }
+
+    public StoreResponseBuilder withSessionToken(String sessionToken) {
+        headerEntries.add(new AbstractMap.SimpleEntry(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken));
         return this;
     }
 

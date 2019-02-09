@@ -30,6 +30,7 @@ public abstract class FeedOptionsBase {
     private Integer maxItemCount;
     private String requestContinuation;
     private PartitionKey partitionkey;
+    private boolean populateQueryMetrics;
 
     protected FeedOptionsBase() {}
 
@@ -37,6 +38,7 @@ public abstract class FeedOptionsBase {
         this.maxItemCount = options.maxItemCount;
         this.requestContinuation = options.requestContinuation;
         this.partitionkey = options.partitionkey;
+        this.populateQueryMetrics = options.populateQueryMetrics;
     }
 
     /**
@@ -97,5 +99,21 @@ public abstract class FeedOptionsBase {
      */
     public void setPartitionKey(PartitionKey partitionkey) {
         this.partitionkey = partitionkey;
+    }
+
+    /**
+     * Gets the option to enable populate query metrics
+     * @return whether to enable populate query metrics
+     */
+    public boolean getPopulateQueryMetrics() {
+        return populateQueryMetrics;
+    }
+
+    /**
+     * Sets the option to enable/disable getting metrics relating to query execution on document query requests
+     * @param populateQueryMetrics whether to enable or disable query metrics
+     */
+    public void setPopulateQueryMetrics(boolean populateQueryMetrics) {
+        this.populateQueryMetrics = populateQueryMetrics;
     }
 }

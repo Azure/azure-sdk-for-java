@@ -742,4 +742,12 @@ public class TestSuiteBase {
     protected int expectedNumberOfPages(int totalExpectedResult, int maxPageSize) {
         return Math.max((totalExpectedResult + maxPageSize - 1 ) / maxPageSize, 1);
     }
+
+    @DataProvider(name = "queryMetricsArgProvider")
+    public Object[][] queryMetricsArgProvider() {
+        return new Object[][]{
+                {true},
+                {false},
+        };
+    }
 }

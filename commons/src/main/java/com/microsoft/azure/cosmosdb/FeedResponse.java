@@ -26,6 +26,8 @@ package com.microsoft.azure.cosmosdb;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,6 +42,8 @@ public class FeedResponse<T extends Resource> {
     private final HashMap<String, Long> quotaHeaders;
     private final boolean useEtagAsContinuation;
     boolean nochanges;
+    private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
+    private final String DefaultPartition = "0";
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false);
@@ -57,6 +61,7 @@ public class FeedResponse<T extends Resource> {
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
         this.nochanges = nochanges;
+        this.queryMetricsMap = new ConcurrentHashMap<>();
     }
 
     /**
@@ -285,6 +290,34 @@ public class FeedResponse<T extends Resource> {
      */
     public Map<String, String> getResponseHeaders() {
         return header;
+    }
+
+    private String getQueryMetricsString(){
+        return getValueOrNull(getResponseHeaders(),
+                HttpConstants.HttpHeaders.QUERY_METRICS);
+    }
+
+    /**
+     * Gets the QueryMetrics for each partition.
+     *
+     * @return the QueryMetrics for each partition.
+     */
+    public ConcurrentMap<String, QueryMetrics> getQueryMetrics() {
+        if (queryMetricsMap != null && !queryMetricsMap.isEmpty()) {
+            return queryMetricsMap;
+        }
+
+        //We parse query metrics for un-partitioned collection here
+        if (!StringUtils.isEmpty(getQueryMetricsString())) {
+            String qm = getQueryMetricsString();
+            qm += String.format(";%s=%.2f", QueryMetricsConstants.RequestCharge, getRequestCharge());
+            queryMetricsMap.put(DefaultPartition, QueryMetrics.createFromDelimitedString(qm));
+        }
+        return queryMetricsMap;
+    }
+
+    ConcurrentMap<String, QueryMetrics> getQueryMetricsMap(){
+        return queryMetricsMap;
     }
 
     private long getCurrentQuotaHeader(String headerName) {
