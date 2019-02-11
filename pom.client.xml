@@ -265,6 +265,7 @@
          <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
+            <version>${spotbugs.version}</version>
             <dependencies>
                <dependency>
                   <groupId>com.azure</groupId>
@@ -309,6 +310,7 @@
                <transformationSets>
                   <transformationSet>
                      <dir>${project.build.directory}/spotbugs</dir>
+                     <includes><include>*.xml</include></includes>
                      <outputDir>${project.build.directory}/spotbugs</outputDir>
                      <stylesheet>fancy-hist.xsl</stylesheet>
                      <!--<stylesheet>default.xsl</stylesheet>-->
@@ -338,6 +340,7 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
+               <source>8</source>
                <doctitle>Azure SDK for Java Reference Documentation</doctitle>
                <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
                <failOnError>true</failOnError>
