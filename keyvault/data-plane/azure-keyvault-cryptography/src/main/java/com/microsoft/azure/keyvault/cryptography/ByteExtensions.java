@@ -34,7 +34,7 @@ public final class ByteExtensions {
     }
     
     public static byte[] xor( byte[] self, byte[] other ) {
-    	return xor( self, other, 0 );
+        return xor( self, other, 0 );
     }
 
     static byte[] xor( byte[] self, byte[] other, int offset )

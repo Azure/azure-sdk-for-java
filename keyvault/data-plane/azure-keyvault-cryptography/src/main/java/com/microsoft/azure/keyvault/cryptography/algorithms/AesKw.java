@@ -117,14 +117,14 @@ public abstract class AesKw extends KeyWrapAlgorithm {
         }
 
         if (iv != null ) {
-        	// iv length must be 64 bits
-        	if ( iv.length != 8) {
-	            throw new IllegalArgumentException("iv length must be 64 bits");
-        	}
-        	// iv cannot be specified with the default provider
-        	if (provider == null) {
-        		throw new IllegalArgumentException("user specified iv is not supported with the default provider");
-        	}
+            // iv length must be 64 bits
+            if ( iv.length != 8) {
+                throw new IllegalArgumentException("iv length must be 64 bits");
+            }
+            // iv cannot be specified with the default provider
+            if (provider == null) {
+                throw new IllegalArgumentException("user specified iv is not supported with the default provider");
+            }
         }
 
         return new AesKwEncryptor(key, iv == null ? _defaultIv : iv, provider);
@@ -161,14 +161,14 @@ public abstract class AesKw extends KeyWrapAlgorithm {
 
 
         if (iv != null ) {
-        	// iv length must be 64 bits
-        	if ( iv.length != 8) {
-	            throw new IllegalArgumentException("iv length must be 64 bits");
-        	}
-        	// iv cannot be specified with the default provider
-        	if (provider == null) {
-        		throw new IllegalArgumentException("user specified iv is not supported with the default provider");
-        	}
+            // iv length must be 64 bits
+            if ( iv.length != 8) {
+                throw new IllegalArgumentException("iv length must be 64 bits");
+            }
+            // iv cannot be specified with the default provider
+            if (provider == null) {
+                throw new IllegalArgumentException("user specified iv is not supported with the default provider");
+            }
         }
 
         return new AesKwDecryptor(key, iv == null ? _defaultIv : iv, provider);

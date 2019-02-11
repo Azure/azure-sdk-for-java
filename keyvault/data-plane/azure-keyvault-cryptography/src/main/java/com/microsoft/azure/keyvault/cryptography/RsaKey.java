@@ -42,7 +42,7 @@ public class RsaKey implements IKey {
      * @throws NoSuchAlgorithmException
      */
     public RsaKey() throws NoSuchAlgorithmException {
-		this(UUID.randomUUID().toString());
+        this(UUID.randomUUID().toString());
     }
     
     /**
@@ -65,7 +65,7 @@ public class RsaKey implements IKey {
      * @throws NoSuchAlgorithmException
      */
     public RsaKey(String kid, int keySize) throws NoSuchAlgorithmException {
-    	this(kid, keySize, null);
+        this(kid, keySize, null);
     }
     
     /**
@@ -101,7 +101,7 @@ public class RsaKey implements IKey {
      * @param keyPair
      */
     public RsaKey(String kid, KeyPair keyPair) {
-    	this(kid, keyPair, null);
+        this(kid, keyPair, null);
     }
 
     /**
@@ -115,10 +115,10 @@ public class RsaKey implements IKey {
      */
     public RsaKey(String kid, KeyPair keyPair, Provider provider) {
 
-    	if (Strings.isNullOrWhiteSpace(kid)) {
-    		throw new IllegalArgumentException("Please provide a kid");
-    	}
-    	
+        if (Strings.isNullOrWhiteSpace(kid)) {
+            throw new IllegalArgumentException("Please provide a kid");
+        }
+        
         if (keyPair == null) {
             throw new IllegalArgumentException("Please provide a KeyPair");
         }
@@ -138,41 +138,41 @@ public class RsaKey implements IKey {
      * @return RsaKey
      */
     public static RsaKey fromJsonWebKey(JsonWebKey jwk) {
-    	return fromJsonWebKey(jwk, false, null);
+        return fromJsonWebKey(jwk, false, null);
     }
     
     /**
-	 * Converts JSON web key to RsaKey and include the private key if set to true.
+     * Converts JSON web key to RsaKey and include the private key if set to true.
      * @param jwk
      * @param includePrivateParameters true if the RSA key pair should include the private key. False otherwise.
      * @return RsaKey
      */
-	public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters) {
-		return fromJsonWebKey(jwk, includePrivateParameters, null);
-	}
-	
+    public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters) {
+        return fromJsonWebKey(jwk, includePrivateParameters, null);
+    }
+    
     /**
      * Converts JSON web key to RsaKey and include the private key if set to true.
      * @param provider the Java security provider.
      * @param includePrivateParameters true if the RSA key pair should include the private key. False otherwise.
      * @return RsaKey
      */
-	public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters, Provider provider) {
-		if (jwk.kid() != null) {
-			return new RsaKey(jwk.kid(), jwk.toRSA(includePrivateParameters, provider));
-		} else {
-			throw new IllegalArgumentException("Json Web Key must have a kid");
-		}
-	}
-	
-	/**
-	 * Converts RsaKey to JSON web key.
-	 * @return
-	 */
-	public JsonWebKey toJsonWebKey() {
-		return JsonWebKey.fromRSA(_keyPair);
-	}
-	
+    public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters, Provider provider) {
+        if (jwk.kid() != null) {
+            return new RsaKey(jwk.kid(), jwk.toRSA(includePrivateParameters, provider));
+        } else {
+            throw new IllegalArgumentException("Json Web Key must have a kid");
+        }
+    }
+    
+    /**
+     * Converts RsaKey to JSON web key.
+     * @return
+     */
+    public JsonWebKey toJsonWebKey() {
+        return JsonWebKey.fromRSA(_keyPair);
+    }
+    
     @Override
     public String getDefaultEncryptionAlgorithm() {
         return RsaOaep.ALGORITHM_NAME;
@@ -185,7 +185,7 @@ public class RsaKey implements IKey {
 
     @Override
     public String getDefaultSignatureAlgorithm() {
-    	return Rs256.ALGORITHM_NAME;
+        return Rs256.ALGORITHM_NAME;
     }
 
     @Override
@@ -194,7 +194,7 @@ public class RsaKey implements IKey {
     }
 
     public KeyPair getKeyPair() {
-    	return _keyPair;
+        return _keyPair;
     }
     
     @Override
@@ -348,10 +348,10 @@ public class RsaKey implements IKey {
         ISignatureTransform signer = algo.createSignatureTransform(_keyPair);
         
         try {
-			return Futures.immediateFuture(Pair.of(signer.sign(digest), Rs256.ALGORITHM_NAME));
-		} catch (Exception e) {
-			return Futures.immediateFailedFuture(e);
-		}
+            return Futures.immediateFuture(Pair.of(signer.sign(digest), Rs256.ALGORITHM_NAME));
+        } catch (Exception e) {
+            return Futures.immediateFailedFuture(e);
+        }
     }
 
     @Override
@@ -378,10 +378,10 @@ public class RsaKey implements IKey {
         ISignatureTransform signer = algo.createSignatureTransform(_keyPair);
         
         try {
-			return Futures.immediateFuture(signer.verify(digest, signature));
-		} catch (Exception e) {
-			return Futures.immediateFailedFuture(e);
-		}
+            return Futures.immediateFuture(signer.verify(digest, signature));
+        } catch (Exception e) {
+            return Futures.immediateFailedFuture(e);
+        }
     }
 
     @Override

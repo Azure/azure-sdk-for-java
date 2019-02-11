@@ -18,10 +18,8 @@ public interface ICryptoTransform {
     /**
      * Transforms the specified region of the specified byte array as a single operation.
      * 
-     * @param input
-     * 			The byte array to be transformed
-     * @return
-     * 			The transformed result.
+     * @param input The byte array to be transformed
+     * @return The transformed result.
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      * @throws InvalidKeyException
