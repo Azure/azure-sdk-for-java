@@ -342,7 +342,7 @@
                <doctitle>Azure SDK for Java Reference Documentation</doctitle>
                <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
                <failOnError>true</failOnError>
-               <footer>Visit the &lt;a href="http://java.ms"&gt;Azure for Java Developers&lt;/a&gt; site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+               <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
                <linksource>false</linksource>
                <excludePackageNames>
                </excludePackageNames>
@@ -563,6 +563,7 @@
             </plugins>
          </build>
       </profile>
+
       <profile>
          <id>java-lts</id>
          <build>
@@ -579,9 +580,22 @@
                      <compilerArgument>-Xlint:all</compilerArgument>
                   </configuration>
                </plugin>
+
+               <!-- Customise the javadoc plugin to not include module directories in links. We don't
+                    currently use modules, so search results were being directed to an 'undefined'
+                    directory (for an 'undefined' module). This --no-module-directories flag fixes 
+                    this, but it is only required for JDK 9+ -->
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-javadoc-plugin</artifactId>
+                  <configuration>
+                     <additionalJOption>--no-module-directories</additionalJOption>
+                  </configuration>
+               </plugin>
             </plugins>
          </build>
       </profile>
+
       <profile>
          <id>run-shade-plugin</id>
          <activation>
