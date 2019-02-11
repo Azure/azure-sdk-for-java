@@ -111,11 +111,11 @@ final class Asn1DerSignatureEncoding {
     // the EDCSA ASN.1 DER signature is in the format:
     // 0x30 b1 0x02 b2 (vr) 0x02 b3 (vs)
     // where:
-    // 		*b1 one or more bytes equal to the length, in bytes, of the remaining list of bytes (from the first 0x02 to the end of the encoding)
-    // 		*b2 one or more bytes equal to the length, in bytes, of (vr)
-    // 		*b3 one or more bytes equal to the length, in bytes, of (vs) 
-    // 		(vr) is the signed big-endian encoding of the value "r", of minimal length
-    // 		(vs) is the signed big-endian encoding of the value "s", of minimal length
+    //      * b1 one or more bytes equal to the length, in bytes, of the remaining list of bytes (from the first 0x02 to the end of the encoding)
+    //      * b2 one or more bytes equal to the length, in bytes, of (vr)
+    //      * b3 one or more bytes equal to the length, in bytes, of (vs)
+    //     (vr) is the signed big-endian encoding of the value "r", of minimal length
+    //     (vs) is the signed big-endian encoding of the value "s", of minimal length
     //
     //      * lengths which are less than 0x80 can be expressed in one byte.  For lengths greater then 0x80 the first byte denotes the
     //        length in bytes of the length with the most significant bit masked off, i.e. 0x81 denotes the length is one byte long.
