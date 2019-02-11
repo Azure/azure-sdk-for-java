@@ -196,15 +196,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <module name="EmptyForIteratorPad"/>
         <module name="MethodParamPad"/>
         <module name="NoWhitespaceAfter">
-            <property name="tokens" value="INC"/>
-            <property name="tokens" value="DEC"/>
-            <property name="tokens" value="UNARY_MINUS"/>
-            <property name="tokens" value="UNARY_PLUS"/>
-            <property name="tokens" value="BNOT"/>
-            <property name="tokens" value="LNOT"/>
-            <property name="tokens" value="DOT"/>
-            <property name="tokens" value="ARRAY_DECLARATOR"/>
-            <property name="tokens" value="INDEX_OP"/>
+            <property name="tokens" value="INC,DEC,UNARY_MINUS,UNARY_PLUS,BNOT,LNOT,DOT,ARRAY_DECLARATOR,INDEX_OP"/>
         </module>
         <module name="NoWhitespaceBefore"/>
         <module name="OperatorWrap"/>
