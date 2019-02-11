@@ -103,6 +103,7 @@
       <maven-build-tools.version>1.0.1-SNAPSHOT</maven-build-tools.version>
       <maven-javadoc.version>3.0.1</maven-javadoc.version>
       <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+      <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
       <jetty-maven-plugin.version>9.2.22.v20170606</jetty-maven-plugin.version>
       <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
       <maven-resources-plugin.version>2.4.3</maven-resources-plugin.version>
@@ -491,19 +492,6 @@
                </executions>
             </plugin>
 
-            <!-- This plugin is used to compile the sources of the project. -->
-            <plugin>
-               <groupId>org.apache.maven.plugins</groupId>
-               <artifactId>maven-compiler-plugin</artifactId>
-               <configuration>
-                  <source>1.8</source>
-                  <target>1.8</target>
-                  <showWarnings>true</showWarnings>
-                  <showDeprecation>true</showDeprecation>
-                  <compilerArgument>-Xlint:unchecked</compilerArgument>
-               </configuration>
-            </plugin>
-
             <!-- This plugin is used for rapid playback testing. -->
             <plugin>
                <groupId>org.eclipse.jetty</groupId>
@@ -547,17 +535,60 @@
 
    <profiles>
 
+       <!--
+        By default we build against our baseline, Java 8, but we also want to ensure compatibility
+        against the latest Java LTS release, currently Java 11. We therefore have two profiles:
+          * The default 'java8', which will perform a build using Java 8 as its target.
+          * The non-default 'java-lts' profile, which will build against the current LTS release.
+      -->
       <profile>
-
+         <id>java8</id>
+         <activation>
+            <activeByDefault>true</activeByDefault>
+         </activation>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <version>${maven-compiler-plugin.version}</version>
+                  <configuration>
+                     <source>1.8</source>
+                     <target>1.8</target>
+                     <showWarnings>true</showWarnings>
+                     <showDeprecation>true</showDeprecation>
+                     <compilerArgument>-Xlint:all</compilerArgument>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+      <profile>
+         <id>java-lts</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-compiler-plugin</artifactId>
+                  <version>${maven-compiler-plugin.version}</version>
+                  <configuration>
+                     <source>11</source>
+                     <target>11</target>
+                     <showWarnings>true</showWarnings>
+                     <showDeprecation>true</showDeprecation>
+                     <compilerArgument>-Xlint:all</compilerArgument>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+      <profile>
          <id>run-shade-plugin</id>
          <activation>
             <property><name>runShadePlugin</name></property>
          </activation>
-
          <build>
-
             <plugins>
-
                <!-- This plug in is used to package the artifact in an uber jar. -->
                <plugin>
                   <groupId>org.apache.maven.plugins</groupId>
@@ -590,13 +621,9 @@
                      </execution>
                   </executions>
                </plugin>
-
             </plugins>
-
          </build>
-
       </profile>
-
       <profile>
          <id>spotbugs-reporting</id>
          <modules>
@@ -605,7 +632,6 @@
             <module>./eng/spotbugs-aggregate-report</module>
          </modules>
       </profile>
-
    </profiles>
 
    <modules>
