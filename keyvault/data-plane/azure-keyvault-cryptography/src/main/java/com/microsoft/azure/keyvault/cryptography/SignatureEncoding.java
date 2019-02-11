@@ -57,7 +57,7 @@ public final class SignatureEncoding {
        }
        catch(IllegalArgumentException ex)
        {
-           throw (IllegalArgumentException)new IllegalArgumentException(ex.getMessage() + " "  + Hex.encodeHexString( asn1DerSignature )).initCause(ex);
+           throw (IllegalArgumentException)new IllegalArgumentException(ex.getMessage() + " "  + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
 
        }
     }
@@ -100,7 +100,7 @@ public final class SignatureEncoding {
        }
        catch(IllegalArgumentException ex)
        {
-            throw (IllegalArgumentException)new IllegalArgumentException(ex.getMessage() + " " + Hex.encodeHexString( signature )).initCause(ex);
+            throw (IllegalArgumentException)new IllegalArgumentException(ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
 
        }
     }
@@ -225,7 +225,7 @@ final class Asn1DerSignatureEncoding {
             int lenlen = blen.length;
 
             // the byte array might have a leading zero byte if so we need to discard this
-            if ( blen[0] == 0 )
+            if (blen[0] == 0)
             {
                 lenlen--;
             }
