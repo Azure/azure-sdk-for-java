@@ -55,7 +55,7 @@ public final class SignatureEncoding {
        {
            return Asn1DerSignatureEncoding.Decode(asn1DerSignature, algorithm);
        }
-       catch(IllegalArgumentException ex)
+       catch (IllegalArgumentException ex)
        {
            throw (IllegalArgumentException) new IllegalArgumentException(ex.getMessage() + " "  + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
        }
@@ -97,7 +97,7 @@ public final class SignatureEncoding {
        {
            return Asn1DerSignatureEncoding.Encode(signature, algorithm);
        }
-       catch(IllegalArgumentException ex)
+       catch (IllegalArgumentException ex)
        {
             throw (IllegalArgumentException) new IllegalArgumentException(ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
        }
@@ -210,7 +210,7 @@ final class Asn1DerSignatureEncoding {
     private static void writeFieldLength(ByteArrayOutputStream field, int len)
     {
         // if the length of vi is less then 0x80 we can fit the length in one byte
-        if(len < 0x80)
+        if (len < 0x80)
         {
             field.write(len);
         }
