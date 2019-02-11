@@ -27,7 +27,7 @@ public final class ByteExtensions {
 
         for (int i = 0; i < self.length; i++)
         {
-            result[i] = (byte)(self[i] | other[offset + i]);
+            result[i] = (byte) (self[i] | other[offset + i]);
         }
 
         return result;
@@ -52,7 +52,7 @@ public final class ByteExtensions {
 
         for (int i = 0; i < self.length; i++)
         {
-            result[i] = (byte)(self[i] ^ other[offset + i]);
+            result[i] = (byte) (self[i] ^ other[offset + i]);
         }
 
         return result;
@@ -61,7 +61,7 @@ public final class ByteExtensions {
     public static void zero(byte[] self)
     {
         if (self != null) {
-            Arrays.fill(self, (byte)0);
+            Arrays.fill(self, (byte) 0);
         }
     }
     
