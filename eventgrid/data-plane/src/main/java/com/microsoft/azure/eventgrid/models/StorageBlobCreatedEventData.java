@@ -53,7 +53,7 @@ public class StorageBlobCreatedEventData {
      * returned in the Content-Length header from the blob.
      */
     @JsonProperty(value = "contentLength")
-    private Integer contentLength;
+    private Long contentLength;
 
     /**
      * The type of blob.
@@ -187,7 +187,7 @@ public class StorageBlobCreatedEventData {
      *
      * @return the contentLength value
      */
-    public Integer contentLength() {
+    public Long contentLength() {
         return this.contentLength;
     }
 
@@ -197,7 +197,7 @@ public class StorageBlobCreatedEventData {
      * @param contentLength the contentLength value to set
      * @return the StorageBlobCreatedEventData object itself.
      */
-    public StorageBlobCreatedEventData withContentLength(Integer contentLength) {
+    public StorageBlobCreatedEventData withContentLength(Long contentLength) {
         this.contentLength = contentLength;
         return this;
     }
