@@ -37,7 +37,7 @@ public abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
             throw new IllegalArgumentException("x");
         }
 
-        return new BigInteger(1,x);
+        return new BigInteger(1, x);
     }
 
     /*

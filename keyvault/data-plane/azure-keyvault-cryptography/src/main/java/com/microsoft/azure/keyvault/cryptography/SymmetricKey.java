@@ -226,7 +226,7 @@ public class SymmetricKey implements IKey {
             throw new NoSuchAlgorithmException(algorithm);
         }
 
-        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm)baseAlgorithm;
+        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform transform = null;
 
@@ -266,7 +266,7 @@ public class SymmetricKey implements IKey {
             throw new NoSuchAlgorithmException(algorithm);
         }
 
-        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm)baseAlgorithm;
+        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform transform = null;
 
@@ -311,7 +311,7 @@ public class SymmetricKey implements IKey {
             throw new NoSuchAlgorithmException(algorithmName);
         }
 
-        KeyWrapAlgorithm algo = (KeyWrapAlgorithm)baseAlgorithm;
+        KeyWrapAlgorithm algo = (KeyWrapAlgorithm) baseAlgorithm;
 
         ICryptoTransform transform = null;
 
@@ -349,7 +349,7 @@ public class SymmetricKey implements IKey {
             throw new NoSuchAlgorithmException(algorithm);
         }
 
-        KeyWrapAlgorithm algo = (KeyWrapAlgorithm)baseAlgorithm;
+        KeyWrapAlgorithm algo = (KeyWrapAlgorithm) baseAlgorithm;
 
         ICryptoTransform transform = null;
 

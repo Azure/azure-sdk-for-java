@@ -40,7 +40,7 @@ public final class SignatureEncoding {
             throw new IllegalArgumentException("Invalid algorithm; must be an instance of ECDSA.");
         }
 
-        return SignatureEncoding.fromAsn1Der(asn1DerSignature, (Ecdsa)baseAlgorithm);
+        return SignatureEncoding.fromAsn1Der(asn1DerSignature, (Ecdsa) baseAlgorithm);
     }
 
     /**
@@ -57,8 +57,7 @@ public final class SignatureEncoding {
        }
        catch(IllegalArgumentException ex)
        {
-           throw (IllegalArgumentException)new IllegalArgumentException(ex.getMessage() + " "  + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
-
+           throw (IllegalArgumentException) new IllegalArgumentException(ex.getMessage() + " "  + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
        }
     }
 
@@ -83,7 +82,7 @@ public final class SignatureEncoding {
             throw new IllegalArgumentException("Invalid algorithm; must be an instance of ECDSA.");
         }
 
-        return SignatureEncoding.toAsn1Der(signature, (Ecdsa)baseAlgorithm);
+        return SignatureEncoding.toAsn1Der(signature, (Ecdsa) baseAlgorithm);
     }
 
     /**
@@ -100,8 +99,7 @@ public final class SignatureEncoding {
        }
        catch(IllegalArgumentException ex)
        {
-            throw (IllegalArgumentException)new IllegalArgumentException(ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
-
+            throw (IllegalArgumentException) new IllegalArgumentException(ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
        }
     }
 }

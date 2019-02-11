@@ -27,7 +27,7 @@ public class Rs256 extends RsaSignature {
         Rs256SignatureTransform(KeyPair keyPair) {
             _keyPair  = keyPair;
 
-            BigInteger modulus = ((RSAPublicKey)_keyPair.getPublic()).getModulus();
+            BigInteger modulus = ((RSAPublicKey) _keyPair.getPublic()).getModulus();
 
             _emLen    = getOctetLength(modulus.bitLength());
 
@@ -49,7 +49,7 @@ public class Rs256 extends RsaSignature {
             BigInteger s = OS2IP(EM);
 
             // RSASP1(s)
-            s = RSASP1((RSAPrivateKey)_keyPair.getPrivate(), s);
+            s = RSASP1((RSAPrivateKey) _keyPair.getPrivate(), s);
 
             // Convert to octet sequence
             return I2OSP(s, _emLen);
@@ -66,7 +66,7 @@ public class Rs256 extends RsaSignature {
             BigInteger s = OS2IP(signature);
 
             // Convert integer message
-            BigInteger m = RSAVP1((RSAPublicKey)_keyPair.getPublic(), s);
+            BigInteger m = RSAVP1((RSAPublicKey) _keyPair.getPublic(), s);
 
             byte[] EM  = I2OSP(m, _emLen);
             byte[] EM2 = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, _emLen, "SHA-256");
