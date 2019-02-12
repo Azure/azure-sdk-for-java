@@ -148,20 +148,20 @@ public class SymmetricKey implements IKey {
     public String getDefaultEncryptionAlgorithm() {
 
         switch (_key.length) {
-        case KeySize128:
-            return Aes128Cbc.ALGORITHM_NAME;
+            case KeySize128:
+                return Aes128Cbc.ALGORITHM_NAME;
 
-        case KeySize192:
-            return Aes192Cbc.ALGORITHM_NAME;
+            case KeySize192:
+                return Aes192Cbc.ALGORITHM_NAME;
 
-        case KeySize256:
-            return Aes128CbcHmacSha256.ALGORITHM_NAME;
+            case KeySize256:
+                return Aes128CbcHmacSha256.ALGORITHM_NAME;
 
-        case KeySize384:
-            return Aes192CbcHmacSha384.ALGORITHM_NAME;
+            case KeySize384:
+                return Aes192CbcHmacSha384.ALGORITHM_NAME;
 
-        case KeySize512:
-            return Aes256CbcHmacSha512.ALGORITHM_NAME;
+            case KeySize512:
+                return Aes256CbcHmacSha512.ALGORITHM_NAME;
         }
 
         return null;
@@ -171,22 +171,22 @@ public class SymmetricKey implements IKey {
     public String getDefaultKeyWrapAlgorithm() {
 
         switch (_key.length) {
-        case KeySize128:
-            return AesKw128.ALGORITHM_NAME;
+            case KeySize128:
+                return AesKw128.ALGORITHM_NAME;
 
-        case KeySize192:
-            return AesKw192.ALGORITHM_NAME;
+            case KeySize192:
+                return AesKw192.ALGORITHM_NAME;
 
-        case KeySize256:
-            return AesKw256.ALGORITHM_NAME;
+            case KeySize256:
+                return AesKw256.ALGORITHM_NAME;
 
-        case KeySize384:
-            // Default to longest allowed key length for wrap
-            return AesKw256.ALGORITHM_NAME;
+            case KeySize384:
+                // Default to longest allowed key length for wrap
+                return AesKw256.ALGORITHM_NAME;
 
-        case KeySize512:
-            // Default to longest allowed key length for wrap
-            return AesKw256.ALGORITHM_NAME;
+            case KeySize512:
+                // Default to longest allowed key length for wrap
+                return AesKw256.ALGORITHM_NAME;
         }
 
         return null;
