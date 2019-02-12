@@ -22,8 +22,7 @@ public abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
     public abstract int getDigestLength();
     public abstract int getCoordLength();
 
-    private void checkDigestLength(byte[] digest)
-    {
+    private void checkDigestLength(byte[] digest) {
         if (digest.length != this.getDigestLength()) {
             throw new IllegalArgumentException("Invalid digest length.");
         }

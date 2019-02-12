@@ -53,8 +53,7 @@ public final class ByteExtensions {
         return result;
     }
 
-    public static void zero(byte[] self)
-    {
+    public static void zero(byte[] self) {
         if (self != null) {
             Arrays.fill(self, (byte) 0);
         }

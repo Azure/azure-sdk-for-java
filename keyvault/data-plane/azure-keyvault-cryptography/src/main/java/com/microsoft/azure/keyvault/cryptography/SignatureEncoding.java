@@ -113,8 +113,7 @@ final class Asn1DerSignatureEncoding {
 
     }
 
-    public static byte[] Encode(byte[] signature, Ecdsa algorithm)
-    {
+    public static byte[] Encode(byte[] signature, Ecdsa algorithm) {
         int coordLength = algorithm.getCoordLength();
 
         // verify that the signature is the correct length for the given algorithm
@@ -148,8 +147,7 @@ final class Asn1DerSignatureEncoding {
         return asn1DerSignature.toByteArray();
     }
 
-    public static byte[] Decode(byte[] bytes, Ecdsa algorithm)
-    {
+    public static byte[] Decode(byte[] bytes, Ecdsa algorithm) {
         int coordLength = algorithm.getCoordLength();
 
         ByteArrayInputStream asn1DerSignature = new ByteArrayInputStream(bytes);
@@ -178,8 +176,7 @@ final class Asn1DerSignatureEncoding {
         return rawSignature;
     }
 
-    private static byte[] encodeIntField(BigInteger i)
-    {
+    private static byte[] encodeIntField(BigInteger i) {
         ByteArrayOutputStream field = new ByteArrayOutputStream();
 
         field.write(0x02);
@@ -196,14 +193,11 @@ final class Asn1DerSignatureEncoding {
         return field.toByteArray();
     }
 
-    private static void writeFieldLength(ByteArrayOutputStream field, int len)
-    {
+    private static void writeFieldLength(ByteArrayOutputStream field, int len) {
         // if the length of vi is less then 0x80 we can fit the length in one byte
         if (len < 0x80) {
             field.write(len);
-        }
-        // otherwise
-        else {
+        } else {
             // get the len as a byte array
             byte[] blen = BigInteger.valueOf(len).toByteArray();
 
@@ -222,8 +216,7 @@ final class Asn1DerSignatureEncoding {
         }
     }
 
-    private static void decodeIntField(ByteArrayInputStream bytes, byte[] dest, int index, int intlen)
-    {
+    private static void decodeIntField(ByteArrayInputStream bytes, byte[] dest, int index, int intlen) {
         // verify the first byte of field is 0x02
         if (bytes.read() != 0x02) {
             throw new IllegalArgumentException("Invalid signature.");
@@ -249,8 +242,7 @@ final class Asn1DerSignatureEncoding {
         bytes.read(dest, index + (intlen - len), len);
     }
 
-    private static int readFieldLength(ByteArrayInputStream bytes)
-    {
+    private static int readFieldLength(ByteArrayInputStream bytes) {
         int firstLenByte = bytes.read();
 
         // if the high order bit of len is not set it is a single byte length so return
