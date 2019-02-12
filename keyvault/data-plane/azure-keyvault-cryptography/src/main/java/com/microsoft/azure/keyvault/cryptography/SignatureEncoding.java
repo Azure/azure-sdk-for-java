@@ -16,7 +16,7 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa;
 import org.apache.commons.codec.binary.Hex;
 
 public final class SignatureEncoding {
-    // SignatureEncoding is intended to be a static class 
+    // SignatureEncoding is intended to be a static class
     private SignatureEncoding() { }
 
     /**
@@ -51,14 +51,12 @@ public final class SignatureEncoding {
      */
     public static byte[] fromAsn1Der(byte[] asn1DerSignature, Ecdsa algorithm) {
 
-       try
-       {
-           return Asn1DerSignatureEncoding.Decode(asn1DerSignature, algorithm);
-       }
-       catch (IllegalArgumentException ex)
-       {
-           throw (IllegalArgumentException) new IllegalArgumentException(ex.getMessage() + " "  + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
-       }
+        try {
+            return Asn1DerSignatureEncoding.Decode(asn1DerSignature, algorithm);
+        } catch (IllegalArgumentException ex) {
+            throw (IllegalArgumentException) new IllegalArgumentException(
+                    ex.getMessage() + " " + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
+        }
     }
 
     /**
@@ -92,15 +90,12 @@ public final class SignatureEncoding {
     * @return The ASN.1 DER encoded signature of the given signature.
     */
     public static byte[] toAsn1Der(byte[] signature, Ecdsa algorithm) {
-       
-       try
-       {
-           return Asn1DerSignatureEncoding.Encode(signature, algorithm);
-       }
-       catch (IllegalArgumentException ex)
-       {
-            throw (IllegalArgumentException) new IllegalArgumentException(ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
-       }
+        try {
+            return Asn1DerSignatureEncoding.Encode(signature, algorithm);
+        } catch (IllegalArgumentException ex) {
+            throw (IllegalArgumentException) new IllegalArgumentException(
+                    ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
+        }
     }
 }
 
@@ -122,10 +117,10 @@ final class Asn1DerSignatureEncoding {
 
     }
 
-    public static byte[] Encode(byte[] signature, Ecdsa algorithm) 
+    public static byte[] Encode(byte[] signature, Ecdsa algorithm)
     {
         int coordLength = algorithm.getCoordLength();
-        
+
         // verify that the signature is the correct length for the given algorithm
         if (signature.length != (coordLength * 2))
         {
@@ -147,7 +142,7 @@ final class Asn1DerSignatureEncoding {
 
         asn1DerSignature.write(0x30);
 
-        // add the length of the fields 
+        // add the length of the fields
         writeFieldLength(asn1DerSignature, rfield.length + sfield.length);
 
         // write the fields
@@ -163,7 +158,7 @@ final class Asn1DerSignatureEncoding {
         int coordLength = algorithm.getCoordLength();
 
         ByteArrayInputStream asn1DerSignature = new ByteArrayInputStream(bytes);
-        
+
         // verify byte 0 is 0x30
         if (asn1DerSignature.read() != 0x30)
         {
@@ -171,7 +166,7 @@ final class Asn1DerSignatureEncoding {
         }
 
         int objLen = readFieldLength(asn1DerSignature);
-        
+
         // verify the object lenth is equal to the remaining length of the _asn1DerSignature
         if (objLen != asn1DerSignature.available())
         {
@@ -214,7 +209,7 @@ final class Asn1DerSignatureEncoding {
         {
             field.write(len);
         }
-        // otherwise 
+        // otherwise
         else
         {
             // get the len as a byte array
@@ -292,7 +287,7 @@ final class Asn1DerSignatureEncoding {
         BigInteger bigLen = new BigInteger(1, lenBytes);
 
         // for DSA signatures no feilds should be longer than can be expressed in an integer
-        // this means that the bitLength must be 31 or less to account for the leading zero of 
+        // this means that the bitLength must be 31 or less to account for the leading zero of
         // a positive integer
         if (bigLen.bitLength() >= 31)
         {
@@ -302,4 +297,4 @@ final class Asn1DerSignatureEncoding {
         return bigLen.intValue();
     }
 }
-    
+
