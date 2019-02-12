@@ -10,24 +10,36 @@ jobs:
   pool:
     vmImage: 'ubuntu-16.04'
 
+  strategy:
+    matrix:
+      Java 8:
+        artifactDir: 'java-8'
+        mvnFlags: ''
+        javaVer: '1.8'
+      Java LTS:
+        artifactDir: 'java-lts'
+        mvnFlags: '-Djava-lts'
+        javaVer: '1.11'
+
   steps:
   - task: Maven@3
     displayName: 'Build and Package'
     inputs:
       mavenPomFile: $(pomFile)
       goals: 'checkstyle:check javadoc:jar source:jar package'
-      options: '--batch-mode -Dmaven.test.skip=true'
+      options: '--batch-mode -Dmaven.test.skip=true $(mvnFlags)'
       mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
       javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
+      jdkVersionOption: $(javaVer)
       jdkArchitectureOption: 'x64'
       publishJUnitResults: false
 
   - powershell: |
      # use sources files as a marker to find POM files so we can copy them to the output. The sources.jar file is generally
      # in a target folder next to the pom.xml file so $_.Directory.Parent should get us the folder that contains the POM.
-     dir -r -i *-sources.jar | % { copy (Join-Path $_.Directory.Parent.FullName "pom.xml") (Join-Path $(Build.ArtifactStagingDirectory) $_.Name.Replace("-sources.jar",".pom")) }
-     dir -r -i *.jar | % { copy $_ $(Build.ArtifactStagingDirectory) }
+     mkdir (Join-Path $(Build.ArtifactStagingDirectory) $(artifactDir))
+     dir -r -i *-sources.jar | % { copy (Join-Path $_.Directory.Parent.FullName "pom.xml") (Join-Path $(Build.ArtifactStagingDirectory) $(artifactDir) $_.Name.Replace("-sources.jar",".pom")) }
+     dir -r -i *.jar | % { copy $_ (Join-Path $(Build.ArtifactStagingDirectory) $(artifactDir)) }
     displayName: 'Copy JAR and POM files to artifact staging'
 
   - task: PublishBuildArtifacts@1
@@ -37,7 +49,7 @@ jobs:
 
   dependsOn:
   - 'Build'
-  
+
   pool:
     vmImage: 'vs2017-win2016'
 
@@ -53,32 +65,61 @@ jobs:
 
   strategy:
     matrix:
-      Linux:
+      Linux - Java 8:
         os.name: 'Linux'
         os.vmImage: 'ubuntu-16.04'
-      macOS:
+        javaVer: '1.8'
+        mvnFlags: ''
+      macOS - Java 8:
         os.name: 'macOS'
         os.vmImage: 'macOS-10.13'
-      Windows:
+        javaVer: '1.8'
+        mvnFlags: ''
+      Windows - Java 8:
         os.name: 'Windows'
         os.vmImage: 'vs2017-win2016'
+        javaVer: '1.8'
+        mvnFlags: ''
+      Linux - Java LTS:
+        os.name: 'Linux'
+        os.vmImage: 'ubuntu-16.04'
+        javaVer: '1.11'
+        mvnFlags: '-Djava-lts'
+      macOS - Java LTS:
+        os.name: 'macOS'
+        os.vmImage: 'macOS-10.13'
+        javaVer: '1.11'
+        mvnFlags: '-Djava-lts'
+      Windows - Java LTS:
+        os.name: 'Windows'
+        os.vmImage: 'vs2017-win2016'
+        javaVer: '1.11'
+        mvnFlags: '-Djava-lts'
 
   pool:
     vmImage: $(os.vmImage)
 
   steps:
-    - script: |
-        mvn jetty:run-forked -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --batch-mode -f $(pomFile)
+    - task: Maven@3
       displayName: 'Start Jetty'
+      inputs:
+        mavenPomFile: $(pomFile)
+        options: '--batch-mode $(mvnFlags)'
+        mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(javaVer)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'jetty:run-forked'
 
     - task: Maven@3
       displayName: 'Run tests'
       inputs:
         mavenPomFile: $(pomFile)
-        options: '--batch-mode'  #hides dependencies download progress from CI output
+        options: '--batch-mode $(mvnFlags)'
         mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
         javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.8'
+        jdkVersionOption: $(javaVer)
         jdkArchitectureOption: 'x64'
         publishJUnitResults: true
         testResultsFiles: '**/TEST-*.xml'
