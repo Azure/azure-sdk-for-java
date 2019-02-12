@@ -19,50 +19,50 @@ public final class RsaOaep extends RsaEncryption {
 
     class RsaOaepDecryptor implements ICryptoTransform {
 
-        private final Cipher _cipher;
+        private final Cipher cipher;
 
         RsaOaepDecryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
             // Create a cipher object using the provider, if specified
             if (provider == null) {
-                _cipher = Cipher.getInstance(RSAOAEP);
+                cipher = Cipher.getInstance(RSAOAEP);
             } else {
-                _cipher = Cipher.getInstance(RSAOAEP, provider);
+                cipher = Cipher.getInstance(RSAOAEP, provider);
             }
 
             // encrypt the plain text using the public key
-            _cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
+            cipher.init(Cipher.DECRYPT_MODE, keyPair.getPrivate());
         }
 
         @Override
         public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
 
-            return _cipher.doFinal(plaintext);
+            return cipher.doFinal(plaintext);
         }
 
     }
 
     class RsaOaepEncryptor implements ICryptoTransform {
 
-        private final Cipher _cipher;
+        private final Cipher cipher;
 
         RsaOaepEncryptor(KeyPair keyPair, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException {
 
             // Create a cipher object using the provider, if specified
             if (provider == null) {
-                _cipher = Cipher.getInstance(RSAOAEP);
+                cipher = Cipher.getInstance(RSAOAEP);
             } else {
-                _cipher = Cipher.getInstance(RSAOAEP, provider);
+                cipher = Cipher.getInstance(RSAOAEP, provider);
             }
 
             // encrypt the plain text using the public key
-            _cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
+            cipher.init(Cipher.ENCRYPT_MODE, keyPair.getPublic());
         }
 
         @Override
         public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
 
-            return _cipher.doFinal(plaintext);
+            return cipher.doFinal(plaintext);
         }
 
     }
