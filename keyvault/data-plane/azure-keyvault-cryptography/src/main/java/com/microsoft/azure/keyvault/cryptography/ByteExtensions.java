@@ -76,11 +76,13 @@ public final class ByteExtensions {
      *      True if the two byte arrays are equal.
      */
     public static boolean sequenceEqualConstantTime(byte[] self, byte[] other) {
-        if (self == null)
+        if (self == null) {
             throw new IllegalArgumentException("self");
+        }
 
-        if (other == null)
+        if (other == null) {
             throw new IllegalArgumentException("other");
+        }
 
         // Constant time comparison of two byte arrays
         long difference = (self.length & 0xffffffffl) ^ (other.length & 0xffffffffl);
