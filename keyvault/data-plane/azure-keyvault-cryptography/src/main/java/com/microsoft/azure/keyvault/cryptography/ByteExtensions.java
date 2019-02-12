@@ -7,13 +7,11 @@ import java.util.Arrays;
 
 public final class ByteExtensions {
 
-    public static byte[] or(byte[] self, byte[] other)
-    {
+    public static byte[] or(byte[] self, byte[] other) {
         return or(self, other, 0);
     }
 
-    public static byte[] or(byte[] self, byte[] other, int offset)
-    {
+    public static byte[] or(byte[] self, byte[] other, int offset) {
         if (self == null)
             throw new IllegalArgumentException("self");
 
@@ -25,20 +23,18 @@ public final class ByteExtensions {
 
         byte[] result = new byte[self.length];
 
-        for (int i = 0; i < self.length; i++)
-        {
+        for (int i = 0; i < self.length; i++) {
             result[i] = (byte) (self[i] | other[offset + i]);
         }
 
         return result;
     }
-    
+
     public static byte[] xor(byte[] self, byte[] other) {
         return xor(self, other, 0);
     }
 
-    static byte[] xor(byte[] self, byte[] other, int offset)
-    {
+    static byte[] xor(byte[] self, byte[] other, int offset) {
         if (self == null)
             throw new IllegalArgumentException("self");
 
@@ -50,8 +46,7 @@ public final class ByteExtensions {
 
         byte[] result = new byte[self.length];
 
-        for (int i = 0; i < self.length; i++)
-        {
+        for (int i = 0; i < self.length; i++) {
             result[i] = (byte) (self[i] ^ other[offset + i]);
         }
 
@@ -64,19 +59,18 @@ public final class ByteExtensions {
             Arrays.fill(self, (byte) 0);
         }
     }
-    
+
     /**
      * Compares two byte arrays in constant time.
-     * 
+     *
      * @param self
-     *      The first byte array to compare 
+     *      The first byte array to compare
      * @param other
      *      The second byte array to compare
      * @return
      *      True if the two byte arrays are equal.
      */
-    public static boolean sequenceEqualConstantTime(byte[] self, byte[] other)
-    {
+    public static boolean sequenceEqualConstantTime(byte[] self, byte[] other) {
         if (self == null)
             throw new IllegalArgumentException("self");
 
@@ -86,12 +80,10 @@ public final class ByteExtensions {
         // Constant time comparison of two byte arrays
         long difference = (self.length & 0xffffffffl) ^ (other.length & 0xffffffffl);
 
-        for (int i = 0; i < self.length && i < other.length; i++)
-        {
+        for (int i = 0; i < self.length && i < other.length; i++) {
             difference |= (self[i] ^ other[i]) & 0xffffffffl;
         }
 
         return difference == 0;
     }
-
 }
