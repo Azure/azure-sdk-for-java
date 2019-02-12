@@ -41,9 +41,9 @@ public class SymmetricKey implements IKey {
 
     public static final int DefaultKeySize = KeySize256;
 
-    private final String   _kid;
-    private final byte[]   _key;
-    private final Provider _provider;
+    private final String   kid;
+    private final byte[]   key;
+    private final Provider provider;
 
     /**
      * Creates a SymmetricKey with a random key identifier and
@@ -95,12 +95,12 @@ public class SymmetricKey implements IKey {
             throw new IllegalArgumentException("The key material must be 128, 192, 256, 384 or 512 bits of data");
         }
 
-        _kid      = kid;
-        _key      = new byte[keySizeInBytes];
-        _provider = provider;
+        this.kid      = kid;
+        this.key      = new byte[keySizeInBytes];
+        this.provider = provider;
 
         // Generate a random key
-        Rng.nextBytes(_key);
+        Rng.nextBytes(key);
     }
 
     /**
@@ -138,15 +138,15 @@ public class SymmetricKey implements IKey {
             throw new IllegalArgumentException("The key material must be 128, 192, 256, 384 or 512 bits of data");
         }
 
-        _kid      = kid;
-        _key      = keyBytes;
-        _provider = provider;
+        this.kid      = kid;
+        this.key      = keyBytes;
+        this.provider = provider;
     }
 
     @Override
     public String getDefaultEncryptionAlgorithm() {
 
-        switch (_key.length) {
+        switch (key.length) {
             case KeySize128:
                 return Aes128Cbc.ALGORITHM_NAME;
 
@@ -169,7 +169,7 @@ public class SymmetricKey implements IKey {
     @Override
     public String getDefaultKeyWrapAlgorithm() {
 
-        switch (_key.length) {
+        switch (key.length) {
             case KeySize128:
                 return AesKw128.ALGORITHM_NAME;
 
@@ -200,7 +200,7 @@ public class SymmetricKey implements IKey {
     @Override
     public String getKid() {
 
-        return _kid;
+        return kid;
     }
 
     @Override
@@ -230,7 +230,7 @@ public class SymmetricKey implements IKey {
         ICryptoTransform transform = null;
 
         try {
-            transform = algo.CreateDecryptor(_key, iv, authenticationData, authenticationTag, _provider);
+            transform = algo.CreateDecryptor(key, iv, authenticationData, authenticationTag, provider);
         } catch (Exception e) {
             return Futures.immediateFailedFuture(e);
         }
@@ -270,7 +270,7 @@ public class SymmetricKey implements IKey {
         ICryptoTransform transform = null;
 
         try {
-            transform = algo.CreateEncryptor(_key, iv, authenticationData, _provider);
+            transform = algo.CreateEncryptor(key, iv, authenticationData, provider);
         } catch (Exception e) {
             return Futures.immediateFailedFuture(e);
         }
@@ -315,7 +315,7 @@ public class SymmetricKey implements IKey {
         ICryptoTransform transform = null;
 
         try {
-            transform = algo.CreateEncryptor(_key, null, _provider);
+            transform = algo.CreateEncryptor(key, null, provider);
         } catch (Exception e) {
             return Futures.immediateFailedFuture(e);
         }
@@ -353,7 +353,7 @@ public class SymmetricKey implements IKey {
         ICryptoTransform transform = null;
 
         try {
-            transform = algo.CreateDecryptor(_key, null, _provider);
+            transform = algo.CreateDecryptor(key, null, provider);
         } catch (Exception e) {
             return Futures.immediateFailedFuture(e);
         }
