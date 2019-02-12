@@ -1,8 +1,7 @@
 package com.microsoft.azure.keyvault.cryptography.algorithms;
 
 public class Es512 extends Ecdsa {
-    
-    public final static String ALGORITHM_NAME = "ES512";
+    public static final String ALGORITHM_NAME = "ES512";
 
     @Override
     public int getDigestLength() {

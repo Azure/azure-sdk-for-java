@@ -67,9 +67,9 @@ public final class Rsa15 extends RsaEncryption {
 
     }
 
-    final static String RSA15 = "RSA/ECB/PKCS1Padding";
+    static final String RSA15 = "RSA/ECB/PKCS1Padding";
 
-    public final static String ALGORITHM_NAME = "RSA1_5";
+    public static final String ALGORITHM_NAME = "RSA1_5";
 
     public Rsa15() {
         super(ALGORITHM_NAME);
