@@ -84,11 +84,10 @@ public final class ByteExtensions {
             throw new IllegalArgumentException("other");
 
         // Constant time comparison of two byte arrays
-        long difference = (self.length & 0xffffffffl) ^ (other.length & 0xffffffffl);
+        long difference = (self.length & 0xffffffffL) ^ (other.length & 0xffffffffL);
 
-        for (int i = 0; i < self.length && i < other.length; i++)
-        {
-            difference |= (self[i] ^ other[i]) & 0xffffffffl;
+        for (int i = 0; i < self.length && i < other.length; i++) {
+            difference |= (self[i] ^ other[i]) & 0xffffffffL;
         }
 
         return difference == 0;
