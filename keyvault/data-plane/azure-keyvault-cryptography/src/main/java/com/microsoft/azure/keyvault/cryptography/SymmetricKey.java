@@ -24,7 +24,6 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Aes256CbcHmacSha512;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw128;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw192;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw256;
-import com.microsoft.azure.keyvault.cryptography.Strings;
 
 /**
  * A simple symmetric key implementation

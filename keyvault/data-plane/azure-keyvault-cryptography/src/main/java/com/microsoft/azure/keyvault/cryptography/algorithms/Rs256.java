@@ -77,7 +77,7 @@ public class Rs256 extends RsaSignature {
 
     }
 
-    public final static String ALGORITHM_NAME = "RS256";
+    public static final String ALGORITHM_NAME = "RS256";
 
     public Rs256() {
         super(ALGORITHM_NAME);

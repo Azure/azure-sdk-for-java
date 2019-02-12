@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.keyvault.cryptography.algorithms;
 
 import java.security.GeneralSecurityException;
@@ -35,7 +38,7 @@ public abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
         private final Provider _provider;
         private final Ecdsa _algorithm;
 
-        public EcdsaSignatureTransform(KeyPair keyPair, Provider provider, Ecdsa algorithm) {
+        EcdsaSignatureTransform(KeyPair keyPair, Provider provider, Ecdsa algorithm) {
             _keyPair = keyPair;
             _provider = provider;
             _algorithm = algorithm;

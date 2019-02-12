@@ -5,5 +5,5 @@ package com.microsoft.azure.keyvault.cryptography;
 
 public interface IAuthenticatedCryptoTransform extends ICryptoTransform {
 
-    public byte[] getTag();
+    byte[] getTag();
 }
