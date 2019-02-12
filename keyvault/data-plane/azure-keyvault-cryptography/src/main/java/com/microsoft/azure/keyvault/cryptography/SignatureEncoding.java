@@ -4,13 +4,10 @@
 package com.microsoft.azure.keyvault.cryptography;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import org.apache.commons.lang3.ArrayUtils;
 
 import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa;
 import org.apache.commons.codec.binary.Hex;
