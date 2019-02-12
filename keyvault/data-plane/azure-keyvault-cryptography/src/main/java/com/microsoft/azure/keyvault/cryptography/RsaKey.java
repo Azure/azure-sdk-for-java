@@ -31,9 +31,9 @@ public class RsaKey implements IKey {
         return RsaKey.KeySize2048;
     }
 
-    private final String   _kid;
-    private final KeyPair  _keyPair;
-    private final Provider _provider;
+    private final String   kid;
+    private final KeyPair  keyPair;
+    private final Provider provider;
 
     /**
      * Constructor.
@@ -87,9 +87,9 @@ public class RsaKey implements IKey {
 
         generator.initialize(keySize);
 
-        _kid      = kid;
-        _keyPair  = generator.generateKeyPair();
-        _provider = provider;
+        this.kid = kid;
+        keyPair = generator.generateKeyPair();
+        this.provider = provider;
     }
 
     /**
@@ -127,9 +127,9 @@ public class RsaKey implements IKey {
             throw new IllegalArgumentException("The KeyPair is not an RsaKey");
         }
 
-        _kid      = kid;
-        _keyPair  = keyPair;
-        _provider = provider;
+        this.kid = kid;
+        this.keyPair = keyPair;
+        this.provider = provider;
     }
 
     /**
@@ -170,7 +170,7 @@ public class RsaKey implements IKey {
      * @return
      */
     public JsonWebKey toJsonWebKey() {
-        return JsonWebKey.fromRSA(_keyPair);
+        return JsonWebKey.fromRSA(keyPair);
     }
 
     @Override
@@ -190,11 +190,11 @@ public class RsaKey implements IKey {
 
     @Override
     public String getKid() {
-        return _kid;
+        return kid;
     }
 
     public KeyPair getKeyPair() {
-        return _keyPair;
+        return keyPair;
     }
 
     @Override
@@ -221,7 +221,7 @@ public class RsaKey implements IKey {
         ListenableFuture<byte[]> result;
 
         try {
-            transform = algo.CreateDecryptor(_keyPair, _provider);
+            transform = algo.CreateDecryptor(keyPair, provider);
             result    = Futures.immediateFuture(transform.doFinal(ciphertext));
         } catch (Exception e) {
             result    = Futures.immediateFailedFuture(e);
@@ -251,7 +251,7 @@ public class RsaKey implements IKey {
         ListenableFuture<Triple<byte[], byte[], String>> result;
 
         try {
-            transform = algo.CreateEncryptor(_keyPair, _provider);
+            transform = algo.CreateEncryptor(keyPair, provider);
             result    = Futures.immediateFuture(Triple.of(transform.doFinal(plaintext), (byte[]) null, algorithmName));
         } catch (Exception e) {
             result    = Futures.immediateFailedFuture(e);
@@ -281,7 +281,7 @@ public class RsaKey implements IKey {
         ListenableFuture<Pair<byte[], String>> result;
 
         try {
-            transform = algo.CreateEncryptor(_keyPair, _provider);
+            transform = algo.CreateEncryptor(keyPair, provider);
             result    = Futures.immediateFuture(Pair.of(transform.doFinal(key), algorithmName));
         } catch (Exception e) {
             result    = Futures.immediateFailedFuture(e);
@@ -315,7 +315,7 @@ public class RsaKey implements IKey {
         ListenableFuture<byte[]> result;
 
         try {
-            transform = algo.CreateDecryptor(_keyPair, _provider);
+            transform = algo.CreateDecryptor(keyPair, provider);
             result    = Futures.immediateFuture(transform.doFinal(encryptedKey));
         } catch (Exception e) {
             result    = Futures.immediateFailedFuture(e);
@@ -345,7 +345,7 @@ public class RsaKey implements IKey {
 
         Rs256 algo = (Rs256) baseAlgorithm;
 
-        ISignatureTransform signer = algo.createSignatureTransform(_keyPair);
+        ISignatureTransform signer = algo.createSignatureTransform(keyPair);
 
         try {
             return Futures.immediateFuture(Pair.of(signer.sign(digest), Rs256.ALGORITHM_NAME));
@@ -375,7 +375,7 @@ public class RsaKey implements IKey {
 
         Rs256 algo = (Rs256) baseAlgorithm;
 
-        ISignatureTransform signer = algo.createSignatureTransform(_keyPair);
+        ISignatureTransform signer = algo.createSignatureTransform(keyPair);
 
         try {
             return Futures.immediateFuture(signer.verify(digest, signature));
