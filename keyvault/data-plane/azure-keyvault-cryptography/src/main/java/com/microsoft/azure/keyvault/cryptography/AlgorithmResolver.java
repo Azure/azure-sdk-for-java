@@ -43,9 +43,9 @@ public class AlgorithmResolver {
         Default.put(Rsa15.ALGORITHM_NAME, new Rsa15());
         Default.put(RsaOaep.ALGORITHM_NAME, new RsaOaep());
 
-        Default.put( Rs256.ALGORITHM_NAME, new Rs256() );
-        // Default.put( RsNull.ALGORITHM_NAME, new RsNull() );
-        
+        Default.put(Rs256.ALGORITHM_NAME, new Rs256());
+        // Default.put(RsNull.ALGORITHM_NAME, new RsNull());
+
         Default.put(Es256k.ALGORITHM_NAME, new Es256k());
         Default.put(Es256.ALGORITHM_NAME, new Es256());
         Default.put(Es384.ALGORITHM_NAME, new Es384());
@@ -56,7 +56,7 @@ public class AlgorithmResolver {
 
     /**
      * Returns the implementation for an algorithm name.
-     * 
+     *
      * @param algorithmName The algorithm name.
      * @return The implementation for the algorithm or null.
      */
@@ -66,7 +66,7 @@ public class AlgorithmResolver {
 
     /**
      * Add/Update a named algorithm implementation.
-     * 
+     *
      * @param algorithmName The algorithm name.
      * @param provider The implementation of the algorithm.
      */
@@ -76,7 +76,7 @@ public class AlgorithmResolver {
 
     /**
      * Remove a named algorithm implementation.
-     * 
+     *
      * @param algorithmName The algorithm name
      */
     public void remove(String algorithmName) {

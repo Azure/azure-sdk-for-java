@@ -266,7 +266,7 @@ public class EcKey implements IKey {
             }
 
             //Did not find a supported curve.
-            throw new IllegalArgumentException ("Curve not supported.");
+            throw new IllegalArgumentException("Curve not supported.");
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException(e);
         }
