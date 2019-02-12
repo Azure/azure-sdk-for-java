@@ -8,9 +8,10 @@ variables:
 queue:
   name: Hosted VS2017
 steps:
+  # Adding -Dmaven.wagon.http.pool=false to the mvn command as a workaround to prevent build failures at maven artifacts downloading stage.
 - bash: |
    LOG_PARAMS='-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-   mvn test -Dhttp.keepAlive=false -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -f $(pomFile)
+   mvn test -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -f $(pomFile)
   displayName: 'Run Live Tests'
   env:
     ARM_CLIENTID: $(ARM_CLIENTID)
@@ -20,5 +21,5 @@ steps:
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'JUnit'
-    testResultsFiles: '**/TEST-*.xml' 
+    testResultsFiles: '**/TEST-*.xml'
 
