@@ -58,12 +58,12 @@ public class EcKey implements IKey {
             .build();
 
 
-    private final String _kid;
-    private final KeyPair _keyPair;
-    private final Provider _provider;
-    private final JsonWebKeyCurveName _curve;
+    private final String kid;
+    private final KeyPair keyPair;
+    private final Provider provider;
+    private final JsonWebKeyCurveName curve;
 
-    protected final String _signatureAlgorithm;
+    protected final String signatureAlgorithm;
     protected String defaultEncryptionAlgorithm;
 
     public static JsonWebKeyCurveName getDefaultCurve() {
@@ -119,12 +119,12 @@ public class EcKey implements IKey {
      * @throws NoSuchAlgorithmException
      */
     public EcKey(String kid, JsonWebKeyCurveName curve, Provider provider) throws InvalidAlgorithmParameterException, NoSuchAlgorithmException {
-        _kid = kid;
-        _provider = provider;
-        _curve = curve;
+        this.kid = kid;
+        this.provider = provider;
+        this.curve = curve;
 
-        _signatureAlgorithm = CURVE_TO_SIGNATURE.get(curve);
-        if (_signatureAlgorithm == null) {
+        signatureAlgorithm = CURVE_TO_SIGNATURE.get(curve);
+        if (signatureAlgorithm == null) {
             throw new NoSuchAlgorithmException("Curve not supported.");
         }
 
@@ -132,7 +132,7 @@ public class EcKey implements IKey {
         ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
 
         generator.initialize(gps);
-        _keyPair = generator.generateKeyPair();
+        keyPair = generator.generateKeyPair();
 
     }
 
@@ -174,13 +174,13 @@ public class EcKey implements IKey {
         if (keyPair.getPublic() == null || !(keyPair.getPublic() instanceof ECPublicKey)) {
             throw new IllegalArgumentException("The keyPair provided is not an ECKey");
         }
-        
-        _kid      = kid;
-        _keyPair  = keyPair;
-        _provider = provider;
-        _curve = getCurveFromKeyPair(keyPair);
-        _signatureAlgorithm = CURVE_TO_SIGNATURE.get(_curve);
-        if (_signatureAlgorithm == null) {
+
+        this.kid = kid;
+        this.keyPair = keyPair;
+        this.provider = provider;
+        curve = getCurveFromKeyPair(keyPair);
+        signatureAlgorithm = CURVE_TO_SIGNATURE.get(curve);
+        if (signatureAlgorithm == null) {
             throw new IllegalArgumentException("Curve not supported.");
         }
     }
@@ -236,7 +236,7 @@ public class EcKey implements IKey {
      * @return
      */
     public JsonWebKey toJsonWebKey() {
-        return JsonWebKey.fromEC(_keyPair, _provider);
+        return JsonWebKey.fromEC(keyPair, provider);
     }
 
     // Matches the curve of the keyPair to supported curves.
@@ -250,7 +250,7 @@ public class EcKey implements IKey {
 
             for (JsonWebKeyCurveName curve : curveList) {
                 ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
-                KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", _provider);
+                KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
                 kpg.initialize(gps);
 
                 // Generate dummy keypair to get parameter spec.
@@ -276,7 +276,7 @@ public class EcKey implements IKey {
      * @return curve of the key
      */
     public JsonWebKeyCurveName getCurve() {
-        return _curve;
+        return curve;
     }
 
     /**
@@ -284,7 +284,7 @@ public class EcKey implements IKey {
      * @return the underlying keyPair of the key
      */
     public KeyPair getKeyPair() {
-        return _keyPair;
+        return keyPair;
     }
 
     @Override
@@ -304,12 +304,12 @@ public class EcKey implements IKey {
 
     @Override
     public String getDefaultSignatureAlgorithm() {
-        return _signatureAlgorithm;
+        return signatureAlgorithm;
     }
 
     @Override
     public String getKid() {
-        return _kid;
+        return kid;
     }
 
     @Override
@@ -339,7 +339,7 @@ public class EcKey implements IKey {
     @Override
     public ListenableFuture<Pair<byte[], String>> signAsync(byte[] digest, String algorithm) throws NoSuchAlgorithmException {
         
-        if (_keyPair.getPrivate() == null) {
+        if (keyPair.getPrivate() == null) {
             throw new UnsupportedOperationException("Sign is not supported without a private key.");
         }
 
@@ -359,7 +359,7 @@ public class EcKey implements IKey {
         }
        
         Ecdsa algo = (Ecdsa) baseAlgorithm;
-        ISignatureTransform signer = algo.createSignatureTransform(_keyPair, _provider);
+        ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
 
         try {
             return Futures.immediateFuture(Pair.of(signer.sign(digest), algorithm));
@@ -388,7 +388,7 @@ public class EcKey implements IKey {
         
         Ecdsa algo = (Ecdsa) baseAlgorithm;
 
-        ISignatureTransform signer = algo.createSignatureTransform(_keyPair, _provider);
+        ISignatureTransform signer = algo.createSignatureTransform(keyPair, provider);
         
         try {
             return Futures.immediateFuture(signer.verify(digest, signature));
