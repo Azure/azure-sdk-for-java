@@ -88,7 +88,7 @@ public class RsaKey implements IKey {
         generator.initialize(keySize);
 
         this.kid = kid;
-        keyPair = generator.generateKeyPair();
+        this.keyPair = generator.generateKeyPair();
         this.provider = provider;
     }
 
