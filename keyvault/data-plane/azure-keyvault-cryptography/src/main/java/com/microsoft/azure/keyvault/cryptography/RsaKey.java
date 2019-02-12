@@ -37,19 +37,19 @@ public class RsaKey implements IKey {
 
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with a 2048 size keypair and a randomly generated kid.
      * @throws NoSuchAlgorithmException
      */
     public RsaKey() throws NoSuchAlgorithmException {
         this(UUID.randomUUID().toString());
     }
-    
+
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with a 2048 size keypair and the kid given.
-     * @param kid 
+     * @param kid
      * @throws NoSuchAlgorithmException
      */
     public RsaKey(String kid) throws NoSuchAlgorithmException {
@@ -58,7 +58,7 @@ public class RsaKey implements IKey {
 
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with size keySize and the kid given.
      * @param kid
      * @param keySize
@@ -67,10 +67,10 @@ public class RsaKey implements IKey {
     public RsaKey(String kid, int keySize) throws NoSuchAlgorithmException {
         this(kid, keySize, null);
     }
-    
+
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with size keySize and the kid given. The given provider is used for algorithm implementation.
      * @param kid
      * @param keySize
@@ -94,7 +94,7 @@ public class RsaKey implements IKey {
 
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with the given KeyPair.
      * The keyPair must be an RSAKey.
      * @param kid
@@ -106,7 +106,7 @@ public class RsaKey implements IKey {
 
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with given KeyPair. The given provider is used for algorithm implementation.
      * The keyPair must be an RSAKey.
      * @param kid
@@ -118,7 +118,7 @@ public class RsaKey implements IKey {
         if (Strings.isNullOrWhiteSpace(kid)) {
             throw new IllegalArgumentException("Please provide a kid");
         }
-        
+
         if (keyPair == null) {
             throw new IllegalArgumentException("Please provide a KeyPair");
         }
@@ -126,7 +126,7 @@ public class RsaKey implements IKey {
         if (keyPair.getPublic() == null || !(keyPair.getPublic() instanceof RSAPublicKey)) {
             throw new IllegalArgumentException("The KeyPair is not an RsaKey");
         }
-        
+
         _kid      = kid;
         _keyPair  = keyPair;
         _provider = provider;
@@ -140,7 +140,7 @@ public class RsaKey implements IKey {
     public static RsaKey fromJsonWebKey(JsonWebKey jwk) {
         return fromJsonWebKey(jwk, false, null);
     }
-    
+
     /**
      * Converts JSON web key to RsaKey and include the private key if set to true.
      * @param jwk
@@ -150,7 +150,7 @@ public class RsaKey implements IKey {
     public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters) {
         return fromJsonWebKey(jwk, includePrivateParameters, null);
     }
-    
+
     /**
      * Converts JSON web key to RsaKey and include the private key if set to true.
      * @param provider the Java security provider.
@@ -164,7 +164,7 @@ public class RsaKey implements IKey {
             throw new IllegalArgumentException("Json Web Key must have a kid");
         }
     }
-    
+
     /**
      * Converts RsaKey to JSON web key.
      * @return
@@ -172,7 +172,7 @@ public class RsaKey implements IKey {
     public JsonWebKey toJsonWebKey() {
         return JsonWebKey.fromRSA(_keyPair);
     }
-    
+
     @Override
     public String getDefaultEncryptionAlgorithm() {
         return RsaOaep.ALGORITHM_NAME;
@@ -196,7 +196,7 @@ public class RsaKey implements IKey {
     public KeyPair getKeyPair() {
         return _keyPair;
     }
-    
+
     @Override
     public ListenableFuture<byte[]> decryptAsync(final byte[] ciphertext, final byte[] iv, final byte[] authenticationData, final byte[] authenticationTag, final String algorithm) throws NoSuchAlgorithmException {
 
@@ -210,12 +210,12 @@ public class RsaKey implements IKey {
         }
 
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform         transform;
         ListenableFuture<byte[]> result;
@@ -240,12 +240,12 @@ public class RsaKey implements IKey {
         // Interpret the requested algorithm
         String    algorithmName = (Strings.isNullOrWhiteSpace(algorithm) ? getDefaultEncryptionAlgorithm() : algorithm);
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithmName);
         }
-        
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform                                 transform;
         ListenableFuture<Triple<byte[], byte[], String>> result;
@@ -270,12 +270,12 @@ public class RsaKey implements IKey {
         // Interpret the requested algorithm
         String    algorithmName = (Strings.isNullOrWhiteSpace(algorithm) ? getDefaultKeyWrapAlgorithm() : algorithm);
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithmName);
         }
-        
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform                       transform;
         ListenableFuture<Pair<byte[], String>> result;
@@ -304,12 +304,12 @@ public class RsaKey implements IKey {
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform         transform;
         ListenableFuture<byte[]> result;
@@ -338,15 +338,15 @@ public class RsaKey implements IKey {
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricSignatureAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        Rs256 algo = (Rs256)baseAlgorithm;
+
+        Rs256 algo = (Rs256) baseAlgorithm;
 
         ISignatureTransform signer = algo.createSignatureTransform(_keyPair);
-        
+
         try {
             return Futures.immediateFuture(Pair.of(signer.sign(digest), Rs256.ALGORITHM_NAME));
         } catch (Exception e) {
@@ -368,15 +368,15 @@ public class RsaKey implements IKey {
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricSignatureAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        Rs256 algo = (Rs256)baseAlgorithm;
+
+        Rs256 algo = (Rs256) baseAlgorithm;
 
         ISignatureTransform signer = algo.createSignatureTransform(_keyPair);
-        
+
         try {
             return Futures.immediateFuture(signer.verify(digest, signature));
         } catch (Exception e) {

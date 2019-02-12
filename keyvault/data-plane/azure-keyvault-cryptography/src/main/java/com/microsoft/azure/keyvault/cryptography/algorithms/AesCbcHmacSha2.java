@@ -75,7 +75,7 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             System.arraycopy(hash, 0, tag, 0, _hmac_key.length);
             
             // Check the tag before performing the final decrypt
-            if ( !ByteExtensions.sequenceEqualConstantTime(_tag, tag) ) {
+            if (!ByteExtensions.sequenceEqualConstantTime(_tag, tag)) {
                 throw new IllegalArgumentException("Data is not authentic");
             }
 
@@ -116,16 +116,16 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             return _tag;
         }
 
-        // public int TransformBlock( byte[] inputBuffer, int inputOffset, int
-        // inputCount, byte[] outputBuffer, int outputOffset )
+        // public int TransformBlock(byte[] inputBuffer, int inputOffset, int
+        // inputCount, byte[] outputBuffer, int outputOffset)
         // {
         // // Encrypt the block
-        // var result = _inner.TransformBlock( inputBuffer, inputOffset,
-        // inputCount, outputBuffer, outputOffset );
+        // var result = _inner.TransformBlock(inputBuffer, inputOffset,
+        // inputCount, outputBuffer, outputOffset);
         //
         // // Add it to the running hash
-        // _hmac.TransformBlock( outputBuffer, outputOffset, result,
-        // outputBuffer, outputOffset );
+        // _hmac.TransformBlock(outputBuffer, outputOffset, result,
+        // outputBuffer, outputOffset);
         //
         // return result;
         // }

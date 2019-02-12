@@ -7,61 +7,61 @@ import java.util.Arrays;
 
 public final class ByteExtensions {
 
-    public static byte[] or( byte[] self, byte[] other )
+    public static byte[] or(byte[] self, byte[] other)
     {
-        return or( self, other, 0 );
+        return or(self, other, 0);
     }
 
-    public static byte[] or( byte[] self, byte[] other, int offset )
+    public static byte[] or(byte[] self, byte[] other, int offset)
     {
-        if ( self == null )
-            throw new IllegalArgumentException( "self" );
+        if (self == null)
+            throw new IllegalArgumentException("self");
 
-        if ( other == null )
-            throw new IllegalArgumentException( "other" );
+        if (other == null)
+            throw new IllegalArgumentException("other");
 
-        if ( self.length > other.length - offset )
-            throw new IllegalArgumentException( "self and other lengths do not match" );
+        if (self.length > other.length - offset)
+            throw new IllegalArgumentException("self and other lengths do not match");
 
         byte[] result = new byte[self.length];
 
-        for ( int i = 0; i < self.length; i++ )
+        for (int i = 0; i < self.length; i++)
         {
-            result[i] = (byte)( self[i] | other[offset + i] );
+            result[i] = (byte) (self[i] | other[offset + i]);
         }
 
         return result;
     }
     
-    public static byte[] xor( byte[] self, byte[] other ) {
-        return xor( self, other, 0 );
+    public static byte[] xor(byte[] self, byte[] other) {
+        return xor(self, other, 0);
     }
 
-    static byte[] xor( byte[] self, byte[] other, int offset )
+    static byte[] xor(byte[] self, byte[] other, int offset)
     {
-        if ( self == null )
-            throw new IllegalArgumentException( "self" );
+        if (self == null)
+            throw new IllegalArgumentException("self");
 
-        if ( other == null )
-            throw new IllegalArgumentException( "other" );
+        if (other == null)
+            throw new IllegalArgumentException("other");
 
-        if ( self.length > other.length - offset )
-            throw new IllegalArgumentException( "self and other lengths do not match" );
+        if (self.length > other.length - offset)
+            throw new IllegalArgumentException("self and other lengths do not match");
 
         byte[] result = new byte[self.length];
 
-        for ( int i = 0; i < self.length; i++ )
+        for (int i = 0; i < self.length; i++)
         {
-            result[i] = (byte)( self[i] ^ other[offset + i] );
+            result[i] = (byte) (self[i] ^ other[offset + i]);
         }
 
         return result;
     }
 
-    public static void zero( byte[] self )
+    public static void zero(byte[] self)
     {
-        if ( self != null ) {
-            Arrays.fill(self, (byte)0);
+        if (self != null) {
+            Arrays.fill(self, (byte) 0);
         }
     }
     
@@ -75,20 +75,20 @@ public final class ByteExtensions {
      * @return
      *      True if the two byte arrays are equal.
      */
-    public static boolean sequenceEqualConstantTime( byte[] self, byte[] other )
+    public static boolean sequenceEqualConstantTime(byte[] self, byte[] other)
     {
-        if ( self == null )
-            throw new IllegalArgumentException( "self" );
+        if (self == null)
+            throw new IllegalArgumentException("self");
 
-        if ( other == null )
-            throw new IllegalArgumentException( "other" );
+        if (other == null)
+            throw new IllegalArgumentException("other");
 
         // Constant time comparison of two byte arrays
-        long difference = ( self.length & 0xffffffffl ) ^ ( other.length & 0xffffffffl );
+        long difference = (self.length & 0xffffffffl) ^ (other.length & 0xffffffffl);
 
-        for ( int i = 0; i < self.length && i < other.length; i++ )
+        for (int i = 0; i < self.length && i < other.length; i++)
         {
-            difference |= ( self[i] ^ other[i] ) & 0xffffffffl;
+            difference |= (self[i] ^ other[i]) & 0xffffffffl;
         }
 
         return difference == 0;

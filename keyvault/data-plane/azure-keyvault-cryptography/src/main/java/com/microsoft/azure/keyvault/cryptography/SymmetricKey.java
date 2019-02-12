@@ -31,7 +31,7 @@ import com.microsoft.azure.keyvault.cryptography.Strings;
  *
  */
 public class SymmetricKey implements IKey {
-    
+
     private static final SecureRandom Rng = new SecureRandom();
 
     public static final int KeySize128 = 128 >> 3;
@@ -39,13 +39,13 @@ public class SymmetricKey implements IKey {
     public static final int KeySize256 = 256 >> 3;
     public static final int KeySize384 = 384 >> 3;
     public static final int KeySize512 = 512 >> 3;
-    
+
     public static final int DefaultKeySize = KeySize256;
 
     private final String   _kid;
     private final byte[]   _key;
     private final Provider _provider;
-    
+
     /**
      * Creates a SymmetricKey with a random key identifier and
      * a random key with DefaultKeySize bits.
@@ -53,7 +53,7 @@ public class SymmetricKey implements IKey {
     public SymmetricKey() {
         this(UUID.randomUUID().toString());
     }
-    
+
     /**
      * Creates a SymmetricKey with the specified key identifier and
      * a random key with DefaultKeySize bits.
@@ -63,7 +63,7 @@ public class SymmetricKey implements IKey {
     public SymmetricKey(String kid) {
         this(kid, DefaultKeySize);
     }
-    
+
     /**
      * Creates a SymmetricKey with the specified key identifier and
      * a random key with the specified size.
@@ -72,10 +72,10 @@ public class SymmetricKey implements IKey {
      * @param keySizeInBytes
      *      The key size to use in bytes.
      */
-    public SymmetricKey(String kid, int keySizeInBytes ) {
+    public SymmetricKey(String kid, int keySizeInBytes) {
         this(kid, keySizeInBytes, null);
     }
-    
+
     /**
      * Creates a SymmetricKey with the specified key identifier and
      * a random key with the specified size that uses the specified provider.
@@ -87,19 +87,19 @@ public class SymmetricKey implements IKey {
      *      The provider to use (optional, null for default)
      */
     public SymmetricKey(String kid, int keySizeInBytes, Provider provider) {
-        
-        if ( Strings.isNullOrWhiteSpace(kid) ) {
+
+        if (Strings.isNullOrWhiteSpace(kid)) {
             throw new IllegalArgumentException("kid");
         }
-        
-        if ( keySizeInBytes != KeySize128 && keySizeInBytes != KeySize192 && keySizeInBytes != KeySize256 && keySizeInBytes != KeySize384 && keySizeInBytes != KeySize512 ) {
+
+        if (keySizeInBytes != KeySize128 && keySizeInBytes != KeySize192 && keySizeInBytes != KeySize256 && keySizeInBytes != KeySize384 && keySizeInBytes != KeySize512) {
             throw new IllegalArgumentException("The key material must be 128, 192, 256, 384 or 512 bits of data");
         }
-        
+
         _kid      = kid;
         _key      = new byte[keySizeInBytes];
         _provider = provider;
-        
+
         // Generate a random key
         Rng.nextBytes(_key);
     }
@@ -127,15 +127,15 @@ public class SymmetricKey implements IKey {
      */
     public SymmetricKey(String kid, byte[] keyBytes, Provider provider) {
 
-        if ( Strings.isNullOrWhiteSpace(kid) ) {
+        if (Strings.isNullOrWhiteSpace(kid)) {
             throw new IllegalArgumentException("kid");
         }
 
-        if ( keyBytes == null ) {
+        if (keyBytes == null) {
             throw new IllegalArgumentException("keyBytes");
         }
 
-        if ( keyBytes.length != KeySize128 && keyBytes.length != KeySize192 && keyBytes.length != KeySize256 && keyBytes.length != KeySize384 && keyBytes.length != KeySize512 ) {
+        if (keyBytes.length != KeySize128 && keyBytes.length != KeySize192 && keyBytes.length != KeySize256 && keyBytes.length != KeySize384 && keyBytes.length != KeySize512) {
             throw new IllegalArgumentException("The key material must be 128, 192, 256, 384 or 512 bits of data");
         }
 
@@ -221,17 +221,17 @@ public class SymmetricKey implements IKey {
 
         // Interpret the algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm)baseAlgorithm;
+
+        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform transform = null;
 
         try {
-            transform = algo.CreateDecryptor(_key, iv, authenticationData, authenticationTag, _provider );
+            transform = algo.CreateDecryptor(_key, iv, authenticationData, authenticationTag, _provider);
         } catch (Exception e) {
             return Futures.immediateFailedFuture(e);
         }
@@ -261,12 +261,12 @@ public class SymmetricKey implements IKey {
         // Interpret the algorithm
         String    algorithmName = (Strings.isNullOrWhiteSpace(algorithm)) ? getDefaultEncryptionAlgorithm() : algorithm;
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm)baseAlgorithm;
+
+        SymmetricEncryptionAlgorithm algo = (SymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform transform = null;
 
@@ -306,12 +306,12 @@ public class SymmetricKey implements IKey {
         // Interpret the algorithm
         String    algorithmName = (Strings.isNullOrWhiteSpace(algorithm)) ? getDefaultKeyWrapAlgorithm() : algorithm;
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof KeyWrapAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithmName);
         }
-        
-        KeyWrapAlgorithm algo = (KeyWrapAlgorithm)baseAlgorithm;
+
+        KeyWrapAlgorithm algo = (KeyWrapAlgorithm) baseAlgorithm;
 
         ICryptoTransform transform = null;
 
@@ -342,14 +342,14 @@ public class SymmetricKey implements IKey {
         if (encryptedKey == null || encryptedKey.length == 0) {
             throw new IllegalArgumentException("wrappedKey");
         }
-        
+
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof KeyWrapAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        KeyWrapAlgorithm algo = (KeyWrapAlgorithm)baseAlgorithm;
+
+        KeyWrapAlgorithm algo = (KeyWrapAlgorithm) baseAlgorithm;
 
         ICryptoTransform transform = null;
 

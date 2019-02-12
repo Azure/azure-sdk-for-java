@@ -38,7 +38,7 @@ public abstract class AesKw extends KeyWrapAlgorithm {
             // The default provider does not support the specification of IV. This
             // is guarded by the CreateEncrypter wrapper method and the iv parameter
             // can be ignored when using the default provider 
-            if (provider == null ) {
+            if (provider == null) {
                 _cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"));
             } else {
                 _cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
@@ -68,7 +68,7 @@ public abstract class AesKw extends KeyWrapAlgorithm {
             // The default provider does not support the specification of IV. This
             // is guarded by the CreateEncrypter wrapper method and the iv parameter
             // can be ignored when using the default provider 
-            if (provider == null ) {
+            if (provider == null) {
                 _cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"));
             } else {
                 _cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
@@ -116,9 +116,9 @@ public abstract class AesKw extends KeyWrapAlgorithm {
             throw new IllegalArgumentException("key length must be 128, 192 or 256 bits");
         }
 
-        if (iv != null ) {
+        if (iv != null) {
             // iv length must be 64 bits
-            if ( iv.length != 8) {
+            if (iv.length != 8) {
                 throw new IllegalArgumentException("iv length must be 64 bits");
             }
             // iv cannot be specified with the default provider
@@ -160,9 +160,9 @@ public abstract class AesKw extends KeyWrapAlgorithm {
         }
 
 
-        if (iv != null ) {
+        if (iv != null) {
             // iv length must be 64 bits
-            if ( iv.length != 8) {
+            if (iv.length != 8) {
                 throw new IllegalArgumentException("iv length must be 64 bits");
             }
             // iv cannot be specified with the default provider
