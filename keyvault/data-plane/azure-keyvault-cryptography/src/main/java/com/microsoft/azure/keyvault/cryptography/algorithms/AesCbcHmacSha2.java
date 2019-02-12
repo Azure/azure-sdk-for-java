@@ -85,12 +85,12 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
     static class AesCbcHmacSha2Encryptor implements IAuthenticatedCryptoTransform {
 
-        final byte[]           _aad_length;
-        final Mac              _hmac;
-        final byte[]           _hmac_key;
-        final ICryptoTransform _inner;
+        final byte[]           aad_length;
+        final Mac              hmac;
+        final byte[]           hmac_key;
+        final ICryptoTransform inner;
 
-        byte[] _tag;
+        byte[] tag;
 
         AesCbcHmacSha2Encryptor(String name, byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
             // Split the key to get the AES key, the HMAC key and the HMAC
@@ -98,22 +98,22 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             Triple<byte[], byte[], Mac> parameters = GetAlgorithmParameters(name, key);
 
             // Save the MAC provider and key
-            _hmac = parameters.getRight();
-            _hmac_key = parameters.getMiddle();
+            this.hmac = parameters.getRight();
+            this.hmac_key = parameters.getMiddle();
 
             // Create the AES encryptor
-            _inner = new AesCbc.AesCbcEncryptor(parameters.getLeft(), iv, provider);
+            this.inner = new AesCbc.AesCbcEncryptor(parameters.getLeft(), iv, provider);
 
-            _aad_length = toBigEndian(authenticationData.length * 8);
+            this.aad_length = toBigEndian(authenticationData.length * 8);
 
             // Prime the hash.
-            _hmac.update(authenticationData);
-            _hmac.update(iv);
+            hmac.update(authenticationData);
+            hmac.update(iv);
         }
 
         @Override
         public byte[] getTag() {
-            return _tag;
+            return tag;
         }
 
         // public int TransformBlock(byte[] inputBuffer, int inputOffset, int
@@ -134,17 +134,17 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         public byte[] doFinal(byte[] input) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException {
 
             // Encrypt the block
-            byte[] output = _inner.doFinal(input);
+            byte[] output = inner.doFinal(input);
 
             // Add the cipher text to the running hash
-            _hmac.update(output);
+            hmac.update(output);
 
             // Add the associated_data_length bytes to the hash
-            byte[] hash = _hmac.doFinal(_aad_length);
+            byte[] hash = hmac.doFinal(aad_length);
 
             // Compute the tag
-            _tag = new byte[_hmac_key.length];
-            System.arraycopy(hash, 0, _tag, 0, _tag.length);
+            tag = new byte[hmac_key.length];
+            System.arraycopy(hash, 0, tag, 0, tag.length);
 
             return output;
         }
