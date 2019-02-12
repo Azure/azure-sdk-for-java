@@ -40,7 +40,7 @@ public final class SignatureEncoding {
             throw new IllegalArgumentException("Invalid algorithm; must be an instance of ECDSA.");
         }
 
-        return SignatureEncoding.fromAsn1Der(asn1DerSignature, (Ecdsa)baseAlgorithm);
+        return SignatureEncoding.fromAsn1Der(asn1DerSignature, (Ecdsa) baseAlgorithm);
     }
 
     /**
@@ -55,10 +55,9 @@ public final class SignatureEncoding {
        {
            return Asn1DerSignatureEncoding.Decode(asn1DerSignature, algorithm);
        }
-       catch(IllegalArgumentException ex)
+       catch (IllegalArgumentException ex)
        {
-           throw (IllegalArgumentException)new IllegalArgumentException(ex.getMessage() + " "  + Hex.encodeHexString( asn1DerSignature )).initCause(ex);
-
+           throw (IllegalArgumentException) new IllegalArgumentException(ex.getMessage() + " "  + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
        }
     }
 
@@ -83,7 +82,7 @@ public final class SignatureEncoding {
             throw new IllegalArgumentException("Invalid algorithm; must be an instance of ECDSA.");
         }
 
-        return SignatureEncoding.toAsn1Der(signature, (Ecdsa)baseAlgorithm);
+        return SignatureEncoding.toAsn1Der(signature, (Ecdsa) baseAlgorithm);
     }
 
     /**
@@ -98,10 +97,9 @@ public final class SignatureEncoding {
        {
            return Asn1DerSignatureEncoding.Encode(signature, algorithm);
        }
-       catch(IllegalArgumentException ex)
+       catch (IllegalArgumentException ex)
        {
-            throw (IllegalArgumentException)new IllegalArgumentException(ex.getMessage() + " " + Hex.encodeHexString( signature )).initCause(ex);
-
+            throw (IllegalArgumentException) new IllegalArgumentException(ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
        }
     }
 }
@@ -212,7 +210,7 @@ final class Asn1DerSignatureEncoding {
     private static void writeFieldLength(ByteArrayOutputStream field, int len)
     {
         // if the length of vi is less then 0x80 we can fit the length in one byte
-        if(len < 0x80)
+        if (len < 0x80)
         {
             field.write(len);
         }
@@ -225,7 +223,7 @@ final class Asn1DerSignatureEncoding {
             int lenlen = blen.length;
 
             // the byte array might have a leading zero byte if so we need to discard this
-            if ( blen[0] == 0 )
+            if (blen[0] == 0)
             {
                 lenlen--;
             }
