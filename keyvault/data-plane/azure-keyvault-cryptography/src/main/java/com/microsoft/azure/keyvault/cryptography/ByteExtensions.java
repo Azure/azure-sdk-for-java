@@ -12,14 +12,17 @@ public final class ByteExtensions {
     }
 
     public static byte[] or(byte[] self, byte[] other, int offset) {
-        if (self == null)
+        if (self == null) {
             throw new IllegalArgumentException("self");
+        }
 
-        if (other == null)
+        if (other == null) {
             throw new IllegalArgumentException("other");
+        }
 
-        if (self.length > other.length - offset)
+        if (self.length > other.length - offset) {
             throw new IllegalArgumentException("self and other lengths do not match");
+        }
 
         byte[] result = new byte[self.length];
 
@@ -35,14 +38,17 @@ public final class ByteExtensions {
     }
 
     static byte[] xor(byte[] self, byte[] other, int offset) {
-        if (self == null)
+        if (self == null) {
             throw new IllegalArgumentException("self");
+        }
 
-        if (other == null)
+        if (other == null) {
             throw new IllegalArgumentException("other");
+        }
 
-        if (self.length > other.length - offset)
+        if (self.length > other.length - offset) {
             throw new IllegalArgumentException("self and other lengths do not match");
+        }
 
         byte[] result = new byte[self.length];
 
