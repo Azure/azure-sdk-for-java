@@ -199,7 +199,9 @@ public abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
         // Construct PS
         byte[] PS = new byte[emLen - T.length - 3];
 
-        for (int i = 0; i < PS.length; i++) PS[i] = (byte) 0xff;
+        for (int i = 0; i < PS.length; i++) {
+            PS[i] = (byte) 0xff;
+        }
 
         // Construct EM
         byte[] EM = new byte[PS.length + T.length + 3];
