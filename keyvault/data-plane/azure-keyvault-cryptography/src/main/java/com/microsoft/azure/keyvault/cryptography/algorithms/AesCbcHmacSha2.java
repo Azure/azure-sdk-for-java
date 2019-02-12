@@ -26,12 +26,12 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
     static class AesCbcHmacSha2Decryptor implements IAuthenticatedCryptoTransform {
 
-        final byte[]           _aad_length;
-        final Mac              _hmac;
-        final byte[]           _hmac_key;
-        final ICryptoTransform _inner;
+        final byte[]           aadLength;
+        final Mac              hmac;
+        final byte[]           hmacKey;
+        final ICryptoTransform inner;
 
-        byte[] _tag;
+        byte[] tag;
 
         AesCbcHmacSha2Decryptor(String name, byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
@@ -40,54 +40,54 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             Triple<byte[], byte[], Mac> parameters = GetAlgorithmParameters(name, key);
 
             // Save the MAC provider and key
-            _hmac     = parameters.getRight();
-            _hmac_key = parameters.getMiddle();
+            hmac = parameters.getRight();
+            hmacKey = parameters.getMiddle();
 
             // Create the AES provider
-            _inner    = new AesCbc.AesCbcDecryptor(parameters.getLeft(), iv, provider);
+            inner = new AesCbc.AesCbcDecryptor(parameters.getLeft(), iv, provider);
 
-            _aad_length = toBigEndian(authenticationData.length * 8);
-            
+            aadLength = toBigEndian(authenticationData.length * 8);
+
             // Save the tag
-            _tag        = authenticationTag;
+            tag = authenticationTag;
 
             // Prime the hash.
-            _hmac.update(authenticationData);
-            _hmac.update(iv);
+            hmac.update(authenticationData);
+            hmac.update(iv);
         }
 
         @Override
         public byte[] getTag() {
-            return _tag;
+            return tag;
         }
 
         @Override
         public byte[] doFinal(byte[] input) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException {
 
             // Add the cipher text to the running hash
-            _hmac.update(input);
+            hmac.update(input);
 
             // Add the associated_data_length bytes to the hash
-            byte[] hash = _hmac.doFinal(_aad_length);
+            byte[] hash = hmac.doFinal(aadLength);
 
             // Compute the new tag
-            byte[] tag = new byte[_hmac_key.length];
-            System.arraycopy(hash, 0, tag, 0, _hmac_key.length);
+            byte[] tag = new byte[hmacKey.length];
+            System.arraycopy(hash, 0, tag, 0, hmacKey.length);
             
             // Check the tag before performing the final decrypt
-            if (!ByteExtensions.sequenceEqualConstantTime(_tag, tag)) {
+            if (!ByteExtensions.sequenceEqualConstantTime(tag, tag)) {
                 throw new IllegalArgumentException("Data is not authentic");
             }
 
-            return _inner.doFinal(input);
+            return inner.doFinal(input);
         }
     }
 
     static class AesCbcHmacSha2Encryptor implements IAuthenticatedCryptoTransform {
 
-        final byte[]           aad_length;
+        final byte[]           aadLength;
         final Mac              hmac;
-        final byte[]           hmac_key;
+        final byte[]           hmacKey;
         final ICryptoTransform inner;
 
         byte[] tag;
@@ -99,12 +99,12 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
             // Save the MAC provider and key
             this.hmac = parameters.getRight();
-            this.hmac_key = parameters.getMiddle();
+            this.hmacKey = parameters.getMiddle();
 
             // Create the AES encryptor
             this.inner = new AesCbc.AesCbcEncryptor(parameters.getLeft(), iv, provider);
 
-            this.aad_length = toBigEndian(authenticationData.length * 8);
+            this.aadLength = toBigEndian(authenticationData.length * 8);
 
             // Prime the hash.
             hmac.update(authenticationData);
@@ -140,10 +140,10 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             hmac.update(output);
 
             // Add the associated_data_length bytes to the hash
-            byte[] hash = hmac.doFinal(aad_length);
+            byte[] hash = hmac.doFinal(aadLength);
 
             // Compute the tag
-            tag = new byte[hmac_key.length];
+            tag = new byte[hmacKey.length];
             System.arraycopy(hash, 0, tag, 0, tag.length);
 
             return output;
@@ -207,8 +207,8 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
     private static Triple<byte[], byte[], Mac> GetAlgorithmParameters(String algorithm, byte[] key) throws InvalidKeyException, NoSuchAlgorithmException {
 
-        byte[] aes_key;
-        byte[] hmac_key;
+        byte[] aesKey;
+        byte[] hmacKey;
         Mac hmac;
 
         if (algorithm.equalsIgnoreCase(Aes128CbcHmacSha256.ALGORITHM_NAME)) {
@@ -216,15 +216,15 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
                 throw new IllegalArgumentException(String.format("%s key length in bits %d < 256", algorithm, key.length << 3));
             }
 
-            hmac_key = new byte[128 >> 3];
-            aes_key = new byte[128 >> 3];
+            hmacKey = new byte[128 >> 3];
+            aesKey = new byte[128 >> 3];
 
             // The HMAC key precedes the AES key
-            System.arraycopy(key, 0, hmac_key, 0, 128 >> 3);
-            System.arraycopy(key, 128 >> 3, aes_key, 0, 128 >> 3);
+            System.arraycopy(key, 0, hmacKey, 0, 128 >> 3);
+            System.arraycopy(key, 128 >> 3, aesKey, 0, 128 >> 3);
 
             hmac = Mac.getInstance("HmacSHA256");
-            hmac.init(new SecretKeySpec(hmac_key, "HmacSHA256"));
+            hmac.init(new SecretKeySpec(hmacKey, "HmacSHA256"));
 
         } else if (algorithm.equalsIgnoreCase(Aes192CbcHmacSha384.ALGORITHM_NAME)) {
 
@@ -232,35 +232,35 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
                 throw new IllegalArgumentException(String.format("%s key length in bits %d < 384", algorithm, key.length << 3));
             }
 
-            hmac_key = new byte[192 >> 3];
-            aes_key = new byte[192 >> 3];
+            hmacKey = new byte[192 >> 3];
+            aesKey = new byte[192 >> 3];
 
             // The HMAC key precedes the AES key
-            System.arraycopy(key, 0, hmac_key, 0, 192 >> 3);
-            System.arraycopy(key, 192 >> 3, aes_key, 0, 192 >> 3);
+            System.arraycopy(key, 0, hmacKey, 0, 192 >> 3);
+            System.arraycopy(key, 192 >> 3, aesKey, 0, 192 >> 3);
 
             hmac = Mac.getInstance("HmacSHA384");
-            hmac.init(new SecretKeySpec(hmac_key, "HmacSHA384"));
+            hmac.init(new SecretKeySpec(hmacKey, "HmacSHA384"));
         } else if (algorithm.equalsIgnoreCase(Aes256CbcHmacSha512.ALGORITHM_NAME)) {
 
             if ((key.length << 3) < 512) {
                 throw new IllegalArgumentException(String.format("%s key length in bits %d < 512", algorithm, key.length << 3));
             }
 
-            hmac_key = new byte[256 >> 3];
-            aes_key = new byte[256 >> 3];
+            hmacKey = new byte[256 >> 3];
+            aesKey = new byte[256 >> 3];
 
             // The HMAC key precedes the AES key
-            System.arraycopy(key, 0, hmac_key, 0, 256 >> 3);
-            System.arraycopy(key, 256 >> 3, aes_key, 0, 256 >> 3);
+            System.arraycopy(key, 0, hmacKey, 0, 256 >> 3);
+            System.arraycopy(key, 256 >> 3, aesKey, 0, 256 >> 3);
 
             hmac = Mac.getInstance("HmacSHA512");
-            hmac.init(new SecretKeySpec(hmac_key, "HmacSHA512"));
+            hmac.init(new SecretKeySpec(hmacKey, "HmacSHA512"));
         } else {
             throw new IllegalArgumentException(String.format("Unsupported algorithm: %s", algorithm));
         }
 
-        return Triple.of(aes_key, hmac_key, hmac);
+        return Triple.of(aesKey, hmacKey, hmac);
     }
 
     static byte[] toBigEndian(long i) {
