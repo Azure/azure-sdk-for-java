@@ -266,7 +266,6 @@
          <plugin>
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
-            <version>${spotbugs.version}</version>
             <dependencies>
                <dependency>
                   <groupId>com.azure</groupId>
@@ -311,7 +310,6 @@
                <transformationSets>
                   <transformationSet>
                      <dir>${project.build.directory}/spotbugs</dir>
-                     <includes><include>*.xml</include></includes>
                      <outputDir>${project.build.directory}/spotbugs</outputDir>
                      <stylesheet>fancy-hist.xsl</stylesheet>
                      <!--<stylesheet>default.xsl</stylesheet>-->
@@ -341,7 +339,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
             <configuration>
-               <source>8</source>
                <doctitle>Azure SDK for Java Reference Documentation</doctitle>
                <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
                <failOnError>true</failOnError>
@@ -548,6 +545,9 @@
          <id>java8</id>
          <activation>
             <activeByDefault>true</activeByDefault>
+            <property>
+               <name>!java-lts</name>
+            </property>
          </activation>
          <build>
             <plugins>
@@ -569,6 +569,11 @@
 
       <profile>
          <id>java-lts</id>
+         <activation>
+            <property>
+               <name>java-lts</name>
+            </property>
+         </activation>
          <build>
             <plugins>
                <plugin>
@@ -609,48 +614,6 @@
          </build>
       </profile>
 
-      <profile>
-         <id>run-shade-plugin</id>
-         <activation>
-            <property><name>runShadePlugin</name></property>
-         </activation>
-         <build>
-            <plugins>
-               <!-- This plug in is used to package the artifact in an uber jar. -->
-               <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-shade-plugin</artifactId>
-                  <version>${maven-shade-plugin.version}</version>
-                  <configuration>
-                  </configuration>
-                  <executions>
-                     <execution>
-                        <id>shade-plugin</id>
-                        <phase>package</phase>
-                        <goals>
-                           <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                           <filters>
-                              <filter>
-                                 <artifact>*:*</artifact>
-                                 <excludes>
-                                    <exclude>META-INF/*.SF</exclude>
-                                    <exclude>META-INF/*.DSA</exclude>
-                                    <exclude>META-INF/*.RSA</exclude>
-                                 </excludes>
-                              </filter>
-                           </filters>
-                           <transformers>
-                              <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                           </transformers>
-                        </configuration>
-                     </execution>
-                  </executions>
-               </plugin>
-            </plugins>
-         </build>
-      </profile>
       <profile>
          <id>spotbugs-reporting</id>
          <modules>
