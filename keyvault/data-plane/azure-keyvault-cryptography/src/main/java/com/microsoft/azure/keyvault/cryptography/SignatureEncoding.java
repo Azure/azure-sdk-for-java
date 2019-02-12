@@ -13,7 +13,7 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa;
 import org.apache.commons.codec.binary.Hex;
 
 public final class SignatureEncoding {
-    // SignatureEncoding is intended to be a static class 
+    // SignatureEncoding is intended to be a static class
     private SignatureEncoding() { }
 
     /**
@@ -26,14 +26,12 @@ public final class SignatureEncoding {
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
 
         // verify the given algoritm could be resolved
-        if (baseAlgorithm == null)
-        {
+        if (baseAlgorithm == null) {
             throw new NoSuchAlgorithmException(algorithm);
         }
 
         // verify the given algoritm is an Ecdsa signature algorithm
-        if (!(baseAlgorithm instanceof Ecdsa))
-        {
+        if (!(baseAlgorithm instanceof Ecdsa)) {
             throw new IllegalArgumentException("Invalid algorithm; must be an instance of ECDSA.");
         }
 
@@ -48,14 +46,12 @@ public final class SignatureEncoding {
      */
     public static byte[] fromAsn1Der(byte[] asn1DerSignature, Ecdsa algorithm) {
 
-       try
-       {
-           return Asn1DerSignatureEncoding.Decode(asn1DerSignature, algorithm);
-       }
-       catch (IllegalArgumentException ex)
-       {
-           throw (IllegalArgumentException) new IllegalArgumentException(ex.getMessage() + " "  + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
-       }
+        try {
+            return Asn1DerSignatureEncoding.Decode(asn1DerSignature, algorithm);
+        } catch (IllegalArgumentException ex) {
+            throw (IllegalArgumentException) new IllegalArgumentException(
+                    ex.getMessage() + " " + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
+        }
     }
 
     /**
@@ -68,14 +64,12 @@ public final class SignatureEncoding {
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
 
         // verify the given algoritm could be resolved
-        if (baseAlgorithm == null)
-        {
+        if (baseAlgorithm == null) {
             throw new NoSuchAlgorithmException(algorithm);
         }
 
         // verify the given algoritm is an Ecdsa signature algorithm
-        if (!(baseAlgorithm instanceof Ecdsa))
-        {
+        if (!(baseAlgorithm instanceof Ecdsa)) {
             throw new IllegalArgumentException("Invalid algorithm; must be an instance of ECDSA.");
         }
 
@@ -89,15 +83,12 @@ public final class SignatureEncoding {
     * @return The ASN.1 DER encoded signature of the given signature.
     */
     public static byte[] toAsn1Der(byte[] signature, Ecdsa algorithm) {
-       
-       try
-       {
-           return Asn1DerSignatureEncoding.Encode(signature, algorithm);
-       }
-       catch (IllegalArgumentException ex)
-       {
-            throw (IllegalArgumentException) new IllegalArgumentException(ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
-       }
+        try {
+            return Asn1DerSignatureEncoding.Encode(signature, algorithm);
+        } catch (IllegalArgumentException ex) {
+            throw (IllegalArgumentException) new IllegalArgumentException(
+                    ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
+        }
     }
 }
 
@@ -119,13 +110,11 @@ final class Asn1DerSignatureEncoding {
 
     }
 
-    public static byte[] Encode(byte[] signature, Ecdsa algorithm) 
-    {
+    public static byte[] Encode(byte[] signature, Ecdsa algorithm) {
         int coordLength = algorithm.getCoordLength();
-        
+
         // verify that the signature is the correct length for the given algorithm
-        if (signature.length != (coordLength * 2))
-        {
+        if (signature.length != (coordLength * 2)) {
             throw new IllegalArgumentException("Invalid signature.");
         }
 
@@ -144,7 +133,7 @@ final class Asn1DerSignatureEncoding {
 
         asn1DerSignature.write(0x30);
 
-        // add the length of the fields 
+        // add the length of the fields
         writeFieldLength(asn1DerSignature, rfield.length + sfield.length);
 
         // write the fields
@@ -155,23 +144,21 @@ final class Asn1DerSignatureEncoding {
         return asn1DerSignature.toByteArray();
     }
 
-    public static byte[] Decode(byte[] bytes, Ecdsa algorithm)
-    {
+    public static byte[] Decode(byte[] bytes, Ecdsa algorithm) {
         int coordLength = algorithm.getCoordLength();
 
         ByteArrayInputStream asn1DerSignature = new ByteArrayInputStream(bytes);
-        
+
         // verify byte 0 is 0x30
-        if (asn1DerSignature.read() != 0x30)
-        {
+        if (asn1DerSignature.read() != 0x30) {
             throw new IllegalArgumentException("Invalid signature.");
         }
 
         int objLen = readFieldLength(asn1DerSignature);
-        
-        // verify the object lenth is equal to the remaining length of the _asn1DerSignature
-        if (objLen != asn1DerSignature.available())
-        {
+
+        // verify the object lenth is equal to the remaining length of the
+        // _asn1DerSignature
+        if (objLen != asn1DerSignature.available()) {
             throw new IllegalArgumentException(String.format("Invalid signature; invalid field len %d", objLen));
         }
 
@@ -186,8 +173,7 @@ final class Asn1DerSignatureEncoding {
         return rawSignature;
     }
 
-    private static byte[] encodeIntField(BigInteger i)
-    {
+    private static byte[] encodeIntField(BigInteger i) {
         ByteArrayOutputStream field = new ByteArrayOutputStream();
 
         field.write(0x02);
@@ -204,24 +190,18 @@ final class Asn1DerSignatureEncoding {
         return field.toByteArray();
     }
 
-    private static void writeFieldLength(ByteArrayOutputStream field, int len)
-    {
+    private static void writeFieldLength(ByteArrayOutputStream field, int len) {
         // if the length of vi is less then 0x80 we can fit the length in one byte
-        if (len < 0x80)
-        {
+        if (len < 0x80) {
             field.write(len);
-        }
-        // otherwise 
-        else
-        {
+        } else {
             // get the len as a byte array
             byte[] blen = BigInteger.valueOf(len).toByteArray();
 
             int lenlen = blen.length;
 
             // the byte array might have a leading zero byte if so we need to discard this
-            if (blen[0] == 0)
-            {
+            if (blen[0] == 0) {
                 lenlen--;
             }
 
@@ -233,11 +213,9 @@ final class Asn1DerSignatureEncoding {
         }
     }
 
-    private static void decodeIntField(ByteArrayInputStream bytes, byte[] dest, int index, int intlen)
-    {
+    private static void decodeIntField(ByteArrayInputStream bytes, byte[] dest, int index, int intlen) {
         // verify the first byte of field is 0x02
-        if (bytes.read() != 0x02)
-        {
+        if (bytes.read() != 0x02) {
             throw new IllegalArgumentException("Invalid signature.");
         }
 
@@ -248,14 +226,12 @@ final class Asn1DerSignatureEncoding {
         // the asn1der encoded value so len can have a max value of intlen + 1
 
         // validate that that len is within the max range and doesn't run past the end of bytes
-        if (len > intlen + 1 || len > bytes.available())
-        {
+        if (len > intlen + 1 || len > bytes.available()) {
             throw new IllegalArgumentException("Invalid signature.");
         }
 
         // if len is greater than intlen increment _bytesRead and decrement len
-        if (len > intlen)
-        {
+        if (len > intlen) {
             bytes.skip(1);
             len--;
         }
@@ -263,13 +239,11 @@ final class Asn1DerSignatureEncoding {
         bytes.read(dest, index + (intlen - len), len);
     }
 
-    private static int readFieldLength(ByteArrayInputStream bytes)
-    {
+    private static int readFieldLength(ByteArrayInputStream bytes) {
         int firstLenByte = bytes.read();
 
         // if the high order bit of len is not set it is a single byte length so return
-        if ((firstLenByte & 0x80) == 0x00)
-        {
+        if ((firstLenByte & 0x80) == 0x00) {
             return firstLenByte;
         }
 
@@ -277,8 +251,7 @@ final class Asn1DerSignatureEncoding {
         int numLenBytes = firstLenByte ^ 0x80;
 
         // if the number of len bytes is greater than the remaining signature the signature is invalid
-        if (numLenBytes > bytes.available())
-        {
+        if (numLenBytes > bytes.available()) {
             throw new IllegalArgumentException("Invalid signature.");
         }
 
@@ -289,14 +262,13 @@ final class Asn1DerSignatureEncoding {
         BigInteger bigLen = new BigInteger(1, lenBytes);
 
         // for DSA signatures no feilds should be longer than can be expressed in an integer
-        // this means that the bitLength must be 31 or less to account for the leading zero of 
+        // this means that the bitLength must be 31 or less to account for the leading zero of
         // a positive integer
-        if (bigLen.bitLength() >= 31)
-        {
+        if (bigLen.bitLength() >= 31) {
             throw new IllegalArgumentException("Invalid signature.");
         }
 
         return bigLen.intValue();
     }
 }
-    
+

@@ -354,7 +354,7 @@ public class EcKey implements IKey {
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
 
-       if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricSignatureAlgorithm)) {
+        if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricSignatureAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
        

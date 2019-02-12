@@ -991,13 +991,9 @@ public class JsonWebKey {
 
         if (JsonWebKeyType.OCT.equals(kty)) {
             return k != null;
-        }
-
-        else if (JsonWebKeyType.RSA.equals(kty) || JsonWebKeyType.RSA_HSM.equals(kty)) {
+        } else if (JsonWebKeyType.RSA.equals(kty) || JsonWebKeyType.RSA_HSM.equals(kty)) {
             return (d != null && dp != null && dq != null && qi != null && p != null && q != null);
-        }
-
-        else if (JsonWebKeyType.EC.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
+        } else if (JsonWebKeyType.EC.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
             return (d != null);
         }
 
@@ -1026,21 +1022,13 @@ public class JsonWebKey {
 
         if (JsonWebKeyType.OCT.equals(kty)) {
             return isValidOctet();
-        }
-
-        else if (JsonWebKeyType.RSA.equals(kty)) {
+        } else if (JsonWebKeyType.RSA.equals(kty)) {
             return isValidRsa();
-        }
-
-        else if (JsonWebKeyType.RSA_HSM.equals(kty)) {
+        } else if (JsonWebKeyType.RSA_HSM.equals(kty)) {
             return isValidRsaHsm();
-        }
-
-        else if (JsonWebKeyType.EC.equals(kty)) {
+        } else if (JsonWebKeyType.EC.equals(kty)) {
             return isValidEc();
-        }
-
-        else if (JsonWebKeyType.EC_HSM.equals(kty)) {
+        } else if (JsonWebKeyType.EC_HSM.equals(kty)) {
             return isValidEcHsm();
         }
 
@@ -1161,19 +1149,13 @@ public class JsonWebKey {
 
         if (JsonWebKeyType.OCT.equals(kty)) {
             hashCode += hashCode(k);
-        }
-
-        else if (JsonWebKeyType.RSA.equals(kty)) {
+        } else if (JsonWebKeyType.RSA.equals(kty)) {
             hashCode += hashCode(n);
-        }
-
-        else if (JsonWebKeyType.EC.equals(kty)) {
+        } else if (JsonWebKeyType.EC.equals(kty)) {
             hashCode += hashCode(x);
             hashCode += hashCode(y);
             hashCode += crv.hashCode();
-        }
-
-        else if (JsonWebKeyType.RSA_HSM.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
+        } else if (JsonWebKeyType.RSA_HSM.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
             hashCode += hashCode(t);
         }
 

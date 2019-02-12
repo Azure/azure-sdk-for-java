@@ -131,8 +131,7 @@ public final class ImportCertificateRequest {
             certificateAttributes = (CertificateAttributes) new CertificateAttributes()
                     .withNotBefore(builder.attributes.notBefore()).withEnabled(builder.attributes.enabled())
                     .withExpires(builder.attributes.expires());
-        }
-        else {
+        } else {
             certificateAttributes = null;
         }
 
