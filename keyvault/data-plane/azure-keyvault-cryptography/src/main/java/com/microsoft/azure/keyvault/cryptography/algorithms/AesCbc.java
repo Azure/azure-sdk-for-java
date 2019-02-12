@@ -25,45 +25,45 @@ public abstract class AesCbc extends SymmetricEncryptionAlgorithm {
     final int keySize;
     static class AesCbcDecryptor implements ICryptoTransform {
 
-        private final Cipher _cipher;
+        private final Cipher cipher;
 
         AesCbcDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             // Create the cipher using the Provider if specified
             if (provider == null) {
-                _cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+                cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             } else {
-                _cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", provider);
+                cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", provider);
             }
 
-            _cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+            cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
         }
 
         @Override
         public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
-            return _cipher.doFinal(plaintext);
+            return cipher.doFinal(plaintext);
         }
     }
 
     static class AesCbcEncryptor implements ICryptoTransform {
 
-        private final Cipher _cipher;
+        private final Cipher cipher;
 
         AesCbcEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             // Create the cipher using the Provider if specified
             if (provider == null) {
-                _cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+                cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             } else {
-                _cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", provider);
+                cipher = Cipher.getInstance("AES/CBC/PKCS5Padding", provider);
             }
 
-            _cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+            cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
         }
 
         @Override
         public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
-            return _cipher.doFinal(plaintext);
+            return cipher.doFinal(plaintext);
         }
     }
 
