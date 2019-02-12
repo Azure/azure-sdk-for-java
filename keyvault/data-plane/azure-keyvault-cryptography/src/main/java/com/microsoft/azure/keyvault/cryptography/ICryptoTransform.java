@@ -25,5 +25,5 @@ public interface ICryptoTransform {
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
      */
-    public byte[] doFinal(byte[] input) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException;
+    byte[] doFinal(byte[] input) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException;
 }

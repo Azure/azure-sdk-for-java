@@ -36,7 +36,7 @@ public abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
         private final Provider _provider;
         private final Ecdsa _algorithm;
 
-        public EcdsaSignatureTransform(KeyPair keyPair, Provider provider, Ecdsa algorithm) {
+        EcdsaSignatureTransform(KeyPair keyPair, Provider provider, Ecdsa algorithm) {
             _keyPair = keyPair;
             _provider = provider;
             _algorithm = algorithm;
