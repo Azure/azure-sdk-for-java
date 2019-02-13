@@ -16,7 +16,7 @@ import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 public final class AesKw192 extends AesKw {
 
     public static final String ALGORITHM_NAME = "A192KW";
-    
+
     static final int KEY_SIZE_IN_BYTES = 192 >> 3;
 
     public AesKw192() {

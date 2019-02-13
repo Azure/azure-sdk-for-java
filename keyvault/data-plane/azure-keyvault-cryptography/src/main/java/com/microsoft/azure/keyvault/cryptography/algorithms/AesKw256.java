@@ -16,7 +16,7 @@ import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 public final class AesKw256 extends AesKw {
 
     public static final String ALGORITHM_NAME = "A256KW";
-    
+
     static final int KEY_SIZE_IN_BYTES = 256 >> 3;
 
     public AesKw256() {
