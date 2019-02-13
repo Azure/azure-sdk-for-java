@@ -20,8 +20,8 @@ import com.microsoft.azure.keyvault.cryptography.KeyWrapAlgorithm;
 
 public abstract class AesKw extends KeyWrapAlgorithm {
 
-    static final byte[] _defaultIv  = new byte[] { (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6 };
-    static final String _cipherName = "AESWrap";
+    static final byte[] DEFAULT_IV = new byte[] { (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6 };
+    static final String CIPHER_NAME = "AESWrap";
 
     class AesKwDecryptor implements ICryptoTransform {
 
@@ -30,9 +30,9 @@ public abstract class AesKw extends KeyWrapAlgorithm {
         AesKwDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             if (provider == null) {
-                cipher = Cipher.getInstance(_cipherName);
+                cipher = Cipher.getInstance(CIPHER_NAME);
             } else {
-                cipher = Cipher.getInstance(_cipherName, provider);
+                cipher = Cipher.getInstance(CIPHER_NAME, provider);
             }
 
             // The default provider does not support the specification of IV. This
@@ -60,9 +60,9 @@ public abstract class AesKw extends KeyWrapAlgorithm {
         AesKwEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             if (provider == null) {
-                cipher = Cipher.getInstance(_cipherName);
+                cipher = Cipher.getInstance(CIPHER_NAME);
             } else {
-                cipher = Cipher.getInstance(_cipherName, provider);
+                cipher = Cipher.getInstance(CIPHER_NAME, provider);
             }
 
             // The default provider does not support the specification of IV. This
@@ -127,7 +127,7 @@ public abstract class AesKw extends KeyWrapAlgorithm {
             }
         }
 
-        return new AesKwEncryptor(key, iv == null ? _defaultIv : iv, provider);
+        return new AesKwEncryptor(key, iv == null ? DEFAULT_IV : iv, provider);
 
     }
 
@@ -171,7 +171,7 @@ public abstract class AesKw extends KeyWrapAlgorithm {
             }
         }
 
-        return new AesKwDecryptor(key, iv == null ? _defaultIv : iv, provider);
+        return new AesKwDecryptor(key, iv == null ? DEFAULT_IV : iv, provider);
     }
 
 }
