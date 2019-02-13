@@ -37,7 +37,7 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
 
             // Split the key to get the AES key, the HMAC key and the HMAC
             // object
-            Triple<byte[], byte[], Mac> parameters = GetAlgorithmParameters(name, key);
+            Triple<byte[], byte[], Mac> parameters = getAlgorithmParameters(name, key);
 
             // Save the MAC provider and key
             hmac = parameters.getRight();
@@ -95,7 +95,7 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         AesCbcHmacSha2Encryptor(String name, byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
             // Split the key to get the AES key, the HMAC key and the HMAC
             // object
-            Triple<byte[], byte[], Mac> parameters = GetAlgorithmParameters(name, key);
+            Triple<byte[], byte[], Mac> parameters = getAlgorithmParameters(name, key);
 
             // Save the MAC provider and key
             this.hmac = parameters.getRight();
@@ -205,7 +205,7 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         return new AesCbcHmacSha2Encryptor(getName(), key, iv, authenticationData, provider);
     }
 
-    private static Triple<byte[], byte[], Mac> GetAlgorithmParameters(String algorithm, byte[] key) throws InvalidKeyException, NoSuchAlgorithmException {
+    private static Triple<byte[], byte[], Mac> getAlgorithmParameters(String algorithm, byte[] key) throws InvalidKeyException, NoSuchAlgorithmException {
 
         byte[] aesKey;
         byte[] hmacKey;
