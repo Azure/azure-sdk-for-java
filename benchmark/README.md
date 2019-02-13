@@ -11,7 +11,7 @@ mvn clean package -DskipTests
 
 and then the package will be generated. 
 
-##Run the Write workload
+##Run the WriteLatency workload
 
 ```bash
 java -jar azure-cosmosdb-benchmark-2.4.1-SNAPSHOT-jar-with-dependencies.jar -serviceEndpoint $endpoint -masterKey $masterkey -databaseId $dbname -collection $colname -consistencyLevel Eventual -concurrency 10 -numberOfOperations 1000000 -operation WriteLatency -connectionMode Direct"
