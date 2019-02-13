@@ -60,6 +60,65 @@ jobs:
       condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
       displayName: 'Component Detection'
 
+    - task: Maven@3
+      displayName: 'Generate project site'
+      inputs:
+        mavenPomFile: $(pomFile)
+        options: '--batch-mode'
+        mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'site'
+
+    - task: Maven@3
+      displayName: 'Install packages to local cache and generate SpotBugs report'
+      inputs:
+        mavenPomFile: $(pomFile)
+        options: '--batch-mode -Pspotbugs-reporting -DskipTests -Dgpg.skip'
+        mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'install'
+
+    - task: Maven@3
+      displayName: 'Generate Checkstyle report'
+      inputs:
+        mavenPomFile: $(pomFile)
+        options: '--batch-mode'
+        mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'checkstyle:checkstyle-aggregate'
+
+    - task: Maven@3
+      displayName: 'Aggregate Javadocs'
+      inputs:
+        mavenPomFile: $(pomFile)
+        options: '--batch-mode'
+        mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'javadoc:aggregate'
+
+    - powershell: |
+       copy -r target/site $(Build.ArtifactStagingDirectory)
+       copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
+       copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "site")
+      displayName: 'Copy reports to artifact staging'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish'
+      inputs:
+        artifactName: reports
+
 - job: 'Test'
 
   dependsOn:
