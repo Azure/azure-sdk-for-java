@@ -45,17 +45,19 @@ jobs:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish'
 
-- job: 'Audit'
+- job: 'Analyze'
 
   dependsOn:
   - 'Build'
 
   pool:
-    vmImage: 'vs2017-win2016'
+    vmImage: 'ubuntu-16.04'
 
   steps:
     - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-      condition: and(always(), ne(variables['System.TeamProject'], 'public'))
+      # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
+      # builds should be sufficient.
+      condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
       displayName: 'Component Detection'
 
 - job: 'Test'
