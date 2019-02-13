@@ -4,15 +4,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-keyvault-parent</artifactId>
-    <version>1.1.2</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
+    <parent>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-keyvault-parent</artifactId>
+        <version>1.2.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
 
-	<artifactId>azure-keyvault-cryptography</artifactId>
-  <version>1.1.2</version>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-keyvault-cryptography</artifactId>
+    <version>1.2.0</version>
 	<packaging>jar</packaging>
 
 	<name>Microsoft Azure SDK for Key Vault Cryptography</name>
@@ -37,7 +38,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<legal>
             <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-		<checkstyle.skip>true</checkstyle.skip>
 	</properties>
 
 
@@ -84,6 +84,23 @@
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcprov-jdk15on</artifactId>
         <scope>test</scope>
-      </dependency>  
+      </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>${basedir}/target/test-classes</outputDirectory>
+                    <resources>
+                        <resource>
+                            <directory>${basedir}/src/test/resources</directory>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

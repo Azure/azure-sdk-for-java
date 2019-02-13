@@ -11,7 +11,7 @@ package com.microsoft.azure.management.eventgrid.v2018_01_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Topic regenerate share access key key request.
+ * Topic regenerate share access key request.
  */
 public class TopicRegenerateKeyRequest {
     /**
@@ -21,7 +21,7 @@ public class TopicRegenerateKeyRequest {
     private String keyName;
 
     /**
-     * Get the keyName value.
+     * Get key name to regenerate key1 or key2.
      *
      * @return the keyName value
      */
@@ -30,7 +30,7 @@ public class TopicRegenerateKeyRequest {
     }
 
     /**
-     * Set the keyName value.
+     * Set key name to regenerate key1 or key2.
      *
      * @param keyName the keyName value to set
      * @return the TopicRegenerateKeyRequest object itself.

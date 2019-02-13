@@ -12,6 +12,7 @@ import com.microsoft.azure.arm.resources.models.implementation.GroupableResource
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Cluster;
 import rx.Observable;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterCreateParametersExtended;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterIdentity;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterGetProperties;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.ClusterCreateProperties;
 import rx.functions.Func1;
@@ -74,8 +75,19 @@ class ClusterImpl extends GroupableResourceCoreImpl<Cluster, ClusterInner, Clust
     }
 
     @Override
+    public ClusterIdentity identity() {
+        return this.inner().identity();
+    }
+
+    @Override
     public ClusterGetProperties properties() {
         return this.inner().properties();
+    }
+
+    @Override
+    public ClusterImpl withIdentity(ClusterIdentity identity) {
+        this.createOrUpdateParameter.withIdentity(identity);
+        return this;
     }
 
     @Override

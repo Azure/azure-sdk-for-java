@@ -1,70 +1,128 @@
+# External variables Settable at queue time:
+# "pomFile" : "pom.client.xml".   This is the project object model file for Maven.
+
 trigger:
 - master
 
 jobs:
-- job: 'Publish'
+- job: 'Build'
+
+  pool:
+    vmImage: 'ubuntu-16.04'
+
+  strategy:
+    matrix:
+      Java 8:
+        artifactDir: 'java-8'
+        mvnFlags: ''
+        javaVer: '1.8'
+      Java LTS:
+        artifactDir: 'java-lts'
+        mvnFlags: '-Djava-lts'
+        javaVer: '1.11'
+
+  steps:
+  - task: Maven@3
+    displayName: 'Build and Package'
+    inputs:
+      mavenPomFile: $(pomFile)
+      goals: 'checkstyle:check javadoc:jar source:jar package'
+      options: '--batch-mode -Dmaven.test.skip=true $(mvnFlags)'
+      mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: $(javaVer)
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+
+  - powershell: |
+     # use sources files as a marker to find POM files so we can copy them to the output. The sources.jar file is generally
+     # in a target folder next to the pom.xml file so $_.Directory.Parent should get us the folder that contains the POM.
+     mkdir (Join-Path $(Build.ArtifactStagingDirectory) $(artifactDir))
+     dir -r -i *-sources.jar | % { copy (Join-Path $_.Directory.Parent.FullName "pom.xml") (Join-Path $(Build.ArtifactStagingDirectory) $(artifactDir) $_.Name.Replace("-sources.jar",".pom")) }
+     dir -r -i *.jar | % { copy $_ (Join-Path $(Build.ArtifactStagingDirectory) $(artifactDir)) }
+    displayName: 'Copy JAR and POM files to artifact staging'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish'
+
+- job: 'Analyze'
+
+  dependsOn:
+  - 'Build'
 
   pool:
     vmImage: 'ubuntu-16.04'
 
   steps:
-  - task: Maven@3
-    displayName: 'Checkstyle'
-    inputs:
-      mavenPomFile: 'pom.client.build.xml'
-      goals: 'checkstyle:check'
-      options: '--batch-mode'
-      mavenOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-      publishJUnitResults: false
-  - task: Maven@3
-    inputs:
-      mavenPomFile: 'pom.client.build.xml'
-      options: '--batch-mode'  #hides dependencies download progress from CI output
-      mavenOptions: '-Xmx3072m -Dmaven.test.skip=true -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: false
-      goals: 'package'
-    displayName: 'Package'
+    - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+      # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
+      # builds should be sufficient.
+      condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
+      displayName: 'Component Detection'
 
-  - task: Maven@3
-    displayName: 'Javadoc'
-    inputs:
-      mavenPomFile: 'pom.client.build.xml'
-      goals: 'javadoc:jar'
-      options: '-DskipTests=true'
-      publishJUnitResults: false
+- job: 'Test'
 
-  - task: Maven@3
-    displayName: 'Sources'
-    inputs:
-      mavenPomFile: 'pom.client.build.xml'
-      goals: 'source:jar'
-      options: '-DskipTests=true'
-      publishJUnitResults: false
+  dependsOn:
+  - 'Build'
 
-  - task: CopyFiles@2
-    inputs:
-      contents: '**/*.jar'
-      targetFolder: $(Build.ArtifactStagingDirectory)
-      flattenFolders: true
-    displayName: 'Copy'
+  strategy:
+    matrix:
+      Linux - Java 8:
+        os.name: 'Linux'
+        os.vmImage: 'ubuntu-16.04'
+        javaVer: '1.8'
+        mvnFlags: ''
+      macOS - Java 8:
+        os.name: 'macOS'
+        os.vmImage: 'macOS-10.13'
+        javaVer: '1.8'
+        mvnFlags: ''
+      Windows - Java 8:
+        os.name: 'Windows'
+        os.vmImage: 'vs2017-win2016'
+        javaVer: '1.8'
+        mvnFlags: ''
+      Linux - Java LTS:
+        os.name: 'Linux'
+        os.vmImage: 'ubuntu-16.04'
+        javaVer: '1.11'
+        mvnFlags: '-Djava-lts'
+      macOS - Java LTS:
+        os.name: 'macOS'
+        os.vmImage: 'macOS-10.13'
+        javaVer: '1.11'
+        mvnFlags: '-Djava-lts'
+      Windows - Java LTS:
+        os.name: 'Windows'
+        os.vmImage: 'vs2017-win2016'
+        javaVer: '1.11'
+        mvnFlags: '-Djava-lts'
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish'
+  pool:
+    vmImage: $(os.vmImage)
 
-- template: client.test.yml
-  parameters:
-    name: Linux
-    vmImage: 'ubuntu-16.04'
+  steps:
+    - task: Maven@3
+      displayName: 'Start Jetty'
+      inputs:
+        mavenPomFile: $(pomFile)
+        options: '--batch-mode $(mvnFlags)'
+        mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(javaVer)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'jetty:run-forked'
 
-- template: client.test.yml
-  parameters:
-    name: macOS
-    vmImage: 'macOS-10.13'
-
-- template: client.test.yml
-  parameters:
-    name: Windows
-    vmImage: 'vs2017-win2016'
+    - task: Maven@3
+      displayName: 'Run tests'
+      inputs:
+        mavenPomFile: $(pomFile)
+        options: '--batch-mode $(mvnFlags)'
+        mavenOptions: '-Xmx3072m -Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: $(javaVer)
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: true
+        testResultsFiles: '**/TEST-*.xml'
+        goals: 'test'

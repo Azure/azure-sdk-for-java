@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.test;
 
@@ -30,7 +27,7 @@ import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
 
 public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
-	private static final String SECRET_NAME = "javaSecret";
+	private static final String SECRET_NAME = "javaSecretTemp";
 	private static final String CRUD_SECRET_NAME = "crudSecret";
 	private static final String SECRET_VALUE = "Chocolate is hidden in the toothpaste cabinet";
 	private static final int MAX_SECRETS = 4;
@@ -65,9 +62,9 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
 	@Test
 	public void deserializeWithExtraFieldTestForSecretOperationsTest() throws Exception {
-		String content = "{\"error\":{\"code\":\"SecretNotFound\",\"message\":\"Secret not found: javaSecret\",\"noneexisting\":true}}";
+		String content = "{\"error\":{\"code\":\"SecretNotFound\",\"message\":\"Secret not found: javaSecretTemp\",\"noneexisting\":true}}";
 		KeyVaultError error = keyVaultClient.serializerAdapter().deserialize(content, KeyVaultError.class);
-		Assert.assertEquals(error.error().message(), "Secret not found: javaSecret");
+		Assert.assertEquals(error.error().message(), "Secret not found: javaSecretTemp");
 		Assert.assertEquals(error.error().code(), "SecretNotFound");
 	}
 

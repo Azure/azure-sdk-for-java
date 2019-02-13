@@ -19,6 +19,9 @@ import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.DatabaseOperations;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ElasticPoolOperations;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.DatabaseVulnerabilityAssessmentScans;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedDatabaseVulnerabilityAssessmentRuleBaselines;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedDatabaseVulnerabilityAssessmentScans;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedDatabaseVulnerabilityAssessments;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.Capabilities;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.Databases;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ElasticPools;
@@ -26,6 +29,8 @@ import com.microsoft.azure.management.sql.v2017_10_01_preview.InstanceFailoverGr
 import com.microsoft.azure.management.sql.v2017_10_01_preview.BackupShortTermRetentionPolicies;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.TdeCertificates;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceTdeCertificates;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceKeys;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceEncryptionProtectors;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -36,6 +41,9 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private DatabaseOperations databaseOperations;
     private ElasticPoolOperations elasticPoolOperations;
     private DatabaseVulnerabilityAssessmentScans databaseVulnerabilityAssessmentScans;
+    private ManagedDatabaseVulnerabilityAssessmentRuleBaselines managedDatabaseVulnerabilityAssessmentRuleBaselines;
+    private ManagedDatabaseVulnerabilityAssessmentScans managedDatabaseVulnerabilityAssessmentScans;
+    private ManagedDatabaseVulnerabilityAssessments managedDatabaseVulnerabilityAssessments;
     private Capabilities capabilities;
     private Databases databases;
     private ElasticPools elasticPools;
@@ -43,6 +51,8 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private BackupShortTermRetentionPolicies backupShortTermRetentionPolicies;
     private TdeCertificates tdeCertificates;
     private ManagedInstanceTdeCertificates managedInstanceTdeCertificates;
+    private ManagedInstanceKeys managedInstanceKeys;
+    private ManagedInstanceEncryptionProtectors managedInstanceEncryptionProtectors;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
     *
@@ -121,6 +131,36 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     }
 
     /**
+     * @return Entry point to manage ManagedDatabaseVulnerabilityAssessmentRuleBaselines.
+     */
+    public ManagedDatabaseVulnerabilityAssessmentRuleBaselines managedDatabaseVulnerabilityAssessmentRuleBaselines() {
+        if (this.managedDatabaseVulnerabilityAssessmentRuleBaselines == null) {
+            this.managedDatabaseVulnerabilityAssessmentRuleBaselines = new ManagedDatabaseVulnerabilityAssessmentRuleBaselinesImpl(this);
+        }
+        return this.managedDatabaseVulnerabilityAssessmentRuleBaselines;
+    }
+
+    /**
+     * @return Entry point to manage ManagedDatabaseVulnerabilityAssessmentScans.
+     */
+    public ManagedDatabaseVulnerabilityAssessmentScans managedDatabaseVulnerabilityAssessmentScans() {
+        if (this.managedDatabaseVulnerabilityAssessmentScans == null) {
+            this.managedDatabaseVulnerabilityAssessmentScans = new ManagedDatabaseVulnerabilityAssessmentScansImpl(this);
+        }
+        return this.managedDatabaseVulnerabilityAssessmentScans;
+    }
+
+    /**
+     * @return Entry point to manage ManagedDatabaseVulnerabilityAssessments.
+     */
+    public ManagedDatabaseVulnerabilityAssessments managedDatabaseVulnerabilityAssessments() {
+        if (this.managedDatabaseVulnerabilityAssessments == null) {
+            this.managedDatabaseVulnerabilityAssessments = new ManagedDatabaseVulnerabilityAssessmentsImpl(this);
+        }
+        return this.managedDatabaseVulnerabilityAssessments;
+    }
+
+    /**
      * @return Entry point to manage Capabilities.
      */
     public Capabilities capabilities() {
@@ -188,6 +228,26 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.managedInstanceTdeCertificates = new ManagedInstanceTdeCertificatesImpl(this);
         }
         return this.managedInstanceTdeCertificates;
+    }
+
+    /**
+     * @return Entry point to manage ManagedInstanceKeys.
+     */
+    public ManagedInstanceKeys managedInstanceKeys() {
+        if (this.managedInstanceKeys == null) {
+            this.managedInstanceKeys = new ManagedInstanceKeysImpl(this);
+        }
+        return this.managedInstanceKeys;
+    }
+
+    /**
+     * @return Entry point to manage ManagedInstanceEncryptionProtectors.
+     */
+    public ManagedInstanceEncryptionProtectors managedInstanceEncryptionProtectors() {
+        if (this.managedInstanceEncryptionProtectors == null) {
+            this.managedInstanceEncryptionProtectors = new ManagedInstanceEncryptionProtectorsImpl(this);
+        }
+        return this.managedInstanceEncryptionProtectors;
     }
 
     /**

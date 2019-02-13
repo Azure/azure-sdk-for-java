@@ -1,0 +1,25 @@
+variables:
+  - group: KeyVault Test Secrets
+  - name: ARM_CLIENTID
+    value: $(java-keyvault-test-arm-client-id)
+  - name: ARM_CLIENTKEY
+    value: $(java-keyvault-test-arm-client-key)
+
+queue:
+  name: Hosted VS2017
+steps:
+  # Adding -Dmaven.wagon.http.pool=false to the mvn command as a workaround to prevent build failures at maven artifacts downloading stage.
+- bash: |
+   LOG_PARAMS='-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+   mvn test -Dmaven.wagon.http.pool=false -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -f $(pomFile)
+  displayName: 'Run Live Tests'
+  env:
+    ARM_CLIENTID: $(ARM_CLIENTID)
+    ARM_CLIENTKEY: $(ARM_CLIENTKEY)
+    AZURE_TEST_MODE: RECORD
+    
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
+

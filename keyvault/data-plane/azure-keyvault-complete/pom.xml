@@ -5,15 +5,15 @@ the MIT License. See License.txt in the project root for license information. --
 	<modelVersion>4.0.0</modelVersion>
   
   <parent>
-		<groupId>com.microsoft.azure</groupId>
-		<artifactId>azure-keyvault-parent</artifactId>
-		<version>1.1.2</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-keyvault-parent</artifactId>
+    <version>1.2.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
   
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-keyvault-complete</artifactId>
-  <version>1.1.2</version>
+  <version>1.2.0</version>
   <packaging>pom</packaging>
   
   <licenses>
@@ -42,7 +42,7 @@ the MIT License. See License.txt in the project root for license information. --
   <developers>
     <developer>
       <id>microsoft</id>
-      <name>Microsoft</name>
+      <name>Microsoft Corporation</name>
     </developer>
   </developers>
   

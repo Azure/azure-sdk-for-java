@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.extensions;
 
@@ -46,16 +43,15 @@ public class CachingKeyResolver implements IKeyResolver {
         if (keyIdentifier.version() == null) {
             final ListenableFuture<IKey> key = keyResolver.resolveKeyAsync(kid);
             key.addListener(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        cache.put(key.get().getKid(), key);
-                                    } catch (Exception e) {
-                                        // Key caching will occur on first read
-                                    }
-                                }
-                            },
-                    MoreExecutors.directExecutor()
+                @Override
+                public void run() {
+                    try {
+                        cache.put(key.get().getKid(), key);
+                    } catch (Exception e) {
+                        // Key caching will occur on first read
+                    }
+                }
+            }, MoreExecutors.directExecutor()
             );
             return key;
         } else {

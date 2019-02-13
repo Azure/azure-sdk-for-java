@@ -39,7 +39,7 @@ class ElasticPoolImpl extends CreatableUpdatableImpl<ElasticPool, ElasticPoolInn
         this.manager = manager;
         // Set resource name
         this.elasticPoolName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.serverName = IdParsingUtils.getValueFromIdByName(inner.id(), "servers");
         this.elasticPoolName = IdParsingUtils.getValueFromIdByName(inner.id(), "elasticPools");

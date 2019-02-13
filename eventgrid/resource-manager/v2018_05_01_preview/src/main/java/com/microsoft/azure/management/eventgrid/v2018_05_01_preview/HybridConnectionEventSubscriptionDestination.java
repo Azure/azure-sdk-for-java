@@ -29,7 +29,7 @@ public class HybridConnectionEventSubscriptionDestination extends EventSubscript
     private String resourceId;
 
     /**
-     * Get the resourceId value.
+     * Get the Azure Resource ID of an hybrid connection that is the destination of an event subscription.
      *
      * @return the resourceId value
      */
@@ -38,7 +38,7 @@ public class HybridConnectionEventSubscriptionDestination extends EventSubscript
     }
 
     /**
-     * Set the resourceId value.
+     * Set the Azure Resource ID of an hybrid connection that is the destination of an event subscription.
      *
      * @param resourceId the resourceId value to set
      * @return the HybridConnectionEventSubscriptionDestination object itself.

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.requests;
 
@@ -134,8 +131,7 @@ public final class ImportCertificateRequest {
             certificateAttributes = (CertificateAttributes) new CertificateAttributes()
                     .withNotBefore(builder.attributes.notBefore()).withEnabled(builder.attributes.enabled())
                     .withExpires(builder.attributes.expires());
-        }
-        else {
+        } else {
             certificateAttributes = null;
         }
 

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.messagesecurity;
 
@@ -62,7 +59,34 @@ public class HttpMessageSecurity {
      */
     public HttpMessageSecurity(String clientSecurityToken, String clientSignatureKeyString,
             String serverEncryptionKeyString, String serverSignatureKeyString) throws IOException {
+        
+        this(clientSecurityToken, clientSignatureKeyString, serverEncryptionKeyString, serverSignatureKeyString, MessageSecurityHelper.generateJsonWebKey());
+    }
 
+
+    /**
+     * Constructor.
+     *
+     * @param clientSecurityToken
+     *            pop or bearer authentication token.
+     * @param clientSignatureKeyString
+     *            string with client signing key (public + private parts) or null if
+     *            not supported
+     * @param serverEncryptionKeyString
+     *            string with server encryption key (public only) or null if not
+     *            supported
+     * @param serverSignatureKeyString
+     *            string with server signing key (public only) or null if not
+     *            supported
+     * @param clientEncryptionKey
+     *            client encryption key (public + private parts) or null if
+     *            not supported
+     * @throws IOException
+     *             throws IOException
+     */
+    public HttpMessageSecurity(String clientSecurityToken, String clientSignatureKeyString,
+            String serverEncryptionKeyString, String serverSignatureKeyString, JsonWebKey clientEncryptionKey) throws IOException {
+        
         this.clientSecurityToken = clientSecurityToken;
 
         if (clientSignatureKeyString != null && !clientSignatureKeyString.equals("")) {
@@ -75,7 +99,7 @@ public class HttpMessageSecurity {
             this.serverEncryptionKey = MessageSecurityHelper.jsonWebKeyFromString(serverEncryptionKeyString);
         }
 
-        this.clientEncryptionKey = MessageSecurityHelper.generateJsonWebKey();
+        this.clientEncryptionKey = clientEncryptionKey;
     }
 
     /**

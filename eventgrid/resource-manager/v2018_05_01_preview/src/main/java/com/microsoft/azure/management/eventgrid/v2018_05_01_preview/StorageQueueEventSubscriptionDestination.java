@@ -35,7 +35,7 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
     private String queueName;
 
     /**
-     * Get the resourceId value.
+     * Get the Azure Resource ID of the storage account that contains the queue that is the destination of an event subscription.
      *
      * @return the resourceId value
      */
@@ -44,7 +44,7 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
     }
 
     /**
-     * Set the resourceId value.
+     * Set the Azure Resource ID of the storage account that contains the queue that is the destination of an event subscription.
      *
      * @param resourceId the resourceId value to set
      * @return the StorageQueueEventSubscriptionDestination object itself.
@@ -55,7 +55,7 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
     }
 
     /**
-     * Get the queueName value.
+     * Get the name of the Storage queue under a storage account that is the destination of an event subscription.
      *
      * @return the queueName value
      */
@@ -64,7 +64,7 @@ public class StorageQueueEventSubscriptionDestination extends EventSubscriptionD
     }
 
     /**
-     * Set the queueName value.
+     * Set the name of the Storage queue under a storage account that is the destination of an event subscription.
      *
      * @param queueName the queueName value to set
      * @return the StorageQueueEventSubscriptionDestination object itself.

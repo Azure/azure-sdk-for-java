@@ -171,7 +171,8 @@ class TopicsImpl extends GroupableResourcesCoreImpl<Topic, TopicImpl, TopicInner
             public Observable<EventTypeInner> call(List<EventTypeInner> innerList) {
                 return Observable.from(innerList);
             }
-        })    .map(new Func1<EventTypeInner, EventType>() {
+        })
+        .map(new Func1<EventTypeInner, EventType>() {
             @Override
             public EventType call(EventTypeInner inner) {
                 return new EventTypeImpl(inner, manager());
