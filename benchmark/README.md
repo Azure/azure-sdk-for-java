@@ -14,7 +14,7 @@ and then the package will be generated.
 ##Run the Write workload
 
 ```bash
-java -jar benchmark/target/azure-cosmosdb-benchmark-{version}-jar-with-dependencies.jar -serviceEndpoint ENDPOINT -masterKey MASTERKEY -databaseId DATABASE_ID -collectionId COLLECTION_ID -numberOfOperations 100000 -operation Write -maxConnectionPoolSize 3000 -consistencyLevel "Eventual"
+java -jar azure-cosmosdb-benchmark-2.4.1-SNAPSHOT-jar-with-dependencies.jar -serviceEndpoint $endpoint -masterKey $masterkey -databaseId $dbname -collection $colname -consistencyLevel Eventual -concurrency 10 -numberOfOperations 1000000 -operation WriteLatency -connectionMode Direct"
 ```
 
 You can provide ``--help`` to the tool to see the list of other work loads (read, etc) and other options. 
