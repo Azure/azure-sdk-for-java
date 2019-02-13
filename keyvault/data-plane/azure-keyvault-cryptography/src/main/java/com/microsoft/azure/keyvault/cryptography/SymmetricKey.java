@@ -315,7 +315,7 @@ public class SymmetricKey implements IKey {
         ICryptoTransform transform = null;
 
         try {
-            transform = algo.CreateEncryptor(key, null, provider);
+            transform = algo.CreateEncryptor(this.key, null, provider);
         } catch (Exception e) {
             return Futures.immediateFailedFuture(e);
         }
