@@ -24,4 +24,10 @@
   <suppress checks="MethodName" files="KeyWrapAlgorithm.java"/>
   <suppress checks="MethodName" files="SignatureEncoding.java"/>
   <suppress checks="MethodName" files="SymmetricEncryptionAlgorithm.java"/>
+  <suppress checks="MethodName" files="RsaSignature.java"/>
+
+  <!-- Public API already released with incorrect constant variable naming -->
+  <suppress checks="ConstantName" files="AlgorithmResolver.java"/>
+  <suppress checks="ConstantName" files="RsaKey.java"/>
+  <suppress checks="ConstantName" files="SymmetricKey.java"/>
 </suppressions>
