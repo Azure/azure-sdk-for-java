@@ -17,7 +17,7 @@ import com.microsoft.azure.keyvault.cryptography.ISignatureTransform;
  */
 public class Rs256 extends RsaSignature {
 
-    static final String RsaNone = "RSA/ECB/PKCS1Padding";
+    static final String RSA_NONE = "RSA/ECB/PKCS1Padding";
 
     class Rs256SignatureTransform implements ISignatureTransform {
 
@@ -37,15 +37,15 @@ public class Rs256 extends RsaSignature {
             // Signing isn't just a case of encrypting the digest, there is much more to do.
             // For details of the algorithm, see https://tools.ietf.org/html/rfc3447#section-8.2
 
-            if (keyPair.getPrivate() == null) {
-                // TODO
-            }
+            // TODO
+            // if (keyPair.getPrivate() == null) {
+            // }
 
             // Construct the encoded message
-            byte[] EM = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
+            byte[] em = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
 
             // Convert to integer message
-            BigInteger s = OS2IP(EM);
+            BigInteger s = OS2IP(em);
 
             // RSASP1(s)
             s = RSASP1((RSAPrivateKey) keyPair.getPrivate(), s);
@@ -67,11 +67,11 @@ public class Rs256 extends RsaSignature {
             // Convert integer message
             BigInteger m = RSAVP1((RSAPublicKey) keyPair.getPublic(), s);
 
-            byte[] EM  = I2OSP(m, emLen);
-            byte[] EM2 = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
+            byte[] em  = I2OSP(m, emLen);
+            byte[] em2 = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
 
             // Use constant time compare
-            return ByteExtensions.sequenceEqualConstantTime(EM, EM2);
+            return ByteExtensions.sequenceEqualConstantTime(em, em2);
         }
 
     }

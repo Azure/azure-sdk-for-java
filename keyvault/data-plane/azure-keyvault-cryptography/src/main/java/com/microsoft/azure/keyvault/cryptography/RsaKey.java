@@ -23,9 +23,9 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
 public class RsaKey implements IKey {
 
-    public static int KeySize1024 = 1024;
-    public static int KeySize2048 = 2048;
-    public static int KeySize4096 = 4096;
+    public static final int KeySize1024 = 1024;
+    public static final int KeySize2048 = 2048;
+    public static final int KeySize4096 = 4096;
 
     public static int getDefaultKeySize() {
         return RsaKey.KeySize2048;

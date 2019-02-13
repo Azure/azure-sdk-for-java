@@ -161,9 +161,10 @@ public class SymmetricKey implements IKey {
 
             case KeySize512:
                 return Aes256CbcHmacSha512.ALGORITHM_NAME;
-        }
 
-        return null;
+            default:
+                return null;
+        }
     }
 
     @Override
@@ -186,9 +187,10 @@ public class SymmetricKey implements IKey {
             case KeySize512:
                 // Default to longest allowed key length for wrap
                 return AesKw256.ALGORITHM_NAME;
-        }
 
-        return null;
+            default:
+                return null;
+        }
     }
 
     @Override

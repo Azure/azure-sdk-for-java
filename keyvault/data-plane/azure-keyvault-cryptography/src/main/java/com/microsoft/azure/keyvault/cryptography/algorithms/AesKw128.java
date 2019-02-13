@@ -16,8 +16,8 @@ import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 public final class AesKw128 extends AesKw {
 
     public static final String ALGORITHM_NAME = "A128KW";
-    
-    static final int KeySizeInBytes = 128 >> 3;
+
+    static final int KEY_SIZE_IN_BYTES = 128 >> 3;
 
     public AesKw128() {
         super(ALGORITHM_NAME);
@@ -30,11 +30,11 @@ public final class AesKw128 extends AesKw {
             throw new IllegalArgumentException("key must not be null");
         }
 
-        if (key.length < KeySizeInBytes) {
+        if (key.length < KEY_SIZE_IN_BYTES) {
             throw new IllegalArgumentException("key must be at least 128 bits long");
         }
 
-        return super.CreateEncryptor(Arrays.copyOfRange(key, 0, KeySizeInBytes), iv, provider);
+        return super.CreateEncryptor(Arrays.copyOfRange(key, 0, KEY_SIZE_IN_BYTES), iv, provider);
     }
 
     @Override
@@ -44,11 +44,11 @@ public final class AesKw128 extends AesKw {
             throw new IllegalArgumentException("key must not be null");
         }
 
-        if (key.length < KeySizeInBytes) {
+        if (key.length < KEY_SIZE_IN_BYTES) {
             throw new IllegalArgumentException("key must be at least 128 bits long");
         }
 
-        return super.CreateDecryptor(Arrays.copyOfRange(key, 0, KeySizeInBytes), iv, provider);
+        return super.CreateDecryptor(Arrays.copyOfRange(key, 0, KEY_SIZE_IN_BYTES), iv, provider);
     }
 
 }
