@@ -42,10 +42,10 @@ public class Rs256 extends RsaSignature {
             }
 
             // Construct the encoded message
-            byte[] EM = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
+            byte[] em = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
 
             // Convert to integer message
-            BigInteger s = OS2IP(EM);
+            BigInteger s = OS2IP(em);
 
             // RSASP1(s)
             s = RSASP1((RSAPrivateKey) keyPair.getPrivate(), s);
@@ -67,11 +67,11 @@ public class Rs256 extends RsaSignature {
             // Convert integer message
             BigInteger m = RSAVP1((RSAPublicKey) keyPair.getPublic(), s);
 
-            byte[] EM  = I2OSP(m, emLen);
-            byte[] EM2 = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
+            byte[] em  = I2OSP(m, emLen);
+            byte[] em2 = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
 
             // Use constant time compare
-            return ByteExtensions.sequenceEqualConstantTime(EM, EM2);
+            return ByteExtensions.sequenceEqualConstantTime(em, em2);
         }
 
     }
