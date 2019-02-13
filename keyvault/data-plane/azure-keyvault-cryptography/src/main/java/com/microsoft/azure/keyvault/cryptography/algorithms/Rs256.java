@@ -37,9 +37,9 @@ public class Rs256 extends RsaSignature {
             // Signing isn't just a case of encrypting the digest, there is much more to do.
             // For details of the algorithm, see https://tools.ietf.org/html/rfc3447#section-8.2
 
-            if (keyPair.getPrivate() == null) {
-                // TODO
-            }
+            // TODO
+            // if (keyPair.getPrivate() == null) {
+            // }
 
             // Construct the encoded message
             byte[] em = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
