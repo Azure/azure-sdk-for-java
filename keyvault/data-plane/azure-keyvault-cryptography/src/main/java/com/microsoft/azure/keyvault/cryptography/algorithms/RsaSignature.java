@@ -17,8 +17,8 @@ import com.microsoft.azure.keyvault.cryptography.Strings;
 
 public abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
 
-    private static final BigInteger twoFiveSix   = new BigInteger("256");
-    private static final byte[]     sha256Prefix = new byte[] { 0x30, 0x31, 0x30, 0x0d, 0x06, 0x09, 0x60, (byte) 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01, 0x05, 0x00, 0x04, 0x20 };
+    private static final BigInteger TWO_FIVE_SIX = new BigInteger("256");
+    private static final byte[] SHA_256_PREFIX = new byte[] { 0x30, 0x31, 0x30, 0x0d, 0x06, 0x09, 0x60, (byte) 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01, 0x05, 0x00, 0x04, 0x20 };
 
     protected RsaSignature(String name) {
         super(name);
@@ -53,7 +53,7 @@ public abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
             throw new IllegalArgumentException("xLen");
         }
 
-        if (x.compareTo(twoFiveSix.pow(xLen)) == 1) {
+        if (x.compareTo(TWO_FIVE_SIX.pow(xLen)) == 1) {
             throw new IllegalArgumentException("integer too large");
         }
 
@@ -176,7 +176,7 @@ public abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
         if (algorithm.equals("SHA-256")) {
 
             // Initialize prefix and digest
-            algorithmPrefix = sha256Prefix;
+            algorithmPrefix = SHA_256_PREFIX;
 
             if (h.length != 32) {
                 throw new IllegalArgumentException("h is incorrect length for SHA-256");
@@ -186,32 +186,32 @@ public abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
         }
 
 
-        // Construct T, the DER encoded DigestInfo structure
-        byte[] T      = new byte[algorithmPrefix.length + h.length];
+        // Construct t, the DER encoded DigestInfo structure
+        byte[] t = new byte[algorithmPrefix.length + h.length];
 
-        System.arraycopy(algorithmPrefix, 0, T, 0, algorithmPrefix.length);
-        System.arraycopy(h, 0, T, algorithmPrefix.length, h.length);
+        System.arraycopy(algorithmPrefix, 0, t, 0, algorithmPrefix.length);
+        System.arraycopy(h, 0, t, algorithmPrefix.length, h.length);
 
-        if (emLen < T.length + 11) {
+        if (emLen < t.length + 11) {
             throw new IllegalArgumentException("intended encoded message length too short");
         }
 
-        // Construct PS
-        byte[] PS = new byte[emLen - T.length - 3];
+        // Construct ps
+        byte[] ps = new byte[emLen - t.length - 3];
 
-        for (int i = 0; i < PS.length; i++) {
-            PS[i] = (byte) 0xff;
+        for (int i = 0; i < ps.length; i++) {
+            ps[i] = (byte) 0xff;
         }
 
-        // Construct EM
-        byte[] EM = new byte[PS.length + T.length + 3];
+        // Construct em
+        byte[] em = new byte[ps.length + t.length + 3];
 
-        EM[0] = 0x00; EM[1] = 0x01; EM[PS.length + 2] = 0x00;
+        em[0] = 0x00; em[1] = 0x01; em[ps.length + 2] = 0x00;
 
-        System.arraycopy(PS, 0, EM, 2, PS.length);
-        System.arraycopy(T, 0, EM, PS.length + 3, T.length);
+        System.arraycopy(ps, 0, em, 2, ps.length);
+        System.arraycopy(t, 0, em, ps.length + 3, t.length);
 
-        return EM;
+        return em;
     }
 
     public abstract ISignatureTransform createSignatureTransform(KeyPair keyPair);
