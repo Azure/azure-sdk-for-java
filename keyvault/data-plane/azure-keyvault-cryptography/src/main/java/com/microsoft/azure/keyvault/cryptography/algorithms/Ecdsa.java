@@ -33,7 +33,7 @@ public abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
 
 
     class EcdsaSignatureTransform implements ISignatureTransform {
-        private final String ALGORITHM = "NONEwithECDSA";
+        private static final String ALGORITHM = "NONEwithECDSA";
         private final KeyPair keyPair;
         private final Provider provider;
         private final Ecdsa algorithm;
