@@ -25,60 +25,60 @@ public abstract class AesKw extends KeyWrapAlgorithm {
 
     class AesKwDecryptor implements ICryptoTransform {
 
-        final Cipher _cipher;
+        final Cipher cipher;
 
         AesKwDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             if (provider == null) {
-                _cipher = Cipher.getInstance(_cipherName);
+                cipher = Cipher.getInstance(_cipherName);
             } else {
-                _cipher = Cipher.getInstance(_cipherName, provider);
+                cipher = Cipher.getInstance(_cipherName, provider);
             }
 
             // The default provider does not support the specification of IV. This
             // is guarded by the CreateEncrypter wrapper method and the iv parameter
             // can be ignored when using the default provider 
             if (provider == null) {
-                _cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"));
+                cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"));
             } else {
-                _cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+                cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
             }
         }
 
         @Override
         public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException {
 
-            return _cipher.unwrap(plaintext, "AESWrap", Cipher.SECRET_KEY).getEncoded();
+            return cipher.unwrap(plaintext, "AESWrap", Cipher.SECRET_KEY).getEncoded();
         }
 
     }
 
     class AesKwEncryptor implements ICryptoTransform {
 
-        final Cipher _cipher;
+        final Cipher cipher;
 
         AesKwEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             if (provider == null) {
-                _cipher = Cipher.getInstance(_cipherName);
+                cipher = Cipher.getInstance(_cipherName);
             } else {
-                _cipher = Cipher.getInstance(_cipherName, provider);
+                cipher = Cipher.getInstance(_cipherName, provider);
             }
 
             // The default provider does not support the specification of IV. This
             // is guarded by the CreateEncrypter wrapper method and the iv parameter
             // can be ignored when using the default provider 
             if (provider == null) {
-                _cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"));
+                cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"));
             } else {
-                _cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+                cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
             }
         }
 
         @Override
         public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
 
-            return _cipher.wrap(new SecretKeySpec(plaintext, "AES"));
+            return cipher.wrap(new SecretKeySpec(plaintext, "AES"));
         }
 
     }

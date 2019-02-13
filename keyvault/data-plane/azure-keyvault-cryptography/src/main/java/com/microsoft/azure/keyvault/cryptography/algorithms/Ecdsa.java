@@ -34,31 +34,31 @@ public abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
 
     class EcdsaSignatureTransform implements ISignatureTransform {
         private final String ALGORITHM = "NONEwithECDSA";
-        private final KeyPair _keyPair;
-        private final Provider _provider;
-        private final Ecdsa _algorithm;
+        private final KeyPair keyPair;
+        private final Provider provider;
+        private final Ecdsa algorithm;
 
         EcdsaSignatureTransform(KeyPair keyPair, Provider provider, Ecdsa algorithm) {
-            _keyPair = keyPair;
-            _provider = provider;
-            _algorithm = algorithm;
+            this.keyPair = keyPair;
+            this.provider = provider;
+            this.algorithm = algorithm;
         }
 
         @Override
         public byte[] sign(byte[] digest) throws GeneralSecurityException {
             checkDigestLength(digest);
-            Signature signature = Signature.getInstance(ALGORITHM, _provider);
-            signature.initSign(_keyPair.getPrivate());
+            Signature signature = Signature.getInstance(ALGORITHM, provider);
+            signature.initSign(keyPair.getPrivate());
             signature.update(digest);
-            return SignatureEncoding.fromAsn1Der(signature.sign(), _algorithm);
+            return SignatureEncoding.fromAsn1Der(signature.sign(), algorithm);
         }
 
         @Override
         public boolean verify(byte[] digest, byte[] signature) throws GeneralSecurityException {
-            Signature verify = Signature.getInstance(ALGORITHM, _provider);
+            Signature verify = Signature.getInstance(ALGORITHM, provider);
             checkDigestLength(digest);
-            signature = SignatureEncoding.toAsn1Der(signature, _algorithm);
-            verify.initVerify(_keyPair.getPublic());
+            signature = SignatureEncoding.toAsn1Der(signature, algorithm);
+            verify.initVerify(keyPair.getPublic());
             verify.update(digest);
             return verify.verify(signature);
         }

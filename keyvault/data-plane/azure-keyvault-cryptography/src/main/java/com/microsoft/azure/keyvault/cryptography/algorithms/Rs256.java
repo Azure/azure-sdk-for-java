@@ -21,16 +21,15 @@ public class Rs256 extends RsaSignature {
 
     class Rs256SignatureTransform implements ISignatureTransform {
 
-        private final KeyPair  _keyPair;
-        private final int      _emLen;
+        private final KeyPair  keyPair;
+        private final int      emLen;
 
         Rs256SignatureTransform(KeyPair keyPair) {
-            _keyPair  = keyPair;
+            this.keyPair = keyPair;
 
-            BigInteger modulus = ((RSAPublicKey) _keyPair.getPublic()).getModulus();
+            BigInteger modulus = ((RSAPublicKey) keyPair.getPublic()).getModulus();
 
-            _emLen    = getOctetLength(modulus.bitLength());
-
+            this.emLen = getOctetLength(modulus.bitLength());
         }
 
         @Override
@@ -38,27 +37,27 @@ public class Rs256 extends RsaSignature {
             // Signing isn't just a case of encrypting the digest, there is much more to do.
             // For details of the algorithm, see https://tools.ietf.org/html/rfc3447#section-8.2
 
-            if (_keyPair.getPrivate() == null) {
+            if (keyPair.getPrivate() == null) {
                 // TODO
             }
 
             // Construct the encoded message
-            byte[] EM = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, _emLen, "SHA-256");
+            byte[] EM = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
 
             // Convert to integer message
             BigInteger s = OS2IP(EM);
 
             // RSASP1(s)
-            s = RSASP1((RSAPrivateKey) _keyPair.getPrivate(), s);
+            s = RSASP1((RSAPrivateKey) keyPair.getPrivate(), s);
 
             // Convert to octet sequence
-            return I2OSP(s, _emLen);
+            return I2OSP(s, emLen);
         }
 
         @Override
         public boolean verify(byte[] digest, byte[] signature) throws NoSuchAlgorithmException {
 
-            if (signature.length != _emLen) {
+            if (signature.length != emLen) {
                 throw new IllegalArgumentException("invalid signature length");
             }
 
@@ -66,10 +65,10 @@ public class Rs256 extends RsaSignature {
             BigInteger s = OS2IP(signature);
 
             // Convert integer message
-            BigInteger m = RSAVP1((RSAPublicKey) _keyPair.getPublic(), s);
+            BigInteger m = RSAVP1((RSAPublicKey) keyPair.getPublic(), s);
 
-            byte[] EM  = I2OSP(m, _emLen);
-            byte[] EM2 = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, _emLen, "SHA-256");
+            byte[] EM  = I2OSP(m, emLen);
+            byte[] EM2 = EMSA_PKCS1_V1_5_ENCODE_HASH(digest, emLen, "SHA-256");
 
             // Use constant time compare
             return ByteExtensions.sequenceEqualConstantTime(EM, EM2);

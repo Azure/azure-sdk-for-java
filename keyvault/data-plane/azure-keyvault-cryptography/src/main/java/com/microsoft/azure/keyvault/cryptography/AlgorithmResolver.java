@@ -52,7 +52,7 @@ public class AlgorithmResolver {
         Default.put(Es512.ALGORITHM_NAME, new Es512());
     }
 
-    private final ConcurrentMap<String, Algorithm> _algorithms = new ConcurrentHashMap<String, Algorithm>();
+    private final ConcurrentMap<String, Algorithm> algorithms = new ConcurrentHashMap<String, Algorithm>();
 
     /**
      * Returns the implementation for an algorithm name.
@@ -61,7 +61,7 @@ public class AlgorithmResolver {
      * @return The implementation for the algorithm or null.
      */
     public Algorithm get(String algorithmName) {
-        return _algorithms.get(algorithmName);
+        return algorithms.get(algorithmName);
     }
 
     /**
@@ -71,7 +71,7 @@ public class AlgorithmResolver {
      * @param provider The implementation of the algorithm.
      */
     public void put(String algorithmName, Algorithm provider) {
-        _algorithms.put(algorithmName, provider);
+        algorithms.put(algorithmName, provider);
     }
 
     /**
@@ -80,6 +80,6 @@ public class AlgorithmResolver {
      * @param algorithmName The algorithm name
      */
     public void remove(String algorithmName) {
-        _algorithms.remove(algorithmName);
+        algorithms.remove(algorithmName);
     }
 }

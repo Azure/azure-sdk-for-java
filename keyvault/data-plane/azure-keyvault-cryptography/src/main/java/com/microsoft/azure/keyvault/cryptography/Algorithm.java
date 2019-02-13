@@ -9,7 +9,7 @@ package com.microsoft.azure.keyvault.cryptography;
  */
 public abstract class Algorithm {
 
-    private final String _name;
+    private final String name;
 
     /**
      * Constructor.
@@ -21,7 +21,7 @@ public abstract class Algorithm {
             throw new IllegalArgumentException("name");
         }
 
-        _name = name;
+        this.name = name;
     }
 
     /**
@@ -30,6 +30,6 @@ public abstract class Algorithm {
      * @return The name of the algorithm.
      */
     public String getName() {
-        return _name;
+        return name;
     }
 }
