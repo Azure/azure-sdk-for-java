@@ -17,7 +17,7 @@ import com.microsoft.azure.keyvault.cryptography.ISignatureTransform;
  */
 public class Rs256 extends RsaSignature {
 
-    static final String RsaNone = "RSA/ECB/PKCS1Padding";
+    static final String RSA_NONE = "RSA/ECB/PKCS1Padding";
 
     class Rs256SignatureTransform implements ISignatureTransform {
 
