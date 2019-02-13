@@ -17,7 +17,7 @@ public final class AesKw192 extends AesKw {
 
     public static final String ALGORITHM_NAME = "A192KW";
     
-    static final int KeySizeInBytes = 192 >> 3;
+    static final int KEY_SIZE_IN_BYTES = 192 >> 3;
 
     public AesKw192() {
         super(ALGORITHM_NAME);
@@ -30,11 +30,11 @@ public final class AesKw192 extends AesKw {
             throw new IllegalArgumentException("key must not be null");
         }
 
-        if (key.length < KeySizeInBytes) {
+        if (key.length < KEY_SIZE_IN_BYTES) {
             throw new IllegalArgumentException("key must be at least 192 bits long");
         }
 
-        return super.CreateEncryptor(Arrays.copyOfRange(key, 0, KeySizeInBytes), iv, provider);
+        return super.CreateEncryptor(Arrays.copyOfRange(key, 0, KEY_SIZE_IN_BYTES), iv, provider);
     }
 
     @Override
@@ -44,11 +44,11 @@ public final class AesKw192 extends AesKw {
             throw new IllegalArgumentException("key must not be null");
         }
 
-        if (key.length < KeySizeInBytes) {
+        if (key.length < KEY_SIZE_IN_BYTES) {
             throw new IllegalArgumentException("key must be at least 192 bits long");
         }
 
-        return super.CreateDecryptor(Arrays.copyOfRange(key, 0, KeySizeInBytes), iv, provider);
+        return super.CreateDecryptor(Arrays.copyOfRange(key, 0, KEY_SIZE_IN_BYTES), iv, provider);
     }
 
 }
