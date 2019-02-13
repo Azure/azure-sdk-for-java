@@ -61,10 +61,10 @@ Latency
 
 ## Other Currently Supported Workloads
 
-* ReadThroughput, 
-* WriteThroughput, 
 * ReadLatency, 
 * WriteLatency, 
+* ReadThroughput, 
+* WriteThroughput, 
 * QueryCross, 
 * QuerySingle, 
 * QuerySingleMany, 
