@@ -80,18 +80,18 @@ public abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
     /*
      * See https://tools.ietf.org/html/rfc3447#section-5.2.1
      */
-    protected BigInteger RSASP1(RSAPrivateKey K, BigInteger m) {
+    protected BigInteger RSASP1(RSAPrivateKey key, BigInteger m) {
 
-        if (K == null) {
-            throw new IllegalArgumentException("K");
+        if (key == null) {
+            throw new IllegalArgumentException("key");
         }
 
         if (m == null) {
             throw new IllegalArgumentException("m");
         }
 
-        BigInteger n = K.getModulus();
-        BigInteger d = K.getPrivateExponent();
+        BigInteger n = key.getModulus();
+        BigInteger d = key.getPrivateExponent();
 
         if (m.compareTo(BigInteger.ONE) == -1 || m.compareTo(n) != -1) {
             throw new IllegalArgumentException("message representative out of range");
@@ -103,17 +103,17 @@ public abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
     /*
      * See https://tools.ietf.org/html/rfc3447#section-5.2.2
      */
-    protected BigInteger RSAVP1(RSAPublicKey K, BigInteger s) {
+    protected BigInteger RSAVP1(RSAPublicKey key, BigInteger s) {
 
-        if (K == null) {
-            throw new IllegalArgumentException("K");
+        if (key == null) {
+            throw new IllegalArgumentException("key");
         }
 
         if (s == null) {
             throw new IllegalArgumentException("s");
         }
-        BigInteger n = K.getModulus();
-        BigInteger e = K.getPublicExponent();
+        BigInteger n = key.getModulus();
+        BigInteger e = key.getPublicExponent();
 
         if (s.compareTo(BigInteger.ONE) == -1 || s.compareTo(n) != -1) {
             throw new IllegalArgumentException("message representative out of range");
