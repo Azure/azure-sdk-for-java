@@ -421,4 +421,10 @@ public interface IMessage {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message transfers, locks, and settlement</a>
      */
     public UUID getLockToken();
+    
+    /**
+     * Creates a shallow copy of this message.
+     * @return copy of this message
+     */
+    public IMessage createCopy();
 }

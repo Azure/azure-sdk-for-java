@@ -1,5 +1,6 @@
 package com.microsoft.azure.servicebus;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,8 +9,11 @@ import java.util.List;
  * Client should test for body type before calling corresponding get method.
  * Get methods not corresponding to the type of the body return null.
  */
-public class MessageBody {
-    private MessageBodyType bodyType;
+public class MessageBody implements Serializable{
+    
+	private static final long serialVersionUID = 7215009530928988502L;
+	
+	private MessageBodyType bodyType;
     private Object valueData;
     private List<List<Object>> sequenceData;
     private List<byte[]> binaryData;

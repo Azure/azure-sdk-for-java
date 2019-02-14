@@ -397,4 +397,23 @@ final public class Message implements Serializable, IMessage {
 	{
 		this.messageBody = body;
 	}
+
+	@Override
+	public IMessage createCopy() {
+		Message copy = new Message(this.getMessageBody(), this.getContentType());
+		copy.setProperties(this.getProperties()); // Retain the same properties
+		
+		copy.setMessageId(this.getMessageId());
+		copy.setCorrelationId(this.getCorrelationId());
+		copy.setTo(this.getTo());
+		copy.setReplyTo(this.getReplyTo());
+		copy.setLabel(this.getLabel());
+		copy.setReplyToSessionId(this.getReplyToSessionId());
+		copy.setSessionId(this.getSessionId());
+		copy.setScheduledEnqueueTimeUtc(this.getScheduledEnqueueTimeUtc());
+		copy.setPartitionKey(this.getPartitionKey());
+		copy.setTimeToLive(this.getTimeToLive());
+		
+		return copy;
+	}
 }
