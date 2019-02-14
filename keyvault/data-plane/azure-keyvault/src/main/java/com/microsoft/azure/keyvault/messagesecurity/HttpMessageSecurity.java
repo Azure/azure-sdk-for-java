@@ -35,8 +35,9 @@ public class HttpMessageSecurity {
     private static final String AUTHENTICATE = "Authorization";
     private static final String BEARER_TOKEP_REFIX = "Bearer ";
     /**
-     * Encoding for JWS and JWE contents specified in:
+     * Encoding for JWS and JWE header and contents specified in:
      * https://tools.ietf.org/html/rfc7515
+     * https://tools.ietf.org/html/rfc7516
      */
     private static final Charset MESSAGE_ENCODING = StandardCharsets.UTF_8;
     private boolean testMode = false;

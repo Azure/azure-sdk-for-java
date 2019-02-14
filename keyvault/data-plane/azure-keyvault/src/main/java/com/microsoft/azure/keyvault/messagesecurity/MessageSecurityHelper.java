@@ -25,6 +25,11 @@ import java.security.KeyPairGenerator;
  * Implements helper methods for message security.
  */
 class MessageSecurityHelper {
+    /**
+     * Encoding for JWS and JWE header and contents specified in:
+     * https://tools.ietf.org/html/rfc7515
+     * https://tools.ietf.org/html/rfc7516
+     */
     private static final Charset MESSAGE_ENCODING = StandardCharsets.UTF_8;
 
     /**
@@ -55,7 +60,7 @@ class MessageSecurityHelper {
      * Convert bytes array to Base64Url string.
      * 
      * @param bytes
-     *            bytes array that is UTF-8 encoded.
+     *            bytes array
      * 
      * @returns Encoded string.
      */
