@@ -47,9 +47,6 @@ jobs:
 
 - job: 'Analyze'
 
-  dependsOn:
-  - 'Build'
-
   pool:
     vmImage: 'ubuntu-16.04'
 
@@ -120,9 +117,6 @@ jobs:
         artifactName: reports
 
 - job: 'Test'
-
-  dependsOn:
-  - 'Build'
 
   strategy:
     matrix:
