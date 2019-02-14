@@ -1,0 +1,8 @@
+language: java
+sudo: false
+jdk:
+- oraclejdk8
+- openjdk7
+script:
+- mvn install -DskipTests=true
+- mvn package javadoc:aggregate -DskipTests=true
