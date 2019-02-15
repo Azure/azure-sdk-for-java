@@ -7,22 +7,22 @@
 package com.microsoft.rest.v3.http;
 
 /**
- * The different values that we commonly use for Content-Type headers.
+ * The different values that commonly used for Content-Type header.
  */
 public final class ContentType {
     /**
-     * Private constructor that prevents creation of ContentType objects.
-     */
-    private ContentType() {
-    }
-
-    /**
-     * The default JSON Content-Type header.
+     * the default JSON Content-Type header.
      */
     public static final String APPLICATION_JSON = "application/json";
 
     /**
-     * The default binary Content-Type header.
+     * the default binary Content-Type header.
      */
     public static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
+
+    /**
+     * Private ctr.
+     */
+    private ContentType() {
+    }
 }

@@ -17,7 +17,8 @@ import java.util.List;
  */
 public class TypeUtil {
     /**
-     * Find all super classes including this class itself.
+     * Find all super classes including provided class.
+     *
      * @param clazz the raw class to find super types for
      * @return the list of super classes
      */
@@ -32,6 +33,7 @@ public class TypeUtil {
 
     /**
      * Get the generic arguments for a type.
+     *
      * @param type the type to get arguments
      * @return the generic arguments, empty if type is not parametrized
      */
@@ -44,6 +46,7 @@ public class TypeUtil {
 
     /**
      * Get the generic argument, or the first if the type has more than one.
+     *
      * @param type the type to get arguments
      * @return the generic argument, null if type is not parametrized
      */
@@ -56,6 +59,7 @@ public class TypeUtil {
 
     /**
      * Get the raw class for a given type.
+     *
      * @param type the input type
      * @return the raw class
      */
@@ -69,6 +73,7 @@ public class TypeUtil {
 
     /**
      * Get the super type for a given type.
+     *
      * @param type the input type
      * @return the direct super type
      */
@@ -116,6 +121,7 @@ public class TypeUtil {
     /**
      * Get the super type for a type in its super type chain, which has
      * a raw class that matches the specified class.
+     *
      * @param subType the sub type to find super type for
      * @param rawSuperType the raw class for the super type
      * @return the super type that matches the requirement
@@ -129,6 +135,7 @@ public class TypeUtil {
 
     /**
      * Determines if a type is the same or a subtype for another type.
+     * 
      * @param subType the supposed sub type
      * @param superType the supposed super type
      * @return true if the first type is the same or a subtype for the second type
@@ -142,6 +149,7 @@ public class TypeUtil {
 
     /**
      * Create a parametrized type from a raw class and its type arguments.
+     *
      * @param rawClass the raw class to construct the parametrized type
      * @param genericTypes the generic arguments
      * @return the parametrized type

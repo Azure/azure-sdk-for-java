@@ -7,48 +7,53 @@
 package com.microsoft.rest.v3.http;
 
 /**
- * The optional properties that can be set on an HttpPipeline.
+ * Optional properties that can be used when creating a HttpPipeline.
  */
-public class HttpPipelineOptions {
-    private HttpClient httpClient;
-    private HttpPipelineLogger logger;
+public final class HttpPipelineOptions {
+    /**
+     * The Logger that has been assigned to the HttpPipeline.
+     */
+    private final HttpPipelineLogger logger;
 
     /**
-     * Configure the HttpClient that will be used for the created HttpPipeline. If no HttpClient
-     * is set (or if null is set), then a default HttpClient will be created for the
-     * HttpPipeline.
-     * @param httpClient the HttpClient to use for the created HttpPipeline.
-     * @return This HttpPipeline options object.
+     * Create a new HttpPipelinePolicyOptions object.
+     *
+     * @param logger The logger that has been assigned to the HttpPipeline
      */
-    public HttpPipelineOptions withHttpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
-        return this;
-    }
-
-    /**
-     * Get the HttpClient that was set.
-     * @return The HttpClient that was set.
-     */
-    HttpClient httpClient() {
-        return httpClient;
-    }
-
-    /**
-     * Configure the Logger that will be used for each RequestPolicy within the created
-     * HttpPipeline.
-     * @param logger The Logger to provide to each RequestPolicy.
-     * @return This HttpPipeline options object.
-     */
-    public HttpPipelineOptions withLogger(HttpPipelineLogger logger) {
+    public HttpPipelineOptions(HttpPipelineLogger logger) {
         this.logger = logger;
-        return this;
     }
 
     /**
-     * Get the Logger that was set.
-     * @return The Logger that was set.
+     * Get whether or not a log with the provided log level should be logged.
+     *
+     * @param logLevel The log level of the log that will be logged
+     * @return Whether or not a log with the provided log level should be logged
      */
-    HttpPipelineLogger logger() {
-        return logger;
+    public boolean shouldLog(HttpPipelineLogLevel logLevel) {
+        boolean result = false;
+
+        if (logger != null && logLevel != null && logLevel != HttpPipelineLogLevel.OFF) {
+            final HttpPipelineLogLevel minimumLogLevel = logger.minimumLogLevel();
+            if (minimumLogLevel != null) {
+                result = logLevel.ordinal() <= minimumLogLevel.ordinal();
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Attempt to log the provided message to the provided logger. If no logger was provided or if
+     * the log level does not meat the logger's threshold, then nothing will be logged.
+     *
+     * @param logLevel The log level of this log.
+     * @param message The message of this log.
+     * @param formattedMessageArguments The formatted arguments to apply to the message.
+     */
+    public void log(HttpPipelineLogLevel logLevel, String message, Object... formattedMessageArguments) {
+        if (logger != null) {
+            logger.log(logLevel, message, formattedMessageArguments);
+        }
     }
 }

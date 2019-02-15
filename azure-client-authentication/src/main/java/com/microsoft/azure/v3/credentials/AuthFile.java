@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.microsoft.azure.v3.AzureEnvironment;
 import com.microsoft.azure.v3.AzureEnvironment.Endpoint;
 import com.microsoft.rest.v3.annotations.Beta;
+import com.microsoft.rest.v3.protocol.SerializerEncoding;
 import com.microsoft.rest.v3.serializer.JacksonAdapter;
 
 import java.io.File;
@@ -59,8 +60,8 @@ final class AuthFile {
 
         AuthFile authFile;
         if (isJsonBased(content)) {
-            authFile = ADAPTER.deserialize(content, AuthFile.class);
-            Map<String, String> endpoints = ADAPTER.deserialize(content, new TypeToken<Map<String, String>>() { }.getType());
+            authFile = ADAPTER.deserialize(content, AuthFile.class, SerializerEncoding.JSON);
+            Map<String, String> endpoints = ADAPTER.deserialize(content, new TypeToken<Map<String, String>>() { }.getType(), SerializerEncoding.JSON);
             authFile.environment.endpoints().putAll(endpoints);
         } else {
             // Set defaults

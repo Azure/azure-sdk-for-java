@@ -32,7 +32,7 @@ import java.lang.reflect.Field;
  * name empty ("") of type Map&lt;String, Object&gt;, all extra properties on the
  * payload will be stored in this map.
  */
-@Beta(since = "1.7.0")
+@Beta(since = "2.0.0")
 public final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {
     /**
      * The default mapperAdapter for the current type.

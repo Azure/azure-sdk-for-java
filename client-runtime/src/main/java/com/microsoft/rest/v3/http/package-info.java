@@ -1,5 +1,4 @@
 /**
- * This package contains the HTTP abstractions between the AnnotationParser's RestProxy and whatever
- * HTTP client we choose to use.
+ * Package containing the HTTP abstractions between the AnnotationParser's RestProxy and HTTP client.
  */
 package com.microsoft.rest.v3.http;

@@ -15,7 +15,7 @@ import com.microsoft.rest.v3.Base64Url;
 import java.io.IOException;
 
 /**
- * Custom serializer for serializing {@link Byte[]} objects into Base64 strings.
+ * Custom serializer for serializing {@code Byte[]} objects into Base64 strings.
  */
 public final class Base64UrlSerializer extends JsonSerializer<Base64Url> {
     /**

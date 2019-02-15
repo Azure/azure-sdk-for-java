@@ -102,7 +102,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
             throw new IllegalStateException("Polling is completed and did not succeed. Cannot create a polling request.");
         }
 
-        return new HttpRequest(fullyQualifiedMethodName(), HttpMethod.GET, pollUrl, createResponseDecoder());
+        return new HttpRequest(HttpMethod.GET, pollUrl, createResponseDecoder());
     }
 
     @Override

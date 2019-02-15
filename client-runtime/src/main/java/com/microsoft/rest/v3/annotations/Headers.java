@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * List of static headers sent to the API.
+ * List of static headers sent to the REST endpoint.
  *
  * Headers are comma separated strings, with each in the format of
  * "header name: header value1,header value2".

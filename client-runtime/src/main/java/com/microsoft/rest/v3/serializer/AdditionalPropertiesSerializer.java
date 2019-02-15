@@ -35,7 +35,7 @@ import java.util.Map.Entry;
  * name empty ("") of type Map&lt;String, Object&gt;, all items in this map will
  * become top level properties for this complex type.
  */
-@Beta(since = "1.7.0")
+@Beta(since = "2.0.0")
 public class AdditionalPropertiesSerializer extends StdSerializer<Object> implements ResolvableSerializer {
     /**
      * The default mapperAdapter for the current type.

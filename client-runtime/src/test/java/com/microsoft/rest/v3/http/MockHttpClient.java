@@ -36,7 +36,7 @@ public class MockHttpClient extends HttpClient {
             .set("Content-Type", "application/json");
 
     @Override
-    public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
+    public Mono<HttpResponse> send(HttpRequest request) {
         HttpResponse response = null;
 
         try {
@@ -133,7 +133,7 @@ public class MockHttpClient extends HttpClient {
                 else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
-                    json.data = bodyToString(request);
+                    json.data = createHttpBinResponseDataForRequest(request);
                     response = new MockHttpResponse(200, json);
                 }
                 else if (requestPathLower.equals("/get")) {
@@ -145,20 +145,20 @@ public class MockHttpClient extends HttpClient {
                 else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
-                    json.data = bodyToString(request);
+                    json.data = createHttpBinResponseDataForRequest(request);
                     response = new MockHttpResponse(200, json);
                 }
                 else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
-                    json.data = bodyToString(request);
+                    json.data = createHttpBinResponseDataForRequest(request);
                     json.headers = toMap(request.headers());
                     response = new MockHttpResponse(200, json);
                 }
                 else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
-                    json.data = bodyToString(request);
+                    json.data = createHttpBinResponseDataForRequest(request);
                     json.headers = toMap(request.headers());
                     response = new MockHttpResponse(200, responseHeaders, json);
                 }
@@ -180,10 +180,19 @@ public class MockHttpClient extends HttpClient {
         return Mono.just(response);
     }
 
-    private static String bodyToString(HttpRequest request) throws IOException {
+    private static String createHttpBinResponseDataForRequest(HttpRequest request) {
+        String body = bodyToString(request);
+        if (body == null) {
+            return "";
+        } else {
+            return body;
+        }
+    }
+
+    private static String bodyToString(HttpRequest request) {
         String body = "";
         if (request.body() != null) {
-            Mono<String> asyncString = FluxUtil.collectBytesInArray(request.body())
+            Mono<String> asyncString = FluxUtil.collectBytesInByteBufStream(request.body(), true)
                     .map(bytes -> new String(bytes, StandardCharsets.UTF_8));
             body = asyncString.block();
         }

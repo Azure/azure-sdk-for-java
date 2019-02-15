@@ -10,7 +10,7 @@ import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.protocol.SerializerAdapter;
 
 /**
- * The base class for generated service clients.
+ * The base class for REST service clients.
  */
 public abstract class ServiceClient {
     /**
@@ -21,10 +21,10 @@ public abstract class ServiceClient {
     /**
      * The lazily-created serializer for this ServiceClient.
      */
-    private SerializerAdapter<?> serializerAdapter;
+    private SerializerAdapter serializerAdapter;
 
     /**
-     * Initializes a new instance of the ServiceClient class.
+     * Creates ServiceClient.
      *
      * @param httpPipeline The HTTP pipeline to send requests through
      */
@@ -42,14 +42,14 @@ public abstract class ServiceClient {
     /**
      * @return the serializer for this ServiceClient.
      */
-    public SerializerAdapter<?> serializerAdapter() {
+    public SerializerAdapter serializerAdapter() {
         if (this.serializerAdapter == null) {
             this.serializerAdapter = createSerializerAdapter();
         }
         return this.serializerAdapter;
     }
 
-    protected SerializerAdapter<?> createSerializerAdapter() {
+    protected SerializerAdapter createSerializerAdapter() {
         return RestProxy.createDefaultSerializer();
     }
 }

@@ -15,8 +15,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * The error type that will be thrown/returned when an unexpected status code is returned from an
- * API.
+ * The error type that will be thrown or returned when an unexpected status code is returned from an REST API.
  *
  * Example:
  *   {@literal @}UnexpectedResponseExceptionType(MyCustomException.class)

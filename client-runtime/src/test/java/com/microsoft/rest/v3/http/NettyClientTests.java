@@ -8,13 +8,15 @@ import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.util.ReferenceCountUtil;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -139,11 +141,11 @@ public class NettyClientTests {
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = HttpClient.createDefault();
-        HttpRequest request = new HttpRequest("", HttpMethod.POST, url(server, "/shortPost"), null)
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"), null)
                 .withHeader("Content-Length", "123")
                 .withBody(Flux.error(new RuntimeException("boo")));
 
-        StepVerifier.create(client.sendRequestAsync(request))
+        StepVerifier.create(client.send(request))
                 .expectErrorMessage("boo")
                 .verify();
     }
@@ -153,13 +155,13 @@ public class NettyClientTests {
         HttpClient client = HttpClient.createDefault();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
-        HttpRequest request = new HttpRequest("", HttpMethod.POST, url(server, "/shortPost"), null)
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"), null)
                 .withHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
                 .withBody(Flux.just(contentChunk)
                         .repeat(repetitions)
-                        .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
+                        .map(s -> Unpooled.wrappedBuffer(s.getBytes(StandardCharsets.UTF_8)))
                         .concatWith(Flux.error(new RuntimeException("boo"))));
-        StepVerifier.create(client.sendRequestAsync(request))
+        StepVerifier.create(client.send(request))
                 // .awaitDone(10, TimeUnit.SECONDS)
                 .expectErrorMessage("boo")
                 .verify();
@@ -199,9 +201,9 @@ public class NettyClientTests {
             //
             latch.await();
             HttpClient client = HttpClient.createDefault();
-            HttpRequest request = new HttpRequest("", HttpMethod.GET,
+            HttpRequest request = new HttpRequest(HttpMethod.GET,
                     new URL("http://localhost:" + ss.getLocalPort() + "/get"), null);
-            HttpResponse response = client.sendRequestAsync(request).block();
+            HttpResponse response = client.send(request).block();
             assertEquals(200, response.statusCode());
             System.out.println("reading body");
             //
@@ -227,8 +229,20 @@ public class NettyClientTests {
                 .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
                     MessageDigest md = md5Digest();
                     return response.body()
-                            .doOnNext(bb -> md.update(bb))
-                            .map(bb -> new NumberedByteBuffer(n, bb))
+                            .doOnNext(bb -> {
+                                bb.retain();
+                                if (bb.hasArray()) {
+                                    // Heap buffer
+                                    md.update(bb.array());
+                                } else {
+                                    // Direct buffer
+                                    int len = bb.readableBytes();
+                                    byte[] array = new byte[len];
+                                    bb.getBytes(bb.readerIndex(), array);
+                                    md.update(array);
+                                }
+                            })
+                            .map(bb -> new NumberedByteBuf(n, bb))
 //                          .doOnComplete(() -> System.out.println("completed " + n))
                             .doOnComplete(() -> Assert.assertArrayEquals("wrong digest!", expectedDigest,
                                     md.digest()));
@@ -237,7 +251,11 @@ public class NettyClientTests {
                 // enable the doOnNext call to see request numbers and thread names
                 // .doOnNext(g -> System.out.println(g.n + " " +
                 // Thread.currentThread().getName()))
-                .map(nbb -> (long) nbb.bb.limit())
+                .map(nbb -> {
+                    long bytesCount = (long) nbb.bb.readableBytes();
+                    ReferenceCountUtil.release(nbb.bb);
+                    return bytesCount;
+                })
                 .reduce((x, y) -> x + y)
                 .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
                 .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
@@ -268,11 +286,11 @@ public class NettyClientTests {
         return expectedDigest;
     }
 
-    private static final class NumberedByteBuffer {
+    private static final class NumberedByteBuf {
         final long n;
-        final ByteBuffer bb;
+        final ByteBuf bb;
 
-        NumberedByteBuffer(long n, ByteBuffer bb) {
+        NumberedByteBuf(long n, ByteBuf bb) {
             this.n = n;
             this.bb = bb;
         }
@@ -284,8 +302,8 @@ public class NettyClientTests {
     }
 
     private static HttpResponse getResponse(HttpClient client, String path) {
-        HttpRequest request = new HttpRequest("", HttpMethod.GET, url(server, path), null);
-        return client.sendRequestAsync(request).block();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path), null);
+        return client.send(request).block();
     }
 
     private static URL url(WireMockServer server, String path) {
@@ -313,8 +331,8 @@ public class NettyClientTests {
     }
 
     private HttpResponse doRequest(HttpClient client, String path) {
-        HttpRequest request = new HttpRequest("", HttpMethod.GET, url(server, path), null);
-        HttpResponse response = client.sendRequestAsync(request).block();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path), null);
+        HttpResponse response = client.send(request).block();
         return response;
     }
 }

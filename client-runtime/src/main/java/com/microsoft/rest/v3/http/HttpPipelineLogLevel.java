@@ -7,7 +7,7 @@
 package com.microsoft.rest.v3.http;
 
 /**
- * The different levels of logs from HttpPipeline's RequestPolicies.
+ * The different levels of logs from HttpPipeline's policies.
  */
 public enum HttpPipelineLogLevel {
     /**

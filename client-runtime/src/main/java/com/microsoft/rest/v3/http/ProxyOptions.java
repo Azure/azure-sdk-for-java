@@ -11,14 +11,17 @@ import reactor.netty.tcp.ProxyProvider.Proxy;
 import java.net.InetSocketAddress;
 
 /**
- * Optional configurations for proxy.
+ * proxy configuration.
  */
 public class ProxyOptions {
     private final InetSocketAddress address;
     private final Type type;
 
     /**
-     * Creates a default proxy options object.
+     * Creates ProxyOptions.
+     *
+     * @param type the proxy type
+     * @param address the proxy address (ip and port number)
      */
     public ProxyOptions(Type type, InetSocketAddress address) {
         this.type = type;
@@ -40,11 +43,20 @@ public class ProxyOptions {
     }
 
     /**
-     * The type of the proxy, mapping the types defined in Reactor-Netty.
+     * The type of the proxy.
      */
     public enum Type {
+        /**
+         * HTTP proxy type.
+         */
         HTTP(Proxy.HTTP),
+        /**
+         * SOCKS4 proxy type.
+         */
         SOCKS4(Proxy.SOCKS4),
+        /**
+         * SOCKS5 proxy type.
+         */
         SOCKS5(Proxy.SOCKS5);
 
         private final Proxy value;

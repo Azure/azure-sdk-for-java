@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 
 /**
- * Defines the parametrized host name of a proxy.
+ * Annotation for parametrized host name.
  *
  * This is the 'host' field or 'x-ms-parameterized-host.hostTemplate' field in
  * a Swagger document. parameters are enclosed in {}s, e.g. {accountName}. An

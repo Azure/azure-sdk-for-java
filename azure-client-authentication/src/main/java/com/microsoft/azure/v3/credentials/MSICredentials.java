@@ -8,6 +8,7 @@ package com.microsoft.azure.v3.credentials;
 
 import com.microsoft.azure.v3.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.v3.annotations.Beta;
+import com.microsoft.rest.v3.protocol.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedReader;
@@ -133,7 +134,7 @@ public final class MSICredentials extends AzureTokenCredentials {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 100);
             String result = reader.readLine();
 
-            MSIToken msiToken = adapter.deserialize(result, MSIToken.class);
+            MSIToken msiToken = adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
             return msiToken.accessToken();
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,7 +177,7 @@ public final class MSICredentials extends AzureTokenCredentials {
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 100);
             String result = reader.readLine();
 
-            MSIToken msiToken = adapter.deserialize(result, MSIToken.class);
+            MSIToken msiToken = adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
             return msiToken.accessToken();
         } catch (Exception e) {
             e.printStackTrace();
@@ -260,7 +261,7 @@ public final class MSICredentials extends AzureTokenCredentials {
                 InputStream stream = connection.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 100);
                 String result = reader.readLine();
-                return adapter.deserialize(result, MSIToken.class);
+                return adapter.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
             } catch (Exception exception) {
                 int responseCode = connection.getResponseCode();
                 if (responseCode == 410 || responseCode == 429 || responseCode == 404 || (responseCode >= 500 && responseCode <= 599)) {

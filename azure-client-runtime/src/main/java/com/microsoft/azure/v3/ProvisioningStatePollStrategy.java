@@ -65,7 +65,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
 
     @Override
     HttpRequest createPollRequest() {
-        return new HttpRequest(data.originalRequest.callerMethod(), HttpMethod.GET, data.originalRequest.url(), createResponseDecoder());
+        return new HttpRequest(HttpMethod.GET, data.originalRequest.url(), createResponseDecoder());
     }
 
     @Override

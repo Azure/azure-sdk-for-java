@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import java.io.IOException;
 
 /**
- * Custom serializer for serializing {@link Byte[]} objects into Base64 strings.
+ * Custom serializer for serializing {@code Byte[]} objects into Base64 strings.
  */
 public final class ByteArraySerializer extends JsonSerializer<Byte[]> {
     /**

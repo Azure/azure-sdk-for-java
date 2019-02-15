@@ -11,15 +11,16 @@ import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.protocol.SerializerAdapter;
 import com.microsoft.rest.v3.protocol.SerializerEncoding;
 import com.microsoft.rest.v3.serializer.JacksonAdapter;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 public class MockAzureHttpResponse extends HttpResponse {
-    private final static SerializerAdapter<?> serializer = new JacksonAdapter();
+    private final static SerializerAdapter serializer = new JacksonAdapter();
 
     private final int statusCode;
 
@@ -63,8 +64,8 @@ public class MockAzureHttpResponse extends HttpResponse {
     }
 
     @Override
-    public String headerValue(String headerName) {
-        return headers.value(headerName);
+    public String headerValue(String name) {
+        return headers.value(name);
     }
 
     @Override
@@ -78,8 +79,8 @@ public class MockAzureHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Flux<ByteBuffer> body() {
-        return Flux.just(ByteBuffer.wrap(bodyBytes));
+    public Flux<ByteBuf> body() {
+        return Flux.just(Unpooled.wrappedBuffer(bodyBytes));
     }
 
     @Override

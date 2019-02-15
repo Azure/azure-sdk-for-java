@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v3.serializer;
 
+import com.microsoft.rest.v3.protocol.SerializerEncoding;
 import com.microsoft.rest.v3.util.Foo;
 import com.microsoft.rest.v3.util.FooChild;
 import org.junit.Assert;
@@ -32,14 +33,14 @@ public class AdditionalPropertiesSerializerTests {
         foo.additionalProperties.put("a.b", "c.d");
         foo.additionalProperties.put("properties.bar", "barbar");
 
-        String serialized = new JacksonAdapter().serialize(foo);
+        String serialized = new JacksonAdapter().serialize(foo, SerializerEncoding.JSON);
         Assert.assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}", serialized);
     }
 
     @Test
     public void canDeserializeAdditionalProperties() throws Exception {
         String wireValue = "{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}";
-        Foo deserialized = new JacksonAdapter().deserialize(wireValue, Foo.class);
+        Foo deserialized = new JacksonAdapter().deserialize(wireValue, Foo.class, SerializerEncoding.JSON);
         Assert.assertNotNull(deserialized.additionalProperties);
         Assert.assertEquals("baz", deserialized.additionalProperties.get("bar"));
         Assert.assertEquals("c.d", deserialized.additionalProperties.get("a.b"));
@@ -63,14 +64,14 @@ public class AdditionalPropertiesSerializerTests {
         foo.additionalProperties.put("a.b", "c.d");
         foo.additionalProperties.put("properties.bar", "barbar");
 
-        String serialized = new JacksonAdapter().serialize(foo);
+        String serialized = new JacksonAdapter().serialize(foo, SerializerEncoding.JSON);
         Assert.assertEquals("{\"$type\":\"foochild\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}", serialized);
     }
 
     @Test
     public void canDeserializeAdditionalPropertiesThroughInheritance() throws Exception {
         String wireValue = "{\"$type\":\"foochild\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}}},\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}";
-        Foo deserialized = new JacksonAdapter().deserialize(wireValue, Foo.class);
+        Foo deserialized = new JacksonAdapter().deserialize(wireValue, Foo.class, SerializerEncoding.JSON);
         Assert.assertNotNull(deserialized.additionalProperties);
         Assert.assertEquals("baz", deserialized.additionalProperties.get("bar"));
         Assert.assertEquals("c.d", deserialized.additionalProperties.get("a.b"));

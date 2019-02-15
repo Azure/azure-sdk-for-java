@@ -7,6 +7,7 @@
 package com.microsoft.azure.v3;
 
 import com.microsoft.azure.v3.annotations.AzureHost;
+import com.microsoft.azure.v3.policy.AsyncCredentialsPolicy;
 import com.microsoft.azure.v3.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.v3.InvalidReturnTypeException;
 import com.microsoft.rest.v3.OperationDescription;
@@ -15,23 +16,20 @@ import com.microsoft.rest.v3.SwaggerInterfaceParser;
 import com.microsoft.rest.v3.SwaggerMethodParser;
 import com.microsoft.azure.v3.credentials.AsyncServiceClientCredentials;
 import com.microsoft.rest.v3.credentials.ServiceClientCredentials;
-import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpMethod;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.HttpPipelineBuilder;
+import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NettyClient;
-import com.microsoft.azure.v3.policy.AsyncCredentialsPolicyFactory;
-import com.microsoft.rest.v3.policy.CookiePolicyFactory;
-import com.microsoft.rest.v3.policy.CredentialsPolicyFactory;
-import com.microsoft.rest.v3.policy.DecodingPolicyFactory;
-import com.microsoft.rest.v3.policy.RequestPolicyFactory;
-import com.microsoft.rest.v3.policy.RetryPolicyFactory;
+import com.microsoft.rest.v3.http.policy.CookiePolicy;
+import com.microsoft.rest.v3.http.policy.CredentialsPolicy;
+import com.microsoft.rest.v3.http.policy.DecodingPolicy;
+import com.microsoft.rest.v3.http.policy.RetryPolicy;
+import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
 import com.microsoft.rest.v3.protocol.SerializerAdapter;
 import com.microsoft.rest.v3.protocol.SerializerEncoding;
 import com.microsoft.rest.v3.util.TypeUtil;
-import io.reactivex.exceptions.Exceptions;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -41,7 +39,9 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.net.NetworkInterface;
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -59,7 +59,7 @@ public final class AzureProxy extends RestProxy {
      * @param interfaceParser The parser that contains information about the swagger interface that
      *                        this RestProxy "implements".
      */
-    private AzureProxy(HttpPipeline httpPipeline, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser) {
+    private AzureProxy(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser) {
         super(httpPipeline, serializer, interfaceParser);
     }
 
@@ -83,7 +83,7 @@ public final class AzureProxy extends RestProxy {
      * Get the default serializer.
      * @return the default serializer.
      */
-    public static SerializerAdapter<?> createDefaultSerializer() {
+    public static SerializerAdapter createDefaultSerializer() {
         return new AzureJacksonAdapter();
     }
 
@@ -157,7 +157,7 @@ public final class AzureProxy extends RestProxy {
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface) {
-        return createDefaultPipeline(swaggerInterface, (RequestPolicyFactory) null);
+        return createDefaultPipeline(swaggerInterface, (HttpPipelinePolicy) null);
     }
 
     /**
@@ -168,7 +168,7 @@ public final class AzureProxy extends RestProxy {
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, ServiceClientCredentials credentials) {
-        return createDefaultPipeline(swaggerInterface, new CredentialsPolicyFactory(credentials));
+        return createDefaultPipeline(swaggerInterface, new CredentialsPolicy(credentials));
     }
 
     /**
@@ -179,7 +179,7 @@ public final class AzureProxy extends RestProxy {
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, AsyncServiceClientCredentials credentials) {
-        return createDefaultPipeline(swaggerInterface, new AsyncCredentialsPolicyFactory(credentials));
+        return createDefaultPipeline(swaggerInterface, new AsyncCredentialsPolicy(credentials));
     }
 
     /**
@@ -190,17 +190,18 @@ public final class AzureProxy extends RestProxy {
      *                          pipeline.
      * @return the default HttpPipeline.
      */
-    public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, RequestPolicyFactory credentialsPolicy) {
-        final HttpClient httpClient = new NettyClient.Factory().create(null);
-        final HttpPipelineBuilder builder = new HttpPipelineBuilder().withHttpClient(httpClient);
-        builder.withUserAgentPolicy(getDefaultUserAgentString(swaggerInterface));
-        builder.withRequestPolicy(new RetryPolicyFactory());
-        builder.withRequestPolicy(new DecodingPolicyFactory());
-        builder.withRequestPolicy(new CookiePolicyFactory());
+    public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, HttpPipelinePolicy credentialsPolicy) {
+        // Order in which policies applied will be the order in which they appear in the array
+        //
+        List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        policies.add(new UserAgentPolicy(getDefaultUserAgentString(swaggerInterface)));
+        policies.add(new RetryPolicy());
+        policies.add(new DecodingPolicy());
+        policies.add(new CookiePolicy());
         if (credentialsPolicy != null) {
-            builder.withRequestPolicy(credentialsPolicy);
+            policies.add(credentialsPolicy);
         }
-        return builder.build();
+        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()]));
     }
 
     /**
@@ -226,7 +227,7 @@ public final class AzureProxy extends RestProxy {
      * @return A proxy implementation of the provided Swagger interface.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter<?> serializer) {
+    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer) {
         return AzureProxy.create(swaggerInterface, null, httpPipeline, serializer);
     }
 
@@ -241,7 +242,7 @@ public final class AzureProxy extends RestProxy {
      * @return A proxy implementation of the provided Swagger interface.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, AzureEnvironment azureEnvironment, HttpPipeline httpPipeline, SerializerAdapter<?> serializer) {
+    public static <A> A create(Class<A> swaggerInterface, AzureEnvironment azureEnvironment, HttpPipeline httpPipeline, SerializerAdapter serializer) {
         String baseUrl = null;
 
         if (azureEnvironment != null) {
@@ -383,7 +384,7 @@ public final class AzureProxy extends RestProxy {
                         }
                         PollStrategy pollStrategy;
                         try {
-                            final SerializerAdapter<?> serializer = serializer();
+                            final SerializerAdapter serializer = serializer();
                             final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class, SerializerEncoding.JSON);
                             if (resource != null && resource.properties() != null && !OperationState.isCompleted(resource.properties().provisioningState())) {
                                 pollStrategy = new ProvisioningStatePollStrategy(

@@ -13,46 +13,24 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
- * This interface defines the behaviors an adapter of a serializer
- * needs to implement.
- *
- * @param <T> the original serializer
+ * An interface defining the behaviors of a serializer.
  */
-public interface SerializerAdapter<T> {
-    /**
-     * @deprecated original serializer type should not be exposed
-     * @return the adapted original serializer
-     */
-    @Deprecated
-    T serializer();
-
+public interface SerializerAdapter {
     /**
      * Serializes an object into a string.
      *
-     * @param object the object to serialize.
-     * @param encoding the encoding to use for serialization.
-     * @return the serialized string. Null if the object to serialize is null.
-     * @throws IOException exception from serialization.
+     * @param object the object to serialize
+     * @param encoding the encoding to use for serialization
+     * @return the serialized string. Null if the object to serialize is null
+     * @throws IOException exception from serialization
      */
     String serialize(Object object, SerializerEncoding encoding) throws IOException;
 
     /**
-     * @deprecated Use serialize(Object, Encoding) instead.
-     *
-     * Serializes an object into a JSON string.
-     *
-     * @param object the object to serialize.
-     * @return the serialized string. Null if the object to serialize is null.
-     * @throws IOException exception from serialization.
-     */
-    @Deprecated
-    String serialize(Object object) throws IOException;
-
-    /**
      * Serializes an object into a raw string. The leading and trailing quotes will be trimmed.
      *
-     * @param object the object to serialize.
-     * @return the serialized string. Null if the object to serialize is null.
+     * @param object the object to serialize
+     * @return the serialized string. Null if the object to serialize is null
      */
     String serializeRaw(Object object);
 
@@ -61,35 +39,21 @@ public interface SerializerAdapter<T> {
      * Swagger collection format joining each individual serialized items in
      * the list.
      *
-     * @param list the list to serialize.
-     * @param format the Swagger collection format.
+     * @param list the list to serialize
+     * @param format the Swagger collection format
      * @return the serialized string
      */
     String serializeList(List<?> list, CollectionFormat format);
 
     /**
-     * @deprecated Use deserialize(String, Type, Encoding) instead.
+     * Deserializes a string into a {@link U} object.
      *
-     * Deserializes a JSON string into a {@link U} object using the current {@link T}.
-     *
-     * @param value the string value to deserialize.
-     * @param <U> the type of the deserialized object.
-     * @param type the type to deserialize.
-     * @return the deserialized object.
-     * @throws IOException exception in deserialization
-     */
-    @Deprecated
-    <U> U deserialize(String value, Type type) throws IOException;
-
-    /**
-     * Deserializes a string into a {@link U} object using the current {@link T}.
-     *
-     * @param value the string value to deserialize.
-     * @param <U> the type of the deserialized object.
-     * @param type the type to deserialize.
-     * @param encoding the encoding used in the serialized value.
-     * @return the deserialized object.
-     * @throws IOException exception in deserialization
+     * @param value the string value to deserialize
+     * @param <U> the type of the deserialized object
+     * @param type the type to deserialize
+     * @param encoding the encoding used in the serialized value
+     * @return the deserialized object
+     * @throws IOException exception from deserialization
      */
     <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException;
 }

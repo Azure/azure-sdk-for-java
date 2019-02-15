@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Marker on a deserialized header type that indicates that the property should
+ * Annotation on a deserialized header type that indicates that the property should
  * be treated as a header collection with the provided prefix.
  */
 @Retention(RUNTIME)
@@ -21,7 +21,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface HeaderCollection {
     /**
      * The header collection prefix.
-     * @return The header collection prefix.
+     *
+     * @return The header collection prefix
      */
     String value();
 }

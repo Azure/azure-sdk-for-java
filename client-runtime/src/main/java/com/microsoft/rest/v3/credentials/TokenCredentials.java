@@ -12,14 +12,18 @@ import java.io.IOException;
  * Token based credentials for use with a REST Service Client.
  */
 public class TokenCredentials implements ServiceClientCredentials {
-    /** The authentication scheme. */
+    /**
+     * The authentication scheme.
+     */
     private String scheme;
 
-    /** The secure token. */
+    /**
+     * The secure token.
+     */
     private String token;
 
     /**
-     * Initializes a new instance of the TokenCredentials.
+     * Creates TokenCredentials.
      *
      * @param scheme scheme to use. If null, defaults to Bearer
      * @param token  valid token

@@ -10,8 +10,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
 import org.reactivestreams.Publisher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
@@ -20,7 +18,6 @@ import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 
-import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -31,13 +28,11 @@ import java.util.function.BiFunction;
  */
 public final class NettyClient extends HttpClient {
     private reactor.netty.http.client.HttpClient httpClient;
-    private static final Logger LOGGER = LoggerFactory.getLogger(NettyClient.class);
 
     /**
      * Creates NettyClient.
      *
-     * @param configuration
-     *            the HTTP client configuration.
+     * @param configuration the HTTP client configuration
      */
     private NettyClient(HttpClientConfiguration configuration) {
         this.httpClient = reactor.netty.http.client.HttpClient.create().wiretap(true);
@@ -47,7 +42,7 @@ public final class NettyClient extends HttpClient {
     }
 
     @Override
-    public Mono<HttpResponse> sendRequestAsync(final HttpRequest request) {
+    public Mono<HttpResponse> send(final HttpRequest request) {
         Objects.requireNonNull(request.httpMethod());
         Objects.requireNonNull(request.url());
         Objects.requireNonNull(request.url().getProtocol());
@@ -93,8 +88,8 @@ public final class NettyClient extends HttpClient {
                 }
 
                 @Override
-                public String headerValue(String headerName) {
-                    return reactorNettyResponse.responseHeaders().get(headerName);
+                public String headerValue(String name) {
+                    return reactorNettyResponse.responseHeaders().get(name);
                 }
 
                 @Override
@@ -105,21 +100,14 @@ public final class NettyClient extends HttpClient {
                 }
 
                 @Override
-                public Flux<ByteBuffer> body() {
+                public Flux<ByteBuf> body() {
                     final ByteBufFlux body = bodyIntern();
                     //
-                    Flux<ByteBuffer> javaNioByteBufferFlux = body.map((ByteBuf nettyByteBuf) -> {
-                        ByteBuffer dst = ByteBuffer.allocate(nettyByteBuf.readableBytes());
-                        nettyByteBuf.readBytes(dst);
-                        dst.flip();
-                        return dst;
-                    }).doFinally(s -> {
+                    return body.doFinally(s -> {
                         if (!reactorNettyConnection.isDisposed()) {
                             reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
                         }
                     });
-                    //
-                    return javaNioByteBufferFlux;
                 }
 
                 @Override
@@ -165,7 +153,6 @@ public final class NettyClient extends HttpClient {
      * The factory for creating a NettyClient.
      */
     public static class Factory implements HttpClientFactory {
-
         /**
          * Create a Netty client factory with default settings.
          */

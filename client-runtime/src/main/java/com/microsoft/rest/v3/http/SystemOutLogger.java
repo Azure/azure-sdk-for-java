@@ -7,7 +7,7 @@
 package com.microsoft.rest.v3.http;
 
 /**
- * A HttpPipeline RequestPolicy logger that logs to the StdOut/System.out stream.
+ * A HttpPipeline HttpPipelinePolicy logger that logs to the StdOut/System.out stream.
  */
 public class SystemOutLogger extends AbstractHttpPipelineLogger {
     @Override

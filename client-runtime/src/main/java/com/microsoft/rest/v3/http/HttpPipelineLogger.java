@@ -7,20 +7,21 @@
 package com.microsoft.rest.v3.http;
 
 /**
- * A Logger that can be added to an HttpPipeline. This enables each RequestPolicy to log
- * messages that can be used for debugging purposes.
+ * A Logger that can be added to an HttpPipeline. This enables each HttpPipelinePolicy to log messages.
  */
 public interface HttpPipelineLogger {
     /**
      * The log level threshold for what logs will be logged.
-     * @return The log level threshold for what logs will be logged.
+     *
+     * @return the log level threshold for what logs will be logged.
      */
     HttpPipelineLogLevel minimumLogLevel();
 
     /**
      * Log the provided message.
-     * @param logLevel The HttpLogDetailLevel associated with this message.
-     * @param message The message to log.
+     *
+     * @param logLevel The log level for the message
+     * @param message The message to log
      * @param formattedArguments A variadic list of arguments that should be formatted into the
      *                           provided message.
      */

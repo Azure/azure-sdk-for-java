@@ -30,7 +30,7 @@ public class MockHttpClient extends HttpClient {
     }
 
     @Override
-    public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
+    public Mono<HttpResponse> send(HttpRequest request) {
         requests.add(request);
 
         return Mono.just(mockResponse);

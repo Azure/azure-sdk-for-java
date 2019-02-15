@@ -6,118 +6,127 @@
 
 package com.microsoft.rest.v3.http;
 
-import com.microsoft.rest.v3.policy.RequestPolicy;
-import com.microsoft.rest.v3.policy.HttpClientRequestPolicyAdapter;
-import com.microsoft.rest.v3.policy.RequestPolicyFactory;
-import com.microsoft.rest.v3.policy.RequestPolicyOptions;
+import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
+import java.util.Objects;
 
 /**
- * A collection of RequestPolicies that will be applied to a HTTP request before it is sent and will
- * be applied to a HTTP response when it is received.
+ * The http pipeline.
  */
 public final class HttpPipeline {
-    /**
-     * The list of RequestPolicy factories that will be applied to HTTP requests and responses.
-     * The factories appear in this list in the order that they will be applied to outgoing
-     * requests.
-     */
-    private final RequestPolicyFactory[] requestPolicyFactories;
+    private final HttpClient httpClient;
+    private final HttpPipelineOptions requestPolicyOptions;
+    private final HttpPipelinePolicy[] pipelinePolicies;
 
     /**
-     * The HttpClient that will be used to send requests unless the sendRequestAsync() method is
-     * called with a different HttpClient.
+     * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through
+     * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
+     *
+     * @param httpClient the http client to write request to wire and receive response from wire.
+     * @param requestPolicyOptions optional properties that gets available in {@link HttpPipelineCallContext} for policies.
+     * @param pipelinePolicies pipeline policies in the order they need to applied
      */
-    private final HttpClientRequestPolicyAdapter httpClientRequestPolicyAdapter;
-
-    /**
-     * The optional properties that will be passed to each RequestPolicy as it is being created.
-     */
-    private final RequestPolicyOptions requestPolicyOptions;
-
-    /**
-     * Create a new HttpPipeline with the provided RequestPolicy factories.
-     * @param requestPolicyFactories The RequestPolicy factories to apply to HTTP requests and
-     *                               responses that pass through this HttpPipeline.
-     * @param options The optional properties that will be set on this HTTP pipelines.
-     */
-    HttpPipeline(RequestPolicyFactory[] requestPolicyFactories, HttpPipelineOptions options) {
-        this.requestPolicyFactories = requestPolicyFactories;
-
-        final HttpClient httpClient = (options != null && options.httpClient() != null ? options.httpClient() : HttpClient.createDefault());
-        this.httpClientRequestPolicyAdapter = new HttpClientRequestPolicyAdapter(httpClient);
-
-        final HttpPipelineLogger logger = (options != null ? options.logger() : null);
-        this.requestPolicyOptions = new RequestPolicyOptions(logger);
+    public HttpPipeline(HttpClient httpClient, HttpPipelineOptions requestPolicyOptions, HttpPipelinePolicy... pipelinePolicies) {
+        Objects.requireNonNull(pipelinePolicies);
+        Objects.requireNonNull(httpClient);
+        this.pipelinePolicies = pipelinePolicies;
+        this.httpClient = httpClient;
+        this.requestPolicyOptions = requestPolicyOptions;
     }
 
     /**
-     * Send the provided HTTP request using this HttpPipeline's HttpClient after it has passed through
-     * each of the RequestPolicies that have been configured on this HttpPipeline.
-     * @param httpRequest The HttpRequest to send.
-     * @return The HttpResponse that was received.
+     * Creates a HttpPipeline holding array of policies that gets applied all request initiated through
+     * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
+     *
+     * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
+     * receive response from wire.
+     *
+     * @param requestPolicyOptions optional properties that gets available in {@link HttpPipelineCallContext} for policies.
+     * @param pipelinePolicies pipeline policies in the order they need to applied
      */
-    public Mono<HttpResponse> sendRequestAsync(HttpRequest httpRequest) {
-        RequestPolicy requestPolicy = httpClientRequestPolicyAdapter;
-        for (final RequestPolicyFactory requestPolicyFactory : requestPolicyFactories) {
-            requestPolicy = requestPolicyFactory.create(requestPolicy, requestPolicyOptions);
-        }
-        return requestPolicy.sendAsync(httpRequest);
+    public HttpPipeline(HttpPipelineOptions requestPolicyOptions, HttpPipelinePolicy... pipelinePolicies) {
+        Objects.requireNonNull(pipelinePolicies);
+        this.pipelinePolicies = pipelinePolicies;
+        this.httpClient = HttpClient.createDefault();
+        this.requestPolicyOptions = requestPolicyOptions;
     }
 
     /**
-     * Build a new HttpPipeline that will use the provided RequestPolicy factories.
-     * @param requestPolicyFactories The RequestPolicy factories to use.
-     * @return The built HttpPipeline.
+     * Creates a HttpPipeline holding array of policies that gets applied
+     * to all request initiated through {@link HttpPipeline#send(HttpPipelineCallContext)}
+     * and it's response.
+     *
+     * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
+     * receive response from wire.
+     *
+     * @param pipelinePolicies pipeline policies in the order they need to applied
      */
-    public static HttpPipeline build(Iterable<RequestPolicyFactory> requestPolicyFactories) {
-        return build(null, requestPolicyFactories);
+    public HttpPipeline(HttpPipelinePolicy... pipelinePolicies) {
+        this(new HttpPipelineOptions(null), pipelinePolicies);
     }
 
     /**
-     * Build a new HttpPipeline that will use the provided RequestPolicy factories.
-     * @param requestPolicyFactories The RequestPolicy factories to use.
-     * @return The built HttpPipeline.
+     * Get the policies in the pipeline.
+     *
+     * @return policies in the pipeline
      */
-    public static HttpPipeline build(RequestPolicyFactory... requestPolicyFactories) {
-        return build((HttpPipelineOptions) null, requestPolicyFactories);
+    public HttpPipelinePolicy[] pipelinePolicies() {
+        return this.pipelinePolicies;
     }
 
     /**
-     * Build a new HttpPipeline that will use the provided HttpClient and RequestPolicy factories.
-     * @param httpClient The HttpClient to use.
-     * @param requestPolicyFactories The RequestPolicy factories to use.
-     * @return The built HttpPipeline.
+     * Get the {@link HttpClient} associated with the pipeline.
+     *
+     * @return the {@link HttpClient} associated with the pipeline
      */
-    public static HttpPipeline build(HttpClient httpClient, RequestPolicyFactory... requestPolicyFactories) {
-        return build(new HttpPipelineOptions().withHttpClient(httpClient), requestPolicyFactories);
+    public HttpClient httpClient() {
+        return this.httpClient;
     }
 
     /**
-     * Build a new HttpPipeline that will use the provided HttpClient and RequestPolicy factories.
-     * @param pipelineOptions The optional properties that can be set on the created HttpPipeline.
-     * @param requestPolicyFactories The RequestPolicy factories to use.
-     * @return The built HttpPipeline.
+     * Creates a new context local to the provided http request.
+     *
+     * @param httpRequest the request for a context needs to be created
+     * @return the request context
      */
-    public static HttpPipeline build(HttpPipelineOptions pipelineOptions, RequestPolicyFactory... requestPolicyFactories) {
-        return build(pipelineOptions, Arrays.asList(requestPolicyFactories));
+    public HttpPipelineCallContext newContext(HttpRequest httpRequest) {
+        return new HttpPipelineCallContext(httpRequest, this.requestPolicyOptions);
     }
 
     /**
-     * Build a new HttpPipeline that will use the provided HttpClient and RequestPolicy factories.
-     * @param pipelineOptions The optional properties that can be set on the created HttpPipeline.
-     * @param requestPolicyFactories The RequestPolicy factories to use.
-     * @return The built HttpPipeline.
+     * Creates a new context local to the provided http request.
+     *
+     * @param httpRequest the request for a context needs to be created
+     * @param data the data to associate with the context
+     * @return the request context
      */
-    public static HttpPipeline build(HttpPipelineOptions pipelineOptions, Iterable<RequestPolicyFactory> requestPolicyFactories) {
-        final HttpPipelineBuilder builder = new HttpPipelineBuilder(pipelineOptions);
-        if (requestPolicyFactories != null) {
-            for (final RequestPolicyFactory requestPolicyFactory : requestPolicyFactories) {
-                builder.withRequestPolicy(requestPolicyFactory);
-            }
-        }
-        return builder.build();
+    public HttpPipelineCallContext newContext(HttpRequest httpRequest, ContextData data) {
+        return new HttpPipelineCallContext(httpRequest, data, this.requestPolicyOptions);
+    }
+
+    /**
+     * Wraps the request in a context and send it through pipeline.
+     *
+     * @param request the request
+     * @return a publisher upon subscription flows the context through policies, sends the request and emits response upon completion
+     */
+    public Mono<HttpResponse> send(HttpRequest request) {
+        return this.send(this.newContext(request));
+    }
+
+    /**
+     * Sends the context (containing request) through pipeline.
+     *
+     * @param context the request context
+     * @return a publisher upon subscription flows the context through policies, sends the request and emits response upon completion
+     */
+    public Mono<HttpResponse> send(HttpPipelineCallContext context) {
+        // Return deferred to mono for complete lazy behaviour.
+        //
+        return Mono.defer(() -> {
+            NextPolicy next = new NextPolicy(this, context);
+            return next.process();
+        });
     }
 }

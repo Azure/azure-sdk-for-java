@@ -2,10 +2,11 @@ package com.microsoft.azure.v3;
 
 import com.microsoft.rest.v3.InvalidReturnTypeException;
 import com.microsoft.rest.v3.http.ContentType;
-import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.RestException;
 import com.microsoft.rest.v3.RestResponse;
-import com.microsoft.rest.v3.policy.DecodingPolicyFactory;
+import com.microsoft.rest.v3.http.HttpPipeline;
+import com.microsoft.rest.v3.http.policy.DecodingPolicy;
+import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.protocol.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.JacksonAdapter;
 import com.microsoft.rest.v3.annotations.BodyParam;
@@ -743,13 +744,16 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     private <T> T createService(Class<T> serviceClass) {
-        final HttpClient httpClient = createHttpClient();
-        return AzureProxy.create(serviceClass, null, HttpPipeline.build(httpClient, new DecodingPolicyFactory()), serializer);
+        HttpPipeline pipeline = new HttpPipeline(createHttpClient(),
+                new HttpPipelineOptions(null),
+                new DecodingPolicy());
+        //
+        return AzureProxy.create(serviceClass, null, pipeline, serializer);
     }
 
     private static void assertContains(String value, String expectedSubstring) {
         assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
-    private static final SerializerAdapter<?> serializer = new JacksonAdapter();
+    private static final SerializerAdapter serializer = new JacksonAdapter();
 }

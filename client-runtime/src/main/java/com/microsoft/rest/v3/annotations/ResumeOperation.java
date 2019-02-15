@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the a continuation method.
+ * Annotation for method representing continuation operation.
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

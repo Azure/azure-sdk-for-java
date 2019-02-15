@@ -12,7 +12,7 @@ import com.microsoft.rest.v3.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The different HTTP methods of a HttpRequest.
+ * The HTTP request methods.
  */
 public class HttpMethod extends ExpandableStringEnum<HttpMethod> {
     /**
@@ -48,8 +48,8 @@ public class HttpMethod extends ExpandableStringEnum<HttpMethod> {
     /**
      * Creates or finds a HttpMethod from its string representation.
      *
-     * @param name a name to look for.
-     * @return the corresponding HttpMethod.
+     * @param name a name to look for
+     * @return the corresponding HttpMethod
      */
     @JsonCreator
     public static HttpMethod fromString(String name) {
@@ -57,7 +57,7 @@ public class HttpMethod extends ExpandableStringEnum<HttpMethod> {
     }
 
     /**
-     * @return known HttpMethod values.
+     * @return known HttpMethod values
      */
     public static Collection<HttpMethod> values() {
         return values(HttpMethod.class);

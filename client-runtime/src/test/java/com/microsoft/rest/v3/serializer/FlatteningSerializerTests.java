@@ -7,6 +7,7 @@
 package com.microsoft.rest.v3.serializer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.v3.protocol.SerializerEncoding;
 import com.microsoft.rest.v3.util.Foo;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,11 +34,11 @@ public class FlatteningSerializerTests {
         JacksonAdapter adapter = new JacksonAdapter();
 
         // serialization
-        String serialized = adapter.serialize(foo);
+        String serialized = adapter.serialize(foo, SerializerEncoding.JSON);
         Assert.assertEquals("{\"$type\":\"foo\",\"properties\":{\"bar\":\"hello.world\",\"props\":{\"baz\":[\"hello\",\"hello.world\"],\"q\":{\"qux\":{\"hello\":\"world\",\"a.b\":\"c.d\",\"bar.b\":\"uuzz\",\"bar.a\":\"ttyy\"}}},\"more.props\":\"hello\"}}", serialized);
 
         // deserialization
-        Foo deserialized = adapter.deserialize(serialized, Foo.class);
+        Foo deserialized = adapter.deserialize(serialized, Foo.class, SerializerEncoding.JSON);
         Assert.assertEquals("hello.world", deserialized.bar);
         Assert.assertArrayEquals(new String[]{"hello", "hello.world"}, deserialized.baz.toArray());
         Assert.assertNotNull(deserialized.qux);
@@ -50,7 +51,7 @@ public class FlatteningSerializerTests {
 
     @Test
     public void canSerializeMapKeysWithDotAndSlash() throws Exception {
-        String serialized = new JacksonAdapter().serialize(prepareSchoolModel());
+        String serialized = new JacksonAdapter().serialize(prepareSchoolModel(), SerializerEncoding.JSON);
         Assert.assertEquals("{\"teacher\":{\"students\":{\"af.B/D\":{},\"af.B/C\":{}}},\"tags\":{\"foo.aa\":\"bar\",\"x.y\":\"zz\"},\"properties\":{\"name\":\"school1\"}}", serialized);
     }
 

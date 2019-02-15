@@ -13,6 +13,8 @@ import java.io.IOException;
  */
 public interface ServiceClientCredentials {
     /**
+     * The Authorization header value for the provided url.
+     *
      * @param uri The URI to which the request is being made.
      * @return The value containing currently valid credentials to put in the HTTP header.
      * @throws IOException if unable to get the authorization header value

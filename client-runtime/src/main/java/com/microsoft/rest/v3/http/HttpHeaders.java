@@ -23,14 +23,15 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     private final Map<String, HttpHeader> headers = new HashMap<>();
 
     /**
-     * Create an empty HttpHeaders object.
+     * Create an empty HttpHeaders instance.
      */
     public HttpHeaders() {
     }
 
     /**
-     * Create a HttpHeaders object with the provided initial headers.
-     * @param headers The map of name to value associations to use as initial headers.
+     * Create a HttpHeaders instance with the provided initial headers.
+     *
+     * @param headers the map of initial headers
      */
     public HttpHeaders(Map<String, String> headers) {
         for (final Map.Entry<String, String> header : headers.entrySet()) {
@@ -39,8 +40,9 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     }
 
     /**
-     * Create a HttpHeaders object with the provided initial headers.
-     * @param headers The map of name to value associations to use as initial headers.
+     * Create a HttpHeaders instance with the provided initial headers.
+     *
+     * @param headers the collection of initial headers
      */
     public HttpHeaders(Iterable<HttpHeader> headers) {
         this();
@@ -51,50 +53,56 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     }
 
     /**
-     * Get the number of HTTP headers in this collection.
-     * @return The number of HTTP headers in this collection.
+     * Gets the number of headers in the collection.
+     *
+     * @return the number of headers in this collection.
      */
     public int size() {
         return headers.size();
     }
 
     /**
-     * Set the value for the header named headerName,
-     * discarding any value previously added for that header.
-     * @param headerName The name of the header.
-     * @param headerValue The value of the header.
-     * @return This HttpHeaders instance.
+     * Set a header.
+     *
+     * if header with same name already exists then the value will be overwritten.
+     * if value is null and header with provided name already exists then it will be removed.
+     *
+     * @param name the name
+     * @param value the value
+     * @return this HttpHeaders
      */
-    public HttpHeaders set(String headerName, String headerValue) {
-        final String headerKey = headerName.toLowerCase();
-        if (headerValue == null) {
+    public HttpHeaders set(String name, String value) {
+        final String headerKey = name.toLowerCase();
+        if (value == null) {
             headers.remove(headerKey);
         }
         else {
-            headers.put(headerKey, new HttpHeader(headerName, headerValue));
+            headers.put(headerKey, new HttpHeader(name, value));
         }
         return this;
     }
 
     /**
-     * Get the header value for the provided header name. If the header name isn't found, then null
-     * will be returned.
-     * @param headerName The name of the header to look for.
-     * @return The String value of the header, or null if the header isn't found.
+     * Get the header value for the provided header name. Null will be returned if the header
+     * name isn't found.
+     *
+     * @param name the name of the header to look for
+     * @return The String value of the header, or null if the header isn't found
      */
-    public String value(String headerName) {
-        final HttpHeader header = getHeader(headerName);
+    public String value(String name) {
+        final HttpHeader header = getHeader(name);
         return header == null ? null : header.value();
     }
 
     /**
-     * Get the header values for the provided header name. If the header name isn't found, then null
-     * will be returned.
-     * @param headerName The name of the header to look for.
-     * @return The String values of the header, or null if the header isn't found.
+     * Get the header values for the provided header name. Null will be returned if
+     * the header name isn't found.
+     *
+     * @param name the name of the header to look for
+     * @return the values of the header, or null if the header isn't found
      */
-    public String[] values(String headerName) {
-        final HttpHeader header = getHeader(headerName);
+    public String[] values(String name) {
+        final HttpHeader header = getHeader(name);
         return header == null ? null : header.values();
     }
 
@@ -104,8 +112,9 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     }
 
     /**
-     * Convert this HttpHeaders collection to a Map.
-     * @return The Map representation of this HttpHeaders collection.
+     * Get {@link Map} representation of the HttpHeaders collection.
+     *
+     * @return the headers as map
      */
     public Map<String, String> toMap() {
         final Map<String, String> result = new HashMap<>();

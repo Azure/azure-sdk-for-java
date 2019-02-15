@@ -1,6 +1,7 @@
 package com.microsoft.rest.v3.serializer;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.microsoft.rest.v3.protocol.SerializerEncoding;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class JacksonAdapterTests {
     public void emptyMap() throws IOException {
         final Map<String,String> map = new HashMap<>();
         final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{}", serializer.serialize(map));
+        assertEquals("{}", serializer.serialize(map, SerializerEncoding.JSON));
     }
 
     @Test
@@ -23,7 +24,7 @@ public class JacksonAdapterTests {
         map.put(null, null);
         final JacksonAdapter serializer = new JacksonAdapter();
         try {
-            serializer.serialize(map);
+            serializer.serialize(map, SerializerEncoding.JSON);
             fail();
         }
         catch (Exception e) {
@@ -37,7 +38,7 @@ public class JacksonAdapterTests {
         final Map<String,String> map = new HashMap<>();
         map.put("", null);
         final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{\"\":null}", serializer.serialize(map));
+        assertEquals("{\"\":null}", serializer.serialize(map, SerializerEncoding.JSON));
     }
 
     @Test
@@ -45,7 +46,7 @@ public class JacksonAdapterTests {
         final Map<String,String> map = new HashMap<>();
         map.put("", "");
         final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{\"\":\"\"}", serializer.serialize(map));
+        assertEquals("{\"\":\"\"}", serializer.serialize(map, SerializerEncoding.JSON));
     }
 
     @Test
@@ -53,6 +54,6 @@ public class JacksonAdapterTests {
         final Map<String,String> map = new HashMap<>();
         map.put("", "test");
         final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{\"\":\"test\"}", serializer.serialize(map));
+        assertEquals("{\"\":\"test\"}", serializer.serialize(map, SerializerEncoding.JSON));
     }
 }

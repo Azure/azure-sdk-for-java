@@ -7,11 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.v3.http.MockAzureHttpClient;
 import com.microsoft.azure.v3.http.MockAzureHttpResponse;
 import com.microsoft.rest.v3.OperationDescription;
-import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.RestException;
+import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.policy.DecodingPolicyFactory;
+import com.microsoft.rest.v3.http.policy.DecodingPolicy;
+import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.protocol.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.JacksonAdapter;
 import com.microsoft.rest.v3.InvalidReturnTypeException;
@@ -462,7 +463,7 @@ public class AzureProxyTests {
         }
 
         assertEquals(0, httpClient.getRequests());
-        assertEquals(1, httpClient.createRequests());
+        assertEquals(0, httpClient.createRequests()); // Request won't reach HttpClient and fail in AzureProxy
         assertEquals(0, httpClient.deleteRequests());
         assertEquals(0, httpClient.pollRequests());
     }
@@ -835,7 +836,7 @@ public class AzureProxyTests {
     public void deleteAsyncWithForbiddenResponse() {
         final MockAzureHttpClient httpClient = new MockAzureHttpClient() {
             @Override
-            public Mono<HttpResponse> sendRequestAsync(HttpRequest request) {
+            public Mono<HttpResponse> send(HttpRequest request) {
                 return Mono.<HttpResponse>just(new MockAzureHttpResponse(403, MockAzureHttpClient.responseHeaders()));
             }
         };
@@ -852,12 +853,16 @@ public class AzureProxyTests {
     }
 
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
-        return AzureProxy.create(serviceClass, null, HttpPipeline.build(httpClient, new DecodingPolicyFactory()), serializer);
+        HttpPipeline pipeline = new HttpPipeline(httpClient,
+                new HttpPipelineOptions(null),
+                new DecodingPolicy());
+
+        return AzureProxy.create(serviceClass, null, pipeline, serializer);
     }
 
     private static void assertContains(String value, String expectedSubstring) {
         assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
-    private static final SerializerAdapter<?> serializer = new JacksonAdapter();
+    private static final SerializerAdapter serializer = new JacksonAdapter();
 }

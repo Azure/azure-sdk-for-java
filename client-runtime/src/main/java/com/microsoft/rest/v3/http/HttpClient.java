@@ -13,32 +13,35 @@ import reactor.core.publisher.Mono;
  */
 public abstract class HttpClient {
     /**
-     * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
-     * @param request The HTTP request to send.
-     * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
+     * Send the provided request asynchronously.
+     *
+     * @param request The HTTP request to send
+     * @return A {@link Mono} that emits response asynchronously
      */
-    public abstract Mono<HttpResponse> sendRequestAsync(HttpRequest request);
-
-    private static final class DefaultHttpClientHolder {
-        // Putting this field in an inner class makes it so it is only instantiated when
-        // one of the createDefault() methods instead of instantiating when any members are accessed.
-        private static HttpClientFactory defaultHttpClientFactory = new NettyClient.Factory();
-    }
+    public abstract Mono<HttpResponse> send(HttpRequest request);
 
     /**
-     * Create an instance of the default HttpClient type.
-     * @return an instance of the default HttpClient type.
+     * Create default HttpClient instance.
+     *
+     * @return the HttpClient
      */
     public static HttpClient createDefault() {
         return createDefault(null);
     }
 
     /**
-     * Create an instance of the default HttpClient type with the provided configuration.
-     * @param configuration The configuration to apply to the HttpClient.
-     * @return an instance of the default HttpClient type.
+     * Create default HttpClient instance with the provided configuration applied.
+     *
+     * @param configuration The configuration to apply to the HttpClient
+     * @return the HttpClient
      */
     public static HttpClient createDefault(HttpClientConfiguration configuration) {
         return DefaultHttpClientHolder.defaultHttpClientFactory.create(configuration);
+    }
+
+    private static final class DefaultHttpClientHolder {
+        // Putting this field in an inner class makes it so it is only instantiated when
+        // one of the createDefault() methods instead of instantiating when any members are accessed.
+        private static HttpClientFactory defaultHttpClientFactory = new NettyClient.Factory();
     }
 }

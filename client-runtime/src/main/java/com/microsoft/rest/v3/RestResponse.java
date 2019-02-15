@@ -11,7 +11,8 @@ import com.microsoft.rest.v3.http.HttpRequest;
 import java.util.Map;
 
 /**
- * The response object that is a result of making a REST request.
+ * The response of a REST request.
+ *
  * @param <THeaders> The deserialized type of the response headers.
  * @param <TBody> The deserialized type of the response body.
  */
@@ -23,12 +24,13 @@ public class RestResponse<THeaders, TBody> {
     private final TBody body;
 
     /**
-     * Create a new RestResponse object.
-     * @param request The request which resulted in this RestResponse.
-     * @param statusCode The status code of the HTTP response.
-     * @param headers The deserialized headers of the HTTP response.
-     * @param rawHeaders The raw headers of the HTTP response.
-     * @param body The deserialized body.
+     * Create RestResponse.
+     *
+     * @param request the request which resulted in this response
+     * @param statusCode the status code of the HTTP response
+     * @param headers the deserialized headers of the HTTP response
+     * @param rawHeaders the raw headers of the HTTP response
+     * @param body the deserialized body
      */
     public RestResponse(HttpRequest request, int statusCode, THeaders headers, Map<String, String> rawHeaders, TBody body) {
         this.request = request;
@@ -39,35 +41,35 @@ public class RestResponse<THeaders, TBody> {
     }
 
     /**
-     * @return The request which resulted in this RestResponse.
+     * @return the request which resulted in this RestResponse.
      */
     public HttpRequest request() {
         return request;
     }
 
     /**
-     * @return The status code of the HTTP response.
+     * @return the status code of the HTTP response.
      */
     public int statusCode() {
         return statusCode;
     }
 
     /**
-     * @return The deserialized headers of the HTTP response.
+     * @return the deserialized headers of the HTTP response.
      */
     public THeaders headers() {
         return headers;
     }
 
     /**
-     * @return A Map containing the raw HTTP response headers.
+     * @return a Map containing the raw HTTP response headers.
      */
     public Map<String, String> rawHeaders() {
         return rawHeaders;
     }
 
     /**
-     * @return The deserialized body of the HTTP response.
+     * @return the deserialized body of the HTTP response.
      */
     public TBody body() {
         return body;

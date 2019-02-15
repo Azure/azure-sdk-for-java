@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.v3.serializer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.rest.v3.protocol.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.JacksonAdapter;
 
@@ -14,7 +13,7 @@ import com.microsoft.rest.v3.serializer.JacksonAdapter;
  * A serialization helper class overriding {@link JacksonAdapter} with extra
  * functionality useful for Azure operations.
  */
-public final class AzureJacksonAdapter extends JacksonAdapter implements SerializerAdapter<ObjectMapper> {
+public final class AzureJacksonAdapter extends JacksonAdapter implements SerializerAdapter {
     /**
      * Creates an instance of the Azure flavored Jackson adapter.
      */

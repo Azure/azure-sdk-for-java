@@ -12,8 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation used for notifying the validator to skip
- * validation for the properties in the parent class.
+ * Annotation to notify the validator to skip validation for the properties in the parent class.
  *
  */
 @Target({ElementType.ANNOTATION_TYPE, ElementType.TYPE})

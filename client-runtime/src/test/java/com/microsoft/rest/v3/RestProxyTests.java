@@ -21,18 +21,20 @@ import com.microsoft.rest.v3.http.ContentType;
 import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.policy.DecodingPolicyFactory;
-import com.microsoft.rest.v3.policy.HttpLogDetailLevel;
-import com.microsoft.rest.v3.policy.HttpLoggingPolicyFactory;
+import com.microsoft.rest.v3.http.policy.DecodingPolicy;
+import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
+import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
+import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.protocol.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.JacksonAdapter;
 import com.microsoft.rest.v3.util.FluxUtil;
+import io.netty.buffer.ByteBuf;
+import io.netty.util.ReferenceCountUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -500,7 +502,7 @@ public abstract class RestProxyTests {
     private interface Service10 {
         @HEAD("anything")
         @ExpectedResponses({200})
-        VoidResponse head();
+        RestVoidResponse head();
 
         @HEAD("anything")
         @ExpectedResponses({200})
@@ -512,7 +514,7 @@ public abstract class RestProxyTests {
 
         @HEAD("anything")
         @ExpectedResponses({200})
-        Mono<VoidResponse> headAsync();
+        Mono<RestVoidResponse> headAsync();
 
         @HEAD("anything")
         @ExpectedResponses({200})
@@ -1246,7 +1248,7 @@ public abstract class RestProxyTests {
     interface UnexpectedOKService {
         @GET("/bytes/1024")
         @ExpectedResponses({400})
-        StreamResponse getBytes();
+        RestStreamResponse getBytes();
     }
 
     @Test
@@ -1277,28 +1279,31 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     interface DownloadService {
         @GET("/bytes/30720")
-        StreamResponse getBytes();
+        RestStreamResponse getBytes();
 
         @GET("/bytes/30720")
-        Flux<ByteBuffer> getBytesFlowable();
+        Flux<ByteBuf> getBytesFlowable();
     }
 
     @Test
     public void SimpleDownloadTest() {
-        StreamResponse response = createService(DownloadService.class).getBytes();
-        int count = 0;
-        for (ByteBuffer bytes : response.body().toIterable()) {
-            count += bytes.remaining();
+        try (RestStreamResponse response = createService(DownloadService.class).getBytes()) {
+            int count = 0;
+            for (ByteBuf byteBuf : response.body().doOnNext(b -> b.retain()).toIterable()) {
+                // assertEquals(1, byteBuf.refCnt());
+                count += byteBuf.readableBytes();
+                ReferenceCountUtil.refCnt(byteBuf);
+            }
+            assertEquals(30720, count);
         }
-        assertEquals(30720, count);
     }
 
     @Test
     public void RawFlowableDownloadTest() {
-        Flux<ByteBuffer> response = createService(DownloadService.class).getBytesFlowable();
+        Flux<ByteBuf> response = createService(DownloadService.class).getBytesFlowable();
         int count = 0;
-        for (ByteBuffer bytes : response.toIterable()) {
-            count += bytes.remaining();
+        for (ByteBuf byteBuf : response.toIterable()) {
+            count += byteBuf.readableBytes();
         }
         assertEquals(30720, count);
     }
@@ -1306,17 +1311,24 @@ public abstract class RestProxyTests {
     @Host("https://httpbin.org")
     interface FlowableUploadService {
         @PUT("/put")
-        BodyResponse<HttpBinJSON> put(@BodyParam("text/plain") Flux<ByteBuffer> content, @HeaderParam("Content-Length") long contentLength);
+        RestContentResponse<HttpBinJSON> put(@BodyParam("text/plain") Flux<ByteBuf> content, @HeaderParam("Content-Length") long contentLength);
     }
 
     @Test
     public void FlowableUploadTest() throws Exception {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
-        Flux<ByteBuffer> stream = FluxUtil.readFile(AsynchronousFileChannel.open(filePath));
+        Flux<ByteBuf> stream = FluxUtil.byteBufStreamFromFile(AsynchronousFileChannel.open(filePath));
 
         final HttpClient httpClient = createHttpClient();
-        // Log the body so that body buffering/replay behavior is exercised.
-        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new DecodingPolicyFactory(), new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY_AND_HEADERS, true));
+        // Scenario: Log the body so that body buffering/replay behavior is exercised.
+        //
+        // Order in which policies applied will be the order in which they added to builder
+        //
+        final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
+                new HttpPipelineOptions(null),
+                new DecodingPolicy(),
+                new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true));
+        //
         RestResponse<Void, HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.body().data);
@@ -1326,8 +1338,8 @@ public abstract class RestProxyTests {
     public void SegmentUploadTest() throws Exception {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ);
-        BodyResponse<HttpBinJSON> response = createService(FlowableUploadService.class)
-                .put(FluxUtil.readFile(fileChannel, 4, 15), 15);
+        RestContentResponse<HttpBinJSON> response = createService(FlowableUploadService.class)
+                .put(FluxUtil.byteBufStreamFromFile(fileChannel, 4, 15), 15);
 
         assertEquals("quick brown fox", response.body().data);
     }
@@ -1387,25 +1399,25 @@ public abstract class RestProxyTests {
         Mono<HttpBinJSON> getAsync();
 
         @GET("anything")
-        Mono<BodyResponse<HttpBinJSON>> getBodyResponseAsync();
+        Mono<RestContentResponse<HttpBinJSON>> getBodyResponseAsync();
     }
 
     @Test(expected = RestException.class)
     public void testMissingDecodingPolicyCausesException() {
-        Service25 service = RestProxy.create(Service25.class, HttpPipeline.build());
+        Service25 service = RestProxy.create(Service25.class, new HttpPipeline());
         service.get();
     }
 
     @Test(expected = RestException.class)
     public void testSingleMissingDecodingPolicyCausesException() {
-        Service25 service = RestProxy.create(Service25.class, HttpPipeline.build());
+        Service25 service = RestProxy.create(Service25.class, new HttpPipeline());
         service.getAsync().block();
         service.getBodyResponseAsync().block();
     }
 
     @Test(expected = RestException.class)
     public void testSingleBodyResponseMissingDecodingPolicyCausesException() {
-        Service25 service = RestProxy.create(Service25.class, HttpPipeline.build());
+        Service25 service = RestProxy.create(Service25.class, new HttpPipeline());
         service.getBodyResponseAsync().block();
     }
 
@@ -1416,7 +1428,10 @@ public abstract class RestProxyTests {
     }
 
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
-        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new DecodingPolicyFactory());
+        final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
+                new HttpPipelineOptions(null),
+                new DecodingPolicy());
+
         return RestProxy.create(serviceClass, httpPipeline, serializer);
     }
 
@@ -1424,5 +1439,5 @@ public abstract class RestProxyTests {
         assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
-    private static final SerializerAdapter<?> serializer = new JacksonAdapter();
+    private static final SerializerAdapter serializer = new JacksonAdapter();
 }

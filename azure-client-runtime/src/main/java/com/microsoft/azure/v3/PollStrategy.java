@@ -9,6 +9,7 @@ package com.microsoft.azure.v3;
 import com.microsoft.rest.v3.RestException;
 import com.microsoft.rest.v3.RestProxy;
 import com.microsoft.rest.v3.SwaggerMethodParser;
+import com.microsoft.rest.v3.http.ContextData;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.protocol.HttpResponseDecoder;
@@ -161,7 +162,7 @@ abstract class PollStrategy {
     Mono<HttpResponse> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             final HttpRequest pollRequest = createPollRequest();
-            return restProxy.sendHttpRequestAsync(pollRequest);
+            return restProxy.sendHttpRequestAsync(pollRequest, new ContextData("caller-method", fullyQualifiedMethodName()));
         })).flatMap(response -> updateFromAsync(response)));
     }
 

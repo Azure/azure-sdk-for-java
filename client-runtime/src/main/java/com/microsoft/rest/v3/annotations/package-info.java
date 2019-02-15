@@ -1,7 +1,4 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
+ * Package containing annotation for client side methods to REST APIs.
  */
-
 package com.microsoft.rest.v3.annotations;

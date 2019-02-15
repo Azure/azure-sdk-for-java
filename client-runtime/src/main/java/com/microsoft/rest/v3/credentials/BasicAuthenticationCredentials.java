@@ -15,7 +15,7 @@ import java.io.UnsupportedEncodingException;
  */
 public class BasicAuthenticationCredentials implements ServiceClientCredentials {
     /**
-     * Basic auth UserName.
+     * Basic auth user name.
      */
     private String userName;
 
@@ -25,7 +25,7 @@ public class BasicAuthenticationCredentials implements ServiceClientCredentials 
     private String password;
 
     /**
-     * Instantiates a new basic authentication credential.
+     * Creates a basic authentication credential.
      *
      * @param userName basic auth user name
      * @param password basic auth password

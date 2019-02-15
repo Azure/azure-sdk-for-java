@@ -13,9 +13,10 @@ import java.io.Closeable;
  */
 public interface HttpClientFactory extends Closeable {
     /**
-     * Creates an HttpClient with the given Configuration.
-     * @param configuration the configuration.
-     * @return the HttpClient.
+     * Creates an {@link HttpClient} with the given Configuration.
+     *
+     * @param configuration the configuration
+     * @return the HttpClient
      */
     HttpClient create(HttpClientConfiguration configuration);
 

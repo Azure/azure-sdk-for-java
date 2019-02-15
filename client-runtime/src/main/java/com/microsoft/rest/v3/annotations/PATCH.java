@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Defines the parametrized relative path for an HTTP PATCH method.
+ * HTTP PATCH method annotation describing the parametrized relative path to an endpoint for resource patch (update).
  *
  * The required value can be either a relative path or an absolute path. When it's
  * an absolute path, it must start with a protocol or a parametrized segment.

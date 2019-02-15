@@ -7,18 +7,21 @@
 package com.microsoft.rest.v3.http;
 
 /**
- * A single header within a HTTP request. If multiple header values are added to a HTTP request with
- * the same name (case-insensitive), then the values will be appended to the end of the same Header
- * with commas separating them.
+ * A single header within a HTTP request or response.
+ *
+ * If multiple header values are added to a HTTP request or response with
+ * the same name (case-insensitive), then the values will be appended
+ * to the end of the same Header with commas separating them.
  */
 public class HttpHeader {
     private final String name;
     private String value;
 
     /**
-     * Create a new HttpHeader using the provided name and value.
-     * @param name The name of the HttpHeader.
-     * @param value The value of the HttpHeader.
+     * Create a HttpHeader instance using the provided name and value.
+     *
+     * @param name the name
+     * @param value the value
      */
     public HttpHeader(String name, String value) {
         this.name = name;
@@ -26,40 +29,45 @@ public class HttpHeader {
     }
 
     /**
-     * Get the name of this Header.
-     * @return The name of this Header.
+     * Get the header name.
+     *
+     * @return the name of this Header
      */
     public String name() {
         return name;
     }
 
     /**
-     * Get the value of this Header.
-     * @return The value of this Header.
+     * Get the header value.
+     *
+     * @return the value of this Header
      */
     public String value() {
         return value;
     }
 
     /**
-     * Get the values of this Header that are separated by a comma.
-     * @return The values of this Header that are separated by a comma.
+     * Get the comma separated value as an array.
+     *
+     * @return the values of this Header that are separated by a comma
      */
     public String[] values() {
         return value == null ? null : value.split(",");
     }
 
     /**
-     * Add another value to the end of this Header.
-     * @param value The value to add to the end of this Header.
+     * Add a new value to the end of the Header.
+     *
+     * @param value the value to add
      */
     public void addValue(String value) {
         this.value += "," + value;
     }
 
     /**
-     * Get the String representation of this HttpHeader.
-     * @return The String representation of this HttpHeader.
+     * Get the String representation of the header.
+     *
+     * @return the String representation of this HttpHeader
      */
     @Override
     public String toString() {

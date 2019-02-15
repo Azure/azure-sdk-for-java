@@ -6,10 +6,11 @@
 
 package com.microsoft.rest.v3.http;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -21,7 +22,8 @@ public final class BufferedHttpResponse extends HttpResponse {
 
     /**
      * Creates a buffered HTTP response.
-     * @param innerHttpResponse The HTTP response to buffer.
+     *
+     * @param innerHttpResponse The HTTP response to buffer
      */
     public BufferedHttpResponse(HttpResponse innerHttpResponse) {
         this.innerHttpResponse = innerHttpResponse;
@@ -34,8 +36,8 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public String headerValue(String headerName) {
-        return innerHttpResponse.headerValue(headerName);
+    public String headerValue(String name) {
+        return innerHttpResponse.headerValue(name);
     }
 
     @Override
@@ -49,8 +51,8 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Flux<ByteBuffer> body() {
-        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(ByteBuffer.wrap(bytes)));
+    public Flux<ByteBuf> body() {
+        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(Unpooled.wrappedBuffer(bytes)));
     }
 
     @Override
@@ -70,8 +72,9 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public boolean withIsDecoded(boolean isDecoded) {
-        return innerHttpResponse.withIsDecoded(isDecoded);
+    public BufferedHttpResponse withIsDecoded(boolean isDecoded) {
+        innerHttpResponse.withIsDecoded(isDecoded);
+        return this;
     }
 
     @Override

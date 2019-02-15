@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * A serialization helper class wrapped around {@link ObjectMapper}.
  */
-public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
+public class JacksonAdapter implements SerializerAdapter {
     /**
      * An instance of {@link ObjectMapper} to serialize/deserialize objects.
      */
@@ -69,7 +69,9 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
         return simpleMapper;
     }
 
-    @Override
+    /**
+     * @return the original serializer type
+     */
     public ObjectMapper serializer() {
         return mapper;
     }
@@ -90,17 +92,12 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     }
 
     @Override
-    public String serialize(Object object) throws IOException {
-        return serialize(object, SerializerEncoding.JSON);
-    }
-
-    @Override
     public String serializeRaw(Object object) {
         if (object == null) {
             return null;
         }
         try {
-            return serialize(object).replaceAll("^\"*", "").replaceAll("\"*$", "");
+            return serialize(object, SerializerEncoding.JSON).replaceAll("^\"*", "").replaceAll("\"*$", "");
         } catch (IOException ex) {
             return null;
         }
@@ -132,12 +129,6 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
         } else {
             return (T) serializer().readValue(value, javaType);
         }
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T deserialize(String value, final Type type) throws IOException {
-        return deserialize(value, type, SerializerEncoding.JSON);
     }
 
     /**

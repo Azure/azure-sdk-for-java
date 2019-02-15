@@ -16,17 +16,21 @@ import com.microsoft.rest.v3.annotations.PUT;
 import com.microsoft.rest.v3.annotations.PathParam;
 import com.microsoft.rest.v3.http.ContentType;
 import com.microsoft.rest.v3.http.HttpHeaders;
-import com.microsoft.rest.v3.http.HttpPipelineBuilder;
-import com.microsoft.rest.v3.http.HttpRequest;
+import com.microsoft.rest.v3.http.HttpPipeline;
+import com.microsoft.rest.v3.http.HttpPipelineCallContext;
+import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
+import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.policy.AddDatePolicyFactory;
-import com.microsoft.rest.v3.policy.AddHeadersPolicyFactory;
-import com.microsoft.rest.v3.policy.HostPolicyFactory;
-import com.microsoft.rest.v3.policy.HttpLogDetailLevel;
-import com.microsoft.rest.v3.policy.RequestPolicy;
-import com.microsoft.rest.v3.policy.RequestPolicyFactory;
-import com.microsoft.rest.v3.policy.RequestPolicyOptions;
+import com.microsoft.rest.v3.http.NextPolicy;
+import com.microsoft.rest.v3.http.policy.AddDatePolicy;
+import com.microsoft.rest.v3.http.policy.AddHeadersPolicy;
+import com.microsoft.rest.v3.http.policy.HostPolicy;
+import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
+import com.microsoft.rest.v3.http.HttpPipelineOptions;
+import com.microsoft.rest.v3.util.FlowableUtils;
 import com.microsoft.rest.v3.util.FluxUtil;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.netty.util.ResourceLeakDetector;
 import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
@@ -48,7 +52,7 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
-import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
 import java.nio.file.FileVisitResult;
@@ -64,11 +68,12 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertArrayEquals;
 
@@ -96,20 +101,23 @@ public class RestProxyStressTests {
 
         HttpHeaders headers = new HttpHeaders()
                 .set("x-ms-version", "2017-04-17");
-        HttpPipelineBuilder builder = new HttpPipelineBuilder()
-                .withRequestPolicy(new AddDatePolicyFactory())
-                .withRequestPolicy(new AddHeadersPolicyFactory(headers))
-                .withRequestPolicy(new ThrottlingRetryPolicyFactory());
-
+        // Order in which policies applied will be the order in which they added to builder
+        List<HttpPipelinePolicy> polices = new ArrayList<HttpPipelinePolicy>();
+        polices.add(new AddDatePolicy());
+        polices.add(new AddHeadersPolicy(headers));
+        polices.add(new ThrottlingRetryPolicy());
+        //
         String liveStressTests = System.getenv("JAVA_SDK_TEST_SAS");
         if (liveStressTests == null || liveStressTests.isEmpty()) {
             launchTestServer();
-            builder.withRequestPolicy(new HostPolicyFactory("http://localhost:" + port));
+            polices.add(new HostPolicy("http://localhost:" + port));
         }
-
-        builder.withHttpLoggingPolicy(HttpLogDetailLevel.BASIC);
-
-        service = RestProxy.create(IOService.class, builder.build());
+        //
+        polices.add(new HttpLoggingPolicy(HttpLogDetailLevel.BASIC, false));
+        //
+        service = RestProxy.create(IOService.class,
+                new HttpPipeline(new HttpPipelineOptions(null),
+                        polices.toArray(new HttpPipelinePolicy[polices.size()])));
 
         TEMP_FOLDER_PATH = Paths.get(tempFolderPath);
         create100MFiles(false);
@@ -141,44 +149,31 @@ public class RestProxyStressTests {
         }
     }
 
-    private static final class ThrottlingRetryPolicyFactory implements RequestPolicyFactory {
+    private static final class ThrottlingRetryPolicy implements HttpPipelinePolicy {
         @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
-            return new ThrottlingRetryPolicy(next);
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+            return process(1 + ThreadLocalRandom.current().nextInt(5), context, next);
         }
 
-        private static final class ThrottlingRetryPolicy implements RequestPolicy {
-            private final RequestPolicy next;
-
-            ThrottlingRetryPolicy(RequestPolicy next) {
-                this.next = next;
-            }
-
-            @Override
-            public Mono<HttpResponse> sendAsync(HttpRequest request) {
-                return sendAsync(request, 1 + ThreadLocalRandom.current().nextInt(5));
-            }
-
-            Mono<HttpResponse> sendAsync(final HttpRequest request, final int waitTimeSeconds) {
-                return next.sendAsync(request).flatMap(httpResponse -> {
-                        if (httpResponse.statusCode() != 503 && httpResponse.statusCode() != 500) {
-                            return Mono.just(httpResponse);
-                        } else {
-                            LoggerFactory.getLogger(getClass()).warn("Received " + httpResponse.statusCode() + " for request. Waiting " + waitTimeSeconds + " seconds before retry.");
-                            final int nextWaitTime = 5 + ThreadLocalRandom.current().nextInt(10);
-                            httpResponse.body().subscribe().dispose(); // TODO: Anu re-evaluate this
-                            return Mono.delay(Duration.of(waitTimeSeconds, ChronoUnit.SECONDS))
-                                    .then(sendAsync(request, nextWaitTime));
-                        }
-                }).onErrorResume(throwable -> {
-                        if (throwable instanceof IOException) {
-                            LoggerFactory.getLogger(getClass()).warn("I/O exception occurred: " + throwable.getMessage());
-                            return sendAsync(request).delaySubscription(Duration.of(waitTimeSeconds, ChronoUnit.SECONDS));
-                        }
-                        LoggerFactory.getLogger(getClass()).warn("Unrecoverable exception occurred: " + throwable.getMessage());
-                        return Mono.error(throwable);
-                });
-            }
+        Mono<HttpResponse> process(final int waitTimeSeconds, final HttpPipelineCallContext context, final NextPolicy nextPolicy) {
+            return nextPolicy.clone().process().flatMap(httpResponse -> {
+                if (httpResponse.statusCode() != 503 && httpResponse.statusCode() != 500) {
+                    return Mono.just(httpResponse);
+                } else {
+                    LoggerFactory.getLogger(getClass()).warn("Received " + httpResponse.statusCode() + " for request. Waiting " + waitTimeSeconds + " seconds before retry.");
+                    final int nextWaitTime = 5 + ThreadLocalRandom.current().nextInt(10);
+                    httpResponse.body().subscribe().dispose(); // TODO: Anu re-evaluate this
+                    return Mono.delay(Duration.of(waitTimeSeconds, ChronoUnit.SECONDS))
+                            .then(process(nextWaitTime, context, nextPolicy));
+                }
+            }).onErrorResume(throwable -> {
+                if (throwable instanceof IOException) {
+                    LoggerFactory.getLogger(getClass()).warn("I/O exception occurred: " + throwable.getMessage());
+                    return process(context, nextPolicy).delaySubscription(Duration.of(waitTimeSeconds, ChronoUnit.SECONDS));
+                }
+                LoggerFactory.getLogger(getClass()).warn("Unrecoverable exception occurred: " + throwable.getMessage());
+                return Mono.error(throwable);
+            });
         }
     }
 
@@ -186,18 +181,18 @@ public class RestProxyStressTests {
     interface IOService {
         @ExpectedResponses({201})
         @PUT("/javasdktest/upload/100m-{id}.dat?{sas}")
-        Mono<VoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuffer> stream, @HeaderParam("content-length") long contentLength);
+        Mono<RestVoidResponse> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) Flux<ByteBuf> stream, @HeaderParam("content-length") long contentLength);
 
         @GET("/javasdktest/upload/100m-{id}.dat?{sas}")
-        Mono<StreamResponse> download100M(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+        Mono<RestStreamResponse> download100M(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({201})
         @PUT("/testcontainer{id}?restype=container&{sas}")
-        Mono<VoidResponse> createContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+        Mono<RestVoidResponse> createContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({202})
         @DELETE("/testcontainer{id}?restype=container&{sas}")
-        Mono<VoidResponse> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+        Mono<RestVoidResponse> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
     }
 
     private static Path TEMP_FOLDER_PATH;
@@ -230,8 +225,8 @@ public class RestProxyStressTests {
     }
 
     private static void create100MFiles(boolean recreate) throws IOException {
-        final Flowable<ByteBuffer> contentGenerator = Flowable.generate(Random::new, (random, emitter) -> {
-            ByteBuffer buf = ByteBuffer.allocate(CHUNK_SIZE);
+        final Flowable<java.nio.ByteBuffer> contentGenerator = Flowable.generate(Random::new, (random, emitter) -> {
+            java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocate(CHUNK_SIZE);
             random.nextBytes(buf.array());
             emitter.onNext(buf);
         });
@@ -256,11 +251,11 @@ public class RestProxyStressTests {
                     final AsynchronousFileChannel file = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
                     final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 
-                    Flowable<ByteBuffer> fileContent = contentGenerator
+                    Flowable<java.nio.ByteBuffer> fileContent = contentGenerator
                             .take(CHUNKS_PER_FILE)
                             .doOnNext(buf -> messageDigest.update(buf.array()));
 
-                    return FluxUtil.writeFile(fileContent, file).andThen(Completable.defer(new Callable<CompletableSource>() {
+                    return FlowableUtils.writeFile(fileContent, file).andThen(Completable.defer(new Callable<CompletableSource>() {
                         @Override
                         public CompletableSource call() throws Exception {
                             file.close();
@@ -271,65 +266,6 @@ public class RestProxyStressTests {
                     }));
                 }
             }).blockingAwait();
-        }
-    }
-
-    private static void create100MFilesUsingFlux(boolean recreate) throws IOException {
-        AtomicInteger fileCreatedCount = new AtomicInteger(0);
-        if (recreate) {
-            deleteRecursive(TEMP_FOLDER_PATH);
-        }
-
-        if (Files.exists(TEMP_FOLDER_PATH)) {
-            LoggerFactory.getLogger(RestProxyStressTests.class).info("Temp files directory already exists: " + TEMP_FOLDER_PATH.toAbsolutePath());
-        } else {
-            LoggerFactory.getLogger(RestProxyStressTests.class).info("Generating temp files in directory: " + TEMP_FOLDER_PATH.toAbsolutePath());
-            Files.createDirectory(TEMP_FOLDER_PATH);
-            //
-            final Flux<ByteBuffer> contentGenerator = Flux.generate(Random::new, (random, synchronousSink) -> {
-                ByteBuffer buf = ByteBuffer.allocate(CHUNK_SIZE);
-                random.nextBytes(buf.array());
-                synchronousSink.next(buf);
-                return random;
-            });
-            //
-            Flux.range(0, 10).flatMap(integer -> {
-                final int i = integer;
-                final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + i + ".dat");
-                //
-                AsynchronousFileChannel file;
-                try {
-                    Files.deleteIfExists(filePath);
-                    Files.createFile(filePath);
-                    file = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
-                } catch (IOException ioe) {
-                    throw Exceptions.propagate(ioe);
-                }
-                //
-                MessageDigest messageDigest;
-                try {
-                    messageDigest = MessageDigest.getInstance("MD5");
-                } catch (NoSuchAlgorithmException nsae) {
-                    throw Exceptions.propagate(nsae);
-                }
-                //
-                Flux<ByteBuffer> fileContent = contentGenerator
-                        .take(CHUNKS_PER_FILE)
-                        .doOnNext(buf -> messageDigest.update(buf.array()));
-                //
-                System.out.println(file.hashCode() + "-" + i);
-                return FluxUtil.writeFile(fileContent, file).then(Mono.defer(() -> {
-                    try {
-                        file.close();
-                        Files.write(TEMP_FOLDER_PATH.resolve("100m-" + i + "-md5.dat"), messageDigest.digest());
-                    } catch (IOException ioe) {
-                        throw Exceptions.propagate(ioe);
-                    }
-                    LoggerFactory.getLogger(RestProxyStressTests.class).info(fileCreatedCount.incrementAndGet() + ". Finished writing file [" + TEMP_FOLDER_PATH.resolve("100m-" + i + "-md5.dat") + "]");
-                    return Mono.empty();
-                }));
-
-            }).blockLast();
         }
     }
 
@@ -363,7 +299,7 @@ public class RestProxyStressTests {
                     } catch (IOException ioe) {
                         Exceptions.propagate(ioe);
                     }
-                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", FluxUtil.readFile(fileStream), FILE_SIZE).map(response -> {
+                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", FluxUtil.byteBufStreamFromFile(fileStream), FILE_SIZE).map(response -> {
                         String base64MD5 = response.rawHeaders().get("Content-MD5");
                         byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
                         Assert.assertArrayEquals(md5, receivedMD5);
@@ -402,10 +338,14 @@ public class RestProxyStressTests {
                         Exceptions.propagate(ioe);
                     }
                     //
-                    Flux<ByteBuffer> stream = null;
+                    ByteBuf mappedByteBufFile = null;
+                    Flux<ByteBuf> stream = null;
                     try {
-                        stream = FluxUtil.split(fileStream.map(FileChannel.MapMode.READ_ONLY, 0, fileStream.size()), CHUNK_SIZE);
+                        MappedByteBuffer mappedByteBufferFile = fileStream.map(FileChannel.MapMode.READ_ONLY, 0, fileStream.size());
+                        mappedByteBufFile = Unpooled.wrappedBuffer(mappedByteBufferFile);
+                        stream = FluxUtil.split(mappedByteBufFile, CHUNK_SIZE);
                     } catch (IOException ioe) {
+                        mappedByteBufFile.release();
                         Exceptions.propagate(ioe);
                     }
                     //
@@ -446,11 +386,11 @@ public class RestProxyStressTests {
         Flux.range(0, NUM_FILES)
                 .zipWith(md5s, (id, md5) -> {
                     return service.download100M(String.valueOf(id), sas).flatMap(response -> {
-                        Flux<ByteBuffer> content;
+                        Flux<ByteBuf> content;
                         try {
                             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
                             content = response.body()
-                                    .doOnNext(buf -> messageDigest.update(buf.slice()));
+                                    .doOnNext(buf -> messageDigest.update(buf.slice().nioBuffer()));
 
                             return content.last().doOnSuccess(b -> {
                                 assertArrayEquals(md5, messageDigest.digest());
@@ -489,17 +429,44 @@ public class RestProxyStressTests {
         Flux.range(0, NUM_FILES)
                 .zipWith(md5s, (integer, md5) -> {
                     final int id = integer;
-                    Flux<ByteBuffer> downloadContent = service.download100M(String.valueOf(id), sas)
+                    Flux<ByteBuf> downloadContent = service.download100M(String.valueOf(id), sas)
                             // Ideally we would intercept this content to load an MD5 to check consistency between download and upload directly,
                             // but it's sufficient to demonstrate that no corruption occurred between preparation->upload->download->upload.
-                            .flatMapMany(StreamResponse::body);
+                            .flatMapMany(RestStreamResponse::body)
+                            .map(reactorNettybb -> {
+                                //
+                                // This test 'downloadUploadStreamingTest' exercises piping scenario.
+                                //
+                                //   A. Receive ByteBufFlux from reactor-netty from NettyInbound.receive() [via service.download100M].
+                                //   B. Directly pass this ByteBufFlux to Outbound.send() [via service.upload100MB]
+                                //
+                                //   NettyOutbound.send(NettyInbound.receive())
+                                //
+                                // A property of ByteBufFlux publisher is - The chunks in the stream gets released automatically once 'onNext' returns.
+                                //
+                                // The Outbound.send method subscribe to ByteBufFlux
+                                //     1. on each onNext call, the received ByteBuf chunk gets 'scheduled' to write through Netty.write()
+                                //     2. onNext returns.
+                                //     3. repeat 1 & 2 until stream completes or errored.
+                                //
+                                // The scheduling & immediate return from onNext [1 & 2] can result in the a chunk of ByteBufFlux to be released
+                                // before the scheduled Netty.write() completes.
+                                //
+                                // This can cause following issues:
+                                //   a. Write of content of released chunks, which is bad.
+                                //   b. Netty.write() calls release on the ByteBuf after write is done. We have double release problem here.
+                                //
+                                // Solution is to aware of ByteBufFlux auto-release property and retain each chunk before passing to Netty.write().
+                                //
+                                return reactorNettybb.retain();
+                            });
                     //
                     return service.upload100MB("copy-" + integer, sas, "BlockBlob", downloadContent, FILE_SIZE)
                             .flatMap(uploadResponse -> {
                                 String base64MD5 = uploadResponse.rawHeaders().get("Content-MD5");
                                 byte[] uploadMD5 = Base64.getDecoder().decode(base64MD5);
                                 assertArrayEquals(md5, uploadMD5);
-                                LoggerFactory.getLogger(getClass()).info("Finished upload and validation for id " + id);
+                                LoggerFactory.getLogger(getClass()).info("Finished upload and validation for id " + id);
                                 return Mono.just(uploadResponse);
                             });
                 })
@@ -516,7 +483,7 @@ public class RestProxyStressTests {
         final Disposable d = Flux.range(0, NUM_FILES)
                 .flatMap(integer ->
                         service.download100M(String.valueOf(integer), sas)
-                                .flatMapMany(StreamResponse::body))
+                                .flatMapMany(RestStreamResponse::body))
                 .subscribe();
 
         Mono.delay(Duration.ofSeconds(10)).then(Mono.defer(() -> {
@@ -533,16 +500,19 @@ public class RestProxyStressTests {
 
         HttpHeaders headers = new HttpHeaders()
                 .set("x-ms-version", "2017-04-17");
-        HttpPipelineBuilder builder = new HttpPipelineBuilder()
-                .withRequestPolicy(new AddDatePolicyFactory())
-                .withRequestPolicy(new AddHeadersPolicyFactory(headers))
-                .withRequestPolicy(new ThrottlingRetryPolicyFactory());
+        // Order in which policies applied will be the order in which they added to builder
+        //
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new AddDatePolicy());
+        policies.add(new AddHeadersPolicy(headers));
+        policies.add(new ThrottlingRetryPolicy());
 
         if (sas == null || sas.isEmpty()) {
-            builder.withRequestPolicy(new HostPolicyFactory("http://localhost:" + port));
+            policies.add(new HostPolicy("http://localhost:" + port));
         }
 
-        final IOService innerService = RestProxy.create(IOService.class, builder.build());
+        final IOService innerService = RestProxy.create(IOService.class,
+                new HttpPipeline(new HttpPipelineOptions(null), policies.toArray(new HttpPipelinePolicy[policies.size()])));
 
         // When running with MockServer, connections sometimes get dropped,
         // but this doesn't seem to result in any bad behavior as long as we retry.

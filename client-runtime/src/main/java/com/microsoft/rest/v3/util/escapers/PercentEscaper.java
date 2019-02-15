@@ -6,8 +6,6 @@
 
 package com.microsoft.rest.v3.util.escapers;
 
-import io.reactivex.annotations.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +58,7 @@ public final class PercentEscaper {
      * @param safeChars a collection of characters that will not be escaped
      * @param usePlusForSpace escape ' ' as '+' if true, "%20" otherwise
      */
-    public PercentEscaper(@NonNull String safeChars, boolean usePlusForSpace) {
+    public PercentEscaper(String safeChars, boolean usePlusForSpace) {
         for (int i = 0; i != safeChars.length(); i++) {
             this.safeChars.add(safeChars.charAt(i));
         }

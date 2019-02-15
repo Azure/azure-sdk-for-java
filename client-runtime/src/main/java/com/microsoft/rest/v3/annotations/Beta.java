@@ -18,7 +18,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Beta annotation.
+ * Annotation to indicate that a functionality is in preview.
  */
 @Documented
 @Retention(RetentionPolicy.CLASS)

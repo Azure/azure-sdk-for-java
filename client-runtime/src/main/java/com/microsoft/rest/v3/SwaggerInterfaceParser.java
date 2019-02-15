@@ -19,7 +19,7 @@ import java.util.Map;
  */
 public class SwaggerInterfaceParser {
     private final Class<?> swaggerInterface;
-    private final SerializerAdapter<?> serializer;
+    private final SerializerAdapter serializer;
     private final String host;
     private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
 
@@ -29,7 +29,7 @@ public class SwaggerInterfaceParser {
      * @param swaggerInterface The interface that will be parsed.
      * @param serializer The serializer that will be used to serialize non-String header values and query values.
      */
-    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter<?> serializer) {
+    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer) {
         this(swaggerInterface, serializer, null);
     }
 
@@ -40,7 +40,7 @@ public class SwaggerInterfaceParser {
      * @param serializer The serializer that will be used to serialize non-String header values and query values.
      * @param host The host of URLs that this Swagger interface targets.
      */
-    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter<?> serializer, String host) {
+    public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer, String host) {
         this.swaggerInterface = swaggerInterface;
         this.serializer = serializer;
 

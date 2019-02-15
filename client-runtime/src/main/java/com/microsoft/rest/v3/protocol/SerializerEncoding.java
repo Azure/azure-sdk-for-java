@@ -10,7 +10,7 @@ package com.microsoft.rest.v3.protocol;
 import com.microsoft.rest.v3.http.HttpHeaders;
 
 /**
- * Represents which encoding to use for serialization.
+ * Represents supported encoding formats serialization.
  */
 public enum SerializerEncoding {
     /**

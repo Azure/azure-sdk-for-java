@@ -9,28 +9,29 @@ package com.microsoft.rest.v3;
 import com.microsoft.rest.v3.annotations.ResumeOperation;
 import com.microsoft.rest.v3.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v3.http.ContentType;
+import com.microsoft.rest.v3.http.ContextData;
 import com.microsoft.rest.v3.http.HttpHeader;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpMethod;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.HttpPipelineBuilder;
+import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.UrlBuilder;
-import com.microsoft.rest.v3.policy.CookiePolicyFactory;
-import com.microsoft.rest.v3.policy.CredentialsPolicyFactory;
-import com.microsoft.rest.v3.policy.DecodingPolicyFactory;
-import com.microsoft.rest.v3.policy.RequestPolicyFactory;
-import com.microsoft.rest.v3.policy.RetryPolicyFactory;
-import com.microsoft.rest.v3.policy.UserAgentPolicyFactory;
+import com.microsoft.rest.v3.http.policy.CookiePolicy;
+import com.microsoft.rest.v3.http.policy.CredentialsPolicy;
+import com.microsoft.rest.v3.http.policy.DecodingPolicy;
+import com.microsoft.rest.v3.http.HttpPipelineOptions;
+import com.microsoft.rest.v3.http.policy.RetryPolicy;
+import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
 import com.microsoft.rest.v3.protocol.HttpResponseDecoder;
 import com.microsoft.rest.v3.protocol.SerializerAdapter;
 import com.microsoft.rest.v3.protocol.SerializerEncoding;
 import com.microsoft.rest.v3.serializer.JacksonAdapter;
 import com.microsoft.rest.v3.util.FluxUtil;
 import com.microsoft.rest.v3.util.TypeUtil;
-import io.reactivex.Single;
-import io.reactivex.exceptions.Exceptions;
+import io.netty.buffer.ByteBuf;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -42,7 +43,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.net.URL;
-import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -55,18 +57,18 @@ import java.util.function.Supplier;
  */
 public class RestProxy implements InvocationHandler {
     private final HttpPipeline httpPipeline;
-    private final SerializerAdapter<?> serializer;
+    private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
 
     /**
      * Create a new instance of RestProxy.
-     * @param httpPipeline The RequestPolicy and HttpClient httpPipeline that will be used to send HTTP
+     * @param httpPipeline The HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP
      *                 requests.
      * @param serializer The serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser The parser that contains information about the swagger interface that
      *                        this RestProxy "implements".
      */
-    public RestProxy(HttpPipeline httpPipeline, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser) {
+    public RestProxy(HttpPipeline httpPipeline, SerializerAdapter serializer, SwaggerInterfaceParser interfaceParser) {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
@@ -86,17 +88,19 @@ public class RestProxy implements InvocationHandler {
      * Get the SerializerAdapter used by this RestProxy.
      * @return The SerializerAdapter used by this RestProxy.
      */
-    public SerializerAdapter<?> serializer() {
+    public SerializerAdapter serializer() {
         return serializer;
     }
 
     /**
      * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
-     * @param request The HTTP request to send.
-     * @return A {@link Single} representing the HTTP response that will arrive asynchronously.
+     *
+     * @param request the HTTP request to send
+     * @param contextData the context
+     * @return a {@link Mono} that emits HttpResponse asynchronously
      */
-    public Mono<HttpResponse> sendHttpRequestAsync(HttpRequest request) {
-        return httpPipeline.sendRequestAsync(request);
+    public Mono<HttpResponse> sendHttpRequestAsync(HttpRequest request, ContextData contextData) {
+        return httpPipeline.send(httpPipeline.newContext(request, contextData));
     }
 
     @Override
@@ -123,7 +127,7 @@ public class RestProxy implements InvocationHandler {
             } else {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
-                final Mono<HttpResponse> asyncResponse = sendHttpRequestAsync(request);
+                final Mono<HttpResponse> asyncResponse = sendHttpRequestAsync(request, methodParser.contextData(args).addData("caller-method", methodParser.fullyQualifiedMethodName()));
                 final Type returnType = methodParser.returnType();
                 return handleAsyncHttpResponse(request, asyncResponse, methodParser, returnType);
             }
@@ -172,8 +176,7 @@ public class RestProxy implements InvocationHandler {
         }
 
         final URL url = urlBuilder.toURL();
-        final HttpRequest request = new HttpRequest(methodParser.fullyQualifiedMethodName(), methodParser.httpMethod(), url, new HttpResponseDecoder(methodParser, serializer));
-        request.withContext(methodParser.context(args));
+        final HttpRequest request = new HttpRequest(methodParser.httpMethod(), url, new HttpResponseDecoder(methodParser, serializer));
 
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject == null) {
@@ -203,16 +206,13 @@ public class RestProxy implements InvocationHandler {
             if (isJson) {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.JSON);
                 request.withBody(bodyContentString);
-            }
-            else if (FluxUtil.isFluxByteBuffer(methodParser.bodyJavaType())) {
+            } else if (FluxUtil.isFluxByteBuf(methodParser.bodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a Flowable<byte[]> is given for the body.
                 //noinspection ConstantConditions
-                request.withBody((Flux<ByteBuffer>) bodyContentObject);
-            }
-            else if (bodyContentObject instanceof byte[]) {
+                request.withBody((Flux<ByteBuf>) bodyContentObject);
+            } else if (bodyContentObject instanceof byte[]) {
                 request.withBody((byte[]) bodyContentObject);
-            }
-            else if (bodyContentObject instanceof String) {
+            } else if (bodyContentObject instanceof String) {
                 final String bodyContentString = (String) bodyContentObject;
                 if (!bodyContentString.isEmpty()) {
                     request.withBody(bodyContentString);
@@ -242,7 +242,6 @@ public class RestProxy implements InvocationHandler {
     @SuppressWarnings("unchecked")
     private HttpRequest createHttpRequest(OperationDescription operationDescription, SwaggerMethodParser methodParser, Object[] args) throws IOException {
         final HttpRequest request = new HttpRequest(
-                methodParser.fullyQualifiedMethodName(),
                 methodParser.httpMethod(),
                 operationDescription.url(),
                 new HttpResponseDecoder(methodParser, serializer));
@@ -276,10 +275,10 @@ public class RestProxy implements InvocationHandler {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.JSON);
                 request.withBody(bodyContentString);
             }
-            else if (FluxUtil.isFluxByteBuffer(methodParser.bodyJavaType())) {
+            else if (FluxUtil.isFluxByteBuf(methodParser.bodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a Flowable<byte[]> is given for the body.
                 //noinspection ConstantConditions
-                request.withBody((Flux<ByteBuffer>) bodyContentObject);
+                request.withBody((Flux<ByteBuf>) bodyContentObject);
             }
             else if (bodyContentObject instanceof byte[]) {
                 request.withBody((byte[]) bodyContentObject);
@@ -441,7 +440,7 @@ public class RestProxy implements InvocationHandler {
                 Type headersType = deserializedTypes[0];
                 if (!response.isDecoded() && !TypeUtil.isTypeOrSubTypeOf(headersType, Void.class)) {
                     asyncResult = asyncResult.then(Mono.error(new RestException(
-                            "No deserialized headers were found. Please add a DecodingPolicyFactory to the HttpPipeline.",
+                            "No deserialized headers were found. Please add a DecodingPolicy to the HttpPipeline.",
                             response,
                             (Object) null)));
                 }
@@ -472,11 +471,11 @@ public class RestProxy implements InvocationHandler {
                 responseBodyBytesAsync = responseBodyBytesAsync.map(base64UrlBytes -> new Base64Url(base64UrlBytes).decodedBytes());
             }
             asyncResult = responseBodyBytesAsync;
-        } else if (FluxUtil.isFluxByteBuffer(entityType)) {
+        } else if (FluxUtil.isFluxByteBuf(entityType)) {
             asyncResult = Mono.just(response.body());
         } else if (!response.isDecoded()) {
             asyncResult = Mono.error(new RestException(
-                    "No deserialized response body was found. Please add a DecodingPolicyFactory to the HttpPipeline.",
+                    "No deserialized response body was found. Please add a DecodingPolicy to the HttpPipeline.",
                     response,
                     (Object) null));
         } else {
@@ -521,7 +520,7 @@ public class RestProxy implements InvocationHandler {
                 result = asyncExpectedResponse.flatMap(response ->
                         handleRestResponseReturnTypeAsync(response, methodParser, monoTypeParam));
             }
-        } else if (FluxUtil.isFluxByteBuffer(returnType)) {
+        } else if (FluxUtil.isFluxByteBuf(returnType)) {
             result = asyncExpectedResponse.flatMapMany(HttpResponse::body);
         } else if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             asyncExpectedResponse.block();
@@ -541,7 +540,7 @@ public class RestProxy implements InvocationHandler {
      * Create an instance of the default serializer.
      * @return the default serializer.
      */
-    public static SerializerAdapter<?> createDefaultSerializer() {
+    public static SerializerAdapter createDefaultSerializer() {
         return new JacksonAdapter();
     }
 
@@ -550,7 +549,7 @@ public class RestProxy implements InvocationHandler {
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline() {
-        return createDefaultPipeline((RequestPolicyFactory) null);
+        return createDefaultPipeline((HttpPipelinePolicy) null);
     }
 
     /**
@@ -559,7 +558,7 @@ public class RestProxy implements InvocationHandler {
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline(ServiceClientCredentials credentials) {
-        return createDefaultPipeline(new CredentialsPolicyFactory(credentials));
+        return createDefaultPipeline(new CredentialsPolicy(credentials));
     }
 
     /**
@@ -568,16 +567,17 @@ public class RestProxy implements InvocationHandler {
      *                          pipeline.
      * @return the default HttpPipeline.
      */
-    public static HttpPipeline createDefaultPipeline(RequestPolicyFactory credentialsPolicy) {
-        final HttpPipelineBuilder builder = new HttpPipelineBuilder();
-        builder.withRequestPolicy(new UserAgentPolicyFactory());
-        builder.withRequestPolicy(new RetryPolicyFactory());
-        builder.withRequestPolicy(new DecodingPolicyFactory());
-        builder.withRequestPolicy(new CookiePolicyFactory());
+    public static HttpPipeline createDefaultPipeline(HttpPipelinePolicy credentialsPolicy) {
+        List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        policies.add(new UserAgentPolicy());
+        policies.add(new RetryPolicy());
+        policies.add(new DecodingPolicy());
+        policies.add(new CookiePolicy());
         if (credentialsPolicy != null) {
-            builder.withRequestPolicy(credentialsPolicy);
+            policies.add(credentialsPolicy);
         }
-        return builder.build();
+        return new HttpPipeline(new HttpPipelineOptions(null),
+                policies.toArray(new HttpPipelinePolicy[policies.size()]));
     }
 
     /**
@@ -594,7 +594,7 @@ public class RestProxy implements InvocationHandler {
     /**
      * Create a proxy implementation of the provided Swagger interface.
      * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
-     * @param httpPipeline The RequestPolicy and HttpClient pipline that will be used to send Http
+     * @param httpPipeline The HttpPipelinePolicy and HttpClient pipline that will be used to send Http
      *                 requests.
      * @param <A> The type of the Swagger interface.
      * @return A proxy implementation of the provided Swagger interface.
@@ -620,7 +620,7 @@ public class RestProxy implements InvocationHandler {
     /**
      * Create a proxy implementation of the provided Swagger interface.
      * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
-     * @param httpPipeline The RequestPolicy and HttpClient pipline that will be used to send Http
+     * @param httpPipeline The HttpPipelinePolicy and HttpClient pipline that will be used to send Http
      *                 requests.
      * @param serializer The serializer that will be used to convert POJOs to and from request and
      *                   response bodies.
@@ -628,7 +628,7 @@ public class RestProxy implements InvocationHandler {
      * @return A proxy implementation of the provided Swagger interface.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter<?> serializer) {
+    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer) {
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, serializer);
         final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, restProxy);
