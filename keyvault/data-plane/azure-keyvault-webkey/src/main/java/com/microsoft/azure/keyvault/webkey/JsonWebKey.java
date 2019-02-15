@@ -226,7 +226,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] n() {
-        return this.n;
+        return cloneArray(this.n);
     }
 
     /**
@@ -250,7 +250,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] e() {
-        return this.e;
+        return cloneArray(this.e);
     }
 
     /**
@@ -274,7 +274,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] d() {
-        return this.d;
+        return cloneArray(this.d);
     }
 
     /**
@@ -298,7 +298,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] dp() {
-        return this.dp;
+        return cloneArray(this.dp);
     }
 
     /**
@@ -322,7 +322,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] dq() {
-        return this.dq;
+        return cloneArray(this.dq);
     }
 
     /**
@@ -346,7 +346,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] qi() {
-        return this.qi;
+        return cloneArray(this.qi);
     }
 
     /**
@@ -370,7 +370,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] p() {
-        return this.p;
+        return cloneArray(this.p);
     }
 
     /**
@@ -394,7 +394,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] q() {
-        return this.q;
+        return cloneArray(this.q);
     }
 
     /**
@@ -418,7 +418,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] k() {
-        return this.k;
+        return cloneArray(this.k);
     }
 
     /**
@@ -442,7 +442,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] t() {
-        return this.t;
+        return cloneArray(this.t);
     }
 
     /**
@@ -502,7 +502,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] x() {
-        return this.x;
+        return cloneArray(this.x);
     }
 
     /**
@@ -526,7 +526,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] y() {
-        return this.y;
+        return cloneArray(this.y);
     }
 
     /**
@@ -1160,6 +1160,17 @@ public class JsonWebKey {
         }
 
         return hashCode;
+    }
+
+    private static byte[] cloneArray(byte[] source) {
+        if (source == null) {
+            return null;
+        }
+
+        byte[] copy = new byte[source.length];
+        System.arraycopy(source, 0, copy, 0, source.length);
+
+        return copy;
     }
 
     private static int hashCode(byte[] obj) {
