@@ -122,14 +122,7 @@ public class CertificateBundle extends com.microsoft.azure.keyvault.models.custo
      * @return A copy of the cer value, or null if it has not been set.
      */
     public byte[] cer() {
-        if (cer == null) {
-            return null;
-        }
-
-        byte[] copy = new byte[cer.length];
-        System.arraycopy(cer, 0, copy, 0, cer.length);
-
-        return copy;
+        return clone(this.cer);
     }
 
     /**
@@ -139,7 +132,7 @@ public class CertificateBundle extends com.microsoft.azure.keyvault.models.custo
      * @return the CertificateBundle object itself.
      */
     public CertificateBundle withCer(byte[] cer) {
-        this.cer = cer;
+        this.cer = clone(cer);
         return this;
     }
 
@@ -203,4 +196,14 @@ public class CertificateBundle extends com.microsoft.azure.keyvault.models.custo
         return this;
     }
 
+    private static byte[] clone(byte[] source) {
+        if (source == null) {
+            return null;
+        }
+
+        byte[] copy = new byte[source.length];
+        System.arraycopy(source, 0, copy, 0, source.length);
+
+        return copy;
+    }
 }
