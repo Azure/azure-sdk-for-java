@@ -5,6 +5,13 @@
     matching the simple name of superclass -->
     <Match>
         <Class name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)" />
-        <Bug code="Nm"/>
+        <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
+    </Match>
+
+    <!-- These AesKw methods are publicly released APIs with incorrect name casing. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.AesKw(128|192|256)" />
+        <Method name="~(CreateDecryptor|CreateEncryptor)" />
+        <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
     </Match>
 </FindBugsFilter>
