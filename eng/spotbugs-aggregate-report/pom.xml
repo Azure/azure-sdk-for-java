@@ -15,6 +15,7 @@
 
     <properties>
         <azure-keyvault.version>1.2.0</azure-keyvault.version>
+        <azure-batch.version>5.0.1</azure-batch.version>
     </properties>
 
     <dependencies>
@@ -43,6 +44,11 @@
             <artifactId>azure-keyvault-webkey</artifactId>
             <version>${azure-keyvault.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-batch</artifactId>
+            <version>${azure-batch.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -64,6 +70,7 @@
                                 <source>..\..\keyvault\data-plane\azure-keyvault-core\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-extensions\src\main\java</source>
+                                <source>..\..\batch\data-plane\src\main\java</source>
                             </sources>
                         </configuration>
                     </execution>
