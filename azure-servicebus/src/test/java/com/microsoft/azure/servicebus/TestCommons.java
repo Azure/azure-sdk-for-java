@@ -276,78 +276,7 @@ public class TestCommons {
 		Assert.assertEquals("Renewed lockeduntil time not set in Message", newLockedUntilUtc, receivedMessage.getLockedUntilUtc());
 		receiver.complete(receivedMessage.getLockToken());
 	}
-		
-	public static void testBasicReceiveAndRenewLockBatch(IMessageSender sender, String sessionId, IMessageReceiver receiver, boolean isEntityPartitioned) throws InterruptedException, ServiceBusException, ExecutionException
-	{		
-		int numMessages = 2;
-		if(isEntityPartitioned)
-		{
-			for(int i=0; i<numMessages; i++)
-			{
-				Message message = new Message("AMQP message");
-				if(sessionId != null)
-				{
-					message.setSessionId(sessionId);
-				}
-				sender.send(message);
-			}
-		}
-		else
-		{
-			// Keep this batch send part as this test sendBatch API call
-			List<Message> messages = new ArrayList<Message>();
-			for(int i=0; i<numMessages; i++)
-			{
-				Message message = new Message("AMQP message");
-				if(sessionId != null)
-				{
-					message.setSessionId(sessionId);
-				}
-				messages.add(message);
-			}
-			sender.sendBatch(messages);
-		}
-				
-		ArrayList<IMessage> totalReceivedMessages = new ArrayList<>();
-		
-		if(isEntityPartitioned && sessionId == null)
-		{
-			Collection<IMessage> receivedMessages = receiver.receiveBatch(1);
-			Assert.assertTrue("Messages not received", receivedMessages != null && receivedMessages.size() > 0);
-			totalReceivedMessages.addAll(receivedMessages);
-		}
-		else
-		{
-			Collection<IMessage> receivedMessages = receiver.receiveBatch(numMessages);
-			while(receivedMessages != null && receivedMessages.size() > 0 && totalReceivedMessages.size() < numMessages)
-			{
-			    totalReceivedMessages.addAll(receivedMessages);
-				receivedMessages = receiver.receiveBatch(numMessages);
-			}
-			Assert.assertEquals("All messages not received", numMessages, totalReceivedMessages.size());
-		}
-		
-		ArrayList<Instant> oldLockTimes = new ArrayList<Instant>();
-		for(IMessage message : totalReceivedMessages)
-		{
-			oldLockTimes.add(message.getLockedUntilUtc());
-		}
-		
-		Thread.sleep(1000);
-		Collection<Instant> newLockTimes = ((MessageReceiver)receiver).renewMessageLockBatch(totalReceivedMessages);
-		Assert.assertEquals("RenewLock didn't return one instant per message in the collection", totalReceivedMessages.size(), newLockTimes.size());
-		Iterator<Instant> newLockTimeIterator = newLockTimes.iterator();
-		Iterator<Instant> oldLockTimeIterator = oldLockTimes.iterator();
-		for(IMessage message : totalReceivedMessages)
-		{	
-			Instant oldLockTime = oldLockTimeIterator.next();
-			Instant newLockTime = newLockTimeIterator.next();
-			Assert.assertTrue("Lock not renewed. OldLockedUntilUtc:" + oldLockTime.toString() + ", newLockedUntilUtc:" + newLockTime.toString(), newLockTime.isAfter(oldLockTime));
-			Assert.assertEquals("Renewed lockeduntil time not set in Message", newLockTime, message.getLockedUntilUtc());
-			receiver.complete(message.getLockToken());			
-		}		
-	}
-		
+
 	public static void testBasicReceiveBatchAndComplete(IMessageSender sender, String sessionId, IMessageReceiver receiver, boolean isEntityPartitioned) throws InterruptedException, ServiceBusException, ExecutionException
 	{
 		int numMessages = 10;		

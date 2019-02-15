@@ -174,14 +174,7 @@ public abstract class SendReceiveTests extends Tests {
 		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
 		TestCommons.testBasicReceiveAndRenewLock(this.sender, this.sessionId, this.receiver);
 	}
-	
-	@Test
-	public void testBasicReceiveAndRenewLockBatch() throws InterruptedException, ServiceBusException, ExecutionException
-	{		
-		this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.PEEKLOCK);
-		TestCommons.testBasicReceiveAndRenewLockBatch(this.sender, this.sessionId, this.receiver, this.isEntityPartitioned());
-	}
-	
+
 	@Test
 	public void testBasicReceiveBatchAndComplete() throws InterruptedException, ServiceBusException, ExecutionException
 	{

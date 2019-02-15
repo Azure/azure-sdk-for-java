@@ -642,20 +642,29 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     @Override
     public CompletableFuture<Instant> renewMessageLockAsync(IMessage message) {
-        ArrayList<IMessage> list = new ArrayList<>();
-        list.add(message);
-        return this.renewMessageLockBatchAsync(list).thenApply((c) -> c.toArray(new Instant[0])[0]);
+        return this.renewMessageLockAsync(message.getLockToken()).thenApply((newLockedUntilUtc) -> {
+            ((Message)message).setLockedUntilUtc(newLockedUntilUtc);
+            return newLockedUntilUtc;
+        });
     }
 
-    //	@Override
+    @Override
+    public CompletableFuture<Instant> renewMessageLockAsync(UUID lockToken) {
+        if (lockToken.equals(ClientConstants.ZEROLOCKTOKEN)) {
+            throw new UnsupportedOperationException("Lock of a message received in ReceiveAndDelete mode cannot be renewed.");
+        }
+
+        return this.renewMessageLockBatchAsync(new UUID[] {lockToken}).thenApply((c) -> c.toArray(new Instant[0])[0]);
+    }
+
     public CompletableFuture<Collection<Instant>> renewMessageLockBatchAsync(Collection<? extends IMessage> messages) {
         this.ensurePeekLockReceiveMode();
 
         if(messages == null || messages.size() == 0)
         {
-        	throw new UnsupportedOperationException("Message collection is null or empty. Locks cannot be renewed.");
+            throw new UnsupportedOperationException("Message collection is null or empty. Locks cannot be renewed.");
         }
-        
+
         UUID[] lockTokens = new UUID[messages.size()];
         int messageIndex = 0;
         for (IMessage message : messages) {
@@ -666,30 +675,39 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
             lockTokens[messageIndex++] = lockToken;
         }
 
+        return this.renewMessageLockBatchAsync(lockTokens);
+    }
+
+    private CompletableFuture<Collection<Instant>> renewMessageLockBatchAsync(UUID[] lockTokens) {
+        this.ensurePeekLockReceiveMode();
+
         if (TRACE_LOGGER.isDebugEnabled()) {
             TRACE_LOGGER.debug("Renewing message locks of lock tokens '{}'", Arrays.toString(lockTokens));
         }
         return this.internalReceiver.renewMessageLocksAsync(lockTokens).thenApplyAsync(
-                (newLockedUntilTimes) ->
-                {
-                    if (TRACE_LOGGER.isDebugEnabled()) {
-                        TRACE_LOGGER.debug("Renewed message locks of lock tokens '{}'", Arrays.toString(lockTokens));
-                    }
-                    // Assuming both collections are of same size and in same order (order doesn't really matter as all instants in the response are same).
-                    Iterator<? extends IMessage> messageIterator = messages.iterator();
-                    Iterator<Instant> lockTimeIterator = newLockedUntilTimes.iterator();
-                    while (messageIterator.hasNext() && lockTimeIterator.hasNext()) {
-                        Message message = (Message) messageIterator.next();
+            (newLockedUntilTimes) ->
+            {
+                if (TRACE_LOGGER.isDebugEnabled()) {
+                    TRACE_LOGGER.debug("Renewed message locks of lock tokens '{}'", Arrays.toString(lockTokens));
+                }
+
+                Iterator<Instant> lockTimeIterator = newLockedUntilTimes.iterator();
+                for(UUID lockToken : lockTokens) {
+                    if (lockTimeIterator.hasNext()) {
                         Instant lockedUntilUtc = lockTimeIterator.next();
-                        message.setLockedUntilUtc(lockedUntilUtc);
-                        if (this.requestResponseLockTokensToLockTimesMap.containsKey(message.getLockToken())) {
-                            this.requestResponseLockTokensToLockTimesMap.put(message.getLockToken(), lockedUntilUtc);
+                        if (this.requestResponseLockTokensToLockTimesMap.containsKey(lockToken)) {
+                            this.requestResponseLockTokensToLockTimesMap.put(lockToken, lockedUntilUtc);
                         }
                     }
-                    return newLockedUntilTimes;
-                },
-                MessagingFactory.INTERNAL_THREAD_POOL
+                }
+                return newLockedUntilTimes;
+            },
+            MessagingFactory.INTERNAL_THREAD_POOL
         );
+    }
+
+    public Collection<Instant> renewMessageLockBatch(Collection<? extends IMessage> messages) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(this.renewMessageLockBatchAsync(messages));
     }
 
     @Override
@@ -697,9 +715,9 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         return Utils.completeFuture(this.renewMessageLockAsync(message));
     }
 
-    //	@Override
-    public Collection<Instant> renewMessageLockBatch(Collection<? extends IMessage> messages) throws InterruptedException, ServiceBusException {
-        return Utils.completeFuture(this.renewMessageLockBatchAsync(messages));
+    @Override
+    public Instant renewMessageLock(UUID lockToken)  throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(this.renewMessageLockAsync(lockToken));
     }
 
     @Override
