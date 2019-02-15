@@ -19,7 +19,7 @@
 
   <name>Microsoft Azure Key Vault SDK Parent</name>
   <description>This package contains the parent module of Microsoft Azure Key Vault SDK.</description>
-  <url>https://github.com/Azure/azure-keyvault-java</url>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
     <license>
@@ -30,8 +30,8 @@
   </licenses>
 
   <scm>
-    <url>scm:git:https://github.com/Azure/azure-keyvault-java</url>
-    <connection>scm:git:git@github.com:Azure/azure-keyvault-java.git</connection>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
     <tag>HEAD</tag>
   </scm>
 
