@@ -11,6 +11,8 @@ import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
+import org.reactivestreams.Publisher
+import org.reactivestreams.Subscriber
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -130,7 +132,8 @@ class TransferManagerTest extends APISpec {
                 new TransferManagerUploadToBlockBlobOptions(null, new BlobHTTPHeaders()
                         .withBlobCacheControl(cacheControl).withBlobContentDisposition(contentDisposition)
                         .withBlobContentEncoding(contentEncoding).withBlobContentLanguage(contentLanguage)
-                        .withBlobContentMD5(contentMD5).withBlobContentType(contentType), null, null, null)).blockingGet()
+                        .withBlobContentMD5(contentMD5).withBlobContentType(contentType), null, null, null))
+                .blockingGet()
 
         BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
 
@@ -323,6 +326,7 @@ class TransferManagerTest extends APISpec {
     Here we're testing that progress is properly added to a single upload. The size of the file must be less than
     the max upload value.
      */
+
     def "Upload file progress sequential"() {
         setup:
         def channel = AsynchronousFileChannel.open(getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES - 1).toPath())
@@ -349,13 +353,12 @@ class TransferManagerTest extends APISpec {
         _ * mockReceiver.reportProgress(!channel.size()) >> { long bytesTransferred ->
             if (!(bytesTransferred > prevCount)) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
-            }
-            else {
+            } else {
                 prevCount = bytesTransferred
             }
         }
 
-        0 * mockReceiver.reportProgress({it > BlockBlobURL.MAX_UPLOAD_BLOB_BYTES - 1})
+        0 * mockReceiver.reportProgress({ it > BlockBlobURL.MAX_UPLOAD_BLOB_BYTES - 1 })
 
         cleanup:
         channel.close()
@@ -386,14 +389,13 @@ class TransferManagerTest extends APISpec {
         (numBlocks - 1.._) * mockReceiver.reportProgress(!channel.size()) >> { long bytesTransferred ->
             if (!(bytesTransferred > prevCount)) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
-            }
-            else {
+            } else {
                 prevCount = bytesTransferred
             }
         }
 
         // We should receive no notifications that report more progress than the size of the file.
-        0 * mockReceiver.reportProgress({it > channel.size()})
+        0 * mockReceiver.reportProgress({ it > channel.size() })
         notThrown(IllegalArgumentException)
 
         cleanup:
@@ -421,11 +423,11 @@ class TransferManagerTest extends APISpec {
         outChannel.close() == null
 
         where:
-        file                                   | _
-        getRandomFile(20)                      | _ // small file
-        getRandomFile(16 * 1024 * 1024)        | _ // medium file in several chunks
-        getRandomFile(8 * 1026 * 1024 + 10)   | _ // medium file not aligned to block
-        getRandomFile(0)                       | _ // empty file
+        file                                | _
+        getRandomFile(20)                   | _ // small file
+        getRandomFile(16 * 1024 * 1024)     | _ // medium file in several chunks
+        getRandomFile(8 * 1026 * 1024 + 10) | _ // medium file not aligned to block
+        getRandomFile(0)                    | _ // empty file
         // Files larger than 2GB to test no integer overflow are left to stress/perf tests to keep test passes short.
     }
 
@@ -715,17 +717,293 @@ class TransferManagerTest extends APISpec {
         (numBlocks - 1.._) * mockReceiver.reportProgress(!channel.size()) >> { long bytesTransferred ->
             if (!(bytesTransferred > prevCount)) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
-            }
-            else {
+            } else {
                 prevCount = bytesTransferred
             }
         }
 
         // We should receive no notifications that report more progress than the size of the file.
-        0 * mockReceiver.reportProgress({it > fileSize})
+        0 * mockReceiver.reportProgress({ it > fileSize })
 
         cleanup:
         channel.close()
+    }
+
+    @Unroll
+    def "Upload NRF"() {
+        when:
+        def data = getRandomData(dataSize)
+        TransferManager.uploadFromNonReplayableFlowable(Flowable.just(data), bu, bufferSize, numBuffs, null)
+                .blockingGet()
+        data.position(0)
+
+        then:
+        FlowableUtil.collectBytesInBuffer(bu.download().blockingGet().body(null)).blockingGet() == data
+        bu.getBlockList(BlockListType.ALL).blockingGet().body().committedBlocks().size() == blockCount
+
+        where:
+        dataSize          | bufferSize        | numBuffs || blockCount
+        350               | 50                | 2        || 7
+        350               | 50                | 5        || 7
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 2        || 10
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 5        || 10
+        10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10
+        500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5
+        500 * 1024 * 1024 | 100 * 1024 * 1024 | 4        || 5
+        10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7
+    }
+
+    def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
+        result.position(0)
+        for (ByteBuffer buffer : buffers) {
+            buffer.position(0)
+            result.limit(result.position() + buffer.remaining())
+            if (buffer != result) {
+                return false
+            }
+            result.position(result.position() + buffer.remaining())
+        }
+        return result.remaining() == 0
+    }
+
+    @Unroll
+    def "Upload NRF chunked source"() {
+        /*
+        This test should validate that the upload should work regardless of what format the passed data is in because
+        it will be chunked appropriately.
+         */
+        setup:
+        TransferManager.uploadFromNonReplayableFlowable(Flowable.fromIterable(dataList), bu, bufferSize, numBuffers,
+                null).blockingGet()
+
+        expect:
+        compareListToBuffer(dataList, FlowableUtil.collectBytesInBuffer(bu.download().blockingGet().body(null))
+                .blockingGet())
+        bu.getBlockList(BlockListType.ALL).blockingGet().body().committedBlocks().size() == blockCount
+
+        where:
+        dataList                                                                                                                       | bufferSize | numBuffers || blockCount
+        [getRandomData(7), getRandomData(7)]                                                                                           | 10         | 2          || 2
+        [getRandomData(3), getRandomData(3), getRandomData(3), getRandomData(3), getRandomData(3), getRandomData(3), getRandomData(3)] | 10         | 2          || 3
+        [getRandomData(10), getRandomData(10)]                                                                                         | 10         | 2          || 2
+        [getRandomData(50), getRandomData(51), getRandomData(49)]                                                                      | 10         | 2          || 15
+        // The case of one large buffer needing to be broken up is tested in the previous test.
+    }
+
+    @Unroll
+    def "Upload NRF illegal arguments null"() {
+        when:
+        TransferManager.uploadFromNonReplayableFlowable(source, url, 4, 4, null)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        source                     | url
+        null                       | new BlockBlobURL(new URL("http://account.com"), StorageURL.createPipeline(primaryCreds))
+        Flowable.just(defaultData) | null
+    }
+
+    @Unroll
+    def "Upload NRF illegal args out of bounds"() {
+        when:
+        TransferManager.uploadFromNonReplayableFlowable(Flowable.just(defaultData), bu, bufferSize, numBuffs, null)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        where:
+        bufferSize                             | numBuffs
+        0                                      | 5
+        BlockBlobURL.MAX_STAGE_BLOCK_BYTES + 1 | 5
+        5                                      | 1
+    }
+
+    @Unroll
+    def "Upload NRF headers"() {
+        when:
+        TransferManager.uploadFromNonReplayableFlowable(Flowable.just(defaultData), bu, 10, 2,
+                new TransferManagerUploadToBlockBlobOptions(null, new BlobHTTPHeaders()
+                        .withBlobCacheControl(cacheControl).withBlobContentDisposition(contentDisposition)
+                        .withBlobContentEncoding(contentEncoding).withBlobContentLanguage(contentLanguage)
+                        .withBlobContentMD5(contentMD5).withBlobContentType(contentType), null, null, null))
+                .blockingGet()
+
+        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
+        defaultData.position(0)
+
+        then:
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                contentMD5, contentType == null ? "application/octet-stream" : contentType)
+        // HTTP default content type is application/octet-stream.
+
+        where:
+        // The MD5 is simply set on the blob for commitBlockList, not validated.
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
+        null         | null               | null            | null            | null                                                         | null
+        "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
+    }
+
+    @Unroll
+    def "Upload NRF metadata"() {
+        setup:
+        Metadata metadata = new Metadata()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        TransferManager.uploadFromNonReplayableFlowable(Flowable.just(getRandomData(10)), bu, 10, 10,
+                new TransferManagerUploadToBlockBlobOptions(null, null, metadata, null, null)).blockingGet()
+        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
+
+        then:
+        response.statusCode() == 200
+        response.headers().metadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    @Unroll
+    def "Upload NRF AC"() {
+        setup:
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+
+        expect:
+        TransferManager.uploadFromNonReplayableFlowable(Flowable.just(getRandomData(10)), bu, 10, 2,
+                new TransferManagerUploadToBlockBlobOptions(null, null, null, bac, null))
+                .blockingGet().statusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Upload NRF AC fail"() {
+        setup:
+        bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
+        noneMatch = setupBlobMatchCondition(bu, noneMatch)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions().withModifiedAccessConditions(
+                new ModifiedAccessConditions().withIfModifiedSince(modified).withIfUnmodifiedSince(unmodified)
+                        .withIfMatch(match).withIfNoneMatch(noneMatch))
+                .withLeaseAccessConditions(new LeaseAccessConditions().withLeaseId(leaseID))
+
+        when:
+        TransferManager.uploadFromNonReplayableFlowable(Flowable.just(getRandomData(10)), bu, 10, 2,
+                new TransferManagerUploadToBlockBlobOptions(null, null, null, bac, null))
+                .blockingGet()
+
+        then:
+        def e = thrown(StorageException)
+        e.errorCode() == StorageErrorCode.CONDITION_NOT_MET ||
+                e.errorCode() == StorageErrorCode.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Upload NRF progress"() {
+        setup:
+        def data = getRandomData(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1)
+        def numBlocks = data.remaining() / BlockBlobURL.MAX_STAGE_BLOCK_BYTES
+        long prevCount = 0
+        def mockReceiver = Mock(IProgressReceiver)
+
+
+        when:
+        TransferManager.uploadFromNonReplayableFlowable(Flowable.just(data), bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, 10,
+                new TransferManagerUploadToBlockBlobOptions(mockReceiver, null, null, null, 20)).blockingGet()
+        data.position(0)
+
+        then:
+        // We should receive exactly one notification of the completed progress.
+        1 * mockReceiver.reportProgress(data.remaining())
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockReceiver.reportProgress(!data.remaining()) >> { long bytesTransferred ->
+            if (!(bytesTransferred > prevCount)) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount = bytesTransferred
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockReceiver.reportProgress({ it > data.remaining() })
+        notThrown(IllegalArgumentException)
+    }
+
+    def "Upload NRF network error"() {
+        setup:
+        /*
+         This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
+         buffering properly to allow for retries even given this source behavior.
+         */
+        bu.upload(Flowable.just(defaultData), defaultDataSize).blockingGet()
+        def nrf = bu.download().blockingGet().body(null)
+
+        // Mock a response that will always be retried.
+        def mockHttpResponse = Mock(HttpResponse) {
+            statusCode() >> 500
+            bodyAsString() >> Single.just("")
+        }
+
+        // Mock a policy that will always then check that the data is still the same and return a retryable error.
+        def mockPolicy = Mock(RequestPolicy) {
+            sendAsync(_) >> { HttpRequest request ->
+                if (!(FlowableUtil.collectBytesInBuffer(request.body()).blockingGet() == defaultData)) {
+                    throw new IllegalArgumentException()
+                }
+                return Single.just(mockHttpResponse)
+            }
+        }
+
+        // Mock a factory that always returns our mock policy.
+        def mockFactory = Mock(RequestPolicyFactory) {
+            create(*_) >> mockPolicy
+        }
+
+        // Build the pipeline
+        def testPipeline = HttpPipeline.build(new RequestRetryFactory(new RequestRetryOptions(null, 3, null, null, null,
+                null)), mockFactory)
+        bu = bu.withPipeline(testPipeline)
+
+        when:
+        // Try to upload the flowable, which will hit a retry. A normal upload would throw, but buffering prevents that.
+        TransferManager.uploadFromNonReplayableFlowable(nrf, bu, 1024, 4, null).blockingGet()
+
+        then:
+        // A second subscription to a download stream will
+        def e = thrown(StorageException)
+        e.statusCode() == 500
     }
 }
 
