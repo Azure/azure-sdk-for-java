@@ -100,14 +100,7 @@ public class CertificateOperation extends com.microsoft.azure.keyvault.models.cu
      * @return the csr value
      */
     public byte[] csr() {
-        if (csr == null) {
-            return null;
-        }
-
-        byte[] copy = new byte[csr.length];
-        System.arraycopy(csr, 0, copy, 0, csr.length);
-
-        return copy;
+        return clone(this.csr);
     }
 
     /**
@@ -117,7 +110,7 @@ public class CertificateOperation extends com.microsoft.azure.keyvault.models.cu
      * @return the CertificateOperation object itself.
      */
     public CertificateOperation withCsr(byte[] csr) {
-        this.csr = csr;
+        this.csr = clone(csr);
         return this;
     }
 
@@ -241,4 +234,14 @@ public class CertificateOperation extends com.microsoft.azure.keyvault.models.cu
         return this;
     }
 
+    private static byte[] clone(byte[] source) {
+        if (source == null) {
+            return null;
+        }
+
+        byte[] copy = new byte[source.length];
+        System.arraycopy(source, 0, copy, 0, source.length);
+
+        return copy;
+    }
 }
