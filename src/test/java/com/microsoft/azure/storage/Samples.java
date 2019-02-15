@@ -1433,6 +1433,45 @@ public class Samples {
     }
 
     /*
+    This example shows how to upload an arbitrary data stream to a block blob.
+     */
+    @Test public void exampleUploadNonReplayableFlowable() throws IOException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerparallelupload" + System.currentTimeMillis());
+        String filename = "BigFile.bin";
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL(filename);
+        File tempFile = File.createTempFile("BigFile", ".bin");
+        tempFile.deleteOnExit();
+
+        // Create the container.
+        containerURL.create(null, null, null)
+                .flatMap(response -> {
+                    /*
+                    We create a simple flowable for the purposes of demonstration, but the Flowable in question need not
+                    produce a repeatable sequence of items. A network stream would be a common use for this api.
+                     */
+                    Flowable<ByteBuffer> data = Flowable.just(ByteBuffer.allocate(1));
+                    return TransferManager.uploadFromNonReplayableFlowable(data, blobURL, 4 * 1024 * 1024, 2, null);
+                })
+                .flatMap(response ->
+                        // Delete the container
+                        containerURL.delete())
+                /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+    }
+
+    /*
     This example shows how to download a large stream with intelligent retries. Specifically, if the connection fails
     while reading, the stream automatically initiates a new downloadBlob call passing a range that starts from the last
     byte successfully read before the failure.
@@ -1539,7 +1578,7 @@ public class Samples {
         URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainerlistlazy");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerlistlazy" + System.currentTimeMillis());
 
         containerURL.create(null, null, null).toCompletable()
                 .andThen(Observable.range(0, 5))
@@ -2181,6 +2220,15 @@ public class Samples {
                         // Delete the container.
                         containerURL.delete(null, null));
         // </tm_file>
+
+        // <tm_nrf>
+        /*
+         We create a simple flowable for the purposes of demonstration, but the Flowable in question need not
+         produce a repeatable sequence of items. A network stream would be a common use for this api.
+         */
+        Flowable<ByteBuffer> nonReplayableFlowable = Flowable.just(ByteBuffer.allocate(1));
+        TransferManager.uploadFromNonReplayableFlowable(nonReplayableFlowable, blobURL, 4 * 1024 * 1024, 2, null);
+        // </tm_nrf>
 
         // <service_getsetprops>
         serviceURL.getProperties(null)
