@@ -5,7 +5,9 @@
 package com.microsoft.azure.keyvault.models;
 
 import com.microsoft.rest.Base64Url;
+
 import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -117,10 +119,17 @@ public class CertificateBundle extends com.microsoft.azure.keyvault.models.custo
     /**
      * Get the cer value.
      *
-     * @return the cer value
+     * @return A copy of the cer value, or null if it has not been set.
      */
     public byte[] cer() {
-        return this.cer;
+        if (cer == null) {
+            return null;
+        }
+
+        byte[] copy = new byte[cer.length];
+        System.arraycopy(cer, 0, copy, 0, cer.length);
+
+        return copy;
     }
 
     /**
