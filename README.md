@@ -5,7 +5,7 @@
 | Component | Build Status |
 | --------- | ------------ |
 | Management Libraries | [![Build Status](https://travis-ci.org/Azure/azure-sdk-for-java.svg?branch=master)](https://travis-ci.org/Azure/azure-sdk-for-java) |
-| Client Libraries | [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/azure-sdk-for-java.client)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=17) |
+| Client Libraries | [![Build Status](https://dev.azure.com/azure-sdk/public/_apis/build/status/17?branchName=master)](https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=17) |
 
 :+1: [Try Azure for FREE](http://go.microsoft.com/fwlink/?LinkId=330212)
 
