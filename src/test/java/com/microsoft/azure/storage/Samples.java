@@ -1457,7 +1457,7 @@ public class Samples {
                     We create a simple flowable for the purposes of demonstration, but the Flowable in question need not
                     produce a repeatable sequence of items. A network stream would be a common use for this api.
                      */
-                    Flowable<ByteBuffer> data = Flowable.just(ByteBuffer.allocate(0));
+                    Flowable<ByteBuffer> data = Flowable.just(ByteBuffer.allocate(1));
                     return TransferManager.uploadFromNonReplayableFlowable(data, blobURL, 4 * 1024 * 1024, 2, null);
                 })
                 .flatMap(response ->
@@ -1578,7 +1578,7 @@ public class Samples {
         URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainerlistlazy");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerlistlazy" + System.currentTimeMillis());
 
         containerURL.create(null, null, null).toCompletable()
                 .andThen(Observable.range(0, 5))
@@ -2226,7 +2226,7 @@ public class Samples {
          We create a simple flowable for the purposes of demonstration, but the Flowable in question need not
          produce a repeatable sequence of items. A network stream would be a common use for this api.
          */
-        Flowable<ByteBuffer> nonReplayableFlowable = Flowable.just(ByteBuffer.allocate(0));
+        Flowable<ByteBuffer> nonReplayableFlowable = Flowable.just(ByteBuffer.allocate(1));
         TransferManager.uploadFromNonReplayableFlowable(nonReplayableFlowable, blobURL, 4 * 1024 * 1024, 2, null);
         // </tm_nrf>
 
