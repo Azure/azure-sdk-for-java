@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter>
+    <!-- These keyvault models are already publicly released APIs with name
+    matching the simple name of superclass -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)" />
+        <Bug code="Nm"/>
+    </Match>
 </FindBugsFilter>
