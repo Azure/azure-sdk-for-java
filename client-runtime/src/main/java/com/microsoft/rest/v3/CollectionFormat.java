@@ -45,7 +45,8 @@ public enum CollectionFormat {
     private String delimiter;
 
     /**
-     * Creates an instance of the enum.
+     * Creates CollectionFormat enum.
+     *
      * @param delimiter the delimiter as a string.
      */
     CollectionFormat(String delimiter) {
@@ -54,6 +55,7 @@ public enum CollectionFormat {
 
     /**
      * Gets the delimiter used to join a list of parameters.
+     *
      * @return the delimiter of the current collection format.
      */
     public String getDelimiter() {

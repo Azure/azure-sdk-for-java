@@ -7,7 +7,7 @@
 package com.microsoft.rest.v3;
 
 /**
- * An exception that will be thrown when a Swagger interface defines a method with an invalid return
+ * An exception thrown when a Swagger interface defines a method with an invalid return
  * type.
  */
 public class InvalidReturnTypeException extends RuntimeException {

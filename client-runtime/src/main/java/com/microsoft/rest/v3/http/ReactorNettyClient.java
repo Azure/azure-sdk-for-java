@@ -24,17 +24,17 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
- * An HttpClient that is implemented using Netty.
+ * HttpClient that is implemented using reactor-netty.
  */
-public final class NettyClient extends HttpClient {
+public final class ReactorNettyClient extends HttpClient {
     private reactor.netty.http.client.HttpClient httpClient;
 
     /**
-     * Creates NettyClient.
+     * Creates ReactorNettyClient.
      *
      * @param configuration the HTTP client configuration
      */
-    private NettyClient(HttpClientConfiguration configuration) {
+    ReactorNettyClient(HttpClientConfiguration configuration) {
         this.httpClient = reactor.netty.http.client.HttpClient.create().wiretap(true);
         if (configuration != null && configuration.proxy() != null) {
             this.httpClient = httpClient.tcpConfiguration(tcpClient -> tcpClient.proxy(ts -> ts.type(configuration.proxy().type().value()).address(configuration.proxy().address())));
@@ -57,6 +57,8 @@ public final class NettyClient extends HttpClient {
     }
 
     /**
+     * Delegate to send the request content.
+     *
      * @param restRequest the Rest request contains the body to be sent
      * @return a delegate upon invocation sets the request body in reactor-netty outbound object
      */
@@ -76,6 +78,8 @@ public final class NettyClient extends HttpClient {
     }
 
     /**
+     * Delegate to receive response.
+     *
      * @param restRequest the Rest request whose response this delegate handles
      * @return a delegate upon invocation setup Rest response object
      */
@@ -147,25 +151,5 @@ public final class NettyClient extends HttpClient {
             return Mono.just(httpResponse);
         };
         return responseDelegate;
-    }
-
-    /**
-     * The factory for creating a NettyClient.
-     */
-    public static class Factory implements HttpClientFactory {
-        /**
-         * Create a Netty client factory with default settings.
-         */
-        public Factory() {
-        }
-
-        @Override
-        public HttpClient create(final HttpClientConfiguration configuration) {
-            return new NettyClient(configuration);
-        }
-
-        @Override
-        public void close() {
-        }
     }
 }

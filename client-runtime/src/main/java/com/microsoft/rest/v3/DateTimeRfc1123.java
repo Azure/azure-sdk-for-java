@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * Simple wrapper over java.time.OffsetDateTime used for specifying RFC1123 format during serialization/deserialization.
+ * Wrapper over java.time.OffsetDateTime used for specifying RFC1123 format during serialization and deserialization.
  */
 public final class DateTimeRfc1123 {
     /**

@@ -14,17 +14,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class is responsible for creating individual Swagger interface method parsers from a Swagger
+ * The type responsible for creating individual Swagger interface method parsers from a Swagger
  * interface.
  */
 public class SwaggerInterfaceParser {
-    private final Class<?> swaggerInterface;
     private final SerializerAdapter serializer;
     private final String host;
     private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
 
     /**
-     * Create a new SwaggerInterfaceParser object with the provided fully qualified interface
+     * Create a SwaggerInterfaceParser object with the provided fully qualified interface
      * name.
      * @param swaggerInterface The interface that will be parsed.
      * @param serializer The serializer that will be used to serialize non-String header values and query values.
@@ -34,14 +33,13 @@ public class SwaggerInterfaceParser {
     }
 
     /**
-     * Create a new SwaggerInterfaceParser object with the provided fully qualified interface
+     * Create a SwaggerInterfaceParser object with the provided fully qualified interface
      * name.
      * @param swaggerInterface The interface that will be parsed.
      * @param serializer The serializer that will be used to serialize non-String header values and query values.
      * @param host The host of URLs that this Swagger interface targets.
      */
     public SwaggerInterfaceParser(Class<?> swaggerInterface, SerializerAdapter serializer, String host) {
-        this.swaggerInterface = swaggerInterface;
         this.serializer = serializer;
 
         if (host != null && !host.isEmpty()) {
@@ -61,8 +59,9 @@ public class SwaggerInterfaceParser {
     /**
      * Get the method parser that is associated with the provided swaggerMethod. The method parser
      * can be used to get details about the Swagger REST API call.
-     * @param swaggerMethod The method to generate a parser for.
-     * @return The SwaggerMethodParser associated with the provided swaggerMethod.
+     *
+     * @param swaggerMethod the method to generate a parser for
+     * @return the SwaggerMethodParser associated with the provided swaggerMethod
      */
     public SwaggerMethodParser methodParser(Method swaggerMethod) {
         SwaggerMethodParser result = methodParsers.get(swaggerMethod);

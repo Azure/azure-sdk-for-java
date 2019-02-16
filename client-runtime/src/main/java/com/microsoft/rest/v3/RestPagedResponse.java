@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Response of a REST API returning page.
+ * Response of a REST API that returns page.
  *
  * @param <T> the type items in the page
  */
@@ -44,7 +44,7 @@ public interface RestPagedResponse<T> extends Closeable {
      *
      * @return the status code of the HTTP response
      */
-    public int statusCode();
+    int statusCode();
 
     /**
      * Get the response header as a map.

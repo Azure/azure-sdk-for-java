@@ -26,7 +26,7 @@ public abstract class HttpClient {
      * @return the HttpClient
      */
     public static HttpClient createDefault() {
-        return createDefault(null);
+        return new ReactorNettyClient(null);
     }
 
     /**
@@ -36,12 +36,6 @@ public abstract class HttpClient {
      * @return the HttpClient
      */
     public static HttpClient createDefault(HttpClientConfiguration configuration) {
-        return DefaultHttpClientHolder.defaultHttpClientFactory.create(configuration);
-    }
-
-    private static final class DefaultHttpClientHolder {
-        // Putting this field in an inner class makes it so it is only instantiated when
-        // one of the createDefault() methods instead of instantiating when any members are accessed.
-        private static HttpClientFactory defaultHttpClientFactory = new NettyClient.Factory();
+        return new ReactorNettyClient(configuration);
     }
 }

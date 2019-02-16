@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.Map;
 
 /**
- * This class contains the data from an originating operation
+ * Type that holds composes data from an originating operation
  * that can be used to resume the polling of the original operation.
  */
 public class OperationDescription implements Serializable {
@@ -24,7 +24,7 @@ public class OperationDescription implements Serializable {
     private String fullyQualifiedMethodName;
 
     /**
-     * Create a new OperationDescription.
+     * Create OperationDescription.
      */
     public OperationDescription() {
         this.fullyQualifiedMethodName = null;
@@ -36,9 +36,10 @@ public class OperationDescription implements Serializable {
 
     /**
      * Create a new Substitution.
-     * @param fullyQualifiedMethodName The fully qualified method name from the originating call.
-     * @param pollStrategyData The data for the originating methods polling strategy.
-     * @param originalHttpRequest The initial http request from the originating call.
+     *
+     * @param fullyQualifiedMethodName the fully qualified method name from the originating call
+     * @param pollStrategyData the data for the originating methods polling strategy
+     * @param originalHttpRequest the initial http request from the originating call
      */
     public OperationDescription(String fullyQualifiedMethodName,
                                 Serializable pollStrategyData,
@@ -51,14 +52,18 @@ public class OperationDescription implements Serializable {
     }
 
     /**
-     * @return the Serializable poll strategy data.
+     * Get the Serializable poll strategy data.
+     *
+     * @return the Serializable poll strategy data
      */
     public Serializable pollStrategyData() {
         return this.pollStrategyData;
     }
 
     /**
-     * @return the originating requests url.
+     * Get the originating requests url.
+     *
+     * @return the originating requests url
      */
     public URL url() {
         return this.url;
@@ -72,14 +77,18 @@ public class OperationDescription implements Serializable {
     }
 
     /**
-     * @return the originating requests headers.
+     * Get the originating requests headers.
+     *
+     * @return the originating requests headers
      */
     public Map<String, String> headers() {
         return this.headers;
     }
 
     /**
-     * @return the originating method name.
+     * Get the originating method name.
+     *
+     * @return the originating method name
      */
     String methodName() {
         int lastIndex = this.fullyQualifiedMethodName.lastIndexOf(".");

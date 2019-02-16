@@ -162,7 +162,7 @@ abstract class PollStrategy {
     Mono<HttpResponse> sendPollRequestWithDelay() {
         return Mono.defer(() -> delayAsync().then(Mono.defer(() -> {
             final HttpRequest pollRequest = createPollRequest();
-            return restProxy.sendHttpRequestAsync(pollRequest, new ContextData("caller-method", fullyQualifiedMethodName()));
+            return restProxy.send(pollRequest, new ContextData("caller-method", fullyQualifiedMethodName()));
         })).flatMap(response -> updateFromAsync(response)));
     }
 

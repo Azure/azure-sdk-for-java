@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
- * An exception that is thrown when a Swagger interface is parsed and it is missing required
+ * An exception thrown when a Swagger interface is parsed and it is missing required
  * annotations.
  */
 public class MissingRequiredAnnotationException extends RuntimeException {

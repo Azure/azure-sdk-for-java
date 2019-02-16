@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 /**
- * Simple wrapper over java.time.OffsetDateTime used for specifying unix seconds format during serialization/deserialization.
+ * A wrapper over java.time.OffsetDateTime used for specifying unix seconds format during serialization and deserialization.
  */
 public final class UnixTime {
     /**
@@ -20,24 +20,27 @@ public final class UnixTime {
     private final OffsetDateTime dateTime;
 
     /**
-     * Creates a new UnixTime object with the specified DateTime.
-     * @param dateTime The DateTime object to wrap.
+     * Creates aUnixTime object with the specified DateTime.
+     *
+     * @param dateTime The DateTime object to wrap
      */
     public UnixTime(OffsetDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
     /**
-     * Creates a new UnixTime object with the specified DateTime.
-     * @param unixSeconds The Unix seconds value.
+     * Creates a UnixTime object with the specified DateTime.
+     *
+     * @param unixSeconds The Unix seconds value
      */
     public UnixTime(long unixSeconds) {
         this.dateTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(unixSeconds), ZoneOffset.UTC);
     }
 
     /**
-     * Returns the underlying DateTime.
-     * @return The underlying DateTime.
+     * Get the underlying DateTime.
+     *
+     * @return The underlying DateTime
      */
     public OffsetDateTime dateTime() {
         if (this.dateTime == null) {

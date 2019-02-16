@@ -9,7 +9,7 @@ package com.microsoft.rest.v3;
 import com.microsoft.rest.v3.http.HttpResponse;
 
 /**
- * Exception thrown for an invalid response with custom error information.
+ * An exception thrown for an invalid response with custom error information.
  */
 public class RestException extends RuntimeException {
     /**

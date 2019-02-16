@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.test.StepVerifierOptions;
 
-public class NettyClientTests {
+public class ReactorNettyClientTests {
 
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();

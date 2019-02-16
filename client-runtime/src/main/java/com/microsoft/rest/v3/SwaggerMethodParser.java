@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class parses details of a specific Swagger REST API call from a provided Swagger interface
+ * The type to parse details of a specific Swagger REST API call from a provided Swagger interface
  * method.
  */
 public class SwaggerMethodParser {
@@ -65,9 +65,10 @@ public class SwaggerMethodParser {
     private Class<?> exceptionBodyType;
 
     /**
-     * Create a new SwaggerMethodParser object using the provided fully qualified method name.
-     * @param swaggerMethod The Swagger method to parse.
-     * @param rawHost The raw host value from the @Host annotation. Before this can be used as the
+     * Create a SwaggerMethodParser object using the provided fully qualified method name.
+     *
+     * @param swaggerMethod the Swagger method to parse.
+     * @param rawHost the raw host value from the @Host annotation. Before this can be used as the
      *                host value in an HTTP request, it must be processed through the possible host
      *                substitutions.
      */
@@ -194,7 +195,8 @@ public class SwaggerMethodParser {
 
     /**
      * Get the fully qualified method that was called to invoke this HTTP request.
-     * @return The fully qualified method that was called to invoke this HTTP request.
+     *
+     * @return the fully qualified method that was called to invoke this HTTP request
      */
     public String fullyQualifiedMethodName() {
         return fullyQualifiedMethodName;
@@ -202,7 +204,8 @@ public class SwaggerMethodParser {
 
     /**
      * Get the HTTP method that will be used to complete the Swagger method's request.
-     * @return The HTTP method that will be used to complete the Swagger method's request.
+     *
+     * @return the HTTP method that will be used to complete the Swagger method's request
      */
     public HttpMethod httpMethod() {
         return httpMethod;
@@ -212,7 +215,8 @@ public class SwaggerMethodParser {
      * Get the HTTP response status codes that are expected when a request is sent out for this
      * Swagger method. If the returned int[] is null, then all status codes less than 400 are
      * allowed.
-     * @return The expected HTTP response status codes for this Swagger method or null if all status
+     *
+     * @return the expected HTTP response status codes for this Swagger method or null if all status
      * codes less than 400 are allowed.
      */
     public int[] expectedStatusCodes() {
@@ -221,8 +225,9 @@ public class SwaggerMethodParser {
 
     /**
      * Get the scheme to use for HTTP requests for this Swagger method.
-     * @param swaggerMethodArguments The arguments to use for scheme/host substitutions.
-     * @return The final host to use for HTTP requests for this Swagger method.
+     *
+     * @param swaggerMethodArguments the arguments to use for scheme/host substitutions.
+     * @return the final host to use for HTTP requests for this Swagger method.
      */
     public String scheme(Object[] swaggerMethodArguments) {
         final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.PATH_ESCAPER);
@@ -232,8 +237,9 @@ public class SwaggerMethodParser {
 
     /**
      * Get the host to use for HTTP requests for this Swagger method.
-     * @param swaggerMethodArguments The arguments to use for host substitutions.
-     * @return The final host to use for HTTP requests for this Swagger method.
+     *
+     * @param swaggerMethodArguments the arguments to use for host substitutions
+     * @return the final host to use for HTTP requests for this Swagger method
      */
     public String host(Object[] swaggerMethodArguments) {
         final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.PATH_ESCAPER);
@@ -243,8 +249,9 @@ public class SwaggerMethodParser {
 
     /**
      * Get the path that will be used to complete the Swagger method's request.
-     * @param methodArguments The method arguments to use with the path substitutions.
-     * @return The path value with its placeholders replaced by the matching substitutions.
+     *
+     * @param methodArguments the method arguments to use with the path substitutions
+     * @return the path value with its placeholders replaced by the matching substitutions
      */
     public String path(Object[] methodArguments) {
         return applySubstitutions(relativePath, pathSubstitutions, methodArguments, UrlEscapers.PATH_ESCAPER);
@@ -253,9 +260,10 @@ public class SwaggerMethodParser {
     /**
      * Get the encoded query parameters that have been added to this value based on the provided
      * method arguments.
-     * @param swaggerMethodArguments The arguments that will be used to create the query parameters'
-     *                               values.
-     * @return An Iterable with the encoded query parameters.
+     *
+     * @param swaggerMethodArguments the arguments that will be used to create the query parameters'
+     *                               values
+     * @return an Iterable with the encoded query parameters
      */
     public Iterable<EncodedParameter> encodedQueryParameters(Object[] swaggerMethodArguments) {
         final List<EncodedParameter> result = new ArrayList<>();
@@ -330,7 +338,8 @@ public class SwaggerMethodParser {
     /**
      * Get whether or not the provided response status code is one of the expected status codes for
      * this Swagger method.
-     * @param responseStatusCode The status code that was returned in the HTTP response.
+     *
+     * @param responseStatusCode the status code that was returned in the HTTP response.
      * @return whether or not the provided response status code is one of the expected status codes
      * for this Swagger method.
      */
@@ -341,12 +350,13 @@ public class SwaggerMethodParser {
     /**
      * Get whether or not the provided response status code is one of the expected status codes for
      * this Swagger method.
-     * @param responseStatusCode The status code that was returned in the HTTP response.
-     * @param additionalAllowedStatusCodes An additional set of allowed status codes that will be
+     *
+     * @param responseStatusCode the status code that was returned in the HTTP response
+     * @param additionalAllowedStatusCodes an additional set of allowed status codes that will be
      *                                     merged with the existing set of allowed status codes for
-     *                                     this query.
+     *                                     this query
      * @return whether or not the provided response status code is one of the expected status codes
-     * for this Swagger method.
+     * for this Swagger method
      */
     public boolean isExpectedResponseStatusCode(int responseStatusCode, int[] additionalAllowedStatusCodes) {
         boolean result;
@@ -380,8 +390,9 @@ public class SwaggerMethodParser {
     /**
      * Get the type of RestException that will be thrown if the HTTP response's status code is not
      * one of the expected status codes.
-     * @return The type of RestException that will be thrown if the HTTP response's status code is
-     * not one of the expected status codes.
+     *
+     * @return the type of RestException that will be thrown if the HTTP response's status code is
+     * not one of the expected status codes
      */
     public Class<? extends RestException> exceptionType() {
         return exceptionType;
@@ -390,8 +401,9 @@ public class SwaggerMethodParser {
     /**
      * Get the type of body Object that a thrown RestException will contain if the HTTP response's
      * status code is not one of the expected status codes.
-     * @return The type of body Object that a thrown RestException will contain if the HTTP
-     * response's status code is not one of the expected status codes.
+     *
+     * @return the type of body Object that a thrown RestException will contain if the HTTP
+     * response's status code is not one of the expected status codes
      */
     public Class<?> exceptionBodyType() {
         return exceptionBodyType;
@@ -399,8 +411,9 @@ public class SwaggerMethodParser {
 
     /**
      * Get the object to be used as the body of the HTTP request.
-     * @param swaggerMethodArguments The method arguments to get the body object from.
-     * @return The object that will be used as the body of the HTTP request.
+     *
+     * @param swaggerMethodArguments the method arguments to get the body object from
+     * @return the object that will be used as the body of the HTTP request
      */
     public Object body(Object[] swaggerMethodArguments) {
         Object result = null;
@@ -416,7 +429,9 @@ public class SwaggerMethodParser {
     }
 
     /**
-     * @return the Content-Type of the body of this Swagger method.
+     * Get the Content-Type of the body of this Swagger method.
+     *
+     * @return the Content-Type of the body of this Swagger method
      */
     public String bodyContentType() {
         return bodyContentType;
@@ -424,7 +439,8 @@ public class SwaggerMethodParser {
 
     /**
      * Get the return type for the method that this object describes.
-     * @return The return type for the method that this object describes.
+     *
+     * @return the return type for the method that this object describes.
      */
     public Type returnType() {
         return returnType;
@@ -433,7 +449,8 @@ public class SwaggerMethodParser {
 
     /**
      * Get the type of the body parameter to this method, if present.
-     * @return The return type of the body parameter to this method.
+     *
+     * @return the return type of the body parameter to this method
      */
     public Type bodyJavaType() {
         return bodyJavaType;
@@ -443,14 +460,17 @@ public class SwaggerMethodParser {
      * Get the type that the return value will be send across the network as. If returnValueWireType
      * is not null, then the raw HTTP response body will need to parsed to this type and then
      * converted to the actual returnType.
-     * @return The type that the raw HTTP response body will be sent as.
+     *
+     * @return the type that the raw HTTP response body will be sent as
      */
     public Type returnValueWireType() {
         return returnValueWireType;
     }
 
     /**
-     * @return Whether or not the Swagger method expects the response to contain a body.
+     * Checks whether or not the Swagger method expects the response to contain a body.
+     *
+     * @return true if Swagger method expects the response to contain a body, false otherwise
      */
     public boolean expectsResponseBody() {
         boolean result = true;
@@ -488,9 +508,10 @@ public class SwaggerMethodParser {
     /**
      * Set both the HTTP method and the path that will be used to complete the Swagger method's
      * request.
-     * @param httpMethod The HTTP method that will be used to complete the Swagger method's request.
-     * @param relativePath The path in the URL that will be used to complete the Swagger method's
-     *                     request.
+     *
+     * @param httpMethod the HTTP method that will be used to complete the Swagger method's request
+     * @param relativePath the path in the URL that will be used to complete the Swagger method's
+     *                     request
      */
     private void setHttpMethodAndRelativePath(HttpMethod httpMethod, String relativePath) {
         this.httpMethod = httpMethod;

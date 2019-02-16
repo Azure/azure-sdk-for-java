@@ -258,7 +258,7 @@ public final class AzureProxy extends RestProxy {
     }
 
     @Override
-    protected Object handleAsyncHttpResponse(final HttpRequest httpRequest, Mono<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
+    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
         //
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
@@ -271,7 +271,7 @@ public final class AzureProxy extends RestProxy {
                     final HttpResponse bufferedHttpResponse = httpResponse.buffer();
                     return createPollStrategy(httpRequest, Mono.just(bufferedHttpResponse), methodParser)
                             .flatMapMany(pollStrategy -> {
-                                Mono<OperationStatus<Object>> first = handleBodyReturnTypeAsync(bufferedHttpResponse, methodParser, operationStatusResultType)
+                                Mono<OperationStatus<Object>> first = handleBodyReturnType(bufferedHttpResponse, methodParser, operationStatusResultType)
                                         .map(operationResult -> new OperationStatus<Object>(operationResult, pollStrategy.status()))
                                         .switchIfEmpty(Mono.defer((Supplier<Mono<OperationStatus<Object>>>) () -> Mono.just(new OperationStatus<Object>((Object) null, pollStrategy.status()))));
                                 Flux<OperationStatus<Object>> rest = pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType);

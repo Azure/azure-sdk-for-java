@@ -11,7 +11,7 @@ import com.microsoft.rest.v3.util.Base64Util;
 import java.util.Arrays;
 
 /**
- * Simple wrapper over Base64Url encoded byte array used during serialization/deserialization.
+ * Wrapper over Base64Url encoded byte array used during serialization and deserialization.
  */
 public final class Base64Url {
     /**

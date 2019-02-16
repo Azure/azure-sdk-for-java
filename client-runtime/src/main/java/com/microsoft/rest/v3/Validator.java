@@ -24,12 +24,13 @@ import java.util.Map;
  */
 public final class Validator {
     /**
-     * Hidden constructor for utility class.
+     * Private Ctr.
      */
     private Validator() { }
 
     /**
      * Validates a user provided required parameter to be not null.
+     *
      * An {@link IllegalArgumentException} is thrown if a property fails the validation.
      *
      * @param parameter the parameter to validate
