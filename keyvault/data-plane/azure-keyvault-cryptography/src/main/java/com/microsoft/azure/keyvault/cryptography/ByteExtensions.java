@@ -99,7 +99,7 @@ public final class ByteExtensions {
      * @param source Array to make copy of
      * @return A copy of the array, or null if source was null.
      */
-    static byte[] clone(byte[] source) {
+    public static byte[] clone(byte[] source) {
         if (source == null) {
             return null;
         }
