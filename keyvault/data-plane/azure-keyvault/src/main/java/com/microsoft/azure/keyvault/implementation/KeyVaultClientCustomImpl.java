@@ -95,7 +95,6 @@ import rx.functions.Func1;
 public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements KeyVaultClientCustom {
 
     private KeyVaultClientService service;
-    private AzureClient azureClient;
 
     protected KeyVaultClientCustomImpl(ServiceClientCredentials credentials) {
         super(credentials);
@@ -106,7 +105,7 @@ public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements 
     }
 
     /**
-     * Intializes the service.
+     * Initializes the service.
      */
     public void initializeService() {
         service = restClient().retrofit().create(KeyVaultClientService.class);
