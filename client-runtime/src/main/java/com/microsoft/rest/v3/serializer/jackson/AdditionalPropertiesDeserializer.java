@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.serializer;
+package com.microsoft.rest.v3.serializer.jackson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonFactory;
@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
 import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
@@ -27,11 +26,12 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
- * Custom serializer for deserializing complex types with wrapped properties.
- * For example, a property with annotation @JsonProperty(value = "properties.name")
- * will be mapped to a top level "name" property in the POJO model.
+ * Custom serializer for deserializing complex types with additional properties.
+ * If a complex type has a property named "additionalProperties" with serialized
+ * name empty ("") of type Map&lt;String, Object&gt;, all extra properties on the
+ * payload will be stored in this map.
  */
-public final class FlatteningDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {
+final class AdditionalPropertiesDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {
     /**
      * The default mapperAdapter for the current type.
      */
@@ -43,12 +43,12 @@ public final class FlatteningDeserializer extends StdDeserializer<Object> implem
     private final ObjectMapper mapper;
 
     /**
-     * Creates an instance of FlatteningDeserializer.
+     * Creates FlatteningDeserializer.
      * @param vc handled type
      * @param defaultDeserializer the default JSON mapperAdapter
      * @param mapper the object mapper for default deserializations
      */
-    protected FlatteningDeserializer(Class<?> vc, JsonDeserializer<?> defaultDeserializer, ObjectMapper mapper) {
+    protected AdditionalPropertiesDeserializer(Class<?> vc, JsonDeserializer<?> defaultDeserializer, ObjectMapper mapper) {
         super(vc);
         this.defaultDeserializer = defaultDeserializer;
         this.mapper = mapper;
@@ -66,8 +66,16 @@ public final class FlatteningDeserializer extends StdDeserializer<Object> implem
         module.setDeserializerModifier(new BeanDeserializerModifier() {
             @Override
             public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
-                if (beanDesc.getBeanClass().getAnnotation(JsonFlatten.class) != null) {
-                    return new FlatteningDeserializer(beanDesc.getBeanClass(), deserializer, mapper);
+                for (Class<?> c : TypeUtil.getAllClasses(beanDesc.getBeanClass())) {
+                    Field[] fields = c.getDeclaredFields();
+                    for (Field field : fields) {
+                        if ("additionalProperties".equalsIgnoreCase(field.getName())) {
+                            JsonProperty property = field.getAnnotation(JsonProperty.class);
+                            if (property != null && property.value().isEmpty()) {
+                                return new AdditionalPropertiesDeserializer(beanDesc.getBeanClass(), deserializer, mapper);
+                            }
+                        }
+                    }
                 }
                 return deserializer;
             }
@@ -78,32 +86,27 @@ public final class FlatteningDeserializer extends StdDeserializer<Object> implem
     @SuppressWarnings("unchecked")
     @Override
     public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
-        JsonNode root = mapper.readTree(jp);
+        ObjectNode root = mapper.readTree(jp);
+        ObjectNode copy = root.deepCopy();
+
+        // compare top level fields and keep only missing fields
         final Class<?> tClass = this.defaultDeserializer.handledType();
         for (Class<?> c : TypeUtil.getAllClasses(tClass)) {
-            // Ignore checks for Object type.
-            if (c.isAssignableFrom(Object.class)) {
-                continue;
-            }
-            for (Field field : c.getDeclaredFields()) {
-                JsonNode node = root;
+            Field[] fields = c.getDeclaredFields();
+            for (Field field : fields) {
                 JsonProperty property = field.getAnnotation(JsonProperty.class);
-                if (property != null) {
-                    String value = property.value();
-                    if (value.matches(".+[^\\\\]\\..+")) {
-                        String[] values = value.split("((?<!\\\\))\\.");
-                        for (String val : values) {
-                            val = val.replace("\\.", ".");
-                            node = node.get(val);
-                            if (node == null) {
-                                break;
-                            }
-                        }
-                        ((ObjectNode) root).put(value, node);
+                String key = property.value().split("((?<!\\\\))\\.")[0];
+                if (!key.isEmpty()) {
+                    if (copy.has(key)) {
+                        copy.remove(key);
                     }
                 }
             }
         }
+
+        // put into additional properties
+        root.put("additionalProperties", copy);
+
         JsonParser parser = new JsonFactory().createParser(root.toString());
         parser.nextToken();
         return defaultDeserializer.deserialize(parser, ctxt);

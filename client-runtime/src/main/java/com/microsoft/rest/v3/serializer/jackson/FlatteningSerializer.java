@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.serializer;
+package com.microsoft.rest.v3.serializer.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.BeanDescription;
@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.microsoft.rest.v3.serializer.JsonFlatten;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -42,7 +43,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * will be mapped from a top level "name" property in the POJO model to
  * {'properties' : { 'name' : 'my_name' }} in the serialized payload.
  */
-public class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
+class FlatteningSerializer extends StdSerializer<Object> implements ResolvableSerializer {
     /**
      * The default mapperAdapter for the current type.
      */

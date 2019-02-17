@@ -8,7 +8,7 @@ package com.microsoft.azure.v3;
 
 import com.microsoft.rest.v3.ServiceClient;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.protocol.SerializerAdapter;
+import com.microsoft.rest.v3.serializer.SerializerAdapter;
 
 /**
  * The base class for generated Azure service clients.

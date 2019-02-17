@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.serializer;
+package com.microsoft.rest.v3.serializer.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -20,7 +20,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * Custom serializer for serializing {@link OffsetDateTime} object into ISO8601 formats.
  */
-public final class DateTimeSerializer extends JsonSerializer<OffsetDateTime> {
+final class DateTimeSerializer extends JsonSerializer<OffsetDateTime> {
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.

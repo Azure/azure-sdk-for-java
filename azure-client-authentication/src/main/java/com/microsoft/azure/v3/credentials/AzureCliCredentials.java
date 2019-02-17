@@ -10,7 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.v3.AzureEnvironment;
 import com.microsoft.rest.v3.annotations.Beta;
-import com.microsoft.rest.v3.serializer.JacksonAdapter;
+import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;

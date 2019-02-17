@@ -7,7 +7,7 @@
 package com.microsoft.rest.v3;
 
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.protocol.SerializerAdapter;
+import com.microsoft.rest.v3.serializer.SerializerAdapter;
 
 /**
  * The base class for REST service clients.

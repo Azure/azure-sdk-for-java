@@ -4,9 +4,10 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.serializer;
+package com.microsoft.rest.v3.serializer.jackson;
 
-import com.microsoft.rest.v3.protocol.SerializerEncoding;
+import com.microsoft.rest.v3.serializer.SerializerEncoding;
+import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
 import com.microsoft.rest.v3.util.Foo;
 import com.microsoft.rest.v3.util.FooChild;
 import org.junit.Assert;

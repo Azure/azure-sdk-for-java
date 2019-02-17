@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.serializer;
+package com.microsoft.rest.v3.serializer.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -17,7 +17,7 @@ import java.time.Duration;
 /**
  * Custom serializer for serializing {@link Duration} object into ISO8601 formats.
  */
-public final class DurationSerializer extends JsonSerializer<Duration> {
+final class DurationSerializer extends JsonSerializer<Duration> {
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.

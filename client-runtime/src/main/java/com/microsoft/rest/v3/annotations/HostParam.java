@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * A host parameter annotation for replacing parametrized segments in a dynamic {@link Host}.
+ * Annotation to annotate replacement of parametrized segments in a dynamic {@link Host}.
  *
  * You provide the value, which should be the same (case sensitive) with
  * the parametrized segments in '{}' in the host, unless there's only one

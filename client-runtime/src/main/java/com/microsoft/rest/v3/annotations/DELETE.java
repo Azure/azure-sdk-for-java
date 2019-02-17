@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * HTTP DELETE method annotation describing the parametrized relative path to an endpoint for resource deletion.
+ * HTTP DELETE method annotation describing the parametrized relative path to a REST endpoint for resource deletion.
  *
  * The required value can be either a relative path or an absolute path. When it's
  * an absolute path, it must start with a protocol or a parametrized segment.

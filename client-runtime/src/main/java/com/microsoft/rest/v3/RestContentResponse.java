@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * REST response with a strongly-typed content specified.
  *
- * @param <TBody> The deserialized type of the response body.
+ * @param <TBody> The deserialized type of the response content.
  */
 public final class RestContentResponse<TBody> extends RestResponse<Void, TBody> {
     /**

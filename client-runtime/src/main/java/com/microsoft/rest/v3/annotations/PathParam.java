@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation for named replacement in a REST API URL path segment.
+ * Annotation to annotate replacement for a named path segment in REST endpoint URL.
  *
  * A parameter that is annotated with PathParam will be ignored if the "uri template"
  * does not contain a path segment variable with name {@link PathParam#value()}.

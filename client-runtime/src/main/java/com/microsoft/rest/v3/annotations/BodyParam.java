@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation for the parameter to be sent as the HTTP Request content.
+ * Annotation to annotate a parameter to send to a REST endpoint as HTTP Request content.
  *
  * If the parameter type extends InputStream, this payload is streamed to server through
  * "application/octet-stream". Otherwise, the body is serialized first and sent as

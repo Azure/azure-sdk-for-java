@@ -1,5 +1,6 @@
-package com.microsoft.rest.v3.serializer;
+package com.microsoft.rest.v3.serializer.jackson;
 
+import com.microsoft.rest.v3.serializer.jackson.DateTimeSerializer;
 import org.junit.Test;
 
 import java.time.LocalDate;

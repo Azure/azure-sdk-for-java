@@ -7,7 +7,7 @@
 package com.microsoft.rest.v3.util.escapers;
 
 /**
- * A collection of useful URL escapers.
+ * Collection of useful URL escapers.
  */
 public final class UrlEscapers {
 

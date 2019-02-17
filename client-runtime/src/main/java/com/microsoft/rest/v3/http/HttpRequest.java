@@ -6,7 +6,7 @@
 
 package com.microsoft.rest.v3.http;
 
-import com.microsoft.rest.v3.protocol.HttpResponseDecoder;
+import com.microsoft.rest.v3.serializer.HttpResponseDecoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;

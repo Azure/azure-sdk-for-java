@@ -4,13 +4,13 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.protocol;
+package com.microsoft.rest.v3.serializer;
 
 
 import com.microsoft.rest.v3.http.HttpHeaders;
 
 /**
- * Represents supported encoding formats serialization.
+ * Supported serialization encoding formats.
  */
 public enum SerializerEncoding {
     /**
@@ -25,6 +25,7 @@ public enum SerializerEncoding {
 
     /**
      * Determines the serializer encoding to use based on the Content-Type header.
+     *
      * @param headers the headers to check the encoding for
      * @return the serializer encoding to use for the body
      */

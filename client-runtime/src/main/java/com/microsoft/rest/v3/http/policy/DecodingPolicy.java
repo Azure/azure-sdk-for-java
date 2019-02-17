@@ -9,7 +9,7 @@ package com.microsoft.rest.v3.http.policy;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.NextPolicy;
-import com.microsoft.rest.v3.protocol.HttpResponseDecoder;
+import com.microsoft.rest.v3.serializer.HttpResponseDecoder;
 import reactor.core.publisher.Mono;
 
 /**

@@ -7,7 +7,7 @@
 package com.microsoft.rest.v3;
 
 import com.microsoft.rest.v3.annotations.Host;
-import com.microsoft.rest.v3.protocol.SerializerAdapter;
+import com.microsoft.rest.v3.serializer.SerializerAdapter;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;

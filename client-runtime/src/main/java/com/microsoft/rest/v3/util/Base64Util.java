@@ -9,7 +9,7 @@ package com.microsoft.rest.v3.util;
 import java.util.Base64;
 
 /**
- * Provides Base64 encoding/decoding methods.
+ * Utility type exposing Base64 encoding and decoding methods.
  */
 public final class Base64Util {
     /**
@@ -66,6 +66,7 @@ public final class Base64Util {
         return encoded == null ? null : Base64.getDecoder().decode(encoded);
     }
 
+    // Private Ctr
     private Base64Util() {
     }
 }

@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation for query parameters to be appended to REST API Request URI.
+ * Annotation for query parameters to be appended to a REST API Request URI.
  *
  * Example#1:
  *

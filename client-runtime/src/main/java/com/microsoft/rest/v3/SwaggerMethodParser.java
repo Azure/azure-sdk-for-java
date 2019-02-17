@@ -25,7 +25,8 @@ import com.microsoft.rest.v3.http.ContextData;
 import com.microsoft.rest.v3.http.HttpHeader;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpMethod;
-import com.microsoft.rest.v3.protocol.SerializerAdapter;
+import com.microsoft.rest.v3.serializer.HttpResponseDecodeData;
+import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import com.microsoft.rest.v3.util.TypeUtil;
 import com.microsoft.rest.v3.util.escapers.PercentEscaper;
 import com.microsoft.rest.v3.util.escapers.UrlEscapers;
@@ -44,7 +45,7 @@ import java.util.Map;
  * The type to parse details of a specific Swagger REST API call from a provided Swagger interface
  * method.
  */
-public class SwaggerMethodParser {
+public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final SerializerAdapter serializer;
     private final String rawHost;
     private final String fullyQualifiedMethodName;
@@ -207,6 +208,7 @@ public class SwaggerMethodParser {
      *
      * @return the HTTP method that will be used to complete the Swagger method's request
      */
+    @Override
     public HttpMethod httpMethod() {
         return httpMethod;
     }
@@ -219,6 +221,7 @@ public class SwaggerMethodParser {
      * @return the expected HTTP response status codes for this Swagger method or null if all status
      * codes less than 400 are allowed.
      */
+    @Override
     public int[] expectedStatusCodes() {
         return expectedStatusCodes;
     }
@@ -405,6 +408,7 @@ public class SwaggerMethodParser {
      * @return the type of body Object that a thrown RestException will contain if the HTTP
      * response's status code is not one of the expected status codes
      */
+    @Override
     public Class<?> exceptionBodyType() {
         return exceptionBodyType;
     }
@@ -442,6 +446,7 @@ public class SwaggerMethodParser {
      *
      * @return the return type for the method that this object describes.
      */
+    @Override
     public Type returnType() {
         return returnType;
     }
@@ -463,6 +468,7 @@ public class SwaggerMethodParser {
      *
      * @return the type that the raw HTTP response body will be sent as
      */
+    @Override
     public Type returnValueWireType() {
         return returnValueWireType;
     }

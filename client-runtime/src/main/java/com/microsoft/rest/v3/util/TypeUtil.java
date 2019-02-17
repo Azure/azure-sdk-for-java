@@ -13,9 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Contains utilities for dealing with types.
+ * Utility type exposing methods to deal with {@link Type}.
  */
-public class TypeUtil {
+public final class TypeUtil {
     /**
      * Find all super classes including provided class.
      *
@@ -171,5 +171,9 @@ public class TypeUtil {
                 return null;
             }
         };
+    }
+
+    // Private Ctr
+    private TypeUtil() {
     }
 }

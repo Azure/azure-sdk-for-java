@@ -4,14 +4,12 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.protocol;
+package com.microsoft.rest.v3.serializer;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.microsoft.rest.v3.Base64Url;
 import com.microsoft.rest.v3.DateTimeRfc1123;
 import com.microsoft.rest.v3.RestException;
 import com.microsoft.rest.v3.RestResponse;
-import com.microsoft.rest.v3.SwaggerMethodParser;
 import com.microsoft.rest.v3.UnixTime;
 import com.microsoft.rest.v3.annotations.HeaderCollection;
 import com.microsoft.rest.v3.http.HttpHeader;
@@ -37,17 +35,17 @@ import java.util.Set;
  * Deserializes an {@link HttpResponse}.
  */
 public final class HttpResponseDecoder {
-    private final SwaggerMethodParser methodParser;
+    private final HttpResponseDecodeData methodParser;
     private final SerializerAdapter serializer;
 
     /**
      * Creates HttpResponseDecoder.
      *
-     * @param methodParser metadata about the Swagger method used for decoding
+     * @param decodeData the necessary data required to decode a Http response
      * @param serializer the serializer
      */
-    public HttpResponseDecoder(SwaggerMethodParser methodParser, SerializerAdapter serializer) {
-        this.methodParser = methodParser;
+    public HttpResponseDecoder(HttpResponseDecodeData decodeData, SerializerAdapter serializer) {
+        this.methodParser = decodeData;
         this.serializer = serializer;
     }
 
@@ -120,10 +118,10 @@ public final class HttpResponseDecoder {
                     return bufferedResponse
                             .withDeserializedHeaders(deserializedHeaders)
                             .withDeserializedBody(body);
-                } catch (JsonParseException e) {
-                    throw new RestException("HTTP response has a malformed body", response, e);
+                } catch (MalformedValueException e) {
+                    throw new RestException("HTTP response has a malformed body.", response, e);
                 } catch (IOException e) {
-                    throw new RestException("Deserialization Failed", response, e);
+                    throw new RestException("Deserialization Failed.", response, e);
                 }
             }).defaultIfEmpty(response.withDeserializedHeaders(deserializedHeaders));
         } else {

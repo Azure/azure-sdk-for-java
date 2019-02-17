@@ -13,7 +13,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation to list the HTTP status codes that are expected for a REST API.
+ * Annotation to annotate list of HTTP status codes that are expected in response from a REST endpoint.
  *
  * Example:
  *   {@literal @}ExpectedResponses({200, 201})

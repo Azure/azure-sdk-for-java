@@ -12,8 +12,8 @@ import com.microsoft.rest.v3.SwaggerMethodParser;
 import com.microsoft.rest.v3.http.ContextData;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.protocol.HttpResponseDecoder;
-import com.microsoft.rest.v3.protocol.SerializerEncoding;
+import com.microsoft.rest.v3.serializer.HttpResponseDecoder;
+import com.microsoft.rest.v3.serializer.SerializerEncoding;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 
 /**
- * Contains helper methods, types for dealing with Flux.
+ * Utility type exposing methods to deal with {@link Flux}.
  */
 public final class FluxUtil {
     /**
@@ -401,6 +401,7 @@ public final class FluxUtil {
 
     //endregion
 
+    // Private Ctr
     private FluxUtil() {
     }
 }

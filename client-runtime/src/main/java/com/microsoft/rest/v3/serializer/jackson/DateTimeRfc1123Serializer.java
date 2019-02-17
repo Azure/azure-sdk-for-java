@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.serializer;
+package com.microsoft.rest.v3.serializer.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * Custom serializer for serializing {@link DateTimeRfc1123} object into RFC1123 formats.
  */
-public final class DateTimeRfc1123Serializer extends JsonSerializer<DateTimeRfc1123> {
+final class DateTimeRfc1123Serializer extends JsonSerializer<DateTimeRfc1123> {
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson
      * ObjectMapper.

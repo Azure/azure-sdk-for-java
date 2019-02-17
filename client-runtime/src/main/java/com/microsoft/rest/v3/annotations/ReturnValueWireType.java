@@ -13,8 +13,7 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation for the type that will be used to deserialize the return value of a service interface
- * method from a network response.
+ * Annotation for the type that will be used to deserialize the return value of a REST API response.
  */
 @Retention(RUNTIME)
 @Target(METHOD)
