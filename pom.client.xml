@@ -524,6 +524,13 @@
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-jar-plugin</artifactId>
                <version>${maven-jar-plugin.version}</version>
+               <configuration>
+                  <archive>
+                     <manifestEntries>
+                        <Automatic-Module-Name>${project.groupId}.${project.artifactId}</Automatic-Module-Name>
+                     </manifestEntries>
+                  </archive>
+               </configuration>
             </plugin>
 
             <!-- This plugin is used to generate project's site and reports -->
