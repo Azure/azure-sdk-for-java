@@ -15,6 +15,7 @@ import com.microsoft.azure.keyvault.models.KeyProperties;
 import com.microsoft.azure.keyvault.models.LifetimeAction;
 import com.microsoft.azure.keyvault.models.SecretProperties;
 import com.microsoft.azure.keyvault.models.X509CertificateProperties;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 
 /**
  * The create certificate request class.
@@ -74,6 +75,10 @@ public final class CreateCertificateRequest {
          * @return the Builder object itself.
          */
         public Builder withAttributes(Attributes attributes) {
+            if (!attributes.getClass().isAssignableFrom(CertificateAttributes.class)) {
+                throw new IllegalArgumentException("attributes");
+            }
+
             this.attributes = (CertificateAttributes) attributes;
             return this;
         }
