@@ -139,7 +139,7 @@ public class SymmetricKey implements IKey {
         }
 
         this.kid      = kid;
-        this.key      = keyBytes;
+        this.key      = ByteExtensions.clone(keyBytes);
         this.provider = provider;
     }
 

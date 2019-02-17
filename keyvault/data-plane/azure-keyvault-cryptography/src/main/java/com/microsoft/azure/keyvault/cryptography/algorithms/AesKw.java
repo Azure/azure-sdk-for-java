@@ -23,7 +23,7 @@ public abstract class AesKw extends KeyWrapAlgorithm {
     static final byte[] DEFAULT_IV = new byte[] { (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6 };
     static final String CIPHER_NAME = "AESWrap";
 
-    class AesKwDecryptor implements ICryptoTransform {
+    static class AesKwDecryptor implements ICryptoTransform {
 
         final Cipher cipher;
 
@@ -53,7 +53,7 @@ public abstract class AesKw extends KeyWrapAlgorithm {
 
     }
 
-    class AesKwEncryptor implements ICryptoTransform {
+    static class AesKwEncryptor implements ICryptoTransform {
 
         final Cipher cipher;
 
@@ -173,5 +173,4 @@ public abstract class AesKw extends KeyWrapAlgorithm {
 
         return new AesKwDecryptor(key, iv == null ? DEFAULT_IV : iv, provider);
     }
-
 }
