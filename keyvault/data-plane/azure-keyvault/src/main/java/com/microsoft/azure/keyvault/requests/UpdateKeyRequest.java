@@ -100,6 +100,10 @@ public final class UpdateKeyRequest {
          * @return the Builder object itself.
          */
         public Builder withAttributes(Attributes attributes) {
+            if (!(attributes instanceof KeyAttributes)) {
+                throw new IllegalArgumentException("Parameter attributes should be instance of CertificateAttributes");
+            }
+
             this.attributes = (KeyAttributes) attributes;
             return this;
         }

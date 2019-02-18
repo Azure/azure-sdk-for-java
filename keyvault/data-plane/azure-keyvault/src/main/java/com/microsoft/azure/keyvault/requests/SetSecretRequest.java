@@ -71,6 +71,10 @@ public final class SetSecretRequest {
          * @return the Builder object itself.
          */
         public Builder withAttributes(Attributes attributes) {
+            if (!(attributes instanceof SecretAttributes)) {
+                throw new IllegalArgumentException("Parameter attributes should be instance of SecretAttributes");
+            }
+
             this.attributes = (SecretAttributes) attributes;
             return this;
         }
