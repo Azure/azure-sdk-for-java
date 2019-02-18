@@ -57,7 +57,7 @@ class JWEHeader {
             return false;
         }
 
-        return object == this || equals((JWEHeader)object);
+        return object == this || equals((JWEHeader) object);
     }
 
     /**

@@ -86,7 +86,7 @@ class JWEObject {
             return false;
         }
 
-        return object == this || equals((JWEObject)object);
+        return object == this || equals((JWEObject) object);
     }
 
     /**
