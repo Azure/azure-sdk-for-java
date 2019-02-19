@@ -27,7 +27,7 @@ jobs:
     inputs:
       mavenPomFile: $(pomFile)
       goals: 'javadoc:jar source:jar package'
-      options: '--batch-mode -Dmaven.test.skip=true $(mvnFlags)'
+      options: '--batch-mode -Dmaven.test.skip=true -Ptemplate-module $(mvnFlags)' # We include template-module so we ensure it always builds in CI
       mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(javaVer)
@@ -57,17 +57,31 @@ jobs:
       condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
       displayName: 'Component Detection'
 
+    # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
+    # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
     - task: Maven@3
-      displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
+      displayName: 'Install reporting tools'
       inputs:
         mavenPomFile: $(pomFile)
-        options: '--batch-mode -Pextra-modules -DskipTests -Dgpg.skip'
+        options: '--batch-mode -Pnon-shipping-modules -DskipTests -Dgpg.skip'
         mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'install site:site site:stage'
+        goals: 'install'
+
+    - task: Maven@3
+      displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
+      inputs:
+        mavenPomFile: $(pomFile)
+        options: '--batch-mode -DskipTests -Dgpg.skip'
+        mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+        javaHomeOption: 'JDKVersion'
+        jdkVersionOption: '1.11'
+        jdkArchitectureOption: 'x64'
+        publishJUnitResults: false
+        goals: 'site:site site:stage'
 
     - powershell: |
        copy -r target/staging $(Build.ArtifactStagingDirectory)

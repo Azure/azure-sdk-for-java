@@ -766,11 +766,17 @@
       </profile>
 
       <profile>
-         <id>extra-modules</id>
+         <id>non-shipping-modules</id>
          <modules>
-            <module>./template/client</module>
             <module>./eng/spotbugs-aggregate-report</module>
             <module>./eng/code-quality-reports</module>
+         </modules>
+      </profile>
+
+      <profile>
+         <id>template-module</id>
+         <modules>
+            <module>./template/client</module>
          </modules>
       </profile>
    </profiles>
