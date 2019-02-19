@@ -26,7 +26,7 @@ jobs:
     displayName: 'Build and Package'
     inputs:
       mavenPomFile: $(pomFile)
-      goals: 'checkstyle:check javadoc:jar source:jar package'
+      goals: 'javadoc:jar source:jar package'
       options: '--batch-mode -Dmaven.test.skip=true $(mvnFlags)'
       mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
       javaHomeOption: 'JDKVersion'
@@ -58,7 +58,7 @@ jobs:
       displayName: 'Component Detection'
 
     - task: Maven@3
-      displayName: 'Install packages to local cache and generate SpotBugs report'
+      displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
       inputs:
         mavenPomFile: $(pomFile)
         options: '--batch-mode -Pextra-modules -DskipTests -Dgpg.skip'
@@ -67,19 +67,7 @@ jobs:
         jdkVersionOption: '1.11'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'install'
-
-    - task: Maven@3
-      displayName: 'Generate Maven project site, including JavaDocs and CheckStyle reports'
-      inputs:
-        mavenPomFile: $(pomFile)
-        options: '--batch-mode -DskipTests'
-        mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'site:site site:stage'
+        goals: 'install site:site site:stage'
 
     - powershell: |
        copy -r target/staging $(Build.ArtifactStagingDirectory)
