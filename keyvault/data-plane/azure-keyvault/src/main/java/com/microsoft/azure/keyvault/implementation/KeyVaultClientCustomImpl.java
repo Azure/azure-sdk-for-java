@@ -528,7 +528,6 @@ public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements 
      */
     public ServiceFuture<KeyBundle> createKeyAsync(CreateKeyRequest createKeyRequest,
             ServiceCallback<KeyBundle> serviceCallback) {
-        createKeyRequest.vaultBaseUrl();
         return createKeyAsync(createKeyRequest.vaultBaseUrl(), createKeyRequest.keyName(), createKeyRequest.keyType(),
                 createKeyRequest.keySize(), createKeyRequest.keyOperations(), createKeyRequest.keyAttributes(),
                 createKeyRequest.tags(), createKeyRequest.curve(), serviceCallback);
