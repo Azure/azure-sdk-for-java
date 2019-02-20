@@ -27,7 +27,7 @@ jobs:
     inputs:
       mavenPomFile: $(pomFile)
       goals: 'javadoc:jar source:jar package'
-      options: '--batch-mode -Dmaven.test.skip=true -Ptemplate-module $(mvnFlags)' # We include template-module so we ensure it always builds in CI
+      options: '--batch-mode -Dmaven.test.skip=true -Dinclude-template $(mvnFlags)' # We include template-module so we ensure it always builds in CI
       mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(javaVer)
@@ -63,7 +63,7 @@ jobs:
       displayName: 'Install reporting tools'
       inputs:
         mavenPomFile: $(pomFile)
-        options: '--batch-mode -Pnon-shipping-modules -DskipTests -Dgpg.skip'
+        options: '--batch-mode -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
         mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'

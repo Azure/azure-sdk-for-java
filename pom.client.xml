@@ -767,6 +767,11 @@
 
       <profile>
          <id>non-shipping-modules</id>
+         <activation>
+             <property>
+                 <name>include-non-shipping-modules</name>
+             </property>
+         </activation>
          <modules>
             <module>./eng/spotbugs-aggregate-report</module>
             <module>./eng/code-quality-reports</module>
@@ -775,6 +780,11 @@
 
       <profile>
          <id>template-module</id>
+         <activation>
+             <property>
+                 <name>include-template</name>
+             </property>
+         </activation>
          <modules>
             <module>./template/client</module>
          </modules>
