@@ -4,8 +4,11 @@
 
 package com.microsoft.azure.keyvault.models;
 
+import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
 import com.microsoft.rest.Base64Url;
+
 import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -117,10 +120,10 @@ public class CertificateBundle extends com.microsoft.azure.keyvault.models.custo
     /**
      * Get the cer value.
      *
-     * @return the cer value
+     * @return A copy of the cer value, or null if it has not been set.
      */
     public byte[] cer() {
-        return this.cer;
+        return ByteExtensions.clone(this.cer);
     }
 
     /**
@@ -130,7 +133,7 @@ public class CertificateBundle extends com.microsoft.azure.keyvault.models.custo
      * @return the CertificateBundle object itself.
      */
     public CertificateBundle withCer(byte[] cer) {
-        this.cer = cer;
+        this.cer = ByteExtensions.clone(cer);
         return this;
     }
 
@@ -193,5 +196,4 @@ public class CertificateBundle extends com.microsoft.azure.keyvault.models.custo
         this.tags = tags;
         return this;
     }
-
 }

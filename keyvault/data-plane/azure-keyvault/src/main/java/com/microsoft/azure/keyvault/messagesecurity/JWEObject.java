@@ -79,7 +79,16 @@ class JWEObject {
         return jweHeader.equals(other.jweHeader) && encryptedKey.equals(other.encryptedKey) && iv.equals(other.iv)
                 && cipherText.equals(other.cipherText) && tag.equals(other.tag);
     }
-    
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof JWEObject)) {
+            return false;
+        }
+
+        return object == this || equals((JWEObject) object);
+    }
+
     /**
      * Hash code for objects.
      * 

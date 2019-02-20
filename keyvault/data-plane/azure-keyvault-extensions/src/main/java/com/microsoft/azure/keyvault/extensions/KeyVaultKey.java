@@ -4,6 +4,7 @@ package com.microsoft.azure.keyvault.extensions;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 import com.google.common.util.concurrent.MoreExecutors;
 import org.apache.commons.lang3.tuple.Pair;
@@ -30,7 +31,7 @@ public class KeyVaultKey implements IKey {
     /**
      * Transforms the result of decrypt operation to byte array.
      */
-    class DecryptResultTransform implements Function<KeyOperationResult, byte[]> {
+    static class DecryptResultTransform implements Function<KeyOperationResult, byte[]> {
 
         DecryptResultTransform() {
             super();
@@ -38,6 +39,8 @@ public class KeyVaultKey implements IKey {
 
         @Override
         public byte[] apply(KeyOperationResult result) {
+            Objects.requireNonNull(result, "Parameter 'result' should not be null");
+
             return result.result();
         }
     }
@@ -45,7 +48,7 @@ public class KeyVaultKey implements IKey {
     /**
      * Transforms the result of sign operation to byte array and algorithm pair.
      */
-    class SignResultTransform implements Function<KeyOperationResult, Pair<byte[], String>> {
+    static class SignResultTransform implements Function<KeyOperationResult, Pair<byte[], String>> {
 
         private final String algorithm;
 
@@ -53,9 +56,10 @@ public class KeyVaultKey implements IKey {
             super();
             this.algorithm = algorithm;
         }
-        
+
         @Override
         public Pair<byte[], String> apply(KeyOperationResult input) {
+            Objects.requireNonNull(input, "Parameter 'input' should not be null");
 
             return Pair.of(input.result(), algorithm);
         }
