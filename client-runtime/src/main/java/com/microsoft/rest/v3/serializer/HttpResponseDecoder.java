@@ -12,6 +12,7 @@ import com.microsoft.rest.v3.RestException;
 import com.microsoft.rest.v3.RestResponse;
 import com.microsoft.rest.v3.UnixTime;
 import com.microsoft.rest.v3.annotations.HeaderCollection;
+import com.microsoft.rest.v3.annotations.ReturnValueWireType;
 import com.microsoft.rest.v3.http.HttpHeader;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpMethod;
@@ -29,13 +30,16 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * Deserializes an {@link HttpResponse}.
  */
 public final class HttpResponseDecoder {
-    private final HttpResponseDecodeData methodParser;
+    // The data needed to decode HttpResponse content and headers
+    private final HttpResponseDecodeData decodeData;
+    // The adaptor for deserialization
     private final SerializerAdapter serializer;
 
     /**
@@ -45,7 +49,7 @@ public final class HttpResponseDecoder {
      * @param serializer the serializer
      */
     public HttpResponseDecoder(HttpResponseDecodeData decodeData, SerializerAdapter serializer) {
-        this.methodParser = decodeData;
+        this.decodeData = decodeData;
         this.serializer = serializer;
     }
 
@@ -65,17 +69,17 @@ public final class HttpResponseDecoder {
             return Mono.error(new RestException("HTTP response has malformed headers", response, e));
         }
 
-        final Type returnValueWireType = methodParser.returnValueWireType();
+        final Type returnValueWireType = decodeData.returnValueWireType();
 
         final Type entityType = getEntityType();
 
-        boolean isSerializableBody = methodParser.httpMethod() != HttpMethod.HEAD
+        boolean isSerializableBody = decodeData.httpMethod() != HttpMethod.HEAD
             && !FluxUtil.isFluxByteBuf(entityType)
             && !(TypeUtil.isTypeOrSubTypeOf(entityType, Mono.class) && TypeUtil.isTypeOrSubTypeOf(TypeUtil.getTypeArgument(entityType), Void.class))
             && !TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)
             && !TypeUtil.isTypeOrSubTypeOf(entityType, Void.TYPE) && !TypeUtil.isTypeOrSubTypeOf(entityType, Void.class);
 
-        int[] expectedStatuses = methodParser.expectedStatusCodes();
+        int[] expectedStatuses = decodeData.expectedStatusCodes();
         boolean isErrorStatus = true;
         if (expectedStatuses != null) {
             for (int expectedStatus : expectedStatuses) {
@@ -96,8 +100,8 @@ public final class HttpResponseDecoder {
                         bufferedResponse.withDeserializedHeaders(deserializedHeaders);
                         Object body = null;
                         try {
-                            body = deserializeBody(bodyString, methodParser.exceptionBodyType(), null, SerializerEncoding.fromHeaders(response.headers()));
-                        } catch (IOException ignored) {
+                            body = deserializeBody(bodyString, decodeData.exceptionBodyType(), null, SerializerEncoding.fromHeaders(response.headers()));
+                        } catch (IOException | MalformedValueException ignored) {
                             // This translates in RestProxy as a RestException with no deserialized body.
                             // The response content will still be accessible via the .response() member.
                         }
@@ -131,6 +135,17 @@ public final class HttpResponseDecoder {
         return result;
     }
 
+    /**
+     * Deserialize the given string value representing content of a REST API response.
+     *
+     * @param value the string value to deserialize
+     * @param resultType the return type of the java proxy method
+     * @param wireType value of optional {@link ReturnValueWireType} annotation present in java proxy method indicating
+     *                 'entity type' (wireType) of REST API wire response body
+     * @param encoding the encoding format of value
+     * @return Deserialized object
+     * @throws IOException
+     */
     private Object deserializeBody(String value, Type resultType, Type wireType, SerializerEncoding encoding) throws IOException {
         Object result;
 
@@ -142,35 +157,48 @@ public final class HttpResponseDecoder {
             final Object wireResponse = serializer.deserialize(value, wireResponseType, encoding);
             result = convertToResultType(wireResponse, resultType, wireType);
         }
-
         return result;
     }
 
+    /**
+     * Given:
+     * (1). the {@code java.lang.reflect.Type} (resultType) of java proxy method return value
+     * (2). and {@link ReturnValueWireType} annotation value indicating 'entity type' (wireType)
+     *      of same REST API's wire response body
+     * this method construct 'response body Type'.
+     *
+     * Note: When {@link ReturnValueWireType} annotation is applied to a proxy method, then the raw
+     * HTTP response content will need to parsed using the derived 'response body Type' then converted
+     * to actual {@code returnType}.
+     *
+     * @param resultType the {@code java.lang.reflect.Type} of java proxy method return value
+     * @param wireType the {@code java.lang.reflect.Type} of entity in REST API response body
+     * @return the {@code java.lang.reflect.Type} of REST API response body
+     */
     private Type constructWireResponseType(Type resultType, Type wireType) {
+        Objects.requireNonNull(resultType);
+        Objects.requireNonNull(wireType);
+        //
         Type wireResponseType = resultType;
 
         if (resultType == byte[].class) {
             if (wireType == Base64Url.class) {
                 wireResponseType = Base64Url.class;
             }
-        }
-        else if (resultType == OffsetDateTime.class) {
+        } else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
                 wireResponseType = DateTimeRfc1123.class;
-            }
-            else if (wireType == UnixTime.class) {
+            } else if (wireType == UnixTime.class) {
                 wireResponseType = UnixTime.class;
             }
-        }
-        else {
+        } else {
             if (TypeUtil.isTypeOrSubTypeOf(resultType, List.class)) {
                 final Type resultElementType = TypeUtil.getTypeArgument(resultType);
                 final Type wireResponseElementType = constructWireResponseType(resultElementType, wireType);
 
                 wireResponseType = TypeUtil.createParameterizedType(
                         (Class<?>) ((ParameterizedType) resultType).getRawType(), wireResponseElementType);
-            }
-            else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
+            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
                 Type[] typeArguments = TypeUtil.getTypeArguments(resultType);
                 final Type resultValueType = typeArguments[1];
                 final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
@@ -182,6 +210,15 @@ public final class HttpResponseDecoder {
         return wireResponseType;
     }
 
+    /**
+     * Converts the object {@code wireResponse} that was deserialized using 'response body Type'
+     * (produced by {@ constructWireResponseType(args)} method) to resultType.
+     *
+     * @param wireResponse the object to convert
+     * @param resultType the {@code java.lang.reflect.Type} to convert wireResponse to
+     * @param wireType the {@code java.lang.reflect.Type} of the wireResponse
+     * @return converted object
+     */
     private Object convertToResultType(Object wireResponse, Type resultType, Type wireType) {
         Object result = wireResponse;
 
@@ -210,10 +247,9 @@ public final class HttpResponseDecoder {
                             wireResponseList.set(i, resultElement);
                         }
                     }
-
+                    //
                     result = wireResponseList;
-                }
-                else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
+                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class)) {
                     final Type resultValueType = TypeUtil.getTypeArguments(resultType)[1];
 
                     final Map<String, Object> wireResponseMap = (Map<String, Object>) wireResponse;
@@ -226,11 +262,13 @@ public final class HttpResponseDecoder {
                             wireResponseMap.put(wireResponseKey, resultValue);
                         }
                     }
+                    //
+                    result = wireResponseMap;
                 } else if (TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
                     RestResponse<?, ?> restResponse = (RestResponse<?, ?>) wireResponse;
                     Object wireResponseBody = restResponse.body();
 
-                    // FIXME: RestProxy is always in charge of creating RestResponse--so this doesn't seem right
+                    // TODO: anuchan - RestProxy is always in charge of creating RestResponse--so this doesn't seem right
                     Object resultBody = convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
                         result = new RestResponse<>(restResponse.request(), restResponse.statusCode(), restResponse.headers(), restResponse.rawHeaders(), resultBody);
@@ -244,14 +282,34 @@ public final class HttpResponseDecoder {
         return result;
     }
 
+    /**
+     * Get the {@link Type} of the REST API 'returned entity'.
+     *
+     * In the declaration of a java proxy method corresponding to the REST API, the 'returned entity' can be:
+     *
+     *      1. emission value of the reactor publisher returned by proxy method
+     *
+     *          e.g. {@code Mono<Foo> getFoo(args);}
+     *               {@code Flux<Foo> getFoos(args);}
+     *          where Foo is the REST API 'returned entity'.
+     *
+     *      2. OR content (body) of {@link RestResponse} emitted by the reactor publisher returned from proxy method
+     *
+     *          e.g. {@code Mono<RestResponse<headers, Foo>> getFoo(args);}
+     *               {@code Flux<RestResponse<headers, Foo>> getFoos(args);}
+     *          where Foo is the REST API return entity.
+     *
+     * @return the entity type.
+     */
     private Type getEntityType() {
-        Type token = methodParser.returnType();
+        Type token = decodeData.returnType();
 
         if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
             token = TypeUtil.getTypeArgument(token);
         } else if (TypeUtil.isTypeOrSubTypeOf(token, Flux.class)) {
             Type t = TypeUtil.getTypeArgument(token);
             try {
+                // TODO: anuchan - unwrap OperationStatus a different way
                 if (TypeUtil.isTypeOrSubTypeOf(t, Class.forName("com.microsoft.azure.v3.OperationStatus"))) {
                     token = t;
                 }
@@ -263,8 +321,8 @@ public final class HttpResponseDecoder {
             token = TypeUtil.getTypeArguments(token)[1];
         }
 
-        // TODO: unwrap OperationStatus a different way?
         try {
+            // TODO: anuchan - unwrap OperationStatus a different way
             if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.microsoft.azure.v3.OperationStatus"))) {
                 token = TypeUtil.getTypeArgument(token);
             }
@@ -273,23 +331,35 @@ public final class HttpResponseDecoder {
         return token;
     }
 
-    private Type getHeadersType() {
-        Type token = methodParser.returnType();
-        Type headersType = null;
-
-        if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
-            token = TypeUtil.getTypeArgument(token);
-        }
-
-        if (TypeUtil.isTypeOrSubTypeOf(token, RestResponse.class)) {
-            headersType = TypeUtil.getTypeArguments(TypeUtil.getSuperType(token, RestResponse.class))[0];
-        }
-
-        return headersType;
-    }
-
+    /**
+     * Deserialize the provided headers returned from a REST API to an entity instance declared as
+     * the model to hold 'Matching' headers.
+     *
+     * 'Matching' headers are the REST API returned headers those with:
+     *      1. header names same as name of a properties in the entity.
+     *      2. header names start with value of {@link HeaderCollection} annotation applied to the properties in the entity.
+     *
+     * When needed, the header entity types must be declared as first generic argument of {@link RestResponse} returned
+     * by java proxy method corresponding to the REST API.
+     * e.g.
+     * {@code Mono<RestResponse<FooMetadataHeaders, Void>> getMetadata(args);}
+     * {@code
+     *      class FooMetadataHeaders {
+     *          String name;
+     *          @HeaderCollection("header-collection-prefix-")
+     *          Map<String,String> headerCollection;
+     *      }
+     * }
+     *
+     * in the case of above example, this method produces an instance of FooMetadataHeaders from provided {@headers}.
+     *
+     * @param headers the REST API returned headers
+     * @return instance of header entity type created based on provided {@headers}, if header entity model does
+     * not exists then return null
+     * @throws IOException
+     */
     private Object deserializeHeaders(HttpHeaders headers) throws IOException {
-        final Type deserializedHeadersType = getHeadersType();
+        final Type deserializedHeadersType = decodeData.headersType();
         if (deserializedHeadersType == null) {
             return null;
         } else {
@@ -333,7 +403,6 @@ public final class HttpResponseDecoder {
                     }
                 }
             }
-
             return deserializedHeaders;
         }
     }
