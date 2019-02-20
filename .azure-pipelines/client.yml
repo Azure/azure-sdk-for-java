@@ -26,8 +26,8 @@ jobs:
     displayName: 'Build and Package'
     inputs:
       mavenPomFile: $(pomFile)
-      goals: 'checkstyle:check javadoc:jar source:jar package'
-      options: '--batch-mode -Dmaven.test.skip=true $(mvnFlags)'
+      goals: 'javadoc:jar source:jar package'
+      options: '--batch-mode -Dmaven.test.skip=true -Dinclude-template $(mvnFlags)' # We include template-module so we ensure it always builds in CI
       mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: $(javaVer)
@@ -64,23 +64,13 @@ jobs:
       condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
       displayName: 'Component Detection'
 
+    # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
+    # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
     - task: Maven@3
-      displayName: 'Generate project site'
+      displayName: 'Install reporting tools'
       inputs:
         mavenPomFile: $(pomFile)
-        options: '--batch-mode'
-        mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'site'
-
-    - task: Maven@3
-      displayName: 'Install packages to local cache and generate SpotBugs report'
-      inputs:
-        mavenPomFile: $(pomFile)
-        options: '--batch-mode -Pspotbugs-reporting -DskipTests -Dgpg.skip'
+        options: '--batch-mode -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
         mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
@@ -89,33 +79,21 @@ jobs:
         goals: 'install'
 
     - task: Maven@3
-      displayName: 'Generate Checkstyle report'
+      displayName: 'Generate Maven project site, including JavaDocs, SpotBugs, and CheckStyle reports'
       inputs:
         mavenPomFile: $(pomFile)
-        options: '--batch-mode'
+        options: '--batch-mode -DskipTests -Dgpg.skip'
         mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: '1.11'
         jdkArchitectureOption: 'x64'
         publishJUnitResults: false
-        goals: 'checkstyle:checkstyle-aggregate'
-
-    - task: Maven@3
-      displayName: 'Aggregate Javadocs'
-      inputs:
-        mavenPomFile: $(pomFile)
-        options: '--batch-mode'
-        mavenOptions: '-Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'javadoc:aggregate'
+        goals: 'site:site site:stage'
 
     - powershell: |
-       copy -r target/site $(Build.ArtifactStagingDirectory)
+       copy -r target/staging $(Build.ArtifactStagingDirectory)
        copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
-       copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "site")
+       copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
       displayName: 'Copy reports to artifact staging'
 
     - task: PublishBuildArtifacts@1

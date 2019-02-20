@@ -18,6 +18,13 @@
         <azure-batch.version>5.0.1</azure-batch.version>
     </properties>
 
+    <distributionManagement>
+        <site>
+            <id>azure-java-build-docs</id>
+            <url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java/</url>
+        </site>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
