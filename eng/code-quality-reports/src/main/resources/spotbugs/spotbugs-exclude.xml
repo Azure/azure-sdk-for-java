@@ -15,8 +15,7 @@
         <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
     </Match>
 
-    <!-- Ignoring dropped exception because it exists in the current Track 1 SDK
-   design. -->
+    <!-- Ignoring dropped exception because it existed in current SDK when migrated. -->
     <Match>
         <Class name="com.microsoft.azure.keyvault.extensions.CachingKeyResolver$2" />
         <Method name="run" />
