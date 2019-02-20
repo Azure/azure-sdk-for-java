@@ -101,7 +101,7 @@ public final class UpdateKeyRequest {
          */
         public Builder withAttributes(Attributes attributes) {
             if (!(attributes instanceof KeyAttributes)) {
-                throw new IllegalArgumentException("Parameter attributes should be instance of CertificateAttributes");
+                throw new IllegalArgumentException("Parameter 'attributes' should be instance of CertificateAttributes, or a subclass");
             }
 
             this.attributes = (KeyAttributes) attributes;

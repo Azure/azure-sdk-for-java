@@ -96,7 +96,7 @@ public final class CreateKeyRequest {
          */
         public Builder withAttributes(Attributes attributes) {
             if (!(attributes instanceof KeyAttributes)) {
-                throw new IllegalArgumentException("Parameter attributes should be instance of KeyAttributes");
+                throw new IllegalArgumentException("Parameter 'attributes' should be instance of KeyAttributes, or a subclass");
             }
 
             this.attributes = (KeyAttributes) attributes;

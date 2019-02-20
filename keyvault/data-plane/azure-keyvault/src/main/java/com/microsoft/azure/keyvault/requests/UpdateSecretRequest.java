@@ -95,7 +95,7 @@ public final class UpdateSecretRequest {
          */
         public Builder withAttributes(Attributes attributes) {
             if (!(attributes instanceof SecretAttributes)) {
-                throw new IllegalArgumentException("Parameter attributes should be instance of SecretAttributes");
+                throw new IllegalArgumentException("Parameter 'attributes' should be instance of SecretAttributes, or a subclass");
             }
 
             this.attributes = (SecretAttributes) attributes;

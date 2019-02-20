@@ -95,7 +95,7 @@ public final class ImportCertificateRequest {
          */
         public Builder withAttributes(Attributes attributes) {
             if (!(attributes instanceof CertificateAttributes)) {
-                throw new IllegalArgumentException("Parameter attributes should be instance of CertificateAttributes");
+                throw new IllegalArgumentException("Parameter 'attributes' should be instance of CertificateAttributes, or a subclass");
             }
 
             this.attributes = (CertificateAttributes) attributes;
