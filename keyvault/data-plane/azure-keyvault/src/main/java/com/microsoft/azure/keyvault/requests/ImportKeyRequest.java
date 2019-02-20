@@ -77,6 +77,10 @@ public final class ImportKeyRequest {
          * @return the Builder object itself.
          */
         public Builder withAttributes(Attributes attributes) {
+            if (!(attributes instanceof KeyAttributes)) {
+                throw new IllegalArgumentException("Parameter 'attributes' should be instance of KeyAttributes, or a subclass");
+            }
+
             this.attributes = (KeyAttributes) attributes;
             return this;
         }

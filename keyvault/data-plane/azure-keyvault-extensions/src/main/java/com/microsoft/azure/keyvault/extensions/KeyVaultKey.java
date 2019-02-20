@@ -30,7 +30,7 @@ public class KeyVaultKey implements IKey {
     /**
      * Transforms the result of decrypt operation to byte array.
      */
-    class DecryptResultTransform implements Function<KeyOperationResult, byte[]> {
+    static class DecryptResultTransform implements Function<KeyOperationResult, byte[]> {
 
         DecryptResultTransform() {
             super();
@@ -45,7 +45,7 @@ public class KeyVaultKey implements IKey {
     /**
      * Transforms the result of sign operation to byte array and algorithm pair.
      */
-    class SignResultTransform implements Function<KeyOperationResult, Pair<byte[], String>> {
+    static class SignResultTransform implements Function<KeyOperationResult, Pair<byte[], String>> {
 
         private final String algorithm;
 

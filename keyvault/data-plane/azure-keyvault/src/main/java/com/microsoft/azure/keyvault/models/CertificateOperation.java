@@ -5,6 +5,7 @@
 package com.microsoft.azure.keyvault.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.keyvault.cryptography.ByteExtensions;
 
 /**
  * A certificate operation is returned in case of asynchronous requests.
@@ -100,7 +101,7 @@ public class CertificateOperation extends com.microsoft.azure.keyvault.models.cu
      * @return the csr value
      */
     public byte[] csr() {
-        return this.csr;
+        return ByteExtensions.clone(this.csr);
     }
 
     /**
@@ -110,7 +111,7 @@ public class CertificateOperation extends com.microsoft.azure.keyvault.models.cu
      * @return the CertificateOperation object itself.
      */
     public CertificateOperation withCsr(byte[] csr) {
-        this.csr = csr;
+        this.csr = ByteExtensions.clone(csr);
         return this;
     }
 
@@ -233,5 +234,4 @@ public class CertificateOperation extends com.microsoft.azure.keyvault.models.cu
         this.requestId = requestId;
         return this;
     }
-
 }
