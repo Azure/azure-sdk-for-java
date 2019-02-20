@@ -4,6 +4,7 @@ package com.microsoft.azure.keyvault.extensions;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 import com.google.common.util.concurrent.MoreExecutors;
 import org.apache.commons.lang3.tuple.Pair;
@@ -38,9 +39,7 @@ public class KeyVaultKey implements IKey {
 
         @Override
         public byte[] apply(KeyOperationResult result) {
-            if (result == null) {
-                throw new IllegalArgumentException("Parameter 'result' should not be null");
-            }
+            Objects.requireNonNull(result, "Parameter 'result' should not be null");
 
             return result.result();
         }
@@ -60,9 +59,7 @@ public class KeyVaultKey implements IKey {
 
         @Override
         public Pair<byte[], String> apply(KeyOperationResult input) {
-            if (input == null) {
-                throw new IllegalArgumentException("Parameter 'input' should not be null");
-            }
+            Objects.requireNonNull(input, "Parameter 'input' should not be null");
 
             return Pair.of(input.result(), algorithm);
         }
