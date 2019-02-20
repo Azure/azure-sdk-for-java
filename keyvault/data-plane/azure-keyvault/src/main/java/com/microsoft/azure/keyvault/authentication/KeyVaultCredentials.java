@@ -119,10 +119,6 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
         AuthenticationResult authResult = getAuthenticationCredentials(supportsPop, challengeMap);
 
-        if (authResult == null) {
-            return null;
-        }
-
         HttpMessageSecurity httpMessageSecurity = new HttpMessageSecurity(authResult.getAuthToken(),
                 supportsPop ? authResult.getPopKey() : "",
                 supportsPop ? challengeMap.get("x-ms-message-encryption-key") : "",
