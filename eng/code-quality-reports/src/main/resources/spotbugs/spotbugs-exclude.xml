@@ -14,4 +14,20 @@
         <Method name="~(CreateDecryptor|CreateEncryptor)" />
         <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
     </Match>
+
+    <!-- Ignoring dropped exception because it exists in the current Track 1 SDK
+   design. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.extensions.CachingKeyResolver$2" />
+        <Method name="run" />
+        <Bug pattern="DE_MIGHT_IGNORE"/>
+    </Match>
+
+    <!-- Protected field already exists in the public API surface area even
+    though it is unused. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.cryptography.EcKey"/>
+        <Field name="defaultEncryptionAlgorithm"/>
+        <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
+    </Match>
 </FindBugsFilter>
