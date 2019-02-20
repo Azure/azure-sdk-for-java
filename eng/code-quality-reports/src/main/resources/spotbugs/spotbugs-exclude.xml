@@ -29,4 +29,20 @@
         <Field name="defaultEncryptionAlgorithm"/>
         <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
+
+    <!-- These KeyVaultClientBase methods are made synchronous by blocking and
+    waiting for a result. They do not return anything, so it can be ignored. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.implementation.KeyVaultClientBaseImpl"/>
+        <Method name="~(purgeDeletedCertificate|purgeDeletedKey|purgeDeletedSecret|purgeDeletedStorageAccount)"/>
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+    </Match>
+
+    <!-- KeyVaultCredential values manipulated do not need to be localised. They
+    are base64 encoded or URL encoded.-->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+        <Method name="~(extractChallenge|isValidChallenge|supportsMessageProtection)"/>
+        <Bug pattern="DM_CONVERT_CASE"/>
+    </Match>
 </FindBugsFilter>

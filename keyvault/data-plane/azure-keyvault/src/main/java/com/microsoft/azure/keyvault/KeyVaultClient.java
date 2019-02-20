@@ -11,7 +11,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
  * Class for Key Vault Client.
  * 
  */
-public final class KeyVaultClient extends KeyVaultClientCustomImpl implements KeyVaultClientCustom {
+public final class KeyVaultClient extends KeyVaultClientCustomImpl {
 
     /**
      * Initializes an instance of KeyVaultClient client.

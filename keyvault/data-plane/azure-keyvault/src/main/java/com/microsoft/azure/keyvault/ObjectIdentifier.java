@@ -114,7 +114,8 @@ public class ObjectIdentifier {
         this.version = version;
         this.vault = String.format("%s://%s", baseUri.getScheme(), getFullAuthority(baseUri));
         baseIdentifier = String.format("%s/%s/%s", this.vault, collection, this.name);
-        identifier = (version == null || version.isEmpty()) ? baseIdentifier
+        identifier = version.isEmpty()
+                ? baseIdentifier
                 : String.format("%s/%s", baseIdentifier, version);
     }
 
