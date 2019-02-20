@@ -50,10 +50,19 @@ class JWEHeader {
     public boolean equals(JWEHeader other) {
         return this.alg.equals(other.alg) && this.kid.equals(other.kid) && this.enc.equals(other.enc);
     }
-    
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof JWEHeader)) {
+            return false;
+        }
+
+        return object == this || equals((JWEHeader) object);
+    }
+
     /**
      * Hash code for objects.
-     * 
+     *
      * @return hashcode
      */
     public int hashCode() {

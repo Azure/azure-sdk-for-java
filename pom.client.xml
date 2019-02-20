@@ -5,9 +5,14 @@
    <artifactId>azure-client-sdk-parent</artifactId>
    <packaging>pom</packaging>
    <version>1.0.0-SNAPSHOT</version>
-   <name>Microsoft Azure SDK Build</name>
+
+   <name>Microsoft Azure SDK for Java</name>
    <description>Parent POM for Microsoft Azure SDK for Java</description>
    <url>https://github.com/Azure/azure-sdk-for-java</url>
+   <organization>
+      <name>Microsoft Corporation</name>
+      <url>http://microsoft.com</url>
+   </organization>
 
    <parent>
       <groupId>com.microsoft.maven</groupId>
@@ -32,7 +37,6 @@
 
    <!-- Repositories definitions -->
    <repositories>
-
       <repository>
          <id>ossrh</id>
          <name>Sonatype Snapshots</name>
@@ -40,14 +44,12 @@
          <layout>default</layout>
          <snapshots>
             <enabled>true</enabled>
-            <updatePolicy>always</updatePolicy>
+            <updatePolicy>daily</updatePolicy>
          </snapshots>
       </repository>
-
    </repositories>
 
    <pluginRepositories>
-
       <pluginRepository>
          <id>ossrh</id>
          <name>Sonatype Snapshots</name>
@@ -58,11 +60,9 @@
             <updatePolicy>always</updatePolicy>
          </snapshots>
       </pluginRepository>
-
    </pluginRepositories>
 
    <distributionManagement>
-
       <snapshotRepository>
          <id>ossrh</id>
          <name>Sonatype Snapshots</name>
@@ -70,8 +70,23 @@
          <uniqueVersion>true</uniqueVersion>
          <layout>default</layout>
       </snapshotRepository>
-
+      <site>
+         <id>azure-java-build-docs</id>
+         <url>${site.url}/site/</url>
+      </site>
    </distributionManagement>
+
+   <issueManagement>
+      <system>GitHub</system>
+      <url>${issues.url}</url>
+   </issueManagement>
+
+   <scm>
+      <url>https://github.com/Azure/azure-sdk-for-java</url>
+      <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
+      <developerConnection></developerConnection>
+      <tag>HEAD</tag>
+   </scm>
 
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -79,6 +94,9 @@
       <testMode>playback</testMode>
       <playbackServerPort>11080</playbackServerPort>
       <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
+
+      <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+      <issues.url>https://github.com/Azure/azure-sdk-for-java/issues</issues.url>
 
       <!-- Dependency Versions -->
       <jackson.version>2.9.6</jackson.version>
@@ -232,9 +250,8 @@
    </dependencyManagement>
 
    <build>
-
-      <!-- This plugin scans checkstyle issues in the code -->
       <plugins>
+         <!-- This plugin scans checkstyle issues in the code -->
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
@@ -249,11 +266,11 @@
                <configLocation>checkstyle/checkstyle.xml</configLocation>
                <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
                <headerLocation>checkstyle/java.header</headerLocation>
-               <propertyExpansion>samedir=runtimes/build-tools/src/main/resources</propertyExpansion>
+               <propertyExpansion>samedir=</propertyExpansion>
                <encoding>UTF-8</encoding>
                <consoleOutput>true</consoleOutput>
                <includeTestSourceDirectory>false</includeTestSourceDirectory>
-               <linkXRef>false</linkXRef>
+               <linkXRef>true</linkXRef>
 
                <!-- TODO soon - enable these failure modes -->
                <failsOnError>false</failsOnError>
@@ -274,23 +291,6 @@
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
             <version>${spotbugs.version}</version>
-            <dependencies>
-               <dependency>
-                  <groupId>com.azure</groupId>
-                  <artifactId>sdk-build-tools</artifactId>
-                  <version>${maven-build-tools.version}</version>
-               </dependency>
-            </dependencies>
-            <configuration>
-               <effort>Max</effort>
-               <threshold>Low</threshold>
-               <xmlOutput>true</xmlOutput>
-               <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
-               <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
-
-               <!-- TODO soon - enable this failure mode -->
-               <failOnError>false</failOnError>
-            </configuration>
             <executions>
                <execution>
                   <phase>verify</phase>
@@ -321,13 +321,8 @@
                      <includes><include>*.xml</include></includes>
                      <outputDir>${project.build.directory}/spotbugs</outputDir>
                      <stylesheet>fancy-hist.xsl</stylesheet>
-                     <!--<stylesheet>default.xsl</stylesheet>-->
-                     <!--<stylesheet>plain.xsl</stylesheet>-->
-                     <!--<stylesheet>fancy.xsl</stylesheet>-->
-                     <!--<stylesheet>summary.xsl</stylesheet>-->
                      <fileMappers>
-                        <fileMapper
-                                implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                        <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
                            <targetExtension>.html</targetExtension>
                         </fileMapper>
                      </fileMappers>
@@ -347,29 +342,6 @@
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
-            <configuration>
-               <source>8</source>
-               <doctitle>Azure SDK for Java Reference Documentation</doctitle>
-               <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
-               <failOnError>true</failOnError>
-               <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
-               <linksource>false</linksource>
-               <excludePackageNames>
-               </excludePackageNames>
-               <groups>
-                  <group>
-                     <title>Azure Batch</title>
-                     <packages>com.microsoft.azure.batch*</packages>
-                  </group>
-                  <group>
-                     <title>Azure Key Vault</title>
-                     <packages>com.microsoft.azure.keyvault*</packages>
-                  </group>
-               </groups>
-
-               <!-- TODO soon - enable this failure mode -->
-               <failOnError>false</failOnError>
-            </configuration>
             <executions>
                <execution>
                   <id>attach-javadocs</id>
@@ -379,12 +351,58 @@
                </execution>
             </executions>
          </plugin>
-
       </plugins>
 
       <pluginManagement>
 
          <plugins>
+
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-javadoc-plugin</artifactId>
+               <configuration>
+                  <source>8</source>
+                  <doctitle>Azure SDK for Java Reference Documentation</doctitle>
+                  <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
+                  <failOnError>false</failOnError>
+                  <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+                  <linksource>false</linksource>
+                  <excludePackageNames>com.microsoft.azure.template</excludePackageNames>
+                  <groups>
+                     <group>
+                        <title>Azure Batch</title>
+                        <packages>com.microsoft.azure.batch*</packages>
+                     </group>
+                     <group>
+                        <title>Azure Key Vault</title>
+                        <packages>com.microsoft.azure.keyvault*</packages>
+                     </group>
+                  </groups>
+               </configuration>
+            </plugin>
+
+            <plugin>
+               <groupId>com.github.spotbugs</groupId>
+               <artifactId>spotbugs-maven-plugin</artifactId>
+               <version>${spotbugs.version}</version>
+               <dependencies>
+                  <dependency>
+                     <groupId>com.azure</groupId>
+                     <artifactId>sdk-build-tools</artifactId>
+                     <version>${maven-build-tools.version}</version>
+                  </dependency>
+               </dependencies>
+               <configuration>
+                  <effort>Max</effort>
+                  <threshold>Low</threshold>
+                  <xmlOutput>true</xmlOutput>
+                  <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+                  <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+
+                  <!-- TODO soon - enable this failure mode -->
+                  <failOnError>false</failOnError>
+               </configuration>
+            </plugin>
 
             <!-- This plugin adds sample code as tests for easier editing in IDEs -->
             <plugin>
@@ -531,6 +549,9 @@
                <groupId>org.apache.maven.plugins</groupId>
                <artifactId>maven-site-plugin</artifactId>
                <version>${maven-site-plugin.version}</version>
+               <configuration>
+                  <relativizeDecorationLinks>false</relativizeDecorationLinks>
+               </configuration>
             </plugin>
 
             <!-- This plugin is used to generate reports information about the project. -->
@@ -545,6 +566,123 @@
       </pluginManagement>
 
    </build>
+
+   <reporting>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jxr-plugin</artifactId>
+            <version>3.0.0</version>
+            <reportSets>
+               <reportSet>
+                  <id>aggregate</id>
+                  <inherited>false</inherited>
+                  <reports>
+                     <report>aggregate</report>
+                  </reports>
+               </reportSet>
+            </reportSets>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.0.0</version>
+            <configuration>
+               <configLocation>checkstyle/checkstyle.xml</configLocation>
+               <suppressionsLocation>checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+               <headerLocation>checkstyle/java.header</headerLocation>
+               <propertyExpansion>samedir=</propertyExpansion>
+               <encoding>UTF-8</encoding>
+               <consoleOutput>true</consoleOutput>
+               <includeTestSourceDirectory>false</includeTestSourceDirectory>
+               <linkXRef>true</linkXRef>
+
+               <!-- TODO soon - enable these failure modes -->
+               <failsOnError>false</failsOnError>
+               <failOnViolation>false</failOnViolation>
+            </configuration>
+            <reportSets>
+               <reportSet>
+                  <id>non-aggregate</id>
+                  <reports>
+                     <report>checkstyle</report>
+                  </reports>
+               </reportSet>
+               <reportSet>
+                  <id>aggregate</id>
+                  <inherited>false</inherited>
+                  <reports>
+                     <report>checkstyle-aggregate</report>
+                  </reports>
+               </reportSet>
+            </reportSets>
+         </plugin>
+         <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <version>${spotbugs.version}</version>
+            <reportSets>
+                <reportSet>
+                    <id>non-aggregate</id>
+                    <reports>
+                        <report>spotbugs</report>
+                    </reports>
+                </reportSet>
+                <reportSet>
+                    <id>aggregate</id>
+                    <inherited>false</inherited>
+                    <reports>
+                         <report>spotbugs</report>
+                     </reports>
+                 </reportSet>
+             </reportSets>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${maven-javadoc.version}</version>
+            <reportSets>
+               <reportSet>
+                  <id>non-aggregate</id>
+                  <reports>
+                     <report>javadoc</report>
+                  </reports>
+               </reportSet>
+               <reportSet>
+                  <id>aggregate</id>
+                  <inherited>false</inherited>
+                  <reports>
+                     <report>aggregate</report>
+                  </reports>
+               </reportSet>
+            </reportSets>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <version>3.0.0</version>
+            <reportSets>
+               <reportSet>
+                  <reports>
+                     <report>index</report>
+                     <report>summary</report>
+                     <report>dependency-info</report>
+                     <report>dependency-management</report>
+                     <report>dependency-convergence</report>
+                     <report>ci-management</report>
+                     <report>dependencies</report>
+                     <report>issue-management</report>
+                     <report>licenses</report>
+                     <report>scm</report>
+                     <report>plugins</report>
+                     <report>plugin-management</report>
+                     <report>team</report>
+                  </reports>
+               </reportSet>
+            </reportSets>
+         </plugin>
+      </plugins>
+   </reporting>
 
    <profiles>
 
@@ -628,19 +766,32 @@
       </profile>
 
       <profile>
-         <id>spotbugs-reporting</id>
+         <id>non-shipping-modules</id>
+         <activation>
+             <property>
+                 <name>include-non-shipping-modules</name>
+             </property>
+         </activation>
+         <modules>
+            <module>./eng/spotbugs-aggregate-report</module>
+            <module>./eng/code-quality-reports</module>
+         </modules>
+      </profile>
+
+      <profile>
+         <id>template-module</id>
+         <activation>
+             <property>
+                 <name>include-template</name>
+             </property>
+         </activation>
          <modules>
             <module>./template/client</module>
-            <module>./batch/data-plane</module>
-            <module>./keyvault/data-plane</module>
-            <module>./eng/spotbugs-aggregate-report</module>
          </modules>
       </profile>
    </profiles>
 
    <modules>
-      <module>./template/client</module>
-      <module>./eng/code-quality-reports</module>
       <module>./batch/data-plane</module>
       <module>./keyvault/data-plane</module>
    </modules>

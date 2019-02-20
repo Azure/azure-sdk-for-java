@@ -62,6 +62,15 @@ class JWSHeader {
         return this.alg.equals(other.alg) && this.kid.equals(other.kid) && this.at.equals(other.at)
                 && this.ts == other.ts && this.p.equals(other.p) && this.typ.equals(other.typ);
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof JWSHeader)) {
+            return false;
+        }
+
+        return object == this || equals((JWSHeader) object);
+    }
     
     /**
      * Hash code for objects.

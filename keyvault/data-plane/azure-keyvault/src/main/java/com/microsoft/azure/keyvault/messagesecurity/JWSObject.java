@@ -64,7 +64,16 @@ class JWSObject {
         return this.payload.equals(other.payload) && this.jwsHeader.equals(other.jwsHeader)
                 && this.signature.equals(other.signature);
     }
-    
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof JWSObject)) {
+            return false;
+        }
+
+        return object == this || equals((JWSObject) object);
+    }
+
     /**
      * Hash code for objects.
      * 

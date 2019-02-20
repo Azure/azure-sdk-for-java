@@ -17,7 +17,7 @@ import com.microsoft.azure.keyvault.cryptography.ICryptoTransform;
 
 public final class Rsa15 extends RsaEncryption {
 
-    class Rsa15Decryptor implements ICryptoTransform {
+    static class Rsa15Decryptor implements ICryptoTransform {
 
         private final Cipher cipher;
 
@@ -42,7 +42,7 @@ public final class Rsa15 extends RsaEncryption {
 
     }
 
-    class Rsa15Encryptor implements ICryptoTransform {
+    static class Rsa15Encryptor implements ICryptoTransform {
 
         private final Cipher cipher;
 

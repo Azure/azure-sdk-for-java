@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Joiner;
-import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -95,7 +94,6 @@ import rx.functions.Func1;
 public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements KeyVaultClientCustom {
 
     private KeyVaultClientService service;
-    private AzureClient azureClient;
 
     protected KeyVaultClientCustomImpl(ServiceClientCredentials credentials) {
         super(credentials);
@@ -106,7 +104,7 @@ public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements 
     }
 
     /**
-     * Intializes the service.
+     * Initializes the service.
      */
     public void initializeService() {
         service = restClient().retrofit().create(KeyVaultClientService.class);
@@ -530,7 +528,6 @@ public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements 
      */
     public ServiceFuture<KeyBundle> createKeyAsync(CreateKeyRequest createKeyRequest,
             ServiceCallback<KeyBundle> serviceCallback) {
-        createKeyRequest.vaultBaseUrl();
         return createKeyAsync(createKeyRequest.vaultBaseUrl(), createKeyRequest.keyName(), createKeyRequest.keyType(),
                 createKeyRequest.keySize(), createKeyRequest.keyOperations(), createKeyRequest.keyAttributes(),
                 createKeyRequest.tags(), createKeyRequest.curve(), serviceCallback);
