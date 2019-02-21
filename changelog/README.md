@@ -1,5 +1,10 @@
 ## Changelog
 
+### 2.4.1
+* Fixed some bugs in Direct mode.
+* Improved logging in Direct mode.
+* Improved connection management.
+
 ### 2.4.0
 * Direct GA.
 * Added support for QueryMetrics.

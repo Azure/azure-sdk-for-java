@@ -1,5 +1,5 @@
 # Java SDK for SQL API of Azure Cosmos DB
-[![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb.svg)](https://search.maven.org/artifact/com.microsoft.azure/azure-cosmosdb/2.4.0/jar)
+[![Maven Central](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb.svg)](https://search.maven.org/artifact/com.microsoft.azure/azure-cosmosdb/2.4.1/jar)
 [![Build Status](https://api.travis-ci.org/Azure/azure-cosmosdb-java.svg?branch=master)](https://travis-ci.org/Azure/azure-cosmosdb-java)
 [![Known Vulnerabilities](https://snyk.io/test/github/Azure/azure-cosmosdb-java/badge.svg?targetFile=sdk%2Fpom.xml)](https://snyk.io/test/github/Azure/azure-cosmosdb-java?targetFile=sdk%2Fpom.xml)
 <!--[![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmosdb-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
@@ -28,7 +28,7 @@
 This project provides a SDK library in Java for interacting with [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query) of [Azure Cosmos DB
 Database Service](https://azure.microsoft.com/en-us/services/cosmos-db/). This project also includes samples, tools, and utilities.
 
-Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/2.4.0).
+Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/2.4.1).
 
 For example, using maven, you can add the following dependency to your maven pom file:
 
@@ -36,7 +36,7 @@ For example, using maven, you can add the following dependency to your maven pom
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmosdb</artifactId>
-  <version>2.4.0</version>
+  <version>2.4.1</version>
 </dependency>
 ```
 
