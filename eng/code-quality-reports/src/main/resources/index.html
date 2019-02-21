@@ -352,7 +352,8 @@
             background-color: #fff;
             border: 1px solid #e8e8e8;
             font-size: 1.1em;
-            padding: 15px
+            padding: 15px;
+            overflow: hidden;
         }
         
         body.status-page .list-group .list-group-item a {
@@ -413,7 +414,6 @@
         }
         
         body.status-page footer {
-            position: absolute;
             width: 100%;
             bottom: 0;
             height: 60px;
@@ -480,9 +480,11 @@
 
                 <div class="group-items ">
                     <li class="list-group-item sub-component">
+                        <ion-icon name="logo-github"></ion-icon>
                         <a href="https://github.com/Azure/azure-sdk-for-java/" target="_blank" class="links">GitHub</a>
                     </li>
                     <li class="list-group-item sub-component">
+                        <ion-icon name="document"></ion-icon>
                         <a href="https://docs.microsoft.com/java/azure/" target="_blank" class="links">Azure Java Developers Documentation Home</a>
                     </li>
                 </div>
@@ -494,15 +496,19 @@
 
                 <div class="group-items">
                     <li class="list-group-item sub-component">
+                        <ion-icon name="book"></ion-icon>
                         <a href="staging/index.html" target="_blank" class="links">Maven Site</a>
                     </li>
                     <li class="list-group-item sub-component">
+                        <ion-icon name="bug"></ion-icon>
                         <a href="staging/spotbugsXml.html" target="_blank" class="links">SpotBugs (Aggregate)</a>
                     </li>
                     <li class="list-group-item sub-component">
+                        <ion-icon name="checkmark"></ion-icon>
                         <a href="staging/checkstyle-aggregate.html" target="_blank" class="links">CheckStyle (Aggregate)</a>
                     </li>
                     <li class="list-group-item sub-component">
+                        <ion-icon name="copy"></ion-icon>
                         <a href="staging/apidocs/index.html" target="_blank" class="links">JavaDoc (Aggregate)</a>
                     </li>
                 </div>
@@ -514,6 +520,7 @@
 
                 <div class="group-items">
                     <li class="list-group-item sub-component">
+                        <ion-icon name="pulse"></ion-icon>
                         <a href="site/index.html" target="_blank" class="links">Azure Client SDK for Java</a>
                         <div class="pull-right">
                             <a href="https://dev.azure.com/azure-sdk/public/_build/latest?definitionId=17">
