@@ -30,4 +30,6 @@
   <suppress checks="ConstantName" files="AlgorithmResolver.java"/>
   <suppress checks="ConstantName" files="RsaKey.java"/>
   <suppress checks="ConstantName" files="SymmetricKey.java"/>
+  <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
+  <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
 </suppressions>
