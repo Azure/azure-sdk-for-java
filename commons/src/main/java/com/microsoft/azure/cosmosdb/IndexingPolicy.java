@@ -28,7 +28,11 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
-import org.apache.commons.text.WordUtils;
+import org.apache.commons.lang3.text.WordUtils;
+
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.microsoft.azure.cosmosdb.CompositePath;
+import com.microsoft.azure.cosmosdb.SpatialSpec;
 
 /**
  * Represents the indexing policy configuration for a collection in the Azure Cosmos DB database service.
@@ -39,6 +43,8 @@ public final class IndexingPolicy extends JsonSerializable {
 
     private Collection<IncludedPath> includedPaths;
     private Collection<ExcludedPath> excludedPaths;
+    private Collection<ArrayList<CompositePath>> compositeIndexes;
+    private Collection<SpatialSpec> spatialIndexes;
 
     /**
      * Constructor.
@@ -184,6 +190,66 @@ public final class IndexingPolicy extends JsonSerializable {
 
     public void setExcludedPaths(Collection<ExcludedPath> excludedPaths) {
         this.excludedPaths = excludedPaths;
+    }
+
+    /**
+     * Gets the composite indexes for additional indexes.
+     *
+     * @return the composite indexes.
+     */
+    public Collection<ArrayList<CompositePath>> getCompositeIndexes() {
+        if (this.compositeIndexes == null) {
+            this.compositeIndexes = new ArrayList<ArrayList<CompositePath>>();
+            ArrayNode compositeIndexes = (ArrayNode) super.get(Constants.Properties.COMPOSITE_INDEXES);
+            for (int i = 0; i < compositeIndexes.size(); i ++) {
+                ArrayNode compositeIndex = (ArrayNode) compositeIndexes.get(i);
+                ArrayList<CompositePath> compositePaths = new ArrayList<CompositePath>();
+                for (int j = 0; j < compositeIndex.size(); j ++) {
+                    CompositePath candidateCompositePath = new CompositePath(compositeIndex.get(j).toString());
+                    compositePaths.add(candidateCompositePath);
+                }
+                this.compositeIndexes.add(compositePaths);
+            }
+        }
+
+        return this.compositeIndexes;
+    }
+
+    /**
+     * Sets the composite indexes for additional indexes.
+     *
+     * @param compositeIndexes the composite indexes.
+     */
+    public void setCompositeIndexes(Collection<ArrayList<CompositePath>> compositeIndexes) {
+        this.compositeIndexes = compositeIndexes;
+        super.set(Constants.Properties.COMPOSITE_INDEXES, this.compositeIndexes);
+    }
+
+    /**
+     * Sets the spatial indexes for additional indexes.
+     *
+     * @return the spatial indexes.
+     */
+    public Collection<SpatialSpec> getSpatialIndexes() {
+        if (this.spatialIndexes == null) {
+            this.spatialIndexes = super.getCollection(Constants.Properties.SPATIAL_INDEXES, SpatialSpec.class);
+
+            if (this.spatialIndexes == null) {
+                this.spatialIndexes = new ArrayList<SpatialSpec>();
+            }
+        }
+
+        return this.spatialIndexes;
+    }
+
+    /**
+     * Sets the spatial indexes for additional indexes.
+     *
+     * @param spatialIndexes the spatial indexes.
+     */
+    public void setSpatialIndexes(Collection<SpatialSpec> spatialIndexes) {
+        this.spatialIndexes = spatialIndexes;
+        super.set(Constants.Properties.SPATIAL_INDEXES, this.spatialIndexes);
     }
 
     @Override

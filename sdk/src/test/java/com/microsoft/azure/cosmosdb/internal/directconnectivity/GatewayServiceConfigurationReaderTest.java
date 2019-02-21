@@ -76,7 +76,6 @@ public class GatewayServiceConfigurationReaderTest extends TestSuiteBase {
     private GatewayServiceConfigurationReader mockGatewayServiceConfigurationReader;
     private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
     private AsyncDocumentClient client;
-    private Builder clientBuilder;
     private String databaseAccountJson;
     private DatabaseAccount expectedDatabaseAccount;
 

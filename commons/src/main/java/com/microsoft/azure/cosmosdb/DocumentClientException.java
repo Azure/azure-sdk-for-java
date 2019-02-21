@@ -50,8 +50,8 @@ public class DocumentClientException extends Exception {
     private static final long serialVersionUID = 1L;
 
     private Error error;
-    private int statusCode;
-    private Map<String, String> responseHeaders;
+    private final int statusCode;
+    private final Map<String, String> responseHeaders;
     String resourceAddress;
     String partitionKeyRangeId;
     URI requestUri;
@@ -65,6 +65,7 @@ public class DocumentClientException extends Exception {
      */
     public DocumentClientException(int statusCode) {
         this.statusCode = statusCode;
+        this.responseHeaders = new HashMap<>();
     }
 
     /**
@@ -117,7 +118,7 @@ public class DocumentClientException extends Exception {
 
         super(errorResource == null ? null : errorResource.getMessage());
 
-        this.responseHeaders = responseHeaders == null ? null : new HashMap<>(responseHeaders);
+        this.responseHeaders = safeResponseHeaders(responseHeaders);
         this.resourceAddress = resourceAddress;
         this.statusCode = statusCode;
         this.error = errorResource;
@@ -134,7 +135,7 @@ public class DocumentClientException extends Exception {
 
         super(message, exception);
 
-        this.responseHeaders = responseHeaders == null ? null : new HashMap<>(responseHeaders);
+        this.responseHeaders = safeResponseHeaders(responseHeaders);
         this.resourceAddress = resourceAddress;
         this.statusCode = statusCode;
     }
@@ -256,5 +257,13 @@ public class DocumentClientException extends Exception {
             return String.format("[class: %s, message: %s]", cause.getClass(), cause.getMessage());
         }
         return null;
+    }
+
+    private Map<String, String> safeResponseHeaders(Map<String, String> map) {
+        if (map != null) {
+            return new HashMap<>(map);
+        } else {
+            return new HashMap<>();
+        }
     }
 }

@@ -23,22 +23,18 @@
 
 package com.microsoft.azure.cosmosdb.benchmark;
 
-import java.util.Random;
-import java.util.UUID;
-
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import org.apache.commons.lang3.RandomStringUtils;
-
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.PartitionKey;
 import com.microsoft.azure.cosmosdb.RequestOptions;
-
+import com.microsoft.azure.cosmosdb.ResourceResponse;
+import org.apache.commons.lang3.RandomStringUtils;
 import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
-import javax.net.ssl.SSLException;
+import java.util.Random;
+import java.util.UUID;
 
 class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
 

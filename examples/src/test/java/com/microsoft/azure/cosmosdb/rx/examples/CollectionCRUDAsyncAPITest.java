@@ -23,6 +23,7 @@
 package com.microsoft.azure.cosmosdb.rx.examples;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.DataType;
@@ -50,8 +51,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
-
-import javax.net.ssl.SSLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -91,10 +90,12 @@ public class CollectionCRUDAsyncAPITest {
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        connectionPolicy.setConnectionMode(ConnectionMode.Direct);
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(ConnectionPolicy.GetDefault())
+                .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
 
@@ -224,10 +225,10 @@ public class CollectionCRUDAsyncAPITest {
 
     /**
      * Attempt to create a Collection which already exists
-     *     - First create a Collection
-     *     - Using the async api generate an async collection creation observable
-     *     - Converts the Observable to blocking using Observable.toBlocking() api
-     *     - Catch already exist failure (409)
+     * - First create a Collection
+     * - Using the async api generate an async collection creation observable
+     * - Converts the Observable to blocking using Observable.toBlocking() api
+     * - Catch already exist failure (409)
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createCollection_toBlocking_CollectionAlreadyExists_Fails() {
@@ -243,7 +244,7 @@ public class CollectionCRUDAsyncAPITest {
             assertThat("Should not reach here", false);
         } catch (Exception e) {
             assertThat("Collection already exists.", ((DocumentClientException) e.getCause()).getStatusCode(),
-                    equalTo(409));
+                       equalTo(409));
         }
     }
 
@@ -388,10 +389,10 @@ public class CollectionCRUDAsyncAPITest {
 
         // Set indexing policy to be range range for string and number
         IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<IncludedPath> includedPaths = new ArrayList<IncludedPath>();
+        Collection<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
         includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<Index>();
+        Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.Range(DataType.String);
         stringIndex.set("precision", -1);
         indexes.add(stringIndex);

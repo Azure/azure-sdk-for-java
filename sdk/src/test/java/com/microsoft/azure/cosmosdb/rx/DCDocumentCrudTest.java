@@ -51,6 +51,7 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import rx.Observable;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -71,7 +72,6 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     private static Database createdDatabase;
     private static DocumentCollection createdCollection;
 
-    private Builder clientBuilder;
     private SpyClientUnderTestFactory.ClientWithGatewaySpy client;
 
     @DataProvider
@@ -79,7 +79,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         return new Object[][] { { createDCBuilder(Protocol.Https) }, { createDCBuilder(Protocol.Tcp) } };
     }
 
-    static protected AsyncDocumentClient.Builder createDCBuilder(Protocol protocol) {
+    static AsyncDocumentClient.Builder createDCBuilder(Protocol protocol) {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.Direct);
@@ -88,10 +88,11 @@ public class DCDocumentCrudTest extends TestSuiteBase {
         doAnswer((Answer<Protocol>) invocation -> protocol).when(configs).getProtocol();
 
         return new AsyncDocumentClient.Builder()
-                .withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.Eventual);
+            .withServiceEndpoint(TestConfigurations.HOST)
+            .withConfigs(configs)
+            .withConnectionPolicy(connectionPolicy)
+            .withConsistencyLevel(ConsistencyLevel.Session)
+            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY);
     }
 
     @Factory(dataProvider = "directClientBuilder")
@@ -133,22 +134,20 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     }
 
     /**
-     * Tests document creation through direct https.
-     * @throws Exception
+     * Tests document creation through direct mode
      */
     @Test(groups = { "direct" }, timeOut = TIMEOUT)
-    public void create() throws Exception {
-        Document docDefinition = getDocumentDefinition();
+    public void create() {
+        final Document docDefinition = getDocumentDefinition();
 
-        Observable<ResourceResponse<Document>> createObservable = client
-                .createDocument(getCollectionLink(), docDefinition, null, false);
+        Observable<ResourceResponse<Document>> createObservable = client.createDocument(
+            this.getCollectionLink(), docDefinition, null, false);
 
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
-                .withId(docDefinition.getId())
-                .build();
+            .withId(docDefinition.getId())
+            .build();
 
         validateSuccess(createObservable, validator, TIMEOUT);
-
         validateNoDocumentOperationThroughGateway();
     }
 
@@ -318,7 +317,8 @@ public class DCDocumentCrudTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "direct" })
-    public void beforeMethod() {
+    public void beforeMethod(Method method) {
+        super.beforeMethod(method);
         client.getCapturedRequests().clear();
     }
 

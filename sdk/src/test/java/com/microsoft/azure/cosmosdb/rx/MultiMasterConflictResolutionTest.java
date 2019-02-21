@@ -48,7 +48,6 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
     private static final int TIMEOUT = 40000;
 
     private final String databaseId = DatabaseForTest.generateId();
-    private final AsyncDocumentClient.Builder clientBuilder;
 
     private AsyncDocumentClient client;
     private Database database;

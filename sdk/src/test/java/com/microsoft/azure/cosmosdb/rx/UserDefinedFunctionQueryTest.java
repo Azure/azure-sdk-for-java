@@ -52,7 +52,6 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private List<UserDefinedFunction> createdUDF = new ArrayList<>();
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     public  String getCollectionLink() {

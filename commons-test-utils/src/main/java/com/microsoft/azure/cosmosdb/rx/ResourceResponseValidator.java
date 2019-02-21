@@ -25,15 +25,18 @@ package com.microsoft.azure.cosmosdb.rx;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.assertj.core.api.Condition;
 
 import com.microsoft.azure.cosmosdb.Attachment;
+import com.microsoft.azure.cosmosdb.CompositePath;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.IndexingMode;
 import com.microsoft.azure.cosmosdb.Offer;
@@ -41,11 +44,13 @@ import com.microsoft.azure.cosmosdb.Permission;
 import com.microsoft.azure.cosmosdb.PermissionMode;
 import com.microsoft.azure.cosmosdb.Resource;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.SpatialSpec;
 import com.microsoft.azure.cosmosdb.StoredProcedure;
 import com.microsoft.azure.cosmosdb.Trigger;
 import com.microsoft.azure.cosmosdb.TriggerOperation;
 import com.microsoft.azure.cosmosdb.TriggerType;
 import com.microsoft.azure.cosmosdb.UserDefinedFunction;
+import com.microsoft.azure.cosmosdb.SpatialType;
 
 public interface ResourceResponseValidator<T extends Resource> {
 
@@ -231,6 +236,18 @@ public interface ResourceResponseValidator<T extends Resource> {
             return this;
         }
 
+        public Builder<T> notEmptySelfLink() {
+            validators.add(new ResourceResponseValidator<T>() {
+
+                @Override
+                public void validate(ResourceResponse<T> resourceResponse) {
+                    assertThat(resourceResponse.getResource()).isNotNull();
+                    assertThat(resourceResponse.getResource().getSelfLink()).isNotEmpty();
+                }
+            });
+            return this;
+        }
+
         public Builder<T> withTriggerInternals(TriggerType type, TriggerOperation op) {
             validators.add(new ResourceResponseValidator<Trigger>() {
 
@@ -274,6 +291,86 @@ public interface ResourceResponseValidator<T extends Resource> {
                     assertThat(resourceResponse.getResource()).isNotNull();
                     assertThat(resourceResponse.getResource().get(key)).is(condition);
 
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> withCompositeIndexes(Collection<ArrayList<CompositePath>> compositeIndexesWritten) {
+            validators.add(new ResourceResponseValidator<DocumentCollection>() {
+
+                @Override
+                public void validate(ResourceResponse<DocumentCollection> resourceResponse) {
+                    Iterator<ArrayList<CompositePath>> compositeIndexesReadIterator = resourceResponse.getResource()
+                            .getIndexingPolicy().getCompositeIndexes().iterator();
+                    Iterator<ArrayList<CompositePath>> compositeIndexesWrittenIterator = compositeIndexesWritten.iterator();
+                    
+                    ArrayList<String> readIndexesStrings = new ArrayList<String>();
+                    ArrayList<String> writtenIndexesStrings = new ArrayList<String>();
+                    
+                    while (compositeIndexesReadIterator.hasNext() && compositeIndexesWrittenIterator.hasNext()) {
+                        Iterator<CompositePath> compositeIndexReadIterator = compositeIndexesReadIterator.next().iterator();
+                        Iterator<CompositePath> compositeIndexWrittenIterator = compositeIndexesWrittenIterator.next().iterator();
+
+                        StringBuilder readIndexesString = new StringBuilder();
+                        StringBuilder writtenIndexesString = new StringBuilder();
+                        
+                        while (compositeIndexReadIterator.hasNext() && compositeIndexWrittenIterator.hasNext()) {
+                            CompositePath compositePathRead = compositeIndexReadIterator.next();
+                            CompositePath compositePathWritten = compositeIndexWrittenIterator.next();
+                            
+                            readIndexesString.append(compositePathRead.getPath() + ":" + compositePathRead.getOrder() + ";");
+                            writtenIndexesString.append(compositePathWritten.getPath() + ":" + compositePathRead.getOrder() + ";");
+                        }
+                        
+                        readIndexesStrings.add(readIndexesString.toString());
+                        writtenIndexesStrings.add(writtenIndexesString.toString());
+                    }
+                    
+                    assertThat(readIndexesStrings).containsExactlyInAnyOrderElementsOf(writtenIndexesStrings);
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> withSpatialIndexes(Collection<SpatialSpec> spatialIndexes) {
+            validators.add(new ResourceResponseValidator<DocumentCollection>() {
+
+                @Override
+                public void validate(ResourceResponse<DocumentCollection> resourceResponse) {
+                    Iterator<SpatialSpec> spatialIndexesReadIterator = resourceResponse.getResource()
+                            .getIndexingPolicy().getSpatialIndexes().iterator();
+                    Iterator<SpatialSpec> spatialIndexesWrittenIterator = spatialIndexes.iterator();
+
+                    HashMap<String, ArrayList<SpatialType>> readIndexMap = new HashMap<String, ArrayList<SpatialType>>();
+                    HashMap<String, ArrayList<SpatialType>> writtenIndexMap = new HashMap<String, ArrayList<SpatialType>>();
+
+                    while (spatialIndexesReadIterator.hasNext() && spatialIndexesWrittenIterator.hasNext()) {
+                        SpatialSpec spatialSpecRead = spatialIndexesReadIterator.next();
+                        SpatialSpec spatialSpecWritten = spatialIndexesWrittenIterator.next();
+
+                        String readPath = spatialSpecRead.getPath() + ":";
+                        String writtenPath = spatialSpecWritten.getPath() + ":";
+
+                        ArrayList<SpatialType> readSpatialTypes = new ArrayList<SpatialType>();
+                        ArrayList<SpatialType> writtenSpatialTypes = new ArrayList<SpatialType>();
+                        
+                        Iterator<SpatialType> spatialTypesReadIterator = spatialSpecRead.getSpatialTypes().iterator();
+                        Iterator<SpatialType> spatialTypesWrittenIterator = spatialSpecWritten.getSpatialTypes().iterator();
+
+                        while (spatialTypesReadIterator.hasNext() && spatialTypesWrittenIterator.hasNext()) {
+                            readSpatialTypes.add(spatialTypesReadIterator.next());
+                            writtenSpatialTypes.add(spatialTypesWrittenIterator.next());
+                        }
+                        
+                        readIndexMap.put(readPath, readSpatialTypes);
+                        writtenIndexMap.put(writtenPath, writtenSpatialTypes);
+                    }
+                    
+                    for (Entry<String, ArrayList<SpatialType>> entry : readIndexMap.entrySet()) {
+                        assertThat(entry.getValue())
+                        .containsExactlyInAnyOrderElementsOf(writtenIndexMap.get(entry.getKey()));
+                    }
                 }
             });
             return this;

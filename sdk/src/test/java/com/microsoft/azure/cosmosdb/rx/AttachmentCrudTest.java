@@ -50,20 +50,15 @@ public class AttachmentCrudTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private Document createdDocument;
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectHttps")  // Direct TCP mode does not support attachments
     public AttachmentCrudTest(AsyncDocumentClient.Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createAttachment() throws Exception {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
-
         // create an Attachment
         String uuid = UUID.randomUUID().toString();
         Attachment attachment = getAttachmentDefinition(uuid, "application/text");
@@ -83,10 +78,6 @@ public class AttachmentCrudTest extends TestSuiteBase {
     
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readAttachment() throws Exception {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
-
         // create an Attachment
         String uuid = UUID.randomUUID().toString();
         Attachment attachment = getAttachmentDefinition(uuid, "application/text");
@@ -111,10 +102,6 @@ public class AttachmentCrudTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void deleteAttachment() throws Exception {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
-
         // create an Attachment
         String uuid = UUID.randomUUID().toString();
         Attachment attachment = getAttachmentDefinition(uuid, "application/text");
@@ -135,10 +122,6 @@ public class AttachmentCrudTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void upsertAttachment() throws Exception {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
-
         // create an Attachment
         String uuid = UUID.randomUUID().toString();
         Attachment attachment = getAttachmentDefinition(uuid, "application/text");
@@ -175,10 +158,6 @@ public class AttachmentCrudTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void replaceAttachment() throws Exception {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
-
         // create an Attachment
         String uuid = UUID.randomUUID().toString();
         Attachment attachment = getAttachmentDefinition(uuid, "application/text");
@@ -216,10 +195,6 @@ public class AttachmentCrudTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            // FIXME skip TCP
-            return;
-        }
         client = clientBuilder.build();
         createdDatabase = SHARED_DATABASE;
         createdCollection = SHARED_MULTI_PARTITION_COLLECTION;

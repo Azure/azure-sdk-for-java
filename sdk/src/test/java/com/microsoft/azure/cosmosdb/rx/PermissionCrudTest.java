@@ -46,7 +46,6 @@ public class PermissionCrudTest extends TestSuiteBase {
     private Database createdDatabase;
     private User createdUser;
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuilders")

@@ -42,13 +42,13 @@ public class Utils {
     @AfterSuite(groups = "samples")
     public void cleanupStaleDatabase() {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.Gateway);
+        connectionPolicy.setConnectionMode(ConnectionMode.Direct);
         RetryOptions options = new RetryOptions();
         connectionPolicy.setRetryOptions(options);
         AsyncDocumentClient client = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-            .withConnectionPolicy(connectionPolicy)
-            .build();
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .build();
         safeCleanDatabases(client);
         client.close();
     }
@@ -121,5 +121,4 @@ public class Utils {
             return client.deleteDatabase("dbs/" + id, null);
         }
     }
-
 }

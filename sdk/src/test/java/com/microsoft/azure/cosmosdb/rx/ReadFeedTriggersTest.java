@@ -49,7 +49,6 @@ public class ReadFeedTriggersTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private List<Trigger> createdTriggers = new ArrayList<>();
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")

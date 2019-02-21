@@ -52,7 +52,6 @@ public class TopQueryTests extends TestSuiteBase {
     private int secondPk = 1;
     private String field = "field";
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -85,7 +84,9 @@ public class TopQueryTests extends TestSuiteBase {
                 validateQuerySuccess(queryObservable1, validator1, TIMEOUT);
             } catch (Throwable error) {
                 if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                    throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                    String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                    logger.info(message, error);
+                    throw new SkipException(message, error);
                 }
                 throw error;
             }

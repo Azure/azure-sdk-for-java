@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,6 +23,7 @@
 package com.microsoft.azure.cosmosdb.rx.examples;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
@@ -47,8 +48,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
-import javax.net.ssl.SSLException;
-
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -60,25 +59,24 @@ import static org.hamcrest.Matchers.is;
  * This integration test class demonstrates how to use Async API to create,
  * delete, replace, and upsert Documents. If you are interested in examples for
  * querying for documents please see {@link DocumentQueryAsyncAPITest}
- * 
+ * <p>
  * NOTE: you can use rxJava based async api with java8 lambda expression. Use
  * of rxJava based async APIs with java8 lambda expressions is much prettier.
- * 
+ * <p>
  * You can also use the async API without java8 lambda expression.
- * 
+ * <p>
  * For example
  * <ul>
  * <li>{@link #createDocument_Async()} demonstrates how to use async api
  * with java8 lambda expression.
- * 
+ *
  * <li>{@link #createDocument_Async_withoutLambda()} demonstrates how to do
  * the same thing without lambda expression.
  * </ul>
- * 
+ * <p>
  * Also if you need to work with Future or ListenableFuture it is possible to
  * transform an observable to ListenableFuture. Please see
  * {@link #transformObservableToGoogleGuavaListenableFuture()}
- * 
  */
 public class DocumentCRUDAsyncAPITest {
     private final static int TIMEOUT = 60000;
@@ -88,12 +86,13 @@ public class DocumentCRUDAsyncAPITest {
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
-
         // Sets up the requirements for each test
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        connectionPolicy.setConnectionMode(ConnectionMode.Direct);
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(ConnectionPolicy.GetDefault())
+                .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
 
@@ -163,7 +162,6 @@ public class DocumentCRUDAsyncAPITest {
 
         Action1<Throwable> onError = new Action1<Throwable>() {
 
-            @Override
             public void call(Throwable error) {
                 System.err
                         .println("an error occurred while creating the document: actual cause: " + error.getMessage());
@@ -253,16 +251,16 @@ public class DocumentCRUDAsyncAPITest {
                 .map(ResourceResponse::getRequestCharge)
                 // Map to request charge
                 .reduce((totalCharge, charge) -> totalCharge + charge);
-                // Sum up all the charges
+        // Sum up all the charges
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
         // Subscribe to the total request charge observable
         totalChargeObservable.subscribe(totalCharge -> {
-            // Print the total charge
-            System.out.println(totalCharge);
-            completionLatch.countDown();
-        }, e -> completionLatch.countDown()
+                                            // Print the total charge
+                                            System.out.println(totalCharge);
+                                            completionLatch.countDown();
+                                        }, e -> completionLatch.countDown()
         );
 
         completionLatch.await();
@@ -290,7 +288,7 @@ public class DocumentCRUDAsyncAPITest {
             Assert.fail("Document Already Exists. Document Creation must fail");
         } catch (Exception e) {
             assertThat("Document already exists.", ((DocumentClientException) e.getCause()).getStatusCode(),
-                    equalTo(409));
+                       equalTo(409));
         }
     }
 
@@ -310,7 +308,7 @@ public class DocumentCRUDAsyncAPITest {
         Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
                 .createDocument(getCollectionLink(), doc, null, false);
 
-        List<Throwable> errorList = Collections.synchronizedList(new ArrayList<Throwable>());
+        List<Throwable> errorList = Collections.synchronizedList(new ArrayList<>());
 
         createDocumentObservable.subscribe(resourceResponse -> {
         }, error -> {
@@ -341,7 +339,7 @@ public class DocumentCRUDAsyncAPITest {
                 .replaceDocument(getDocumentLink(createdDocument), replacingDocument, null);
 
         List<ResourceResponse<Document>> capturedResponse = Collections
-                .synchronizedList(new ArrayList<ResourceResponse<Document>>());
+                .synchronizedList(new ArrayList<>());
 
         replaceDocumentObservable.subscribe(resourceResponse -> {
             capturedResponse.add(resourceResponse);
@@ -354,7 +352,7 @@ public class DocumentCRUDAsyncAPITest {
     }
 
     /**
-     *  Upsert a document
+     * Upsert a document
      */
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void documentUpsert_Async() throws Exception {
@@ -369,7 +367,7 @@ public class DocumentCRUDAsyncAPITest {
                 .upsertDocument(getCollectionLink(), upsertingDocument, null, false);
 
         List<ResourceResponse<Document>> capturedResponse = Collections
-                .synchronizedList(new ArrayList<ResourceResponse<Document>>());
+                .synchronizedList(new ArrayList<>());
 
         upsertDocumentObservable.subscribe(resourceResponse -> {
             capturedResponse.add(resourceResponse);
@@ -396,7 +394,7 @@ public class DocumentCRUDAsyncAPITest {
                 .deleteDocument(getDocumentLink(createdDocument), null);
 
         List<ResourceResponse<Document>> capturedResponse = Collections
-                .synchronizedList(new ArrayList<ResourceResponse<Document>>());
+                .synchronizedList(new ArrayList<>());
 
         deleteDocumentObservable.subscribe(resourceResponse -> {
             capturedResponse.add(resourceResponse);
@@ -434,7 +432,7 @@ public class DocumentCRUDAsyncAPITest {
                 .readDocument(getDocumentLink(createdDocument), null);
 
         List<ResourceResponse<Document>> capturedResponse = Collections
-                .synchronizedList(new ArrayList<ResourceResponse<Document>>());
+                .synchronizedList(new ArrayList<>());
 
         readDocumentObservable.subscribe(resourceResponse -> {
             capturedResponse.add(resourceResponse);

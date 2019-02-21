@@ -24,6 +24,7 @@
 package com.microsoft.azure.cosmosdb.internal.directconnectivity;
 
 import com.microsoft.azure.cosmosdb.rx.internal.Utils;
+import io.netty.channel.ChannelException;
 import io.reactivex.netty.client.PoolExhaustedException;
 
 import javax.net.ssl.SSLHandshakeException;
@@ -65,6 +66,33 @@ public class WebExceptionUtility {
                 webEx instanceof SSLHandshakeException ||
                 webEx instanceof NoRouteToHostException ||
                 webEx instanceof SSLPeerUnverifiedException) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isNetworkFailure(Exception ex) {
+        Exception iterator = ex;
+
+        while (iterator != null) {
+            if (WebExceptionUtility.isNetworkFailureInternal(iterator)) {
+                return true;
+            }
+
+            Throwable t = iterator.getCause();
+            iterator = Utils.as(t, Exception.class);
+        }
+
+        return false;
+    }
+
+    private static boolean isNetworkFailureInternal(Exception ex) {
+        if (ex instanceof IOException) {
+            return true;
+        }
+
+        if (ex instanceof ChannelException) {
             return true;
         }
 

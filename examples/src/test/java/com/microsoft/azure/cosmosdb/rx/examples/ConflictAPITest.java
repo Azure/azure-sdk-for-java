@@ -24,6 +24,7 @@ package com.microsoft.azure.cosmosdb.rx.examples;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microsoft.azure.cosmosdb.Conflict;
+import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
@@ -43,14 +44,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import javax.net.ssl.SSLException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 
-/**o
+/**
  * This integration test class demonstrates how to use Async API for
  * Conflicts.
  * <p>
@@ -67,11 +66,12 @@ public class ConflictAPITest {
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
-
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        connectionPolicy.setConnectionMode(ConnectionMode.Direct);
         client = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(ConnectionPolicy.GetDefault())
+                .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
 

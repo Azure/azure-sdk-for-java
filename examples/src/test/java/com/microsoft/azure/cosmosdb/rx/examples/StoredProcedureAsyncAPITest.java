@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.cosmosdb.rx.examples;
 
+import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.DataType;
@@ -68,10 +69,12 @@ public class StoredProcedureAsyncAPITest {
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        connectionPolicy.setConnectionMode(ConnectionMode.Direct);
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(ConnectionPolicy.GetDefault())
+                .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
 
@@ -94,22 +97,22 @@ public class StoredProcedureAsyncAPITest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void scriptConsoleLogEnabled() throws Exception {
         // Create a stored procedure
-        StoredProcedure storedProcedure = new StoredProcedure( 
+        StoredProcedure storedProcedure = new StoredProcedure(
                 "{" +
-                "  'id':'storedProcedureSample'," +
-                "  'body':" +
-                "    'function() {" +
-                "        var mytext = \"x\";" +
-                "        var myval = 1;" +
-                "        try {" +
-                "            console.log(\"The value of %s is %s.\", mytext, myval);" +
-                "            getContext().getResponse().setBody(\"Success!\");" +
-                "        }" +
-                "        catch(err) {" +
-                "            getContext().getResponse().setBody(\"inline err: [\" + err.number + \"] \" + err);" +
-                "        }" +
-                "    }'" +
-                "}");
+                        "  'id':'storedProcedureSample'," +
+                        "  'body':" +
+                        "    'function() {" +
+                        "        var mytext = \"x\";" +
+                        "        var myval = 1;" +
+                        "        try {" +
+                        "            console.log(\"The value of %s is %s.\", mytext, myval);" +
+                        "            getContext().getResponse().setBody(\"Success!\");" +
+                        "        }" +
+                        "        catch(err) {" +
+                        "            getContext().getResponse().setBody(\"inline err: [\" + err.number + \"] \" + err);" +
+                        "        }" +
+                        "    }'" +
+                        "}");
 
         storedProcedure = asyncClient.createStoredProcedure(getCollectionLink(), storedProcedure, null)
                 .toBlocking().single().getResource();
@@ -121,13 +124,13 @@ public class StoredProcedureAsyncAPITest {
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
         // Execute the stored procedure
-        asyncClient.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, new Object[] {})
+        asyncClient.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, new Object[]{})
                 .subscribe(storedProcedureResponse -> {
                     String logResult = "The value of x is 1.";
                     try {
                         assertThat(URLDecoder.decode(storedProcedureResponse.getScriptLog(), "UTF-8"), is(logResult));
                         assertThat(URLDecoder.decode(storedProcedureResponse.getResponseHeaders()
-                                .get(HttpConstants.HttpHeaders.SCRIPT_LOG_RESULTS), "UTF-8"), is(logResult));
+                                                             .get(HttpConstants.HttpHeaders.SCRIPT_LOG_RESULTS), "UTF-8"), is(logResult));
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
@@ -135,7 +138,7 @@ public class StoredProcedureAsyncAPITest {
                     System.out.println(storedProcedureResponse.getActivityId());
                 }, error -> {
                     System.err.println("an error occurred while executing the stored procedure: actual cause: "
-                            + error.getMessage());
+                                               + error.getMessage());
                 });
 
         successfulCompletionLatch.await();
@@ -155,7 +158,7 @@ public class StoredProcedureAsyncAPITest {
                         "      getContext().getResponse().setBody(" +
                         "          \"2*\" + value + \" is \" + num * 2 );" +
                         "    }'" +
-                "}");
+                        "}");
 
         storedProcedure = asyncClient.createStoredProcedure(getCollectionLink(), storedProcedure, null)
                 .toBlocking().single().getResource();
@@ -166,7 +169,7 @@ public class StoredProcedureAsyncAPITest {
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
         // Execute the stored procedure
-        Object[] storedProcedureArgs = new Object[] { "a", 123 };
+        Object[] storedProcedureArgs = new Object[]{"a", 123};
         asyncClient.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, storedProcedureArgs)
                 .subscribe(storedProcedureResponse -> {
                     String storedProcResultAsString = storedProcedureResponse.getResponseAsString();
@@ -175,7 +178,7 @@ public class StoredProcedureAsyncAPITest {
                     System.out.println(storedProcedureResponse.getActivityId());
                 }, error -> {
                     System.err.println("an error occurred while executing the stored procedure: actual cause: "
-                            + error.getMessage());
+                                               + error.getMessage());
                 });
 
         successfulCompletionLatch.await();
@@ -195,7 +198,7 @@ public class StoredProcedureAsyncAPITest {
                         "      getContext().getResponse().setBody(" +
                         "          \"a is \" + value.temp);" +
                         "    }'" +
-                "}");
+                        "}");
 
         storedProcedure = asyncClient.createStoredProcedure(getCollectionLink(), storedProcedure, null)
                 .toBlocking().single().getResource();
@@ -212,7 +215,7 @@ public class StoredProcedureAsyncAPITest {
         SamplePojo samplePojo = new SamplePojo();
 
         // Execute the stored procedure
-        Object[] storedProcedureArgs = new Object[] { samplePojo };
+        Object[] storedProcedureArgs = new Object[]{samplePojo};
         asyncClient.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, storedProcedureArgs)
                 .subscribe(storedProcedureResponse -> {
                     String storedProcResultAsString = storedProcedureResponse.getResponseAsString();
@@ -221,7 +224,7 @@ public class StoredProcedureAsyncAPITest {
                     System.out.println(storedProcedureResponse.getActivityId());
                 }, error -> {
                     System.err.println("an error occurred while executing the stored procedure: actual cause: "
-                            + error.getMessage());
+                                               + error.getMessage());
                 });
 
         successfulCompletionLatch.await();

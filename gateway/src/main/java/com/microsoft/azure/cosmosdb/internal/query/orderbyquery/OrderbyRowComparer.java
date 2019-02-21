@@ -32,6 +32,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.cosmosdb.internal.query.ItemComparator;
+import com.microsoft.azure.cosmosdb.internal.query.ItemType;
+import com.microsoft.azure.cosmosdb.internal.query.ItemTypeHelper;
 import com.microsoft.azure.cosmosdb.internal.query.QueryItem;
 import com.microsoft.azure.cosmosdb.internal.query.SortOrder;
 
@@ -39,6 +41,7 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
     private static final Logger logger = LoggerFactory.getLogger(OrderbyRowComparer.class);
     
     private final List<SortOrder> sortOrders;
+    private volatile List<ItemType> itemTypes;
 
     public OrderbyRowComparer(Collection<SortOrder> sortOrders) {
         this.sortOrders = new ArrayList<>(sortOrders);
@@ -50,6 +53,29 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
             // comparing document (row) vs document (row)
             List<QueryItem> result1 = r1.getOrderByItems();
             List<QueryItem> result2 = r2.getOrderByItems();
+
+            if (result1.size() != result2.size()) {
+                throw new IllegalStateException("OrderByItems cannot have different sizes.");
+            }
+
+            if (result1.size() != this.sortOrders.size()) {
+                throw new IllegalStateException(
+                        String.format("OrderByItems cannot have a different size than sort orders."));
+            }
+
+            if (this.itemTypes == null) {
+                synchronized (this) {
+                    if (this.itemTypes == null) {
+                        this.itemTypes = new ArrayList<ItemType>(result1.size());
+                        for (QueryItem item : result1) {
+                            this.itemTypes.add(ItemTypeHelper.getOrderByItemType(item.getItem()));
+                        }
+                    }
+                }
+            }
+
+            this.checkOrderByItemType(result1);
+            this.checkOrderByItemType(result2);
 
             for (int i = 0; i < result1.size(); ++i) {
                 int cmp = ItemComparator.getInstance().compare(result1.get(i).getItem(), result2.get(i).getItem());
@@ -73,6 +99,16 @@ public final class OrderbyRowComparer<T> implements Comparator<OrderByRowResult<
             // we are also capturing the exception stacktrace here
             logger.error("Orderby Row comparision failed {}, {}", r1.toJson(), r2.toJson(), e);
             throw e;
+        }
+    }
+    
+    private void checkOrderByItemType(List<QueryItem> orderByItems) {
+        for (int i = 0; i < this.itemTypes.size(); ++i) {
+            ItemType type = ItemTypeHelper.getOrderByItemType(orderByItems.get(i).getItem());
+            if (type != this.itemTypes.get(i)) {
+                throw new UnsupportedOperationException(
+                        String.format("Expected %s, but got %s.", this.itemTypes.get(i).toString(), type.toString()));
+            }
         }
     }
 }

@@ -49,7 +49,6 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -147,7 +146,9 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
             storedProcedure = client.createStoredProcedure(getCollectionLink(), storedProcedureDef, null).toBlocking().single().getResource();
         } catch (Throwable error) {
             if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                logger.info(message, error);
+                throw new SkipException(message, error);
             }
             throw error;
         }
@@ -158,7 +159,9 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
             result = client.executeStoredProcedure(storedProcedure.getSelfLink(), null).toBlocking().single().getResponseAsString();
         } catch (Throwable error) {
             if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                logger.info(message, error);
+                throw new SkipException(message, error);
             }
             throw error;
         }

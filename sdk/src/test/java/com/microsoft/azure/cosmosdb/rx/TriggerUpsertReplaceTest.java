@@ -47,7 +47,6 @@ public class TriggerUpsertReplaceTest extends TestSuiteBase {
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")

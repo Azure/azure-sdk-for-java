@@ -48,7 +48,6 @@ public class UserCrudTest extends TestSuiteBase {
 
     private Database createdDatabase;
     
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuilders")

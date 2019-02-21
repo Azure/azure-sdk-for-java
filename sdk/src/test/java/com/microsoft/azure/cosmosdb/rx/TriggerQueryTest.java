@@ -54,7 +54,6 @@ public class TriggerQueryTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private List<Trigger> createdTriggers = new ArrayList<>();
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     public String getCollectionLink() {

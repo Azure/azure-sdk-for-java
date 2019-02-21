@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -61,26 +61,28 @@ import rx.Observable;
  * Provides a client-side logical representation of the Azure Cosmos DB
  * database service. This async client is used to configure and execute requests
  * against the service.
- * 
+ *
  * <p>
  * {@link AsyncDocumentClient} async APIs return <a href="https://github.com/ReactiveX/RxJava">rxJava</a>'s {@code
  * Observable}, and so you can use rxJava {@link Observable} functionality.
  * <STRONG>The async {@link Observable} based APIs perform the requested operation only after
  * subscription.</STRONG>
- * 
+ *
  * <p>
  * The service client encapsulates the endpoint and credentials used to access
  * the Cosmos DB service.
- * 
+ * <p>
  * To instantiate you can use the {@link Builder}
  * <pre>
  * {@code
- *   AsyncDocumentClient client = new AsyncDocumentClient.Builder()
- *           .withServiceEndpoint(serviceEndpoint)
- *           .withMasterKey(masterKey)
- *           .withConnectionPolicy(ConnectionPolicy.GetDefault())
- *           .withConsistencyLevel(ConsistencyLevel.Session)
- *           .build();
+ * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+ * connectionPolicy.setConnectionMode(ConnectionMode.Direct);
+ * AsyncDocumentClient client = new AsyncDocumentClient.Builder()
+ *         .withServiceEndpoint(serviceEndpoint)
+ *         .withMasterKeyOrResourceToken(masterKey)
+ *         .withConnectionPolicy(connectionPolicy)
+ *         .withConsistencyLevel(ConsistencyLevel.Session)
+ *         .build();
  * }
  * </pre>
  */
@@ -89,15 +91,17 @@ public interface AsyncDocumentClient {
     /**
      * Helper class to build {@link AsyncDocumentClient} instances
      * as logical representation of the Azure Cosmos DB database service.
-     * 
+     *
      * <pre>
      * {@code
-     *   AsyncDocumentClient client = new AsyncDocumentClient.Builder()
-     *           .withServiceEndpoint(serviceEndpoint)
-     *           .withMasterKeyOrResourceToken(masterKeyOrResourceToken)
-     *           .withConnectionPolicy(ConnectionPolicy.GetDefault())
-     *           .withConsistencyLevel(ConsistencyLevel.Session)
-     *           .build();
+     * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+     * connectionPolicy.setConnectionMode(ConnectionMode.Direct);
+     * AsyncDocumentClient client = new AsyncDocumentClient.Builder()
+     *         .withServiceEndpoint(serviceEndpoint)
+     *         .withMasterKeyOrResourceToken(masterKey)
+     *         .withConnectionPolicy(connectionPolicy)
+     *         .withConsistencyLevel(ConsistencyLevel.Session)
+     *         .build();
      * }
      * </pre>
      */
@@ -119,15 +123,14 @@ public interface AsyncDocumentClient {
             }
             return this;
         }
+
         /**
          * New method withMasterKeyOrResourceToken will take either master key or resource token
          * and perform authentication for accessing resource.
          *
-         * @deprecated use {@link #withMasterKeyOrResourceToken(String)} instead.
-         *
-         * @param masterKeyOrResourceToken
-         *            MasterKey or resourceToken for authentication .
+         * @param masterKeyOrResourceToken MasterKey or resourceToken for authentication.
          * @return current Builder.
+         * @deprecated use {@link #withMasterKeyOrResourceToken(String)} instead.
          */
         @Deprecated
         public Builder withMasterKey(String masterKeyOrResourceToken) {
@@ -138,21 +141,20 @@ public interface AsyncDocumentClient {
         /**
          * This method will accept the master key , additionally it can also consume
          * resource token too for authentication.
-         * 
-         * @param masterKeyOrResourceToken
-         *            MasterKey or resourceToken for authentication .
+         *
+         * @param masterKeyOrResourceToken MasterKey or resourceToken for authentication.
          * @return current Builder.
          */
         public Builder withMasterKeyOrResourceToken(String masterKeyOrResourceToken) {
             this.masterKeyOrResourceToken = masterKeyOrResourceToken;
             return this;
         }
+
         /**
          * This method will accept the permission list , which contains the
          * resource tokens needed to access resources.
-         * 
-         * @param permissionFeed
-         *            Permission list for authentication.
+         *
+         * @param permissionFeed Permission list for authentication.
          * @return current Builder.
          */
         public Builder withPermissionFeed(List<Permission> permissionFeed) {
@@ -168,7 +170,7 @@ public interface AsyncDocumentClient {
         /**
          * NOTE: This is experimental and internal only.
          * If sets, modifies the event loop size and the computation pool size.
-         * 
+         *
          * @param eventLoopSize the size of the event loop (the number of event loop threads).
          * @return current Builder.
          */
@@ -193,9 +195,9 @@ public interface AsyncDocumentClient {
                 throw new IllegalArgumentException(error);
             }
         }
-        
+
         public AsyncDocumentClient build() {
-            
+
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot build client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty()),
@@ -236,18 +238,18 @@ public interface AsyncDocumentClient {
 
     /**
      * Gets the connection policy
-     * 
+     *
      * @return the connection policy
      */
     ConnectionPolicy getConnectionPolicy();
 
     /**
      * Creates a database.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the created database.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param database the database.
      * @param options  the request options.
      * @return an {@link Observable} containing the single resource response with the created database or an error.
@@ -256,11 +258,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Deletes a database.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the deleted database.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param options      the request options.
      * @return an {@link Observable} containing the single resource response with the deleted database or an error.
@@ -269,11 +271,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads a database.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the read database.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param options      the request options.
      * @return an {@link Observable} containing the single resource response with the read database or an error.
@@ -282,11 +284,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads all databases.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response of the read databases.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param options the feed options.
      * @return an {@link Observable} containing one or several feed response pages of read databases or an error.
      */
@@ -294,11 +296,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for databases.
-     * 
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response of the read databases.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param query   the query.
      * @param options the feed options.
      * @return an {@link Observable} containing one or several feed response pages of read databases or an error.
@@ -307,11 +309,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for databases.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response of the obtained databases.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param querySpec the SQL query specification.
      * @param options   the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the obtained databases or an error.
@@ -320,26 +322,26 @@ public interface AsyncDocumentClient {
 
     /**
      * Creates a document collection.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the created collection.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param collection   the collection.
      * @param options      the request options.
      * @return an {@link Observable} containing the single resource response with the created collection or an error.
      */
     Observable<ResourceResponse<DocumentCollection>> createCollection(String databaseLink, DocumentCollection collection,
-            RequestOptions options);
+                                                                      RequestOptions options);
 
     /**
      * Replaces a document collection.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the replaced document collection.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collection the document collection to use.
      * @param options    the request options.
      * @return an {@link Observable} containing the single resource response with the replaced document collection or an error.
@@ -348,25 +350,24 @@ public interface AsyncDocumentClient {
 
     /**
      * Deletes a document collection by the collection link.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the deleted database.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param options        the request options.
      * @return an {@link Observable} containing the single resource response for the deleted database or an error.
-
      */
     Observable<ResourceResponse<DocumentCollection>> deleteCollection(String collectionLink, RequestOptions options);
 
     /**
      * Reads a document collection by the collection link.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the read collection.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param options        the request options.
      * @return an {@link Observable} containing the single resource response with the read collection or an error.
@@ -375,25 +376,24 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads all document collections in a database.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response of the read collections.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param options      the fee options.
-     * @return the feed response with the read collections.
      * @return an {@link Observable} containing one or several feed response pages of the read collections or an error.
      */
     Observable<FeedResponse<DocumentCollection>> readCollections(String databaseLink, FeedOptions options);
 
     /**
      * Query for document collections in a database.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response of the obtained collections.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param query        the query.
      * @param options      the feed options.
@@ -403,11 +403,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for document collections in a database.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response of the obtained collections.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param querySpec    the SQL query specification.
      * @param options      the feed options.
@@ -417,28 +417,27 @@ public interface AsyncDocumentClient {
 
     /**
      * Creates a document.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the created document.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink               the link to the parent document collection.
      * @param document                     the document represented as a POJO or Document object.
      * @param options                      the request options.
      * @param disableAutomaticIdGeneration the flag for disabling automatic id generation.
      * @return an {@link Observable} containing the single resource response with the created document or an error.
-
      */
     Observable<ResourceResponse<Document>> createDocument(String collectionLink, Object document, RequestOptions options,
-            boolean disableAutomaticIdGeneration);
+                                                          boolean disableAutomaticIdGeneration);
 
     /**
      * Upserts a document.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the upserted document.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink               the link to the parent document collection.
      * @param document                     the document represented as a POJO or Document object to upsert.
      * @param options                      the request options.
@@ -446,15 +445,15 @@ public interface AsyncDocumentClient {
      * @return an {@link Observable} containing the single resource response with the upserted document or an error.
      */
     Observable<ResourceResponse<Document>> upsertDocument(String collectionLink, Object document, RequestOptions options,
-            boolean disableAutomaticIdGeneration);
+                                                          boolean disableAutomaticIdGeneration);
 
     /**
      * Replaces a document using a POJO object.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the replaced document.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param documentLink the document link.
      * @param document     the document represented as a POJO or Document object.
      * @param options      the request options.
@@ -464,11 +463,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Replaces a document with the passed in document.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the replaced document.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param document the document to replace (containing the document id).
      * @param options  the request options.
      * @return an {@link Observable} containing the single resource response with the replaced document or an error.
@@ -476,12 +475,12 @@ public interface AsyncDocumentClient {
     Observable<ResourceResponse<Document>> replaceDocument(Document document, RequestOptions options);
 
     /**
-     * Deletes a document by the document link. 
-     * 
+     * Deletes a document by the document link.
+     * <p>
      * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the deleted document.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param documentLink the document link.
      * @param options      the request options.
      * @return an {@link Observable} containing the single resource response for the deleted document or an error.
@@ -490,11 +489,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads a document by the document link.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the read document.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param documentLink the document link.
      * @param options      the request options.
      * @return an {@link Observable} containing the single resource response with the read document or an error.
@@ -503,11 +502,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads all documents in a document collection.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response of the read documents.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the read documents or an error.
@@ -517,11 +516,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for documents in a document collection.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response of the obtained documents.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the link to the parent document collection.
      * @param query          the query.
      * @param options        the feed options.
@@ -531,80 +530,80 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for documents in a document collection.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response of the obtained documents.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the link to the parent document collection.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the obtained documents or an error.
      */
     Observable<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, FeedOptions options);
-    
+
     /**
      * Query for documents change feed in a document collection.
-     * After subscription the operation will be performed. 
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained documents.
      * In case of failure the {@link Observable} will error.
-     * 
-     * @param collectionLink            the link to the parent document collection.
-     * @param changeFeedOptions         the change feed options.
+     *
+     * @param collectionLink    the link to the parent document collection.
+     * @param changeFeedOptions the change feed options.
      * @return an {@link Observable} containing one or several feed response pages of the obtained documents or an error.
      */
-    Observable<FeedResponse<Document>> queryDocumentChangeFeed(String collectionLink, 
-            ChangeFeedOptions changeFeedOptions);
-    
+    Observable<FeedResponse<Document>> queryDocumentChangeFeed(String collectionLink,
+                                                               ChangeFeedOptions changeFeedOptions);
+
     /**
      * Reads all partition key ranges in a document collection.
-     * After subscription the operation will be performed. 
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained partition key ranges.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the link to the parent document collection.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the obtained partition key ranges or an error.
      */
-    Observable<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink,  FeedOptions options);
-    
+    Observable<FeedResponse<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink, FeedOptions options);
+
     /**
      * Creates a stored procedure.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the created stored procedure.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink  the collection link.
      * @param storedProcedure the stored procedure to create.
      * @param options         the request options.
      * @return an {@link Observable} containing the single resource response with the created stored procedure or an error.
      */
     Observable<ResourceResponse<StoredProcedure>> createStoredProcedure(String collectionLink, StoredProcedure storedProcedure,
-            RequestOptions options);
+                                                                        RequestOptions options);
 
     /**
      * Upserts a stored procedure.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the upserted stored procedure.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink  the collection link.
      * @param storedProcedure the stored procedure to upsert.
      * @param options         the request options.
      * @return an {@link Observable} containing the single resource response with the upserted stored procedure or an error.
      */
     Observable<ResourceResponse<StoredProcedure>> upsertStoredProcedure(String collectionLink, StoredProcedure storedProcedure,
-            RequestOptions options);
+                                                                        RequestOptions options);
 
     /**
      * Replaces a stored procedure.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the replaced stored procedure.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param storedProcedure the stored procedure to use.
      * @param options         the request options.
      * @return an {@link Observable} containing the single resource response with the replaced stored procedure or an error.
@@ -613,11 +612,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Deletes a stored procedure by the stored procedure link.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the deleted stored procedure.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param storedProcedureLink the stored procedure link.
      * @param options             the request options.
      * @return an {@link Observable} containing the single resource response for the deleted stored procedure or an error.
@@ -626,11 +625,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Read a stored procedure by the stored procedure link.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the read stored procedure.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param storedProcedureLink the stored procedure link.
      * @param options             the request options.
      * @return an {@link Observable} containing the single resource response with the read stored procedure or an error.
@@ -639,11 +638,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads all stored procedures in a document collection link.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the read stored procedures.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the read stored procedures or an error.
@@ -652,11 +651,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for stored procedures in a document collection.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained stored procedures.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param query          the query.
      * @param options        the feed options.
@@ -666,26 +665,26 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for stored procedures in a document collection.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained stored procedures.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the obtained stored procedures or an error.
      */
     Observable<FeedResponse<StoredProcedure>> queryStoredProcedures(String collectionLink, SqlQuerySpec querySpec,
-            FeedOptions options);
+                                                                    FeedOptions options);
 
     /**
      * Executes a stored procedure by the stored procedure link.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the stored procedure response.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param storedProcedureLink the stored procedure link.
      * @param procedureParams     the array of procedure parameter values.
      * @return an {@link Observable} containing the single resource response with the stored procedure response or an error.
@@ -694,26 +693,26 @@ public interface AsyncDocumentClient {
 
     /**
      * Executes a stored procedure by the stored procedure link.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the stored procedure response.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param storedProcedureLink the stored procedure link.
      * @param options             the request options.
      * @param procedureParams     the array of procedure parameter values.
      * @return an {@link Observable} containing the single resource response with the stored procedure response or an error.
      */
     Observable<StoredProcedureResponse> executeStoredProcedure(String storedProcedureLink, RequestOptions options,
-            Object[] procedureParams);
+                                                               Object[] procedureParams);
 
     /**
      * Creates a trigger.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the created trigger.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param trigger        the trigger.
      * @param options        the request options.
@@ -723,11 +722,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Upserts a trigger.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the upserted trigger.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param trigger        the trigger to upsert.
      * @param options        the request options.
@@ -737,11 +736,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Replaces a trigger.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the replaced trigger.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param trigger the trigger to use.
      * @param options the request options.
      * @return an {@link Observable} containing the single resource response with the replaced trigger or an error.
@@ -750,11 +749,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Deletes a trigger.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the deleted trigger.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param triggerLink the trigger link.
      * @param options     the request options.
      * @return an {@link Observable} containing the single resource response for the deleted trigger or an error.
@@ -763,11 +762,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads a trigger by the trigger link.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the read trigger.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param triggerLink the trigger link.
      * @param options     the request options.
      * @return an {@link Observable} containing the single resource response for the read trigger or an error.
@@ -776,11 +775,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads all triggers in a document collection.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the read triggers.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the read triggers or an error.
@@ -789,11 +788,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for triggers.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained triggers.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param query          the query.
      * @param options        the feed options.
@@ -803,11 +802,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for triggers.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained triggers.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
@@ -817,41 +816,41 @@ public interface AsyncDocumentClient {
 
     /**
      * Creates a user defined function.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the created user defined function.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param udf            the user defined function.
      * @param options        the request options.
      * @return an {@link Observable} containing the single resource response with the created user defined function or an error.
      */
     Observable<ResourceResponse<UserDefinedFunction>> createUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
-            RequestOptions options);
+                                                                                RequestOptions options);
 
     /**
      * Upserts a user defined function.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the upserted user defined function.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param udf            the user defined function to upsert.
      * @param options        the request options.
      * @return an {@link Observable} containing the single resource response with the upserted user defined function or an error.
      */
     Observable<ResourceResponse<UserDefinedFunction>> upsertUserDefinedFunction(String collectionLink, UserDefinedFunction udf,
-            RequestOptions options);
+                                                                                RequestOptions options);
 
     /**
      * Replaces a user defined function.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the replaced user defined function.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param udf     the user defined function.
      * @param options the request options.
      * @return an {@link Observable} containing the single resource response with the replaced user defined function or an error.
@@ -860,11 +859,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Deletes a user defined function.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the deleted user defined function.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param udfLink the user defined function link.
      * @param options the request options.
      * @return an {@link Observable} containing the single resource response for the deleted user defined function or an error.
@@ -873,11 +872,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Read a user defined function.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the read user defined function.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param udfLink the user defined function link.
      * @param options the request options.
      * @return an {@link Observable} containing the single resource response for the read user defined function or an error.
@@ -886,11 +885,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads all user defined functions in a document collection.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the read user defined functions.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the read user defined functions or an error.
@@ -899,41 +898,41 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for user defined functions.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained user defined functions.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param query          the query.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the obtained user defined functions or an error.
      */
     Observable<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink, String query,
-            FeedOptions options);
+                                                                            FeedOptions options);
 
     /**
      * Query for user defined functions.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained user defined functions.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the obtained user defined functions or an error.
      */
     Observable<FeedResponse<UserDefinedFunction>> queryUserDefinedFunctions(String collectionLink, SqlQuerySpec querySpec,
-            FeedOptions options);
+                                                                            FeedOptions options);
 
     /**
      * Creates an attachment.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the created attachment.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param documentLink the document link.
      * @param attachment   the attachment to create.
      * @param options      the request options.
@@ -943,11 +942,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Upserts an attachment.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the upserted attachment.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param documentLink the document link.
      * @param attachment   the attachment to upsert.
      * @param options      the request options.
@@ -957,11 +956,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Replaces an attachment.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the replaced attachment.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param attachment the attachment to use.
      * @param options    the request options.
      * @return an {@link Observable} containing the single resource response with the replaced attachment or an error.
@@ -970,11 +969,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Deletes an attachment.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the deleted attachment.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param attachmentLink the attachment link.
      * @param options        the request options.
      * @return an {@link Observable} containing the single resource response for the deleted attachment or an error.
@@ -983,11 +982,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads an attachment.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the read attachment.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param attachmentLink the attachment link.
      * @param options        the request options.
      * @return an {@link Observable} containing the single resource response with the read attachment or an error.
@@ -996,11 +995,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads all attachments in a document.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the read attachments.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param documentLink the document link.
      * @param options      the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the read attachments or an error.
@@ -1028,11 +1027,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for attachments.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained attachments.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param documentLink the document link.
      * @param query        the query.
      * @param options      the feed options.
@@ -1042,11 +1041,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for attachments.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained attachments.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param documentLink the document link.
      * @param querySpec    the SQL query specification.
      * @param options      the feed options.
@@ -1056,14 +1055,14 @@ public interface AsyncDocumentClient {
 
     /**
      * Creates an attachment.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the created attachment.
      * In case of failure the {@link Observable} will error.
-     * 
-     * @param documentLink the document link.
-     * @param mediaStream  the media stream for creating the attachment.
-     * @param options      the media options.
+     *
+     * @param documentLink   the document link.
+     * @param mediaStream    the media stream for creating the attachment.
+     * @param options        the media options.
      * @param requestOptions the request options
      * @return an {@link Observable} containing the single resource response with the created attachment or an error.
      */
@@ -1071,14 +1070,14 @@ public interface AsyncDocumentClient {
 
     /**
      * Upserts an attachment to the media stream
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the upserted attachment.
      * In case of failure the {@link Observable} will error.
-     * 
-     * @param documentLink the document link.
-     * @param mediaStream  the media stream for upserting the attachment.
-     * @param options      the media options.
+     *
+     * @param documentLink   the document link.
+     * @param mediaStream    the media stream for upserting the attachment.
+     * @param options        the media options.
      * @param requestOptions the request options
      * @return an {@link Observable} containing the single resource response with the upserted attachment or an error.
      */
@@ -1086,11 +1085,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads a conflict.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the read conflict.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param conflictLink the conflict link.
      * @param options      the request options.
      * @return an {@link Observable} containing the single resource response with the read conflict or an error.
@@ -1099,11 +1098,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads all conflicts in a document collection.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the read conflicts.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the read conflicts or an error.
@@ -1112,11 +1111,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for conflicts.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained conflicts.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param query          the query.
      * @param options        the feed options.
@@ -1126,11 +1125,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for conflicts.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained conflicts.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param collectionLink the collection link.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
@@ -1140,11 +1139,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Deletes a conflict.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the deleted conflict.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param conflictLink the conflict link.
      * @param options      the request options.
      * @return an {@link Observable} containing the single resource response for the deleted conflict or an error.
@@ -1153,11 +1152,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Creates a user.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the created user.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param user         the user to create.
      * @param options      the request options.
@@ -1167,11 +1166,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Upserts a user.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the upserted user.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param user         the user to upsert.
      * @param options      the request options.
@@ -1181,11 +1180,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Replaces a user.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the replaced user.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param user    the user to use.
      * @param options the request options.
      * @return an {@link Observable} containing the single resource response with the replaced user or an error.
@@ -1194,11 +1193,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Deletes a user.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the deleted user.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param userLink the user link.
      * @param options  the request options.
      * @return an {@link Observable} containing the single resource response for the deleted user or an error.
@@ -1207,11 +1206,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads a user.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the read user.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param userLink the user link.
      * @param options  the request options.
      * @return an {@link Observable} containing the single resource response with the read user or an error.
@@ -1220,11 +1219,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads all users in a database.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the read users.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param options      the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the read users or an error.
@@ -1233,11 +1232,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for users.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained users.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param query        the query.
      * @param options      the feed options.
@@ -1247,11 +1246,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for users.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained users.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param databaseLink the database link.
      * @param querySpec    the SQL query specification.
      * @param options      the feed options.
@@ -1261,11 +1260,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Creates a permission.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the created permission.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param userLink   the user link.
      * @param permission the permission to create.
      * @param options    the request options.
@@ -1275,11 +1274,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Upserts a permission.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the upserted permission.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param userLink   the user link.
      * @param permission the permission to upsert.
      * @param options    the request options.
@@ -1289,11 +1288,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Replaces a permission.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the replaced permission.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param permission the permission to use.
      * @param options    the request options.
      * @return an {@link Observable} containing the single resource response with the replaced permission or an error.
@@ -1302,11 +1301,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Deletes a permission.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response for the deleted permission.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param permissionLink the permission link.
      * @param options        the request options.
      * @return an {@link Observable} containing the single resource response for the deleted permission or an error.
@@ -1315,11 +1314,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads a permission.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the read permission.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param permissionLink the permission link.
      * @param options        the request options.
      * @return an {@link Observable} containing the single resource response with the read permission or an error.
@@ -1328,11 +1327,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads all permissions.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the read permissions.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param permissionLink the permission link.
      * @param options        the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the read permissions or an error.
@@ -1341,11 +1340,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for permissions.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained permissions.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param permissionLink the permission link.
      * @param query          the query.
      * @param options        the feed options.
@@ -1355,11 +1354,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for permissions.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the obtained permissions.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param permissionLink the permission link.
      * @param querySpec      the SQL query specification.
      * @param options        the feed options.
@@ -1369,11 +1368,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Replaces an offer.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the replaced offer.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param offer the offer to use.
      * @return an {@link Observable} containing the single resource response with the replaced offer or an error.
      */
@@ -1381,11 +1380,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads an offer.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the read offer.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param offerLink the offer link.
      * @return an {@link Observable} containing the single resource response with the read offer or an error.
      */
@@ -1393,11 +1392,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Reads offers.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of the read offers.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param options the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the read offers or an error.
      */
@@ -1405,11 +1404,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for offers in a database.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of obtained obtained offers.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param query   the query.
      * @param options the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the obtained offers or an error.
@@ -1418,11 +1417,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Query for offers in a database.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} will contain one or several feed response pages of obtained obtained offers.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @param querySpec the query specification.
      * @param options   the feed options.
      * @return an {@link Observable} containing one or several feed response pages of the obtained offers or an error.
@@ -1431,11 +1430,11 @@ public interface AsyncDocumentClient {
 
     /**
      * Gets database account information.
-     * 
-     * After subscription the operation will be performed. 
+     * <p>
+     * After subscription the operation will be performed.
      * The {@link Observable} upon successful completion will contain a single resource response with the database account.
      * In case of failure the {@link Observable} will error.
-     * 
+     *
      * @return an {@link Observable} containing the single resource response with the database account or an error.
      */
     Observable<DatabaseAccount> getDatabaseAccount();

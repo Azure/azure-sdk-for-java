@@ -44,7 +44,6 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 
 public class NetworkFailureTest extends TestSuiteBase {
     private static final int TIMEOUT = ClientRetryPolicy.MaxRetryCount * ClientRetryPolicy.RetryIntervalInMS + 60000;
-    private final AsyncDocumentClient.Builder clientBuilder;
     private final DocumentCollection collectionDefinition;
 
     @Factory(dataProvider = "simpleClientBuildersWithDirect")

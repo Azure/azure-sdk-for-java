@@ -68,7 +68,6 @@ public class DocumentQuerySpyWireContentTest extends TestSuiteBase {
     private List<Document> createdDocumentsInSinglePartitionCollection = new ArrayList<>();
     private List<Document> createdDocumentsInMultiPartitionCollection = new ArrayList<>();
 
-    private Builder clientBuilder;
     private SpyClientUnderTestFactory.ClientUnderTest client;
 
     public String getSinglePartitionCollectionLink() {

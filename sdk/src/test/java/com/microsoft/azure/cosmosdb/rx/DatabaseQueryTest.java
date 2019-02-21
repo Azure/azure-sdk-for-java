@@ -49,7 +49,6 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
     private List<Database> createdDatabases = new ArrayList<>();
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
     
     @Factory(dataProvider = "clientBuilders")

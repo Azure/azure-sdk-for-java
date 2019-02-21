@@ -54,7 +54,6 @@ public class ReadFeedPermissionsTest extends TestSuiteBase {
     private User createdUser;
     private List<Permission> createdPermissions = new ArrayList<>();
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuilders")

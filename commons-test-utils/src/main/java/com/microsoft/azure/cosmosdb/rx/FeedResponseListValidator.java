@@ -26,11 +26,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.microsoft.azure.cosmosdb.BridgeInternal;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.microsoft.azure.cosmosdb.CompositePath;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.QueryMetrics;
@@ -212,6 +216,44 @@ public interface FeedResponseListValidator<T extends Resource> {
                     } else {
 
                         assertThat(value).isNull();
+                    }
+
+                }
+            });
+            return this;
+        }
+
+        public Builder<T> withOrderedResults(ArrayList<Document> expectedOrderedList,
+                ArrayList<CompositePath> compositeIndex) {
+            validators.add(new FeedResponseListValidator<Document>() {
+                @Override
+                public void validate(List<FeedResponse<Document>> feedList) {
+
+                    List<Document> resultOrderedList = feedList.stream()
+                            .flatMap(f -> f.getResults().stream())
+                            .collect(Collectors.toList());
+                    assertThat(expectedOrderedList.size()).isEqualTo(resultOrderedList.size());
+
+                    ArrayList<String> paths = new ArrayList<String>();
+                    Iterator<CompositePath> compositeIndexIterator = compositeIndex.iterator();
+                    while (compositeIndexIterator.hasNext()) {
+                        paths.add(compositeIndexIterator.next().getPath().replace("/", ""));
+                    }
+                    for (int i = 0; i < resultOrderedList.size(); i ++) {
+                        ArrayNode resultValues = (ArrayNode) resultOrderedList.get(i).get("$1");
+                        assertThat(resultValues.size()).isEqualTo(paths.size());
+                        for (int j = 0; j < paths.size(); j++) {
+                            if (paths.get(j).contains("number")) {
+                                assertThat(expectedOrderedList.get(i).getInt(paths.get(j))).isEqualTo(resultValues.get(j).intValue());
+                            } else if (paths.get(j).toLowerCase().contains("string")) {
+                                assertThat(expectedOrderedList.get(i).getString(paths.get(j))).isEqualTo(resultValues.get(j).asText());
+                            } else if (paths.get(j).contains("bool")) {
+                                assertThat(expectedOrderedList.get(i).getBoolean(paths.get(j))).isEqualTo(resultValues.get(j).asBoolean());
+                            } else {
+                                assertThat(resultValues.get(j).isNull()).isTrue();
+                                assertThat(expectedOrderedList.get(i).get("nullField")).isNull();
+                            }
+                        }
                     }
 
                 }

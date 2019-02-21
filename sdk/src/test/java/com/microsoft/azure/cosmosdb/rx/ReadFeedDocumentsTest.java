@@ -22,28 +22,22 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
-import org.testng.SkipException;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import rx.Observable;
 
-import javax.net.ssl.SSLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ReadFeedDocumentsTest extends TestSuiteBase {
 
@@ -51,7 +45,6 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private List<Document> createdDocuments;
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -61,9 +54,6 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
         options.setMaxItemCount(2);
@@ -83,9 +73,6 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments_withoutEnableCrossPartitionQuery() {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
 
@@ -102,10 +89,6 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void beforeClass() {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            // FIXME skip TCP
-            return;
-        }
         client = clientBuilder.build();
         createdDatabase = SHARED_DATABASE;
         createdCollection = SHARED_MULTI_PARTITION_COLLECTION;

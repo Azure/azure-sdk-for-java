@@ -48,7 +48,6 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
     private List<Database> createdDatabases = new ArrayList<>();
     private List<Database> allDatabases = new ArrayList<>();
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuilders")

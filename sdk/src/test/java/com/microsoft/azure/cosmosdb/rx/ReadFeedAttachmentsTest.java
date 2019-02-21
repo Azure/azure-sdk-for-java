@@ -58,7 +58,6 @@ public class ReadFeedAttachmentsTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private Document createdDocument;
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     private PartitionKey pk;

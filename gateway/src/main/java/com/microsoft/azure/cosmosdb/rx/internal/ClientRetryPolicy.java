@@ -22,19 +22,17 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
-import java.io.IOException;
-import java.net.URL;
-import java.time.Duration;
-
-import org.apache.commons.collections4.list.UnmodifiableList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.RetryOptions;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
-
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.WebExceptionUtility;
+import org.apache.commons.collections4.list.UnmodifiableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Single;
+
+import java.net.URL;
+import java.time.Duration;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -104,9 +102,7 @@ public class ClientRetryPolicy implements IDocumentClientRetryPolicy {
         }
 
         // Received Connection error (HttpRequestException), initiate the endpoint rediscovery
-        if (clientException != null &&
-                clientException.getCause() instanceof IOException ||
-                e != null && e instanceof IOException) {
+        if (WebExceptionUtility.isNetworkFailure(e)) {
             logger.warn("Endpoint not reachable. Will refresh cache and retry. {}" , e.toString());
             return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest);
         }

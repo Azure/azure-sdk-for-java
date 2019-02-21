@@ -48,6 +48,7 @@ import org.testng.annotations.Test;
 import rx.Observable;
 
 import javax.net.ssl.SSLException;
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -57,8 +58,7 @@ import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doAnswer;
 
 public class RetryCreateDocumentTest extends TestSuiteBase {
-    private final AsyncDocumentClient.Builder clientBuilder;
-    
+
     private SpyClientUnderTestFactory.ClientWithGatewaySpy client;
 
     private Database database;
@@ -185,7 +185,8 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
     }
     
     @BeforeMethod(groups = { "simple" })
-    public void beforeMethod() {
+    public void beforeMethod(Method method) {
+        super.beforeMethod(method);
         Mockito.reset(client.getSpyGatewayStoreModel());
     }
 

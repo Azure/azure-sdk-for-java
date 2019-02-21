@@ -49,7 +49,6 @@ public class ReadFeedUdfsTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private List<UserDefinedFunction> createdUserDefinedFunctions = new ArrayList<>();
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")

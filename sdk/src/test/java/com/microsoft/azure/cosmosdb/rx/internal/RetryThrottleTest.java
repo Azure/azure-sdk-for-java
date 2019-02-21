@@ -85,16 +85,16 @@ public class RetryThrottleTest extends TestSuiteBase {
                 .withConsistencyLevel(ConsistencyLevel.Eventual);
 
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(builder);
-        
+
         // create a document to ensure collection is cached
-        client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false).toBlocking().single();
-        
+        client.createDocument(getCollectionLink(collection), getDocumentDefinition(), null, false).toBlocking().single();
+
         List<Observable<ResourceResponse<Document>>> list = new ArrayList<>();
         for(int i = 0; i < TOTAL_DOCS; i++) {
             Observable<ResourceResponse<Document>> obs = client.createDocument(getCollectionLink(collection),  getDocumentDefinition(), null, false);
             list.add(obs);
         }
-        
+
         // registers a spy to count number of invocation
         AtomicInteger totalCount = new AtomicInteger();
         AtomicInteger successCount = new AtomicInteger();
@@ -110,7 +110,7 @@ public class RetryThrottleTest extends TestSuiteBase {
                 return client.getOrigGatewayStoreModel().processMessage(req).doOnNext(rsp -> successCount.incrementAndGet());
             }
         }).when(client.getSpyGatewayStoreModel()).processMessage(anyObject());
-        
+
         List<ResourceResponse<Document>> rsps = Observable.merge(list, 100).toList().toSingle().toBlocking().value();
         System.out.println("total: " + totalCount.get());
         assertThat(rsps).hasSize(TOTAL_DOCS);

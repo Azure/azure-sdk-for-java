@@ -187,7 +187,6 @@ public class SpyClientUnderTestFactory {
                 Collections.synchronizedList(new ArrayList<Pair<HttpClientRequest<ByteBuf>, Future<HttpResponseHeaders>>>());
 
         DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel) {
-            // TODO: DANOBLE: ensure the configs instance instantiated here specifies Protocol.Https
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, new Configs(), -1);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.Direct;
             init();

@@ -38,6 +38,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -48,7 +49,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SessionTest extends TestSuiteBase {
     protected static final int TIMEOUT = 20000;
-    private final AsyncDocumentClient.Builder clientBuilder;
 
     private Database createdDatabase;
     private DocumentCollection createdCollection;
@@ -78,7 +78,8 @@ public class SessionTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void beforeTest() {
+    public void beforeTest(Method method) {
+        super.beforeMethod(method);
         client.clearCapturedRequests();
     }
 

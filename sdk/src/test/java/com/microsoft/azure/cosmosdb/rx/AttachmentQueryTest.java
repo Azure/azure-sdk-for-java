@@ -54,7 +54,6 @@ public class AttachmentQueryTest extends TestSuiteBase {
 
     private Document createdDocument;
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     public String getCollectionLink() {

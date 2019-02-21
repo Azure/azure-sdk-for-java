@@ -48,7 +48,6 @@ public class ReadFeedUsersTest extends TestSuiteBase {
     public final String databaseId = DatabaseForTest.generateId();
     private Database createdDatabase;
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
     private List<User> createdUsers = new ArrayList<>();
 

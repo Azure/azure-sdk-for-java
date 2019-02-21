@@ -46,7 +46,6 @@ public class DatabaseCrudTest extends TestSuiteBase {
     private final String preExistingDatabaseId = DatabaseForTest.generateId();
     private final List<String> databases = new ArrayList<>();
     private AsyncDocumentClient client;
-    private Builder clientBuilder;
 
     @Factory(dataProvider = "clientBuilders")
     public DatabaseCrudTest(AsyncDocumentClient.Builder clientBuilder) {

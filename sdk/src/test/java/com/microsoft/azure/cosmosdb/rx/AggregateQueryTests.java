@@ -80,7 +80,6 @@ public class AggregateQueryTests extends TestSuiteBase {
     private int numberOfDocumentsWithNumericId;
     private int numberOfDocsWithSamePartitionKey = 400;
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -88,10 +87,14 @@ public class AggregateQueryTests extends TestSuiteBase {
         this.clientBuilder = clientBuilder;
     }
 
-    // TODO: DANOBLE: Tcp protocol performance or--maybe--a public emulator performance problem
+
+    // TODO: DANOBLE: Investigate Direct TCP performance issue
+    // Links: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
+    // Notes:
     // I've seen this test time out in my development environment. I test against a debug instance of the public
     // emulator and so what I'm seeing could be the result of a public emulator performance issue. Of course, it
     // might also be the result of a Tcp protocol performance problem.
+
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT, dataProvider = "queryMetricsArgProvider")
     public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
 
@@ -106,16 +109,18 @@ public class AggregateQueryTests extends TestSuiteBase {
                 .queryDocuments(createdCollection.getSelfLink(), queryConfig.query, options);
 
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
-                    .withAggregateValue(queryConfig.expected)
-                    .numberOfPages(1)
-                    .hasValidQueryMetrics(qmEnabled)
-                    .build();
+                .withAggregateValue(queryConfig.expected)
+                .numberOfPages(1)
+                .hasValidQueryMetrics(qmEnabled)
+                .build();
 
             try {
                 validateQuerySuccess(queryObservable, validator);
             } catch (Throwable error) {
                 if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                    throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                    String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                    logger.info(message, error);
+                    throw new SkipException(message, error);
                 }
                 throw error;
             }

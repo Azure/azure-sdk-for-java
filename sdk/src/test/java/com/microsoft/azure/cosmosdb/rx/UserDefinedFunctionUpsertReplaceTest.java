@@ -47,7 +47,6 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -68,11 +67,10 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         try {
             readBackUdf = client.upsertUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
         } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Https) {
-                throw new SkipException(String.format("Direct HTTPS test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
             if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                logger.info(message, error);
+                throw new SkipException(message, error);
             }
             throw error;
         }
@@ -116,11 +114,10 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         try {
             readBackUdf = client.createUserDefinedFunction(getCollectionLink(), udf, null).toBlocking().single().getResource();
         } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Https) {
-                throw new SkipException(String.format("Direct HTTPS test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
             if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                logger.info(message, error);
+                throw new SkipException(message, error);
             }
             throw error;
         }
@@ -154,9 +151,8 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();
-
         createdDatabase = SHARED_DATABASE;
-        createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+        truncateCollection(createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY);
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)

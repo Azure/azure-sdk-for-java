@@ -219,6 +219,10 @@ public class BridgeInternal {
         documentClientException.requestHeaders = requestHeaders;
     }
 
+    public static <E extends  DocumentClientException> Map<String, String> getRequestHeaders(DocumentClientException documentClientException) {
+        return documentClientException.requestHeaders;
+    }
+
     public static Map<String, Object> getQueryEngineConfiuration(DatabaseAccount databaseAccount) {
         return databaseAccount.getQueryEngineConfiuration();
     }

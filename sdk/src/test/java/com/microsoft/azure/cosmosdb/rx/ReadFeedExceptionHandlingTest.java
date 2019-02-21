@@ -73,7 +73,6 @@ public class ReadFeedExceptionHandlingTest extends TestSuiteBase {
         }
     }
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")

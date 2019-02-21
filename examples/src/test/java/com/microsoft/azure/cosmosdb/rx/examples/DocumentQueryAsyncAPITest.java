@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,6 +23,7 @@
 package com.microsoft.azure.cosmosdb.rx.examples;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
@@ -54,8 +55,6 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import javax.net.ssl.SSLException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
@@ -64,25 +63,24 @@ import static org.hamcrest.Matchers.notNullValue;
 /**
  * This integration test class demonstrates how to use Async API to query for
  * Documents.
- * 
+ * <p>
  * NOTE: you can use rxJava based async api with java8 lambda expression. Use
  * of rxJava based async APIs with java8 lambda expressions is much prettier.
- * 
+ * <p>
  * You can also use the async API without java8 lambda expression.
- * 
+ * <p>
  * For example
  * <ul>
  * <li>{@link #queryDocuments_Async()} demonstrates how to use async api
  * with java8 lambda expression.
- * 
+ *
  * <li>{@link #queryDocuments_Async_withoutLambda()} demonstrates how to do
  * the same thing without lambda expression.
  * </ul>
- * 
+ * <p>
  * Also if you need to work with Future or ListenableFuture it is possible to
  * transform an observable to ListenableFuture. Please see
  * {@link #transformObservableToGoogleGuavaListenableFuture()}
- * 
  */
 public class DocumentQueryAsyncAPITest {
     private final static int TIMEOUT = 60000;
@@ -93,10 +91,12 @@ public class DocumentQueryAsyncAPITest {
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        connectionPolicy.setConnectionMode(ConnectionMode.Direct);
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(ConnectionPolicy.GetDefault())
+                .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
 
@@ -153,7 +153,7 @@ public class DocumentQueryAsyncAPITest {
             }
 
             for (@SuppressWarnings("unused")
-            Document d : page.getResults()) {
+                    Document d : page.getResults()) {
                 resultsCountDown.countDown();
             }
         });
@@ -381,7 +381,7 @@ public class DocumentQueryAsyncAPITest {
         }
         assertThat("number of total results", numberOfResults, equalTo(numberOfDocuments));
         assertThat("number of result pages", pageCounter,
-                equalTo((numberOfDocuments + requestPageSize - 1) / requestPageSize));
+                   equalTo((numberOfDocuments + requestPageSize - 1) / requestPageSize));
     }
 
     /**
@@ -392,16 +392,16 @@ public class DocumentQueryAsyncAPITest {
         // Create a partitioned collection
         String collectionId = UUID.randomUUID().toString();
         DocumentCollection multiPartitionCollection = createMultiPartitionCollection("dbs/" + createdDatabase.getId(),
-                collectionId, "/key");
+                                                                                     collectionId, "/key");
 
         // Insert documents
         int totalNumberOfDocumentsInMultiPartitionCollection = 10;
         for (int i = 0; i < totalNumberOfDocumentsInMultiPartitionCollection; i++) {
 
             Document doc = new Document(String.format("{\"id\":\"documentId%d\",\"key\":\"%s\",\"prop\":%d}", i,
-                    RandomStringUtils.randomAlphabetic(2), i));
+                                                      RandomStringUtils.randomAlphabetic(2), i));
             asyncClient.createDocument("dbs/" + createdDatabase.getId() + "/colls/" + multiPartitionCollection.getId(),
-                    doc, null, true).toBlocking().single();
+                                       doc, null, true).toBlocking().single();
         }
 
         // Query for the documents order by the prop field
@@ -418,7 +418,7 @@ public class DocumentQueryAsyncAPITest {
         Observable<FeedResponse<Document>> documentQueryObservable = asyncClient.queryDocuments(
                 "dbs/" + createdDatabase.getId() + "/colls/" + multiPartitionCollection.getId(), query, options);
 
-        List<String> resultList = (List<String>) Collections.synchronizedList(new ArrayList<String>());
+        List<String> resultList = Collections.synchronizedList(new ArrayList<>());
 
         documentQueryObservable.map(FeedResponse::getResults)
                 // Map the logical page to the list of documents in the page
@@ -472,7 +472,7 @@ public class DocumentQueryAsyncAPITest {
     }
 
     private DocumentCollection createMultiPartitionCollection(String databaseLink, String collectionId,
-            String partitionKeyPath) {
+                                                              String partitionKeyPath) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add(partitionKeyPath);

@@ -23,18 +23,10 @@
 package com.microsoft.azure.cosmosdb.rx.internal;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.microsoft.azure.cosmosdb.BridgeInternal;
+import com.microsoft.azure.cosmosdb.ConsistencyLevel;
+import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.Error;
 import com.microsoft.azure.cosmosdb.ISessionContainer;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.OperationType;
@@ -42,20 +34,8 @@ import com.microsoft.azure.cosmosdb.internal.PathsHelper;
 import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.RuntimeConstants;
-import com.microsoft.azure.cosmosdb.internal.SessionContainer;
 import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.microsoft.azure.cosmosdb.ConnectionPolicy;
-import com.microsoft.azure.cosmosdb.ConsistencyLevel;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.Error;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.StoreResponse;
-import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyAndResourceTokenPair;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -65,10 +45,24 @@ import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 import io.reactivex.netty.protocol.http.client.HttpResponseHeaders;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func0;
-import rx.functions.Func1;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -393,7 +387,25 @@ class RxGatewayStoreModel implements RxStoreModel {
 
                 return storeResponseObservable;
 
-            }).map(storeResponse -> new RxDocumentServiceResponse(storeResponse));
+            }).map(storeResponse -> new RxDocumentServiceResponse(storeResponse))
+                    .onErrorResumeNext(throwable -> {
+                        if (!(throwable instanceof Exception)) {
+                            // fatal error
+                            logger.error("Unexpected failure {}", throwable.getMessage(), throwable);
+                            return Observable.error(throwable);
+                        }
+
+                        Exception exception = (Exception) throwable;
+                        if (!(exception instanceof DocumentClientException)) {
+                            // wrap in DocumentClientException
+                            logger.error("Network failure", exception);
+                            DocumentClientException dce = new DocumentClientException(0, exception);
+                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
+                            return Observable.error(dce);
+                        }
+
+                        return Observable.error(exception);
+                    });
         }
     }
 
@@ -408,7 +420,9 @@ class RxGatewayStoreModel implements RxStoreModel {
                     body = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
                 } catch (IOException e) {
                     logger.error("Failed to get content from the http response", e);
-                    throw new IllegalStateException("Failed to get content from the http response", e);
+                    DocumentClientException dce = new DocumentClientException(0, e);
+                    BridgeInternal.setRequestHeaders(dce, request.getHeaders());
+                    throw dce;
                 } finally {
                     IOUtils.closeQuietly(inputStream);
                 }
@@ -421,14 +435,16 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             String statusCodeString = status.reasonPhrase() != null
                     ? status.reasonPhrase().replace(" ", "")
-                            : "";
-                    Error error = null;
-                    error = (body != null)? new Error(body): new Error();
-                    error = new Error(statusCodeString,
-                            String.format("%s, StatusCode: %s", error.getMessage(), statusCodeString),
-                            error.getPartitionedQueryExecutionInfo());
+                    : "";
+            Error error = null;
+            error = (body != null) ? new Error(body) : new Error();
+            error = new Error(statusCodeString,
+                              String.format("%s, StatusCode: %s", error.getMessage(), statusCodeString),
+                              error.getPartitionedQueryExecutionInfo());
 
-                    throw new DocumentClientException(statusCode, error, responseHeaders);
+            DocumentClientException dce = new DocumentClientException(statusCode, error, responseHeaders);
+            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
+            throw dce;
         }
     }
 

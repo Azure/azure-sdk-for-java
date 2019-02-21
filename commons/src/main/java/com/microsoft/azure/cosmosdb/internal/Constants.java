@@ -129,6 +129,10 @@ public final class Constants {
         public static final String INCLUDED_PATHS = "includedPaths";
         public static final String EXCLUDED_PATHS = "excludedPaths";
         public static final String INDEXES = "indexes";
+        public static final String COMPOSITE_INDEXES = "compositeIndexes";
+        public static final String ORDER = "order";
+        public static final String SPATIAL_INDEXES = "spatialIndexes";
+        public static final String TYPES = "types";
 
         // Unique index.
         public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";

@@ -78,7 +78,6 @@ public class ResourceTokenTest extends TestSuiteBase {
     private Permission createdColPermissionWithPartitionKey2;
     private Permission createdColPermissionWithPartitionKey2WithName;
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     // All static string used in below test cases

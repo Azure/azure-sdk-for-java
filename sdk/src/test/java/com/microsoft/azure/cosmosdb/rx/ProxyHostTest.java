@@ -23,6 +23,7 @@
 package com.microsoft.azure.cosmosdb.rx;
 
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -70,7 +71,6 @@ public class ProxyHostTest extends TestSuiteBase {
     private static DocumentCollection createdCollection;
 
     private AsyncDocumentClient client;
-    private Builder clientBuilder;
     private final String PROXY_HOST = "localhost";
     private final int PROXY_PORT = 8080;
     private HttpProxyServer httpProxyServer;
@@ -172,7 +172,8 @@ public class ProxyHostTest extends TestSuiteBase {
     }
 
     @AfterMethod(groups = { "simple" })
-    public void afterMethod() {
+    public void afterMethod(Method method) {
+        super.beforeMethod(method);
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }

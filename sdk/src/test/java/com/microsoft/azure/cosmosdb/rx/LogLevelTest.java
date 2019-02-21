@@ -24,6 +24,7 @@
 package com.microsoft.azure.cosmosdb.rx;
 
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.util.UUID;
 
 import org.apache.log4j.Level;
@@ -60,8 +61,6 @@ public class LogLevelTest extends TestSuiteBase {
 
     private static Database createdDatabase;
     private static DocumentCollection createdCollection;
-
-    private Builder clientBuilder;
 
     public LogLevelTest() {
         this.clientBuilder = createGatewayRxDocumentClient();
@@ -285,7 +284,8 @@ public class LogLevelTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple"})
-    public void beforeMethod() {
+    public void beforeMethod(Method method) {
+        super.beforeMethod(method);
         LogManager.resetConfiguration();
         PropertyConfigurator.configure(this.getClass().getClassLoader().getResource("log4j.properties"));
     }

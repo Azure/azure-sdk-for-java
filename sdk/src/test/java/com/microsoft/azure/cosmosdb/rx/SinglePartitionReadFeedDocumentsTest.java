@@ -27,8 +27,6 @@ import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
-import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -45,7 +43,6 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private List<Document> createdDocuments;
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -55,16 +52,10 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = FEED_TIMEOUT)
     public void readDocuments() {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            // FIXME skip TCP
-            throw new SkipException("RNTBD");
-        }
-        FeedOptions options = new FeedOptions();
+        final FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);
-
-        Observable<FeedResponse<Document>> feedObservable = client.readDocuments(getCollectionLink(), options);
-
-        int expectedPageSize = (createdDocuments.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
+        final Observable<FeedResponse<Document>> feedObservable = client.readDocuments(getCollectionLink(), options);
+        final int expectedPageSize = (createdDocuments.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .totalSize(createdDocuments.size())
@@ -78,10 +69,6 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            // FIXME skip TCP
-            return;
-        }
         client = clientBuilder.build();
         createdDatabase = SHARED_DATABASE;
         createdCollection = SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
@@ -105,11 +92,11 @@ public class SinglePartitionReadFeedDocumentsTest extends TestSuiteBase {
     private Document getDocumentDefinition() {
         String uuid = UUID.randomUUID().toString();
         Document doc = new Document(String.format("{ "
-                                                          + "\"id\": \"%s\", "
-                                                          + "\"mypk\": \"%s\", "
-                                                          + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
-                                                          + "}"
-                , uuid, uuid));
+            + "\"id\": \"%s\", "
+            + "\"mypk\": \"%s\", "
+            + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+            + "}"
+            , uuid, uuid));
         return doc;
     }
 

@@ -25,6 +25,9 @@ package com.microsoft.azure.cosmosdb.rx;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.UUID;
 
 import com.microsoft.azure.cosmosdb.DatabaseForTest;
 import org.testng.annotations.AfterClass;
@@ -40,6 +43,10 @@ import com.microsoft.azure.cosmosdb.IndexingMode;
 import com.microsoft.azure.cosmosdb.IndexingPolicy;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmosdb.CompositePath;
+import com.microsoft.azure.cosmosdb.CompositePathSortOrder;
+import com.microsoft.azure.cosmosdb.SpatialSpec;
+import com.microsoft.azure.cosmosdb.SpatialType;
 
 import rx.Observable;
 
@@ -49,7 +56,6 @@ public class CollectionCrudTest extends TestSuiteBase {
     private static final int TIMEOUT = 30000;
     private static final int SETUP_TIMEOUT = 20000;
     private static final int SHUTDOWN_TIMEOUT = 20000;
-    private final AsyncDocumentClient.Builder clientBuilder;
     private final String databaseId = DatabaseForTest.generateId();
 
     private AsyncDocumentClient client;
@@ -70,6 +76,80 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
                 .withId(collectionDefinition.getId()).build();
+        
+        validateSuccess(createObservable, validator);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void createCollectionWithCompositeIndexAndSpatialSpec() throws Exception {
+        DocumentCollection collection = new DocumentCollection();
+
+        IndexingPolicy indexingPolicy = new IndexingPolicy();
+        CompositePath compositePath1 = new CompositePath();
+        compositePath1.setPath("/path1");
+        compositePath1.setOrder(CompositePathSortOrder.Ascending);
+        CompositePath compositePath2 = new CompositePath();
+        compositePath2.setPath("/path2");
+        compositePath2.setOrder(CompositePathSortOrder.Descending);
+        CompositePath compositePath3 = new CompositePath();
+        compositePath3.setPath("/path3");
+        CompositePath compositePath4 = new CompositePath();
+        compositePath4.setPath("/path4");
+        compositePath4.setOrder(CompositePathSortOrder.Ascending);
+        CompositePath compositePath5 = new CompositePath();
+        compositePath5.setPath("/path5");
+        compositePath5.setOrder(CompositePathSortOrder.Descending);
+        CompositePath compositePath6 = new CompositePath();
+        compositePath6.setPath("/path6");
+        
+        ArrayList<CompositePath> compositeIndex1 = new ArrayList<CompositePath>();
+        compositeIndex1.add(compositePath1);
+        compositeIndex1.add(compositePath2);
+        compositeIndex1.add(compositePath3);
+        
+        ArrayList<CompositePath> compositeIndex2 = new ArrayList<CompositePath>();
+        compositeIndex2.add(compositePath4);
+        compositeIndex2.add(compositePath5);
+        compositeIndex2.add(compositePath6);
+        
+        Collection<ArrayList<CompositePath>> compositeIndexes = new ArrayList<ArrayList<CompositePath>>();
+        compositeIndexes.add(compositeIndex1);
+        compositeIndexes.add(compositeIndex2);
+        indexingPolicy.setCompositeIndexes(compositeIndexes);
+
+        SpatialType[] spatialTypes = new SpatialType[] {
+                SpatialType.Point,
+                SpatialType.LineString,
+                SpatialType.Polygon,
+                SpatialType.MultiPolygon
+                };
+        Collection<SpatialSpec> spatialIndexes = new ArrayList<SpatialSpec>();
+        for (int index = 0; index < 2; index++) {
+            Collection<SpatialType> collectionOfSpatialTypes = new ArrayList<SpatialType>();
+
+            SpatialSpec spec = new SpatialSpec();
+            spec.setPath("/path" + index + "/*");
+
+            for (int i = index; i < index + 3; i++) {
+                collectionOfSpatialTypes.add(spatialTypes[i]);
+            }
+            spec.setSpatialTypes(collectionOfSpatialTypes);
+            spatialIndexes.add(spec);
+        }
+        
+        indexingPolicy.setSpatialIndexes(spatialIndexes);
+
+        collection.setId(UUID.randomUUID().toString());
+        collection.setIndexingPolicy(indexingPolicy);
+        
+        Observable<ResourceResponse<DocumentCollection>> createObservable = client
+                .createCollection(database.getSelfLink(), collection, null);
+
+        ResourceResponseValidator<DocumentCollection> validator = new ResourceResponseValidator.Builder<DocumentCollection>()
+                .withId(collection.getId())
+                .withCompositeIndexes(compositeIndexes)
+                .withSpatialIndexes(spatialIndexes)
+                .build();
         
         validateSuccess(createObservable, validator);
     }

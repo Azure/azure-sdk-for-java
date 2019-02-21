@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -23,6 +23,7 @@
 package com.microsoft.azure.cosmosdb.rx.examples;
 
 import com.google.common.util.concurrent.ListenableFuture;
+import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
@@ -31,9 +32,7 @@ import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import rx.Observable;
 import rx.functions.Action1;
@@ -43,8 +42,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-import javax.net.ssl.SSLException;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
@@ -52,25 +49,24 @@ import static org.hamcrest.Matchers.greaterThan;
 /**
  * This integration test class demonstrates how to use Async API to create,
  * delete, replace, and update Databases.
- * 
+ * <p>
  * NOTE: you can use rxJava based async api with java8 lambda expression. Use of
  * rxJava based async APIs with java8 lambda expressions is much prettier.
- * 
+ * <p>
  * You can also use the async API without java8 lambda expression support.
- * 
+ * <p>
  * For example
  * <ul>
  * <li>{@link #createDatabase_Async()} demonstrates how to use async api
  * with java8 lambda expression.
- * 
+ *
  * <li>{@link #createDatabase_Async_withoutLambda()} demonstrates how to
  * do the same thing without lambda expression.
  * </ul>
- * 
+ * <p>
  * Also if you need to work with Future or ListenableFuture it is possible to
  * transform an observable to ListenableFuture. Please see
  * {@link #transformObservableToGoogleGuavaListenableFuture()}
- * 
  */
 public class DatabaseCRUDAsyncAPITest {
     private final static int TIMEOUT = 60000;
@@ -80,15 +76,17 @@ public class DatabaseCRUDAsyncAPITest {
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        connectionPolicy.setConnectionMode(ConnectionMode.Direct);
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(ConnectionPolicy.GetDefault())
+                .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
     }
 
-    public Database getDatabaseDefinition() {
+    private Database getDatabaseDefinition() {
         Database databaseDefinition = new Database();
         databaseDefinition.setId(Utils.generateDatabaseId());
 
@@ -99,7 +97,7 @@ public class DatabaseCRUDAsyncAPITest {
 
     @AfterClass(groups = "samples", timeOut = TIMEOUT)
     public void shutdown() {
-        for(String id: databaseIds) {
+        for (String id : databaseIds) {
             Utils.safeClean(asyncClient, id);
         }
         Utils.safeClose(asyncClient);
@@ -113,7 +111,7 @@ public class DatabaseCRUDAsyncAPITest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDatabase_Async() throws Exception {
         Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(getDatabaseDefinition(),
-                null);
+                                                                                                     null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
 
@@ -137,7 +135,7 @@ public class DatabaseCRUDAsyncAPITest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDatabase_Async_withoutLambda() throws Exception {
         Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(getDatabaseDefinition(),
-                null);
+                                                                                                     null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
         Action1<ResourceResponse<Database>> onDatabaseCreationAction = new Action1<ResourceResponse<Database>>() {
@@ -172,7 +170,7 @@ public class DatabaseCRUDAsyncAPITest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void createDatabase_toBlocking() {
         Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(getDatabaseDefinition(),
-                null);
+                                                                                                     null);
 
         // toBlocking() converts to a blocking observable.
         // single() gets the only result.
@@ -201,7 +199,7 @@ public class DatabaseCRUDAsyncAPITest {
             assertThat("Should not reach here", false);
         } catch (Exception e) {
             assertThat("Database already exists.", ((DocumentClientException) e.getCause()).getStatusCode(),
-                    equalTo(409));
+                       equalTo(409));
         }
     }
 
@@ -214,7 +212,7 @@ public class DatabaseCRUDAsyncAPITest {
     @Test(groups = "samples", timeOut = TIMEOUT)
     public void transformObservableToGoogleGuavaListenableFuture() throws Exception {
         Observable<ResourceResponse<Database>> createDatabaseObservable = asyncClient.createDatabase(getDatabaseDefinition(),
-                null);
+                                                                                                     null);
         ListenableFuture<ResourceResponse<Database>> future = ListenableFutureObservable.to(createDatabaseObservable);
 
         ResourceResponse<Database> rrd = future.get();
@@ -233,7 +231,7 @@ public class DatabaseCRUDAsyncAPITest {
 
         // Read the created database using async api
         Observable<ResourceResponse<Database>> readDatabaseObservable = asyncClient.readDatabase("dbs/" + database.getId(),
-                null);
+                                                                                                 null);
 
         final CountDownLatch completionLatch = new CountDownLatch(1);
 

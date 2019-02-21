@@ -48,7 +48,6 @@ public class CollectionQueryTest extends TestSuiteBase {
     private final static int TIMEOUT = 30000;
     private final String databaseId = DatabaseForTest.generateId();
     private List<DocumentCollection> createdCollections = new ArrayList<>();
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     private String getDatabaseLink() {

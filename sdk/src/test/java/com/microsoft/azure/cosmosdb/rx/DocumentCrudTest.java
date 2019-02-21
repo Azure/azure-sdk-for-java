@@ -22,22 +22,6 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
-import java.util.Date;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import com.microsoft.azure.cosmosdb.FeedOptions;
-import com.microsoft.azure.cosmosdb.StoredProcedure;
-import com.microsoft.azure.cosmosdb.Undefined;
-import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
-import org.apache.commons.lang3.StringUtils;
-import org.testng.SkipException;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
@@ -45,12 +29,21 @@ import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.PartitionKey;
 import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmosdb.Undefined;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
-
+import org.apache.commons.lang3.StringUtils;
+import org.testng.SkipException;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import rx.Observable;
 
-import javax.net.ssl.SSLException;
+import java.util.Date;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -60,7 +53,6 @@ public class DocumentCrudTest extends TestSuiteBase {
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
     
     @Factory(dataProvider = "clientBuildersWithDirect")
@@ -350,10 +342,12 @@ public class DocumentCrudTest extends TestSuiteBase {
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
                 .withId(docDefinition.getId()).build();
         try {
-        validateSuccess(upsertObservable, validator);
+            validateSuccess(upsertObservable, validator);
         } catch (Throwable error) {
             if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                logger.info(message, error);
+                throw new SkipException(message, error);
             }
             throw error;
         }
@@ -381,7 +375,9 @@ public class DocumentCrudTest extends TestSuiteBase {
             validateSuccess(readObservable, validator);
         } catch (Throwable error) {
             if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                logger.info(message, error);
+                throw new SkipException(message, error);
             }
             throw error;
         }

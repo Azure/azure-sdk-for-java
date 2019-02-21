@@ -55,7 +55,6 @@ public class ReadFeedOffersTest extends TestSuiteBase {
     private Database createdDatabase;
     private List<Offer> allOffers = new ArrayList<>();
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuilders")

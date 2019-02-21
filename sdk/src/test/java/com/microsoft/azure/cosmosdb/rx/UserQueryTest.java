@@ -50,7 +50,6 @@ public class UserQueryTest extends TestSuiteBase {
 
     private List<User> createdUsers = new ArrayList<>();
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     private String getDatabaseLink() {

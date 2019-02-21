@@ -218,7 +218,6 @@ public class HttpConstants {
         public static final String A_IM = "A-IM";
         public static final String ALLOW_TENTATIVE_WRITES = "x-ms-cosmos-allow-tentative-writes";
 
-        // TODO: DANOBLE: Integrate these settings into the fold
         // These settings were added to support RNTBD and they've been added here to reduce merge conflicts
 
         public static final String CAN_CHARGE = "x-ms-cancharge";
@@ -266,11 +265,11 @@ public class HttpConstants {
     }
 
     public static class Versions {
-        public static final String CURRENT_VERSION = "2018-06-18";
+        public static final String CURRENT_VERSION = "2018-09-17";
 
         // TODO: FIXME we can use maven plugin for generating a version file
         // @see https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
-        public static final String SDK_VERSION = "2.4.1-SNAPSHOT";
+        public static final String SDK_VERSION = "2.4.1";
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }
 

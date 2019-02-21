@@ -23,11 +23,11 @@
 
 package com.microsoft.azure.cosmosdb.rx.examples;
 
+import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.DataType;
 import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.IncludedPath;
 import com.microsoft.azure.cosmosdb.Index;
@@ -46,15 +46,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
-import javax.net.ssl.SSLException;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * This integration test class demonstrates how to use Async API to query and
  * replace an Offer.
- * 
  */
 public class OfferCRUDAsyncAPITest {
     private final static int TIMEOUT = 60000;
@@ -63,10 +60,12 @@ public class OfferCRUDAsyncAPITest {
 
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void setUp() {
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        connectionPolicy.setConnectionMode(ConnectionMode.Direct);
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(ConnectionPolicy.GetDefault())
+                .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
 
@@ -96,7 +95,7 @@ public class OfferCRUDAsyncAPITest {
 
         // Create the collection
         DocumentCollection createdCollection = asyncClient.createCollection("dbs/" + createdDatabase.getId(),
-                getMultiPartitionCollectionDefinition(), multiPartitionRequestOptions).toBlocking().single()
+                                                                            getMultiPartitionCollectionDefinition(), multiPartitionRequestOptions).toBlocking().single()
                 .getResource();
 
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
@@ -105,36 +104,36 @@ public class OfferCRUDAsyncAPITest {
         asyncClient.queryOffers(
                 String.format("SELECT * FROM r where r.offerResourceId = '%s'", createdCollection.getResourceId()),
                 null).flatMap(offerFeedResponse -> {
-                    List<Offer> offerList = offerFeedResponse.getResults();
-                    // Number of offers returned should be 1
-                    assertThat(offerList.size(), equalTo(1));
+            List<Offer> offerList = offerFeedResponse.getResults();
+            // Number of offers returned should be 1
+            assertThat(offerList.size(), equalTo(1));
 
-                    // This offer must correspond to the collection we created
-                    Offer offer = offerList.get(0);
-                    int curentThroughput = offer.getThroughput();
-                    assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.getResourceId()));
-                    assertThat(curentThroughput, equalTo(initialThroughput));
-                    System.out.println("initial throughput: " + curentThroughput);
+            // This offer must correspond to the collection we created
+            Offer offer = offerList.get(0);
+            int currentThroughput = offer.getThroughput();
+            assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.getResourceId()));
+            assertThat(currentThroughput, equalTo(initialThroughput));
+            System.out.println("initial throughput: " + currentThroughput);
 
-                    // Update the offer's throughput
-                    offer.setThroughput(newThroughput);
+            // Update the offer's throughput
+            offer.setThroughput(newThroughput);
 
-                    // Replace the offer
-                    return asyncClient.replaceOffer(offer);
-                }).subscribe(offerResourceResponse -> {
-                    Offer offer = offerResourceResponse.getResource();
-                    int currentThroughput = offer.getThroughput();
+            // Replace the offer
+            return asyncClient.replaceOffer(offer);
+        }).subscribe(offerResourceResponse -> {
+            Offer offer = offerResourceResponse.getResource();
+            int currentThroughput = offer.getThroughput();
 
-                    // The current throughput of the offer must be equal to the new throughput value
-                    assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.getResourceId()));
-                    assertThat(currentThroughput, equalTo(newThroughput));
+            // The current throughput of the offer must be equal to the new throughput value
+            assertThat(offer.getString("offerResourceId"), equalTo(createdCollection.getResourceId()));
+            assertThat(currentThroughput, equalTo(newThroughput));
 
-                    System.out.println("updated throughput: " + currentThroughput);
-                    successfulCompletionLatch.countDown();
-                }, error -> {
-                    System.err
-                            .println("an error occurred while updating the offer: actual cause: " + error.getMessage());
-                });
+            System.out.println("updated throughput: " + currentThroughput);
+            successfulCompletionLatch.countDown();
+        }, error -> {
+            System.err
+                    .println("an error occurred while updating the offer: actual cause: " + error.getMessage());
+        });
 
         successfulCompletionLatch.await();
     }
@@ -146,17 +145,17 @@ public class OfferCRUDAsyncAPITest {
         // Set the partitionKeyDefinition for a partitioned collection
         // Here, we are setting the partitionKey of the Collection to be /city
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        List<String> paths = new ArrayList<String>();
+        List<String> paths = new ArrayList<>();
         paths.add("/city");
         partitionKeyDefinition.setPaths(paths);
         collectionDefinition.setPartitionKey(partitionKeyDefinition);
 
         // Set indexing policy to be range range for string and number
         IndexingPolicy indexingPolicy = new IndexingPolicy();
-        Collection<IncludedPath> includedPaths = new ArrayList<IncludedPath>();
+        Collection<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
         includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<Index>();
+        Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.Range(DataType.String);
         stringIndex.set("precision", -1);
         indexes.add(stringIndex);

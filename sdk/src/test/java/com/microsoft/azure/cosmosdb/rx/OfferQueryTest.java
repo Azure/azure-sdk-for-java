@@ -52,7 +52,6 @@ public class OfferQueryTest extends TestSuiteBase {
 
     private List<DocumentCollection> createdCollections = new ArrayList<>();
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     private String getDatabaseLink() {

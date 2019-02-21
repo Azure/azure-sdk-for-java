@@ -49,7 +49,6 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private List<StoredProcedure> createdStoredProcedures = new ArrayList<>();
 
-    private AsyncDocumentClient.Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "clientBuildersWithDirect")

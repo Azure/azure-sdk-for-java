@@ -55,6 +55,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
 
+import com.microsoft.azure.cosmosdb.CompositePath;
+import com.microsoft.azure.cosmosdb.CompositePathSortOrder;
 import com.microsoft.azure.cosmosdb.ConnectionMode;
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.ConsistencyLevel;
@@ -69,6 +71,7 @@ import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.Resource;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.User;
+import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import org.testng.annotations.Test;
 import rx.Observable;
@@ -85,22 +88,33 @@ public class TestSuiteBase {
     protected static final int SUITE_SETUP_TIMEOUT = 120000;
     protected static final int SUITE_SHUTDOWN_TIMEOUT = 60000;
 
-    protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 2000;
+    protected static final int WAIT_REPLICA_CATCH_UP_IN_MILLIS = 4000;
 
     protected int subscriberValidationTimeout = TIMEOUT;
+
+    protected Builder clientBuilder;
 
     protected static Database SHARED_DATABASE;
     protected static DocumentCollection SHARED_MULTI_PARTITION_COLLECTION;
     protected static DocumentCollection SHARED_SINGLE_PARTITION_COLLECTION;
     protected static DocumentCollection SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY;
+    protected static DocumentCollection SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
 
     protected TestSuiteBase() {
         logger.debug("Initializing {} ...", this.getClass().getSimpleName());
     }
 
     @BeforeMethod(groups = { "simple", "long", "direct", "multi-master", "emulator" })
-    public void beforeMethod(Method m) {
-        logger.info("Starting {}:{} ...", m.getDeclaringClass().getSimpleName(), m.getName());
+    public void beforeMethod(Method method) {
+        if (this.clientBuilder != null) {
+            logger.info("Starting {}::{} using {} {} mode with {} consistency",
+                method.getDeclaringClass().getSimpleName(), method.getName(),
+                this.clientBuilder.connectionPolicy.getConnectionMode(),
+                this.clientBuilder.configs.getProtocol(),
+                this.clientBuilder.desiredConsistencyLevel);
+            return;
+        }
+        logger.info("Starting {}::{}", method.getDeclaringClass().getSimpleName(), method.getName());
     }
 
     @AfterMethod(groups = { "simple", "long", "direct", "multi-master", "emulator" })
@@ -149,6 +163,7 @@ public class TestSuiteBase {
             SHARED_MULTI_PARTITION_COLLECTION = createCollection(houseKeepingClient, SHARED_DATABASE.getId(), getCollectionDefinitionWithRangeRangeIndex(), options);
             SHARED_SINGLE_PARTITION_COLLECTION = createCollection(houseKeepingClient, SHARED_DATABASE.getId(), getCollectionDefinition(), null);
             SHARED_SINGLE_PARTITION_COLLECTION_WITHOUT_PARTITION_KEY = createCollection(houseKeepingClient, SHARED_DATABASE.getId(), getCollectionDefinitionSinglePartitionWithoutPartitionKey());
+            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES = createCollection(houseKeepingClient, SHARED_DATABASE.getId(), getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes(), options);
         } finally {
             houseKeepingClient.close();
         }
@@ -296,6 +311,122 @@ public class TestSuiteBase {
     public static DocumentCollection createCollection(AsyncDocumentClient client, String databaseId,
                                                       DocumentCollection collection) {
         return client.createCollection("dbs/" + databaseId, collection, null).toBlocking().single().getResource();
+    }
+
+    private static DocumentCollection getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes() {
+        final String NUMBER_FIELD = "numberField";
+        final String STRING_FIELD = "stringField";
+        final String NUMBER_FIELD_2 = "numberField2";
+        final String STRING_FIELD_2 = "stringField2";
+        final String BOOL_FIELD = "boolField";
+        final String NULL_FIELD = "nullField";
+        final String OBJECT_FIELD = "objectField";
+        final String ARRAY_FIELD = "arrayField";
+        final String SHORT_STRING_FIELD = "shortStringField";
+        final String MEDIUM_STRING_FIELD = "mediumStringField";
+        final String LONG_STRING_FIELD = "longStringField";
+        final String PARTITION_KEY = "pk";
+
+        DocumentCollection documentCollection = new DocumentCollection();
+
+        IndexingPolicy indexingPolicy = new IndexingPolicy();
+        Collection<ArrayList<CompositePath>> compositeIndexes = new ArrayList<ArrayList<CompositePath>>();
+        
+        //Simple
+        ArrayList<CompositePath> compositeIndexSimple = new ArrayList<CompositePath>();
+        CompositePath compositePath1 = new CompositePath();
+        compositePath1.setPath("/" + NUMBER_FIELD);
+        compositePath1.setOrder(CompositePathSortOrder.Ascending);
+        
+        CompositePath compositePath2 = new CompositePath();
+        compositePath2.setPath("/" + STRING_FIELD);
+        compositePath2.setOrder(CompositePathSortOrder.Descending);
+        
+        compositeIndexSimple.add(compositePath1);
+        compositeIndexSimple.add(compositePath2);
+        
+        //Max Columns
+        ArrayList<CompositePath> compositeIndexMaxColumns = new ArrayList<CompositePath>();
+        CompositePath compositePath3 = new CompositePath();
+        compositePath3.setPath("/" + NUMBER_FIELD);
+        compositePath3.setOrder(CompositePathSortOrder.Descending);
+        
+        CompositePath compositePath4 = new CompositePath();
+        compositePath4.setPath("/" + STRING_FIELD);
+        compositePath4.setOrder(CompositePathSortOrder.Ascending);
+
+        CompositePath compositePath5 = new CompositePath();
+        compositePath5.setPath("/" + NUMBER_FIELD_2);
+        compositePath5.setOrder(CompositePathSortOrder.Descending);
+        
+        CompositePath compositePath6 = new CompositePath();
+        compositePath6.setPath("/" + STRING_FIELD_2);
+        compositePath6.setOrder(CompositePathSortOrder.Ascending);
+
+        compositeIndexMaxColumns.add(compositePath3);
+        compositeIndexMaxColumns.add(compositePath4);
+        compositeIndexMaxColumns.add(compositePath5);
+        compositeIndexMaxColumns.add(compositePath6);
+        
+        //Primitive Values
+        ArrayList<CompositePath> compositeIndexPrimitiveValues = new ArrayList<CompositePath>();
+        CompositePath compositePath7 = new CompositePath();
+        compositePath7.setPath("/" + NUMBER_FIELD);
+        compositePath7.setOrder(CompositePathSortOrder.Descending);
+        
+        CompositePath compositePath8 = new CompositePath();
+        compositePath8.setPath("/" + STRING_FIELD);
+        compositePath8.setOrder(CompositePathSortOrder.Ascending);
+
+        CompositePath compositePath9 = new CompositePath();
+        compositePath9.setPath("/" + BOOL_FIELD);
+        compositePath9.setOrder(CompositePathSortOrder.Descending);
+        
+        CompositePath compositePath10 = new CompositePath();
+        compositePath10.setPath("/" + NULL_FIELD);
+        compositePath10.setOrder(CompositePathSortOrder.Ascending);
+
+        compositeIndexPrimitiveValues.add(compositePath7);
+        compositeIndexPrimitiveValues.add(compositePath8);
+        compositeIndexPrimitiveValues.add(compositePath9);
+        compositeIndexPrimitiveValues.add(compositePath10);
+
+        //Long Strings
+        ArrayList<CompositePath> compositeIndexLongStrings = new ArrayList<CompositePath>();
+        CompositePath compositePath11 = new CompositePath();
+        compositePath11.setPath("/" + STRING_FIELD);
+        
+        CompositePath compositePath12 = new CompositePath();
+        compositePath12.setPath("/" + SHORT_STRING_FIELD);
+
+        CompositePath compositePath13 = new CompositePath();
+        compositePath13.setPath("/" + MEDIUM_STRING_FIELD);
+        
+        CompositePath compositePath14 = new CompositePath();
+        compositePath14.setPath("/" + LONG_STRING_FIELD);
+        
+        compositeIndexLongStrings.add(compositePath11);
+        compositeIndexLongStrings.add(compositePath12);
+        compositeIndexLongStrings.add(compositePath13);
+        compositeIndexLongStrings.add(compositePath14);
+
+        compositeIndexes.add(compositeIndexSimple);
+        compositeIndexes.add(compositeIndexMaxColumns);
+        compositeIndexes.add(compositeIndexPrimitiveValues);
+        compositeIndexes.add(compositeIndexLongStrings);
+        
+        indexingPolicy.setCompositeIndexes(compositeIndexes);
+        documentCollection.setIndexingPolicy(indexingPolicy);
+        
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
+        ArrayList<String> partitionKeyPaths = new ArrayList<String>();
+        partitionKeyPaths.add("/" + PARTITION_KEY);
+        partitionKeyDefinition.setPaths(partitionKeyPaths);
+        documentCollection.setPartitionKey(partitionKeyDefinition);
+
+        documentCollection.setId(UUID.randomUUID().toString());
+        
+        return documentCollection;
     }
 
     public static Document createDocument(AsyncDocumentClient client, String databaseId, String collectionId, Document document) {
@@ -627,6 +758,20 @@ public class TestSuiteBase {
 
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirect() {
+        return simpleClientBuildersWithDirect(Protocol.Https, Protocol.Tcp);
+    }
+
+    @DataProvider
+    public static Object[][] simpleClientBuildersWithDirectHttps() {
+        return simpleClientBuildersWithDirect(Protocol.Https);
+    }
+
+    @DataProvider
+    public static Object[][] simpleClientBuildersWithDirectTcp() {
+        return simpleClientBuildersWithDirect(Protocol.Tcp);
+    }
+
+    private static Object[][] simpleClientBuildersWithDirect(Protocol... protocols) {
 
         ConsistencyLevel accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         logger.info("Max test consistency to use is [{}]", accountConsistency);
@@ -647,7 +792,7 @@ public class TestSuiteBase {
         List<AsyncDocumentClient.Builder> builders = new ArrayList<>();
         builders.add(createGatewayRxDocumentClient(ConsistencyLevel.Session));
 
-        for (Protocol protocol : Protocol.values()) {
+        for (Protocol protocol : protocols) {
             testConsistencies.forEach(consistencyLevel -> builders.add(createDirectRxDocumentClient(consistencyLevel, protocol)));
         }
 
@@ -662,6 +807,20 @@ public class TestSuiteBase {
 
     @DataProvider
     public static Object[][] clientBuildersWithDirect() {
+        return clientBuildersWithDirect(Protocol.Https, Protocol.Tcp);
+    }
+
+    @DataProvider
+    public static Object[][] clientBuildersWithDirectHttps() {
+        return clientBuildersWithDirect(Protocol.Https);
+    }
+
+    @DataProvider
+    public static Object[][] clientBuildersWithDirectTcp() {
+        return clientBuildersWithDirect(Protocol.Tcp);
+    }
+
+    private static Object[][] clientBuildersWithDirect(Protocol... protocols) {
 
         ConsistencyLevel accountConsistency = parseConsistency(TestConfigurations.CONSISTENCY);
         logger.info("Max test consistency to use is [{}]", accountConsistency);
@@ -686,7 +845,7 @@ public class TestSuiteBase {
         List<AsyncDocumentClient.Builder> builders = new ArrayList<>();
         builders.add(createGatewayRxDocumentClient(ConsistencyLevel.Session));
 
-        for (Protocol protocol : Protocol.values()) {
+        for (Protocol protocol : protocols) {
             testConsistencies.forEach(consistencyLevel -> builders.add(createDirectRxDocumentClient(consistencyLevel, protocol)));
         }
 

@@ -24,6 +24,7 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.time.ZonedDateTime;
@@ -63,7 +64,6 @@ public class ChangeFeedTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private Multimap<String, Document> partitionKeyToDocuments = ArrayListMultimap.create();
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     public String getCollectionLink() {
@@ -263,7 +263,8 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void populateDocuments() {
+    public void populateDocuments(Method method) {
+        super.beforeMethod(method);
         partitionKeyToDocuments.clear();
 
         RequestOptions options = new RequestOptions();

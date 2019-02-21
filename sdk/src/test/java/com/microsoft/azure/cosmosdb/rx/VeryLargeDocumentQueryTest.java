@@ -24,14 +24,8 @@ package com.microsoft.azure.cosmosdb.rx;
 
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.FeedOptions;
-import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.SqlParameter;
-import com.microsoft.azure.cosmosdb.SqlParameterCollection;
-import com.microsoft.azure.cosmosdb.SqlQuerySpec;
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 import org.apache.commons.lang3.StringUtils;
@@ -41,24 +35,17 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import rx.Observable;
-import rx.observers.TestSubscriber;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
-import static org.assertj.core.api.Assertions.assertThat;
-
-
+ 
 public class VeryLargeDocumentQueryTest extends TestSuiteBase {
     private final static int TIMEOUT = 60000;
     private final static int SETUP_TIMEOUT = 60000;
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     @Factory(dataProvider = "simpleClientBuildersWithDirect")
@@ -78,7 +65,9 @@ public class VeryLargeDocumentQueryTest extends TestSuiteBase {
                 new FeedResponseListValidator.Builder().totalSize(cnt).build());
         } catch (Throwable error) {
             if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                logger.info(message, error);
+                throw new SkipException(message, error);
             }
             throw error;
         }

@@ -72,7 +72,6 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private List<Document> createdDocuments = new ArrayList<>();
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     private int numberOfPartitions;
@@ -86,15 +85,15 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     public void queryDocumentsValidateContent(boolean qmEnabled) throws Exception {
         Document expectedDocument = createdDocuments.get(0);
 
-        String query =
-            String.format("SELECT * from root r where r.propStr = '%s'"
-                    + " ORDER BY r.propInt",
-                expectedDocument.getString("propStr"));
+        String query = String.format("SELECT * from root r where r.propStr = '%s'"
+            + " ORDER BY r.propInt"
+            , expectedDocument.getString("propStr"));
 
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        Observable<FeedResponse<Document>> queryObservable = client
-            .queryDocuments(getCollectionLink(), query, options);
+        options.setPopulateQueryMetrics(qmEnabled);
+
+        Observable<FeedResponse<Document>> queryObservable = client.queryDocuments(getCollectionLink(), query, options);
 
         List<String> expectedResourceIds = new ArrayList<>();
         expectedResourceIds.add(expectedDocument.getResourceId());
@@ -109,21 +108,20 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .containsExactly(expectedResourceIds)
                 .validateAllResources(resourceIDToValidator)
                 .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
-                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
-                        .hasRequestChargeHeader().build())
+                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>().hasRequestChargeHeader().build())
                 .hasValidQueryMetrics(qmEnabled)
                 .build();
 
         try {
             validateQuerySuccess(queryObservable, validator);
         } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Https) {
-                throw new SkipException(String.format("Direct Https test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
-            throw error;
+            // TODO: DANOBLE: report this detailed information in all failures produced by TestSuiteBase classes
+            // work item: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/370015
+            String message = String.format("%s %s mode with %s consistency test failure",
+                this.clientBuilder.connectionPolicy.getConnectionMode(),
+                this.clientBuilder.configs.getProtocol(),
+                this.clientBuilder.desiredConsistencyLevel);
+            throw new AssertionError(message, error);
         }
     }
 
@@ -143,14 +141,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .hasRequestChargeHeader().build())
             .build();
 
-        try {
-            validateQuerySuccess(queryObservable, validator);
-        } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
-            throw error;
-        }
+        validateQuerySuccess(queryObservable, validator);
     }
 
     @DataProvider(name = "sortOrder")
@@ -184,14 +175,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
                 .build();
 
-        try {
-            validateQuerySuccess(queryObservable, validator);
-        } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
-            throw error;
-        }
+        validateQuerySuccess(queryObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -216,14 +200,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
             .build();
 
-        try {
-            validateQuerySuccess(queryObservable, validator);
-        } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
-            throw error;
-        }
+        validateQuerySuccess(queryObservable, validator);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -248,14 +225,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             .totalRequestChargeIsAtLeast(numberOfPartitions * minQueryRequestChargePerPartition)
             .build();
 
-        try {
-            validateQuerySuccess(queryObservable, validator);
-        } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
-            throw error;
-        }
+        validateQuerySuccess(queryObservable, validator);
     }
 
     @DataProvider(name = "topValue")
@@ -289,14 +259,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                         .hasRequestChargeHeader().build())
                 .totalRequestChargeIsAtLeast(numberOfPartitions * (topValue > 0 ? minQueryRequestChargePerPartition : 1))
                 .build();
-        try {
-            validateQuerySuccess(queryObservable, validator);
-        } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
-            throw error;
-        }
+
+        validateQuerySuccess(queryObservable, validator);
     }
 
     private <T> List<String> sortDocumentsAndCollectResourceIds(String propName, Function<Document, T> extractProp, Comparator<T> comparer) {
@@ -366,14 +330,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .requestChargeGreaterThanOrEqualTo(1.0).build())
             .build();
 
-        try {
-            validateQuerySuccess(queryObservable, validator);
-        } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
-            throw error;
-        }
+        validateQuerySuccess(queryObservable, validator);
     }
 
     public List<Document> bulkInsert(AsyncDocumentClient client, List<Map<String, Object>> keyValuePropsList) {
@@ -410,12 +367,6 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         //undefined values
         props = new HashMap<>();
-        keyValuePropsList.add(props);
-
-        // null values
-        props = new HashMap<>();
-        props.put("propInt", null);
-        props.put("propStr", null);
         keyValuePropsList.add(props);
 
         createdDocuments = bulkInsert(client, keyValuePropsList);

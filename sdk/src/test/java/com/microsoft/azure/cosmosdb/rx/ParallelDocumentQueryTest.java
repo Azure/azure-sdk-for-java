@@ -22,7 +22,23 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import com.microsoft.azure.cosmosdb.BridgeInternal;
+import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.Document;
+import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.FeedOptions;
+import com.microsoft.azure.cosmosdb.FeedResponse;
+import com.microsoft.azure.cosmosdb.QueryMetrics;
+import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
+import org.testng.SkipException;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
+import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,36 +46,13 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.microsoft.azure.cosmosdb.BridgeInternal;
-import com.microsoft.azure.cosmosdb.QueryMetrics;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
-import org.testng.SkipException;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.FeedOptions;
-import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
-import com.microsoft.azure.cosmosdb.RequestOptions;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
-
-import rx.Observable;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ParallelDocumentQueryTest extends TestSuiteBase {
     private Database createdDatabase;
     private DocumentCollection createdCollection;
     private List<Document> createdDocuments;
 
-    private Builder clientBuilder;
     private AsyncDocumentClient client;
 
     public String getCollectionLink() {
@@ -104,8 +97,10 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         try {
             validateQuerySuccess(queryObservable, validator, TIMEOUT);
         } catch (Throwable error) {
-            if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                String message = String.format(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel));
+                logger.info(message, error);
+                throw new SkipException(message, error);
             }
             throw error;
         }
@@ -113,10 +108,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryMetricEquality() throws Exception {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
-
         String query = "SELECT * from c where c.prop = 99";
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(5);
@@ -154,10 +145,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryDocuments_NoResults() {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
-
         String query = "SELECT * from root r where r.id = '2'";
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
@@ -174,12 +161,11 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void queryDocumentsWithPageSize() {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
+    // TODO: DANOBLE: Investigate Direct TCP performance issue
+    // See: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
 
+    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
+    public void queryDocumentsWithPageSize() {
         String query = "SELECT * from root";
         FeedOptions options = new FeedOptions();
         int pageSize = 3;
@@ -204,15 +190,20 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                                          .pageSizeIsLessThanOrEqualTo(pageSize)
                                          .build())
                 .build();
-        validateQuerySuccess(queryObservable, validator);
+        try {
+            validateQuerySuccess(queryObservable, validator, 2 * subscriberValidationTimeout);
+        } catch (Throwable error) {
+            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                logger.info(message, error);
+                throw new SkipException(message, error);
+            }
+            throw error;
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void invalidQuerySyntax() {
-        if (clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-            throw new SkipException("RNTBD");
-        }
-
         String query = "I am an invalid query";
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
@@ -241,7 +232,11 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    // TODO: DANOBLE: Investigate Direct TCP performance issue
+    // Links: 
+    // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
+
+    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
     public void partitionKeyRangeId() {
         int sum = 0;
         try {
@@ -260,7 +255,9 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
             }
         } catch (Throwable error) {
             if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
+                String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                logger.info(message, error);
+                throw new SkipException(message, error);
             }
             throw error;
         }
@@ -268,11 +265,15 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         assertThat(sum).isEqualTo(createdDocuments.size());
     }
 
-    // TODO: DANOBLE: Tcp protocol performance issue or--maybe--a public emulator performance problem
+    // TODO: DANOBLE: Investigate Direct TCP performance issue
+    // Links:
+    // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
+    // Notes:
     // When I've watch this method execute in the debugger and seen that the code sometimes pauses for quite a while in
     // the middle of the second group of 21 documents. I test against a debug instance of the public emulator and so
     // what I'm seeing could be the result of a public emulator performance issue. Of course, it might also be the
     // result of a Tcp protocol performance problem.
+
     @BeforeClass(groups = { "simple" }, timeOut = 2 * SETUP_TIMEOUT)
     public void beforeClass() {
         client = clientBuilder.build();

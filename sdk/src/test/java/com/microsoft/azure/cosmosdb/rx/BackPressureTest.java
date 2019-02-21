@@ -22,20 +22,6 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
-import org.testng.SkipException;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Factory;
-import org.testng.annotations.Test;
-
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
@@ -46,11 +32,21 @@ import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentClientUnderTest;
-
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Factory;
+import org.testng.annotations.Test;
 import rx.Observable;
 import rx.internal.util.RxRingBuffer;
 import rx.observers.TestSubscriber;
 import rx.schedulers.Schedulers;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class BackPressureTest extends TestSuiteBase {
 
@@ -61,20 +57,19 @@ public class BackPressureTest extends TestSuiteBase {
     private DocumentCollection createdCollection;
     private List<Document> createdDocuments;
 
-    private Builder clientBuilder;
     private RxDocumentClientUnderTest client;
 
     public String getCollectionLink() {
         return Utils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    static protected DocumentCollection getSinglePartitionCollectionDefinition() {
+    private static DocumentCollection getSinglePartitionCollectionDefinition() {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    @Factory(dataProvider = "simpleClientBuildersWithDirectHttps")
     public BackPressureTest(Builder clientBuilder) {
         this.clientBuilder = clientBuilder;
     }
@@ -112,19 +107,9 @@ public class BackPressureTest extends TestSuiteBase {
             i++;
         }
 
-        try {
-            subscriber.assertNoErrors();
-            subscriber.assertCompleted();
-            assertThat(subscriber.getOnNextEvents()).hasSize(createdDocuments.size());
-        } catch (Throwable error) {
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Https) {
-                throw new SkipException(String.format("Direct Https test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
-            if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                throw new SkipException(String.format("Direct TCP test failure: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel), error);
-            }
-            throw error;
-        }
+        subscriber.assertNoErrors();
+        subscriber.assertCompleted();
+        assertThat(subscriber.getOnNextEvents()).hasSize(createdDocuments.size());
     }
 
     @Test(groups = { "long" }, timeOut = TIMEOUT)
@@ -165,7 +150,11 @@ public class BackPressureTest extends TestSuiteBase {
         assertThat(subscriber.getOnNextEvents()).hasSize(createdDocuments.size());
     }
 
-    @BeforeClass(groups = { "long" }, timeOut = SETUP_TIMEOUT)
+    // TODO: DANOBLE: Investigate Direct TCP performance issue
+    // NOTE: This method requires multiple SHUTDOWN_TIMEOUT intervals
+    // SEE: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
+
+    @BeforeClass(groups = { "long" }, timeOut = 2 * SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
 
         RequestOptions options = new RequestOptions();
@@ -207,7 +196,11 @@ public class BackPressureTest extends TestSuiteBase {
         client.queryDocuments(getCollectionLink(), "SELECT * from r", null).first().toBlocking().single();
     }
 
-    @AfterClass(groups = { "long" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    // TODO: DANOBLE: Investigate Direct TCP performance issue
+    // NOTE: This method requires multiple SHUTDOWN_TIMEOUT intervals
+    // SEE: https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028https://msdata.visualstudio.com/CosmosDB/_workitems/edit/367028
+
+    @AfterClass(groups = { "long" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteCollection(client, createdCollection);
         safeClose(client);
