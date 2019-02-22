@@ -25,8 +25,6 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
     @BeforeClass
     public static void setup() throws Exception {
-        String testMode = getTestMode();
-        Assume.assumeTrue("Tests only run in Record/Live mode", testMode.equals("RECORD"));
         try {
             if(isRecordMode()) {
                 createClientDirect(AuthMode.SharedKey);

@@ -22,8 +22,11 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.*;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.interceptors.LoggingInterceptor;
+import com.microsoft.rest.protocol.ResponseBuilder;
+import com.microsoft.rest.protocol.SerializerAdapter;
 import org.junit.*;
 import org.junit.rules.TestName;
 
@@ -71,7 +74,7 @@ public class BatchIntegrationTestBase {
 
 
     private static void initTestMode() throws IOException {
-        String azureTestMode = "RECORD";
+        String azureTestMode = "PLAYBACK";
         if (azureTestMode != null) {
             if (azureTestMode.equalsIgnoreCase("Record")) {
                 testMode = TestBase.TestMode.RECORD;
@@ -173,14 +176,21 @@ public class BatchIntegrationTestBase {
 
             restClient = buildRestClient(new RestClient.Builder().withBaseUrl(credentials.baseUrl())
                     .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withResponseBuilderFactory(new AzureResponseBuilder.Factory()).withCredentials(credentials)
+                    .withCredentials(credentials)
+                    .withResponseBuilderFactory(new ResponseBuilder.Factory() {
+                        private final AzureResponseBuilder.Factory baseFactory = new AzureResponseBuilder.Factory();
+                        @Override
+                        public <T, E extends RestException> ResponseBuilder<T, E> newInstance(SerializerAdapter<?> serializerAdapter) {
+                            return baseFactory.<T, E>newInstance(serializerAdapter).withThrowOnGet404(true);
+                        }
+                    })
                     .withLogLevel(LogLevel.NONE)
                     .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
                     .withNetworkInterceptor(interceptorManager.initInterceptor())
                     .withInterceptor(new ResourceManagerThrottlingInterceptor()));
 
-            interceptorManager.addTextReplacementRule("https://management.azure.com/", playbackUri + "/");
-            interceptorManager.addTextReplacementRule("https://batch.azure.com/", playbackUri + "/");
+            //interceptorManager.addTextReplacementRule("https://management.azure.com/", playbackUri + "/");
+            //interceptorManager.addTextReplacementRule("https://batch.azure.com/", playbackUri + "/");
 
             batchClient = BatchClient.open(restClient, credentials.baseUrl());
             alternativeBatchClient = batchClient;
@@ -199,9 +209,6 @@ public class BatchIntegrationTestBase {
             alternativeBatchClient = BatchClient.open(buildPlaybackRestClient(credentials, alternativePlaybackUri + "/"),alternativePlaybackUri+"/");
 
         }
-
-
-        //batchClient = BatchClient.open(credentials);
     }
 
     @Before
