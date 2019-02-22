@@ -19,6 +19,8 @@ import com.microsoft.azure.management.sql.v2014_04_01.Database;
 import com.microsoft.azure.management.sql.v2014_04_01.ImportExportResponse;
 import com.microsoft.azure.management.sql.v2014_04_01.ExportRequest;
 import com.microsoft.azure.management.sql.v2014_04_01.ImportRequest;
+import com.microsoft.azure.management.sql.v2014_04_01.DatabasisServerMetric;
+import com.microsoft.azure.management.sql.v2014_04_01.DatabasisServerMetricDefinition;
 
 class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
     private final SqlManager manager;
@@ -178,6 +180,14 @@ class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
         return  new ImportExportResponseImpl(inner, manager());
     }
 
+    private DatabasisServerMetricImpl wrapDatabasisServerMetricModel(MetricInner inner) {
+        return  new DatabasisServerMetricImpl(inner, manager());
+    }
+
+    private DatabasisServerMetricDefinitionImpl wrapDatabasisServerMetricDefinitionModel(MetricDefinitionInner inner) {
+        return  new DatabasisServerMetricDefinitionImpl(inner, manager());
+    }
+
     @Override
     public Observable<ImportExportResponse> importMethodAsync(String resourceGroupName, String serverName, ImportRequest parameters) {
         DatabasesInner client = this.inner();
@@ -186,6 +196,42 @@ class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
             @Override
             public ImportExportResponse call(ImportExportResponseInner inner) {
                 return new ImportExportResponseImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<DatabasisServerMetric> listMetricsAsync(String resourceGroupName, String serverName, String databaseName, String filter) {
+        DatabasesInner client = this.inner();
+        return client.listMetricsAsync(resourceGroupName, serverName, databaseName, filter)
+        .flatMap(new Func1<List<MetricInner>, Observable<MetricInner>>() {
+            @Override
+            public Observable<MetricInner> call(List<MetricInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<MetricInner, DatabasisServerMetric>() {
+            @Override
+            public DatabasisServerMetric call(MetricInner inner) {
+                return wrapDatabasisServerMetricModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Observable<DatabasisServerMetricDefinition> listMetricDefinitionsAsync(String resourceGroupName, String serverName, String databaseName) {
+        DatabasesInner client = this.inner();
+        return client.listMetricDefinitionsAsync(resourceGroupName, serverName, databaseName)
+        .flatMap(new Func1<List<MetricDefinitionInner>, Observable<MetricDefinitionInner>>() {
+            @Override
+            public Observable<MetricDefinitionInner> call(List<MetricDefinitionInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<MetricDefinitionInner, DatabasisServerMetricDefinition>() {
+            @Override
+            public DatabasisServerMetricDefinition call(MetricDefinitionInner inner) {
+                return wrapDatabasisServerMetricDefinitionModel(inner);
             }
         });
     }

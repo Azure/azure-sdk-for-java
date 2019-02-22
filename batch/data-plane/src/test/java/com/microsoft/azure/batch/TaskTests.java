@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.batch;
 
@@ -15,10 +12,7 @@ import com.microsoft.azure.storage.StorageUri;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.io.*;
 import java.net.URI;
@@ -31,6 +25,8 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
     @BeforeClass
     public static void setup() throws Exception {
+        String testMode = getTestMode();
+        Assume.assumeTrue("Tests only run in Record/Live mode", testMode.equals("RECORD"));
         try {
             if(isRecordMode()) {
                 createClientDirect(AuthMode.SharedKey);

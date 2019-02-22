@@ -1,5 +1,10 @@
 # Azure Batch SDK for Java release notes
 
+## Changes in 5.0.1
+### Features
+### Fixes
+  - Fix corrupt signing of 5.0.0 Java SDK binary
+
 ## Changes in 5.0.0
 ### Features
 - **[Breaking]** Removed support for the `ChangeOSVersion` API on `CloudServiceConfiguration` pools. 

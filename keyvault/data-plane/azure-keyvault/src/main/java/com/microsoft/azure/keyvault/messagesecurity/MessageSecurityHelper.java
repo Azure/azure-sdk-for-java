@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.messagesecurity;
 
@@ -11,6 +8,8 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 
 import org.apache.commons.codec.binary.Base64;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.UUID;
@@ -26,6 +25,13 @@ import java.security.KeyPairGenerator;
  * Implements helper methods for message security.
  */
 class MessageSecurityHelper {
+    /**
+     * Encoding for JWS and JWE header and contents specified in:
+     * https://tools.ietf.org/html/rfc7515
+     * https://tools.ietf.org/html/rfc7516
+     */
+    private static final Charset MESSAGE_ENCODING = StandardCharsets.UTF_8;
+
     /**
      * Convert base64Url string to bytes array.
      * 
@@ -47,19 +53,19 @@ class MessageSecurityHelper {
      * @returns Decoded string.
      */
     public static String base64UrltoString(String base64url) {
-        return new String(base64UrltoByteArray(base64url));
+        return new String(base64UrltoByteArray(base64url), MESSAGE_ENCODING);
     }
 
     /**
      * Convert bytes array to Base64Url string.
      * 
      * @param bytes
-     *            bytes array.
+     *            bytes array
      * 
      * @returns Encoded string.
      */
     public static String bytesToBase64Url(byte[] bytes) {
-        String result = (new String(Base64.encodeBase64(bytes))).replace("=", "").replace("\\", "").replace('+', '-')
+        String result = (new String(Base64.encodeBase64(bytes), MESSAGE_ENCODING)).replace("=", "").replace("\\", "").replace('+', '-')
                 .replace('/', '_');
         return result;
     }
@@ -73,7 +79,7 @@ class MessageSecurityHelper {
      * @returns Encoded string.
      */
     public static String stringToBase64Url(String str) {
-        return bytesToBase64Url(str.getBytes());
+        return bytesToBase64Url(str.getBytes(MESSAGE_ENCODING));
     }
 
     /**
@@ -104,7 +110,7 @@ class MessageSecurityHelper {
             return result;
         } catch (NoSuchAlgorithmException e) {
             // Unexpected. Should never be thrown.
-            return null;
+            throw new RuntimeException(e);
         }
     }
 

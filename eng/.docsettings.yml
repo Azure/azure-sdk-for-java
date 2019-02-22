@@ -1,0 +1,9 @@
+omitted_paths:
+  - archive/*
+  - profiles/*
+  - loganalytics/data-plane/samples/*
+  - applicationinsights/data-plane/samples/*
+  - "*/data-plane/*"
+  - "*/resource-manager/*"
+language: java
+root_check_enabled: True

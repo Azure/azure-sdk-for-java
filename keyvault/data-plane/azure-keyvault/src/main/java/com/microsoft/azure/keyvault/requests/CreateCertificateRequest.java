@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.requests;
 
@@ -77,6 +74,10 @@ public final class CreateCertificateRequest {
          * @return the Builder object itself.
          */
         public Builder withAttributes(Attributes attributes) {
+            if (!(attributes instanceof CertificateAttributes)) {
+                throw new IllegalArgumentException("Parameter 'attributes' should be instance of CertificateAttributes, or a subclass");
+            }
+
             this.attributes = (CertificateAttributes) attributes;
             return this;
         }

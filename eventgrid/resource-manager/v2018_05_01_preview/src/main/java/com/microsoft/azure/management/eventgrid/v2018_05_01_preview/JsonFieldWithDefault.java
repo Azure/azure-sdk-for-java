@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * This is used to express the source of an input schema mapping for a single
  * target field in the Event Grid Event schema. This is currently used in the
- * mappings for the 'subject','eventtype' and 'dataversion' properties. This
+ * mappings for the 'subject','eventType' and 'dataVersion' properties. This
  * represents a field in the input event schema along with a default value to
  * be used, and at least one of these two properties should be provided.
  */
@@ -34,7 +34,7 @@ public class JsonFieldWithDefault {
     private String defaultValue;
 
     /**
-     * Get the sourceField value.
+     * Get name of a field in the input event schema that's to be used as the source of a mapping.
      *
      * @return the sourceField value
      */
@@ -43,7 +43,7 @@ public class JsonFieldWithDefault {
     }
 
     /**
-     * Set the sourceField value.
+     * Set name of a field in the input event schema that's to be used as the source of a mapping.
      *
      * @param sourceField the sourceField value to set
      * @return the JsonFieldWithDefault object itself.
@@ -54,7 +54,7 @@ public class JsonFieldWithDefault {
     }
 
     /**
-     * Get the defaultValue value.
+     * Get the default value to be used for mapping when a SourceField is not provided or if there's no property with the specified name in the published JSON event payload.
      *
      * @return the defaultValue value
      */
@@ -63,7 +63,7 @@ public class JsonFieldWithDefault {
     }
 
     /**
-     * Set the defaultValue value.
+     * Set the default value to be used for mapping when a SourceField is not provided or if there's no property with the specified name in the published JSON event payload.
      *
      * @param defaultValue the defaultValue value to set
      * @return the JsonFieldWithDefault object itself.

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.test;
 
@@ -226,7 +223,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withX509CertificateProperties(x509Properties);
 
         String vaultUri = getVaultUri();
-        String certificateName = "SelfSignedJavaPem";
+        String certificateName = "SelfSignedJavaPem2";
         CertificateOperation certificateOperation = keyVaultClient.createCertificate(
                 new CreateCertificateRequest
                     .Builder(vaultUri, certificateName)

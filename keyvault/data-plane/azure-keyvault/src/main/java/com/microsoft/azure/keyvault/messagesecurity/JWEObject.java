@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.messagesecurity;
 
@@ -82,7 +79,16 @@ class JWEObject {
         return jweHeader.equals(other.jweHeader) && encryptedKey.equals(other.encryptedKey) && iv.equals(other.iv)
                 && cipherText.equals(other.cipherText) && tag.equals(other.tag);
     }
-    
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof JWEObject)) {
+            return false;
+        }
+
+        return object == this || equals((JWEObject) object);
+    }
+
     /**
      * Hash code for objects.
      * 

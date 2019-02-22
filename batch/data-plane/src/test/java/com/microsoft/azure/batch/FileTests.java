@@ -1,16 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.protocol.models.*;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.apache.commons.io.IOUtils;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
@@ -34,7 +28,6 @@ public class FileTests extends BatchIntegrationTestBase {
             livePool = createIfNotExistPaaSPool(poolId);
             Assert.assertNotNull(livePool);
         }
-
     }
 
     @AfterClass

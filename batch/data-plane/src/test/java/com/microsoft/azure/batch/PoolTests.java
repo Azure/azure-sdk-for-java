@@ -1,12 +1,8 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.batch.auth.BatchApplicationTokenCredentials;
 import org.junit.*;
 
 import java.util.*;
@@ -59,7 +55,7 @@ public class PoolTests extends BatchIntegrationTestBase {
     @Test
     public void canCRUDLowPriIaaSPool() throws Exception {
         // CREATE
-        String poolId = getStringIdWithUserNamePrefix("-canCRUDLowPri");
+        String poolId = getStringIdWithUserNamePrefix("-canCRUDLowPri-testPool");
 
         // Create a pool with 3 Small VMs
         String POOL_VM_SIZE = "STANDARD_A1";
@@ -303,6 +299,8 @@ public class PoolTests extends BatchIntegrationTestBase {
         }
     }
 
+    //Temporarily disabling this test - REST API is missing the logic for this case.
+    @Ignore
     @Test
     public void shouldFailOnCreateLinuxPoolWithWindowsConfig() throws Exception {
         String poolId = getStringIdWithUserNamePrefix("-createLinuxPool");

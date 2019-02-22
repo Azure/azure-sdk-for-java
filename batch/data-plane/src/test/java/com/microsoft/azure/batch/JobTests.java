@@ -1,16 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.batch;
 
 import com.microsoft.azure.batch.protocol.models.*;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.Date;
 import java.util.List;
@@ -20,7 +14,6 @@ public class JobTests extends BatchIntegrationTestBase {
 
     @BeforeClass
     public static void setup() throws Exception {
-
         if(isRecordMode()) {
             createClientDirect(AuthMode.SharedKey);
             String poolId = getStringIdWithUserNamePrefix("-testpool");
@@ -105,7 +98,6 @@ public class JobTests extends BatchIntegrationTestBase {
     public void canUpdateJobState() throws Exception {
         // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-CanUpdateState");
-
         PoolInformation poolInfo = new PoolInformation();
         if(isRecordMode()) {
             poolInfo.withPoolId(livePool.id());

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.keyvault.cryptography.test;
 
 import static org.junit.Assert.assertEquals;
@@ -38,7 +41,11 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.microsoft.azure.keyvault.cryptography.EcKey;
-import com.microsoft.azure.keyvault.cryptography.test.resources.PemFile;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es256;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es256k;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es384;
+import com.microsoft.azure.keyvault.cryptography.algorithms.Es512;
+import com.microsoft.azure.keyvault.cryptography.SignatureEncoding;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
@@ -78,8 +85,8 @@ public class ECKeyTest {
     public static void setUpBeforeClass() throws Exception {
     	setProvider(Security.getProvider("SunEC"));
     	EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", _provider);
-    	
-        Path byte_location = Paths.get("src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/byte_array.bin");
+
+    	Path byte_location = Paths.get(getPath("byte_array.bin"));
         CEK = Files.readAllBytes(byte_location);
 
     	FACTORY = KeyFactory.getInstance("EC", _provider);
@@ -214,16 +221,25 @@ public class ECKeyTest {
         return keyPair;
     }
     
-    private void testFromFile(String keyType, MessageDigest digest) throws Exception {
-        String privateKeyPath = "src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "keynew.pem";
-        String publicKeyPath = "src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "keypubnew.pem";
+    private void testFromFile(String keyType, MessageDigest digest, String algorithm) throws Exception {
+        String privateKeyPath = getPath(keyType+"keynew.pem");
+        String publicKeyPath = getPath(keyType+"keypubnew.pem");
         
         EcKey newKey = new EcKey("akey", getKeyFromFile(privateKeyPath, publicKeyPath));
         
-        Path signatureLocation = Paths.get("src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "sig.der");
-        byte[] signature = Files.readAllBytes(signatureLocation);
-   
+        Path signatureLocation = Paths.get(getPath(keyType+"sig.der"));
+        byte[] signature = SignatureEncoding.fromAsn1Der(Files.readAllBytes(signatureLocation), algorithm);
+
         doVerify(newKey, digest, signature);
+    }
+
+    private static String getPath(String filename){
+
+        String path =  ECKeyTest.class.getClassLoader().getResource(filename).getPath();
+        if(path.contains(":")){
+            path = path.substring(1);
+        }
+        return path;
     }
     
     @Test
@@ -238,22 +254,22 @@ public class ECKeyTest {
     
     @Test
     public void testFromP384File() throws Exception {
-        testFromFile("p384", DIGEST_384);
+        testFromFile("p384", DIGEST_384, Es384.ALGORITHM_NAME);
     }
     
     @Test
     public void testFromP521File() throws Exception {
-        testFromFile("p521", DIGEST_512);
+        testFromFile("p521", DIGEST_512, Es512.ALGORITHM_NAME);
     }
     
     @Test
     public void testFromP256File() throws Exception {
-        testFromFile("p256", DIGEST_256);
+        testFromFile("p256", DIGEST_256, Es256.ALGORITHM_NAME);
     }
     
     @Test
     public void testFromSEC256File() throws Exception{
-        testFromFile("secp256", DIGEST_256);
+        testFromFile("secp256", DIGEST_256, Es256k.ALGORITHM_NAME);
     }
     
     @Test

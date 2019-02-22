@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<FindBugsFilter>
+    <!-- These keyvault models are already publicly released APIs with name
+    matching the simple name of superclass -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.models\.(CertificateBundle|CertificateOperation|IssuerBundle|KeyBundle|SecretBundle)" />
+        <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
+    </Match>
+
+    <!-- These AesKw methods are publicly released APIs with incorrect name casing. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.AesKw(128|192|256)" />
+        <Method name="~(CreateDecryptor|CreateEncryptor)" />
+        <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
+    </Match>
+
+    <!-- Ignoring dropped exception because it existed in current SDK when migrated. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.extensions.CachingKeyResolver$2" />
+        <Method name="run" />
+        <Bug pattern="DE_MIGHT_IGNORE"/>
+    </Match>
+
+    <!-- Protected field already exists in the public API surface area even
+    though it is unused. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.cryptography.EcKey"/>
+        <Field name="defaultEncryptionAlgorithm"/>
+        <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
+    </Match>
+
+    <!-- These KeyVaultClientBase methods are made synchronous by blocking and
+    waiting for a result. They do not return anything, so it can be ignored. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.implementation.KeyVaultClientBaseImpl"/>
+        <Method name="~(purgeDeletedCertificate|purgeDeletedKey|purgeDeletedSecret|purgeDeletedStorageAccount)"/>
+        <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+    </Match>
+
+    <!-- KeyVaultCredential values manipulated do not need to be localised. They
+    are base64 encoded or URL encoded.-->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+        <Method name="~(extractChallenge|isValidChallenge|supportsMessageProtection)"/>
+        <Bug pattern="DM_CONVERT_CASE"/>
+    </Match>
+</FindBugsFilter>

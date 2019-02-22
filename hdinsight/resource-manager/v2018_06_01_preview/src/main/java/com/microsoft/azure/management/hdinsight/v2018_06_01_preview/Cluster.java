@@ -30,6 +30,11 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
     String etag();
 
     /**
+     * @return the identity value.
+     */
+    ClusterIdentity identity();
+
+    /**
      * @return the properties value.
      */
     ClusterGetProperties properties();
@@ -57,6 +62,18 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
         }
 
         /**
+         * The stage of the cluster definition allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity The identity of the cluster, if configured
+             * @return the next definition stage
+             */
+            WithCreate withIdentity(ClusterIdentity identity);
+        }
+
+        /**
          * The stage of the cluster definition allowing to specify Properties.
          */
         interface WithProperties {
@@ -73,19 +90,31 @@ public interface Cluster extends HasInner<ClusterInner>, Resource, GroupableReso
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Cluster>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithProperties {
+        interface WithCreate extends Creatable<Cluster>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithIdentity, DefinitionStages.WithProperties {
         }
     }
     /**
      * The template for a Cluster update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Cluster>, Resource.UpdateWithTags<Update>, UpdateStages.WithProperties {
+    interface Update extends Appliable<Cluster>, Resource.UpdateWithTags<Update>, UpdateStages.WithIdentity, UpdateStages.WithProperties {
     }
 
     /**
      * Grouping of Cluster update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the cluster update allowing to specify Identity.
+         */
+        interface WithIdentity {
+            /**
+             * Specifies identity.
+             * @param identity The identity of the cluster, if configured
+             * @return the next update stage
+             */
+            Update withIdentity(ClusterIdentity identity);
+        }
+
         /**
          * The stage of the cluster update allowing to specify Properties.
          */
