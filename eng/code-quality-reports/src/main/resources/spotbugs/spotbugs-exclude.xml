@@ -8,7 +8,7 @@
         <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
     </Match>
 
-    <!-- These AesKw methods are publicly released APIs with incorrect name casing. -->
+    <!-- Cryptographic algorithms are publicly released APIs with incorrect name casing. -->
     <Match>
         <Or>
             <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.(Aes|Rsa)(.+)" />
@@ -47,5 +47,12 @@
         <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
         <Method name="~(extractChallenge|isValidChallenge|supportsMessageProtection)"/>
         <Bug pattern="DM_CONVERT_CASE"/>
+    </Match>
+
+    <!-- Known issue in autorest where it will generate a variable with a value of null.
+    https://github.com/Azure/autorest.java/issues/324 -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.KeyVaultClientImpl"/>
+        <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
     </Match>
 </FindBugsFilter>
