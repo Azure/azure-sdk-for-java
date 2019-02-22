@@ -9,6 +9,9 @@ package com.microsoft.azure.batch;
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
 import com.microsoft.azure.batch.interceptor.BatchClientParallelOptions;
 import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageCredentialsAccountAndKey;
+import com.microsoft.azure.storage.StorageUri;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -18,22 +21,25 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
+import java.net.URI;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class TaskTests  extends BatchTestBase {
+public class TaskTests  extends BatchIntegrationTestBase {
     private static CloudPool livePool;
     private static CloudPool liveIaaSPool;
 
     @BeforeClass
     public static void setup() throws Exception {
         try {
-        createClient(AuthMode.SharedKey);
-        String poolId = getStringWithUserNamePrefix("-testpool");
-        livePool = createIfNotExistPaaSPool(poolId);
-        poolId = getStringWithUserNamePrefix("-testIaaSpool");
-        liveIaaSPool = createIfNotExistIaaSPool(poolId);
-        Assert.assertNotNull(livePool);
+            if(isRecordMode()) {
+                createClientDirect(AuthMode.SharedKey);
+                String poolId = getStringIdWithUserNamePrefix("-testpool");
+                livePool = createIfNotExistPaaSPool(poolId);
+                poolId = getStringIdWithUserNamePrefix("-testIaaSpool");
+                liveIaaSPool = createIfNotExistIaaSPool(poolId);
+                Assert.assertNotNull(livePool);
+            }
         } catch (BatchErrorException e) {
             cleanup();
             throw e;
@@ -65,19 +71,27 @@ public class TaskTests  extends BatchTestBase {
         bw.write("This is an example");
         bw.close();
         temp.deleteOnExit();
-        String jobId = getStringWithUserNamePrefix("-canCRUDTest-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-canCRUDTest");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(liveIaaSPool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(livePool.id());
+        }
         batchClient.jobOperations().createJob(jobId, poolInfo);
-
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
 
         try {
-            // Create storage container
-            CloudBlobContainer container = createBlobContainer(storageAccountName, storageAccountKey, "testaddtask");
-            String sas = uploadFileToCloud(container, BLOB_FILE_NAME, temp.getAbsolutePath());
+            String sas = "";
+            CloudBlobContainer container = null;
+
+            //The Storage operations run only in Record mode.
+            // Playback mode is configured to test Batch operations only.
+            if(isRecordMode()) {
+                // Create storage container
+                container = createBlobContainer(storageAccountName, storageAccountKey, "testaddtask");
+                sas = uploadFileToCloud(container, BLOB_FILE_NAME, temp.getAbsolutePath());
+            }
 
             // Associate resource file with task
             ResourceFile file = new ResourceFile();
@@ -131,8 +145,14 @@ public class TaskTests  extends BatchTestBase {
                 String fileContent = stream.toString("UTF-8");
                 Assert.assertEquals("This is an example", fileContent);
 
+                String outputSas = "";
+
+                //The Storage operations run only in Record mode.
+                // Playback mode is configured to test Batch operations only.
+                if(isRecordMode()) {
+                    outputSas = generateContainerSasToken(container);
+                }
                 // UPLOAD LOG
-                String outputSas = generateContainerSasToken(container);
                 UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.computeNodeOperations().uploadBatchServiceLogs(liveIaaSPool.id(), task.nodeInfo().nodeId(), outputSas, DateTime.now().minusMinutes(-10));
                 Assert.assertNotNull(uploadBatchServiceLogsResult);
                 Assert.assertTrue(uploadBatchServiceLogsResult.numberOfFilesUploaded() > 0);
@@ -160,11 +180,13 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void testJobUser() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-testJobUser-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-testJobUser");
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(livePool.id());
+        }
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         try {
@@ -199,17 +221,26 @@ public class TaskTests  extends BatchTestBase {
     @Test
     public void testOutputFiles() throws Exception {
         int TASK_COMPLETE_TIMEOUT_IN_SECONDS = 60; // 60 seconds timeout
-        String jobId = getStringWithUserNamePrefix("-testOutputFiles-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-testOutputFiles");
         String taskId = "mytask";
         String badTaskId = "mytask1";
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(liveIaaSPool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(liveIaaSPool.id());
+        }
         batchClient.jobOperations().createJob(jobId, poolInfo);
-        CloudBlobContainer container = createBlobContainer(storageAccountName, storageAccountKey, "output");
-        String containerUrl = generateContainerSasToken(container);
+        CloudBlobContainer container = null;
+        String containerUrl = "";
+
+        //The Storage operations run only in Record mode.
+        // Playback mode is configured to test Batch operations only.
+        if(isRecordMode()) {
+            container = createBlobContainer(storageAccountName, storageAccountKey, "output");
+            containerUrl = generateContainerSasToken(container);
+        }
 
         try {
             // CREATE
@@ -243,9 +274,11 @@ public class TaskTests  extends BatchTestBase {
                 Assert.assertEquals(TaskExecutionResult.SUCCESS, task.executionInfo().result());
                 Assert.assertNull(task.executionInfo().failureInfo());
 
-                // Get the task command output file
-                String result = getContentFromContainer(container, "taskLogs/output.txt");
-                Assert.assertEquals("hello\n", result);
+                if(isRecordMode()) {
+                    // Get the task command output file
+                    String result = getContentFromContainer(container, "taskLogs/output.txt");
+                    Assert.assertEquals("hello\n", result);
+                }
             }
 
             taskToAdd = new TaskAddParameter();
@@ -263,14 +296,20 @@ public class TaskTests  extends BatchTestBase {
                 Assert.assertEquals(ErrorCategory.USER_ERROR, task.executionInfo().failureInfo().category());
                 Assert.assertEquals("FailureExitCode", task.executionInfo().failureInfo().code());
 
-                // Get the task command output file
-                String result = getContentFromContainer(container, "taskLogs/err.txt");
-                Assert.assertEquals("bash: bad: command not found\n", result);
+                //The Storage operations run only in Record mode.
+                // Playback mode is configured to test Batch operations only.
+                if(isRecordMode()) {
+                    // Get the task command output file
+                    String result = getContentFromContainer(container, "taskLogs/err.txt");
+                    Assert.assertEquals("bash: bad: command not found\n", result);
+                }
             }
 
         } finally {
             try {
-                container.delete();
+                if (isRecordMode()) {
+                    container.delete();
+                }
                 batchClient.jobOperations().deleteJob(jobId);
             } catch (Exception e) {
                 // Ignore here
@@ -280,12 +319,13 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void testAddMultiTasks() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-testAddMultiTasks-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(livePool.id());
+        }
         batchClient.jobOperations().createJob(jobId, poolInfo);
-
 
         int TASK_COUNT=1000;
 
@@ -320,13 +360,15 @@ public class TaskTests  extends BatchTestBase {
     @Test
     public void testAddMultiTasksWithError() throws Exception {
 
+        String accessKey = System.getenv("AZURE_BATCH_ACCESS_KEY");
+        accessKey = (accessKey == null || accessKey.length() == 0) ? "RANDOM_KEY" : accessKey;
         BatchSharedKeyCredentials noExistCredentials1 = new BatchSharedKeyCredentials(
                 "https://noexistaccount.westus.batch.azure.com",
-                "noexistaccount",
-                System.getenv("AZURE_BATCH_ACCESS_KEY"));
+                "noexistaccount", accessKey
+                );
         BatchClient testBatchClient = BatchClient.open(noExistCredentials1);
 
-        String jobId = getStringWithUserNamePrefix("-testAddMultiTasksWithError-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasksWithError");
 
         int TASK_COUNT=1000;
 
@@ -351,18 +393,19 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void testGetTaskCounts() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-testGetTaskCounts-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-testGetTaskCounts");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(livePool.id());
+        }
         batchClient.jobOperations().createJob(jobId, poolInfo);
-
 
         int TASK_COUNT=1000;
 
         try {
             // Test Job count
-            TaskCounts counts = batchClient.jobOperations().getTaskCounts(jobId);
+            TaskCounts counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);
             int all = counts.active() + counts.completed() + counts.running();
             Assert.assertEquals(0, all);
 
@@ -379,10 +422,13 @@ public class TaskTests  extends BatchTestBase {
             behaviors.add(option);
             batchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
 
-            TimeUnit.SECONDS.sleep(30);
+            //The Waiting period is only needed in record mode.
+            if(isRecordMode()) {
+                TimeUnit.SECONDS.sleep(30);
+            }
 
             // Test Job count
-            counts = batchClient.jobOperations().getTaskCounts(jobId);
+            counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);
             all = counts.active() + counts.completed() + counts.running();
             Assert.assertEquals(TASK_COUNT, all);
         } finally {
@@ -396,11 +442,13 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void failCreateContainerTaskWithRegularPool() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-failCreateContainerRegPool-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-failCreateContainerRegPool");
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(liveIaaSPool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(liveIaaSPool.id());
+        }
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         TaskAddParameter taskToAdd = new TaskAddParameter();
@@ -439,11 +487,13 @@ public class TaskTests  extends BatchTestBase {
     
     @Test
     public void failIfPoisonTaskTooLarge() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-failIfPoisonTaskTooLarge-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-failIfPoisonTaskTooLarge");
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(liveIaaSPool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(liveIaaSPool.id());
+        }
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         List<TaskAddParameter> tasksToAdd = new ArrayList<TaskAddParameter>();
@@ -488,11 +538,16 @@ public class TaskTests  extends BatchTestBase {
 
     @Test
     public void succeedWithRetry() throws Exception {
-        String jobId = getStringWithUserNamePrefix("-succeedWithRetry-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        if(!isRecordMode()){
+            return;
+        }
+        String jobId = getStringIdWithUserNamePrefix("-succeedWithRetry");
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(liveIaaSPool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(liveIaaSPool.id());
+        }
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         List<TaskAddParameter> tasksToAdd = new ArrayList<TaskAddParameter>();

@@ -37,6 +37,7 @@ import java.util.*;
  */
 public class BatchIntegrationTestBase {
     static BatchClient batchClient;
+    static BatchClient alternativeBatchClient;
     static int MAX_LEN_ID = 64;
 
     public enum AuthMode {
@@ -55,6 +56,7 @@ public class BatchIntegrationTestBase {
     protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     protected static String playbackUri = null;
+    protected static String alternativePlaybackUri = null;
 
     private final RunCondition runCondition;
 
@@ -69,7 +71,7 @@ public class BatchIntegrationTestBase {
 
 
     private static void initTestMode() throws IOException {
-        String azureTestMode = System.getenv("AZURE_TEST_MODE");
+        String azureTestMode = "RECORD";
         if (azureTestMode != null) {
             if (azureTestMode.equalsIgnoreCase("Record")) {
                 testMode = TestBase.TestMode.RECORD;
@@ -98,6 +100,7 @@ public class BatchIntegrationTestBase {
 
             // 11080 and 11081 needs to be in sync with values in jetty.xml file
             playbackUri = PLAYBACK_URI_BASE + "11080";
+            alternativePlaybackUri = PLAYBACK_URI_BASE + "11081";
         } else {
             playbackUri = PLAYBACK_URI_BASE + "1234";
         }
@@ -180,6 +183,7 @@ public class BatchIntegrationTestBase {
             interceptorManager.addTextReplacementRule("https://batch.azure.com/", playbackUri + "/");
 
             batchClient = BatchClient.open(restClient, credentials.baseUrl());
+            alternativeBatchClient = batchClient;
 
         } else { // is Playback Mode
             defaultSubscription = ZERO_SUBSCRIPTION;
@@ -192,6 +196,8 @@ public class BatchIntegrationTestBase {
             }));
 
             batchClient = BatchClient.open(buildPlaybackRestClient(credentials, playbackUri + "/"),playbackUri+"/");
+            alternativeBatchClient = BatchClient.open(buildPlaybackRestClient(credentials, alternativePlaybackUri + "/"),alternativePlaybackUri+"/");
+
         }
 
 
@@ -233,7 +239,7 @@ public class BatchIntegrationTestBase {
         String POOL_OS_VERSION = "*";
 
         // 5 minutes
-        long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -321,7 +327,7 @@ public class BatchIntegrationTestBase {
     }
 
     static String getStringIdWithUserNamePrefix(String name) {
-        String userName = System.getProperty("user.name");
+        String userName = "BatchUser";
         StringBuilder out = new StringBuilder();
         int remainingSpace = MAX_LEN_ID - name.length();
         if (remainingSpace > 0){

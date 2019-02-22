@@ -15,15 +15,18 @@ import org.junit.Test;
 import java.util.Date;
 import java.util.List;
 
-public class JobTests extends BatchTestBase {
+public class JobTests extends BatchIntegrationTestBase {
     private static CloudPool livePool;
 
     @BeforeClass
     public static void setup() throws Exception {
-        createClient(AuthMode.SharedKey);
-        String poolId = getStringWithUserNamePrefix("-testpool");
-        livePool = createIfNotExistPaaSPool(poolId);
-        Assert.assertNotNull(livePool);
+
+        if(isRecordMode()) {
+            createClientDirect(AuthMode.SharedKey);
+            String poolId = getStringIdWithUserNamePrefix("-testpool");
+            livePool = createIfNotExistPaaSPool(poolId);
+            Assert.assertNotNull(livePool);
+        }
     }
 
     @AfterClass
@@ -39,10 +42,12 @@ public class JobTests extends BatchTestBase {
     @Test
     public void canCRUDJob() throws Exception {
         // CREATE
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-Job-canCRUD");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(livePool.id());
+        }
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         try {
@@ -99,10 +104,12 @@ public class JobTests extends BatchTestBase {
     @Test
     public void canUpdateJobState() throws Exception {
         // CREATE
-        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-Job-CanUpdateState");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        if(isRecordMode()) {
+            poolInfo.withPoolId(livePool.id());
+        }
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         try {

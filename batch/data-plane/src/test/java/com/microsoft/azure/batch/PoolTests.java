@@ -12,15 +12,17 @@ import org.junit.*;
 import java.util.*;
 import com.microsoft.azure.batch.protocol.models.*;
 
-public class PoolTests extends BatchTestBase {
+public class PoolTests extends BatchIntegrationTestBase {
     private static CloudPool livePool;
 
     @BeforeClass
     public static void setup() throws Exception {
-        createClient(AuthMode.SharedKey);
-        String poolId = getStringWithUserNamePrefix("-testpool");
-        livePool = createIfNotExistPaaSPool(poolId);
-        Assert.assertNotNull(livePool);
+        if(isRecordMode()) {
+            createClientDirect(AuthMode.SharedKey);
+            String poolId = getStringIdWithUserNamePrefix("-testpool");
+            livePool = createIfNotExistPaaSPool(poolId);
+            Assert.assertNotNull(livePool);
+        }
     }
 
     @AfterClass
@@ -34,7 +36,11 @@ public class PoolTests extends BatchTestBase {
 
     @Test
     public void testPoolOData() throws Exception {
-        CloudPool pool = batchClient.poolOperations().getPool(livePool.id(),
+        String poolId = "";
+        if(isRecordMode()){
+            poolId = livePool.id();
+        }
+        CloudPool pool = batchClient.poolOperations().getPool(poolId,
                 new DetailLevel.Builder().withExpandClause("stats").build());
         Assert.assertNotNull(pool.stats());
 
@@ -53,15 +59,15 @@ public class PoolTests extends BatchTestBase {
     @Test
     public void canCRUDLowPriIaaSPool() throws Exception {
         // CREATE
-        String poolId = getStringWithUserNamePrefix("-canCRUDLowPri");
+        String poolId = getStringIdWithUserNamePrefix("-canCRUDLowPri");
 
         // Create a pool with 3 Small VMs
         String POOL_VM_SIZE = "STANDARD_A1";
         int POOL_VM_COUNT = 0;
         int POOL_LOW_PRI_VM_COUNT = 2;
 
-        // 5 minutes
-        long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
+        // 10 minutes
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -146,9 +152,10 @@ public class PoolTests extends BatchTestBase {
 
             // DELETE
             boolean deleted = false;
+            elapsedTime = 0L;
             batchClient.poolOperations().deletePool(poolId);
             // Wait for the VM to be allocated
-            while (elapsedTime < POOL_STEADY_TIMEOUT_IN_SECONDS * 2) {
+            while (elapsedTime < POOL_STEADY_TIMEOUT_IN_SECONDS) {
                 try {
                     batchClient.poolOperations().getPool(poolId);
                 } catch (BatchErrorException err) {
@@ -177,7 +184,7 @@ public class PoolTests extends BatchTestBase {
 
     @Test
     public void canCreateDataDisk() throws Exception {
-        String poolId = getStringWithUserNamePrefix("-testpool3");
+        String poolId = getStringIdWithUserNamePrefix("-testpool3");
 
         // Create a pool with 0 Small VMs
         String POOL_VM_SIZE = "STANDARD_D1";
@@ -213,7 +220,7 @@ public class PoolTests extends BatchTestBase {
 
     @Test
     public void canCreateCustomImageWithExpectedError() throws Exception {
-        String poolId = getStringWithUserNamePrefix("-customImageExpErr");
+        String poolId = getStringIdWithUserNamePrefix("-customImageExpErr");
 
         // Create a pool with 0 Small VMs
         String POOL_VM_SIZE = "STANDARD_D1";
@@ -251,7 +258,7 @@ public class PoolTests extends BatchTestBase {
 
     @Test
     public void shouldFailOnCreateContainerPoolWithRegularImage() throws Exception {
-        String poolId = getStringWithUserNamePrefix("-createContainerRegImage");
+        String poolId = getStringIdWithUserNamePrefix("-createContainerRegImage");
 
         // Create a pool with 0 Small VMs
         String POOL_VM_SIZE = "STANDARD_D1";
@@ -295,10 +302,10 @@ public class PoolTests extends BatchTestBase {
             }
         }
     }
-    
+
     @Test
     public void shouldFailOnCreateLinuxPoolWithWindowsConfig() throws Exception {
-        String poolId = getStringWithUserNamePrefix("-createLinuxPool");
+        String poolId = getStringIdWithUserNamePrefix("-createLinuxPool");
 
         // Create a pool with 0 Small VMs
         String POOL_VM_SIZE = "STANDARD_D1";
@@ -314,8 +321,8 @@ public class PoolTests extends BatchTestBase {
                 .withNodeAgentSKUId("batch.node.ubuntu 16.04");
         UserAccount windowsUser = new UserAccount();
         windowsUser.withWindowsUserConfiguration(new WindowsUserConfiguration().withLoginMode(LoginMode.INTERACTIVE))
-            .withName("testaccount")
-            .withPassword("password");
+                .withName("testaccount")
+                .withPassword("password");
         ArrayList<UserAccount> users = new ArrayList<UserAccount>();
         users.add(windowsUser);
         PoolAddParameter pool = new PoolAddParameter().withId(poolId)
@@ -357,7 +364,7 @@ public class PoolTests extends BatchTestBase {
     @Test
     public void canCRUDLowPriPaaSPool() throws Exception {
         // CREATE
-        String poolId = getStringWithUserNamePrefix("-testpool4");
+        String poolId = getStringIdWithUserNamePrefix("-testpool4");
 
         // Create a pool with 3 Small VMs
         String POOL_VM_SIZE = "Small";
@@ -447,7 +454,7 @@ public class PoolTests extends BatchTestBase {
     @Test
     public void canCRUDPaaSPool() throws Exception {
         // CREATE
-        String poolId = getStringWithUserNamePrefix("-CRUDPaaS");
+        String poolId = getStringIdWithUserNamePrefix("-CRUDPaaS");
 
         // Create a pool with 3 Small VMs
         String POOL_VM_SIZE = "Small";
