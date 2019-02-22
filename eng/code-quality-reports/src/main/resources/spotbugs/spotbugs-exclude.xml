@@ -10,7 +10,10 @@
 
     <!-- These AesKw methods are publicly released APIs with incorrect name casing. -->
     <Match>
-        <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.AesKw(128|192|256)" />
+        <Or>
+            <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.(Aes|Rsa)(.+)" />
+            <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.(.+)Algorithm" />
+        </Or>
         <Method name="~(CreateDecryptor|CreateEncryptor)" />
         <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
     </Match>
