@@ -48,6 +48,12 @@
         <Method name="~(extractChallenge|isValidChallenge|supportsMessageProtection)"/>
         <Bug pattern="DM_CONVERT_CASE"/>
     </Match>
+    <!-- HTTP header, "content-type" is not localised. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity"/>
+        <Method name="unprotectResponse"/>
+        <Bug pattern="DM_CONVERT_CASE"/>
+    </Match>
 
     <!-- Known issue in autorest where it will generate a variable with a value of null.
     https://github.com/Azure/autorest.java/issues/324 -->
