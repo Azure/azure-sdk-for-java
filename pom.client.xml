@@ -291,6 +291,23 @@
             <groupId>com.github.spotbugs</groupId>
             <artifactId>spotbugs-maven-plugin</artifactId>
             <version>${spotbugs.version}</version>
+            <dependencies>
+               <dependency>
+                  <groupId>com.azure</groupId>
+                  <artifactId>sdk-build-tools</artifactId>
+                  <version>${maven-build-tools.version}</version>
+               </dependency>
+            </dependencies>
+            <configuration>
+               <effort>Max</effort>
+               <threshold>Low</threshold>
+               <xmlOutput>true</xmlOutput>
+               <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+               <excludeFilterFile>spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+
+               <!-- TODO soon - enable this failure mode -->
+               <failOnError>false</failOnError>
+            </configuration>
             <executions>
                <execution>
                   <phase>verify</phase>
@@ -318,7 +335,7 @@
                <transformationSets>
                   <transformationSet>
                      <dir>${project.build.directory}/spotbugs</dir>
-                     <includes><include>*.xml</include></includes>
+                     <includes><include>spotbugsXml.xml</include></includes>
                      <outputDir>${project.build.directory}/spotbugs</outputDir>
                      <stylesheet>fancy-hist.xsl</stylesheet>
                      <fileMappers>
