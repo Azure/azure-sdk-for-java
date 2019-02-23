@@ -12,7 +12,6 @@ import rx.functions.Func1;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -24,7 +23,7 @@ public class FileTests extends BatchIntegrationTestBase {
     public static void setup() throws Exception {
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
-            createClientDirect(AuthMode.SharedKey);
+            createClient(AuthMode.SharedKey);
             livePool = createIfNotExistPaaSPool(poolId);
             Assert.assertNotNull(livePool);
         }

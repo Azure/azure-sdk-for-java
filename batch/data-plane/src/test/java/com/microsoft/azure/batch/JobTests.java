@@ -6,7 +6,6 @@ package com.microsoft.azure.batch;
 import com.microsoft.azure.batch.protocol.models.*;
 import org.junit.*;
 
-import java.util.Date;
 import java.util.List;
 
 public class JobTests extends BatchIntegrationTestBase {
@@ -15,7 +14,7 @@ public class JobTests extends BatchIntegrationTestBase {
     @BeforeClass
     public static void setup() throws Exception {
         if(isRecordMode()) {
-            createClientDirect(AuthMode.SharedKey);
+            createClient(AuthMode.SharedKey);
             String poolId = getStringIdWithUserNamePrefix("-testpool");
             livePool = createIfNotExistPaaSPool(poolId);
             Assert.assertNotNull(livePool);

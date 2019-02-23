@@ -6,16 +6,12 @@ package com.microsoft.azure.batch;
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
 import com.microsoft.azure.batch.interceptor.BatchClientParallelOptions;
 import com.microsoft.azure.batch.protocol.models.*;
-import com.microsoft.azure.storage.StorageCredentials;
-import com.microsoft.azure.storage.StorageCredentialsAccountAndKey;
-import com.microsoft.azure.storage.StorageUri;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.*;
 
 import java.io.*;
-import java.net.URI;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +23,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
     public static void setup() throws Exception {
         try {
             if(isRecordMode()) {
-                createClientDirect(AuthMode.SharedKey);
+                createClient(AuthMode.SharedKey);
                 String poolId = getStringIdWithUserNamePrefix("-testpool");
                 livePool = createIfNotExistPaaSPool(poolId);
                 poolId = getStringIdWithUserNamePrefix("-testIaaSpool");

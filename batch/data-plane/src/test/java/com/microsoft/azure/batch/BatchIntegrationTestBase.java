@@ -50,31 +50,13 @@ public class BatchIntegrationTestBase {
 
     private static TestBase.TestMode testMode = null;
     private PrintStream out;
-
-    protected enum RunCondition {
-        MOCK_ONLY, LIVE_ONLY, BOTH
-    }
-
-    protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     protected static String playbackUri = null;
     protected static String alternativePlaybackUri = null;
 
-    private final RunCondition runCondition;
-
-    protected BatchIntegrationTestBase() {
-        this(RunCondition.BOTH);
-    }
-
-    protected BatchIntegrationTestBase(RunCondition runCondition) {
-        this.runCondition = runCondition;
-    }
-
-
 
     private static void initTestMode() throws IOException {
-        String azureTestMode = "PLAYBACK";
+        String azureTestMode = System.getenv("AZURE_TEST_MODE");
         if (azureTestMode != null) {
             if (azureTestMode.equalsIgnoreCase("Record")) {
                 testMode = TestBase.TestMode.RECORD;
@@ -84,22 +66,12 @@ public class BatchIntegrationTestBase {
                 throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
             }
         } else {
-            // System.out.print("Environment variable 'AZURE_TEST_MODE' has not been set
-            // yet. Using 'Playback' mode.");
             testMode = TestBase.TestMode.PLAYBACK;
         }
     }
 
     private static void initPlaybackUri() throws IOException {
         if (isPlaybackMode()) {
-            Properties mavenProps = new Properties();
-            InputStream in = TestBase.class.getResourceAsStream("/maven.properties");
-            if (in == null) {
-                throw new IOException(
-                        "The file \"maven.properties\" has not been generated yet. Please execute \"mvn compile\" to generate the file.");
-            }
-            mavenProps.load(in);
-            String port = mavenProps.getProperty("playbackServerPort");
 
             // 11080 and 11081 needs to be in sync with values in jetty.xml file
             playbackUri = PLAYBACK_URI_BASE + "11080";
@@ -142,34 +114,27 @@ public class BatchIntegrationTestBase {
 
     protected InterceptorManager interceptorManager = null;
 
-    static void createClientDirect(AuthMode mode) {
+    static void createClient(AuthMode mode) {
         BatchCredentials credentials;
 
         if (mode == AuthMode.AAD) {
-            credentials = new BatchApplicationTokenCredentials(System.getenv("AZURE_BATCH_ENDPOINT"),
-                    System.getenv("CLIENT_ID"), System.getenv("APPLICATION_SECRET"), "microsoft.onmicrosoft.com", null,
-                    null);
+            credentials = getApplicationTokenCredentials();
         } else {
-            credentials = new BatchSharedKeyCredentials(System.getenv("AZURE_BATCH_ENDPOINT"),
-                    System.getenv("AZURE_BATCH_ACCOUNT"), System.getenv("AZURE_BATCH_ACCESS_KEY"));
+            credentials = getSharedKeyCredentials();
         }
         batchClient = BatchClient.open(credentials);
     }
 
-    void createClient(AuthMode mode) throws IOException {
+    void createClientWithInterceptor(AuthMode mode) throws IOException {
         BatchCredentials credentials;
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
         RestClient restClient;
-        String defaultSubscription;
 
         if (mode == AuthMode.AAD) {
-            credentials = new BatchApplicationTokenCredentials(System.getenv("AZURE_BATCH_ENDPOINT"),
-                    System.getenv("CLIENT_ID"), System.getenv("APPLICATION_SECRET"), "microsoft.onmicrosoft.com", null,
-                    null);
+            credentials = getApplicationTokenCredentials();
         } else {
-            credentials = new BatchSharedKeyCredentials(System.getenv("AZURE_BATCH_ENDPOINT"),
-                    System.getenv("AZURE_BATCH_ACCOUNT"), System.getenv("AZURE_BATCH_ACCESS_KEY"));
+            credentials = getSharedKeyCredentials();
         }
 
         if (isRecordMode()) {
@@ -189,15 +154,10 @@ public class BatchIntegrationTestBase {
                     .withNetworkInterceptor(interceptorManager.initInterceptor())
                     .withInterceptor(new ResourceManagerThrottlingInterceptor()));
 
-            //interceptorManager.addTextReplacementRule("https://management.azure.com/", playbackUri + "/");
-            //interceptorManager.addTextReplacementRule("https://batch.azure.com/", playbackUri + "/");
-
             batchClient = BatchClient.open(restClient, credentials.baseUrl());
             alternativeBatchClient = batchClient;
 
         } else { // is Playback Mode
-            defaultSubscription = ZERO_SUBSCRIPTION;
-
             out = System.out;
             System.setOut(new PrintStream(new OutputStream() {
                 public void write(int b) {
@@ -211,10 +171,21 @@ public class BatchIntegrationTestBase {
         }
     }
 
+    private static BatchSharedKeyCredentials getSharedKeyCredentials() {
+        return new BatchSharedKeyCredentials(System.getenv("AZURE_BATCH_ENDPOINT"),
+                System.getenv("AZURE_BATCH_ACCOUNT"), System.getenv("AZURE_BATCH_ACCESS_KEY"));
+    }
+
+    private static BatchApplicationTokenCredentials getApplicationTokenCredentials() {
+        return new BatchApplicationTokenCredentials(System.getenv("AZURE_BATCH_ENDPOINT"),
+                System.getenv("CLIENT_ID"), System.getenv("APPLICATION_SECRET"), "microsoft.onmicrosoft.com", null,
+                null);
+    }
+
     @Before
     public void beforeMethod() throws Exception {
         printThreadInfo(String.format("%s: %s", "beforeTest", testName.getMethodName()));
-        createClient(AuthMode.SharedKey);
+        createClientWithInterceptor(AuthMode.SharedKey);
     }
 
 
@@ -297,8 +268,8 @@ public class BatchIntegrationTestBase {
         String POOL_VM_SIZE = "STANDARD_A1";
         int POOL_VM_COUNT = 1;
 
-        // 5 minutes
-        long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
+        // 10 minutes
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -485,7 +456,14 @@ public class BatchIntegrationTestBase {
         return s;
     }
 
-    static TestBase.TestMode getTestMode(){
-        return testMode;
+
+
+    static void threadSleepInRecordMode(long millis) throws InterruptedException{
+        // Called for long timeouts which should only happen in Record mode.
+        // Speeds up the tests in Playback mode.
+        if(isRecordMode()) {
+            Thread.sleep(millis);
+        }
     }
+
 }

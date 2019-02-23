@@ -8,7 +8,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.*;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class JobScheduleTests extends BatchIntegrationTestBase {
     @BeforeClass
     public static void setup() throws Exception {
         if(isRecordMode()) {
-            createClientDirect(AuthMode.SharedKey);
+            createClient(AuthMode.SharedKey);
             String poolId = getStringIdWithUserNamePrefix("-testpool");
             livePool = createIfNotExistPaaSPool(poolId);
             Assert.assertNotNull(livePool);
