@@ -54,8 +54,8 @@ abstract class BatchTestBase {
         String POOL_OS_FAMILY = "4";
         String POOL_OS_VERSION = "*";
 
-        // 5 minutes
-        long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
+        // 10 minutes
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
