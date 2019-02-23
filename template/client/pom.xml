@@ -16,6 +16,15 @@
   <name>Microsoft Azure SDK for Template</name>
   <description>This package contains Microsoft Azure SDK for Template.</description>
 
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
