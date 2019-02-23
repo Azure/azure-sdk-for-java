@@ -10,12 +10,13 @@ import com.microsoft.azure.batch.protocol.models.*;
 
 public class PoolTests extends BatchIntegrationTestBase {
     private static CloudPool livePool;
+    private static String poolId;
 
     @BeforeClass
     public static void setup() throws Exception {
+        poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
             createClientDirect(AuthMode.SharedKey);
-            String poolId = getStringIdWithUserNamePrefix("-testpool");
             livePool = createIfNotExistPaaSPool(poolId);
             Assert.assertNotNull(livePool);
         }
@@ -32,10 +33,6 @@ public class PoolTests extends BatchIntegrationTestBase {
 
     @Test
     public void testPoolOData() throws Exception {
-        String poolId = "";
-        if(isRecordMode()){
-            poolId = livePool.id();
-        }
         CloudPool pool = batchClient.poolOperations().getPool(poolId,
                 new DetailLevel.Builder().withExpandClause("stats").build());
         Assert.assertNotNull(pool.stats());
@@ -105,8 +102,10 @@ public class PoolTests extends BatchIntegrationTestBase {
                     steady = true;
                     break;
                 }
-                System.out.println("wait 120 seconds for pool steady...");
-                Thread.sleep(120 * 1000);
+                if(isRecordMode()) {
+                    System.out.println("wait 120 seconds for pool steady...");
+                    Thread.sleep(120 * 1000);
+                }
                 elapsedTime = (new Date()).getTime() - startTime;
             }
 
@@ -162,8 +161,10 @@ public class PoolTests extends BatchIntegrationTestBase {
                         throw err;
                     }
                 }
-                System.out.println("wait 15 seconds for pool delete...");
-                Thread.sleep(15 * 1000);
+                if(isRecordMode()) {
+                    System.out.println("wait 15 seconds for pool delete...");
+                    Thread.sleep(15 * 1000);
+                }
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assert.assertTrue(deleted);
@@ -371,8 +372,8 @@ public class PoolTests extends BatchIntegrationTestBase {
         String POOL_OS_FAMILY = "4";
         String POOL_OS_VERSION = "*";
 
-        // 5 minutes
-        long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
+        // 10 minutes
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -402,8 +403,10 @@ public class PoolTests extends BatchIntegrationTestBase {
                     steady = true;
                     break;
                 }
-                System.out.println("wait 30 seconds for pool steady...");
-                Thread.sleep(30 * 1000);
+                if(isRecordMode()) {
+                    System.out.println("wait 30 seconds for pool steady...");
+                    Thread.sleep(30 * 1000);
+                }
                 elapsedTime = (new Date()).getTime() - startTime;
             }
 
@@ -433,8 +436,10 @@ public class PoolTests extends BatchIntegrationTestBase {
                         throw err;
                     }
                 }
-                System.out.println("wait 15 seconds for pool delete...");
-                Thread.sleep(15 * 1000);
+                if(isRecordMode()) {
+                    System.out.println("wait 15 seconds for pool delete...");
+                    Thread.sleep(15 * 1000);
+                }
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assert.assertTrue(deleted);
@@ -496,8 +501,10 @@ public class PoolTests extends BatchIntegrationTestBase {
                     steady = true;
                     break;
                 }
-                System.out.println("wait 30 seconds for pool steady...");
-                Thread.sleep(30 * 1000);
+                if(isRecordMode()) {
+                    System.out.println("wait 30 seconds for pool steady...");
+                    Thread.sleep(30 * 1000);
+                }
                 elapsedTime = (new Date()).getTime() - startTime;
             }
 
@@ -565,8 +572,10 @@ public class PoolTests extends BatchIntegrationTestBase {
                         throw err;
                     }
                 }
-                System.out.println("wait 5 seconds for pool delete...");
-                Thread.sleep(5 * 1000);
+                if(isRecordMode()) {
+                    System.out.println("wait 5 seconds for pool delete...");
+                    Thread.sleep(5 * 1000);
+                }
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assert.assertTrue(deleted);

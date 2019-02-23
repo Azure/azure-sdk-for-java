@@ -230,7 +230,14 @@ public class BatchIntegrationTestBase {
     protected RestClient buildPlaybackRestClient(ServiceClientCredentials credentials, String baseUrl) throws IOException {
         return buildRestClient(new RestClient.Builder().withBaseUrl(baseUrl)
                 .withSerializerAdapter(new AzureJacksonAdapter())
-                .withResponseBuilderFactory(new AzureResponseBuilder.Factory()).withCredentials(credentials)
+                .withResponseBuilderFactory(new ResponseBuilder.Factory() {
+                    private final AzureResponseBuilder.Factory baseFactory = new AzureResponseBuilder.Factory();
+                    @Override
+                    public <T, E extends RestException> ResponseBuilder<T, E> newInstance(SerializerAdapter<?> serializerAdapter) {
+                        return baseFactory.<T, E>newInstance(serializerAdapter).withThrowOnGet404(true);
+                    }
+                })
+                .withCredentials(credentials)
                 .withLogLevel(LogLevel.NONE)
                 .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
                 .withNetworkInterceptor(interceptorManager.initInterceptor())
@@ -245,7 +252,7 @@ public class BatchIntegrationTestBase {
         String POOL_OS_FAMILY = "4";
         String POOL_OS_VERSION = "*";
 
-        // 5 minutes
+        // 10 minutes
         long POOL_STEADY_TIMEOUT_IN_SECONDS = 10 * 60 * 1000;
 
         // Check if pool exists
