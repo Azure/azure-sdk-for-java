@@ -55,7 +55,11 @@ public class JobScheduleTests extends BatchIntegrationTestBase {
             Assert.assertNotNull(jobSchedule);
             Assert.assertEquals(jobScheduleId, jobSchedule.id());
             Assert.assertEquals((Integer) 100, jobSchedule.jobSpecification().priority());
-            Assert.assertTrue(jobSchedule.schedule().doNotRunAfter().compareTo(DateTime.now()) > 0);
+            //This case will only hold true during live mode as recorded job schedule time will be in the past.
+            //Hence, this assertion should only run in Record/Live mode.
+            if(isRecordMode()) {
+                Assert.assertTrue(jobSchedule.schedule().doNotRunAfter().compareTo(DateTime.now()) > 0);
+            }
 
             // LIST
             List<CloudJobSchedule> jobSchedules = batchClient.jobScheduleOperations().listJobSchedules(new DetailLevel.Builder().withFilterClause(String.format("id eq '%s'", jobScheduleId)).build());

@@ -312,6 +312,8 @@ public class BatchIntegrationTestBase {
     }
 
     static String getStringIdWithUserNamePrefix(String name) {
+        //'BatchUser' is the name used for Recording / Playing Back tests.
+        // For Local testing, use your username here, to create your unique Batch resources and avoiding conflict in shared batch account.
         String userName = "BatchUser";
         StringBuilder out = new StringBuilder();
         int remainingSpace = MAX_LEN_ID - name.length();
