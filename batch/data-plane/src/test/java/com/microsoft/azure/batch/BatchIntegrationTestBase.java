@@ -27,6 +27,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.interceptors.LoggingInterceptor;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
+import okhttp3.OkHttpClient;
 import org.junit.*;
 import org.junit.rules.TestName;
 
@@ -131,11 +132,7 @@ public class BatchIntegrationTestBase {
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
         RestClient restClient;
 
-        if (mode == AuthMode.AAD) {
-            credentials = getApplicationTokenCredentials();
-        } else {
-            credentials = getSharedKeyCredentials();
-        }
+        credentials = getCredentials(mode);
 
         if (isRecordMode()) {
 
@@ -169,6 +166,30 @@ public class BatchIntegrationTestBase {
             alternativeBatchClient = BatchClient.open(buildPlaybackRestClient(credentials, alternativePlaybackUri + "/"),alternativePlaybackUri+"/");
 
         }
+    }
+
+    private static BatchCredentials getCredentials(AuthMode mode){
+        BatchCredentials credentials;
+        if(isRecordMode()) {
+            if (mode == AuthMode.AAD) {
+                credentials = getApplicationTokenCredentials();
+            } else {
+                credentials = getSharedKeyCredentials();
+            }
+        } else{
+            credentials =  new BatchCredentials() {
+                @Override
+                public String baseUrl() {
+                    return null;
+                }
+
+                @Override
+                public void applyCredentialsFilter(OkHttpClient.Builder builder) {
+
+                }
+            };
+        }
+        return credentials;
     }
 
     private static BatchSharedKeyCredentials getSharedKeyCredentials() {
