@@ -30,7 +30,7 @@ jobs:
     displayName: 'Build and Package'
     inputs:
       mavenPomFile: $(pomFile)
-      goals: 'javadoc:jar source:jar package'
+      goals: 'checkstyle:check javadoc:jar source:jar package' # Run checkstyle:check to fail build when checkstyle failures are encountered
       options: '$(DefaultOptions) $(ProfileFlag) -Dmaven.test.skip=true -Dinclude-template' # We include template-module so we ensure it always builds in CI
       mavenOptions: '$(LoggingOptions)'
       javaHomeOption: 'JDKVersion'
