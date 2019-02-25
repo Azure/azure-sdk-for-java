@@ -26,18 +26,18 @@ jobs:
         JavaVersion: '1.11'
 
   steps:
-  # This build task can be removed once we start publishing the build tools to Maven Central
   - task: Maven@3
-      displayName: 'Install reporting tools'
-      inputs:
-        mavenPomFile: $(pomFile)
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
-        mavenOptions: '$(LoggingOptions)'
-        javaHomeOption: 'JDKVersion'
-        jdkVersionOption: '1.11'
-        jdkArchitectureOption: 'x64'
-        publishJUnitResults: false
-        goals: 'install'
+    # This build task can be removed once we start publishing the build tools to Maven Central
+    displayName: 'Install reporting tools'
+    inputs:
+      mavenPomFile: $(pomFile)
+      options: '$(DefaultOptions) -Dinclude-non-shipping-modules -DskipTests -Dgpg.skip'
+      mavenOptions: '$(LoggingOptions)'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      jdkArchitectureOption: 'x64'
+      publishJUnitResults: false
+      goals: 'install'
 
   - task: Maven@3
     displayName: 'Build and Package'
