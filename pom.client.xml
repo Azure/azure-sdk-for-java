@@ -845,6 +845,7 @@
   </profiles>
 
   <modules>
+    <module>./azconfig/data-plane</module>
     <module>./batch/data-plane</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
