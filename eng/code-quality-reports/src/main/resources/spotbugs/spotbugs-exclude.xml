@@ -46,6 +46,13 @@
         <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
 
+    <!-- These KeyVault classes are publicly released APIs that intentionally return null rather
+    than an empty array. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.(cryptography|models|webkey)\.[\w]+"/>
+        <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+    </Match>
+
     <!-- Suppress non-null warning in the case that we change the code and it is possible for
     KeyVaultCredentials.getAuthenticationCredentials to return null. -->
     <Match>
