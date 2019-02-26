@@ -24,6 +24,13 @@
         <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
     </Match>
 
+    <!-- KeyVaultKey.DecryptResultTransform and SignResultTransform were not created with the
+    intention that a null could be passed in. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
+        <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
+    </Match>
+
     <!-- Ignoring dropped exception because it existed in current SDK when migrated. -->
     <Match>
         <Class name="com.microsoft.azure.keyvault.extensions.CachingKeyResolver$2" />
