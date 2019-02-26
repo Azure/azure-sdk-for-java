@@ -72,7 +72,7 @@
     <!-- Known issue in autorest where it will generate a variable with a value of null.
     https://github.com/Azure/autorest.java/issues/324 -->
     <Match>
-        <Class name="com.microsoft.azure.keyvault.KeyVaultClientImpl"/>
+        <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
         <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
     </Match>
 </FindBugsFilter>
