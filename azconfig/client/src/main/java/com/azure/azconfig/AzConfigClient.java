@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.azconfig;
 
 import com.azure.azconfig.implementation.PageImpl;
@@ -17,7 +14,6 @@ import com.azure.azconfig.models.KeyValueListFilter;
 import com.azure.azconfig.models.Label;
 import com.azure.azconfig.models.RevisionFilter;
 import com.microsoft.azure.v3.CloudException;
-import com.microsoft.azure.v3.Page;
 import com.microsoft.rest.v3.RestPagedResponse;
 import com.microsoft.rest.v3.RestProxy;
 import com.microsoft.rest.v3.RestResponse;
