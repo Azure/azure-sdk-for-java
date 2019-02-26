@@ -33,6 +33,13 @@
         <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
 
+    <!-- Suppress non-null warning in the case that we change the code and it is possible for
+    KeyVaultCredentials.getAuthenticationCredentials to return null. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+        <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+    </Match>
+
     <!-- These KeyVaultClientBase methods are made synchronous by blocking and
     waiting for a result. They do not return anything, so it can be ignored. -->
     <Match>
@@ -67,12 +74,5 @@
     <Match>
         <Class name="com.microsoft.azure.keyvault.KeyVaultClientImpl"/>
         <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
-    </Match>
-
-    <!-- Suppress non-null warning in the case that we change the code and it is possible for
-    KeyVaultCredentials.getAuthenticationCredentials to return null. -->
-    <Match>
-        <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
-        <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
     </Match>
 </FindBugsFilter>
