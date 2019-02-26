@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter>
-    <!-- These autorest generated APIs for existing Azure SDK components supports Java 7.
-    Suppressing error for using anonymous inner classes. -->
-    <Match>
-        <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
-        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-    </Match>
-
     <!-- These keyvault models are already publicly released APIs with name
     matching the simple name of superclass -->
     <Match>
@@ -46,6 +39,13 @@
         <Class name="com.microsoft.azure.keyvault.implementation.KeyVaultClientBaseImpl"/>
         <Method name="~(purgeDeletedCertificate|purgeDeletedKey|purgeDeletedSecret|purgeDeletedStorageAccount)"/>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+    </Match>
+
+    <!-- These autorest generated APIs for existing Azure SDK components supports Java 7.
+    Suppressing error for using anonymous inner classes. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
     </Match>
 
     <!-- KeyVaultCredential values manipulated do not need to be localised. They
