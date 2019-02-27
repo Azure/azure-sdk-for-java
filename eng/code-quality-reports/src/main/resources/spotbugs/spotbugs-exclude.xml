@@ -31,11 +31,11 @@
         <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
     </Match>
 
-    <!-- Ignoring dropped exception because it existed in current SDK when migrated. -->
+    <!-- Ignoring dropped exception and catch Exception because it existed in current SDK when migrated. -->
     <Match>
-        <Class name="com.microsoft.azure.keyvault.extensions.CachingKeyResolver$2" />
+        <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.CachingKeyResolver\$[0-9]+" />
         <Method name="run" />
-        <Bug pattern="DE_MIGHT_IGNORE"/>
+        <Bug pattern="DE_MIGHT_IGNORE,REC_CATCH_EXCEPTION"/>
     </Match>
 
     <!-- Protected field already exists in the public API surface area even
