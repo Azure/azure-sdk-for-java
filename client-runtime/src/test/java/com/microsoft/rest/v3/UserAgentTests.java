@@ -30,14 +30,14 @@ public class UserAgentTests {
                     Assert.assertEquals(
                             request.headers().value("User-Agent"),
                             "AutoRest-Java");
-                    return Mono.<HttpResponse>just(new MockHttpResponse(200));
+                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
             },
             new HttpPipelineOptions(null),
             new UserAgentPolicy("AutoRest-Java"));
 
         HttpResponse response = pipeline.send(new HttpRequest(
-                HttpMethod.GET, new URL("http://localhost"), null)).block();
+                HttpMethod.GET, new URL("http://localhost"))).block();
 
         Assert.assertEquals(200, response.statusCode());
     }
@@ -49,14 +49,14 @@ public class UserAgentTests {
                 public Mono<HttpResponse> send(HttpRequest request) {
                     String header = request.headers().value("User-Agent");
                     Assert.assertEquals("Awesome", header);
-                    return Mono.<HttpResponse>just(new MockHttpResponse(200));
+                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
             },
             new HttpPipelineOptions(null),
             new UserAgentPolicy("Awesome"));
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,
-                new URL("http://localhost"), null)).block();
+                new URL("http://localhost"))).block();
         Assert.assertEquals(200, response.statusCode());
     }
 }

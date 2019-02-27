@@ -26,7 +26,7 @@ import java.util.function.BiFunction;
 /**
  * HttpClient that is implemented using reactor-netty.
  */
-public final class ReactorNettyClient extends HttpClient {
+final class ReactorNettyClient extends HttpClient {
     private reactor.netty.http.client.HttpClient httpClient;
 
     /**
@@ -148,7 +148,7 @@ public final class ReactorNettyClient extends HttpClient {
                     return reactorNettyConnection;
                 }
             };
-            return Mono.just(httpResponse);
+            return Mono.just(httpResponse.withRequest(restRequest));
         };
         return responseDelegate;
     }

@@ -19,9 +19,10 @@ import java.net.MalformedURLException;
 /**
  * The Pipeline policy that adds a given protocol to each HttpRequest.
  */
-public class ProtocolPolicy extends AbstractPipelinePolicy {
+public class ProtocolPolicy implements HttpPipelinePolicy {
     private final String protocol;
     private final boolean overwrite;
+    private final HttpPipelineOptions options;
 
     /**
      * Create a new ProtocolPolicy.
@@ -40,18 +41,19 @@ public class ProtocolPolicy extends AbstractPipelinePolicy {
      * @param options the request options
      */
     public ProtocolPolicy(String protocol, boolean overwrite, HttpPipelineOptions options) {
-        super(options);
         this.protocol = protocol;
         this.overwrite = overwrite;
+        this.options = options;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
         if (overwrite || urlBuilder.scheme() == null) {
-            if (shouldLog(HttpPipelineLogLevel.INFO)) {
-                log(HttpPipelineLogLevel.INFO, "Setting protocol to {0}", protocol);
+            if (options.shouldLog(HttpPipelineLogLevel.INFO)) {
+                options.log(HttpPipelineLogLevel.INFO, "Setting protocol to {0}", protocol);
             }
+
             try {
                 context.httpRequest().withUrl(urlBuilder.withScheme(protocol).toURL());
             } catch (MalformedURLException e) {

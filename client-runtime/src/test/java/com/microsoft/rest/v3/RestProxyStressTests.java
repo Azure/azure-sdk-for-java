@@ -14,7 +14,6 @@ import com.microsoft.rest.v3.annotations.HeaderParam;
 import com.microsoft.rest.v3.annotations.Host;
 import com.microsoft.rest.v3.annotations.PUT;
 import com.microsoft.rest.v3.annotations.PathParam;
-import com.microsoft.rest.v3.http.ContentType;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;

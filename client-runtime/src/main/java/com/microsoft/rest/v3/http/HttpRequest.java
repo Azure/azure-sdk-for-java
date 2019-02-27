@@ -6,7 +6,6 @@
 
 package com.microsoft.rest.v3.http;
 
-import com.microsoft.rest.v3.serializer.HttpResponseDecoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
@@ -22,20 +21,17 @@ public class HttpRequest {
     private URL url;
     private HttpHeaders headers;
     private Flux<ByteBuf> body;
-    private final HttpResponseDecoder responseDecoder;
 
     /**
      * Create a new HttpRequest instance.
      *
      * @param httpMethod the HTTP request method
      * @param url the target address to send the request to
-     * @param responseDecoder decoder to decode response of this request
      */
-    public HttpRequest(HttpMethod httpMethod, URL url, HttpResponseDecoder responseDecoder) {
+    public HttpRequest(HttpMethod httpMethod, URL url) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = new HttpHeaders();
-        this.responseDecoder = responseDecoder;
     }
 
     /**
@@ -45,14 +41,12 @@ public class HttpRequest {
      * @param url the target address to send the request to
      * @param headers the HTTP headers to use with this request
      * @param body the request content
-     * @param responseDecoder decoder to decode response of this request
      */
-    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuf> body, HttpResponseDecoder responseDecoder) {
+    public HttpRequest(HttpMethod httpMethod, URL url, HttpHeaders headers, Flux<ByteBuf> body) {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
         this.body = body;
-        this.responseDecoder = responseDecoder;
     }
 
     /**
@@ -176,15 +170,6 @@ public class HttpRequest {
     }
 
     /**
-     * Get the response decoder for the request.
-     *
-     * @return the {@link HttpResponseDecoder} to decodes the response of this request.
-     */
-    public HttpResponseDecoder responseDecoder() {
-        return responseDecoder;
-    }
-
-    /**
      * Creates a clone of the request.
      *
      * The main purpose of this is so that this HttpRequest can be changed and the resulting
@@ -195,6 +180,6 @@ public class HttpRequest {
      */
     public HttpRequest buffer() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
-        return new HttpRequest(httpMethod, url, bufferedHeaders, body, responseDecoder);
+        return new HttpRequest(httpMethod, url, bufferedHeaders, body);
     }
 }

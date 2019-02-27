@@ -19,9 +19,10 @@ import java.net.MalformedURLException;
 /**
  * The Pipeline policy that adds a given port to each HttpRequest.
  */
-public class PortPolicy extends AbstractPipelinePolicy {
+public class PortPolicy implements HttpPipelinePolicy {
     private final int port;
     private final boolean overwrite;
+    private final HttpPipelineOptions options;
 
     /**
      * Create a new PortPolicy object.
@@ -40,18 +41,19 @@ public class PortPolicy extends AbstractPipelinePolicy {
      * @param options the request options
      */
     public PortPolicy(int port, boolean overwrite, HttpPipelineOptions options) {
-        super(options);
         this.port = port;
         this.overwrite = overwrite;
+        this.options = options;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
         if (overwrite || urlBuilder.port() == null) {
-            if (shouldLog(HttpPipelineLogLevel.INFO)) {
-                log(HttpPipelineLogLevel.INFO, "Changing port to {0}", port);
+            if (options.shouldLog(HttpPipelineLogLevel.INFO)) {
+                options.log(HttpPipelineLogLevel.INFO, "Changing port to {0}", port);
             }
+
             try {
                 context.httpRequest().withUrl(urlBuilder.withPort(port).toURL());
             } catch (MalformedURLException e) {

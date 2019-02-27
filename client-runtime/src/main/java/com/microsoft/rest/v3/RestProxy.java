@@ -8,7 +8,6 @@ package com.microsoft.rest.v3;
 
 import com.microsoft.rest.v3.annotations.ResumeOperation;
 import com.microsoft.rest.v3.credentials.ServiceClientCredentials;
-import com.microsoft.rest.v3.http.ContentType;
 import com.microsoft.rest.v3.http.ContextData;
 import com.microsoft.rest.v3.http.HttpHeader;
 import com.microsoft.rest.v3.http.HttpHeaders;
@@ -20,11 +19,11 @@ import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.UrlBuilder;
 import com.microsoft.rest.v3.http.policy.CookiePolicy;
 import com.microsoft.rest.v3.http.policy.CredentialsPolicy;
-import com.microsoft.rest.v3.http.policy.DecodingPolicy;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.policy.RetryPolicy;
 import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
 import com.microsoft.rest.v3.serializer.HttpResponseDecoder;
+import com.microsoft.rest.v3.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.SerializerEncoding;
 import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
@@ -60,6 +59,7 @@ public class RestProxy implements InvocationHandler {
     private final HttpPipeline httpPipeline;
     private final SerializerAdapter serializer;
     private final SwaggerInterfaceParser interfaceParser;
+    private final HttpResponseDecoder decoder;
 
     /**
      * Create a RestProxy.
@@ -74,6 +74,7 @@ public class RestProxy implements InvocationHandler {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
+        this.decoder = new HttpResponseDecoder(this.serializer);
     }
 
     /**
@@ -110,8 +111,8 @@ public class RestProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
         try {
-            SwaggerMethodParser methodParser = null;
-            HttpRequest request = null;
+            final SwaggerMethodParser methodParser;
+            final HttpRequest request;
             if (method.isAnnotationPresent(ResumeOperation.class)) {
                 OperationDescription opDesc = (OperationDescription) args[0];
                 Method resumeMethod = null;
@@ -132,8 +133,10 @@ public class RestProxy implements InvocationHandler {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
                 final Mono<HttpResponse> asyncResponse = send(request, methodParser.contextData(args).addData("caller-method", methodParser.fullyQualifiedMethodName()));
-                final Type returnType = methodParser.returnType();
-                return handleHttpResponse(request, asyncResponse, methodParser, returnType);
+                //
+                Mono<HttpDecodedResponse> asyncDecodedResponse = this.decoder.decode(asyncResponse, methodParser);
+                //
+                return handleHttpResponse(request, asyncDecodedResponse, methodParser, methodParser.returnType());
             }
 
         } catch (Exception e) {
@@ -181,7 +184,7 @@ public class RestProxy implements InvocationHandler {
         }
 
         final URL url = urlBuilder.toURL();
-        final HttpRequest request = new HttpRequest(methodParser.httpMethod(), url, new HttpResponseDecoder(methodParser, serializer));
+        final HttpRequest request = new HttpRequest(methodParser.httpMethod(), url);
 
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject == null) {
@@ -249,8 +252,7 @@ public class RestProxy implements InvocationHandler {
     private HttpRequest createHttpRequest(OperationDescription operationDescription, SwaggerMethodParser methodParser, Object[] args) throws IOException {
         final HttpRequest request = new HttpRequest(
                 methodParser.httpMethod(),
-                operationDescription.url(),
-                new HttpResponseDecoder(methodParser, serializer));
+                operationDescription.url());
 
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject == null) {
@@ -309,15 +311,21 @@ public class RestProxy implements InvocationHandler {
         return request;
     }
 
-    private Exception instantiateUnexpectedException(SwaggerMethodParser methodParser, HttpResponse response, String responseContent) {
-        final int responseStatusCode = response.statusCode();
-        final Class<? extends RestException> exceptionType = methodParser.exceptionType();
-        final Class<?> exceptionBodyType = methodParser.exceptionBodyType();
+    private Mono<HttpDecodedResponse> ensureExpectedStatus(Mono<HttpDecodedResponse> asyncDecodedResponse, final SwaggerMethodParser methodParser) {
+        return asyncDecodedResponse
+                .flatMap(decodedHttpResponse -> ensureExpectedStatus(decodedHttpResponse, methodParser, null));
+    }
 
-        String contentType = response.headerValue("Content-Type");
+    private static Exception instantiateUnexpectedException(Class<? extends RestException> exceptionType,
+                                                            Class<?> exceptionBodyType,
+                                                            HttpResponse httpResponse,
+                                                            String responseContent,
+                                                            Object responseDecodedContent) {
+        final int responseStatusCode = httpResponse.statusCode();
+        String contentType = httpResponse.headerValue("Content-Type");
         String bodyRepresentation;
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            bodyRepresentation = "(" + response.headerValue("Content-Length") + "-byte body)";
+            bodyRepresentation = "(" + httpResponse.headerValue("Content-Length") + "-byte body)";
         } else {
             bodyRepresentation = responseContent.isEmpty() ? "(empty body)" : "\"" + responseContent + "\"";
         }
@@ -325,46 +333,75 @@ public class RestProxy implements InvocationHandler {
         Exception result;
         try {
             final Constructor<? extends RestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
-            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation, response, response.deserializedBody());
+            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation,
+                    httpResponse,
+                    responseDecodedContent);
         } catch (ReflectiveOperationException e) {
             String message = "Status code " + responseStatusCode + ", but an instance of "
                     + exceptionType.getCanonicalName() + " cannot be created."
                     + " Response body: " + bodyRepresentation;
-
+            //
             result = new IOException(message, e);
         }
-
         return result;
     }
 
-    private Mono<HttpResponse> ensureExpectedStatus(Mono<HttpResponse> asyncResponse, final SwaggerMethodParser methodParser) {
-        return asyncResponse
-                .flatMap(httpResponse -> ensureExpectedStatus(httpResponse, methodParser));
-    }
-
-    private Mono<HttpResponse> ensureExpectedStatus(final HttpResponse response, final SwaggerMethodParser methodParser) {
-        return ensureExpectedStatus(response, methodParser, null);
-    }
-
     /**
-     * Ensure that the provided HttpResponse has a status code that is defined in the provided
-     * SwaggerMethodParser or is in the int[] of additional allowed status codes. If the
-     * HttpResponse's status code is not allowed, then an exception will be thrown.
-     * @param response The HttpResponse to check.
+     * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has
+     * 'disallowed status code' OR (2) emits provided response if it's status code ia allowed.
+     *
+     * 'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser
+     *  or is in the int[] of additional allowed status codes.
+     *
+     * @param decodedResponse The HttpResponse to check.
      * @param methodParser The method parser that contains information about the service interface
      *                     method that initiated the HTTP request.
      * @param additionalAllowedStatusCodes Additional allowed status codes that are permitted based
      *                                     on the context of the HTTP request.
-     * @return An async-version of the provided HttpResponse.
+     * @return An async-version of the provided decodedResponse.
      */
-    public Mono<HttpResponse> ensureExpectedStatus(final HttpResponse response, final SwaggerMethodParser methodParser, int[] additionalAllowedStatusCodes) {
-        final int responseStatusCode = response.statusCode();
-        final Mono<HttpResponse> asyncResult;
+    public Mono<HttpDecodedResponse> ensureExpectedStatus(final HttpDecodedResponse decodedResponse, final SwaggerMethodParser methodParser, int[] additionalAllowedStatusCodes) {
+        final int responseStatusCode = decodedResponse.sourceResponse().statusCode();
+        final Mono<HttpDecodedResponse> asyncResult;
         if (!methodParser.isExpectedResponseStatusCode(responseStatusCode, additionalAllowedStatusCodes)) {
-            asyncResult = response.bodyAsString().flatMap((Function<String, Mono<HttpResponse>>) responseBody -> Mono.error(instantiateUnexpectedException(methodParser, response, responseBody)))
-                    .switchIfEmpty(Mono.defer((Supplier<Mono<HttpResponse>>) () -> Mono.error(instantiateUnexpectedException(methodParser, response, ""))));
+            Mono<String> bodyAsString = decodedResponse.sourceResponse().bodyAsString();
+            //
+            asyncResult = bodyAsString.flatMap((Function<String, Mono<HttpDecodedResponse>>) responseContent -> {
+                // bodyAsString() emits non-empty string, now look for decoded version of same string
+                Mono<Object> decodedErrorBody = decodedResponse.decodedBody();
+                //
+                return decodedErrorBody.flatMap((Function<Object, Mono<HttpDecodedResponse>>) responseDecodedErrorObject -> {
+                    // decodedBody() emits 'responseDecodedErrorObject' the successfully decoded exception body object
+                    Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
+                            methodParser.exceptionBodyType(),
+                            decodedResponse.sourceResponse(),
+                            responseContent,
+                            responseDecodedErrorObject);
+                    return Mono.error(exception);
+                    //
+                }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
+                    // decodedBody() emits empty, indicate unable to decode 'responseContent',
+                    // create exception with un-decodable content string and without exception body object.
+                    Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
+                            methodParser.exceptionBodyType(),
+                            decodedResponse.sourceResponse(),
+                            responseContent,
+                            null);
+                    return Mono.error(exception);
+                    //
+                }));
+            }).switchIfEmpty(Mono.defer((Supplier<Mono<HttpDecodedResponse>>) () -> {
+                // bodyAsString() emits empty, indicate no body, create exception empty content string no exception body object.
+                Throwable exception = instantiateUnexpectedException(methodParser.exceptionType(),
+                        methodParser.exceptionBodyType(),
+                        decodedResponse.sourceResponse(),
+                        "",
+                        null);
+                return Mono.error(exception);
+                //
+            }));
         } else {
-            asyncResult = Mono.just(response);
+            asyncResult = Mono.just(decodedResponse);
         }
         return asyncResult;
     }
@@ -398,30 +435,36 @@ public class RestProxy implements InvocationHandler {
         }
     }
 
-    private Mono<?> handleRestResponseReturnType(HttpResponse response, SwaggerMethodParser methodParser, Type entityType) {
-        final int responseStatusCode = response.statusCode();
-
+    private Mono<?> handleRestResponseReturnType(HttpDecodedResponse response, SwaggerMethodParser methodParser, Type entityType) {
+        final int responseStatusCode = response.sourceResponse().statusCode();
+        //
         try {
             Mono<?> asyncResult;
             if (TypeUtil.isTypeOrSubTypeOf(entityType, RestResponse.class)) {
+                // entityType = ? extends RestResponse<THeaders, TBody>
                 Constructor<? extends RestResponse<?, ?>> responseConstructor = getRestResponseConstructor(entityType);
 
                 Type[] deserializedTypes = TypeUtil.getTypeArguments(TypeUtil.getSuperType(entityType, RestResponse.class));
 
-                HttpHeaders responseHeaders = response.headers();
-                Object deserializedHeaders = response.deserializedHeaders();
+                HttpHeaders responseHeaders = response.sourceResponse().headers();
+                Object deserializedHeaders = response.decodedHeaders().block();
 
                 Type bodyType = deserializedTypes[1];
                 if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                    asyncResult = response.body().ignoreElements()
-                            .then(Mono.just(responseConstructor.newInstance(response.request(), responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
+                    // entityType = ? extends RestResponse<THeaders, Void>
+                    asyncResult = response.sourceResponse().body().ignoreElements()
+                            .then(Mono.just(responseConstructor.newInstance(response.sourceResponse().request(), responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
                 } else {
                     final Map<String, String> rawHeaders = responseHeaders.toMap();
-                    //
+                    // entityType = ? extends RestResponse<THeaders, byte[]>,
+                    // entityType = ? extends RestResponse<THeaders, Base64Url>
+                    // entityType = ? extends RestResponse<THeaders, Flux<ByteBuf>>
+                    // entityType = ? extends RestResponse<THeaders, Boolean>
+                    // entityType = ? extends RestResponse<THeaders, VirtualMachine>
                     asyncResult = handleBodyReturnType(response, methodParser, bodyType)
                             .map((Function<Object, RestResponse<?, ?>>) bodyAsObject -> {
                                 try {
-                                    return responseConstructor.newInstance(response.request(), responseStatusCode, deserializedHeaders, rawHeaders, bodyAsObject);
+                                    return responseConstructor.newInstance(response.sourceResponse().request(), responseStatusCode, deserializedHeaders, rawHeaders, bodyAsObject);
                                 } catch (IllegalAccessException iae) {
                                     throw reactor.core.Exceptions.propagate(iae);
                                 } catch (InvocationTargetException ite) {
@@ -432,7 +475,7 @@ public class RestProxy implements InvocationHandler {
                             })
                             .switchIfEmpty(Mono.defer((Supplier<Mono<RestResponse<?, ?>>>) () -> {
                                 try {
-                                return Mono.just(responseConstructor.newInstance(response.request(), responseStatusCode, deserializedHeaders, rawHeaders, null));
+                                return Mono.just(responseConstructor.newInstance(response.sourceResponse().request(), responseStatusCode, deserializedHeaders, rawHeaders, null));
                                 } catch (IllegalAccessException iae) {
                                     throw reactor.core.Exceptions.propagate(iae);
                                 } catch (InvocationTargetException ite) {
@@ -441,14 +484,6 @@ public class RestProxy implements InvocationHandler {
                                     throw reactor.core.Exceptions.propagate(ie);
                                 }
                             }));
-                }
-
-                Type headersType = deserializedTypes[0];
-                if (!response.isDecoded() && !TypeUtil.isTypeOrSubTypeOf(headersType, Void.class)) {
-                    asyncResult = asyncResult.then(Mono.error(new RestException(
-                            "No deserialized headers were found. Please add a DecodingPolicy to the HttpPipeline.",
-                            response,
-                            (Object) null)));
                 }
             } else {
                 // For now we're just throwing if the Maybe didn't emit a value.
@@ -461,8 +496,8 @@ public class RestProxy implements InvocationHandler {
         }
     }
 
-    protected final Mono<?> handleBodyReturnType(final HttpResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
-        final int responseStatusCode = response.statusCode();
+    protected final Mono<?> handleBodyReturnType(final HttpDecodedResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
+        final int responseStatusCode = response.sourceResponse().statusCode();
         final HttpMethod httpMethod = methodParser.httpMethod();
         final Type returnValueWireType = methodParser.returnValueWireType();
 
@@ -472,72 +507,67 @@ public class RestProxy implements InvocationHandler {
             boolean isSuccess = (responseStatusCode / 100) == 2;
             asyncResult = Mono.just(isSuccess);
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
-            Mono<byte[]> responseBodyBytesAsync = response.bodyAsByteArray();
+            // Mono<byte[]>
+            Mono<byte[]> responseBodyBytesAsync = response.sourceResponse().bodyAsByteArray();
             if (returnValueWireType == Base64Url.class) {
+                // Mono<Base64Url>
                 responseBodyBytesAsync = responseBodyBytesAsync.map(base64UrlBytes -> new Base64Url(base64UrlBytes).decodedBytes());
             }
             asyncResult = responseBodyBytesAsync;
         } else if (FluxUtil.isFluxByteBuf(entityType)) {
-            asyncResult = Mono.just(response.body());
-        } else if (!response.isDecoded()) {
-            asyncResult = Mono.error(new RestException(
-                    "No deserialized response body was found. Please add a DecodingPolicy to the HttpPipeline.",
-                    response,
-                    (Object) null));
+            // Mono<Flux<ByteBuf>>
+            asyncResult = Mono.just(response.sourceResponse().body());
         } else {
-            Object result = response.deserializedBody();
-            if (result == null) {
-                asyncResult = Mono.empty();
-            } else {
-                asyncResult = Mono.just(result);
-            }
+            // Mono<Object>
+            asyncResult = response.decodedBody();
         }
         return asyncResult;
     }
 
-    protected Object handleHttpResponse(HttpRequest httpRequest, Mono<HttpResponse> asyncHttpResponse, SwaggerMethodParser methodParser, Type returnType) {
-        return handleRestReturnType(httpRequest, asyncHttpResponse, methodParser, returnType);
+    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncDecodedHttpResponse, SwaggerMethodParser methodParser, Type returnType) {
+        return handleRestReturnType(asyncDecodedHttpResponse, methodParser, returnType);
     }
 
     protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType)
         throws Exception {
-        throw new Exception("The resume operation is not avaiable in the base RestProxy class.");
+        throw new Exception("The resume operation is not available in the base RestProxy class.");
     }
 
     /**
      * Handle the provided asynchronous HTTP response and return the deserialized value.
      *
-     * @param httpRequest the original HTTP request
-     * @param asyncHttpResponse the asynchronous HTTP response to the original HTTP request
+     * @param asyncHttpDecodedResponse the asynchronous HTTP response to the original HTTP request
      * @param methodParser the SwaggerMethodParser that the request originates from
      * @param returnType the type of value that will be returned
      * @return the deserialized result
      */
-    public final Object handleRestReturnType(HttpRequest httpRequest, Mono<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, final Type returnType) {
-        Object result;
-
-        final Mono<HttpResponse> asyncExpectedResponse = ensureExpectedStatus(asyncHttpResponse, methodParser);
-
+    public final Object handleRestReturnType(Mono<HttpDecodedResponse> asyncHttpDecodedResponse, final SwaggerMethodParser methodParser, final Type returnType) {
+        final Mono<HttpDecodedResponse> asyncExpectedResponse = ensureExpectedStatus(asyncHttpDecodedResponse, methodParser);
+        final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {
             final Type monoTypeParam = TypeUtil.getTypeArgument(returnType);
             if (TypeUtil.isTypeOrSubTypeOf(monoTypeParam, Void.class)) {
-                // TODO: Generator: For methods that returns Completable today, Generator has to be updated to emit method return type as Mono<Void>
+                // ProxyMethod ReturnType: Mono<Void>
                 result = asyncExpectedResponse.then();
             } else {
+                // ProxyMethod ReturnType: Mono<? extends RestResponse<?, ?>>
                 result = asyncExpectedResponse.flatMap(response ->
                         handleRestResponseReturnType(response, methodParser, monoTypeParam));
             }
         } else if (FluxUtil.isFluxByteBuf(returnType)) {
-            result = asyncExpectedResponse.flatMapMany(HttpResponse::body);
+            // ProxyMethod ReturnType: Flux<ByteBuf>
+            result = asyncExpectedResponse.flatMapMany(ar -> {
+               return ar.sourceResponse().body();
+            });
         } else if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
+            // ProxyMethod ReturnType: Void
             asyncExpectedResponse.block();
             result = null;
         } else {
-            // The method return value is not an asynchronous type (Mono or Flux) or synchronous void type so
-            // block the deserialization until a value is received.
+            // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void
+            // Block the deserialization until a value T is received
             result = asyncExpectedResponse
-                    .flatMap(httpResponse ->
-                            handleRestResponseReturnType(httpResponse, methodParser, returnType))
+                    .flatMap(httpResponse -> handleRestResponseReturnType(httpResponse, methodParser, returnType))
                     .block();
         }
         return result;
@@ -581,7 +611,6 @@ public class RestProxy implements InvocationHandler {
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
         policies.add(new UserAgentPolicy());
         policies.add(new RetryPolicy());
-        policies.add(new DecodingPolicy());
         policies.add(new CookiePolicy());
         if (credentialsPolicy != null) {
             policies.add(credentialsPolicy);

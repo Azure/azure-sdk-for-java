@@ -67,7 +67,10 @@ abstract class PollStrategy {
     }
 
     protected Mono<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse, int[] additionalAllowedStatusCodes) {
-        return restProxy.ensureExpectedStatus(httpResponse, methodParser, additionalAllowedStatusCodes);
+        Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse = new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser);
+        return asyncDecodedResponse.flatMap(decodedResponse -> {
+            return restProxy.ensureExpectedStatus(decodedResponse, methodParser, additionalAllowedStatusCodes);
+        }).map(decodedResponse -> httpResponse);
     }
 
     protected String fullyQualifiedMethodName() {
@@ -136,10 +139,6 @@ abstract class PollStrategy {
         this.status = status;
     }
 
-    protected final HttpResponseDecoder createResponseDecoder() {
-        return new HttpResponseDecoder(methodParser, restProxy.serializer());
-    }
-
     /**
      * Create a new HTTP poll request.
      * @return A new HTTP poll request.
@@ -172,7 +171,7 @@ abstract class PollStrategy {
             operationStatus = new OperationStatus<>(this, httpRequest);
         } else {
             try {
-                final Object resultObject = restProxy.handleRestReturnType(httpRequest, Mono.just(httpResponse), methodParser, operationStatusResultType);
+                final Object resultObject = restProxy.handleRestReturnType(new HttpResponseDecoder(restProxy.serializer()).decode(Mono.just(httpResponse), this.methodParser), methodParser, operationStatusResultType);
                 operationStatus = new OperationStatus<>(resultObject, status());
             } catch (RestException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);

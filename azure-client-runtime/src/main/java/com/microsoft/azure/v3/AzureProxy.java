@@ -23,9 +23,10 @@ import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.policy.CookiePolicy;
 import com.microsoft.rest.v3.http.policy.CredentialsPolicy;
-import com.microsoft.rest.v3.http.policy.DecodingPolicy;
 import com.microsoft.rest.v3.http.policy.RetryPolicy;
 import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
+import com.microsoft.rest.v3.serializer.HttpResponseDecoder;
+import com.microsoft.rest.v3.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.SerializerEncoding;
 import com.microsoft.rest.v3.util.TypeUtil;
@@ -196,7 +197,6 @@ public final class AzureProxy extends RestProxy {
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
         policies.add(new UserAgentPolicy(getDefaultUserAgentString(swaggerInterface)));
         policies.add(new RetryPolicy());
-        policies.add(new DecodingPolicy());
         policies.add(new CookiePolicy());
         if (credentialsPolicy != null) {
             policies.add(credentialsPolicy);
@@ -258,20 +258,19 @@ public final class AzureProxy extends RestProxy {
     }
 
     @Override
-    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
-        //
+    protected Object handleHttpResponse(final HttpRequest httpRequest, Mono<HttpDecodedResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Flux.class)) {
             final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
             if (!TypeUtil.isTypeOrSubTypeOf(operationStatusType, OperationStatus.class)) {
                 throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Flux (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Flux's inner type that is OperationStatus (not " + returnType.toString() + ").");
             } else {
+                // Get ResultTypeT in OperationStatus<ResultTypeT>
                 final Type operationStatusResultType = ((ParameterizedType) operationStatusType).getActualTypeArguments()[0];
                 //
                 return asyncHttpResponse.flatMapMany(httpResponse -> {
-                    final HttpResponse bufferedHttpResponse = httpResponse.buffer();
-                    return createPollStrategy(httpRequest, Mono.just(bufferedHttpResponse), methodParser)
+                    return createPollStrategy(httpRequest, Mono.just(httpResponse), methodParser)
                             .flatMapMany(pollStrategy -> {
-                                Mono<OperationStatus<Object>> first = handleBodyReturnType(bufferedHttpResponse, methodParser, operationStatusResultType)
+                                Mono<OperationStatus<Object>> first = handleBodyReturnType(httpResponse, methodParser, operationStatusResultType)
                                         .map(operationResult -> new OperationStatus<Object>(operationResult, pollStrategy.status()))
                                         .switchIfEmpty(Mono.defer((Supplier<Mono<OperationStatus<Object>>>) () -> Mono.just(new OperationStatus<Object>((Object) null, pollStrategy.status()))));
                                 Flux<OperationStatus<Object>> rest = pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType);
@@ -282,7 +281,7 @@ public final class AzureProxy extends RestProxy {
         } else {
             final Mono<HttpResponse> lastAsyncHttpResponse = createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
                     .flatMap((Function<PollStrategy, Mono<HttpResponse>>) pollStrategy -> pollStrategy.pollUntilDone());
-            return handleRestReturnType(httpRequest, lastAsyncHttpResponse, methodParser, returnType);
+            return handleRestReturnType(new HttpResponseDecoder(this.serializer()).decode(lastAsyncHttpResponse, methodParser), methodParser, returnType);
         }
     }
 
@@ -302,12 +301,13 @@ public final class AzureProxy extends RestProxy {
         return pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusType);
     }
 
-    private Mono<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest, final Mono<HttpResponse> asyncOriginalHttpResponse, final SwaggerMethodParser methodParser) {
-        return asyncOriginalHttpResponse
-                .flatMap((Function<HttpResponse, Mono<PollStrategy>>) originalHttpResponse -> {
-                    final int httpStatusCode = originalHttpResponse.statusCode();
+    private Mono<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest, final Mono<HttpDecodedResponse> asyncOriginalHttpDecodedResponse, final SwaggerMethodParser methodParser) {
+        return asyncOriginalHttpDecodedResponse
+                .flatMap((Function<HttpDecodedResponse, Mono<PollStrategy>>) originalHttpDecodedResponse -> {
+                    final int httpStatusCode = originalHttpDecodedResponse.sourceResponse().statusCode();
+                    final HttpResponse originalHttpResponse = originalHttpDecodedResponse.sourceResponse();
                     final int[] longRunningOperationStatusCodes = new int[] {200, 201, 202};
-                    return ensureExpectedStatus(originalHttpResponse, methodParser, longRunningOperationStatusCodes)
+                    return ensureExpectedStatus(originalHttpDecodedResponse, methodParser, longRunningOperationStatusCodes)
                             .flatMap(response -> {
                                 Mono<PollStrategy> result = null;
 
@@ -335,7 +335,7 @@ public final class AzureProxy extends RestProxy {
                                     } else if (httpStatusCode == 202) {
                                         pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                         if (pollStrategy == null) {
-                                            pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                            pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpDecodedResponse.sourceResponse(), delayInMilliseconds);
                                         }
                                     }
                                 }

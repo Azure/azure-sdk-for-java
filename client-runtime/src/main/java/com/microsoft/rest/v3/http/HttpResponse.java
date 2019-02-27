@@ -8,7 +8,6 @@ package com.microsoft.rest.v3.http;
 
 import java.io.Closeable;
 
-import com.microsoft.rest.v3.http.policy.DecodingPolicy;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,9 +17,6 @@ import reactor.netty.Connection;
  * The type representing response of {@link HttpRequest}.
  */
 public abstract class HttpResponse implements Closeable {
-    private Object deserializedHeaders;
-    private Object deserializedBody;
-    private boolean isDecoded;
     private HttpRequest request;
 
     /**
@@ -90,46 +86,6 @@ public abstract class HttpResponse implements Closeable {
     public abstract Mono<String> bodyAsString();
 
     /**
-     * Get the deserialized headers.
-     *
-     * @return the deserialized headers, if present. Otherwise, null
-     */
-    public Object deserializedHeaders() {
-        return deserializedHeaders;
-    }
-
-    /**
-     * Set the deserialized headers on this response.
-     *
-     * @param deserializedHeaders the deserialized headers
-     * @return this HttpResponse
-     */
-    public HttpResponse withDeserializedHeaders(Object deserializedHeaders) {
-        this.deserializedHeaders = deserializedHeaders;
-        return this;
-    }
-
-    /**
-     * Get the deserialized body.
-     *
-     * @return the deserialized body, if present. Otherwise, null.
-     */
-    public Object deserializedBody() {
-        return deserializedBody;
-    }
-
-    /**
-     * Sets the deserialized content on this response.
-     *
-     * @param deserializedBody the deserialized content
-     * @return this HttpResponse
-     */
-    public HttpResponse withDeserializedBody(Object deserializedBody) {
-        this.deserializedBody = deserializedBody;
-        return this;
-    }
-
-    /**
      * Get the request which resulted in this response.
      *
      * @return the request which resulted in this response.
@@ -146,26 +102,6 @@ public abstract class HttpResponse implements Closeable {
      */
     public final HttpResponse withRequest(HttpRequest request) {
         this.request = request;
-        return this;
-    }
-
-    /**
-     * Checks the response content is decoded.
-     *
-     * @return true if the response content decoded by {@link DecodingPolicy} false otherwise
-     */
-    public boolean isDecoded() {
-        return isDecoded;
-    }
-
-    /**
-     * Sets the flag indicating whether this HttpResponse has been decoded by a {@link DecodingPolicy}.
-     *
-     * @param isDecoded whether this HttpResponse has been decoded
-     * @return this response
-     */
-    public HttpResponse withIsDecoded(boolean isDecoded) {
-        this.isDecoded = isDecoded;
         return this;
     }
 

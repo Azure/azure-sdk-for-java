@@ -208,7 +208,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      *
      * @return the HTTP method that will be used to complete the Swagger method's request
      */
-    @Override
     public HttpMethod httpMethod() {
         return httpMethod;
     }
@@ -336,18 +335,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         } else {
             return ContextData.NONE;
         }
-    }
-
-    /**
-     * Get whether or not the provided response status code is one of the expected status codes for
-     * this Swagger method.
-     *
-     * @param responseStatusCode the status code that was returned in the HTTP response.
-     * @return whether or not the provided response status code is one of the expected status codes
-     * for this Swagger method.
-     */
-    public boolean isExpectedResponseStatusCode(int responseStatusCode) {
-        return isExpectedResponseStatusCode(responseStatusCode, null);
     }
 
     /**

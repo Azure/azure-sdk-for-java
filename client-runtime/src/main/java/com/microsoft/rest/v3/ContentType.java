@@ -4,12 +4,12 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.http;
+package com.microsoft.rest.v3;
 
 /**
  * The different values that commonly used for Content-Type header.
  */
-public final class ContentType {
+final class ContentType {
     /**
      * the default JSON Content-Type header.
      */

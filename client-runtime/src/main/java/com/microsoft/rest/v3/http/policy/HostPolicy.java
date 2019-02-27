@@ -19,8 +19,9 @@ import java.net.MalformedURLException;
 /**
  * The Pipeline policy that adds the given host to each HttpRequest.
  */
-public class HostPolicy extends AbstractPipelinePolicy {
+public class HostPolicy implements HttpPipelinePolicy {
     private final String host;
+    private final HttpPipelineOptions options;
 
     /**
      * Create HostPolicy.
@@ -38,14 +39,14 @@ public class HostPolicy extends AbstractPipelinePolicy {
      * @param options the request options
      */
     public HostPolicy(String host, HttpPipelineOptions options) {
-        super(options);
         this.host = host;
+        this.options = options;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
-        if (shouldLog(HttpPipelineLogLevel.INFO)) {
-            log(HttpPipelineLogLevel.INFO, "Setting host to {0}", host);
+        if (options.shouldLog(HttpPipelineLogLevel.INFO)) {
+            options.log(HttpPipelineLogLevel.INFO, "Setting host to {0}", host);
         }
 
         Mono<HttpResponse> result;

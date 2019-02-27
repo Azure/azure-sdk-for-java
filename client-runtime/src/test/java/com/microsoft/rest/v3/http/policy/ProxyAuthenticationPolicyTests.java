@@ -30,7 +30,7 @@ public class ProxyAuthenticationPolicyTests {
                     return next.process();
                 });
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost"), null))
+        pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost")))
                 .block();
 
         if (!auditorVisited.get()) {

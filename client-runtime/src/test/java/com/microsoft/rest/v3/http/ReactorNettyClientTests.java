@@ -141,7 +141,7 @@ public class ReactorNettyClientTests {
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
         HttpClient client = HttpClient.createDefault();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"), null)
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
                 .withHeader("Content-Length", "123")
                 .withBody(Flux.error(new RuntimeException("boo")));
 
@@ -155,7 +155,7 @@ public class ReactorNettyClientTests {
         HttpClient client = HttpClient.createDefault();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"), null)
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
                 .withHeader("Content-Length", String.valueOf(contentChunk.length() * repetitions))
                 .withBody(Flux.just(contentChunk)
                         .repeat(repetitions)
@@ -202,7 +202,7 @@ public class ReactorNettyClientTests {
             latch.await();
             HttpClient client = HttpClient.createDefault();
             HttpRequest request = new HttpRequest(HttpMethod.GET,
-                    new URL("http://localhost:" + ss.getLocalPort() + "/get"), null);
+                    new URL("http://localhost:" + ss.getLocalPort() + "/get"));
             HttpResponse response = client.send(request).block();
             assertEquals(200, response.statusCode());
             System.out.println("reading body");
@@ -302,7 +302,7 @@ public class ReactorNettyClientTests {
     }
 
     private static HttpResponse getResponse(HttpClient client, String path) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path), null);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         return client.send(request).block();
     }
 
@@ -331,7 +331,7 @@ public class ReactorNettyClientTests {
     }
 
     private HttpResponse doRequest(HttpClient client, String path) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path), null);
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
         HttpResponse response = client.send(request).block();
         return response;
     }

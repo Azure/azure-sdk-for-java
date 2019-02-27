@@ -22,7 +22,6 @@ import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.MockHttpResponse;
-import com.microsoft.rest.v3.http.policy.DecodingPolicy;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.serializer.SerializerEncoding;
 import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
@@ -45,23 +44,23 @@ import static org.junit.Assert.*;
 
 public class RestProxyXMLTests {
     static class MockXMLHTTPClient extends HttpClient {
-        private HttpResponse response(String resource) throws IOException, URISyntaxException {
+        private HttpResponse response(HttpRequest request, String resource) throws IOException, URISyntaxException {
             URL url = getClass().getClassLoader().getResource(resource);
             byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/xml");
-            HttpResponse res = new MockHttpResponse(200, headers, bytes);
+            HttpResponse res = new MockHttpResponse(request, 200, headers, bytes);
             return res;
         }
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             try {
                 if (request.url().toString().endsWith("GetContainerACLs")) {
-                    return Mono.just(response("GetContainerACLs.xml"));
+                    return Mono.just(response(request, "GetContainerACLs.xml"));
                 } else if (request.url().toString().endsWith("GetXMLWithAttributes")) {
-                    return Mono.just(response("GetXMLWithAttributes.xml"));
+                    return Mono.just(response(request, "GetXMLWithAttributes.xml"));
                 } else {
-                    return Mono.<HttpResponse>just(new MockHttpResponse(404));
+                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
                 }
             } catch (IOException | URISyntaxException e) {
                 return Mono.error(e);
@@ -82,8 +81,7 @@ public class RestProxyXMLTests {
     public void canReadXMLResponse() throws Exception {
         //
         final HttpPipeline pipeline = new HttpPipeline(new MockXMLHTTPClient(),
-                new HttpPipelineOptions(null),
-                new DecodingPolicy());
+                new HttpPipelineOptions(null));
 
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
@@ -103,10 +101,10 @@ public class RestProxyXMLTests {
                 return FluxUtil.collectBytesInByteBufStream(request.body(), false)
                         .map(bytes -> {
                             receivedBytes = bytes;
-                            return new MockHttpResponse(200);
+                            return new MockHttpResponse(request, 200);
                         });
             } else {
-                return Mono.<HttpResponse>just(new MockHttpResponse(404));
+                return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
             }
         }
     }
@@ -115,7 +113,7 @@ public class RestProxyXMLTests {
     public void canWriteXMLRequest() throws Exception {
         URL url = getClass().getClassLoader().getResource("GetContainerACLs.xml");
         byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL("http://unused/SetContainerACLs"), null);
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, new URL("http://unused/SetContainerACLs"));
         request.withBody(bytes);
 
         SignedIdentifierInner si = new SignedIdentifierInner();
@@ -133,8 +131,7 @@ public class RestProxyXMLTests {
         MockXMLReceiverClient httpClient = new MockXMLReceiverClient();
         //
         final HttpPipeline pipeline = new HttpPipeline(httpClient,
-                new HttpPipelineOptions(null),
-                new DecodingPolicy());
+                new HttpPipelineOptions(null));
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
                 pipeline,
@@ -169,8 +166,7 @@ public class RestProxyXMLTests {
         JacksonAdapter serializer = new JacksonAdapter();
         //
         final HttpPipeline pipeline = new HttpPipeline(new MockXMLHTTPClient(),
-                new HttpPipelineOptions(null),
-                new DecodingPolicy());
+                new HttpPipelineOptions(null));
 
         //
         MyXMLServiceWithAttributes myXMLService = RestProxy.create(

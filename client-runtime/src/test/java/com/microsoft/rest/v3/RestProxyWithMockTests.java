@@ -165,7 +165,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                         HttpHeaders headers = new HttpHeaders();
                         headers.set("Content-Type", "application/json");
 
-                        HttpResponse response = new MockHttpResponse(200, headers,
+                        HttpResponse response = new MockHttpResponse(request, 200, headers,
                                 "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
                         return Mono.just(response);
                     }
@@ -189,7 +189,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                         HttpHeaders headers = new HttpHeaders();
                         headers.set("Content-Type", "application/json");
 
-                        HttpResponse response = new MockHttpResponse(200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
+                        HttpResponse response = new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
                         return Mono.just(response);
                     }
                 }, new HttpPipelineOptions(null)));
@@ -213,7 +213,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                         HttpHeaders headers = new HttpHeaders();
                         headers.set("Content-Type", "application/json; charset=UTF-8");
 
-                        HttpResponse response = new MockHttpResponse(200, headers,
+                        HttpResponse response = new MockHttpResponse(request, 200, headers,
                                 "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
                         return Mono.just(response);
                     }
@@ -237,7 +237,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                         HttpHeaders headers = new HttpHeaders();
                         headers.set("Content-Type", "application/json; charset=UTF-8");
 
-                        HttpResponse response = new MockHttpResponse(200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
+                        HttpResponse response = new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
                         return Mono.just(response);
                     }
                 }, new HttpPipelineOptions(null)));
@@ -302,7 +302,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
             headers.set("header-collection-prefix-one", "1");
             headers.set("header-collection-prefix-two", "2");
             headers.set("header-collection-prefix-three", "3");
-            final MockHttpResponse response = new MockHttpResponse(200, headers);
+            final MockHttpResponse response = new MockHttpResponse(request, 200, headers);
             return Mono.<HttpResponse>just(response);
         }
     };

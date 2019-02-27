@@ -5,7 +5,6 @@ import com.microsoft.rest.v3.http.ContentType;
 import com.microsoft.rest.v3.RestException;
 import com.microsoft.rest.v3.RestResponse;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.policy.DecodingPolicy;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
@@ -746,8 +745,7 @@ public abstract class AzureProxyToRestProxyTests {
 
     private <T> T createService(Class<T> serviceClass) {
         HttpPipeline pipeline = new HttpPipeline(createHttpClient(),
-                new HttpPipelineOptions(null),
-                new DecodingPolicy());
+                new HttpPipelineOptions(null));
         //
         return AzureProxy.create(serviceClass, null, pipeline, serializer);
     }

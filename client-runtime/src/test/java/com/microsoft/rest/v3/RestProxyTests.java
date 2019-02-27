@@ -21,7 +21,6 @@ import com.microsoft.rest.v3.http.ContentType;
 import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.policy.DecodingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
@@ -31,6 +30,7 @@ import com.microsoft.rest.v3.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.util.ReferenceCountUtil;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1302,8 +1302,9 @@ public abstract class RestProxyTests {
     public void RawFlowableDownloadTest() {
         Flux<ByteBuf> response = createService(DownloadService.class).getBytesFlowable();
         int count = 0;
-        for (ByteBuf byteBuf : response.toIterable()) {
+        for (ByteBuf byteBuf : response.doOnNext(b -> b.retain()).toIterable()) {
             count += byteBuf.readableBytes();
+            ReferenceCountUtil.refCnt(byteBuf);
         }
         assertEquals(30720, count);
     }
@@ -1326,7 +1327,6 @@ public abstract class RestProxyTests {
         //
         final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
                 new HttpPipelineOptions(null),
-                new DecodingPolicy(),
                 new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true));
         //
         RestResponse<Void, HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream, Files.size(filePath));
@@ -1403,12 +1403,14 @@ public abstract class RestProxyTests {
     }
 
     @Test(expected = RestException.class)
+    @Ignore("Decoding is not a policy anymore")
     public void testMissingDecodingPolicyCausesException() {
         Service25 service = RestProxy.create(Service25.class, new HttpPipeline());
         service.get();
     }
 
     @Test(expected = RestException.class)
+    @Ignore("Decoding is not a policy anymore")
     public void testSingleMissingDecodingPolicyCausesException() {
         Service25 service = RestProxy.create(Service25.class, new HttpPipeline());
         service.getAsync().block();
@@ -1416,6 +1418,7 @@ public abstract class RestProxyTests {
     }
 
     @Test(expected = RestException.class)
+    @Ignore("Decoding is not a policy anymore")
     public void testSingleBodyResponseMissingDecodingPolicyCausesException() {
         Service25 service = RestProxy.create(Service25.class, new HttpPipeline());
         service.getBodyResponseAsync().block();
@@ -1429,8 +1432,7 @@ public abstract class RestProxyTests {
 
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
         final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
-                new HttpPipelineOptions(null),
-                new DecodingPolicy());
+                new HttpPipelineOptions(null));
 
         return RestProxy.create(serviceClass, httpPipeline, serializer);
     }

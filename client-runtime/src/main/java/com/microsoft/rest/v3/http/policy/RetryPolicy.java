@@ -24,29 +24,25 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private static final int DEFAULT_DELAY = 0;
     private static final ChronoUnit DEFAULT_TIME_UNIT = ChronoUnit.MILLIS;
     private final int maxRetries;
-    private final long delayTime;
-    private final ChronoUnit timeUnit;
+    private final Duration delayDuration;
 
     /**
      * Creates a RetryPolicy with the default number of retry attempts and delay between retries.
      */
     public RetryPolicy() {
-        maxRetries = DEFAULT_MAX_RETRIES;
-        delayTime = DEFAULT_DELAY;
-        timeUnit = DEFAULT_TIME_UNIT;
+        this.maxRetries = DEFAULT_MAX_RETRIES;
+        this.delayDuration = Duration.of(DEFAULT_DELAY, DEFAULT_TIME_UNIT);
     }
 
     /**
      * Creates a RetryPolicy.
      *
      * @param maxRetries the maximum number of retries to attempt.
-     * @param delayTime the delay between retries
-     * @param timeUnit the time unit of the delay
+     * @param delayDuration the delay between retries
      */
-    public RetryPolicy(int maxRetries, long delayTime, ChronoUnit timeUnit) {
+    public RetryPolicy(int maxRetries, Duration delayDuration) {
         this.maxRetries = maxRetries;
-        this.delayTime = delayTime;
-        this.timeUnit = timeUnit;
+        this.delayDuration = delayDuration;
     }
 
     @Override
@@ -59,14 +55,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return next.clone().process()
                 .flatMap(httpResponse -> {
                     if (shouldRetry(httpResponse, tryCount)) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(Duration.of(delayTime, timeUnit));
+                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(this.delayDuration);
                     } else {
                         return Mono.just(httpResponse);
                     }
                 })
                 .onErrorResume(err -> {
                     if (tryCount < maxRetries) {
-                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(Duration.of(delayTime, timeUnit));
+                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1).delaySubscription(this.delayDuration);
                     } else {
                         return Mono.error(err);
                     }

@@ -58,6 +58,6 @@ public class ProtocolPolicyTests {
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
-        return new HttpRequest(HttpMethod.GET, new URL(url), null);
+        return new HttpRequest(HttpMethod.GET, new URL(url));
     }
 }

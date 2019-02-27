@@ -11,7 +11,6 @@ import com.microsoft.rest.v3.RestException;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.policy.DecodingPolicy;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
@@ -837,7 +836,7 @@ public class AzureProxyTests {
         final MockAzureHttpClient httpClient = new MockAzureHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
-                return Mono.<HttpResponse>just(new MockAzureHttpResponse(403, MockAzureHttpClient.responseHeaders()));
+                return Mono.<HttpResponse>just(new MockAzureHttpResponse(request, 403, MockAzureHttpClient.responseHeaders()));
             }
         };
 
@@ -854,8 +853,7 @@ public class AzureProxyTests {
 
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
         HttpPipeline pipeline = new HttpPipeline(httpClient,
-                new HttpPipelineOptions(null),
-                new DecodingPolicy());
+                new HttpPipelineOptions(null));
 
         return AzureProxy.create(serviceClass, null, pipeline, serializer);
     }

@@ -25,34 +25,35 @@ public class MockHttpResponse extends HttpResponse {
 
     private final byte[] bodyBytes;
 
-    public MockHttpResponse(int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bodyBytes) {
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = bodyBytes;
+        this.withRequest(request);
     }
 
-    public MockHttpResponse(int statusCode, byte[] bodyBytes) {
-        this(statusCode, new HttpHeaders(), bodyBytes);
+    public MockHttpResponse(HttpRequest request, int statusCode, byte[] bodyBytes) {
+        this(request, statusCode, new HttpHeaders(), bodyBytes);
     }
 
-    public MockHttpResponse(int statusCode) {
-        this(statusCode, new byte[0]);
+    public MockHttpResponse(HttpRequest request, int statusCode) {
+        this(request, statusCode, new byte[0]);
     }
 
-    public MockHttpResponse(int statusCode, String string) {
-        this(statusCode, new HttpHeaders(), string == null ? new byte[0] : string.getBytes());
+    public MockHttpResponse(HttpRequest request, int statusCode, String string) {
+        this(request, statusCode, new HttpHeaders(), string == null ? new byte[0] : string.getBytes());
     }
 
-    public MockHttpResponse(int statusCode, HttpHeaders headers) {
-        this(statusCode, headers, new byte[0]);
+    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
+        this(request, statusCode, headers, new byte[0]);
     }
 
-    public MockHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {
-        this(statusCode, headers, serialize(serializable));
+    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, Object serializable) {
+        this(request, statusCode, headers, serialize(serializable));
     }
 
-    public MockHttpResponse(int statusCode, Object serializable) {
-        this(statusCode, new HttpHeaders(), serialize(serializable));
+    public MockHttpResponse(HttpRequest request, int statusCode, Object serializable) {
+        this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
 
     private static byte[] serialize(Object serializable) {

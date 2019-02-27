@@ -43,7 +43,7 @@ public class HttpPipelineTests {
                 new ProtocolPolicy("ftp"),
                 new RetryPolicy());
 
-        HttpPipelineCallContext context = pipeline.newContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com"), null));
+        HttpPipelineCallContext context = pipeline.newContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
         assertNotNull(context);
         assertNotNull(context.requestPolicyOptions());
         assertNotNull(pipeline.httpClient());
@@ -60,11 +60,11 @@ public class HttpPipelineTests {
                 assertEquals(0, request.headers().size());
                 assertEquals(expectedHttpMethod, request.httpMethod());
                 assertEquals(expectedUrl, request.url());
-                return Mono.<HttpResponse>just(new MockHttpResponse(200));
+                return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
             }
         }, new HttpPipelineOptions(null));
 
-        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl, null)).block();
+        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }
@@ -81,7 +81,7 @@ public class HttpPipelineTests {
                 assertEquals(expectedUserAgent, request.headers().value("User-Agent"));
                 assertEquals(expectedHttpMethod, request.httpMethod());
                 assertEquals(expectedUrl, request.url());
-                return Mono.<HttpResponse>just(new MockHttpResponse(200));
+                return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
             }
         };
 
@@ -89,7 +89,7 @@ public class HttpPipelineTests {
                 new HttpPipelineOptions(null),
                 new UserAgentPolicy(expectedUserAgent));
 
-        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl, null)).block();
+        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }
@@ -108,13 +108,13 @@ public class HttpPipelineTests {
 
                     assertEquals(expectedHttpMethod, request.httpMethod());
                     assertEquals(expectedUrl, request.url());
-                    return Mono.<HttpResponse>just(new MockHttpResponse(200));
+                    return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
             },
             new HttpPipelineOptions(null),
             new RequestIdPolicy());
 
-        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl, null)).block();
+        final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }
