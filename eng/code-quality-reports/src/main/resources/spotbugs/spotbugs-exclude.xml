@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter>
+    <!-- These existing KeyVault Attribute APIs return their super class rather than the actual type. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.requests\.\w+Request"/>
+        <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+    </Match>
+
     <!-- These keyvault models are already publicly released APIs with name
     matching the simple name of superclass -->
     <Match>
@@ -33,12 +39,26 @@
         <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
 
+    <!-- Suppress non-null warning in the case that we change the code and it is possible for
+    KeyVaultCredentials.getAuthenticationCredentials to return null. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+        <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+    </Match>
+
     <!-- These KeyVaultClientBase methods are made synchronous by blocking and
     waiting for a result. They do not return anything, so it can be ignored. -->
     <Match>
         <Class name="com.microsoft.azure.keyvault.implementation.KeyVaultClientBaseImpl"/>
         <Method name="~(purgeDeletedCertificate|purgeDeletedKey|purgeDeletedSecret|purgeDeletedStorageAccount)"/>
         <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+    </Match>
+
+    <!-- These autorest generated APIs for existing Azure SDK components supports Java 7.
+    Suppressing error for using anonymous inner classes. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
     </Match>
 
     <!-- KeyVaultCredential values manipulated do not need to be localised. They
@@ -58,7 +78,7 @@
     <!-- Known issue in autorest where it will generate a variable with a value of null.
     https://github.com/Azure/autorest.java/issues/324 -->
     <Match>
-        <Class name="com.microsoft.azure.keyvault.KeyVaultClientImpl"/>
+        <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
         <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
     </Match>
 </FindBugsFilter>
