@@ -611,7 +611,7 @@
                <propertyExpansion>samedir=</propertyExpansion>
                <encoding>UTF-8</encoding>
                <consoleOutput>true</consoleOutput>
-               <includeTestSourceDirectory>false</includeTestSourceDirectory>
+               <includeTestSourceDirectory>true</includeTestSourceDirectory>
                <linkXRef>true</linkXRef>
 
                <!-- TODO soon - enable these failure modes -->

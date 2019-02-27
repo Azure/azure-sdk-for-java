@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.batch;
 
@@ -10,7 +7,18 @@ import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.batch.auth.BatchApplicationTokenCredentials;
 import com.microsoft.azure.batch.auth.BatchCredentials;
 import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
-import com.microsoft.azure.batch.protocol.models.*;
+import com.microsoft.azure.batch.protocol.models.CloudPool;
+import com.microsoft.azure.batch.protocol.models.CloudServiceConfiguration;
+import com.microsoft.azure.batch.protocol.models.PoolAddParameter;
+import com.microsoft.azure.batch.protocol.models.UserAccount;
+import com.microsoft.azure.batch.protocol.models.ElevationLevel;
+import com.microsoft.azure.batch.protocol.models.AllocationState;
+import com.microsoft.azure.batch.protocol.models.VirtualMachineConfiguration;
+import com.microsoft.azure.batch.protocol.models.ImageReference;
+import com.microsoft.azure.batch.protocol.models.CloudTask;
+import com.microsoft.azure.batch.protocol.models.LinuxUserConfiguration;
+import com.microsoft.azure.batch.protocol.models.TaskState;
+import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.management.resources.core.InterceptorManager;
 import com.microsoft.azure.management.resources.core.TestBase;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
@@ -19,7 +27,11 @@ import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageCredentialsAccountAndKey;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.*;
+import com.microsoft.azure.storage.blob.CloudBlobClient;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.RestException;
@@ -28,13 +40,25 @@ import com.microsoft.rest.interceptors.LoggingInterceptor;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import okhttp3.OkHttpClient;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.After;
+import org.junit.Rule;
+import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.rules.TestName;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.FileInputStream;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * The base for batch dataplane tests.
@@ -42,7 +66,7 @@ import java.util.*;
 public class BatchIntegrationTestBase {
     static BatchClient batchClient;
     static BatchClient alternativeBatchClient;
-    static int MAX_LEN_ID = 64;
+    static final int MAX_LEN_ID = 64;
 
     public enum AuthMode {
         AAD, SharedKey
@@ -83,13 +107,14 @@ public class BatchIntegrationTestBase {
     }
 
     static boolean isPlaybackMode() {
-        if (testMode == null)
+        if (testMode == null) {
             try {
                 initTestMode();
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException("Can't init test mode.");
             }
+        }
         return testMode == TestBase.TestMode.PLAYBACK;
     }
 
@@ -162,21 +187,21 @@ public class BatchIntegrationTestBase {
                 }
             }));
 
-            batchClient = BatchClient.open(buildPlaybackRestClient(credentials, playbackUri + "/"),playbackUri+"/");
-            alternativeBatchClient = BatchClient.open(buildPlaybackRestClient(credentials, alternativePlaybackUri + "/"),alternativePlaybackUri+"/");
+            batchClient = BatchClient.open(buildPlaybackRestClient(credentials, playbackUri + "/"), playbackUri + "/");
+            alternativeBatchClient = BatchClient.open(buildPlaybackRestClient(credentials, alternativePlaybackUri + "/"), alternativePlaybackUri + "/");
 
         }
     }
 
-    private static BatchCredentials getCredentials(AuthMode mode){
+    private static BatchCredentials getCredentials(AuthMode mode) {
         BatchCredentials credentials;
-        if(isRecordMode()) {
+        if (isRecordMode()) {
             if (mode == AuthMode.AAD) {
                 credentials = getApplicationTokenCredentials();
             } else {
                 credentials = getSharedKeyCredentials();
             }
-        } else{
+        } else {
             credentials =  new BatchCredentials() {
                 @Override
                 public String baseUrl() {
@@ -239,25 +264,25 @@ public class BatchIntegrationTestBase {
 
     static CloudPool createIfNotExistPaaSPool(String poolId) throws Exception {
         // Create a pool with 3 Small VMs
-        String POOL_VM_SIZE = "Small";
-        int POOL_VM_COUNT = 3;
-        String POOL_OS_FAMILY = "4";
-        String POOL_OS_VERSION = "*";
+        String poolVmSize = "Small";
+        int poolVmCount = 3;
+        String poolOsFamily = "4";
+        String poolOsVersion = "*";
 
         // 10 minutes
-        long POOL_STEADY_TIMEOUT_IN_SECONDS = 10 * 60 * 1000;
+        long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
             // Use PaaS VM with Windows
             CloudServiceConfiguration configuration = new CloudServiceConfiguration();
-            configuration.withOsFamily(POOL_OS_FAMILY).withOsVersion(POOL_OS_VERSION);
+            configuration.withOsFamily(poolOsFamily).withOsVersion(poolOsVersion);
 
             List<UserAccount> userList = new ArrayList<>();
             userList.add(new UserAccount().withName("test-user").withPassword("kt#_gahr!@aGERDXA")
                     .withElevationLevel(ElevationLevel.ADMIN));
             PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
-                    .withTargetDedicatedNodes(POOL_VM_COUNT).withVmSize(POOL_VM_SIZE)
+                    .withTargetDedicatedNodes(poolVmCount).withVmSize(poolVmSize)
                     .withCloudServiceConfiguration(configuration).withUserAccounts(userList);
             batchClient.poolOperations().createPool(addParameter);
         }
@@ -268,7 +293,7 @@ public class BatchIntegrationTestBase {
         CloudPool pool;
 
         // Wait for the VM to be allocated
-        while (elapsedTime < POOL_STEADY_TIMEOUT_IN_SECONDS) {
+        while (elapsedTime < poolSteadyTimeoutInSeconds) {
             pool = batchClient.poolOperations().getPool(poolId);
             if (pool.allocationState() == AllocationState.STEADY) {
                 steady = true;
@@ -286,11 +311,11 @@ public class BatchIntegrationTestBase {
 
     static CloudPool createIfNotExistIaaSPool(String poolId) throws Exception {
         // Create a pool with 3 Small VMs
-        String POOL_VM_SIZE = "STANDARD_A1";
-        int POOL_VM_COUNT = 1;
+        String poolVmSize = "STANDARD_A1";
+        int poolVmCount = 1;
 
         // 10 minutes
-        long POOL_STEADY_TIMEOUT_IN_SECONDS = 10 * 60 * 1000;
+        long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -305,7 +330,7 @@ public class BatchIntegrationTestBase {
                     .withLinuxUserConfiguration(new LinuxUserConfiguration().withUid(5).withGid(5))
                     .withElevationLevel(ElevationLevel.ADMIN));
             PoolAddParameter addParameter = new PoolAddParameter().withId(poolId)
-                    .withTargetDedicatedNodes(POOL_VM_COUNT).withVmSize(POOL_VM_SIZE)
+                    .withTargetDedicatedNodes(poolVmCount).withVmSize(poolVmSize)
                     .withVirtualMachineConfiguration(configuration).withUserAccounts(userList);
             batchClient.poolOperations().createPool(addParameter);
         }
@@ -316,7 +341,7 @@ public class BatchIntegrationTestBase {
         CloudPool pool;
 
         // Wait for the VM to be allocated
-        while (elapsedTime < POOL_STEADY_TIMEOUT_IN_SECONDS) {
+        while (elapsedTime < poolSteadyTimeoutInSeconds) {
             pool = batchClient.poolOperations().getPool(poolId);
             if (pool.allocationState() == AllocationState.STEADY) {
                 steady = true;
@@ -338,9 +363,9 @@ public class BatchIntegrationTestBase {
         String userName = "BatchUser";
         StringBuilder out = new StringBuilder();
         int remainingSpace = MAX_LEN_ID - name.length();
-        if (remainingSpace > 0){
-            if(userName.length() > remainingSpace){
-                out.append(userName.substring(0,remainingSpace));
+        if (remainingSpace > 0) {
+            if (userName.length() > remainingSpace) {
+                out.append(userName.substring(0, remainingSpace));
             } else {
                 out.append(userName);
             }
@@ -481,10 +506,10 @@ public class BatchIntegrationTestBase {
 
 
 
-    static void threadSleepInRecordMode(long millis) throws InterruptedException{
+    static void threadSleepInRecordMode(long millis) throws InterruptedException {
         // Called for long timeouts which should only happen in Record mode.
         // Speeds up the tests in Playback mode.
-        if(isRecordMode()) {
+        if (isRecordMode()) {
             Thread.sleep(millis);
         }
     }

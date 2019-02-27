@@ -105,7 +105,7 @@ public class BatchClient {
      * @param baseUrl A  String object specifying the the batch end point.
      * @return The new {@link BatchClient} instance.
      */
-    public static BatchClient open(RestClient restClient, String baseUrl) {
+    protected static BatchClient open(RestClient restClient, String baseUrl) {
         return new BatchClient(restClient, baseUrl);
     }
 
