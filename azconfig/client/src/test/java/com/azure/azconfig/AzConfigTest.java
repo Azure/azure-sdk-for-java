@@ -84,11 +84,6 @@ public class AzConfigTest {
             policies.add(interceptorManager.initRecordPolicy());
 
             pipeline = new HttpPipeline(interceptorManager.initPlaybackClient(), new HttpPipelineOptions(null), policies.toArray(new HttpPipelinePolicy[0]));
-//            pipeline = new HttpPipelineBuilder()
-//                            .withRequestPolicy(new RequestRetryPolicyFactory())
-//                            .withRequestPolicy(new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY_AND_HEADERS, true))
-//                            .withHttpClient(interceptorManager.initPlaybackClient())
-//                            .withDecodingPolicy().build();
 
             System.out.println(playbackUri);
         } else { // Record mode
