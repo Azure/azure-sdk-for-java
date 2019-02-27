@@ -1842,10 +1842,10 @@ public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements 
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
 
-        Objects.requireNonNull(service, "Service has not been initialized. Call this.initializeService() before using this method.");
-
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        return service
+        KeyVaultClientService clientService = Objects.requireNonNull(service, "Service has not been initialized. Call this.initializeService() before using this method.");
+
+        return clientService
                 .getPendingCertificateSigningRequest(certificateName, this.apiVersion(), this.acceptLanguage(),
                         parameterizedHost, this.userAgent())
                 .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
