@@ -259,7 +259,7 @@ public class AzConfigTest {
             Assert.fail("Should not be able to modify locked value");
         } catch (Exception ex) {
             Assert.assertTrue(ex instanceof CloudException);
-            Assert.assertEquals(HttpResponseStatus.FORBIDDEN.code(), ((CloudException) ex).response().statusCode());
+            Assert.assertEquals(HttpResponseStatus.CONFLICT.code(), ((CloudException) ex).response().statusCode());
         }
         client.unlockKeyValue(keyName).block();
         KeyValue updatedKv = new KeyValue().withKey(keyName).withValue("myUpdatedValue");
