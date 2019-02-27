@@ -100,9 +100,9 @@ public class AzConfigTest {
 //                               .withRequestPolicy(new RequestIdPolicyFactory())
 //                               .withRequestPolicy(new AzConfigCredentialsPolicyFactory(credentials))
 //                               .withRequestPolicy(new RequestRetryPolicyFactory())
-////                               .withRequestPolicy(new TimeoutPolicyFactory(3, ChronoUnit.MINUTES))
+//                               .withRequestPolicy(new TimeoutPolicyFactory(3, ChronoUnit.MINUTES))
 //                               .withRequestPolicy(interceptorManager.initRecordPolicy())
-////                            .withHttpClient(NettyClient.createDefault(configuration))
+//                               .withHttpClient(NettyClient.createDefault(configuration))
 //                               .withRequestPolicy(new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY_AND_HEADERS, true))
 //                               .withDecodingPolicy().build();
             interceptorManager.addTextReplacementRule(credentials.baseUri().toString(), playbackUri);
