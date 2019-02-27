@@ -36,7 +36,7 @@
     <Match>
         <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.CachingKeyResolver\$[0-9]+" />
         <Method name="run" />
-        <Bug pattern="DE_MIGHT_IGNORE,REC_CATCH_EXCEPTION"/>
+        <Bug pattern="DE_MIGHT_IGNORE"/>
     </Match>
 
     <!-- Protected field already exists in the public API surface area even
