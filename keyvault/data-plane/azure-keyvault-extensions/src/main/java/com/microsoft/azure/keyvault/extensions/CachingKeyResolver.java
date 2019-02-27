@@ -28,13 +28,7 @@ public class CachingKeyResolver implements IKeyResolver {
     public CachingKeyResolver(int capacity, final IKeyResolver keyResolver) {
         this.keyResolver = keyResolver;
         cache = CacheBuilder.newBuilder().maximumSize(capacity)
-                .build(new CacheLoader<String, ListenableFuture<IKey>>() {
-
-                    @Override
-                    public ListenableFuture<IKey> load(String kid) {
-                        return keyResolver.resolveKeyAsync(kid);
-                    }
-                });
+                .build(new CachingKeyResolverCacheLoader(keyResolver));
     }
 
     @Override
@@ -56,6 +50,20 @@ public class CachingKeyResolver implements IKeyResolver {
             return key;
         } else {
             return cache.getUnchecked(kid);
+        }
+    }
+
+    private static class CachingKeyResolverCacheLoader extends CacheLoader<String, ListenableFuture<IKey>> {
+
+        private final IKeyResolver keyResolver;
+
+        CachingKeyResolverCacheLoader(IKeyResolver keyResolver) {
+            this.keyResolver = keyResolver;
+        }
+
+        @Override
+        public ListenableFuture<IKey> load(String kid) {
+            return keyResolver.resolveKeyAsync(kid);
         }
     }
 }
