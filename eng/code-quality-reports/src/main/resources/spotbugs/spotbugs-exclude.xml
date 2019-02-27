@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter>
+    <!-- These existing KeyVault Attribute APIs return their super class rather than the actual type. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.requests\.\w+Request"/>
+        <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+    </Match>
+
     <!-- These keyvault models are already publicly released APIs with name
     matching the simple name of superclass -->
     <Match>
