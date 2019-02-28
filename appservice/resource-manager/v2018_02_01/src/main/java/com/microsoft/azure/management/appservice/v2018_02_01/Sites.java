@@ -20,6 +20,7 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
+import java.util.UUID;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteInner;
 
 /**
@@ -40,6 +41,11 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
      * @return the clientCertEnabled value.
      */
     Boolean clientCertEnabled();
+
+    /**
+     * @return the clientCertExclusionPaths value.
+     */
+    String clientCertExclusionPaths();
 
     /**
      * @return the cloningInfo value.
@@ -70,6 +76,11 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
      * @return the enabledHostNames value.
      */
     List<String> enabledHostNames();
+
+    /**
+     * @return the geoDistributions value.
+     */
+    List<GeoDistribution> geoDistributions();
 
     /**
      * @return the hostingEnvironmentProfile value.
@@ -107,6 +118,11 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
     ManagedServiceIdentity identity();
 
     /**
+     * @return the inProgressOperationId value.
+     */
+    UUID inProgressOperationId();
+
+    /**
      * @return the isDefaultContainer value.
      */
     Boolean isDefaultContainer();
@@ -140,6 +156,11 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
      * @return the possibleOutboundIpAddresses value.
      */
     String possibleOutboundIpAddresses();
+
+    /**
+     * @return the redundancyMode value.
+     */
+    RedundancyMode redundancyMode();
 
     /**
      * @return the repositorySiteName value.
@@ -244,6 +265,16 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         }
 
         /**
+         * The stage of the sites update allowing to specify ClientCertExclusionPaths.
+         */
+        interface WithClientCertExclusionPaths {
+            /**
+             * Specifies clientCertExclusionPaths.
+             */
+            WithCreate withClientCertExclusionPaths(String clientCertExclusionPaths);
+        }
+
+        /**
          * The stage of the sites update allowing to specify CloningInfo.
          */
         interface WithCloningInfo {
@@ -281,6 +312,16 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
              * Specifies enabled.
              */
             WithCreate withEnabled(Boolean enabled);
+        }
+
+        /**
+         * The stage of the sites update allowing to specify GeoDistributions.
+         */
+        interface WithGeoDistributions {
+            /**
+             * Specifies geoDistributions.
+             */
+            WithCreate withGeoDistributions(List<GeoDistribution> geoDistributions);
         }
 
         /**
@@ -364,6 +405,16 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         }
 
         /**
+         * The stage of the sites update allowing to specify RedundancyMode.
+         */
+        interface WithRedundancyMode {
+            /**
+             * Specifies redundancyMode.
+             */
+            WithCreate withRedundancyMode(RedundancyMode redundancyMode);
+        }
+
+        /**
          * The stage of the sites update allowing to specify Reserved.
          */
         interface WithReserved {
@@ -408,13 +459,13 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Sites>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithHyperV, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig {
+        interface WithCreate extends Creatable<Sites>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithClientCertExclusionPaths, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithGeoDistributions, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithHyperV, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithRedundancyMode, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig {
         }
     }
     /**
      * The template for a Sites update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Sites>, Resource.UpdateWithTags<Update>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithHyperV, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
+    interface Update extends Appliable<Sites>, Resource.UpdateWithTags<Update>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithClientCertExclusionPaths, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithGeoDistributions, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithHyperV, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithRedundancyMode, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
     }
 
     /**
@@ -439,6 +490,16 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
              * Specifies clientCertEnabled.
              */
             Update withClientCertEnabled(Boolean clientCertEnabled);
+        }
+
+        /**
+         * The stage of the sites {0} allowing to specify ClientCertExclusionPaths.
+         */
+        interface WithClientCertExclusionPaths {
+            /**
+             * Specifies clientCertExclusionPaths.
+             */
+            Update withClientCertExclusionPaths(String clientCertExclusionPaths);
         }
 
         /**
@@ -479,6 +540,16 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
              * Specifies enabled.
              */
             Update withEnabled(Boolean enabled);
+        }
+
+        /**
+         * The stage of the sites {0} allowing to specify GeoDistributions.
+         */
+        interface WithGeoDistributions {
+            /**
+             * Specifies geoDistributions.
+             */
+            Update withGeoDistributions(List<GeoDistribution> geoDistributions);
         }
 
         /**
@@ -549,6 +620,16 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
              * Specifies kind.
              */
             Update withKind(String kind);
+        }
+
+        /**
+         * The stage of the sites {0} allowing to specify RedundancyMode.
+         */
+        interface WithRedundancyMode {
+            /**
+             * Specifies redundancyMode.
+             */
+            Update withRedundancyMode(RedundancyMode redundancyMode);
         }
 
         /**

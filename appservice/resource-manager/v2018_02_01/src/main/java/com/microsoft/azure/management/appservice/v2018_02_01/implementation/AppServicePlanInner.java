@@ -42,12 +42,6 @@ public class AppServicePlanInner extends Resource {
     private String subscription;
 
     /**
-     * App Service plan administration site.
-     */
-    @JsonProperty(value = "properties.adminSiteName")
-    private String adminSiteName;
-
-    /**
      * Specification for the App Service Environment to use for the App Service
      * plan.
      */
@@ -203,26 +197,6 @@ public class AppServicePlanInner extends Resource {
      */
     public String subscription() {
         return this.subscription;
-    }
-
-    /**
-     * Get app Service plan administration site.
-     *
-     * @return the adminSiteName value
-     */
-    public String adminSiteName() {
-        return this.adminSiteName;
-    }
-
-    /**
-     * Set app Service plan administration site.
-     *
-     * @param adminSiteName the adminSiteName value to set
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withAdminSiteName(String adminSiteName) {
-        this.adminSiteName = adminSiteName;
-        return this;
     }
 
     /**

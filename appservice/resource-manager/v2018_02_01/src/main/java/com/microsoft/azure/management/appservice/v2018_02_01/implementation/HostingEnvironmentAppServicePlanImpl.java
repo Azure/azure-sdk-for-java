@@ -34,11 +34,6 @@ class HostingEnvironmentAppServicePlanImpl extends WrapperImpl<AppServicePlanInn
 
 
     @Override
-    public String adminSiteName() {
-        return this.inner().adminSiteName();
-    }
-
-    @Override
     public DateTime freeOfferExpirationTime() {
         return this.inner().freeOfferExpirationTime();
     }

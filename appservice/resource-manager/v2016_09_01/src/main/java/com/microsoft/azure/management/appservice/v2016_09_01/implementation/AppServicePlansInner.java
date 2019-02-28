@@ -835,6 +835,7 @@ public class AppServicePlansInner implements InnerSupportsGet<AppServicePlanInne
     private ServiceResponse<AppServicePlanInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<AppServicePlanInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<AppServicePlanInner>() { }.getType())
+                .register(201, new TypeToken<AppServicePlanInner>() { }.getType())
                 .register(202, new TypeToken<AppServicePlanInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

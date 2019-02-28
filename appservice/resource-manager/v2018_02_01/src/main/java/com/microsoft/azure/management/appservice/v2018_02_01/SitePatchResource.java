@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import java.util.List;
 import org.joda.time.DateTime;
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -156,6 +157,12 @@ public class SitePatchResource extends ProxyOnlyResource {
     private Boolean clientCertEnabled;
 
     /**
+     * client certificate authentication comma-separated exclusion paths.
+     */
+    @JsonProperty(value = "properties.clientCertExclusionPaths")
+    private String clientCertExclusionPaths;
+
+    /**
      * &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the
      * app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API
@@ -243,6 +250,25 @@ public class SitePatchResource extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.httpsOnly")
     private Boolean httpsOnly;
+
+    /**
+     * Site redundancy mode. Possible values include: 'None', 'Manual',
+     * 'Failover', 'ActiveActive', 'GeoRedundant'.
+     */
+    @JsonProperty(value = "properties.redundancyMode")
+    private RedundancyMode redundancyMode;
+
+    /**
+     * Specifies an operation id if this site has a pending operation.
+     */
+    @JsonProperty(value = "properties.inProgressOperationId", access = JsonProperty.Access.WRITE_ONLY)
+    private UUID inProgressOperationId;
+
+    /**
+     * GeoDistributions for this site.
+     */
+    @JsonProperty(value = "properties.geoDistributions")
+    private List<GeoDistribution> geoDistributions;
 
     /**
      * Get current state of the app.
@@ -547,6 +573,26 @@ public class SitePatchResource extends ProxyOnlyResource {
     }
 
     /**
+     * Get client certificate authentication comma-separated exclusion paths.
+     *
+     * @return the clientCertExclusionPaths value
+     */
+    public String clientCertExclusionPaths() {
+        return this.clientCertExclusionPaths;
+    }
+
+    /**
+     * Set client certificate authentication comma-separated exclusion paths.
+     *
+     * @param clientCertExclusionPaths the clientCertExclusionPaths value to set
+     * @return the SitePatchResource object itself.
+     */
+    public SitePatchResource withClientCertExclusionPaths(String clientCertExclusionPaths) {
+        this.clientCertExclusionPaths = clientCertExclusionPaths;
+        return this;
+    }
+
+    /**
      * Get &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the app; otherwise, &lt;code&gt;false&lt;/code&gt;.
       If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API management process.
      *
@@ -720,6 +766,55 @@ public class SitePatchResource extends ProxyOnlyResource {
      */
     public SitePatchResource withHttpsOnly(Boolean httpsOnly) {
         this.httpsOnly = httpsOnly;
+        return this;
+    }
+
+    /**
+     * Get site redundancy mode. Possible values include: 'None', 'Manual', 'Failover', 'ActiveActive', 'GeoRedundant'.
+     *
+     * @return the redundancyMode value
+     */
+    public RedundancyMode redundancyMode() {
+        return this.redundancyMode;
+    }
+
+    /**
+     * Set site redundancy mode. Possible values include: 'None', 'Manual', 'Failover', 'ActiveActive', 'GeoRedundant'.
+     *
+     * @param redundancyMode the redundancyMode value to set
+     * @return the SitePatchResource object itself.
+     */
+    public SitePatchResource withRedundancyMode(RedundancyMode redundancyMode) {
+        this.redundancyMode = redundancyMode;
+        return this;
+    }
+
+    /**
+     * Get specifies an operation id if this site has a pending operation.
+     *
+     * @return the inProgressOperationId value
+     */
+    public UUID inProgressOperationId() {
+        return this.inProgressOperationId;
+    }
+
+    /**
+     * Get geoDistributions for this site.
+     *
+     * @return the geoDistributions value
+     */
+    public List<GeoDistribution> geoDistributions() {
+        return this.geoDistributions;
+    }
+
+    /**
+     * Set geoDistributions for this site.
+     *
+     * @param geoDistributions the geoDistributions value to set
+     * @return the SitePatchResource object itself.
+     */
+    public SitePatchResource withGeoDistributions(List<GeoDistribution> geoDistributions) {
+        this.geoDistributions = geoDistributions;
         return this;
     }
 

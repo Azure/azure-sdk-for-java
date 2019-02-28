@@ -19,6 +19,7 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
+import java.util.UUID;
 import java.util.Map;
 
 /**
@@ -39,6 +40,11 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
      * @return the clientCertEnabled value.
      */
     Boolean clientCertEnabled();
+
+    /**
+     * @return the clientCertExclusionPaths value.
+     */
+    String clientCertExclusionPaths();
 
     /**
      * @return the cloningInfo value.
@@ -69,6 +75,11 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
      * @return the enabledHostNames value.
      */
     List<String> enabledHostNames();
+
+    /**
+     * @return the geoDistributions value.
+     */
+    List<GeoDistribution> geoDistributions();
 
     /**
      * @return the hostingEnvironmentProfile value.
@@ -109,6 +120,11 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
      * @return the identity value.
      */
     ManagedServiceIdentity identity();
+
+    /**
+     * @return the inProgressOperationId value.
+     */
+    UUID inProgressOperationId();
 
     /**
      * @return the isDefaultContainer value.
@@ -154,6 +170,11 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
      * @return the possibleOutboundIpAddresses value.
      */
     String possibleOutboundIpAddresses();
+
+    /**
+     * @return the redundancyMode value.
+     */
+    RedundancyMode redundancyMode();
 
     /**
      * @return the repositorySiteName value.
@@ -282,6 +303,16 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         }
 
         /**
+         * The stage of the slots definition allowing to specify ClientCertExclusionPaths.
+         */
+        interface WithClientCertExclusionPaths {
+            /**
+             * Specifies clientCertExclusionPaths.
+             */
+            WithCreate withClientCertExclusionPaths(String clientCertExclusionPaths);
+        }
+
+        /**
          * The stage of the slots definition allowing to specify CloningInfo.
          */
         interface WithCloningInfo {
@@ -319,6 +350,16 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
              * Specifies enabled.
              */
             WithCreate withEnabled(Boolean enabled);
+        }
+
+        /**
+         * The stage of the slots definition allowing to specify GeoDistributions.
+         */
+        interface WithGeoDistributions {
+            /**
+             * Specifies geoDistributions.
+             */
+            WithCreate withGeoDistributions(List<GeoDistribution> geoDistributions);
         }
 
         /**
@@ -402,6 +443,16 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
         }
 
         /**
+         * The stage of the slots definition allowing to specify RedundancyMode.
+         */
+        interface WithRedundancyMode {
+            /**
+             * Specifies redundancyMode.
+             */
+            WithCreate withRedundancyMode(RedundancyMode redundancyMode);
+        }
+
+        /**
          * The stage of the slots definition allowing to specify Reserved.
          */
         interface WithReserved {
@@ -456,13 +507,13 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Slots>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithHyperV, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<Slots>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithClientCertExclusionPaths, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithGeoDistributions, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithHyperV, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithRedundancyMode, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig, DefinitionStages.WithTags {
         }
     }
     /**
      * The template for a Slots update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Slots>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithHyperV, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
+    interface Update extends Appliable<Slots>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithClientCertExclusionPaths, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithGeoDistributions, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithHyperV, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithRedundancyMode, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
     }
 
     /**
@@ -487,6 +538,16 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
              * Specifies clientCertEnabled.
              */
             Update withClientCertEnabled(Boolean clientCertEnabled);
+        }
+
+        /**
+         * The stage of the slots update allowing to specify ClientCertExclusionPaths.
+         */
+        interface WithClientCertExclusionPaths {
+            /**
+             * Specifies clientCertExclusionPaths.
+             */
+            Update withClientCertExclusionPaths(String clientCertExclusionPaths);
         }
 
         /**
@@ -527,6 +588,16 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
              * Specifies enabled.
              */
             Update withEnabled(Boolean enabled);
+        }
+
+        /**
+         * The stage of the slots update allowing to specify GeoDistributions.
+         */
+        interface WithGeoDistributions {
+            /**
+             * Specifies geoDistributions.
+             */
+            Update withGeoDistributions(List<GeoDistribution> geoDistributions);
         }
 
         /**
@@ -597,6 +668,16 @@ public interface Slots extends HasInner<SiteInner>, Indexable, Refreshable<Slots
              * Specifies kind.
              */
             Update withKind(String kind);
+        }
+
+        /**
+         * The stage of the slots update allowing to specify RedundancyMode.
+         */
+        interface WithRedundancyMode {
+            /**
+             * Specifies redundancyMode.
+             */
+            Update withRedundancyMode(RedundancyMode redundancyMode);
         }
 
         /**

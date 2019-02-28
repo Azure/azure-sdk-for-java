@@ -26,11 +26,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppS
  */
 public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, AppServicePlanInner>, HasResourceGroup, Refreshable<AppServicePlan>, Updatable<AppServicePlan.Update>, HasManager<CertificateRegistrationManager> {
     /**
-     * @return the adminSiteName value.
-     */
-    String adminSiteName();
-
-    /**
      * @return the freeOfferExpirationTime value.
      */
     DateTime freeOfferExpirationTime();
@@ -155,16 +150,6 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
          * The stage of the AppServicePlan definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
-        }
-
-        /**
-         * The stage of the appserviceplan update allowing to specify AdminSiteName.
-         */
-        interface WithAdminSiteName {
-            /**
-             * Specifies adminSiteName.
-             */
-            WithCreate withAdminSiteName(String adminSiteName);
         }
 
         /**
@@ -312,29 +297,19 @@ public interface AppServicePlan extends HasInner<AppServicePlanInner>, Resource,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<AppServicePlan>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdminSiteName, DefinitionStages.WithFreeOfferExpirationTime, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHyperV, DefinitionStages.WithIsSpot, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithMaximumElasticWorkerCount, DefinitionStages.WithPerSiteScaling, DefinitionStages.WithReserved, DefinitionStages.WithSku, DefinitionStages.WithSpotExpirationTime, DefinitionStages.WithTargetWorkerCount, DefinitionStages.WithTargetWorkerSizeId, DefinitionStages.WithWorkerTierName {
+        interface WithCreate extends Creatable<AppServicePlan>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithFreeOfferExpirationTime, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHyperV, DefinitionStages.WithIsSpot, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithMaximumElasticWorkerCount, DefinitionStages.WithPerSiteScaling, DefinitionStages.WithReserved, DefinitionStages.WithSku, DefinitionStages.WithSpotExpirationTime, DefinitionStages.WithTargetWorkerCount, DefinitionStages.WithTargetWorkerSizeId, DefinitionStages.WithWorkerTierName {
         }
     }
     /**
      * The template for a AppServicePlan update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<AppServicePlan>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdminSiteName, UpdateStages.WithFreeOfferExpirationTime, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHyperV, UpdateStages.WithIsSpot, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithMaximumElasticWorkerCount, UpdateStages.WithPerSiteScaling, UpdateStages.WithReserved, UpdateStages.WithSpotExpirationTime, UpdateStages.WithTargetWorkerCount, UpdateStages.WithTargetWorkerSizeId, UpdateStages.WithWorkerTierName {
+    interface Update extends Appliable<AppServicePlan>, Resource.UpdateWithTags<Update>, UpdateStages.WithFreeOfferExpirationTime, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHyperV, UpdateStages.WithIsSpot, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithMaximumElasticWorkerCount, UpdateStages.WithPerSiteScaling, UpdateStages.WithReserved, UpdateStages.WithSpotExpirationTime, UpdateStages.WithTargetWorkerCount, UpdateStages.WithTargetWorkerSizeId, UpdateStages.WithWorkerTierName {
     }
 
     /**
      * Grouping of AppServicePlan update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the appserviceplan {0} allowing to specify AdminSiteName.
-         */
-        interface WithAdminSiteName {
-            /**
-             * Specifies adminSiteName.
-             */
-            Update withAdminSiteName(String adminSiteName);
-        }
-
         /**
          * The stage of the appserviceplan {0} allowing to specify FreeOfferExpirationTime.
          */

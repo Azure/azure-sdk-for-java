@@ -13,6 +13,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Site
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
+import java.util.UUID;
 import org.joda.time.DateTime;
 import java.util.Map;
 
@@ -34,6 +35,11 @@ public interface ServerfarmSite extends HasInner<SiteInner>, HasManager<Certific
      * @return the clientCertEnabled value.
      */
     Boolean clientCertEnabled();
+
+    /**
+     * @return the clientCertExclusionPaths value.
+     */
+    String clientCertExclusionPaths();
 
     /**
      * @return the cloningInfo value.
@@ -64,6 +70,11 @@ public interface ServerfarmSite extends HasInner<SiteInner>, HasManager<Certific
      * @return the enabledHostNames value.
      */
     List<String> enabledHostNames();
+
+    /**
+     * @return the geoDistributions value.
+     */
+    List<GeoDistribution> geoDistributions();
 
     /**
      * @return the hostingEnvironmentProfile value.
@@ -104,6 +115,11 @@ public interface ServerfarmSite extends HasInner<SiteInner>, HasManager<Certific
      * @return the identity value.
      */
     ManagedServiceIdentity identity();
+
+    /**
+     * @return the inProgressOperationId value.
+     */
+    UUID inProgressOperationId();
 
     /**
      * @return the isDefaultContainer value.
@@ -149,6 +165,11 @@ public interface ServerfarmSite extends HasInner<SiteInner>, HasManager<Certific
      * @return the possibleOutboundIpAddresses value.
      */
     String possibleOutboundIpAddresses();
+
+    /**
+     * @return the redundancyMode value.
+     */
+    RedundancyMode redundancyMode();
 
     /**
      * @return the repositorySiteName value.

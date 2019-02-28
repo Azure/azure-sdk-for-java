@@ -14,6 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.management.appservice.v2018_02_01.SitePatchResource;
 import java.util.List;
 import org.joda.time.DateTime;
+import java.util.UUID;
 import com.microsoft.azure.management.appservice.v2018_02_01.UsageState;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteAvailabilityState;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostNameSslState;
@@ -21,6 +22,8 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.v2018_02_01.CloningInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
+import com.microsoft.azure.management.appservice.v2018_02_01.RedundancyMode;
+import com.microsoft.azure.management.appservice.v2018_02_01.GeoDistribution;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
 import rx.functions.Func1;
 
@@ -90,6 +93,11 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
     }
 
     @Override
+    public String clientCertExclusionPaths() {
+        return this.inner().clientCertExclusionPaths();
+    }
+
+    @Override
     public CloningInfo cloningInfo() {
         return this.inner().cloningInfo();
     }
@@ -117,6 +125,11 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
     @Override
     public List<String> enabledHostNames() {
         return this.inner().enabledHostNames();
+    }
+
+    @Override
+    public List<GeoDistribution> geoDistributions() {
+        return this.inner().geoDistributions();
     }
 
     @Override
@@ -155,6 +168,11 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
     }
 
     @Override
+    public UUID inProgressOperationId() {
+        return this.inner().inProgressOperationId();
+    }
+
+    @Override
     public Boolean isDefaultContainer() {
         return this.inner().isDefaultContainer();
     }
@@ -187,6 +205,11 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
     @Override
     public String possibleOutboundIpAddresses() {
         return this.inner().possibleOutboundIpAddresses();
+    }
+
+    @Override
+    public RedundancyMode redundancyMode() {
+        return this.inner().redundancyMode();
     }
 
     @Override
@@ -276,6 +299,16 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
     }
 
     @Override
+    public SitesImpl withClientCertExclusionPaths(String clientCertExclusionPaths) {
+        if (isInCreateMode()) {
+            this.inner().withClientCertExclusionPaths(clientCertExclusionPaths);
+        } else {
+            this.updateParameter.withClientCertExclusionPaths(clientCertExclusionPaths);
+        }
+        return this;
+    }
+
+    @Override
     public SitesImpl withCloningInfo(CloningInfo cloningInfo) {
         if (isInCreateMode()) {
             this.inner().withCloningInfo(cloningInfo);
@@ -311,6 +344,16 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
             this.inner().withEnabled(enabled);
         } else {
             this.updateParameter.withEnabled(enabled);
+        }
+        return this;
+    }
+
+    @Override
+    public SitesImpl withGeoDistributions(List<GeoDistribution> geoDistributions) {
+        if (isInCreateMode()) {
+            this.inner().withGeoDistributions(geoDistributions);
+        } else {
+            this.updateParameter.withGeoDistributions(geoDistributions);
         }
         return this;
     }
@@ -381,6 +424,16 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
             this.inner().withKind(kind);
         } else {
             this.updateParameter.withKind(kind);
+        }
+        return this;
+    }
+
+    @Override
+    public SitesImpl withRedundancyMode(RedundancyMode redundancyMode) {
+        if (isInCreateMode()) {
+            this.inner().withRedundancyMode(redundancyMode);
+        } else {
+            this.updateParameter.withRedundancyMode(redundancyMode);
         }
         return this;
     }
