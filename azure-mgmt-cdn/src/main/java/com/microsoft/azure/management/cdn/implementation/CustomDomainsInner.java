@@ -12,6 +12,7 @@ import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.cdn.CustomDomainHttpsParameters;
 import com.microsoft.azure.management.cdn.CustomDomainParameters;
 import com.microsoft.azure.management.cdn.ErrorResponseException;
 import com.microsoft.azure.Page;
@@ -19,6 +20,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
@@ -92,7 +94,7 @@ public class CustomDomainsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.CustomDomains enableCustomHttps" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/enableCustomHttps")
-        Observable<Response<ResponseBody>> enableCustomHttps(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("customDomainName") String customDomainName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> enableCustomHttps(@Path("resourceGroupName") String resourceGroupName, @Path("profileName") String profileName, @Path("endpointName") String endpointName, @Path("customDomainName") String customDomainName, @Path("subscriptionId") String subscriptionId, @Body CustomDomainHttpsParameters customDomainHttpsParameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cdn.CustomDomains listByEndpointNext" })
         @GET
@@ -899,7 +901,106 @@ public class CustomDomainsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.enableCustomHttps(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final CustomDomainHttpsParameters customDomainHttpsParameters = null;
+        return service.enableCustomHttps(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), customDomainHttpsParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CustomDomainInner>>>() {
+                @Override
+                public Observable<ServiceResponse<CustomDomainInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CustomDomainInner> clientResponse = enableCustomHttpsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CustomDomainInner object if successful.
+     */
+    public CustomDomainInner enableCustomHttps(String resourceGroupName, String profileName, String endpointName, String customDomainName, CustomDomainHttpsParameters customDomainHttpsParameters) {
+        return enableCustomHttpsWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by default.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CustomDomainInner> enableCustomHttpsAsync(String resourceGroupName, String profileName, String endpointName, String customDomainName, CustomDomainHttpsParameters customDomainHttpsParameters, final ServiceCallback<CustomDomainInner> serviceCallback) {
+        return ServiceFuture.fromResponse(enableCustomHttpsWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters), serviceCallback);
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CustomDomainInner object
+     */
+    public Observable<CustomDomainInner> enableCustomHttpsAsync(String resourceGroupName, String profileName, String endpointName, String customDomainName, CustomDomainHttpsParameters customDomainHttpsParameters) {
+        return enableCustomHttpsWithServiceResponseAsync(resourceGroupName, profileName, endpointName, customDomainName, customDomainHttpsParameters).map(new Func1<ServiceResponse<CustomDomainInner>, CustomDomainInner>() {
+            @Override
+            public CustomDomainInner call(ServiceResponse<CustomDomainInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Enable https delivery of the custom domain.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
+     * @param customDomainHttpsParameters The configuration specifying how to enable HTTPS for the custom domain - using CDN managed certificate or user's own certificate. If not specified, enabling ssl uses CDN managed certificate by default.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CustomDomainInner object
+     */
+    public Observable<ServiceResponse<CustomDomainInner>> enableCustomHttpsWithServiceResponseAsync(String resourceGroupName, String profileName, String endpointName, String customDomainName, CustomDomainHttpsParameters customDomainHttpsParameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (profileName == null) {
+            throw new IllegalArgumentException("Parameter profileName is required and cannot be null.");
+        }
+        if (endpointName == null) {
+            throw new IllegalArgumentException("Parameter endpointName is required and cannot be null.");
+        }
+        if (customDomainName == null) {
+            throw new IllegalArgumentException("Parameter customDomainName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(customDomainHttpsParameters);
+        return service.enableCustomHttps(resourceGroupName, profileName, endpointName, customDomainName, this.client.subscriptionId(), customDomainHttpsParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CustomDomainInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CustomDomainInner>> call(Response<ResponseBody> response) {
