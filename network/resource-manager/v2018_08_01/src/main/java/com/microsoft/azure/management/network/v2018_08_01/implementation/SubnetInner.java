@@ -61,12 +61,6 @@ public class SubnetInner extends SubResource {
     private List<ServiceEndpointPolicyInner> serviceEndpointPolicies;
 
     /**
-     * An array of references to interface endpoints.
-     */
-    @JsonProperty(value = "properties.interfaceEndpoints", access = JsonProperty.Access.WRITE_ONLY)
-    private List<InterfaceEndpointInner> interfaceEndpoints;
-
-    /**
      * Gets an array of references to the network interface IP configurations
      * using subnet.
      */
@@ -241,15 +235,6 @@ public class SubnetInner extends SubResource {
     public SubnetInner withServiceEndpointPolicies(List<ServiceEndpointPolicyInner> serviceEndpointPolicies) {
         this.serviceEndpointPolicies = serviceEndpointPolicies;
         return this;
-    }
-
-    /**
-     * Get an array of references to interface endpoints.
-     *
-     * @return the interfaceEndpoints value
-     */
-    public List<InterfaceEndpointInner> interfaceEndpoints() {
-        return this.interfaceEndpoints;
     }
 
     /**

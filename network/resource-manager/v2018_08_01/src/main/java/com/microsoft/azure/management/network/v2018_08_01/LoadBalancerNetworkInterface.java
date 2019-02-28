@@ -51,11 +51,6 @@ public interface LoadBalancerNetworkInterface extends HasInner<NetworkInterfaceI
     String id();
 
     /**
-     * @return the interfaceEndpoint value.
-     */
-    InterfaceEndpoint interfaceEndpoint();
-
-    /**
      * @return the ipConfigurations value.
      */
     List<VirtualMachineScaleSetNetworkInterfaceIPConfiguration> ipConfigurations();

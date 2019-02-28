@@ -14,7 +14,6 @@ import rx.Observable;
 import com.microsoft.azure.SubResource;
 import java.util.List;
 import com.microsoft.azure.management.network.v2018_08_01.NetworkInterfaceDnsSettings;
-import com.microsoft.azure.management.network.v2018_08_01.InterfaceEndpoint;
 import java.util.ArrayList;
 import com.microsoft.azure.management.network.v2018_08_01.VirtualMachineScaleSetNetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.network.v2018_08_01.NetworkSecurityGroup;
@@ -74,16 +73,6 @@ class NetworkInterfaceImpl extends GroupableResourceCoreImpl<NetworkInterface, N
     @Override
     public List<String> hostedWorkloads() {
         return this.inner().hostedWorkloads();
-    }
-
-    @Override
-    public InterfaceEndpoint interfaceEndpoint() {
-        InterfaceEndpointInner inner = this.inner().interfaceEndpoint();
-        if (inner != null) {
-            return  new InterfaceEndpointImpl(inner.name(), inner, manager());
-        } else {
-            return null;
-        }
     }
 
     @Override
@@ -206,12 +195,6 @@ class NetworkInterfaceImpl extends GroupableResourceCoreImpl<NetworkInterface, N
     @Override
     public NetworkInterfaceImpl withTapConfigurations(List<NetworkInterfaceTapConfigurationInner> tapConfigurations) {
         this.inner().withTapConfigurations(tapConfigurations);
-        return this;
-    }
-
-    @Override
-    public NetworkInterfaceImpl withVirtualMachine(SubResource virtualMachine) {
-        this.inner().withVirtualMachine(virtualMachine);
         return this;
     }
 

@@ -399,19 +399,6 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The InterfaceEndpointsInner object to access its operations.
-     */
-    private InterfaceEndpointsInner interfaceEndpoints;
-
-    /**
-     * Gets the InterfaceEndpointsInner object to access its operations.
-     * @return the InterfaceEndpointsInner object.
-     */
-    public InterfaceEndpointsInner interfaceEndpoints() {
-        return this.interfaceEndpoints;
-    }
-
-    /**
      * The LoadBalancersInner object to access its operations.
      */
     private LoadBalancersInner loadBalancers;
@@ -1063,7 +1050,6 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         this.expressRoutePortsLocations = new ExpressRoutePortsLocationsInner(restClient().retrofit(), this);
         this.expressRoutePorts = new ExpressRoutePortsInner(restClient().retrofit(), this);
         this.expressRouteLinks = new ExpressRouteLinksInner(restClient().retrofit(), this);
-        this.interfaceEndpoints = new InterfaceEndpointsInner(restClient().retrofit(), this);
         this.loadBalancers = new LoadBalancersInner(restClient().retrofit(), this);
         this.loadBalancerBackendAddressPools = new LoadBalancerBackendAddressPoolsInner(restClient().retrofit(), this);
         this.loadBalancerFrontendIPConfigurations = new LoadBalancerFrontendIPConfigurationsInner(restClient().retrofit(), this);

@@ -52,11 +52,6 @@ public interface Subnet extends HasInner<SubnetInner>, Indexable, Refreshable<Su
     String id();
 
     /**
-     * @return the interfaceEndpoints value.
-     */
-    List<InterfaceEndpoint> interfaceEndpoints();
-
-    /**
      * @return the ipConfigurationProfiles value.
      */
     List<IPConfigurationProfile> ipConfigurationProfiles();

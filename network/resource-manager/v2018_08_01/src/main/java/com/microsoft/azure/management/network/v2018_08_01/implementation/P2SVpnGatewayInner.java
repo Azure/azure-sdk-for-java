@@ -56,7 +56,7 @@ public class P2SVpnGatewayInner extends Resource {
     private AddressSpace vpnClientAddressPool;
 
     /**
-     * All P2S vpnclients' connection health status.
+     * All P2S VPN clients' connection health status.
      */
     @JsonProperty(value = "properties.vpnClientConnectionHealth", access = JsonProperty.Access.WRITE_ONLY)
     private VpnClientConnectionHealth vpnClientConnectionHealth;
@@ -175,7 +175,7 @@ public class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Get all P2S vpnclients' connection health status.
+     * Get all P2S VPN clients' connection health status.
      *
      * @return the vpnClientConnectionHealth value
      */

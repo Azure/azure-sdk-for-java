@@ -25,7 +25,7 @@ public class NetworkInterfaceInner extends Resource {
     /**
      * The reference of a virtual machine.
      */
-    @JsonProperty(value = "properties.virtualMachine")
+    @JsonProperty(value = "properties.virtualMachine", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource virtualMachine;
 
     /**
@@ -33,13 +33,6 @@ public class NetworkInterfaceInner extends Resource {
      */
     @JsonProperty(value = "properties.networkSecurityGroup")
     private NetworkSecurityGroupInner networkSecurityGroup;
-
-    /**
-     * A reference to the interface endpoint to which the network interface is
-     * linked.
-     */
-    @JsonProperty(value = "properties.interfaceEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private InterfaceEndpointInner interfaceEndpoint;
 
     /**
      * A list of IPConfigurations of the network interface.
@@ -124,17 +117,6 @@ public class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Set the reference of a virtual machine.
-     *
-     * @param virtualMachine the virtualMachine value to set
-     * @return the NetworkInterfaceInner object itself.
-     */
-    public NetworkInterfaceInner withVirtualMachine(SubResource virtualMachine) {
-        this.virtualMachine = virtualMachine;
-        return this;
-    }
-
-    /**
      * Get the reference of the NetworkSecurityGroup resource.
      *
      * @return the networkSecurityGroup value
@@ -152,15 +134,6 @@ public class NetworkInterfaceInner extends Resource {
     public NetworkInterfaceInner withNetworkSecurityGroup(NetworkSecurityGroupInner networkSecurityGroup) {
         this.networkSecurityGroup = networkSecurityGroup;
         return this;
-    }
-
-    /**
-     * Get a reference to the interface endpoint to which the network interface is linked.
-     *
-     * @return the interfaceEndpoint value
-     */
-    public InterfaceEndpointInner interfaceEndpoint() {
-        return this.interfaceEndpoint;
     }
 
     /**

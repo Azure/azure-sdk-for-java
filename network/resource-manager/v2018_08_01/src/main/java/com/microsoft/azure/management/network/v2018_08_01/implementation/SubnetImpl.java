@@ -18,10 +18,9 @@ import com.microsoft.azure.management.network.v2018_08_01.IPConfigurationProfile
 import com.microsoft.azure.management.network.v2018_08_01.ResourceNavigationLink;
 import com.microsoft.azure.management.network.v2018_08_01.ServiceAssociationLink;
 import com.microsoft.azure.management.network.v2018_08_01.Delegation;
-import java.util.ArrayList;
-import com.microsoft.azure.management.network.v2018_08_01.InterfaceEndpoint;
 import com.microsoft.azure.management.network.v2018_08_01.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.v2018_08_01.RouteTable;
+import java.util.ArrayList;
 import com.microsoft.azure.management.network.v2018_08_01.ServiceEndpointPolicy;
 
 class SubnetImpl extends CreatableUpdatableImpl<Subnet, SubnetInner, SubnetImpl> implements Subnet, Subnet.Definition, Subnet.Update {
@@ -104,17 +103,6 @@ class SubnetImpl extends CreatableUpdatableImpl<Subnet, SubnetInner, SubnetImpl>
     @Override
     public String id() {
         return this.inner().id();
-    }
-
-    @Override
-    public List<InterfaceEndpoint> interfaceEndpoints() {
-        List<InterfaceEndpoint> lst = new ArrayList<InterfaceEndpoint>();
-        if (this.inner().interfaceEndpoints() != null) {
-            for (InterfaceEndpointInner inner : this.inner().interfaceEndpoints()) {
-                lst.add( new InterfaceEndpointImpl(inner.name(), inner, manager()));
-            }
-        }
-        return lst;
     }
 
     @Override

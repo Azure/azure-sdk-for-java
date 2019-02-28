@@ -13,7 +13,6 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 import com.microsoft.azure.management.network.v2018_08_01.NetworkInterfaceDnsSettings;
 import java.util.List;
-import com.microsoft.azure.management.network.v2018_08_01.InterfaceEndpoint;
 import java.util.ArrayList;
 import com.microsoft.azure.management.network.v2018_08_01.VirtualMachineScaleSetNetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.network.v2018_08_01.NetworkSecurityGroup;
@@ -64,16 +63,6 @@ class LoadBalancerNetworkInterfaceImpl extends WrapperImpl<NetworkInterfaceInner
     @Override
     public String id() {
         return this.inner().id();
-    }
-
-    @Override
-    public InterfaceEndpoint interfaceEndpoint() {
-        InterfaceEndpointInner inner = this.inner().interfaceEndpoint();
-        if (inner != null) {
-            return  new InterfaceEndpointImpl(inner.name(), inner, manager());
-        } else {
-            return null;
-        }
     }
 
     @Override
