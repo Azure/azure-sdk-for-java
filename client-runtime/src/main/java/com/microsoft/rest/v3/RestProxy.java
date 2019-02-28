@@ -8,6 +8,7 @@ package com.microsoft.rest.v3;
 
 import com.microsoft.rest.v3.annotations.ResumeOperation;
 import com.microsoft.rest.v3.credentials.ServiceClientCredentials;
+import com.microsoft.rest.v3.http.ContentType;
 import com.microsoft.rest.v3.http.ContextData;
 import com.microsoft.rest.v3.http.HttpHeader;
 import com.microsoft.rest.v3.http.HttpHeaders;
