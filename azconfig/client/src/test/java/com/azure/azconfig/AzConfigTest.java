@@ -7,17 +7,13 @@ import com.azure.azconfig.models.KeyLabelFilter;
 import com.azure.azconfig.models.KeyValueFilter;
 import com.azure.azconfig.models.KeyValue;
 import com.azure.azconfig.models.KeyValueListFilter;
-import com.azure.azconfig.models.Label;
-import com.azure.azconfig.models.RevisionFilter;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.v3.CloudException;
-import com.microsoft.azure.v3.Page;
 import com.microsoft.rest.v3.http.HttpClientConfiguration;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.ProxyOptions;
 import com.microsoft.azure.utils.SdkContext;
-import com.microsoft.rest.v3.http.policy.DecodingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
@@ -79,6 +75,8 @@ public class AzConfigTest {
         String connectionString;
 
         if (isPlaybackMode()) {
+            System.out.println("PLAYBACK MODE");
+
             credentials = AzConfigClient.AzConfigCredentials.parseConnectionString("endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw");
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.initRecordPolicy());
@@ -87,6 +85,8 @@ public class AzConfigTest {
 
             System.out.println(playbackUri);
         } else { // Record mode
+            System.out.println("RECORD MODE");
+
             connectionString =  System.getenv("AZCONFIG_CONNECTION_STRING");
             HttpClientConfiguration configuration = new HttpClientConfiguration().withProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
             credentials = AzConfigClient.AzConfigCredentials.parseConnectionString(connectionString);
@@ -117,7 +117,6 @@ public class AzConfigTest {
         policies.add(new RequestIdPolicy());
         policies.add(new AzConfigCredentialsPolicy(credentials));
         policies.add(new RetryPolicy());
-        policies.add(new DecodingPolicy());
         //        policies.add(new RequestRetryPolicyFactory()); // todo - do we really need custom retry policy here?
         policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
 
