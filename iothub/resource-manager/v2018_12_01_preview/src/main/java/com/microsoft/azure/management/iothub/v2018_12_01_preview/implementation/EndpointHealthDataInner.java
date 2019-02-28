@@ -22,8 +22,18 @@ public class EndpointHealthDataInner {
     private String endpointId;
 
     /**
-     * Health status. Possible values include: 'unknown', 'healthy',
-     * 'unhealthy', 'dead'.
+     * Health statuses have following meanings. The 'healthy' status shows that
+     * the endpoint is accepting messages as expected. The 'unhealthy' status
+     * shows that the endpoint is not accepting messages as expected and IoT
+     * Hub is retrying to send data to this endpoint. The status of an
+     * unhealthy endpoint will be updated to healthy when IoT Hub has
+     * established an eventually consistent state of health. The 'dead' status
+     * shows that the endpoint is not accepting messages, after IoT Hub retried
+     * sending messages for the retrial period. See IoT Hub metrics to identify
+     * errors and monitor issues with endpoints. The 'unknown' status shows
+     * that the IoT Hub has not established a connection with the endpoint. No
+     * messages have been delivered to or rejected from this endpoint. Possible
+     * values include: 'unknown', 'healthy', 'unhealthy', 'dead'.
      */
     @JsonProperty(value = "healthStatus")
     private EndpointHealthStatus healthStatus;
@@ -49,7 +59,7 @@ public class EndpointHealthDataInner {
     }
 
     /**
-     * Get health status. Possible values include: 'unknown', 'healthy', 'unhealthy', 'dead'.
+     * Get health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting messages as expected. The 'unhealthy' status shows that the endpoint is not accepting messages as expected and IoT Hub is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to healthy when IoT Hub has established an eventually consistent state of health. The 'dead' status shows that the endpoint is not accepting messages, after IoT Hub retried sending messages for the retrial period. See IoT Hub metrics to identify errors and monitor issues with endpoints. The 'unknown' status shows that the IoT Hub has not established a connection with the endpoint. No messages have been delivered to or rejected from this endpoint. Possible values include: 'unknown', 'healthy', 'unhealthy', 'dead'.
      *
      * @return the healthStatus value
      */
@@ -58,7 +68,7 @@ public class EndpointHealthDataInner {
     }
 
     /**
-     * Set health status. Possible values include: 'unknown', 'healthy', 'unhealthy', 'dead'.
+     * Set health statuses have following meanings. The 'healthy' status shows that the endpoint is accepting messages as expected. The 'unhealthy' status shows that the endpoint is not accepting messages as expected and IoT Hub is retrying to send data to this endpoint. The status of an unhealthy endpoint will be updated to healthy when IoT Hub has established an eventually consistent state of health. The 'dead' status shows that the endpoint is not accepting messages, after IoT Hub retried sending messages for the retrial period. See IoT Hub metrics to identify errors and monitor issues with endpoints. The 'unknown' status shows that the IoT Hub has not established a connection with the endpoint. No messages have been delivered to or rejected from this endpoint. Possible values include: 'unknown', 'healthy', 'unhealthy', 'dead'.
      *
      * @param healthStatus the healthStatus value to set
      * @return the EndpointHealthDataInner object itself.
