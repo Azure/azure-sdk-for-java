@@ -67,7 +67,7 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
     /**
      * @return the proxyOverride value.
      */
-    String proxyOverride();
+    ManagedInstanceProxyOverride proxyOverride();
 
     /**
      * @return the publicDataEndpointEnabled value.
@@ -93,6 +93,11 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
      * @return the subnetId value.
      */
     String subnetId();
+
+    /**
+     * @return the timezoneId value.
+     */
+    String timezoneId();
 
     /**
      * @return the vCores value.
@@ -188,7 +193,7 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
             /**
              * Specifies proxyOverride.
              */
-            WithCreate withProxyOverride(String proxyOverride);
+            WithCreate withProxyOverride(ManagedInstanceProxyOverride proxyOverride);
         }
 
         /**
@@ -232,6 +237,16 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
         }
 
         /**
+         * The stage of the managedinstance update allowing to specify TimezoneId.
+         */
+        interface WithTimezoneId {
+            /**
+             * Specifies timezoneId.
+             */
+            WithCreate withTimezoneId(String timezoneId);
+        }
+
+        /**
          * The stage of the managedinstance update allowing to specify VCores.
          */
         interface WithVCores {
@@ -246,13 +261,13 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ManagedInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdministratorLogin, DefinitionStages.WithAdministratorLoginPassword, DefinitionStages.WithCollation, DefinitionStages.WithDnsZonePartner, DefinitionStages.WithIdentity, DefinitionStages.WithLicenseType, DefinitionStages.WithProxyOverride, DefinitionStages.WithPublicDataEndpointEnabled, DefinitionStages.WithSku, DefinitionStages.WithStorageSizeInGB, DefinitionStages.WithSubnetId, DefinitionStages.WithVCores {
+        interface WithCreate extends Creatable<ManagedInstance>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAdministratorLogin, DefinitionStages.WithAdministratorLoginPassword, DefinitionStages.WithCollation, DefinitionStages.WithDnsZonePartner, DefinitionStages.WithIdentity, DefinitionStages.WithLicenseType, DefinitionStages.WithProxyOverride, DefinitionStages.WithPublicDataEndpointEnabled, DefinitionStages.WithSku, DefinitionStages.WithStorageSizeInGB, DefinitionStages.WithSubnetId, DefinitionStages.WithTimezoneId, DefinitionStages.WithVCores {
         }
     }
     /**
      * The template for a ManagedInstance update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ManagedInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLogin, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithCollation, UpdateStages.WithDnsZonePartner, UpdateStages.WithLicenseType, UpdateStages.WithProxyOverride, UpdateStages.WithPublicDataEndpointEnabled, UpdateStages.WithSku, UpdateStages.WithStorageSizeInGB, UpdateStages.WithSubnetId, UpdateStages.WithVCores {
+    interface Update extends Appliable<ManagedInstance>, Resource.UpdateWithTags<Update>, UpdateStages.WithAdministratorLogin, UpdateStages.WithAdministratorLoginPassword, UpdateStages.WithCollation, UpdateStages.WithDnsZonePartner, UpdateStages.WithLicenseType, UpdateStages.WithProxyOverride, UpdateStages.WithPublicDataEndpointEnabled, UpdateStages.WithSku, UpdateStages.WithStorageSizeInGB, UpdateStages.WithSubnetId, UpdateStages.WithTimezoneId, UpdateStages.WithVCores {
     }
 
     /**
@@ -316,7 +331,7 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
             /**
              * Specifies proxyOverride.
              */
-            Update withProxyOverride(String proxyOverride);
+            Update withProxyOverride(ManagedInstanceProxyOverride proxyOverride);
         }
 
         /**
@@ -357,6 +372,16 @@ public interface ManagedInstance extends HasInner<ManagedInstanceInner>, Resourc
              * Specifies subnetId.
              */
             Update withSubnetId(String subnetId);
+        }
+
+        /**
+         * The stage of the managedinstance {0} allowing to specify TimezoneId.
+         */
+        interface WithTimezoneId {
+            /**
+             * Specifies timezoneId.
+             */
+            Update withTimezoneId(String timezoneId);
         }
 
         /**

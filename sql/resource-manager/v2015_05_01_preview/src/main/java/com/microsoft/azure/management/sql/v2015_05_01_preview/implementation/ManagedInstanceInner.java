@@ -10,6 +10,7 @@ package com.microsoft.azure.management.sql.v2015_05_01_preview.implementation;
 
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ResourceIdentity;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.Sku;
+import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceProxyOverride;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -108,10 +109,27 @@ public class ManagedInstanceInner extends Resource {
     private Boolean publicDataEndpointEnabled;
 
     /**
-     * Proxy override of the managed instance.
+     * Connection type used for connecting to the instance. Possible values
+     * include: 'Proxy', 'Redirect', 'Default'.
      */
     @JsonProperty(value = "properties.proxyOverride")
-    private String proxyOverride;
+    private ManagedInstanceProxyOverride proxyOverride;
+
+    /**
+     * Id of the timezone. Allowed values are timezones supported by Windows.
+     * Winodws keeps details on supported timezones, including the id, in
+     * registry under
+     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
+     * Zones.
+     * You can get those registry values via SQL Server by querying SELECT name
+     * AS timezone_id FROM sys.time_zone_info.
+     * List of Ids can also be obtained by executing
+     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe
+     * Standard Time".
+     */
+    @JsonProperty(value = "properties.timezoneId")
+    private String timezoneId;
 
     /**
      * Get the Azure Active Directory identity of the managed instance.
@@ -361,22 +379,52 @@ public class ManagedInstanceInner extends Resource {
     }
 
     /**
-     * Get proxy override of the managed instance.
+     * Get connection type used for connecting to the instance. Possible values include: 'Proxy', 'Redirect', 'Default'.
      *
      * @return the proxyOverride value
      */
-    public String proxyOverride() {
+    public ManagedInstanceProxyOverride proxyOverride() {
         return this.proxyOverride;
     }
 
     /**
-     * Set proxy override of the managed instance.
+     * Set connection type used for connecting to the instance. Possible values include: 'Proxy', 'Redirect', 'Default'.
      *
      * @param proxyOverride the proxyOverride value to set
      * @return the ManagedInstanceInner object itself.
      */
-    public ManagedInstanceInner withProxyOverride(String proxyOverride) {
+    public ManagedInstanceInner withProxyOverride(ManagedInstanceProxyOverride proxyOverride) {
         this.proxyOverride = proxyOverride;
+        return this;
+    }
+
+    /**
+     * Get id of the timezone. Allowed values are timezones supported by Windows.
+     Winodws keeps details on supported timezones, including the id, in registry under
+     KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+     You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+     List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
+     *
+     * @return the timezoneId value
+     */
+    public String timezoneId() {
+        return this.timezoneId;
+    }
+
+    /**
+     * Set id of the timezone. Allowed values are timezones supported by Windows.
+     Winodws keeps details on supported timezones, including the id, in registry under
+     KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+     You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+     List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
+     *
+     * @param timezoneId the timezoneId value to set
+     * @return the ManagedInstanceInner object itself.
+     */
+    public ManagedInstanceInner withTimezoneId(String timezoneId) {
+        this.timezoneId = timezoneId;
         return this;
     }
 
