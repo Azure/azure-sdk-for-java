@@ -35,6 +35,11 @@ public interface PipelineRun extends HasInner<PipelineRunInner>, HasManager<Data
     PipelineRunInvokedBy invokedBy();
 
     /**
+     * @return the isLatest value.
+     */
+    Boolean isLatest();
+
+    /**
      * @return the lastUpdated value.
      */
     DateTime lastUpdated();
@@ -58,6 +63,11 @@ public interface PipelineRun extends HasInner<PipelineRunInner>, HasManager<Data
      * @return the runEnd value.
      */
     DateTime runEnd();
+
+    /**
+     * @return the runGroupId value.
+     */
+    String runGroupId();
 
     /**
      * @return the runId value.

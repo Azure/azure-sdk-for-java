@@ -87,6 +87,27 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
     private Map<String, Object> newClusterCustomTags;
 
     /**
+     * The driver node type for the new cluster. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.newClusterDriverNodeType")
+    private Object newClusterDriverNodeType;
+
+    /**
+     * User-defined initialization scripts for the new cluster. Type: array of
+     * strings (or Expression with resultType array of strings).
+     */
+    @JsonProperty(value = "typeProperties.newClusterInitScripts")
+    private Object newClusterInitScripts;
+
+    /**
+     * Enable the elastic disk on the new cluster. Type: boolean (or Expression
+     * with resultType boolean).
+     */
+    @JsonProperty(value = "typeProperties.newClusterEnableElasticDisk")
+    private Object newClusterEnableElasticDisk;
+
+    /**
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -271,6 +292,66 @@ public class AzureDatabricksLinkedService extends LinkedServiceInner {
      */
     public AzureDatabricksLinkedService withNewClusterCustomTags(Map<String, Object> newClusterCustomTags) {
         this.newClusterCustomTags = newClusterCustomTags;
+        return this;
+    }
+
+    /**
+     * Get the driver node type for the new cluster. Type: string (or Expression with resultType string).
+     *
+     * @return the newClusterDriverNodeType value
+     */
+    public Object newClusterDriverNodeType() {
+        return this.newClusterDriverNodeType;
+    }
+
+    /**
+     * Set the driver node type for the new cluster. Type: string (or Expression with resultType string).
+     *
+     * @param newClusterDriverNodeType the newClusterDriverNodeType value to set
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withNewClusterDriverNodeType(Object newClusterDriverNodeType) {
+        this.newClusterDriverNodeType = newClusterDriverNodeType;
+        return this;
+    }
+
+    /**
+     * Get user-defined initialization scripts for the new cluster. Type: array of strings (or Expression with resultType array of strings).
+     *
+     * @return the newClusterInitScripts value
+     */
+    public Object newClusterInitScripts() {
+        return this.newClusterInitScripts;
+    }
+
+    /**
+     * Set user-defined initialization scripts for the new cluster. Type: array of strings (or Expression with resultType array of strings).
+     *
+     * @param newClusterInitScripts the newClusterInitScripts value to set
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withNewClusterInitScripts(Object newClusterInitScripts) {
+        this.newClusterInitScripts = newClusterInitScripts;
+        return this;
+    }
+
+    /**
+     * Get enable the elastic disk on the new cluster. Type: boolean (or Expression with resultType boolean).
+     *
+     * @return the newClusterEnableElasticDisk value
+     */
+    public Object newClusterEnableElasticDisk() {
+        return this.newClusterEnableElasticDisk;
+    }
+
+    /**
+     * Set enable the elastic disk on the new cluster. Type: boolean (or Expression with resultType boolean).
+     *
+     * @param newClusterEnableElasticDisk the newClusterEnableElasticDisk value to set
+     * @return the AzureDatabricksLinkedService object itself.
+     */
+    public AzureDatabricksLinkedService withNewClusterEnableElasticDisk(Object newClusterEnableElasticDisk) {
+        this.newClusterEnableElasticDisk = newClusterEnableElasticDisk;
         return this;
     }
 

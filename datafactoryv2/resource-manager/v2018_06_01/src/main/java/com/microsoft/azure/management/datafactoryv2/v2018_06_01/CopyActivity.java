@@ -83,6 +83,12 @@ public class CopyActivity extends ExecutionActivity {
     private RedirectIncompatibleRowSettings redirectIncompatibleRowSettings;
 
     /**
+     * Preserve Rules.
+     */
+    @JsonProperty(value = "typeProperties.preserveRules")
+    private List<Object> preserveRules;
+
+    /**
      * List of inputs for the activity.
      */
     @JsonProperty(value = "inputs")
@@ -271,6 +277,26 @@ public class CopyActivity extends ExecutionActivity {
      */
     public CopyActivity withRedirectIncompatibleRowSettings(RedirectIncompatibleRowSettings redirectIncompatibleRowSettings) {
         this.redirectIncompatibleRowSettings = redirectIncompatibleRowSettings;
+        return this;
+    }
+
+    /**
+     * Get preserve Rules.
+     *
+     * @return the preserveRules value
+     */
+    public List<Object> preserveRules() {
+        return this.preserveRules;
+    }
+
+    /**
+     * Set preserve Rules.
+     *
+     * @param preserveRules the preserveRules value to set
+     * @return the CopyActivity object itself.
+     */
+    public CopyActivity withPreserveRules(List<Object> preserveRules) {
+        this.preserveRules = preserveRules;
         return this;
     }
 

@@ -22,7 +22,8 @@ public class RunQueryFilter {
      * ActivityType and Status, and to query trigger runs are TriggerName,
      * TriggerRunTimestamp and Status. Possible values include: 'PipelineName',
      * 'Status', 'RunStart', 'RunEnd', 'ActivityName', 'ActivityRunStart',
-     * 'ActivityRunEnd', 'ActivityType', 'TriggerName', 'TriggerRunTimestamp'.
+     * 'ActivityRunEnd', 'ActivityType', 'TriggerName', 'TriggerRunTimestamp',
+     * 'RunGroupId', 'LatestOnly'.
      */
     @JsonProperty(value = "operand", required = true)
     private RunQueryFilterOperand operand;
@@ -41,7 +42,7 @@ public class RunQueryFilter {
     private List<String> values;
 
     /**
-     * Get parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status. Possible values include: 'PipelineName', 'Status', 'RunStart', 'RunEnd', 'ActivityName', 'ActivityRunStart', 'ActivityRunEnd', 'ActivityType', 'TriggerName', 'TriggerRunTimestamp'.
+     * Get parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status. Possible values include: 'PipelineName', 'Status', 'RunStart', 'RunEnd', 'ActivityName', 'ActivityRunStart', 'ActivityRunEnd', 'ActivityType', 'TriggerName', 'TriggerRunTimestamp', 'RunGroupId', 'LatestOnly'.
      *
      * @return the operand value
      */
@@ -50,7 +51,7 @@ public class RunQueryFilter {
     }
 
     /**
-     * Set parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status. Possible values include: 'PipelineName', 'Status', 'RunStart', 'RunEnd', 'ActivityName', 'ActivityRunStart', 'ActivityRunEnd', 'ActivityType', 'TriggerName', 'TriggerRunTimestamp'.
+     * Set parameter name to be used for filter. The allowed operands to query pipeline runs are PipelineName, RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart, ActivityRunEnd, ActivityType and Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and Status. Possible values include: 'PipelineName', 'Status', 'RunStart', 'RunEnd', 'ActivityName', 'ActivityRunStart', 'ActivityRunEnd', 'ActivityType', 'TriggerName', 'TriggerRunTimestamp', 'RunGroupId', 'LatestOnly'.
      *
      * @param operand the operand value to set
      * @return the RunQueryFilter object itself.

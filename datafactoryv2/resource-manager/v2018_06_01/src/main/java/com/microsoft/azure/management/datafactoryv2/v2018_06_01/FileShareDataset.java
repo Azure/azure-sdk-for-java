@@ -36,6 +36,20 @@ public class FileShareDataset extends DatasetInner {
     private Object fileName;
 
     /**
+     * The start of file's modified datetime. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
+    private Object modifiedDatetimeStart;
+
+    /**
+     * The end of file's modified datetime. Type: string (or Expression with
+     * resultType string).
+     */
+    @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
+    private Object modifiedDatetimeEnd;
+
+    /**
      * The format of the files.
      */
     @JsonProperty(value = "typeProperties.format")
@@ -92,6 +106,46 @@ public class FileShareDataset extends DatasetInner {
      */
     public FileShareDataset withFileName(Object fileName) {
         this.fileName = fileName;
+        return this;
+    }
+
+    /**
+     * Get the start of file's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @return the modifiedDatetimeStart value
+     */
+    public Object modifiedDatetimeStart() {
+        return this.modifiedDatetimeStart;
+    }
+
+    /**
+     * Set the start of file's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @param modifiedDatetimeStart the modifiedDatetimeStart value to set
+     * @return the FileShareDataset object itself.
+     */
+    public FileShareDataset withModifiedDatetimeStart(Object modifiedDatetimeStart) {
+        this.modifiedDatetimeStart = modifiedDatetimeStart;
+        return this;
+    }
+
+    /**
+     * Get the end of file's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @return the modifiedDatetimeEnd value
+     */
+    public Object modifiedDatetimeEnd() {
+        return this.modifiedDatetimeEnd;
+    }
+
+    /**
+     * Set the end of file's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set
+     * @return the FileShareDataset object itself.
+     */
+    public FileShareDataset withModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
+        this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
     }
 

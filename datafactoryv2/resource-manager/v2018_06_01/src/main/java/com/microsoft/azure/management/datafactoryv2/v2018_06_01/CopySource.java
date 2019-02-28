@@ -21,6 +21,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("CopySource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AmazonRedshiftSource", value = AmazonRedshiftSource.class),
+    @JsonSubTypes.Type(name = "GoogleAdWordsSource", value = GoogleAdWordsSource.class),
+    @JsonSubTypes.Type(name = "OracleServiceCloudSource", value = OracleServiceCloudSource.class),
+    @JsonSubTypes.Type(name = "DynamicsAXSource", value = DynamicsAXSource.class),
     @JsonSubTypes.Type(name = "ResponsysSource", value = ResponsysSource.class),
     @JsonSubTypes.Type(name = "SalesforceMarketingCloudSource", value = SalesforceMarketingCloudSource.class),
     @JsonSubTypes.Type(name = "VerticaSource", value = VerticaSource.class),
@@ -52,16 +55,23 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "AzurePostgreSqlSource", value = AzurePostgreSqlSource.class),
     @JsonSubTypes.Type(name = "AmazonMWSSource", value = AmazonMWSSource.class),
     @JsonSubTypes.Type(name = "HttpSource", value = HttpSource.class),
+    @JsonSubTypes.Type(name = "AzureBlobFSSource", value = AzureBlobFSSource.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreSource", value = AzureDataLakeStoreSource.class),
+    @JsonSubTypes.Type(name = "Office365Source", value = Office365Source.class),
+    @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSource", value = CosmosDbMongoDbApiSource.class),
+    @JsonSubTypes.Type(name = "MongoDbV2Source", value = MongoDbV2Source.class),
     @JsonSubTypes.Type(name = "MongoDbSource", value = MongoDbSource.class),
     @JsonSubTypes.Type(name = "CassandraSource", value = CassandraSource.class),
     @JsonSubTypes.Type(name = "WebSource", value = WebSource.class),
     @JsonSubTypes.Type(name = "OracleSource", value = OracleSource.class),
+    @JsonSubTypes.Type(name = "AzureDataExplorerSource", value = AzureDataExplorerSource.class),
     @JsonSubTypes.Type(name = "AzureMySqlSource", value = AzureMySqlSource.class),
     @JsonSubTypes.Type(name = "HdfsSource", value = HdfsSource.class),
     @JsonSubTypes.Type(name = "FileSystemSource", value = FileSystemSource.class),
     @JsonSubTypes.Type(name = "SqlDWSource", value = SqlDWSource.class),
     @JsonSubTypes.Type(name = "SqlSource", value = SqlSource.class),
+    @JsonSubTypes.Type(name = "RestSource", value = RestSource.class),
+    @JsonSubTypes.Type(name = "SapOpenHubSource", value = SapOpenHubSource.class),
     @JsonSubTypes.Type(name = "SapEccSource", value = SapEccSource.class),
     @JsonSubTypes.Type(name = "SapCloudForCustomerSource", value = SapCloudForCustomerSource.class),
     @JsonSubTypes.Type(name = "SalesforceSource", value = SalesforceSource.class),
@@ -91,6 +101,13 @@ public class CopySource {
      */
     @JsonProperty(value = "sourceRetryWait")
     private Object sourceRetryWait;
+
+    /**
+     * The maximum concurrent connection count for the source data store. Type:
+     * integer (or Expression with resultType integer).
+     */
+    @JsonProperty(value = "maxConcurrentConnections")
+    private Object maxConcurrentConnections;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -149,6 +166,26 @@ public class CopySource {
      */
     public CopySource withSourceRetryWait(Object sourceRetryWait) {
         this.sourceRetryWait = sourceRetryWait;
+        return this;
+    }
+
+    /**
+     * Get the maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+     *
+     * @return the maxConcurrentConnections value
+     */
+    public Object maxConcurrentConnections() {
+        return this.maxConcurrentConnections;
+    }
+
+    /**
+     * Set the maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType integer).
+     *
+     * @param maxConcurrentConnections the maxConcurrentConnections value to set
+     * @return the CopySource object itself.
+     */
+    public CopySource withMaxConcurrentConnections(Object maxConcurrentConnections) {
+        this.maxConcurrentConnections = maxConcurrentConnections;
         return this;
     }
 

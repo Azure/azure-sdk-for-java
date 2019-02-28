@@ -49,6 +49,11 @@ class PipelineRunImpl extends WrapperImpl<PipelineRunInner> implements PipelineR
     }
 
     @Override
+    public Boolean isLatest() {
+        return this.inner().isLatest();
+    }
+
+    @Override
     public DateTime lastUpdated() {
         return this.inner().lastUpdated();
     }
@@ -71,6 +76,11 @@ class PipelineRunImpl extends WrapperImpl<PipelineRunInner> implements PipelineR
     @Override
     public DateTime runEnd() {
         return this.inner().runEnd();
+    }
+
+    @Override
+    public String runGroupId() {
+        return this.inner().runGroupId();
     }
 
     @Override

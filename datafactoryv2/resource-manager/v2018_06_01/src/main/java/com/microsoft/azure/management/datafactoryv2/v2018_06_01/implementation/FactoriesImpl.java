@@ -131,6 +131,18 @@ class FactoriesImpl extends GroupableResourcesCoreImpl<Factory, FactoryImpl, Fac
     }
 
     @Override
+    public Observable<Factory> upgradeAsync(String resourceGroupName, String factoryName) {
+        FactoriesInner client = this.inner();
+        return client.upgradeAsync(resourceGroupName, factoryName)
+        .map(new Func1<FactoryInner, Factory>() {
+            @Override
+            public Factory call(FactoryInner inner) {
+                return new FactoryImpl(inner.name(), inner, manager());
+            }
+        });
+    }
+
+    @Override
     public Observable<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest) {
         FactoriesInner client = this.inner();
         return client.getGitHubAccessTokenAsync(resourceGroupName, factoryName, gitHubAccessTokenRequest)

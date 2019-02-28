@@ -43,6 +43,20 @@ public class AzureBlobDataset extends DatasetInner {
     private Object fileName;
 
     /**
+     * The start of Azure Blob's modified datetime. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
+    private Object modifiedDatetimeStart;
+
+    /**
+     * The end of Azure Blob's modified datetime. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
+    private Object modifiedDatetimeEnd;
+
+    /**
      * The format of the Azure Blob storage.
      */
     @JsonProperty(value = "typeProperties.format")
@@ -111,6 +125,46 @@ public class AzureBlobDataset extends DatasetInner {
      */
     public AzureBlobDataset withFileName(Object fileName) {
         this.fileName = fileName;
+        return this;
+    }
+
+    /**
+     * Get the start of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @return the modifiedDatetimeStart value
+     */
+    public Object modifiedDatetimeStart() {
+        return this.modifiedDatetimeStart;
+    }
+
+    /**
+     * Set the start of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @param modifiedDatetimeStart the modifiedDatetimeStart value to set
+     * @return the AzureBlobDataset object itself.
+     */
+    public AzureBlobDataset withModifiedDatetimeStart(Object modifiedDatetimeStart) {
+        this.modifiedDatetimeStart = modifiedDatetimeStart;
+        return this;
+    }
+
+    /**
+     * Get the end of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @return the modifiedDatetimeEnd value
+     */
+    public Object modifiedDatetimeEnd() {
+        return this.modifiedDatetimeEnd;
+    }
+
+    /**
+     * Set the end of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set
+     * @return the AzureBlobDataset object itself.
+     */
+    public AzureBlobDataset withModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
+        this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
     }
 

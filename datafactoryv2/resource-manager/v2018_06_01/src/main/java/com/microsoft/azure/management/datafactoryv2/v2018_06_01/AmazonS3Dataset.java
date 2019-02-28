@@ -50,6 +50,20 @@ public class AmazonS3Dataset extends DatasetInner {
     private Object version;
 
     /**
+     * The start of S3 object's modified datetime. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
+    private Object modifiedDatetimeStart;
+
+    /**
+     * The end of S3 object's modified datetime. Type: string (or Expression
+     * with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
+    private Object modifiedDatetimeEnd;
+
+    /**
      * The format of files.
      */
     @JsonProperty(value = "typeProperties.format")
@@ -138,6 +152,46 @@ public class AmazonS3Dataset extends DatasetInner {
      */
     public AmazonS3Dataset withVersion(Object version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the start of S3 object's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @return the modifiedDatetimeStart value
+     */
+    public Object modifiedDatetimeStart() {
+        return this.modifiedDatetimeStart;
+    }
+
+    /**
+     * Set the start of S3 object's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @param modifiedDatetimeStart the modifiedDatetimeStart value to set
+     * @return the AmazonS3Dataset object itself.
+     */
+    public AmazonS3Dataset withModifiedDatetimeStart(Object modifiedDatetimeStart) {
+        this.modifiedDatetimeStart = modifiedDatetimeStart;
+        return this;
+    }
+
+    /**
+     * Get the end of S3 object's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @return the modifiedDatetimeEnd value
+     */
+    public Object modifiedDatetimeEnd() {
+        return this.modifiedDatetimeEnd;
+    }
+
+    /**
+     * Set the end of S3 object's modified datetime. Type: string (or Expression with resultType string).
+     *
+     * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set
+     * @return the AmazonS3Dataset object itself.
+     */
+    public AmazonS3Dataset withModifiedDatetimeEnd(Object modifiedDatetimeEnd) {
+        this.modifiedDatetimeEnd = modifiedDatetimeEnd;
         return this;
     }
 

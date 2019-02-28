@@ -37,6 +37,15 @@ public class AmazonS3LinkedService extends LinkedServiceInner {
     private SecretBase secretAccessKey;
 
     /**
+     * This value specifies the endpoint to access with the S3 Connector. This
+     * is an optional property; change it only if you want to try a different
+     * service endpoint or want to switch between https and http. Type: string
+     * (or Expression with resultType string).
+     */
+    @JsonProperty(value = "typeProperties.serviceUrl")
+    private Object serviceUrl;
+
+    /**
      * The encrypted credential used for authentication. Credentials are
      * encrypted using the integration runtime credential manager. Type: string
      * (or Expression with resultType string).
@@ -81,6 +90,26 @@ public class AmazonS3LinkedService extends LinkedServiceInner {
      */
     public AmazonS3LinkedService withSecretAccessKey(SecretBase secretAccessKey) {
         this.secretAccessKey = secretAccessKey;
+        return this;
+    }
+
+    /**
+     * Get this value specifies the endpoint to access with the S3 Connector. This is an optional property; change it only if you want to try a different service endpoint or want to switch between https and http. Type: string (or Expression with resultType string).
+     *
+     * @return the serviceUrl value
+     */
+    public Object serviceUrl() {
+        return this.serviceUrl;
+    }
+
+    /**
+     * Set this value specifies the endpoint to access with the S3 Connector. This is an optional property; change it only if you want to try a different service endpoint or want to switch between https and http. Type: string (or Expression with resultType string).
+     *
+     * @param serviceUrl the serviceUrl value to set
+     * @return the AmazonS3LinkedService object itself.
+     */
+    public AmazonS3LinkedService withServiceUrl(Object serviceUrl) {
+        this.serviceUrl = serviceUrl;
         return this;
     }
 

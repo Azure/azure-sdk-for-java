@@ -20,10 +20,13 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CopySink")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSink", value = CosmosDbMongoDbApiSink.class),
     @JsonSubTypes.Type(name = "SalesforceSink", value = SalesforceSink.class),
+    @JsonSubTypes.Type(name = "AzureDataExplorerSink", value = AzureDataExplorerSink.class),
     @JsonSubTypes.Type(name = "DynamicsSink", value = DynamicsSink.class),
     @JsonSubTypes.Type(name = "OdbcSink", value = OdbcSink.class),
     @JsonSubTypes.Type(name = "AzureSearchIndexSink", value = AzureSearchIndexSink.class),
+    @JsonSubTypes.Type(name = "AzureBlobFSSink", value = AzureBlobFSSink.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreSink", value = AzureDataLakeStoreSink.class),
     @JsonSubTypes.Type(name = "OracleSink", value = OracleSink.class),
     @JsonSubTypes.Type(name = "SqlDWSink", value = SqlDWSink.class),
@@ -68,6 +71,13 @@ public class CopySink {
      */
     @JsonProperty(value = "sinkRetryWait")
     private Object sinkRetryWait;
+
+    /**
+     * The maximum concurrent connection count for the sink data store. Type:
+     * integer (or Expression with resultType integer).
+     */
+    @JsonProperty(value = "maxConcurrentConnections")
+    private Object maxConcurrentConnections;
 
     /**
      * Get unmatched properties from the message are deserialized this collection.
@@ -166,6 +176,26 @@ public class CopySink {
      */
     public CopySink withSinkRetryWait(Object sinkRetryWait) {
         this.sinkRetryWait = sinkRetryWait;
+        return this;
+    }
+
+    /**
+     * Get the maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
+     *
+     * @return the maxConcurrentConnections value
+     */
+    public Object maxConcurrentConnections() {
+        return this.maxConcurrentConnections;
+    }
+
+    /**
+     * Set the maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType integer).
+     *
+     * @param maxConcurrentConnections the maxConcurrentConnections value to set
+     * @return the CopySink object itself.
+     */
+    public CopySink withMaxConcurrentConnections(Object maxConcurrentConnections) {
+        this.maxConcurrentConnections = maxConcurrentConnections;
         return this;
     }
 

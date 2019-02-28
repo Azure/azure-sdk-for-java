@@ -98,6 +98,10 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories upgrade" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/upgrade")
+        Observable<Response<ResponseBody>> upgrade(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Factories getGitHubAccessToken" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/getGitHubAccessToken")
         Observable<Response<ResponseBody>> getGitHubAccessToken(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Query("api-version") String apiVersion, @Body GitHubAccessTokenRequest gitHubAccessTokenRequest, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -958,6 +962,92 @@ public class FactoriesInner implements InnerSupportsGet<FactoryInner>, InnerSupp
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Upgrade preview version factory to G.A. version.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the FactoryInner object if successful.
+     */
+    public FactoryInner upgrade(String resourceGroupName, String factoryName) {
+        return upgradeWithServiceResponseAsync(resourceGroupName, factoryName).toBlocking().single().body();
+    }
+
+    /**
+     * Upgrade preview version factory to G.A. version.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<FactoryInner> upgradeAsync(String resourceGroupName, String factoryName, final ServiceCallback<FactoryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(upgradeWithServiceResponseAsync(resourceGroupName, factoryName), serviceCallback);
+    }
+
+    /**
+     * Upgrade preview version factory to G.A. version.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FactoryInner object
+     */
+    public Observable<FactoryInner> upgradeAsync(String resourceGroupName, String factoryName) {
+        return upgradeWithServiceResponseAsync(resourceGroupName, factoryName).map(new Func1<ServiceResponse<FactoryInner>, FactoryInner>() {
+            @Override
+            public FactoryInner call(ServiceResponse<FactoryInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Upgrade preview version factory to G.A. version.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FactoryInner object
+     */
+    public Observable<ServiceResponse<FactoryInner>> upgradeWithServiceResponseAsync(String resourceGroupName, String factoryName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (factoryName == null) {
+            throw new IllegalArgumentException("Parameter factoryName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.upgrade(this.client.subscriptionId(), resourceGroupName, factoryName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FactoryInner>>>() {
+                @Override
+                public Observable<ServiceResponse<FactoryInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<FactoryInner> clientResponse = upgradeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<FactoryInner> upgradeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FactoryInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<FactoryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

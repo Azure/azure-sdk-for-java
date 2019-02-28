@@ -35,6 +35,13 @@ public class TabularTranslator extends CopyTranslator {
     private Object schemaMapping;
 
     /**
+     * The JSON Path of the Nested Array that is going to do cross-apply. Type:
+     * object (or Expression with resultType object).
+     */
+    @JsonProperty(value = "collectionReference")
+    private Object collectionReference;
+
+    /**
      * Get column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with resultType string).
      *
      * @return the columnMappings value
@@ -71,6 +78,26 @@ public class TabularTranslator extends CopyTranslator {
      */
     public TabularTranslator withSchemaMapping(Object schemaMapping) {
         this.schemaMapping = schemaMapping;
+        return this;
+    }
+
+    /**
+     * Get the JSON Path of the Nested Array that is going to do cross-apply. Type: object (or Expression with resultType object).
+     *
+     * @return the collectionReference value
+     */
+    public Object collectionReference() {
+        return this.collectionReference;
+    }
+
+    /**
+     * Set the JSON Path of the Nested Array that is going to do cross-apply. Type: object (or Expression with resultType object).
+     *
+     * @param collectionReference the collectionReference value to set
+     * @return the TabularTranslator object itself.
+     */
+    public TabularTranslator withCollectionReference(Object collectionReference) {
+        this.collectionReference = collectionReference;
         return this;
     }
 

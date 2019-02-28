@@ -46,6 +46,12 @@ public final class RunQueryFilterOperand extends ExpandableStringEnum<RunQueryFi
     /** Static value TriggerRunTimestamp for RunQueryFilterOperand. */
     public static final RunQueryFilterOperand TRIGGER_RUN_TIMESTAMP = fromString("TriggerRunTimestamp");
 
+    /** Static value RunGroupId for RunQueryFilterOperand. */
+    public static final RunQueryFilterOperand RUN_GROUP_ID = fromString("RunGroupId");
+
+    /** Static value LatestOnly for RunQueryFilterOperand. */
+    public static final RunQueryFilterOperand LATEST_ONLY = fromString("LatestOnly");
+
     /**
      * Creates or finds a RunQueryFilterOperand from its string representation.
      * @param name a name to look for

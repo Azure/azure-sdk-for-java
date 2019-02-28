@@ -56,6 +56,13 @@ public class CustomActivity extends ExecutionActivity {
     private Map<String, Object> extendedProperties;
 
     /**
+     * The retention time for the files submitted for custom activity. Type:
+     * double (or Expression with resultType double).
+     */
+    @JsonProperty(value = "typeProperties.retentionTimeInDays")
+    private Object retentionTimeInDays;
+
+    /**
      * Get command for custom activity Type: string (or Expression with resultType string).
      *
      * @return the command value
@@ -152,6 +159,26 @@ public class CustomActivity extends ExecutionActivity {
      */
     public CustomActivity withExtendedProperties(Map<String, Object> extendedProperties) {
         this.extendedProperties = extendedProperties;
+        return this;
+    }
+
+    /**
+     * Get the retention time for the files submitted for custom activity. Type: double (or Expression with resultType double).
+     *
+     * @return the retentionTimeInDays value
+     */
+    public Object retentionTimeInDays() {
+        return this.retentionTimeInDays;
+    }
+
+    /**
+     * Set the retention time for the files submitted for custom activity. Type: double (or Expression with resultType double).
+     *
+     * @param retentionTimeInDays the retentionTimeInDays value to set
+     * @return the CustomActivity object itself.
+     */
+    public CustomActivity withRetentionTimeInDays(Object retentionTimeInDays) {
+        this.retentionTimeInDays = retentionTimeInDays;
         return this;
     }
 

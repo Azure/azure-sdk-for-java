@@ -23,6 +23,16 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Factories extends SupportsCreating<Factory.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Factory>, SupportsListingByResourceGroup<Factory>, SupportsListing<Factory>, HasInner<FactoriesInner> {
     /**
+     * Upgrade preview version factory to G.A. version.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Factory> upgradeAsync(String resourceGroupName, String factoryName);
+
+    /**
      * Get GitHub Access Token.
      *
      * @param resourceGroupName The resource group name.

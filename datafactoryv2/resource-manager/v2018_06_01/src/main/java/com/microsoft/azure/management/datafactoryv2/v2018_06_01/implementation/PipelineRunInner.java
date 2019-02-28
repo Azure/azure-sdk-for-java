@@ -30,6 +30,18 @@ public class PipelineRunInner {
     private String runId;
 
     /**
+     * Identifier that correlates all the recovery runs of a pipeline run.
+     */
+    @JsonProperty(value = "runGroupId", access = JsonProperty.Access.WRITE_ONLY)
+    private String runGroupId;
+
+    /**
+     * Indicates if the recovered pipeline run is the latest in its group.
+     */
+    @JsonProperty(value = "isLatest", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isLatest;
+
+    /**
      * The pipeline name.
      */
     @JsonProperty(value = "pipelineName", access = JsonProperty.Access.WRITE_ONLY)
@@ -111,6 +123,24 @@ public class PipelineRunInner {
      */
     public String runId() {
         return this.runId;
+    }
+
+    /**
+     * Get identifier that correlates all the recovery runs of a pipeline run.
+     *
+     * @return the runGroupId value
+     */
+    public String runGroupId() {
+        return this.runGroupId;
+    }
+
+    /**
+     * Get indicates if the recovered pipeline run is the latest in its group.
+     *
+     * @return the isLatest value
+     */
+    public Boolean isLatest() {
+        return this.isLatest;
     }
 
     /**

@@ -81,7 +81,7 @@ public class PipelinesInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Pipelines createRun" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelines/{pipelineName}/createRun")
-        Observable<Response<ResponseBody>> createRun(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("pipelineName") String pipelineName, @Query("api-version") String apiVersion, @Query("referencePipelineRunId") String referencePipelineRunId, @Body Map<String, Object> parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createRun(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("factoryName") String factoryName, @Path("pipelineName") String pipelineName, @Query("api-version") String apiVersion, @Query("referencePipelineRunId") String referencePipelineRunId, @Query("isRecovery") Boolean isRecovery, @Query("startActivityName") String startActivityName, @Body Map<String, Object> parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datafactoryv2.v2018_06_01.Pipelines listByFactoryNext" })
         @GET
@@ -763,8 +763,10 @@ public class PipelinesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String referencePipelineRunId = null;
+        final Boolean isRecovery = null;
+        final String startActivityName = null;
         final Map<String, Object> parameters = null;
-        return service.createRun(this.client.subscriptionId(), resourceGroupName, factoryName, pipelineName, this.client.apiVersion(), referencePipelineRunId, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createRun(this.client.subscriptionId(), resourceGroupName, factoryName, pipelineName, this.client.apiVersion(), referencePipelineRunId, isRecovery, startActivityName, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CreateRunResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CreateRunResponseInner>> call(Response<ResponseBody> response) {
@@ -785,14 +787,16 @@ public class PipelinesInner {
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
+     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and the new run will be grouped under the same groupId.
+     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the CreateRunResponseInner object if successful.
      */
-    public CreateRunResponseInner createRun(String resourceGroupName, String factoryName, String pipelineName, String referencePipelineRunId, Map<String, Object> parameters) {
-        return createRunWithServiceResponseAsync(resourceGroupName, factoryName, pipelineName, referencePipelineRunId, parameters).toBlocking().single().body();
+    public CreateRunResponseInner createRun(String resourceGroupName, String factoryName, String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters) {
+        return createRunWithServiceResponseAsync(resourceGroupName, factoryName, pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters).toBlocking().single().body();
     }
 
     /**
@@ -802,13 +806,15 @@ public class PipelinesInner {
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
+     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and the new run will be grouped under the same groupId.
+     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not specified.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<CreateRunResponseInner> createRunAsync(String resourceGroupName, String factoryName, String pipelineName, String referencePipelineRunId, Map<String, Object> parameters, final ServiceCallback<CreateRunResponseInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createRunWithServiceResponseAsync(resourceGroupName, factoryName, pipelineName, referencePipelineRunId, parameters), serviceCallback);
+    public ServiceFuture<CreateRunResponseInner> createRunAsync(String resourceGroupName, String factoryName, String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters, final ServiceCallback<CreateRunResponseInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createRunWithServiceResponseAsync(resourceGroupName, factoryName, pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters), serviceCallback);
     }
 
     /**
@@ -818,12 +824,14 @@ public class PipelinesInner {
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
+     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and the new run will be grouped under the same groupId.
+     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CreateRunResponseInner object
      */
-    public Observable<CreateRunResponseInner> createRunAsync(String resourceGroupName, String factoryName, String pipelineName, String referencePipelineRunId, Map<String, Object> parameters) {
-        return createRunWithServiceResponseAsync(resourceGroupName, factoryName, pipelineName, referencePipelineRunId, parameters).map(new Func1<ServiceResponse<CreateRunResponseInner>, CreateRunResponseInner>() {
+    public Observable<CreateRunResponseInner> createRunAsync(String resourceGroupName, String factoryName, String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters) {
+        return createRunWithServiceResponseAsync(resourceGroupName, factoryName, pipelineName, referencePipelineRunId, isRecovery, startActivityName, parameters).map(new Func1<ServiceResponse<CreateRunResponseInner>, CreateRunResponseInner>() {
             @Override
             public CreateRunResponseInner call(ServiceResponse<CreateRunResponseInner> response) {
                 return response.body();
@@ -838,11 +846,13 @@ public class PipelinesInner {
      * @param factoryName The factory name.
      * @param pipelineName The pipeline name.
      * @param referencePipelineRunId The pipeline run identifier. If run ID is specified the parameters of the specified run will be used to create a new run.
+     * @param isRecovery Recovery mode flag. If recovery mode is set to true, the specified referenced pipeline run and the new run will be grouped under the same groupId.
+     * @param startActivityName In recovery mode, the rerun will start from this activity. If not specified, all activities will run.
      * @param parameters Parameters of the pipeline run. These parameters will be used only if the runId is not specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the CreateRunResponseInner object
      */
-    public Observable<ServiceResponse<CreateRunResponseInner>> createRunWithServiceResponseAsync(String resourceGroupName, String factoryName, String pipelineName, String referencePipelineRunId, Map<String, Object> parameters) {
+    public Observable<ServiceResponse<CreateRunResponseInner>> createRunWithServiceResponseAsync(String resourceGroupName, String factoryName, String pipelineName, String referencePipelineRunId, Boolean isRecovery, String startActivityName, Map<String, Object> parameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -859,7 +869,7 @@ public class PipelinesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createRun(this.client.subscriptionId(), resourceGroupName, factoryName, pipelineName, this.client.apiVersion(), referencePipelineRunId, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createRun(this.client.subscriptionId(), resourceGroupName, factoryName, pipelineName, this.client.apiVersion(), referencePipelineRunId, isRecovery, startActivityName, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CreateRunResponseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<CreateRunResponseInner>> call(Response<ResponseBody> response) {
