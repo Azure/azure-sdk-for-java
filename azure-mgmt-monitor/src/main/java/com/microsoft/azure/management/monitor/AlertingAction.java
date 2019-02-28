@@ -27,7 +27,7 @@ public class AlertingAction extends Action {
     /**
      * Azure action group reference.
      */
-    @JsonProperty(value = "aznsAction", required = true)
+    @JsonProperty(value = "aznsAction")
     private AzNsActionGroup aznsAction;
 
     /**
