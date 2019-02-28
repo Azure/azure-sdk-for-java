@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FindBugsFilter>
+    <!-- These existing KeyVault Attribute APIs return their super class rather than the actual type. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.requests\.\w+Request"/>
+        <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
+    </Match>
+
     <!-- These keyvault models are already publicly released APIs with name
     matching the simple name of superclass -->
     <Match>
@@ -8,9 +14,12 @@
         <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
     </Match>
 
-    <!-- These AesKw methods are publicly released APIs with incorrect name casing. -->
+    <!-- Cryptographic algorithms are publicly released APIs with incorrect name casing. -->
     <Match>
-        <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.AesKw(128|192|256)" />
+        <Or>
+            <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.algorithms\.(Aes|Rsa)(.+)" />
+            <Class name="~com\.microsoft\.azure\.keyvault\.cryptography\.(.+)Algorithm" />
+        </Or>
         <Method name="~(CreateDecryptor|CreateEncryptor)" />
         <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
     </Match>
@@ -30,6 +39,13 @@
         <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
 
+    <!-- Suppress non-null warning in the case that we change the code and it is possible for
+    KeyVaultCredentials.getAuthenticationCredentials to return null. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
+        <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE"/>
+    </Match>
+
     <!-- These KeyVaultClientBase methods are made synchronous by blocking and
     waiting for a result. They do not return anything, so it can be ignored. -->
     <Match>
@@ -38,11 +54,31 @@
         <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
     </Match>
 
+    <!-- These autorest generated APIs for existing Azure SDK components supports Java 7.
+    Suppressing error for using anonymous inner classes. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+        <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+    </Match>
+
     <!-- KeyVaultCredential values manipulated do not need to be localised. They
     are base64 encoded or URL encoded.-->
     <Match>
         <Class name="com.microsoft.azure.keyvault.authentication.KeyVaultCredentials"/>
         <Method name="~(extractChallenge|isValidChallenge|supportsMessageProtection)"/>
         <Bug pattern="DM_CONVERT_CASE"/>
+    </Match>
+    <!-- HTTP header, "content-type" is not localised. -->
+    <Match>
+        <Class name="com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity"/>
+        <Method name="unprotectResponse"/>
+        <Bug pattern="DM_CONVERT_CASE"/>
+    </Match>
+
+    <!-- Known issue in autorest where it will generate a variable with a value of null.
+    https://github.com/Azure/autorest.java/issues/324 -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.(.+)Impl"/>
+        <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE"/>
     </Match>
 </FindBugsFilter>
