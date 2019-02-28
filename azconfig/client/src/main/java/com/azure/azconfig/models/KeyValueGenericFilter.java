@@ -21,7 +21,7 @@ public abstract class KeyValueGenericFilter<T extends KeyValueGenericFilter> {
     }
 
     /**
-     * Sets specific labe of the key.
+     * Sets specific label of the key.
      * @param label the label
      * @return KeyValueGenericFilter object itself
      */

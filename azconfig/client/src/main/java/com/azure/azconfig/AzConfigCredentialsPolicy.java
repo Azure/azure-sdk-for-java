@@ -9,7 +9,7 @@ import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.NextPolicy;
-import com.microsoft.rest.v3.http.policy.AbstractPipelinePolicy;
+import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
 
@@ -27,7 +27,7 @@ import java.util.Base64;
 /**
  * Creates a policy that authenticates request with AzConfig service.
  */
-public final class AzConfigCredentialsPolicy extends AbstractPipelinePolicy {
+public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
     private static final String SIGNED_HEADERS = "host;x-ms-date;x-ms-content-sha256";
     private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";
 
@@ -38,7 +38,8 @@ public final class AzConfigCredentialsPolicy extends AbstractPipelinePolicy {
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
     private static final String ACCEPT_HEADER = "Accept";
 
-    private AzConfigClient.AzConfigCredentials credentials;
+    private final AzConfigClient.AzConfigCredentials credentials;
+    private final HttpPipelineOptions options;
 
     /**
      * Initializes a new instance of AzConfigCredentialsPolicy based on credentials.
@@ -56,8 +57,8 @@ public final class AzConfigCredentialsPolicy extends AbstractPipelinePolicy {
      * @param options the request options
      */
     AzConfigCredentialsPolicy(AzConfigClient.AzConfigCredentials credentials, HttpPipelineOptions options) {
-        super(options);
         this.credentials = credentials;
+        this.options = options;
     }
 
     /**
@@ -94,8 +95,8 @@ public final class AzConfigCredentialsPolicy extends AbstractPipelinePolicy {
         Mono<HttpResponse> response = next.process();
         return response.doOnSuccess(httpResponse -> {
             if (httpResponse.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
-                if (shouldLog(HttpPipelineLogLevel.ERROR)) {
-                    log(HttpPipelineLogLevel.ERROR,
+                if (options.shouldLog(HttpPipelineLogLevel.ERROR)) {
+                    options.log(HttpPipelineLogLevel.ERROR,
                             "===== HTTP Unauthorized status, String-to-Sign:%n'%s'%n==================%n",
                             stringToSign);
                 }
