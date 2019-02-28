@@ -9,7 +9,7 @@ import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.NextPolicy;
-import com.microsoft.rest.v3.http.policy.HostPolicy;
+import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
 
@@ -23,12 +23,11 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
-import java.util.Objects;
 
 /**
  * Creates a policy that authenticates request with AzConfig service.
  */
-public final class AzConfigCredentialsPolicy extends HostPolicy {
+public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
     private static final String SIGNED_HEADERS = "host;x-ms-date;x-ms-content-sha256";
     private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";
 
@@ -58,7 +57,6 @@ public final class AzConfigCredentialsPolicy extends HostPolicy {
      * @param options the request options
      */
     AzConfigCredentialsPolicy(AzConfigClient.AzConfigCredentials credentials, HttpPipelineOptions options) {
-        super(credentials.baseUri().getHost(), options);
         this.credentials = credentials;
         this.options = options;
     }
