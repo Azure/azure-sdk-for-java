@@ -59,7 +59,7 @@ public class ContainerServicesInner {
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including verison and available upgrades.
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version and available upgrades.
      *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -73,7 +73,7 @@ public class ContainerServicesInner {
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including verison and available upgrades.
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version and available upgrades.
      *
      * @param location The name of a supported Azure region.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -86,7 +86,7 @@ public class ContainerServicesInner {
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including verison and available upgrades.
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version and available upgrades.
      *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -103,7 +103,7 @@ public class ContainerServicesInner {
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including verison and available upgrades.
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version and available upgrades.
      *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -136,7 +136,7 @@ public class ContainerServicesInner {
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including verison and available upgrades.
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version and available upgrades.
      *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned
@@ -151,7 +151,7 @@ public class ContainerServicesInner {
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including verison and available upgrades.
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version and available upgrades.
      *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned
@@ -165,7 +165,7 @@ public class ContainerServicesInner {
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including verison and available upgrades.
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version and available upgrades.
      *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned
@@ -183,7 +183,7 @@ public class ContainerServicesInner {
 
     /**
      * Gets a list of supported orchestrators in the specified subscription.
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including verison and available upgrades.
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version and available upgrades.
      *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned

@@ -10,12 +10,12 @@ package com.microsoft.azure.management.containerservice.v2017_07_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.containerservice.v2017_07_01.implementation.ContainerServiceManager;
 import java.util.List;
@@ -98,7 +98,9 @@ public interface ContainerService extends HasInner<ContainerServiceInner>, Resou
         interface WithLinuxProfile {
            /**
             * Specifies linuxProfile.
-            */
+            * @param linuxProfile Profile for Linux VMs in the container service cluster
+            * @return the next definition stage
+*/
             WithMasterProfile withLinuxProfile(ContainerServiceLinuxProfile linuxProfile);
         }
 
@@ -108,7 +110,9 @@ public interface ContainerService extends HasInner<ContainerServiceInner>, Resou
         interface WithMasterProfile {
            /**
             * Specifies masterProfile.
-            */
+            * @param masterProfile Profile for the container service master
+            * @return the next definition stage
+*/
             WithOrchestratorProfile withMasterProfile(ContainerServiceMasterProfile masterProfile);
         }
 
@@ -118,56 +122,68 @@ public interface ContainerService extends HasInner<ContainerServiceInner>, Resou
         interface WithOrchestratorProfile {
            /**
             * Specifies orchestratorProfile.
-            */
+            * @param orchestratorProfile Profile for the container service orchestrator
+            * @return the next definition stage
+*/
             WithCreate withOrchestratorProfile(ContainerServiceOrchestratorProfile orchestratorProfile);
         }
 
         /**
-         * The stage of the containerservice update allowing to specify AgentPoolProfiles.
+         * The stage of the containerservice definition allowing to specify AgentPoolProfiles.
          */
         interface WithAgentPoolProfiles {
             /**
              * Specifies agentPoolProfiles.
+             * @param agentPoolProfiles Properties of the agent pool
+             * @return the next definition stage
              */
             WithCreate withAgentPoolProfiles(List<ContainerServiceAgentPoolProfile> agentPoolProfiles);
         }
 
         /**
-         * The stage of the containerservice update allowing to specify CustomProfile.
+         * The stage of the containerservice definition allowing to specify CustomProfile.
          */
         interface WithCustomProfile {
             /**
              * Specifies customProfile.
+             * @param customProfile Properties to configure a custom container service cluster
+             * @return the next definition stage
              */
             WithCreate withCustomProfile(ContainerServiceCustomProfile customProfile);
         }
 
         /**
-         * The stage of the containerservice update allowing to specify DiagnosticsProfile.
+         * The stage of the containerservice definition allowing to specify DiagnosticsProfile.
          */
         interface WithDiagnosticsProfile {
             /**
              * Specifies diagnosticsProfile.
+             * @param diagnosticsProfile Profile for diagnostics in the container service cluster
+             * @return the next definition stage
              */
             WithCreate withDiagnosticsProfile(ContainerServiceDiagnosticsProfile diagnosticsProfile);
         }
 
         /**
-         * The stage of the containerservice update allowing to specify ServicePrincipalProfile.
+         * The stage of the containerservice definition allowing to specify ServicePrincipalProfile.
          */
         interface WithServicePrincipalProfile {
             /**
              * Specifies servicePrincipalProfile.
+             * @param servicePrincipalProfile Information about a service principal identity for the cluster to use for manipulating Azure APIs. Exact one of secret or keyVaultSecretRef need to be specified
+             * @return the next definition stage
              */
             WithCreate withServicePrincipalProfile(ContainerServiceServicePrincipalProfile servicePrincipalProfile);
         }
 
         /**
-         * The stage of the containerservice update allowing to specify WindowsProfile.
+         * The stage of the containerservice definition allowing to specify WindowsProfile.
          */
         interface WithWindowsProfile {
             /**
              * Specifies windowsProfile.
+             * @param windowsProfile Profile for Windows VMs in the container service cluster
+             * @return the next definition stage
              */
             WithCreate withWindowsProfile(ContainerServiceWindowsProfile windowsProfile);
         }
@@ -191,51 +207,61 @@ public interface ContainerService extends HasInner<ContainerServiceInner>, Resou
      */
     interface UpdateStages {
         /**
-         * The stage of the containerservice {0} allowing to specify AgentPoolProfiles.
+         * The stage of the containerservice update allowing to specify AgentPoolProfiles.
          */
         interface WithAgentPoolProfiles {
             /**
              * Specifies agentPoolProfiles.
+             * @param agentPoolProfiles Properties of the agent pool
+             * @return the next update stage
              */
             Update withAgentPoolProfiles(List<ContainerServiceAgentPoolProfile> agentPoolProfiles);
         }
 
         /**
-         * The stage of the containerservice {0} allowing to specify CustomProfile.
+         * The stage of the containerservice update allowing to specify CustomProfile.
          */
         interface WithCustomProfile {
             /**
              * Specifies customProfile.
+             * @param customProfile Properties to configure a custom container service cluster
+             * @return the next update stage
              */
             Update withCustomProfile(ContainerServiceCustomProfile customProfile);
         }
 
         /**
-         * The stage of the containerservice {0} allowing to specify DiagnosticsProfile.
+         * The stage of the containerservice update allowing to specify DiagnosticsProfile.
          */
         interface WithDiagnosticsProfile {
             /**
              * Specifies diagnosticsProfile.
+             * @param diagnosticsProfile Profile for diagnostics in the container service cluster
+             * @return the next update stage
              */
             Update withDiagnosticsProfile(ContainerServiceDiagnosticsProfile diagnosticsProfile);
         }
 
         /**
-         * The stage of the containerservice {0} allowing to specify ServicePrincipalProfile.
+         * The stage of the containerservice update allowing to specify ServicePrincipalProfile.
          */
         interface WithServicePrincipalProfile {
             /**
              * Specifies servicePrincipalProfile.
+             * @param servicePrincipalProfile Information about a service principal identity for the cluster to use for manipulating Azure APIs. Exact one of secret or keyVaultSecretRef need to be specified
+             * @return the next update stage
              */
             Update withServicePrincipalProfile(ContainerServiceServicePrincipalProfile servicePrincipalProfile);
         }
 
         /**
-         * The stage of the containerservice {0} allowing to specify WindowsProfile.
+         * The stage of the containerservice update allowing to specify WindowsProfile.
          */
         interface WithWindowsProfile {
             /**
              * Specifies windowsProfile.
+             * @param windowsProfile Profile for Windows VMs in the container service cluster
+             * @return the next update stage
              */
             Update withWindowsProfile(ContainerServiceWindowsProfile windowsProfile);
         }
