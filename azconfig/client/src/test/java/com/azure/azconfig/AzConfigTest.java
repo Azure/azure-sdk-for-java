@@ -2,11 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.azconfig;
 
-import com.azure.azconfig.models.Key;
-import com.azure.azconfig.models.KeyLabelFilter;
-import com.azure.azconfig.models.KeyValueFilter;
-import com.azure.azconfig.models.KeyValue;
-import com.azure.azconfig.models.KeyValueListFilter;
+import com.azure.azconfig.models.*;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.v3.CloudException;
 import com.microsoft.rest.v3.http.HttpClientConfiguration;
@@ -27,6 +23,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 import static com.azure.azconfig.AzConfigClient.SDK_NAME;
@@ -275,8 +274,8 @@ public class AzConfigTest {
         KeyValue updatedNewKeyValue = client.setKeyValue(newKeyValue.withValue("myNewValue"), null).block().body();
 
         // Get all revisions for a key
-//        List<KeyValue> revisions = client.listKeyValueRevisions(new RevisionFilter().withKey(keyPrefix + "*")).blockFirst();
-//        Assert.assertEquals(2, revisions.size());
+        Long revisions = client.listKeyValueRevisions(new RevisionFilter().withKey(keyPrefix + "*")).count().block();
+        Assert.assertEquals(Long.valueOf(2L), revisions);
     }
 
     @Test
