@@ -4,20 +4,17 @@ package com.azure.azconfig;
 
 import com.azure.azconfig.models.Key;
 import com.azure.azconfig.models.KeyLabelFilter;
-import com.azure.azconfig.models.KeyValueFilter;
 import com.azure.azconfig.models.KeyValue;
+import com.azure.azconfig.models.KeyValueFilter;
 import com.azure.azconfig.models.KeyValueListFilter;
-import com.azure.azconfig.models.Label;
 import com.azure.azconfig.models.RevisionFilter;
 import com.microsoft.azure.core.InterceptorManager;
+import com.microsoft.azure.utils.SdkContext;
 import com.microsoft.azure.v3.CloudException;
-import com.microsoft.azure.v3.Page;
 import com.microsoft.rest.v3.http.HttpClientConfiguration;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.ProxyOptions;
-import com.microsoft.azure.utils.SdkContext;
-import com.microsoft.rest.v3.http.policy.DecodingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
@@ -35,13 +32,11 @@ import org.junit.rules.TestName;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.regex.Pattern;
 
 import static com.azure.azconfig.AzConfigClient.SDK_NAME;
 import static com.azure.azconfig.AzConfigClient.SDK_VERSION;
@@ -79,58 +74,52 @@ public class AzConfigTest {
         String connectionString;
 
         if (isPlaybackMode()) {
-            credentials = AzConfigClient.AzConfigCredentials.parseConnectionString("endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw");
-            List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+            System.out.println("PLAYBACK MODE");
 
-            policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
-            policies.add(new RequestIdPolicy());
-            policies.add(new AzConfigCredentialsPolicy(credentials));
-            policies.add(new RetryPolicy());
+            credentials = AzConfigClient.AzConfigCredentials.parseConnectionString("endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw");
+            List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.initRecordPolicy());
 
-            //        policies.add(new RequestRetryPolicyFactory()); // todo - do we really need custom retry policy here?
-            policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-            pipeline = new HttpPipeline(interceptorManager.initPlaybackClient(), new HttpPipelineOptions(null), policies.toArray(new HttpPipelinePolicy[policies.size()]));
-//            pipeline = new HttpPipelineBuilder()
-//                            .withRequestPolicy(new RequestRetryPolicyFactory())
-//                            .withRequestPolicy(new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY_AND_HEADERS, true))
-//                            .withHttpClient(interceptorManager.initPlaybackClient())
-//                            .withDecodingPolicy().build();
+            pipeline = new HttpPipeline(interceptorManager.initPlaybackClient(), new HttpPipelineOptions(null), policies.toArray(new HttpPipelinePolicy[0]));
 
             System.out.println(playbackUri);
-        }
-        else { // Record mode
+        } else { // Record mode
+            System.out.println("RECORD MODE");
+
             connectionString =  System.getenv("AZCONFIG_CONNECTION_STRING");
             HttpClientConfiguration configuration = new HttpClientConfiguration().withProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
             credentials = AzConfigClient.AzConfigCredentials.parseConnectionString(connectionString);
-            List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
-
-            policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
-            policies.add(new RequestIdPolicy());
-            policies.add(new AzConfigCredentialsPolicy(credentials));
-            policies.add(new RetryPolicy());
+            List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.initRecordPolicy());
-            policies.add(new DecodingPolicy());
-            //        policies.add(new RequestRetryPolicyFactory()); // todo - do we really need custom retry policy here?
-            policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
 
-            pipeline = new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()]));
+            pipeline = new HttpPipeline(policies.toArray(new HttpPipelinePolicy[0]));
 
 //            pipeline = new HttpPipelineBuilder(new HttpPipelineOptions().withHttpClient(NettyClient.createDefault()))
 //                               .withRequestPolicy(new UserAgentPolicyFactory(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)))
 //                               .withRequestPolicy(new RequestIdPolicyFactory())
 //                               .withRequestPolicy(new AzConfigCredentialsPolicyFactory(credentials))
 //                               .withRequestPolicy(new RequestRetryPolicyFactory())
-////                               .withRequestPolicy(new TimeoutPolicyFactory(3, ChronoUnit.MINUTES))
+//                               .withRequestPolicy(new TimeoutPolicyFactory(3, ChronoUnit.MINUTES))
 //                               .withRequestPolicy(interceptorManager.initRecordPolicy())
-////                            .withHttpClient(NettyClient.createDefault(configuration))
+//                               .withHttpClient(NettyClient.createDefault(configuration))
 //                               .withRequestPolicy(new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY_AND_HEADERS, true))
 //                               .withDecodingPolicy().build();
             interceptorManager.addTextReplacementRule(credentials.baseUri().toString(), playbackUri);
         }
         client = AzConfigClient.create(credentials, pipeline);
         keyPrefix = SdkContext.randomResourceName("key", 8);
+    }
+
+    private static List<HttpPipelinePolicy> getDefaultPolicies(AzConfigClient.AzConfigCredentials credentials) {
+        List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AzConfigCredentialsPolicy(credentials));
+        policies.add(new RetryPolicy());
+        //        policies.add(new RequestRetryPolicyFactory()); // todo - do we really need custom retry policy here?
+        policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        return policies;
     }
 
     private static void initPlaybackUri() throws IOException {
@@ -202,13 +191,14 @@ public class AzConfigTest {
         String key = SdkContext.randomResourceName(keyPrefix, 16);
         String label = SdkContext.randomResourceName("lbl", 8);
         KeyValue kv = new KeyValue().withKey(key).withValue("myValue").withLabel(label);
+
         client.setKeyValue(kv).block();
 
-        kv = client.listKeyValues(new KeyValueListFilter().withKey(key).withLabel(label)).flatMapIterable(Page::items).blockFirst();
+        kv = client.listKeyValues(new KeyValueListFilter().withKey(key).withLabel(label)).blockFirst();
         Assert.assertEquals(key, kv.key());
         Assert.assertEquals(label, kv.label());
 
-        kv = client.listKeyValues(new KeyValueListFilter().withKey(key)).flatMapIterable(Page::items).blockFirst();
+        kv = client.listKeyValues(new KeyValueListFilter().withKey(key)).blockFirst();
         Assert.assertEquals(key, kv.key());
         Assert.assertEquals(label, kv.label());
     }
@@ -267,7 +257,7 @@ public class AzConfigTest {
             Assert.fail("Should not be able to modify locked value");
         } catch (Exception ex) {
             Assert.assertTrue(ex instanceof CloudException);
-            Assert.assertEquals(HttpResponseStatus.FORBIDDEN.code(), ((CloudException) ex).response().statusCode());
+            Assert.assertEquals(HttpResponseStatus.CONFLICT.code(), ((CloudException) ex).response().statusCode());
         }
         client.unlockKeyValue(keyName).block();
         KeyValue updatedKv = new KeyValue().withKey(keyName).withValue("myUpdatedValue");
@@ -284,8 +274,8 @@ public class AzConfigTest {
         KeyValue updatedNewKeyValue = client.setKeyValue(newKeyValue.withValue("myNewValue"), null).block().body();
 
         // Get all revisions for a key
-        List<KeyValue> revisions = client.listKeyValueRevisions(new RevisionFilter().withKey(keyPrefix + "*")).blockFirst().items();
-        Assert.assertEquals(2, revisions.size());
+        Long revisions = client.listKeyValueRevisions(new RevisionFilter().withKey(keyPrefix + "*")).count().block();
+        Assert.assertEquals(Long.valueOf(2L), revisions);
     }
 
     @Test
