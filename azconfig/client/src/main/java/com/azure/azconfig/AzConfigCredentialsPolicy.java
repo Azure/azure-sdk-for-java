@@ -9,7 +9,7 @@ import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.NextPolicy;
-import com.microsoft.rest.v3.http.policy.AbstractPipelinePolicy;
+import com.microsoft.rest.v3.http.policy.HostPolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
 
@@ -23,11 +23,12 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
+import java.util.Objects;
 
 /**
  * Creates a policy that authenticates request with AzConfig service.
  */
-public final class AzConfigCredentialsPolicy extends AbstractPipelinePolicy {
+public final class AzConfigCredentialsPolicy extends HostPolicy {
     private static final String SIGNED_HEADERS = "host;x-ms-date;x-ms-content-sha256";
     private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";
 
@@ -38,7 +39,8 @@ public final class AzConfigCredentialsPolicy extends AbstractPipelinePolicy {
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
     private static final String ACCEPT_HEADER = "Accept";
 
-    private AzConfigClient.AzConfigCredentials credentials;
+    private final AzConfigClient.AzConfigCredentials credentials;
+    private final HttpPipelineOptions options;
 
     /**
      * Initializes a new instance of AzConfigCredentialsPolicy based on credentials.
@@ -56,8 +58,9 @@ public final class AzConfigCredentialsPolicy extends AbstractPipelinePolicy {
      * @param options the request options
      */
     AzConfigCredentialsPolicy(AzConfigClient.AzConfigCredentials credentials, HttpPipelineOptions options) {
-        super(options);
+        super(credentials.baseUri().getHost(), options);
         this.credentials = credentials;
+        this.options = options;
     }
 
     /**
@@ -94,8 +97,8 @@ public final class AzConfigCredentialsPolicy extends AbstractPipelinePolicy {
         Mono<HttpResponse> response = next.process();
         return response.doOnSuccess(httpResponse -> {
             if (httpResponse.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
-                if (shouldLog(HttpPipelineLogLevel.ERROR)) {
-                    log(HttpPipelineLogLevel.ERROR,
+                if (options.shouldLog(HttpPipelineLogLevel.ERROR)) {
+                    options.log(HttpPipelineLogLevel.ERROR,
                             "===== HTTP Unauthorized status, String-to-Sign:%n'%s'%n==================%n",
                             stringToSign);
                 }
