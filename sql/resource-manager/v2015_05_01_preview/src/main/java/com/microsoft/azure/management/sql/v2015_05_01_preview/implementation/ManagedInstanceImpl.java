@@ -14,6 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceUpdate;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.ResourceIdentity;
 import com.microsoft.azure.management.sql.v2015_05_01_preview.Sku;
+import com.microsoft.azure.management.sql.v2015_05_01_preview.ManagedInstanceProxyOverride;
 import rx.functions.Func1;
 
 class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, ManagedInstanceInner, ManagedInstanceImpl, SqlManager> implements ManagedInstance, ManagedInstance.Definition, ManagedInstance.Update {
@@ -107,7 +108,7 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
-    public String proxyOverride() {
+    public ManagedInstanceProxyOverride proxyOverride() {
         return this.inner().proxyOverride();
     }
 
@@ -134,6 +135,11 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     @Override
     public String subnetId() {
         return this.inner().subnetId();
+    }
+
+    @Override
+    public String timezoneId() {
+        return this.inner().timezoneId();
     }
 
     @Override
@@ -198,7 +204,7 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
     }
 
     @Override
-    public ManagedInstanceImpl withProxyOverride(String proxyOverride) {
+    public ManagedInstanceImpl withProxyOverride(ManagedInstanceProxyOverride proxyOverride) {
         if (isInCreateMode()) {
             this.inner().withProxyOverride(proxyOverride);
         } else {
@@ -243,6 +249,16 @@ class ManagedInstanceImpl extends GroupableResourceCoreImpl<ManagedInstance, Man
             this.inner().withSubnetId(subnetId);
         } else {
             this.updateParameter.withSubnetId(subnetId);
+        }
+        return this;
+    }
+
+    @Override
+    public ManagedInstanceImpl withTimezoneId(String timezoneId) {
+        if (isInCreateMode()) {
+            this.inner().withTimezoneId(timezoneId);
+        } else {
+            this.updateParameter.withTimezoneId(timezoneId);
         }
         return this;
     }
