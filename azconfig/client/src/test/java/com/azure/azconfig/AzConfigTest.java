@@ -2,7 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.azconfig;
 
-import com.azure.azconfig.models.*;
+import com.azure.azconfig.models.Key;
+import com.azure.azconfig.models.KeyLabelFilter;
+import com.azure.azconfig.models.KeyValueFilter;
+import com.azure.azconfig.models.KeyValue;
+import com.azure.azconfig.models.KeyValueListFilter;
+import com.azure.azconfig.models.Label;
+import com.azure.azconfig.models.RevisionFilter;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.v3.CloudException;
 import com.microsoft.rest.v3.http.HttpClientConfiguration;
@@ -23,8 +29,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
