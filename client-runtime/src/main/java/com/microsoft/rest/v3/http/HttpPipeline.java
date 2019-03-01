@@ -125,7 +125,7 @@ public final class HttpPipeline {
         // Return deferred to mono for complete lazy behaviour.
         //
         return Mono.defer(() -> {
-            NextPolicy next = new NextPolicy(this, context);
+            HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(this, context);
             return next.process();
         });
     }

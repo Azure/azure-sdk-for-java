@@ -13,7 +13,7 @@ import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.util.FluxUtil;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -57,7 +57,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         //
         Optional<Object> data = context.getData("caller-method");
         String callerMethod;

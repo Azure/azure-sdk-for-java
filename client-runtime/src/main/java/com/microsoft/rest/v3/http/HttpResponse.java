@@ -7,6 +7,7 @@
 package com.microsoft.rest.v3.http;
 
 import java.io.Closeable;
+import java.nio.charset.Charset;
 
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
@@ -84,6 +85,14 @@ public abstract class HttpResponse implements Closeable {
      * @return This response content as a string
      */
     public abstract Mono<String> bodyAsString();
+
+    /**
+     * Get the response content as a string.
+     *
+     * @param charset the charset to use as encoding
+     * @return This response content as a string
+     */
+    public abstract Mono<String> bodyAsString(Charset charset);
 
     /**
      * Get the request which resulted in this response.

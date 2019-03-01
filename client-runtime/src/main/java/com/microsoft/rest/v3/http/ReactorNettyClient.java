@@ -18,27 +18,33 @@ import reactor.netty.NettyOutbound;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 /**
  * HttpClient that is implemented using reactor-netty.
  */
-final class ReactorNettyClient extends HttpClient {
+class ReactorNettyClient extends HttpClient {
     private reactor.netty.http.client.HttpClient httpClient;
 
     /**
-     * Creates ReactorNettyClient.
-     *
-     * @param configuration the HTTP client configuration
+     * Creates default ReactorNettyClient.
      */
-    ReactorNettyClient(HttpClientConfiguration configuration) {
-        this.httpClient = reactor.netty.http.client.HttpClient.create().wiretap(true);
-        if (configuration != null && configuration.proxy() != null) {
-            this.httpClient = httpClient.tcpConfiguration(tcpClient -> tcpClient.proxy(ts -> ts.type(configuration.proxy().type().value()).address(configuration.proxy().address())));
-        }
+    ReactorNettyClient() {
+        this(reactor.netty.http.client.HttpClient.create());
+    }
+
+    /**
+     * Creates ReactorNettyClient with provided http client.
+     *
+     * @param httpClient the reactor http client
+     */
+    private ReactorNettyClient(reactor.netty.http.client.HttpClient httpClient) {
+        this.httpClient = httpClient;
     }
 
     @Override
@@ -133,6 +139,15 @@ final class ReactorNettyClient extends HttpClient {
                 }
 
                 @Override
+                public Mono<String> bodyAsString(Charset charset) {
+                    return bodyIntern().aggregate().asString(charset).doFinally(s -> {
+                        if (!reactorNettyConnection.isDisposed()) {
+                            reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
+                        }
+                    });
+                }
+
+                @Override
                 public void close() {
                     if (!reactorNettyConnection.isDisposed()) {
                         reactorNettyConnection.channel().eventLoop().execute(reactorNettyConnection::dispose);
@@ -151,5 +166,41 @@ final class ReactorNettyClient extends HttpClient {
             return Mono.just(httpResponse.withRequest(restRequest));
         };
         return responseDelegate;
+    }
+
+    @Override
+    protected final HttpClient setProxy(Supplier<ProxyOptions> proxyOptionsSupplier) {
+        return new ClientProxyOptions(this.httpClient, proxyOptionsSupplier);
+    }
+
+    @Override
+    protected final HttpClient setWiretap(boolean enableWiretap) {
+        return new ClientWiretap(this.httpClient, enableWiretap);
+    }
+
+    @Override
+    protected final HttpClient setPort(int port) {
+        return new ClientPort(this.httpClient, port);
+    }
+
+    private static class ClientProxyOptions extends ReactorNettyClient {
+        ClientProxyOptions(reactor.netty.http.client.HttpClient httpClient, Supplier<ProxyOptions> proxyOptions) {
+            super(httpClient.tcpConfiguration(tcpClient -> {
+                ProxyOptions options = proxyOptions.get();
+                return tcpClient.proxy(ts -> ts.type(options.type().value()).address(options.address()));
+            }));
+        }
+    }
+
+    private static class ClientWiretap extends ReactorNettyClient {
+        ClientWiretap(reactor.netty.http.client.HttpClient httpClient, boolean enableWiretap) {
+            super(httpClient.wiretap(enableWiretap));
+        }
+    }
+
+    private static class ClientPort extends ReactorNettyClient {
+        ClientPort(reactor.netty.http.client.HttpClient httpClient, int port) {
+            super(httpClient.port(port));
+        }
     }
 }

@@ -8,7 +8,7 @@ package com.microsoft.rest.v3.http.policy;
 
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.util.Base64Util;
 import reactor.core.publisher.Mono;
 
@@ -33,7 +33,7 @@ public class ProxyAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String auth = username + ":" + password;
         String encodedAuth = Base64Util.encodeToString(auth.getBytes(StandardCharsets.UTF_8));
         context.httpRequest().withHeader("Proxy-Authentication", "Basic " + encodedAuth);

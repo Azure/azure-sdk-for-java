@@ -7,8 +7,8 @@
 package com.microsoft.rest.v3.http.policy;
 
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
 import reactor.core.publisher.Mono;
 
 /**
@@ -39,7 +39,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String header = context.httpRequest().headers().value("User-Agent");
         if (header == null || DEFAULT_USER_AGENT_HEADER.equals(header)) {
             header = userAgent;

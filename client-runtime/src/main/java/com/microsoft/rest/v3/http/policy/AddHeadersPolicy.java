@@ -10,7 +10,7 @@ import com.microsoft.rest.v3.http.HttpHeader;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import reactor.core.publisher.Mono;
 
 /**
@@ -29,7 +29,7 @@ public class AddHeadersPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         for (HttpHeader header : headers) {
             context.httpRequest().withHeader(header.name(), header.value());
         }

@@ -18,10 +18,10 @@ import com.microsoft.rest.v3.http.ContentType;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
 import com.microsoft.rest.v3.http.policy.AddDatePolicy;
 import com.microsoft.rest.v3.http.policy.AddHeadersPolicy;
 import com.microsoft.rest.v3.http.policy.HostPolicy;
@@ -151,11 +151,11 @@ public class RestProxyStressTests {
 
     private static final class ThrottlingRetryPolicy implements HttpPipelinePolicy {
         @Override
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             return process(1 + ThreadLocalRandom.current().nextInt(5), context, next);
         }
 
-        Mono<HttpResponse> process(final int waitTimeSeconds, final HttpPipelineCallContext context, final NextPolicy nextPolicy) {
+        Mono<HttpResponse> process(final int waitTimeSeconds, final HttpPipelineCallContext context, final HttpPipelineNextPolicy nextPolicy) {
             return nextPolicy.clone().process().flatMap(httpResponse -> {
                 if (httpResponse.statusCode() != 503 && httpResponse.statusCode() != 500) {
                     return Mono.just(httpResponse);

@@ -8,7 +8,7 @@ package com.microsoft.rest.v3.http.policy;
 
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import reactor.core.publisher.Mono;
 
 /**
@@ -23,5 +23,5 @@ public interface HttpPipelinePolicy {
      * @param next the next policy to invoke
      * @return publisher that initiate the request upon subscription and emits response on completion.
      */
-    Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next);
+    Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next);
 }

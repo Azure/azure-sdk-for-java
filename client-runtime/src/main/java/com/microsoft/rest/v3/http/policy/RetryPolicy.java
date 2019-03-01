@@ -7,9 +7,9 @@
 package com.microsoft.rest.v3.http.policy;
 
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
 import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
@@ -46,11 +46,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return attemptAsync(context, next, context.httpRequest(), 0);
     }
 
-    private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final NextPolicy next, final HttpRequest originalHttpRequest, final int tryCount) {
+    private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, final HttpPipelineNextPolicy next, final HttpRequest originalHttpRequest, final int tryCount) {
         context.withHttpRequest(originalHttpRequest.buffer());
         return next.clone().process()
                 .flatMap(httpResponse -> {

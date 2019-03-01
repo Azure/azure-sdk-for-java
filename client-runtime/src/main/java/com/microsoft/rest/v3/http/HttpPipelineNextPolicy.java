@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 /**
  * A type that invokes next policy in the pipeline.
  */
-public class NextPolicy {
+public class HttpPipelineNextPolicy {
     private final HttpPipeline pipeline;
     private final HttpPipelineCallContext context;
     private int currentPolicyIndex;
@@ -20,12 +20,12 @@ public class NextPolicy {
     /**
      * Package Private ctr.
      *
-     * Creates NextPolicy.
+     * Creates HttpPipelineNextPolicy.
      *
      * @param pipeline the pipeline
      * @param context the request-response context
      */
-    NextPolicy(final HttpPipeline pipeline, HttpPipelineCallContext context) {
+    HttpPipelineNextPolicy(final HttpPipeline pipeline, HttpPipelineCallContext context) {
         this.pipeline = pipeline;
         this.context = context;
         this.currentPolicyIndex = -1;
@@ -51,8 +51,8 @@ public class NextPolicy {
     }
 
     @Override
-    public NextPolicy clone() {
-        NextPolicy cloned = new NextPolicy(this.pipeline, this.context);
+    public HttpPipelineNextPolicy clone() {
+        HttpPipelineNextPolicy cloned = new HttpPipelineNextPolicy(this.pipeline, this.context);
         cloned.currentPolicyIndex = this.currentPolicyIndex;
         return cloned;
     }

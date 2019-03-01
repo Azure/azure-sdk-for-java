@@ -10,7 +10,7 @@ import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.UrlBuilder;
 import reactor.core.publisher.Mono;
 
@@ -44,7 +44,7 @@ public class HostPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         if (options.shouldLog(HttpPipelineLogLevel.INFO)) {
             options.log(HttpPipelineLogLevel.INFO, "Setting host to {0}", host);
         }

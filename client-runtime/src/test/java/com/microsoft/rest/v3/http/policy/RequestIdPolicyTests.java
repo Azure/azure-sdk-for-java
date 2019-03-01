@@ -20,6 +20,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
@@ -52,6 +53,11 @@ public class RequestIdPolicyTests {
 
         @Override
         public Mono<String> bodyAsString() {
+            return Mono.empty();
+        }
+
+        @Override
+        public Mono<String> bodyAsString(Charset charset) {
             return Mono.empty();
         }
     };

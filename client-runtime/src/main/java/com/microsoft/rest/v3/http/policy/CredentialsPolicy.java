@@ -9,7 +9,7 @@ package com.microsoft.rest.v3.http.policy;
 import com.microsoft.rest.v3.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class CredentialsPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         try {
             String token = credentials.authorizationHeaderValue(context.httpRequest().url().toString());
             context.httpRequest().headers().set("Authorization", token);

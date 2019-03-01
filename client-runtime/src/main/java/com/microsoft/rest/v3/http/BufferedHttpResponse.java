@@ -11,6 +11,7 @@ import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -60,6 +61,12 @@ public final class BufferedHttpResponse extends HttpResponse {
     public Mono<String> bodyAsString() {
         return bodyAsByteArray()
                 .map(bytes -> bytes == null ? null : new String(bytes, StandardCharsets.UTF_8));
+    }
+
+    @Override
+    public Mono<String> bodyAsString(Charset charset) {
+        return bodyAsByteArray()
+                .map(bytes -> bytes == null ? null : new String(bytes, charset));
     }
 
     @Override

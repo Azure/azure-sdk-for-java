@@ -8,8 +8,8 @@ package com.microsoft.rest.v3.http.policy;
 
 import com.microsoft.rest.v3.http.HttpHeader;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -31,7 +31,7 @@ public class CookiePolicy implements HttpPipelinePolicy {
     private final CookieHandler cookies = new CookieManager();
 
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         try {
             final URI uri = context.httpRequest().url().toURI();
 
