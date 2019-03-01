@@ -29,6 +29,7 @@ import com.microsoft.azure.management.consumption.v2018_10_01.Forecasts;
 import com.microsoft.azure.management.consumption.v2018_10_01.Operations;
 import com.microsoft.azure.management.consumption.v2018_10_01.AggregatedCosts;
 import com.microsoft.azure.management.consumption.v2018_10_01.Charges;
+import com.microsoft.azure.management.consumption.v2018_10_01.Tenants;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -49,6 +50,7 @@ public final class ConsumptionManager extends ManagerCore<ConsumptionManager, Co
     private Operations operations;
     private AggregatedCosts aggregatedCosts;
     private Charges charges;
+    private Tenants tenants;
     /**
     * Get a Configurable instance that can be used to create ConsumptionManager with optional configuration.
     *
@@ -224,6 +226,16 @@ public final class ConsumptionManager extends ManagerCore<ConsumptionManager, Co
             this.charges = new ChargesImpl(this);
         }
         return this.charges;
+    }
+
+    /**
+     * @return Entry point to manage Tenants.
+     */
+    public Tenants tenants() {
+        if (this.tenants == null) {
+            this.tenants = new TenantsImpl(this);
+        }
+        return this.tenants;
     }
 
     /**

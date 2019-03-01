@@ -302,6 +302,19 @@ public class ConsumptionManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The TenantsInner object to access its operations.
+     */
+    private TenantsInner tenants;
+
+    /**
+     * Gets the TenantsInner object to access its operations.
+     * @return the TenantsInner object.
+     */
+    public TenantsInner tenants() {
+        return this.tenants;
+    }
+
+    /**
      * Initializes an instance of ConsumptionManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -349,6 +362,7 @@ public class ConsumptionManagementClientImpl extends AzureServiceClient {
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.aggregatedCosts = new AggregatedCostsInner(restClient().retrofit(), this);
         this.charges = new ChargesInner(restClient().retrofit(), this);
+        this.tenants = new TenantsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
