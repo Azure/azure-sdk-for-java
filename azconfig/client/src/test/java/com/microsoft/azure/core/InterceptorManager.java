@@ -200,7 +200,8 @@ public class InterceptorManager {
                 }
             }
 
-            HttpResponse response = new MockHttpResponse(recordStatusCode, headers, rawBody);
+            HttpResponse response = new MockHttpResponse(recordStatusCode, headers, rawBody)
+                    .withRequest(request);
             return Mono.just(response);
         }
     }
