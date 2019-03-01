@@ -475,26 +475,17 @@ public final class AzConfigClient extends ServiceClient {
                                                             .flatMapIterable(i -> i));
     }
 
-    public Flux<Key> listKeys(KeyLabelFilter filter, Function<Flux<RestPagedResponse<Key>>, ? extends Publisher<Key>> receiver) {
-        return listKeysSinglePageAsync(filter)
+
+    public <T> Flux<T> listKeys(KeyLabelFilter filter, Function<Flux<RestPagedResponse<Key>>, ? extends Flux<T>> receiver) {
+        Flux<RestPagedResponse<Key>> p = listKeysSinglePageAsync(filter)
                        .concatMap(page -> {
                            String nextPageLink = page.nextLink();
                            if (nextPageLink == null) {
                                return Flux.just(page);
                            }
-                           return Flux.just(page).concatMap(p -> listKeysNextAsync(nextPageLink));
-                       })
-                       .flatMapIterable(RestPagedResponse::items);
-    }
-
-    /**
-     * Response type holding a items in single page and it's headers.
-     *
-     * @param <T> type of page items
-     */
-    interface PageResponse<T> {
-        List<T> items();
-        Map<String, List<String>> headers();
+                           return Flux.just(page).concatMap(p1 -> listKeysNextAsync(nextPageLink));
+                       });
+       return  receiver.apply(p);
     }
 
     /**
