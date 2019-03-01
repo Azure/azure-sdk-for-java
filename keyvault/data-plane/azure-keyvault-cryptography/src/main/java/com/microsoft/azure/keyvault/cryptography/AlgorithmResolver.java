@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.cryptography;
 
@@ -46,43 +43,43 @@ public class AlgorithmResolver {
         Default.put(Rsa15.ALGORITHM_NAME, new Rsa15());
         Default.put(RsaOaep.ALGORITHM_NAME, new RsaOaep());
 
-        Default.put( Rs256.ALGORITHM_NAME, new Rs256() );
-        // Default.put( RsNull.ALGORITHM_NAME, new RsNull() );
-        
+        Default.put(Rs256.ALGORITHM_NAME, new Rs256());
+        // Default.put(RsNull.ALGORITHM_NAME, new RsNull());
+
         Default.put(Es256k.ALGORITHM_NAME, new Es256k());
         Default.put(Es256.ALGORITHM_NAME, new Es256());
         Default.put(Es384.ALGORITHM_NAME, new Es384());
         Default.put(Es512.ALGORITHM_NAME, new Es512());
     }
 
-    private final ConcurrentMap<String, Algorithm> _algorithms = new ConcurrentHashMap<String, Algorithm>();
+    private final ConcurrentMap<String, Algorithm> algorithms = new ConcurrentHashMap<String, Algorithm>();
 
     /**
      * Returns the implementation for an algorithm name.
-     * 
+     *
      * @param algorithmName The algorithm name.
      * @return The implementation for the algorithm or null.
      */
     public Algorithm get(String algorithmName) {
-        return _algorithms.get(algorithmName);
+        return algorithms.get(algorithmName);
     }
 
     /**
      * Add/Update a named algorithm implementation.
-     * 
+     *
      * @param algorithmName The algorithm name.
      * @param provider The implementation of the algorithm.
      */
     public void put(String algorithmName, Algorithm provider) {
-        _algorithms.put(algorithmName, provider);
+        algorithms.put(algorithmName, provider);
     }
 
     /**
      * Remove a named algorithm implementation.
-     * 
+     *
      * @param algorithmName The algorithm name
      */
     public void remove(String algorithmName) {
-        _algorithms.remove(algorithmName);
+        algorithms.remove(algorithmName);
     }
 }

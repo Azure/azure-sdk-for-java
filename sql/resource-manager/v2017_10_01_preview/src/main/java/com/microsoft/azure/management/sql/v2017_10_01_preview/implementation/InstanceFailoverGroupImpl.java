@@ -37,7 +37,7 @@ class InstanceFailoverGroupImpl extends CreatableUpdatableImpl<InstanceFailoverG
         this.manager = manager;
         // Set resource name
         this.failoverGroupName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.locationName = IdParsingUtils.getValueFromIdByName(inner.id(), "locations");
         this.failoverGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "instanceFailoverGroups");

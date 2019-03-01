@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.webkey;
 
@@ -229,7 +226,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] n() {
-        return this.n;
+        return ByteExtensions.clone(this.n);
     }
 
     /**
@@ -240,7 +237,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withN(byte[] n) {
-        this.n = n;
+        this.n = ByteExtensions.clone(n);
         return this;
     }
 
@@ -253,7 +250,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] e() {
-        return this.e;
+        return ByteExtensions.clone(this.e);
     }
 
     /**
@@ -264,7 +261,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withE(byte[] e) {
-        this.e = e;
+        this.e = ByteExtensions.clone(e);
         return this;
     }
 
@@ -277,7 +274,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] d() {
-        return this.d;
+        return ByteExtensions.clone(this.d);
     }
 
     /**
@@ -288,7 +285,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withD(byte[] d) {
-        this.d = d;
+        this.d = ByteExtensions.clone(d);
         return this;
     }
 
@@ -301,7 +298,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] dp() {
-        return this.dp;
+        return ByteExtensions.clone(this.dp);
     }
 
     /**
@@ -312,7 +309,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withDp(byte[] dp) {
-        this.dp = dp;
+        this.dp = ByteExtensions.clone(dp);
         return this;
     }
 
@@ -325,7 +322,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] dq() {
-        return this.dq;
+        return ByteExtensions.clone(this.dq);
     }
 
     /**
@@ -336,7 +333,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withDq(byte[] dq) {
-        this.dq = dq;
+        this.dq = ByteExtensions.clone(dq);
         return this;
     }
 
@@ -349,7 +346,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] qi() {
-        return this.qi;
+        return ByteExtensions.clone(this.qi);
     }
 
     /**
@@ -360,7 +357,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withQi(byte[] qi) {
-        this.qi = qi;
+        this.qi = ByteExtensions.clone(qi);
         return this;
     }
 
@@ -373,7 +370,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] p() {
-        return this.p;
+        return ByteExtensions.clone(this.p);
     }
 
     /**
@@ -384,7 +381,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withP(byte[] p) {
-        this.p = p;
+        this.p = ByteExtensions.clone(p);
         return this;
     }
 
@@ -397,7 +394,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] q() {
-        return this.q;
+        return ByteExtensions.clone(this.q);
     }
 
     /**
@@ -408,7 +405,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withQ(byte[] q) {
-        this.q = q;
+        this.q = ByteExtensions.clone(q);
         return this;
     }
 
@@ -421,7 +418,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] k() {
-        return this.k;
+        return ByteExtensions.clone(this.k);
     }
 
     /**
@@ -432,7 +429,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withK(byte[] k) {
-        this.k = k;
+        this.k = ByteExtensions.clone(k);
         return this;
     }
 
@@ -445,7 +442,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] t() {
-        return this.t;
+        return ByteExtensions.clone(this.t);
     }
 
     /**
@@ -456,7 +453,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withT(byte[] t) {
-        this.t = t;
+        this.t = ByteExtensions.clone(t);
         return this;
     }
 
@@ -505,7 +502,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] x() {
-        return this.x;
+        return ByteExtensions.clone(this.x);
     }
 
     /**
@@ -516,7 +513,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withX(byte[] x) {
-        this.x = x;
+        this.x = ByteExtensions.clone(x);
         return this;
     }
 
@@ -529,7 +526,7 @@ public class JsonWebKey {
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
     @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
     public byte[] y() {
-        return this.y;
+        return ByteExtensions.clone(this.y);
     }
 
     /**
@@ -540,7 +537,7 @@ public class JsonWebKey {
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withY(byte[] y) {
-        this.y = y;
+        this.y = ByteExtensions.clone(y);
         return this;
     }
 
@@ -994,13 +991,9 @@ public class JsonWebKey {
 
         if (JsonWebKeyType.OCT.equals(kty)) {
             return k != null;
-        }
-
-        else if (JsonWebKeyType.RSA.equals(kty) || JsonWebKeyType.RSA_HSM.equals(kty)) {
+        } else if (JsonWebKeyType.RSA.equals(kty) || JsonWebKeyType.RSA_HSM.equals(kty)) {
             return (d != null && dp != null && dq != null && qi != null && p != null && q != null);
-        }
-
-        else if (JsonWebKeyType.EC.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
+        } else if (JsonWebKeyType.EC.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
             return (d != null);
         }
 
@@ -1029,21 +1022,13 @@ public class JsonWebKey {
 
         if (JsonWebKeyType.OCT.equals(kty)) {
             return isValidOctet();
-        }
-
-        else if (JsonWebKeyType.RSA.equals(kty)) {
+        } else if (JsonWebKeyType.RSA.equals(kty)) {
             return isValidRsa();
-        }
-
-        else if (JsonWebKeyType.RSA_HSM.equals(kty)) {
+        } else if (JsonWebKeyType.RSA_HSM.equals(kty)) {
             return isValidRsaHsm();
-        }
-
-        else if (JsonWebKeyType.EC.equals(kty)) {
+        } else if (JsonWebKeyType.EC.equals(kty)) {
             return isValidEc();
-        }
-
-        else if (JsonWebKeyType.EC_HSM.equals(kty)) {
+        } else if (JsonWebKeyType.EC_HSM.equals(kty)) {
             return isValidEcHsm();
         }
 
@@ -1164,19 +1149,13 @@ public class JsonWebKey {
 
         if (JsonWebKeyType.OCT.equals(kty)) {
             hashCode += hashCode(k);
-        }
-
-        else if (JsonWebKeyType.RSA.equals(kty)) {
+        } else if (JsonWebKeyType.RSA.equals(kty)) {
             hashCode += hashCode(n);
-        }
-
-        else if (JsonWebKeyType.EC.equals(kty)) {
+        } else if (JsonWebKeyType.EC.equals(kty)) {
             hashCode += hashCode(x);
             hashCode += hashCode(y);
             hashCode += crv.hashCode();
-        }
-
-        else if (JsonWebKeyType.RSA_HSM.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
+        } else if (JsonWebKeyType.RSA_HSM.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
             hashCode += hashCode(t);
         }
 

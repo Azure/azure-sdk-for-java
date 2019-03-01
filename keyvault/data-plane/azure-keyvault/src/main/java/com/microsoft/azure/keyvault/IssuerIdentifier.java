@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault;
 
@@ -31,11 +28,8 @@ public final class IssuerIdentifier extends ObjectIdentifier {
         }
 
         String[] segments = baseUri.getPath().split("/");
-        if (segments.length != 4 || segments[1] != "certificates" || segments[2] != "issuers") {
-            return false;
-        }
 
-        return true;
+        return segments.length == 4 && segments[1].equals("certificates") && segments[2].equals("issuers");
     }
 
     /**

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.messagesecurity;
 
@@ -67,7 +64,16 @@ class JWSObject {
         return this.payload.equals(other.payload) && this.jwsHeader.equals(other.jwsHeader)
                 && this.signature.equals(other.signature);
     }
-    
+
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof JWSObject)) {
+            return false;
+        }
+
+        return object == this || equals((JWSObject) object);
+    }
+
     /**
      * Hash code for objects.
      * 

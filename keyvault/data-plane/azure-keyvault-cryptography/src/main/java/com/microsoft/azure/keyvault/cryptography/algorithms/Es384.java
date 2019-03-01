@@ -1,13 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.keyvault.cryptography.algorithms;
 
 public class Es384 extends Ecdsa {
-
-    public final static String ALGORITHM_NAME = "SHA384withECDSA";
+    public static final String ALGORITHM_NAME = "ES384";
 
     @Override
-    public void checkDigestLength(byte[] digest) {
-        if (digest.length != 48) {
-            throw new IllegalArgumentException("Invalid digest length.");
-        }
+    public int getDigestLength() {
+        return 48;
+    }
+    
+    @Override
+    public int getCoordLength() {
+        return 48;
     }
 }

@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.cryptography;
 
@@ -12,7 +9,7 @@ package com.microsoft.azure.keyvault.cryptography;
  */
 public abstract class Algorithm {
 
-    private final String _name;
+    private final String name;
 
     /**
      * Constructor.
@@ -24,7 +21,7 @@ public abstract class Algorithm {
             throw new IllegalArgumentException("name");
         }
 
-        _name = name;
+        this.name = name;
     }
 
     /**
@@ -33,6 +30,6 @@ public abstract class Algorithm {
      * @return The name of the algorithm.
      */
     public String getName() {
-        return _name;
+        return name;
     }
 }
