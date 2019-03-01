@@ -270,7 +270,7 @@ public class InterceptorManager {
         mapper.writeValue(recordFile, recordedData);
     }
 
-    private File getRecordFile(String testName) {
+    private static File getRecordFile(String testName) {
         URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
         File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
         if (!folderFile.exists()) {
@@ -290,7 +290,7 @@ public class InterceptorManager {
         return text;
     }
 
-    private String removeHost(String url) {
+    private static String removeHost(String url) {
         URI uri = URI.create(url);
         return String.format("%s?%s", uri.getPath(), uri.getQuery());
     }
