@@ -255,7 +255,7 @@ public final class AzConfigClient extends ServiceClient {
                                                             .flatMapIterable(i -> i));
     }
 
-    public Flux<KeyValue> listKeyValues(KeyValueListFilter filter, Function<Flux<RestPagedResponse<KeyValue>>, ? extends Flux<KeyValue>> receiver) {
+    public <T> Flux<T> listKeyValues(KeyValueListFilter filter, Function<Flux<RestPagedResponse<KeyValue>>, ? extends Flux<T>> receiver) {
         Flux<RestPagedResponse<KeyValue>> p = listSinglePageAsync(filter)
                        .concatMap(page -> {
                            String nextPageLink = page.nextLink();
