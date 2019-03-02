@@ -78,12 +78,14 @@ public class AzConfigTest {
 
             credentials = AzConfigClient.AzConfigCredentials.parseConnectionString("endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw");
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
-            policies.add(interceptorManager.initRecordPolicy());
 
-            pipeline = new HttpPipeline(interceptorManager.initPlaybackClient(), new HttpPipelineOptions(null), policies.toArray(new HttpPipelinePolicy[0]));
+            pipeline = new HttpPipeline(
+                    interceptorManager.initPlaybackClient(),
+                    new HttpPipelineOptions(null),
+                    policies.toArray(new HttpPipelinePolicy[0]));
 
             System.out.println(playbackUri);
-        } else { // Record mode
+        } else {
             System.out.println("RECORD MODE");
 
             connectionString =  System.getenv("AZCONFIG_CONNECTION_STRING");
