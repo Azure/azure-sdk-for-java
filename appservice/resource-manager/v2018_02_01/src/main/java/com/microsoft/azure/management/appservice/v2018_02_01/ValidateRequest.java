@@ -62,7 +62,7 @@ public class ValidateRequest {
     private Boolean isSpot;
 
     /**
-     * Target capacity of the App Service plan (number of VM's).
+     * Target capacity of the App Service plan (number of VMs).
      */
     @JsonProperty(value = "properties.capacity")
     private Integer capacity;
@@ -73,6 +73,13 @@ public class ValidateRequest {
      */
     @JsonProperty(value = "properties.hostingEnvironment")
     private String hostingEnvironment;
+
+    /**
+     * &lt;code&gt;true&lt;/code&gt; if App Service plan is running as a
+     * windows container.
+     */
+    @JsonProperty(value = "properties.isXenon")
+    private Boolean isXenon;
 
     /**
      * Get resource name to verify.
@@ -215,7 +222,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Get target capacity of the App Service plan (number of VM's).
+     * Get target capacity of the App Service plan (number of VMs).
      *
      * @return the capacity value
      */
@@ -224,7 +231,7 @@ public class ValidateRequest {
     }
 
     /**
-     * Set target capacity of the App Service plan (number of VM's).
+     * Set target capacity of the App Service plan (number of VMs).
      *
      * @param capacity the capacity value to set
      * @return the ValidateRequest object itself.
@@ -251,6 +258,26 @@ public class ValidateRequest {
      */
     public ValidateRequest withHostingEnvironment(String hostingEnvironment) {
         this.hostingEnvironment = hostingEnvironment;
+        return this;
+    }
+
+    /**
+     * Get &lt;code&gt;true&lt;/code&gt; if App Service plan is running as a windows container.
+     *
+     * @return the isXenon value
+     */
+    public Boolean isXenon() {
+        return this.isXenon;
+    }
+
+    /**
+     * Set &lt;code&gt;true&lt;/code&gt; if App Service plan is running as a windows container.
+     *
+     * @param isXenon the isXenon value to set
+     * @return the ValidateRequest object itself.
+     */
+    public ValidateRequest withIsXenon(Boolean isXenon) {
+        this.isXenon = isXenon;
         return this;
     }
 

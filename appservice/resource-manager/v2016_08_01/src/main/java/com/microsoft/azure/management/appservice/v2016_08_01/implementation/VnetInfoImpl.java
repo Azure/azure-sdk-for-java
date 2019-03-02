@@ -15,26 +15,26 @@ import java.util.List;
 import com.microsoft.azure.management.appservice.v2016_08_01.VnetRoute;
 
 class VnetInfoImpl extends CreatableUpdatableImpl<VnetInfo, VnetInfoInner, VnetInfoImpl> implements VnetInfo, VnetInfo.Definition, VnetInfo.Update {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String vnetName;
     private String slot;
 
-    VnetInfoImpl(String name, AppServiceManager manager) {
+    VnetInfoImpl(String name, WebManager manager) {
         super(name, new VnetInfoInner());
         this.manager = manager;
         // Set resource name
-        this.slot = name;
+        this.vnetName = name;
         //
     }
 
-    VnetInfoImpl(VnetInfoInner inner, AppServiceManager manager) {
+    VnetInfoImpl(VnetInfoInner inner, WebManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.slot = inner.name();
-        // resource ancestor names
+        this.vnetName = inner.name();
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.vnetName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkConnections");
@@ -43,7 +43,7 @@ class VnetInfoImpl extends CreatableUpdatableImpl<VnetInfo, VnetInfoInner, VnetI
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

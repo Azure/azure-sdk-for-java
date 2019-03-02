@@ -30,11 +30,11 @@ public class RampUpRule {
     private Double reroutePercentage;
 
     /**
-     * In auto ramp up scenario this is the step to to add/remove from
+     * In auto ramp up scenario this is the step to add/remove from
      * &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
      * &lt;code&gt;MinReroutePercentage&lt;/code&gt; or
      * &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked
-     * every N minutes specificed in
+     * every N minutes specified in
      * &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
      * Custom decision algorithm can be provided in TiPCallback site extension
      * which URL can be specified in
@@ -44,7 +44,7 @@ public class RampUpRule {
     private Double changeStep;
 
     /**
-     * Specifies interval in mimuntes to reevaluate ReroutePercentage.
+     * Specifies interval in minutes to reevaluate ReroutePercentage.
      */
     @JsonProperty(value = "changeIntervalInMinutes")
     private Integer changeIntervalInMinutes;
@@ -118,8 +118,8 @@ public class RampUpRule {
     }
 
     /**
-     * Get in auto ramp up scenario this is the step to to add/remove from &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
-     &lt;code&gt;MinReroutePercentage&lt;/code&gt; or &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specificed in &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
+     * Get in auto ramp up scenario this is the step to add/remove from &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
+     &lt;code&gt;MinReroutePercentage&lt;/code&gt; or &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specified in &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
      Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified in &lt;code&gt;ChangeDecisionCallbackUrl&lt;/code&gt;.
      *
      * @return the changeStep value
@@ -129,8 +129,8 @@ public class RampUpRule {
     }
 
     /**
-     * Set in auto ramp up scenario this is the step to to add/remove from &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
-     &lt;code&gt;MinReroutePercentage&lt;/code&gt; or &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specificed in &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
+     * Set in auto ramp up scenario this is the step to add/remove from &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
+     &lt;code&gt;MinReroutePercentage&lt;/code&gt; or &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specified in &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
      Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified in &lt;code&gt;ChangeDecisionCallbackUrl&lt;/code&gt;.
      *
      * @param changeStep the changeStep value to set
@@ -142,7 +142,7 @@ public class RampUpRule {
     }
 
     /**
-     * Get specifies interval in mimuntes to reevaluate ReroutePercentage.
+     * Get specifies interval in minutes to reevaluate ReroutePercentage.
      *
      * @return the changeIntervalInMinutes value
      */
@@ -151,7 +151,7 @@ public class RampUpRule {
     }
 
     /**
-     * Set specifies interval in mimuntes to reevaluate ReroutePercentage.
+     * Set specifies interval in minutes to reevaluate ReroutePercentage.
      *
      * @param changeIntervalInMinutes the changeIntervalInMinutes value to set
      * @return the RampUpRule object itself.

@@ -14,26 +14,28 @@ import rx.Observable;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteAvailabilityState;
 import com.microsoft.azure.management.appservice.v2018_02_01.CloningInfo;
 import java.util.List;
+import com.microsoft.azure.management.appservice.v2018_02_01.GeoDistribution;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostNameSslState;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
+import java.util.UUID;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.appservice.v2018_02_01.RedundancyMode;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
-import com.microsoft.azure.management.appservice.v2018_02_01.SnapshotRecoveryRequest;
 import java.util.Map;
 import com.microsoft.azure.management.appservice.v2018_02_01.UsageState;
 
 class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements HostingEnvironmentSite {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    HostingEnvironmentSiteImpl(SiteInner inner,  AppServiceManager manager) {
+    HostingEnvironmentSiteImpl(SiteInner inner,  CertificateRegistrationManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -52,6 +54,11 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     @Override
     public Boolean clientCertEnabled() {
         return this.inner().clientCertEnabled();
+    }
+
+    @Override
+    public String clientCertExclusionPaths() {
+        return this.inner().clientCertExclusionPaths();
     }
 
     @Override
@@ -85,6 +92,11 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     }
 
     @Override
+    public List<GeoDistribution> geoDistributions() {
+        return this.inner().geoDistributions();
+    }
+
+    @Override
     public HostingEnvironmentProfile hostingEnvironmentProfile() {
         return this.inner().hostingEnvironmentProfile();
     }
@@ -110,6 +122,11 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     }
 
     @Override
+    public Boolean hyperV() {
+        return this.inner().hyperV();
+    }
+
+    @Override
     public String id() {
         return this.inner().id();
     }
@@ -117,6 +134,11 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     @Override
     public ManagedServiceIdentity identity() {
         return this.inner().identity();
+    }
+
+    @Override
+    public UUID inProgressOperationId() {
+        return this.inner().inProgressOperationId();
     }
 
     @Override
@@ -165,6 +187,11 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     }
 
     @Override
+    public RedundancyMode redundancyMode() {
+        return this.inner().redundancyMode();
+    }
+
+    @Override
     public String repositorySiteName() {
         return this.inner().repositorySiteName();
     }
@@ -197,11 +224,6 @@ class HostingEnvironmentSiteImpl extends WrapperImpl<SiteInner> implements Hosti
     @Override
     public SlotSwapStatus slotSwapStatus() {
         return this.inner().slotSwapStatus();
-    }
-
-    @Override
-    public SnapshotRecoveryRequest snapshotInfo() {
-        return this.inner().snapshotInfo();
     }
 
     @Override

@@ -34,6 +34,13 @@ public class StackMinorVersion {
     private Boolean isDefault;
 
     /**
+     * &lt;code&gt;true&lt;/code&gt; if this supports Remote Debugging,
+     * otherwise &lt;code&gt;false&lt;/code&gt;.
+     */
+    @JsonProperty(value = "isRemoteDebuggingEnabled")
+    private Boolean isRemoteDebuggingEnabled;
+
+    /**
      * Get application stack minor version (display only).
      *
      * @return the displayVersion value
@@ -90,6 +97,26 @@ public class StackMinorVersion {
      */
     public StackMinorVersion withIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
+        return this;
+    }
+
+    /**
+     * Get &lt;code&gt;true&lt;/code&gt; if this supports Remote Debugging, otherwise &lt;code&gt;false&lt;/code&gt;.
+     *
+     * @return the isRemoteDebuggingEnabled value
+     */
+    public Boolean isRemoteDebuggingEnabled() {
+        return this.isRemoteDebuggingEnabled;
+    }
+
+    /**
+     * Set &lt;code&gt;true&lt;/code&gt; if this supports Remote Debugging, otherwise &lt;code&gt;false&lt;/code&gt;.
+     *
+     * @param isRemoteDebuggingEnabled the isRemoteDebuggingEnabled value to set
+     * @return the StackMinorVersion object itself.
+     */
+    public StackMinorVersion withIsRemoteDebuggingEnabled(Boolean isRemoteDebuggingEnabled) {
+        this.isRemoteDebuggingEnabled = isRemoteDebuggingEnabled;
         return this;
     }
 

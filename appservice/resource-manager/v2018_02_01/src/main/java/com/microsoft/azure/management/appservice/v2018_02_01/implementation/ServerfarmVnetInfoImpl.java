@@ -16,21 +16,22 @@ import com.microsoft.azure.management.appservice.v2018_02_01.VnetRoute;
 import java.util.List;
 
 class ServerfarmVnetInfoImpl extends IndexableRefreshableWrapperImpl<ServerfarmVnetInfo, VnetInfoInner> implements ServerfarmVnetInfo {
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
     private String resourceGroupName;
     private String name;
     private String vnetName;
 
-    ServerfarmVnetInfoImpl(VnetInfoInner inner,  AppServiceManager manager) {
+    ServerfarmVnetInfoImpl(VnetInfoInner inner,  CertificateRegistrationManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "serverfarms");
         this.vnetName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkConnections");
     }
 
     @Override
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -60,6 +61,11 @@ class ServerfarmVnetInfoImpl extends IndexableRefreshableWrapperImpl<ServerfarmV
     @Override
     public String id() {
         return this.inner().id();
+    }
+
+    @Override
+    public Boolean isSwift() {
+        return this.inner().isSwift();
     }
 
     @Override

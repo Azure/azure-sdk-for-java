@@ -15,12 +15,12 @@ import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 
 /**
  * Type representing ServerfarmVnetGateway.
  */
-public interface ServerfarmVnetGateway extends HasInner<VnetGatewayInner>, Indexable, Refreshable<ServerfarmVnetGateway>, Updatable<ServerfarmVnetGateway.Update>, HasManager<AppServiceManager> {
+public interface ServerfarmVnetGateway extends HasInner<VnetGatewayInner>, Indexable, Refreshable<ServerfarmVnetGateway>, Updatable<ServerfarmVnetGateway.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
@@ -67,6 +67,8 @@ public interface ServerfarmVnetGateway extends HasInner<VnetGatewayInner>, Index
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
@@ -77,6 +79,8 @@ public interface ServerfarmVnetGateway extends HasInner<VnetGatewayInner>, Index
         interface WithVnetName {
             /**
              * Specifies vnetName.
+             * @param vnetName The Virtual Network name
+             * @return the next update stage
              */
             Update withVnetName(String vnetName);
         }

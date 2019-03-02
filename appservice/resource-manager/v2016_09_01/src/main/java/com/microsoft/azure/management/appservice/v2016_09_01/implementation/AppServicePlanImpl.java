@@ -19,9 +19,9 @@ import com.microsoft.azure.management.appservice.v2016_09_01.ProvisioningState;
 import com.microsoft.azure.management.appservice.v2016_09_01.SkuDescription;
 import rx.functions.Func1;
 
-class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppServicePlanInner, AppServicePlanImpl, AppServiceManager> implements AppServicePlan, AppServicePlan.Definition, AppServicePlan.Update {
+class AppServicePlanImpl extends GroupableResourceCoreImpl<AppServicePlan, AppServicePlanInner, AppServicePlanImpl, WebManager> implements AppServicePlan, AppServicePlan.Definition, AppServicePlan.Update {
     private AppServicePlanPatchResource updateParameter;
-    AppServicePlanImpl(String name, AppServicePlanInner inner, AppServiceManager manager) {
+    AppServicePlanImpl(String name, AppServicePlanInner inner, WebManager manager) {
         super(name, inner, manager);
         this.updateParameter = new AppServicePlanPatchResource();
     }

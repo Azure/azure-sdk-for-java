@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * User crendentials used for publishing activity.
+ * User credentials used for publishing activity.
  */
 @JsonFlatten
 public class User extends ProxyOnlyResource {

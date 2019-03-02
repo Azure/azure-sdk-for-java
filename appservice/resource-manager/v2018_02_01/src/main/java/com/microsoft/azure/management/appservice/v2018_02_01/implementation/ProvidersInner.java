@@ -189,7 +189,7 @@ public class ProvidersInner {
      * Get available application frameworks and their versions.
      * Get available application frameworks and their versions.
      *
-     * @param osTypeSelected Possible values include: 'Windows', 'Linux'
+     * @param osTypeSelected Possible values include: 'Windows', 'Linux', 'WindowsFunctions', 'LinuxFunctions'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -209,7 +209,7 @@ public class ProvidersInner {
      * Get available application frameworks and their versions.
      * Get available application frameworks and their versions.
      *
-     * @param osTypeSelected Possible values include: 'Windows', 'Linux'
+     * @param osTypeSelected Possible values include: 'Windows', 'Linux', 'WindowsFunctions', 'LinuxFunctions'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -230,7 +230,7 @@ public class ProvidersInner {
      * Get available application frameworks and their versions.
      * Get available application frameworks and their versions.
      *
-     * @param osTypeSelected Possible values include: 'Windows', 'Linux'
+     * @param osTypeSelected Possible values include: 'Windows', 'Linux', 'WindowsFunctions', 'LinuxFunctions'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationStackInner&gt; object
      */
@@ -248,7 +248,7 @@ public class ProvidersInner {
      * Get available application frameworks and their versions.
      * Get available application frameworks and their versions.
      *
-     * @param osTypeSelected Possible values include: 'Windows', 'Linux'
+     * @param osTypeSelected Possible values include: 'Windows', 'Linux', 'WindowsFunctions', 'LinuxFunctions'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationStackInner&gt; object
      */
@@ -270,7 +270,7 @@ public class ProvidersInner {
      * Get available application frameworks and their versions.
      * Get available application frameworks and their versions.
      *
-    ServiceResponse<PageImpl<ApplicationStackInner>> * @param osTypeSelected Possible values include: 'Windows', 'Linux'
+    ServiceResponse<PageImpl<ApplicationStackInner>> * @param osTypeSelected Possible values include: 'Windows', 'Linux', 'WindowsFunctions', 'LinuxFunctions'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationStackInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -518,7 +518,7 @@ public class ProvidersInner {
      * Get available application frameworks and their versions.
      * Get available application frameworks and their versions.
      *
-     * @param osTypeSelected Possible values include: 'Windows', 'Linux'
+     * @param osTypeSelected Possible values include: 'Windows', 'Linux', 'WindowsFunctions', 'LinuxFunctions'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -538,7 +538,7 @@ public class ProvidersInner {
      * Get available application frameworks and their versions.
      * Get available application frameworks and their versions.
      *
-     * @param osTypeSelected Possible values include: 'Windows', 'Linux'
+     * @param osTypeSelected Possible values include: 'Windows', 'Linux', 'WindowsFunctions', 'LinuxFunctions'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -559,7 +559,7 @@ public class ProvidersInner {
      * Get available application frameworks and their versions.
      * Get available application frameworks and their versions.
      *
-     * @param osTypeSelected Possible values include: 'Windows', 'Linux'
+     * @param osTypeSelected Possible values include: 'Windows', 'Linux', 'WindowsFunctions', 'LinuxFunctions'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationStackInner&gt; object
      */
@@ -577,7 +577,7 @@ public class ProvidersInner {
      * Get available application frameworks and their versions.
      * Get available application frameworks and their versions.
      *
-     * @param osTypeSelected Possible values include: 'Windows', 'Linux'
+     * @param osTypeSelected Possible values include: 'Windows', 'Linux', 'WindowsFunctions', 'LinuxFunctions'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ApplicationStackInner&gt; object
      */
@@ -599,7 +599,7 @@ public class ProvidersInner {
      * Get available application frameworks and their versions.
      * Get available application frameworks and their versions.
      *
-    ServiceResponse<PageImpl<ApplicationStackInner>> * @param osTypeSelected Possible values include: 'Windows', 'Linux'
+    ServiceResponse<PageImpl<ApplicationStackInner>> * @param osTypeSelected Possible values include: 'Windows', 'Linux', 'WindowsFunctions', 'LinuxFunctions'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationStackInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */

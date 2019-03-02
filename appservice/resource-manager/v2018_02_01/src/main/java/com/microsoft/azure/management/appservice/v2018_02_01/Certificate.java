@@ -17,7 +17,7 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateInner;
@@ -25,7 +25,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Cert
 /**
  * Type representing Certificate.
  */
-public interface Certificate extends HasInner<CertificateInner>, Resource, GroupableResourceCore<AppServiceManager, CertificateInner>, HasResourceGroup, Refreshable<Certificate>, Updatable<Certificate.Update>, HasManager<AppServiceManager> {
+public interface Certificate extends HasInner<CertificateInner>, Resource, GroupableResourceCore<CertificateRegistrationManager, CertificateInner>, HasResourceGroup, Refreshable<Certificate>, Updatable<Certificate.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the cerBlob value.
      */
@@ -154,66 +154,80 @@ public interface Certificate extends HasInner<CertificateInner>, Resource, Group
         interface WithPassword {
            /**
             * Specifies password.
-            */
+            * @param password Certificate password
+            * @return the next definition stage
+*/
             WithCreate withPassword(String password);
         }
 
         /**
-         * The stage of the certificate update allowing to specify HostNames.
+         * The stage of the certificate definition allowing to specify HostNames.
          */
         interface WithHostNames {
             /**
              * Specifies hostNames.
+             * @param hostNames Host names the certificate applies to
+             * @return the next definition stage
              */
             WithCreate withHostNames(List<String> hostNames);
         }
 
         /**
-         * The stage of the certificate update allowing to specify KeyVaultId.
+         * The stage of the certificate definition allowing to specify KeyVaultId.
          */
         interface WithKeyVaultId {
             /**
              * Specifies keyVaultId.
+             * @param keyVaultId Key Vault Csm resource Id
+             * @return the next definition stage
              */
             WithCreate withKeyVaultId(String keyVaultId);
         }
 
         /**
-         * The stage of the certificate update allowing to specify KeyVaultSecretName.
+         * The stage of the certificate definition allowing to specify KeyVaultSecretName.
          */
         interface WithKeyVaultSecretName {
             /**
              * Specifies keyVaultSecretName.
+             * @param keyVaultSecretName Key Vault secret name
+             * @return the next definition stage
              */
             WithCreate withKeyVaultSecretName(String keyVaultSecretName);
         }
 
         /**
-         * The stage of the certificate update allowing to specify Kind.
+         * The stage of the certificate definition allowing to specify Kind.
          */
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
 
         /**
-         * The stage of the certificate update allowing to specify PfxBlob.
+         * The stage of the certificate definition allowing to specify PfxBlob.
          */
         interface WithPfxBlob {
             /**
              * Specifies pfxBlob.
+             * @param pfxBlob Pfx blob
+             * @return the next definition stage
              */
             WithCreate withPfxBlob(byte[] pfxBlob);
         }
 
         /**
-         * The stage of the certificate update allowing to specify ServerFarmId.
+         * The stage of the certificate definition allowing to specify ServerFarmId.
          */
         interface WithServerFarmId {
             /**
              * Specifies serverFarmId.
+             * @param serverFarmId Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}"
+             * @return the next definition stage
              */
             WithCreate withServerFarmId(String serverFarmId);
         }
@@ -237,61 +251,73 @@ public interface Certificate extends HasInner<CertificateInner>, Resource, Group
      */
     interface UpdateStages {
         /**
-         * The stage of the certificate {0} allowing to specify HostNames.
+         * The stage of the certificate update allowing to specify HostNames.
          */
         interface WithHostNames {
             /**
              * Specifies hostNames.
+             * @param hostNames Host names the certificate applies to
+             * @return the next update stage
              */
             Update withHostNames(List<String> hostNames);
         }
 
         /**
-         * The stage of the certificate {0} allowing to specify KeyVaultId.
+         * The stage of the certificate update allowing to specify KeyVaultId.
          */
         interface WithKeyVaultId {
             /**
              * Specifies keyVaultId.
+             * @param keyVaultId Key Vault Csm resource Id
+             * @return the next update stage
              */
             Update withKeyVaultId(String keyVaultId);
         }
 
         /**
-         * The stage of the certificate {0} allowing to specify KeyVaultSecretName.
+         * The stage of the certificate update allowing to specify KeyVaultSecretName.
          */
         interface WithKeyVaultSecretName {
             /**
              * Specifies keyVaultSecretName.
+             * @param keyVaultSecretName Key Vault secret name
+             * @return the next update stage
              */
             Update withKeyVaultSecretName(String keyVaultSecretName);
         }
 
         /**
-         * The stage of the certificate {0} allowing to specify Kind.
+         * The stage of the certificate update allowing to specify Kind.
          */
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }
 
         /**
-         * The stage of the certificate {0} allowing to specify PfxBlob.
+         * The stage of the certificate update allowing to specify PfxBlob.
          */
         interface WithPfxBlob {
             /**
              * Specifies pfxBlob.
+             * @param pfxBlob Pfx blob
+             * @return the next update stage
              */
             Update withPfxBlob(byte[] pfxBlob);
         }
 
         /**
-         * The stage of the certificate {0} allowing to specify ServerFarmId.
+         * The stage of the certificate update allowing to specify ServerFarmId.
          */
         interface WithServerFarmId {
             /**
              * Specifies serverFarmId.
+             * @param serverFarmId Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}"
+             * @return the next update stage
              */
             Update withServerFarmId(String serverFarmId);
         }
