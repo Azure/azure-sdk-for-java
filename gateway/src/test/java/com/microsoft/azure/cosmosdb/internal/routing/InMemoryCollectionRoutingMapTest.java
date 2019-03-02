@@ -138,7 +138,6 @@ public class InMemoryCollectionRoutingMapTest {
         assertThat(routingMap).isNotNull();
     }
 
-
     @Test(groups = {"unit"})
     public void goneRanges() {
         CollectionRoutingMap routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(
@@ -157,7 +156,7 @@ public class InMemoryCollectionRoutingMapTest {
         assertThat(routingMap.IsGone("4")).isFalse();
         assertThat(routingMap.IsGone("100")).isFalse();
     }
-
+    
     @Test(groups = {"unit"})
     public void tryCombineRanges() {
         CollectionRoutingMap routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(

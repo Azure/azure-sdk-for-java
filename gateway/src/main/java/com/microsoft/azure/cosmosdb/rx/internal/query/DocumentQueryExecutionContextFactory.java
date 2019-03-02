@@ -101,7 +101,7 @@ public class DocumentQueryExecutionContextFactory {
         return proxyQueryExecutionContext;
     }
 
-    public static <T extends Resource> Observable<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(
+	public static <T extends Resource> Observable<? extends IDocumentQueryExecutionContext<T>> createSpecializedDocumentQueryExecutionContextAsync(
             IDocumentQueryClient client,
             ResourceType resourceTypeEnum,
             Class<T> resourceType,

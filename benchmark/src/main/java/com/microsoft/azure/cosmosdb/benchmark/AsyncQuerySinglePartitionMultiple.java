@@ -48,7 +48,7 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Docu
     }
 
     @Override
-    protected void onNextLogging() {
+    protected void onSuccess() {
         pageCount++;
         if (pageCount % 10000 == 0) {
             if (pageCount == 0) {
@@ -60,7 +60,7 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Docu
 
     @Override
     protected void performWorkload(Subscriber<FeedResponse<Document>> subs, long i) throws InterruptedException {
-        Observable<FeedResponse<Document>> obs = client.queryDocuments(collection.getSelfLink(), SQL_QUERY, options);
+        Observable<FeedResponse<Document>> obs = client.queryDocuments(getCollectionLink(), SQL_QUERY, options);
 
         concurrencyControlSemaphore.acquire();
 

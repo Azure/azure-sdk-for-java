@@ -24,7 +24,9 @@ package com.microsoft.azure.cosmosdb.rx.internal.query;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
+import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.PartitionKeyRange;
@@ -46,102 +48,84 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
     private IDocumentQueryExecutionComponent<T> component;
     private int actualPageSize;
     private UUID correlatedActivityId;
-    private PipelinedDocumentQueryExecutionContext(
-            IDocumentQueryExecutionComponent<T> component,
-            int actualPageSize,
+
+    private PipelinedDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int actualPageSize,
             UUID correlatedActivityId) {
         this.component = component;
         this.actualPageSize = actualPageSize;
         this.correlatedActivityId = correlatedActivityId;
 
-        //            this.executeNextSchedulingMetrics = new SchedulingStopwatch();
-        //            this.executeNextSchedulingMetrics.Ready();
+        // this.executeNextSchedulingMetrics = new SchedulingStopwatch();
+        // this.executeNextSchedulingMetrics.Ready();
 
-        //            DefaultTrace.TraceVerbose(string.Format(
-        //                CultureInfo.InvariantCulture,
-        //                "{0} Pipelined~Context, actual page size: {1}",
-        //                DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture),
-        //                this.actualPageSize));
+        // DefaultTrace.TraceVerbose(string.Format(
+        // CultureInfo.InvariantCulture,
+        // "{0} Pipelined~Context, actual page size: {1}",
+        // DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture),
+        // this.actualPageSize));
     }
 
-    public static <T extends Resource>  Observable<PipelinedDocumentQueryExecutionContext<T>> createAsync(
-            IDocumentQueryClient client,
-            ResourceType resourceTypeEnum,
-            Class<T> resourceType,
-            SqlQuerySpec expression,
-            FeedOptions feedOptions,
-            String resourceLink,
-            String collectionRid,
-            PartitionedQueryExecutionInfo partitionedQueryExecutionInfo,
-            List<PartitionKeyRange> targetRanges,
-            int initialPageSize,
-            boolean isContinuationExpected,
-            boolean getLazyFeedResponse,
+    public static <T extends Resource> Observable<PipelinedDocumentQueryExecutionContext<T>> createAsync(
+            IDocumentQueryClient client, ResourceType resourceTypeEnum, Class<T> resourceType, SqlQuerySpec expression,
+            FeedOptions feedOptions, String resourceLink, String collectionRid,
+            PartitionedQueryExecutionInfo partitionedQueryExecutionInfo, List<PartitionKeyRange> targetRanges,
+            int initialPageSize, boolean isContinuationExpected, boolean getLazyFeedResponse,
             UUID correlatedActivityId) {
-        //            DefaultTrace.TraceInformation(
-        //                string.Format(
-        //                    CultureInfo.InvariantCulture,
-        //                    "{0}, CorrelatedActivityId: {1} | Pipelined~Context.CreateAsync",
-        //                    DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture),
-        //                    correlatedActivityId));
-        Observable<IDocumentQueryExecutionComponent<T>> component;
+        // Use nested callback pattern to unwrap the continuation token at each level.
+        Function<String, Observable<IDocumentQueryExecutionComponent<T>>> createBaseComponentFunction;
 
         QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
 
         if (queryInfo.hasOrderBy()) {
-
-            component = OrderByDocumentQueryExecutionContext.createAsync(
-                    client,
-                    resourceTypeEnum,
-                    resourceType,
-                    expression,
-                    feedOptions,
-                    resourceLink,
-                    collectionRid,
-                    partitionedQueryExecutionInfo,
-                    targetRanges,
-                    initialPageSize,
-                    isContinuationExpected,
-                    getLazyFeedResponse,
-                    correlatedActivityId);
-
+            createBaseComponentFunction = (continuationToken) -> {
+                FeedOptions orderByFeedOptions = new FeedOptions(feedOptions);
+                orderByFeedOptions.setRequestContinuation(continuationToken);
+                return OrderByDocumentQueryExecutionContext.createAsync(client, resourceTypeEnum, resourceType,
+                        expression, orderByFeedOptions, resourceLink, collectionRid, partitionedQueryExecutionInfo,
+                        targetRanges, initialPageSize, isContinuationExpected, getLazyFeedResponse,
+                        correlatedActivityId);
+            };
         } else {
-
-            component = ParallelDocumentQueryExecutionContext.createAsync(
-                    client,
-                    resourceTypeEnum,
-                    resourceType,
-                    expression,
-                    feedOptions,
-                    resourceLink,
-                    collectionRid,
-                    partitionedQueryExecutionInfo,
-                    targetRanges,
-                    initialPageSize,
-                    isContinuationExpected,
-                    getLazyFeedResponse, 
-                    correlatedActivityId);
-
+            createBaseComponentFunction = (continuationToken) -> {
+                FeedOptions parallelFeedOptions = new FeedOptions(feedOptions);
+                parallelFeedOptions.setRequestContinuation(continuationToken);
+                return ParallelDocumentQueryExecutionContext.createAsync(client, resourceTypeEnum, resourceType,
+                        expression, parallelFeedOptions, resourceLink, collectionRid, partitionedQueryExecutionInfo,
+                        targetRanges, initialPageSize, isContinuationExpected, getLazyFeedResponse,
+                        correlatedActivityId);
+            };
         }
 
-        
+        Function<String, Observable<IDocumentQueryExecutionComponent<T>>> createAggregateComponentFunction;
         if (queryInfo.hasAggregates()) {
-            component = AggregateDocumentQueryExecutionContext.createAsync(component, queryInfo.getAggregates());
+            createAggregateComponentFunction = (continuationToken) -> {
+                return AggregateDocumentQueryExecutionContext.createAsync(createBaseComponentFunction,
+                        queryInfo.getAggregates(), continuationToken);
+            };
+        } else {
+            createAggregateComponentFunction = createBaseComponentFunction;
         }
 
+        Function<String, Observable<IDocumentQueryExecutionComponent<T>>> createTopComponentFunction;
         if (queryInfo.hasTop()) {
-            component = TopDocumentQueryExecutionContext.createAsync(component, queryInfo.getTop());
+            createTopComponentFunction = (continuationToken) -> {
+                return TopDocumentQueryExecutionContext.createAsync(createAggregateComponentFunction,
+                        queryInfo.getTop(), continuationToken);
+            };
+        } else {
+            createTopComponentFunction = createAggregateComponentFunction;
         }
 
-        int actualPageSize = Utils.getValueOrDefault(feedOptions.getMaxItemCount(), ParallelQueryConfig.ClientInternalPageSize);
+        int actualPageSize = Utils.getValueOrDefault(feedOptions.getMaxItemCount(),
+                ParallelQueryConfig.ClientInternalPageSize);
 
         if (actualPageSize == -1) {
             actualPageSize = Integer.MAX_VALUE;
         }
 
         int pageSize = Math.min(actualPageSize, Utils.getValueOrDefault(queryInfo.getTop(), (actualPageSize)));
-        return component.map(c -> new PipelinedDocumentQueryExecutionContext<>(c, pageSize, correlatedActivityId));
-
+        return createTopComponentFunction.apply(feedOptions.getRequestContinuation())
+                .map(c -> new PipelinedDocumentQueryExecutionContext<>(c, pageSize, correlatedActivityId));
     }
 
     @Override

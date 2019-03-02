@@ -46,6 +46,7 @@ import com.microsoft.azure.cosmosdb.rx.internal.InvalidPartitionExceptionRetryPo
 import com.microsoft.azure.cosmosdb.rx.internal.PartitionKeyRangeGoneRetryPolicy;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.Strings;
+import com.microsoft.azure.cosmosdb.rx.internal.Utils.ValueHolder;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxCollectionCache;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.IPartitionKeyRangeCache;
 import com.microsoft.azure.cosmosdb.internal.query.metrics.ClientSideMetrics;
@@ -103,15 +104,31 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         if (feedOptions == null) {
             feedOptions = new FeedOptions();
         }
+        
+        FeedOptions newFeedOptions = new FeedOptions(feedOptions);
+        
+        // We can not go to backend with the composite continuation token,
+        // but we still need the gateway for the query plan.
+        // The workaround is to try and parse the continuation token as a composite continuation token.
+        // If it is, then we send the query to the gateway with max degree of parallelism to force getting back the query plan
+        
+        String originalContinuation = newFeedOptions.getRequestContinuation();
+        
+        if (isClientSideContinuationToken(originalContinuation)) {
+            // At this point we know we want back a query plan
+            newFeedOptions.setRequestContinuation(null);
+            newFeedOptions.setMaxDegreeOfParallelism(Integer.MAX_VALUE);
+        }
 
-        int maxPageSize = feedOptions.getMaxItemCount() != null ? feedOptions.getMaxItemCount() : Constants.Properties.DEFAULT_MAX_PAGE_SIZE;
+        int maxPageSize = newFeedOptions.getMaxItemCount() != null ? newFeedOptions.getMaxItemCount() : Constants.Properties.DEFAULT_MAX_PAGE_SIZE;
 
         Func2<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> this.createRequestAsync(continuationToken, pageSize);
 
         // TODO: clean up if we want to use single vs observable.
         Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc = executeInternalAyncFunc();
 
-        return Paginator.getPaginatedQueryResultAsObservable(feedOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
+        return Paginator
+    			.getPaginatedQueryResultAsObservable(newFeedOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
     }
 
     public Single<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
@@ -224,6 +241,27 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         }
 
         return request;
+    }
+    
+    private static boolean isClientSideContinuationToken(String continuationToken) {
+        if (continuationToken != null) {
+            ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
+            if (CompositeContinuationToken.tryParse(continuationToken, outCompositeContinuationToken)) {
+                return true;
+            }
+
+            ValueHolder<OrderByContinuationToken> outOrderByContinuationToken = new ValueHolder<OrderByContinuationToken>();
+            if (OrderByContinuationToken.tryParse(continuationToken, outOrderByContinuationToken)) {
+                return true;
+            }
+
+            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<TakeContinuationToken>();
+            if (TakeContinuationToken.tryParse(continuationToken, outTakeContinuationToken)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
 

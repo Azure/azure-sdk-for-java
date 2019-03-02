@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.Document;
@@ -135,11 +136,13 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
     }
 
     public static <T extends Resource>  Observable<IDocumentQueryExecutionComponent<T>> createAsync(
-            Observable<IDocumentQueryExecutionComponent<T>> observableComponent, Collection<AggregateOperator> aggregates) {
+            Function<String, Observable<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction, 
+            Collection<AggregateOperator> aggregates,
+            String continuationToken) {
 
-        return observableComponent.map( component -> {
-            return new AggregateDocumentQueryExecutionContext<T>(component, aggregates);
-        });
+        return createSourceComponentFunction
+                .apply(continuationToken)
+                .map( component -> { return new AggregateDocumentQueryExecutionContext<T>(component, aggregates);});
     }
 
     public IDocumentQueryExecutionComponent<T> getComponent() {

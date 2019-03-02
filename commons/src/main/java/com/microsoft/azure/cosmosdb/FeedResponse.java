@@ -46,22 +46,32 @@ public class FeedResponse<T extends Resource> {
     private final String DefaultPartition = "0";
 
     FeedResponse(List<T> results, Map<String, String> headers) {
-        this(results, headers, false, false);
+        this(results, headers, false, false, new ConcurrentHashMap<>());
+    }
+    
+    FeedResponse(List<T> results, Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+        this(results, headers, false, false, queryMetricsMap);
     }
 
     FeedResponse(List<T> results, Map<String, String> header, boolean nochanges) {
-        this(results, header, true, nochanges);
+        this(results, header, true, nochanges, new ConcurrentHashMap<>());
     }
 
-    private FeedResponse(List<T> results, Map<String, String> header, boolean useEtagAsContinuation,
-            boolean nochanges) {
+    // TODO: need to more sure the query metrics can round trip just from the headers.
+    // We can then remove it as a parameter.
+    private FeedResponse(
+            List<T> results, 
+            Map<String, String> header, 
+            boolean useEtagAsContinuation, 
+            boolean nochanges, 
+            ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this.results = results;
         this.header = header;
         this.usageHeaders = new HashMap<>();
         this.quotaHeaders = new HashMap<>();
         this.useEtagAsContinuation = useEtagAsContinuation;
         this.nochanges = nochanges;
-        this.queryMetricsMap = new ConcurrentHashMap<>();
+        this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
     }
 
     /**

@@ -31,7 +31,6 @@ import java.util.stream.Collectors;
 import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.rx.internal.IDocumentClientRetryPolicy;
-import com.microsoft.azure.cosmosdb.rx.internal.IRetryPolicyFactory;
 import com.microsoft.azure.cosmosdb.rx.internal.ObservableHelper;
 import com.microsoft.azure.cosmosdb.internal.query.metrics.ClientSideMetrics;
 import com.microsoft.azure.cosmosdb.internal.query.metrics.FetchExecutionRangeAccumulator;
@@ -176,17 +175,22 @@ class DocumentProducer<T extends Resource> {
     public Observable<DocumentProducerFeedResponse> produceAsync() {
         Func2<String, Integer, RxDocumentServiceRequest> sourcePartitionCreateRequestFunc =
                 (token, maxItemCount) -> createRequestFunc.call(targetRange, token, maxItemCount);
-
-        Observable<FeedResponse<T>> obs = Paginator.getPaginatedQueryResultAsObservable(feedOptions, sourcePartitionCreateRequestFunc,
-                executeRequestFuncWithRetries, resourceType, top, pageSize).map(rsp -> {
-            lastResponseContinuationToken = rsp.getResponseContinuation();
-            this.fetchExecutionRangeAccumulator.endFetchRange(rsp.getActivityId(),
-                    rsp.getResults().size(),
-                    this.retries);
-            this.fetchSchedulingMetrics.stop();
-            return rsp;
-        });
-
+        Observable<FeedResponse<T>> obs = Paginator
+                .getPaginatedQueryResultAsObservable(
+                        feedOptions, 
+                        sourcePartitionCreateRequestFunc,
+                        executeRequestFuncWithRetries, 
+                        resourceType, 
+                        top, 
+                        pageSize)
+                .map(rsp -> {
+                    lastResponseContinuationToken = rsp.getResponseContinuation();
+                    this.fetchExecutionRangeAccumulator.endFetchRange(rsp.getActivityId(),
+                            rsp.getResults().size(),
+                            this.retries);
+                    this.fetchSchedulingMetrics.stop();
+                    return rsp;});
+        
         return splitProof(obs.map(page -> new DocumentProducerFeedResponse(page)));
     }
 

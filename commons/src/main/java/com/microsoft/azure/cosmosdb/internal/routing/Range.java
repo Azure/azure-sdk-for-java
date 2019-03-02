@@ -27,9 +27,10 @@ import java.util.Comparator;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.JsonSerializable;
 
-@JsonIgnoreProperties({"empty", "singleValue", "hashMap"})
+@JsonIgnoreProperties({ "empty", "singleValue", "hashMap" })
 public final class Range<T extends Comparable<T>> extends JsonSerializable {
     private static final String MIN_PROPERTY = "min";
     private static final String MAX_PROPERTY = "max";
@@ -83,11 +84,13 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
         if (this.minValue == null) {
             this.minValue = (T) super.get(Range.MIN_PROPERTY);
         }
+
         return this.minValue;
     }
 
     public void setMin(T min) {
         this.minValue = min;
+        super.set(Range.MIN_PROPERTY, min);
     }
 
     @SuppressWarnings("unchecked")
@@ -95,11 +98,13 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
         if (this.maxValue == null) {
             this.maxValue = (T) super.get(Range.MAX_PROPERTY);
         }
+
         return this.maxValue;
     }
 
     public void setMax(T max) {
         this.maxValue = max;
+        super.set(Range.MAX_PROPERTY, max);
     }
 
     @JsonProperty("isMinInclusive")
@@ -160,17 +165,6 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
         hash = (hash * 397) ^ Boolean.compare(this.isMinInclusive(), false);
         hash = (hash * 397) ^ Boolean.compare(this.isMaxInclusive(), false);
         return hash;
-    }
-
-    @Override
-    public String toString() {
-        return toJson();
-    }
-    
-    @Override
-    public String toJson() {
-        return new StringBuilder().append(this.isMinInclusive() ? '[' : ')').append(this.getMin()).append(',')
-                .append(this.getMax()).append(this.isMaxInclusive() ? ']' : ')').toString();
     }
 
     public static class MinComparator<T extends Comparable<T>> implements Comparator<Range<T>> {

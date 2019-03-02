@@ -25,9 +25,15 @@ package com.microsoft.azure.cosmosdb.benchmark;
 
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.ScheduledReporter;
 import com.codahale.metrics.Timer;
+import com.codahale.metrics.graphite.Graphite;
+import com.codahale.metrics.graphite.GraphiteReporter;
+import com.codahale.metrics.jvm.CachedThreadStatesGaugeSet;
+import com.codahale.metrics.jvm.GarbageCollectorMetricSet;
+import com.codahale.metrics.jvm.MemoryUsageGaugeSet;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
@@ -40,6 +46,7 @@ import org.slf4j.LoggerFactory;
 import rx.Observable;
 import rx.Subscriber;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +58,7 @@ abstract class AsyncBenchmark<T> {
     private final MetricRegistry metricsRegistry = new MetricRegistry();
     private final ScheduledReporter reporter;
     private final CountDownLatch operationCounterLatch;
+    private final String nameCollectionLink;
 
     private Meter successMeter;
     private Meter failureMeter;
@@ -76,6 +84,7 @@ abstract class AsyncBenchmark<T> {
 
         Database database = DocDBUtils.getDatabase(client, cfg.getDatabaseId());
         collection = DocDBUtils.getCollection(client, database.getSelfLink(), cfg.getCollectionId());
+        nameCollectionLink = String.format("dbs/%s/colls/%s", database.getId(), collection.getId());
         partitionKey = collection.getPartitionKey().getPaths().iterator().next().split("/")[1];
         concurrencyControlSemaphore = new Semaphore(cfg.getConcurrency());
         operationCounterLatch = new CountDownLatch(cfg.getNumberOfOperations());
@@ -84,7 +93,8 @@ abstract class AsyncBenchmark<T> {
         ArrayList<Observable<Document>> createDocumentObservables = new ArrayList<>();
 
         if (configuration.getOperationType() != Operation.WriteLatency
-                && configuration.getOperationType() != Operation.WriteThroughput) {
+                && configuration.getOperationType() != Operation.WriteThroughput
+                && configuration.getOperationType() != Operation.ReadMyWrites) {
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
                 String uuid = UUID.randomUUID().toString();
@@ -101,17 +111,57 @@ abstract class AsyncBenchmark<T> {
                 createDocumentObservables.add(obs);
             }
         }
+
         docsToRead = Observable.merge(createDocumentObservables, 100).toList().toBlocking().single();
-        reporter = ConsoleReporter.forRegistry(metricsRegistry).convertRatesTo(TimeUnit.SECONDS)
-                .convertDurationsTo(TimeUnit.MILLISECONDS).build();
+        init();
+
+        if (configuration.isEnableJvmStats()) {
+            metricsRegistry.register("gc", new GarbageCollectorMetricSet());
+            metricsRegistry.register("threads", new CachedThreadStatesGaugeSet(10, TimeUnit.SECONDS));
+            metricsRegistry.register("memory", new MemoryUsageGaugeSet());
+        }
+
+        if (configuration.getGraphiteEndpoint() != null) {
+            final Graphite graphite = new Graphite(new InetSocketAddress(configuration.getGraphiteEndpoint(), configuration.getGraphiteEndpointPort()));
+            reporter = GraphiteReporter.forRegistry(metricsRegistry)
+                    .prefixedWith(configuration.getOperationType().name())
+                    .convertRatesTo(TimeUnit.SECONDS)
+                    .convertDurationsTo(TimeUnit.MILLISECONDS)
+                    .filter(MetricFilter.ALL)
+                    .build(graphite);
+        } else {
+            reporter = ConsoleReporter.forRegistry(metricsRegistry).convertRatesTo(TimeUnit.SECONDS)
+                    .convertDurationsTo(TimeUnit.MILLISECONDS).build();
+        }
+    }
+
+    protected void init() {
     }
 
     void shutdown() {
         client.close();
     }
 
-    protected void onNextLogging() {
+    protected void onSuccess() {
+    }
 
+    protected void onError(Throwable throwable) {
+    }
+
+    protected String getCollectionLink() {
+        if (configuration.isUseNameLink()) {
+            return this.nameCollectionLink;
+        } else {
+            return collection.getSelfLink();
+        }
+    }
+
+    protected String getDocumentLink(Document doc) {
+        if (configuration.isUseNameLink()) {
+            return this.nameCollectionLink + "/docs/" + doc.getId();
+        } else {
+            return doc.getSelfLink();
+        }
     }
 
     protected abstract void performWorkload(Subscriber<T> subs, long i) throws Exception;
@@ -141,23 +191,21 @@ abstract class AsyncBenchmark<T> {
                     successMeter.mark();
                     concurrencyControlSemaphore.release();
                     operationCounterLatch.countDown();
+                    AsyncBenchmark.this.onSuccess();
                 }
 
                 @Override
                 public void onError(Throwable e) {
                     failureMeter.mark();
-                    logger.error("Encountered failure {} on thread {} with throttling sem {}" ,
-                                 e.getMessage(), Thread.currentThread().getName(),
-                                 concurrencyControlSemaphore.availablePermits());
-                    logger.error("Encountered failure detail", e);
+                    logger.error("Encountered failure {} on thread {}" ,
+                                 e.getMessage(), Thread.currentThread().getName(), e);
                     concurrencyControlSemaphore.release();
-                    e.printStackTrace();
                     operationCounterLatch.countDown();
+                    AsyncBenchmark.this.onError(e);
                 }
 
                 @Override
                 public void onNext(T value) {
-                    onNextLogging();
                 }
             };
 

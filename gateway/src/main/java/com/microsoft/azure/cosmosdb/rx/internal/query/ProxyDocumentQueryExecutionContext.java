@@ -129,20 +129,20 @@ public class ProxyDocumentQueryExecutionContext<T extends Resource> implements I
                     partitionedQueryExecutionInfo.getQueryRanges());
 
             Observable<IDocumentQueryExecutionContext<T>> exContext = partitionKeyRanges.toObservable()
-                    .flatMap(pkranges -> 
-
-                    DocumentQueryExecutionContextFactory.createSpecializedDocumentQueryExecutionContextAsync(
-                            this.client,
-                            this.resourceTypeEnum,
-                            this.resourceType,
-                            this.query,
-                            this.feedOptions,
-                            this.resourceLink,
-                            isContinuationExpected,
-                            partitionedQueryExecutionInfo,
-                            pkranges,
-                            this.collection.getResourceId(),
-                            this.correlatedActivityId));
+                    .flatMap(pkranges -> {
+                        return DocumentQueryExecutionContextFactory.createSpecializedDocumentQueryExecutionContextAsync(
+                                this.client,
+                                this.resourceTypeEnum,
+                                this.resourceType,
+                                this.query,
+                                this.feedOptions,
+                                this.resourceLink,
+                                isContinuationExpected,
+                                partitionedQueryExecutionInfo,
+                                pkranges,
+                                this.collection.getResourceId(),
+                                this.correlatedActivityId);
+                        });
 
             return exContext.flatMap(context -> context.executeAsync());
         };

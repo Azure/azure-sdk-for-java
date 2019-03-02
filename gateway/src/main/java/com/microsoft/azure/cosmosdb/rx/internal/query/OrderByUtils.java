@@ -41,7 +41,8 @@ class OrderByUtils {
     public static <T extends Resource> Observable<OrderByRowResult<T>> orderedMerge(Class<T> klass, 
             OrderbyRowComparer<T> consumeComparer,
             RequestChargeTracker tracker, 
-            List<DocumentProducer<T>> documentProducers, Map<String, QueryMetrics> queryMetricsMap) {
+            List<DocumentProducer<T>> documentProducers, 
+            Map<String, QueryMetrics> queryMetricsMap) {
         return toOrderByQueryResultObservable(klass, documentProducers.get(0), tracker, queryMetricsMap)
                 .compose(
                         Transformers.orderedMergeWith(
@@ -82,10 +83,15 @@ class OrderByUtils {
                         queryMetricsMap.put(key, documentProducerFeedResponse.pageResult.getQueryMetrics().get(key));
                     }
                 }
+                
                 tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                 Observable<T> x = Observable.<T>from(documentProducerFeedResponse.pageResult.getResults());
 
-                return x.map(r -> new OrderByRowResult<T>(klass, r.toJson(), documentProducerFeedResponse.sourcePartitionKeyRange));
+                return x.map(r -> new OrderByRowResult<T>(
+                        klass, 
+                        r.toJson(), 
+                        documentProducerFeedResponse.sourcePartitionKeyRange,
+                        documentProducerFeedResponse.pageResult.getResponseContinuation()));
             }, 1);
         }
     }

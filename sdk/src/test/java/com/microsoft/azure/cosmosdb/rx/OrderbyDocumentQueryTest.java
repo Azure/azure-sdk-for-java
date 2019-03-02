@@ -25,42 +25,40 @@ package com.microsoft.azure.cosmosdb.rx;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.DataType;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.IncludedPath;
-import com.microsoft.azure.cosmosdb.Index;
-import com.microsoft.azure.cosmosdb.IndexingPolicy;
 import com.microsoft.azure.cosmosdb.PartitionKey;
-import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
-import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
+import com.microsoft.azure.cosmosdb.internal.query.QueryItem;
+import com.microsoft.azure.cosmosdb.internal.routing.Range;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
+import com.microsoft.azure.cosmosdb.rx.internal.Utils.ValueHolder;
+import com.microsoft.azure.cosmosdb.rx.internal.query.CompositeContinuationToken;
+import com.microsoft.azure.cosmosdb.rx.internal.query.OrderByContinuationToken;
 
 import rx.Observable;
 import rx.observers.TestSubscriber;
@@ -329,8 +327,82 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
                 .requestChargeGreaterThanOrEqualTo(1.0).build())
             .build();
-
+        
         validateQuerySuccess(queryObservable, validator);
+    }
+    
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+	public void orderByContinuationTokenRoundTrip() throws Exception {
+        {
+        	// Positive
+            OrderByContinuationToken orderByContinuationToken = new OrderByContinuationToken(
+                    new CompositeContinuationToken(
+                            "asdf",
+                            new Range<String>("A", "D", false, true)), 
+                    new QueryItem[] {new QueryItem("{\"item\" : 42}")}, 
+                    "rid",
+                    false);
+            String serialized = orderByContinuationToken.toString();
+            ValueHolder<OrderByContinuationToken> outOrderByContinuationToken = new ValueHolder<OrderByContinuationToken>();
+            
+            assertThat(OrderByContinuationToken.tryParse(serialized, outOrderByContinuationToken)).isTrue();
+            OrderByContinuationToken deserialized = outOrderByContinuationToken.v;
+            CompositeContinuationToken compositeContinuationToken = deserialized.getCompositeContinuationToken();
+            String token = compositeContinuationToken.getToken();
+            Range<String> range = compositeContinuationToken.getRange();
+            assertThat(token).isEqualTo("asdf");
+            assertThat(range.getMin()).isEqualTo("A");
+            assertThat(range.getMax()).isEqualTo("D");
+            assertThat(range.isMinInclusive()).isEqualTo(false);
+            assertThat(range.isMaxInclusive()).isEqualTo(true);
+            
+            QueryItem[] orderByItems = deserialized.getOrderByItems();
+            assertThat(orderByItems).isNotNull();
+            assertThat(orderByItems.length).isEqualTo(1);
+            assertThat(orderByItems[0].getItem()).isEqualTo(42);
+            
+            String rid = deserialized.getRid();
+            assertThat(rid).isEqualTo("rid");
+            
+            boolean inclusive = deserialized.getInclusive();
+            assertThat(inclusive).isEqualTo(false);
+        }
+        
+        {
+        	// Negative
+        	ValueHolder<OrderByContinuationToken> outOrderByContinuationToken = new ValueHolder<OrderByContinuationToken>();
+        	assertThat(OrderByContinuationToken.tryParse("{\"property\" : \"Not a valid Order By Token\"}", outOrderByContinuationToken)).isFalse();
+        }
+	}
+    
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
+    public void queryDocumentsWithOrderByContinuationTokensInteger() throws Exception {
+        // Get Actual
+        String query = "SELECT * FROM c ORDER BY c.propInt";
+        
+        // Get Expected
+        Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
+        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
+        this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
+    }
+    
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
+    public void queryDocumentsWithOrderByContinuationTokensString() throws Exception {
+        // Get Actual
+        String query = "SELECT * FROM c ORDER BY c.id";
+        
+        // Get Expected
+        Comparator<String> validatorComparator = Comparator.nullsFirst(Comparator.<String>naturalOrder());
+        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("id", d -> d.getString("id"), validatorComparator);
+        this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
+    }
+
+    public Document createDocument(AsyncDocumentClient client, Map<String, Object> keyValueProps)
+            throws DocumentClientException {
+        Document docDefinition = getDocumentDefinition(keyValueProps);
+        return client.createDocument(getCollectionLink(), docDefinition, null, false)
+                .toBlocking().single()
+                .getResource();
     }
 
     public List<Document> bulkInsert(AsyncDocumentClient client, List<Map<String, Object>> keyValuePropsList) {
@@ -389,6 +461,73 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     public void afterClass() {
         safeClose(client);
     }
+    
+    private void assertInvalidContinuationToken(String query, int[] pageSize, List<String> expectedIds) {
+        String requestContinuation = null;
+        do {
+            FeedOptions options = new FeedOptions();
+            options.setMaxItemCount(1);
+            options.setEnableCrossPartitionQuery(true);
+            options.setMaxDegreeOfParallelism(2);
+            OrderByContinuationToken orderByContinuationToken = new OrderByContinuationToken(
+                    new CompositeContinuationToken(
+                            "asdf",
+                            new Range<String>("A", "D", false, true)), 
+                    new QueryItem[] {new QueryItem("{\"item\" : 42}")}, 
+                    "rid",
+                    false);
+            options.setRequestContinuation(orderByContinuationToken.toString());
+            Observable<FeedResponse<Document>> queryObservable = client.queryDocuments(getCollectionLink(), query,
+                    options);
+
+            Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
+            TestSubscriber<FeedResponse<Document>> testSubscriber = new VerboseTestSubscriber<>();
+            firstPageObservable.subscribe(testSubscriber);
+            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+            testSubscriber.assertError(NotImplementedException.class);
+        } while (requestContinuation != null);
+    }
+    
+    private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, List<String> expectedIds) {
+        for (int pageSize : pageSizes) {
+            List<Document> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);
+            List<String> actualIds = new ArrayList<String>();
+            for (Document document : receivedDocuments) {
+                actualIds.add(document.getResourceId());
+            }
+
+            assertThat(actualIds).containsOnlyElementsOf(expectedIds);
+        }
+    }
+
+    private List<Document> queryWithContinuationTokens(String query, int pageSize) {
+        String requestContinuation = null;
+        List<String> continuationTokens = new ArrayList<String>();
+        List<Document> receivedDocuments = new ArrayList<Document>();
+        do {
+            FeedOptions options = new FeedOptions();
+            options.setMaxItemCount(pageSize);
+            options.setEnableCrossPartitionQuery(true);
+            options.setMaxDegreeOfParallelism(2);
+            options.setRequestContinuation(requestContinuation);
+            Observable<FeedResponse<Document>> queryObservable = client.queryDocuments(getCollectionLink(), query,
+                    options);
+
+            Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
+            TestSubscriber<FeedResponse<Document>> testSubscriber = new VerboseTestSubscriber<>();
+            firstPageObservable.subscribe(testSubscriber);
+            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+            testSubscriber.assertNoErrors();
+            testSubscriber.assertCompleted();
+
+            FeedResponse<Document> firstPage = testSubscriber.getOnNextEvents().get(0);
+            requestContinuation = firstPage.getResponseContinuation();
+            receivedDocuments.addAll(firstPage.getResults());
+            continuationTokens.add(requestContinuation);
+        } while (requestContinuation != null);
+
+        return receivedDocuments;
+    }
 
     private static Document getDocumentDefinition(String partitionKey, String id, Map<String, Object> keyValuePair) {
         StringBuilder sb = new StringBuilder();
@@ -427,6 +566,6 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             return com.microsoft.azure.cosmosdb.internal.Utils.getSimpleObjectMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new IllegalStateException(e);
-        }
-    }
+		}
+	}
 }

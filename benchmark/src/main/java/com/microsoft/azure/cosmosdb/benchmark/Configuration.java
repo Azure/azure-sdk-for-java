@@ -39,6 +39,7 @@ import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.benchmark.Configuration.Operation.OperationTypeConverter;
 
 class Configuration {
+    private final static int GRAPHITE_SERVER_DEFAULT_PORT = 2003;
 
     @Parameter(names = "-serviceEndpoint", description = "Service Endpoint")
     private String serviceEndpoint;
@@ -52,6 +53,9 @@ class Configuration {
     @Parameter(names = "-collectionId", description = "Collection ID")
     private String collectionId;
 
+    @Parameter(names = "-useNameLink", description = "Use name Link")
+    private boolean useNameLink = false;
+
     @Parameter(names = "-documentDataFieldSize", description = "Length of a document data field in characters (16-bit)")
     private int documentDataFieldSize = 20;
 
@@ -62,7 +66,13 @@ class Configuration {
     private ConsistencyLevel consistencyLevel = ConsistencyLevel.Session;
 
     @Parameter(names = "-connectionMode", description = "Connection Mode")
-    private ConnectionMode connectionMode = ConnectionMode.Gateway;
+    private ConnectionMode connectionMode = ConnectionMode.Direct;
+
+    @Parameter(names = "-graphiteEndpoint", description = "Graphite endpoint")
+    private String graphiteEndpoint;
+
+    @Parameter(names = "-enableJvmStats", description = "Enables JVM Stats")
+    private boolean enableJvmStats;
 
     @Parameter(names = "-operation", description = "Type of Workload:\n"
             + "\tReadThroughput- run a Read workload that prints only throughput *\n"
@@ -78,6 +88,7 @@ class Configuration {
             + "\tQueryAggregateTopOrderby - run a 'Select top 1 value count(c) from c order by c._ts' workload that prints throughput\n"
             + "\tQueryTopOrderby - run a 'Select top 1000 * from c order by c._ts' workload that prints throughput\n"
             + "\tMixed - runa workload of 90 reads, 9 writes and 1 QueryTopOrderby per 100 operations *\n"
+            + "\tReadMyWrites - run a workflow of writes followed by reads and queries attempting to read the write.*\n"
             + "\n\t* writes 10k documents initially, which are used in the reads", converter = OperationTypeConverter.class)
     private Operation operation = Operation.WriteThroughput;
 
@@ -98,7 +109,20 @@ class Configuration {
     private boolean help = false;
 
     enum Operation {
-        ReadThroughput, WriteThroughput, ReadLatency, WriteLatency, QueryCross, QuerySingle, QuerySingleMany, QueryParallel, QueryOrderby, QueryAggregate, QueryAggregateTopOrderby, QueryTopOrderby, Mixed;
+        ReadThroughput,
+        WriteThroughput,
+        ReadLatency,
+        WriteLatency,
+        QueryCross,
+        QuerySingle,
+        QuerySingleMany,
+        QueryParallel,
+        QueryOrderby,
+        QueryAggregate,
+        QueryAggregateTopOrderby,
+        QueryTopOrderby,
+        Mixed,
+        ReadMyWrites;
 
         static Operation fromString(String code) {
 
@@ -213,6 +237,35 @@ class Configuration {
             return concurrency;
         } else {
             return this.maxConnectionPoolSize;
+        }
+    }
+
+    boolean isUseNameLink() {
+        return useNameLink;
+    }
+
+    public boolean isEnableJvmStats() {
+        return enableJvmStats;
+    }
+
+    public String getGraphiteEndpoint() {
+        if (graphiteEndpoint == null) {
+            return null;
+        }
+
+        return StringUtils.substringBeforeLast(graphiteEndpoint, ":");
+    }
+
+    public int getGraphiteEndpointPort() {
+        if (graphiteEndpoint == null) {
+            return -1;
+        }
+
+        String portAsString = Strings.emptyToNull(StringUtils.substringAfterLast(graphiteEndpoint, ":"));
+        if (portAsString == null) {
+            return GRAPHITE_SERVER_DEFAULT_PORT;
+        } else {
+            return Integer.parseInt(portAsString);
         }
     }
 

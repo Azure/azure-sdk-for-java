@@ -88,7 +88,7 @@ class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
         newDoc.set("dataField3", dataFieldValue);
         newDoc.set("dataField4", dataFieldValue);
         newDoc.set("dataField5", dataFieldValue);
-        Observable<ResourceResponse<Document>> obs = client.createDocument(collection.getSelfLink(), newDoc, null,
+        Observable<ResourceResponse<Document>> obs = client.createDocument(getCollectionLink(), newDoc, null,
                 false);
 
         concurrencyControlSemaphore.acquire();

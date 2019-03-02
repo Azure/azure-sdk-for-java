@@ -78,6 +78,10 @@ public class Main {
                 benchmark = new AsyncQuerySinglePartitionMultiple(cfg);
                 break;
 
+            case ReadMyWrites:
+                benchmark = new ReadMyWriteWorkflow(cfg);
+                break;
+
             default:
                 throw new RuntimeException(cfg.getOperationType() + " is not supported");
             }

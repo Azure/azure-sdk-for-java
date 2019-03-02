@@ -40,11 +40,13 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
 
     private final String uuid;
     private final String dataFieldValue;
+    private final Random r;
 
     AsyncMixedBenchmark(Configuration cfg) {
         super(cfg);
         uuid = UUID.randomUUID().toString();
         dataFieldValue = RandomStringUtils.randomAlphabetic(configuration.getDocumentDataFieldSize());
+        r = new Random();
     }
 
     @Override
@@ -61,7 +63,7 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
             newDoc.set("dataField3", dataFieldValue);
             newDoc.set("dataField4", dataFieldValue);
             newDoc.set("dataField5", dataFieldValue);
-            obs = client.createDocument(collection.getSelfLink(), newDoc, null, false).map(ResourceResponse::getResource);
+            obs = client.createDocument(getCollectionLink(), newDoc, null, false).map(ResourceResponse::getResource);
 
         } else if (i % 100 == 0) {
 
@@ -70,17 +72,16 @@ class AsyncMixedBenchmark extends AsyncBenchmark<Document> {
             options.setEnableCrossPartitionQuery(true);
 
             String sqlQuery = "Select top 100 * from c order by c._ts";
-            obs = client.queryDocuments(collection.getSelfLink(), sqlQuery, options)
+            obs = client.queryDocuments(getCollectionLink(), sqlQuery, options)
                     .map(frp -> frp.getResults().get(0));
         } else {
 
-            Random r = new Random();
             int index = r.nextInt(1000);
 
             RequestOptions options = new RequestOptions();
             options.setPartitionKey(new PartitionKey(docsToRead.get(index).getId()));
 
-            obs = client.readDocument(docsToRead.get(index).getSelfLink(), options).map(ResourceResponse::getResource);
+            obs = client.readDocument(getDocumentLink(docsToRead.get(index)), options).map(ResourceResponse::getResource);
         }
 
         concurrencyControlSemaphore.acquire();

@@ -557,7 +557,7 @@ public class DocumentProducerTest extends TestSuiteBase {
                             + "\" : [ " + qi.toJson() + " ] }";
 
                     OrderByRowResult<Document> row =
-                            new OrderByRowResult<>(Document.class, json, mockPartitionKeyRange(partitionKeyRangeId));
+                            new OrderByRowResult<>(Document.class, json, mockPartitionKeyRange(partitionKeyRangeId), "backend continuation token");
                     res.add(row);
                 } else {
                     res.add(d);

@@ -36,7 +36,6 @@ import com.microsoft.azure.cosmosdb.internal.RequestChargeTracker;
 import com.microsoft.azure.cosmosdb.internal.query.orderbyquery.OrderByRowResult;
 import com.microsoft.azure.cosmosdb.internal.query.orderbyquery.OrderbyRowComparer;
 import com.microsoft.azure.cosmosdb.rx.internal.IDocumentClientRetryPolicy;
-import com.microsoft.azure.cosmosdb.rx.internal.RetryPolicy;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.Utils;
 

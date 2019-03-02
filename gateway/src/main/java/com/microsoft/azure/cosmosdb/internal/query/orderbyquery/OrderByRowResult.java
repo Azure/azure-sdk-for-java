@@ -33,15 +33,21 @@ import com.microsoft.azure.cosmosdb.internal.query.QueryItem;
  * Represents the result of a query in the Azure Cosmos DB database service.
  */
 public final class OrderByRowResult<T> extends Document {
-    private final PartitionKeyRange targetRange;
     private final Class<T> klass;
     private volatile List<QueryItem> orderByItems;
     private volatile T payload;
+    private final PartitionKeyRange targetRange;
+    private final String backendContinuationToken;
 
-    public OrderByRowResult(Class<T> klass, String jsonString, PartitionKeyRange targetRange) {
+    public OrderByRowResult(
+            Class<T> klass, 
+            String jsonString, 
+            PartitionKeyRange targetRange,
+            String backendContinuationToken) {
         super(jsonString);
         this.klass = klass;
         this.targetRange = targetRange;
+        this.backendContinuationToken = backendContinuationToken;
     }
 
     public List<QueryItem> getOrderByItems() {
@@ -55,5 +61,9 @@ public final class OrderByRowResult<T> extends Document {
 
     public PartitionKeyRange getSourcePartitionKeyRange() {
         return this.targetRange;
+    }
+
+    public String getSourceBackendContinuationToken() {
+        return this.backendContinuationToken;
     }
 }

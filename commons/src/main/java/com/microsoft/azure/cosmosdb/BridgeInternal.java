@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentMap;
 
 import static com.microsoft.azure.cosmosdb.internal.Constants.QueryExecutionContext.INCREMENTAL_FEED_HEADER_VALUE;
 
@@ -168,8 +169,12 @@ public class BridgeInternal {
         return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
     }
 
-    public static <T extends Resource> FeedResponse<T> createFeedResponse(List<T> results, Map<String, String> headers ) {
+    public static <T extends Resource> FeedResponse<T> createFeedResponse(List<T> results, Map<String, String> headers) {
         return new FeedResponse<>(results, headers);
+    }
+    
+    public static <T extends Resource> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results, Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+        return new FeedResponse<>(results, headers, queryMetricsMap);
     }
 
     public static <E extends  DocumentClientException> E setResourceAddress(E e, String resourceAddress) {

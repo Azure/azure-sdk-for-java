@@ -22,7 +22,13 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import com.microsoft.azure.cosmosdb.internal.directconnectivity.Protocol;
 import org.testng.SkipException;
@@ -38,7 +44,8 @@ import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.PartitionKey;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
+import com.microsoft.azure.cosmosdb.rx.internal.Utils.ValueHolder;
+import com.microsoft.azure.cosmosdb.rx.internal.query.TakeContinuationToken;
 
 import rx.Observable;
 
@@ -70,21 +77,21 @@ public class TopQueryTests extends TestSuiteBase {
 
         int expectedTotalSize = 20;
         int expectedNumberOfPages = 3;
-        int[] expectedPageLengths = new int[] {9, 9, 2};
+        int[] expectedPageLengths = new int[] { 9, 9, 2 };
 
         for (int i = 0; i < 2; i++) {
-            Observable<FeedResponse<Document>> queryObservable1 = client.queryDocuments(createdCollection.getSelfLink(), 
+            Observable<FeedResponse<Document>> queryObservable1 = client.queryDocuments(createdCollection.getSelfLink(),
                     "SELECT TOP 0 value AVG(c.field) from c", options);
 
             FeedResponseListValidator<Document> validator1 = new FeedResponseListValidator.Builder<Document>()
-                    .totalSize(0)
-                    .build();
+                    .totalSize(0).build();
 
             try {
                 validateQuerySuccess(queryObservable1, validator1, TIMEOUT);
             } catch (Throwable error) {
                 if (this.clientBuilder.configs.getProtocol() == Protocol.Tcp) {
-                    String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s", this.clientBuilder.desiredConsistencyLevel);
+                    String message = String.format("Direct TCP test failure ignored: desiredConsistencyLevel=%s",
+                            this.clientBuilder.desiredConsistencyLevel);
                     logger.info(message, error);
                     throw new SkipException(message, error);
                 }
@@ -95,20 +102,16 @@ public class TopQueryTests extends TestSuiteBase {
                     "SELECT TOP 1 value AVG(c.field) from c", options);
 
             FeedResponseListValidator<Document> validator2 = new FeedResponseListValidator.Builder<Document>()
-                    .totalSize(1)
-                    .build();
+                    .totalSize(1).build();
 
             validateQuerySuccess(queryObservable2, validator2, TIMEOUT);
 
-            Observable<FeedResponse<Document>> queryObservable3 = client.queryDocuments(createdCollection.getSelfLink(), 
+            Observable<FeedResponse<Document>> queryObservable3 = client.queryDocuments(createdCollection.getSelfLink(),
                     "SELECT TOP 20 * from c", options);
 
             FeedResponseListValidator<Document> validator3 = new FeedResponseListValidator.Builder<Document>()
-                    .totalSize(expectedTotalSize)
-                    .numberOfPages(expectedNumberOfPages)
-                    .pageLengths(expectedPageLengths)
-                    .hasValidQueryMetrics(qmEnabled)
-                    .build();
+                    .totalSize(expectedTotalSize).numberOfPages(expectedNumberOfPages).pageLengths(expectedPageLengths)
+                    .hasValidQueryMetrics(qmEnabled).build();
 
             validateQuerySuccess(queryObservable3, validator3, TIMEOUT);
 
@@ -118,10 +121,82 @@ public class TopQueryTests extends TestSuiteBase {
 
                 expectedTotalSize = 10;
                 expectedNumberOfPages = 2;
-                expectedPageLengths = new int[] {9, 1};
+                expectedPageLengths = new int[] { 9, 1 };
 
             }
         }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void topContinuationTokenRoundTrips() throws Exception {
+        {
+            // Positive
+            TakeContinuationToken takeContinuationToken = new TakeContinuationToken(42, "asdf");
+            String serialized = takeContinuationToken.toString();
+            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<TakeContinuationToken>();
+
+            assertThat(TakeContinuationToken.tryParse(serialized, outTakeContinuationToken)).isTrue();
+            TakeContinuationToken deserialized = outTakeContinuationToken.v;
+
+            assertThat(deserialized.getTakeCount()).isEqualTo(42);
+            assertThat(deserialized.getSourceToken()).isEqualTo("asdf");
+        }
+
+        {
+            // Negative
+            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<TakeContinuationToken>();
+            assertThat(
+                    TakeContinuationToken.tryParse("{\"property\": \"Not a valid token\"}", outTakeContinuationToken))
+                            .isFalse();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 10)
+    public void queryDocumentsWithTopContinuationTokens() throws Exception {
+        String query = "SELECT TOP 8 * FROM c";
+        this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10 }, 8);
+    }
+
+    private void queryWithContinuationTokensAndPageSizes(String query, int[] pageSizes, int topCount) {
+        for (int pageSize : pageSizes) {
+            List<Document> receivedDocuments = this.queryWithContinuationTokens(query, pageSize);
+            Set<String> actualIds = new HashSet<String>();
+            for (Document document : receivedDocuments) {
+                actualIds.add(document.getResourceId());
+            }
+
+            assertThat(actualIds.size()).describedAs("total number of results").isEqualTo(topCount);
+        }
+    }
+
+    private List<Document> queryWithContinuationTokens(String query, int pageSize) {
+        String requestContinuation = null;
+        List<String> continuationTokens = new ArrayList<String>();
+        List<Document> receivedDocuments = new ArrayList<Document>();
+
+        do {
+            FeedOptions options = new FeedOptions();
+            options.setMaxItemCount(pageSize);
+            options.setEnableCrossPartitionQuery(true);
+            options.setMaxDegreeOfParallelism(2);
+            options.setRequestContinuation(requestContinuation);
+            Observable<FeedResponse<Document>> queryObservable = client.queryDocuments(createdCollection.getSelfLink(),
+                    query, options);
+
+            Observable<FeedResponse<Document>> firstPageObservable = queryObservable.first();
+            VerboseTestSubscriber<FeedResponse<Document>> testSubscriber = new VerboseTestSubscriber<>();
+            firstPageObservable.subscribe(testSubscriber);
+            testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+            testSubscriber.assertNoErrors();
+            testSubscriber.assertCompleted();
+
+            FeedResponse<Document> firstPage = testSubscriber.getOnNextEvents().get(0);
+            requestContinuation = firstPage.getResponseContinuation();
+            receivedDocuments.addAll(firstPage.getResults());
+            continuationTokens.add(requestContinuation);
+        } while (requestContinuation != null);
+
+        return receivedDocuments;
     }
 
     public void bulkInsert(AsyncDocumentClient client) {

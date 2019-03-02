@@ -26,6 +26,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -666,7 +668,7 @@ public class TestSuiteBase {
     public static <T extends Resource> void validateSuccess(Observable<ResourceResponse<T>> observable,
                                                             ResourceResponseValidator<T> validator, long timeout) {
 
-        TestSubscriber<ResourceResponse<T>> testSubscriber = new TestSubscriber<ResourceResponse<T>>();
+    	VerboseTestSubscriber<ResourceResponse<T>> testSubscriber = new VerboseTestSubscriber<ResourceResponse<T>>();
 
         observable.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
@@ -684,7 +686,7 @@ public class TestSuiteBase {
     public static <T extends Resource> void validateFailure(Observable<ResourceResponse<T>> observable,
                                                             FailureValidator validator, long timeout) {
 
-        TestSubscriber<ResourceResponse<T>> testSubscriber = new TestSubscriber<>();
+    	VerboseTestSubscriber<ResourceResponse<T>> testSubscriber = new VerboseTestSubscriber<>();
 
         observable.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
@@ -702,7 +704,7 @@ public class TestSuiteBase {
     public static <T extends Resource> void validateQuerySuccess(Observable<FeedResponse<T>> observable,
                                                                  FeedResponseListValidator<T> validator, long timeout) {
 
-        TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
+    	VerboseTestSubscriber<FeedResponse<T>> testSubscriber = new VerboseTestSubscriber<FeedResponse<T>>();
 
         observable.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
@@ -719,7 +721,7 @@ public class TestSuiteBase {
     public static <T extends Resource> void validateQueryFailure(Observable<FeedResponse<T>> observable,
                                                                  FailureValidator validator, long timeout) {
 
-        TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
+    	VerboseTestSubscriber<FeedResponse<T>> testSubscriber = new VerboseTestSubscriber<>();
 
         observable.subscribe(testSubscriber);
         testSubscriber.awaitTerminalEvent(timeout, TimeUnit.MILLISECONDS);
@@ -909,4 +911,24 @@ public class TestSuiteBase {
                 {false},
         };
     }
+    
+    public static class VerboseTestSubscriber<T> extends TestSubscriber<T> {
+		@Override
+	   	public void assertNoErrors() {
+           List<Throwable> onErrorEvents = getOnErrorEvents();
+           StringBuilder errorMessageBuilder = new StringBuilder();
+           if (!onErrorEvents.isEmpty()) {
+               for(Throwable throwable : onErrorEvents) {
+               	StringWriter sw = new StringWriter();
+               	PrintWriter pw = new PrintWriter(sw);
+               	throwable.printStackTrace(pw);
+               	String sStackTrace = sw.toString(); // stack trace as a string
+               	errorMessageBuilder.append(sStackTrace);
+               }
+               
+               AssertionError ae = new AssertionError(errorMessageBuilder.toString());
+               throw ae;
+            }
+	    }
+	}
 }
