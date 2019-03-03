@@ -28,4 +28,15 @@ public interface ManagedDatabaseSecurityAlertPolicies extends SupportsCreating<M
      */
     Observable<ManagedDatabaseSecurityAlertPolicy> getAsync(String resourceGroupName, String managedInstanceName, String databaseName);
 
+    /**
+     * Gets a list of managed database's security alert policies.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the managed database for which the security alert policies are defined.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ManagedDatabaseSecurityAlertPolicy> listByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName);
+
 }

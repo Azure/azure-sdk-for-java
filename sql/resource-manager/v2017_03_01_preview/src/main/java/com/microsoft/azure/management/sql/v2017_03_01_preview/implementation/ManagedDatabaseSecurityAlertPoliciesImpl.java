@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedDatabaseSecurityAlertPolicies;
 import rx.Observable;
 import rx.functions.Func1;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedDatabaseSecurityAlertPolicy;
 
 class ManagedDatabaseSecurityAlertPoliciesImpl extends WrapperImpl<ManagedDatabaseSecurityAlertPoliciesInner> implements ManagedDatabaseSecurityAlertPolicies {
@@ -38,6 +39,24 @@ class ManagedDatabaseSecurityAlertPoliciesImpl extends WrapperImpl<ManagedDataba
 
     private ManagedDatabaseSecurityAlertPolicyImpl wrapModel(String name) {
         return new ManagedDatabaseSecurityAlertPolicyImpl(name, this.manager());
+    }
+
+    @Override
+    public Observable<ManagedDatabaseSecurityAlertPolicy> listByDatabaseAsync(final String resourceGroupName, final String managedInstanceName, final String databaseName) {
+        ManagedDatabaseSecurityAlertPoliciesInner client = this.inner();
+        return client.listByDatabaseAsync(resourceGroupName, managedInstanceName, databaseName)
+        .flatMapIterable(new Func1<Page<ManagedDatabaseSecurityAlertPolicyInner>, Iterable<ManagedDatabaseSecurityAlertPolicyInner>>() {
+            @Override
+            public Iterable<ManagedDatabaseSecurityAlertPolicyInner> call(Page<ManagedDatabaseSecurityAlertPolicyInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<ManagedDatabaseSecurityAlertPolicyInner, ManagedDatabaseSecurityAlertPolicy>() {
+            @Override
+            public ManagedDatabaseSecurityAlertPolicy call(ManagedDatabaseSecurityAlertPolicyInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
     @Override

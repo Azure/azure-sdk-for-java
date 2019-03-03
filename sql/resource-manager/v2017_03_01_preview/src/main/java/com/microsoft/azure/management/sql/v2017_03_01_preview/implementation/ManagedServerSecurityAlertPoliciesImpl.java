@@ -14,6 +14,7 @@ import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedServerSecur
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.management.sql.v2017_03_01_preview.ManagedServerSecurityAlertPolicy;
+import com.microsoft.azure.Page;
 
 class ManagedServerSecurityAlertPoliciesImpl extends WrapperImpl<ManagedServerSecurityAlertPoliciesInner> implements ManagedServerSecurityAlertPolicies {
     private final SqlManager manager;
@@ -57,6 +58,24 @@ class ManagedServerSecurityAlertPoliciesImpl extends WrapperImpl<ManagedServerSe
                 return wrapManagedServerSecurityAlertPolicyModel(inner);
             }
        });
+    }
+
+    @Override
+    public Observable<ManagedServerSecurityAlertPolicy> listByInstanceAsync(final String resourceGroupName, final String managedInstanceName) {
+        ManagedServerSecurityAlertPoliciesInner client = this.inner();
+        return client.listByInstanceAsync(resourceGroupName, managedInstanceName)
+        .flatMapIterable(new Func1<Page<ManagedServerSecurityAlertPolicyInner>, Iterable<ManagedServerSecurityAlertPolicyInner>>() {
+            @Override
+            public Iterable<ManagedServerSecurityAlertPolicyInner> call(Page<ManagedServerSecurityAlertPolicyInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<ManagedServerSecurityAlertPolicyInner, ManagedServerSecurityAlertPolicy>() {
+            @Override
+            public ManagedServerSecurityAlertPolicy call(ManagedServerSecurityAlertPolicyInner inner) {
+                return wrapManagedServerSecurityAlertPolicyModel(inner);
+            }
+        });
     }
 
 }
