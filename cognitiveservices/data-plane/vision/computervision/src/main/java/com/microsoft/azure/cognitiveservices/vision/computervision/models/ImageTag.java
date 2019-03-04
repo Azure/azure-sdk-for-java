@@ -11,29 +11,29 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An image caption, i.e. a brief description of what the image depicts.
+ * An entity observation in the image, along with the confidence score.
  */
 public class ImageTag {
     /**
-     * The tag value.
+     * Name of the entity.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * The level of confidence the service has in the caption.
+     * The level of confidence that the entity was observed.
      */
     @JsonProperty(value = "confidence")
     private double confidence;
 
     /**
-     * Optional categorization for the tag.
+     * Optional hint/details for this tag.
      */
     @JsonProperty(value = "hint")
     private String hint;
 
     /**
-     * Get the name value.
+     * Get name of the entity.
      *
      * @return the name value
      */
@@ -42,7 +42,7 @@ public class ImageTag {
     }
 
     /**
-     * Set the name value.
+     * Set name of the entity.
      *
      * @param name the name value to set
      * @return the ImageTag object itself.
@@ -53,7 +53,7 @@ public class ImageTag {
     }
 
     /**
-     * Get the confidence value.
+     * Get the level of confidence that the entity was observed.
      *
      * @return the confidence value
      */
@@ -62,7 +62,7 @@ public class ImageTag {
     }
 
     /**
-     * Set the confidence value.
+     * Set the level of confidence that the entity was observed.
      *
      * @param confidence the confidence value to set
      * @return the ImageTag object itself.
@@ -73,7 +73,7 @@ public class ImageTag {
     }
 
     /**
-     * Get the hint value.
+     * Get optional hint/details for this tag.
      *
      * @return the hint value
      */
@@ -82,7 +82,7 @@ public class ImageTag {
     }
 
     /**
-     * Set the hint value.
+     * Set optional hint/details for this tag.
      *
      * @param hint the hint value to set
      * @return the ImageTag object itself.

@@ -33,7 +33,7 @@ public class OcrLine {
     private List<OcrWord> words;
 
     /**
-     * Get the boundingBox value.
+     * Get bounding box of a recognized line. The four integers represent the x-coordinate of the left edge, the y-coordinate of the top edge, width, and height of the bounding box, in the coordinate system of the input image, after it has been rotated around its center according to the detected text angle (see textAngle property), with the origin at the top-left corner, and the y-axis pointing down.
      *
      * @return the boundingBox value
      */
@@ -42,7 +42,7 @@ public class OcrLine {
     }
 
     /**
-     * Set the boundingBox value.
+     * Set bounding box of a recognized line. The four integers represent the x-coordinate of the left edge, the y-coordinate of the top edge, width, and height of the bounding box, in the coordinate system of the input image, after it has been rotated around its center according to the detected text angle (see textAngle property), with the origin at the top-left corner, and the y-axis pointing down.
      *
      * @param boundingBox the boundingBox value to set
      * @return the OcrLine object itself.
@@ -53,7 +53,7 @@ public class OcrLine {
     }
 
     /**
-     * Get the words value.
+     * Get an array of objects, where each object represents a recognized word.
      *
      * @return the words value
      */
@@ -62,7 +62,7 @@ public class OcrLine {
     }
 
     /**
-     * Set the words value.
+     * Set an array of objects, where each object represents a recognized word.
      *
      * @param words the words value to set
      * @return the OcrLine object itself.

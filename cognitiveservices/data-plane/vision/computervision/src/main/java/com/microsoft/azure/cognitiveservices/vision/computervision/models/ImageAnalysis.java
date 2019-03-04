@@ -22,19 +22,20 @@ public class ImageAnalysis {
     private List<Category> categories;
 
     /**
-     * The adult property.
+     * An object describing whether the image contains adult-oriented content
+     * and/or is racy.
      */
     @JsonProperty(value = "adult")
     private AdultInfo adult;
 
     /**
-     * The color property.
+     * An object providing additional metadata describing color attributes.
      */
     @JsonProperty(value = "color")
     private ColorInfo color;
 
     /**
-     * The imageType property.
+     * An object providing possible image types and matching confidence levels.
      */
     @JsonProperty(value = "imageType")
     private ImageType imageType;
@@ -46,7 +47,8 @@ public class ImageAnalysis {
     private List<ImageTag> tags;
 
     /**
-     * The description property.
+     * A collection of content tags, along with a list of captions sorted by
+     * confidence level, and image metadata.
      */
     @JsonProperty(value = "description")
     private ImageDescriptionDetails description;
@@ -58,7 +60,19 @@ public class ImageAnalysis {
     private List<FaceDescription> faces;
 
     /**
-     * Id of the request for tracking purposes.
+     * Array of objects describing what was detected in the image.
+     */
+    @JsonProperty(value = "objects")
+    private List<DetectedObject> objects;
+
+    /**
+     * Array of brands detected in the image.
+     */
+    @JsonProperty(value = "brands")
+    private List<DetectedBrand> brands;
+
+    /**
+     * Id of the REST API request.
      */
     @JsonProperty(value = "requestId")
     private String requestId;
@@ -70,7 +84,7 @@ public class ImageAnalysis {
     private ImageMetadata metadata;
 
     /**
-     * Get the categories value.
+     * Get an array indicating identified categories.
      *
      * @return the categories value
      */
@@ -79,7 +93,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the categories value.
+     * Set an array indicating identified categories.
      *
      * @param categories the categories value to set
      * @return the ImageAnalysis object itself.
@@ -90,7 +104,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the adult value.
+     * Get an object describing whether the image contains adult-oriented content and/or is racy.
      *
      * @return the adult value
      */
@@ -99,7 +113,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the adult value.
+     * Set an object describing whether the image contains adult-oriented content and/or is racy.
      *
      * @param adult the adult value to set
      * @return the ImageAnalysis object itself.
@@ -110,7 +124,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the color value.
+     * Get an object providing additional metadata describing color attributes.
      *
      * @return the color value
      */
@@ -119,7 +133,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the color value.
+     * Set an object providing additional metadata describing color attributes.
      *
      * @param color the color value to set
      * @return the ImageAnalysis object itself.
@@ -130,7 +144,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the imageType value.
+     * Get an object providing possible image types and matching confidence levels.
      *
      * @return the imageType value
      */
@@ -139,7 +153,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the imageType value.
+     * Set an object providing possible image types and matching confidence levels.
      *
      * @param imageType the imageType value to set
      * @return the ImageAnalysis object itself.
@@ -150,7 +164,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the tags value.
+     * Get a list of tags with confidence level.
      *
      * @return the tags value
      */
@@ -159,7 +173,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the tags value.
+     * Set a list of tags with confidence level.
      *
      * @param tags the tags value to set
      * @return the ImageAnalysis object itself.
@@ -170,7 +184,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the description value.
+     * Get a collection of content tags, along with a list of captions sorted by confidence level, and image metadata.
      *
      * @return the description value
      */
@@ -179,7 +193,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the description value.
+     * Set a collection of content tags, along with a list of captions sorted by confidence level, and image metadata.
      *
      * @param description the description value to set
      * @return the ImageAnalysis object itself.
@@ -190,7 +204,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the faces value.
+     * Get an array of possible faces within the image.
      *
      * @return the faces value
      */
@@ -199,7 +213,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the faces value.
+     * Set an array of possible faces within the image.
      *
      * @param faces the faces value to set
      * @return the ImageAnalysis object itself.
@@ -210,7 +224,47 @@ public class ImageAnalysis {
     }
 
     /**
-     * Get the requestId value.
+     * Get array of objects describing what was detected in the image.
+     *
+     * @return the objects value
+     */
+    public List<DetectedObject> objects() {
+        return this.objects;
+    }
+
+    /**
+     * Set array of objects describing what was detected in the image.
+     *
+     * @param objects the objects value to set
+     * @return the ImageAnalysis object itself.
+     */
+    public ImageAnalysis withObjects(List<DetectedObject> objects) {
+        this.objects = objects;
+        return this;
+    }
+
+    /**
+     * Get array of brands detected in the image.
+     *
+     * @return the brands value
+     */
+    public List<DetectedBrand> brands() {
+        return this.brands;
+    }
+
+    /**
+     * Set array of brands detected in the image.
+     *
+     * @param brands the brands value to set
+     * @return the ImageAnalysis object itself.
+     */
+    public ImageAnalysis withBrands(List<DetectedBrand> brands) {
+        this.brands = brands;
+        return this;
+    }
+
+    /**
+     * Get id of the REST API request.
      *
      * @return the requestId value
      */
@@ -219,7 +273,7 @@ public class ImageAnalysis {
     }
 
     /**
-     * Set the requestId value.
+     * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
      * @return the ImageAnalysis object itself.

@@ -28,7 +28,7 @@ public class CategoryDetail {
     private List<LandmarksModel> landmarks;
 
     /**
-     * Get the celebrities value.
+     * Get an array of celebrities if any identified.
      *
      * @return the celebrities value
      */
@@ -37,7 +37,7 @@ public class CategoryDetail {
     }
 
     /**
-     * Set the celebrities value.
+     * Set an array of celebrities if any identified.
      *
      * @param celebrities the celebrities value to set
      * @return the CategoryDetail object itself.
@@ -48,7 +48,7 @@ public class CategoryDetail {
     }
 
     /**
-     * Get the landmarks value.
+     * Get an array of landmarks if any identified.
      *
      * @return the landmarks value
      */
@@ -57,7 +57,7 @@ public class CategoryDetail {
     }
 
     /**
-     * Set the landmarks value.
+     * Set an array of landmarks if any identified.
      *
      * @param landmarks the landmarks value to set
      * @return the CategoryDetail object itself.

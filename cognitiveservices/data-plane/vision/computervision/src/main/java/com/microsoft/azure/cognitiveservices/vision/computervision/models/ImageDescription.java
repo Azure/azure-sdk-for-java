@@ -43,7 +43,7 @@ public class ImageDescription {
     private ImageMetadata metadata;
 
     /**
-     * Get the tags value.
+     * Get a collection of image tags.
      *
      * @return the tags value
      */
@@ -52,7 +52,7 @@ public class ImageDescription {
     }
 
     /**
-     * Set the tags value.
+     * Set a collection of image tags.
      *
      * @param tags the tags value to set
      * @return the ImageDescription object itself.
@@ -63,7 +63,7 @@ public class ImageDescription {
     }
 
     /**
-     * Get the captions value.
+     * Get a list of captions, sorted by confidence level.
      *
      * @return the captions value
      */
@@ -72,7 +72,7 @@ public class ImageDescription {
     }
 
     /**
-     * Set the captions value.
+     * Set a list of captions, sorted by confidence level.
      *
      * @param captions the captions value to set
      * @return the ImageDescription object itself.
@@ -83,7 +83,7 @@ public class ImageDescription {
     }
 
     /**
-     * Get the requestId value.
+     * Get id of the REST API request.
      *
      * @return the requestId value
      */
@@ -92,7 +92,7 @@ public class ImageDescription {
     }
 
     /**
-     * Set the requestId value.
+     * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
      * @return the ImageDescription object itself.

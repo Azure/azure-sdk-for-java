@@ -18,14 +18,20 @@ public class Word {
     /**
      * The boundingBox property.
      */
-    @JsonProperty(value = "boundingBox")
+    @JsonProperty(value = "boundingBox", required = true)
     private List<Integer> boundingBox;
 
     /**
      * The text property.
      */
-    @JsonProperty(value = "text")
+    @JsonProperty(value = "text", required = true)
     private String text;
+
+    /**
+     * Possible values include: 'High', 'Low'.
+     */
+    @JsonProperty(value = "confidence")
+    private TextRecognitionResultConfidenceClass confidence;
 
     /**
      * Get the boundingBox value.
@@ -64,6 +70,26 @@ public class Word {
      */
     public Word withText(String text) {
         this.text = text;
+        return this;
+    }
+
+    /**
+     * Get possible values include: 'High', 'Low'.
+     *
+     * @return the confidence value
+     */
+    public TextRecognitionResultConfidenceClass confidence() {
+        return this.confidence;
+    }
+
+    /**
+     * Set possible values include: 'High', 'Low'.
+     *
+     * @param confidence the confidence value to set
+     * @return the Word object itself.
+     */
+    public Word withConfidence(TextRecognitionResultConfidenceClass confidence) {
+        this.confidence = confidence;
         return this;
     }
 

@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The TextOperationResult model.
+ * The ReadOperationResult model.
  */
-public class TextOperationResult {
+public class ReadOperationResult {
     /**
      * Status of the text operation. Possible values include: 'Not Started',
      * 'Running', 'Failed', 'Succeeded'.
@@ -22,10 +23,10 @@ public class TextOperationResult {
     private TextOperationStatusCodes status;
 
     /**
-     * The recognitionResult property.
+     * The recognitionResults property.
      */
-    @JsonProperty(value = "recognitionResult")
-    private TextRecognitionResult recognitionResult;
+    @JsonProperty(value = "recognitionResults")
+    private List<TextRecognitionResult> recognitionResults;
 
     /**
      * Get status of the text operation. Possible values include: 'Not Started', 'Running', 'Failed', 'Succeeded'.
@@ -40,30 +41,30 @@ public class TextOperationResult {
      * Set status of the text operation. Possible values include: 'Not Started', 'Running', 'Failed', 'Succeeded'.
      *
      * @param status the status value to set
-     * @return the TextOperationResult object itself.
+     * @return the ReadOperationResult object itself.
      */
-    public TextOperationResult withStatus(TextOperationStatusCodes status) {
+    public ReadOperationResult withStatus(TextOperationStatusCodes status) {
         this.status = status;
         return this;
     }
 
     /**
-     * Get the recognitionResult value.
+     * Get the recognitionResults value.
      *
-     * @return the recognitionResult value
+     * @return the recognitionResults value
      */
-    public TextRecognitionResult recognitionResult() {
-        return this.recognitionResult;
+    public List<TextRecognitionResult> recognitionResults() {
+        return this.recognitionResults;
     }
 
     /**
-     * Set the recognitionResult value.
+     * Set the recognitionResults value.
      *
-     * @param recognitionResult the recognitionResult value to set
-     * @return the TextOperationResult object itself.
+     * @param recognitionResults the recognitionResults value to set
+     * @return the ReadOperationResult object itself.
      */
-    public TextOperationResult withRecognitionResult(TextRecognitionResult recognitionResult) {
-        this.recognitionResult = recognitionResult;
+    public ReadOperationResult withRecognitionResults(List<TextRecognitionResult> recognitionResults) {
+        this.recognitionResults = recognitionResults;
         return this;
     }
 

@@ -12,11 +12,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * List of celebrities recognized in the image.
+ * Result of domain-specific classifications for the domain of celebrities.
  */
 public class CelebrityResults {
     /**
-     * The celebrities property.
+     * List of celebrities recognized in the image.
      */
     @JsonProperty(value = "celebrities")
     private List<CelebritiesModel> celebrities;
@@ -34,7 +34,7 @@ public class CelebrityResults {
     private ImageMetadata metadata;
 
     /**
-     * Get the celebrities value.
+     * Get list of celebrities recognized in the image.
      *
      * @return the celebrities value
      */
@@ -43,7 +43,7 @@ public class CelebrityResults {
     }
 
     /**
-     * Set the celebrities value.
+     * Set list of celebrities recognized in the image.
      *
      * @param celebrities the celebrities value to set
      * @return the CelebrityResults object itself.
@@ -54,7 +54,7 @@ public class CelebrityResults {
     }
 
     /**
-     * Get the requestId value.
+     * Get id of the REST API request.
      *
      * @return the requestId value
      */
@@ -63,7 +63,7 @@ public class CelebrityResults {
     }
 
     /**
-     * Set the requestId value.
+     * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
      * @return the CelebrityResults object itself.
