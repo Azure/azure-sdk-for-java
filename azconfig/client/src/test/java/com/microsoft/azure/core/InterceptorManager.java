@@ -4,7 +4,6 @@ package com.microsoft.azure.core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.azure.azconfig.AzConfigTest;
 import com.microsoft.azure.utils.SdkContext;
 import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpHeader;
@@ -32,6 +31,9 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 
+import static com.microsoft.azure.core.TestMode.PLAYBACK;
+import static com.microsoft.azure.core.TestMode.RECORD;
+
 public class InterceptorManager {
 
     private final static String RECORD_FOLDER = "session-records/";
@@ -43,10 +45,10 @@ public class InterceptorManager {
     protected RecordedData recordedData;
 
     private final String testName;
+    private final TestMode testMode;
 
-    private final AzConfigTest.TestMode testMode;
 
-    private InterceptorManager(String testName, AzConfigTest.TestMode testMode) {
+    private InterceptorManager(String testName, TestMode testMode) {
         this.testName = testName;
         this.testMode = testMode;
     }
@@ -56,7 +58,7 @@ public class InterceptorManager {
     }
 
     // factory method
-    public static InterceptorManager create(String testName, AzConfigTest.TestMode testMode) {
+    public static InterceptorManager create(String testName, TestMode testMode) {
         InterceptorManager interceptorManager = new InterceptorManager(testName, testMode);
         SdkContext.setResourceNamerFactory(new TestResourceNamerFactory(interceptorManager));
         SdkContext.setDelayProvider(new TestDelayProvider(interceptorManager.isRecordMode()));
@@ -66,11 +68,11 @@ public class InterceptorManager {
     }
 
     public boolean isRecordMode() {
-        return testMode == AzConfigTest.TestMode.RECORD;
+        return testMode == TestMode.RECORD;
     }
 
     public boolean isPlaybackMode() {
-        return testMode == AzConfigTest.TestMode.PLAYBACK;
+        return testMode == TestMode.PLAYBACK;
     }
 
     public RecordPolicy initRecordPolicy() {
