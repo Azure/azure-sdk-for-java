@@ -11,14 +11,14 @@
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
-        <version>0.0.3-beta</version>
+        <version>1.0.0</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-privatedns</artifactId>
-    <version>1.0.0-beta</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Network Management</name>
-    <description>This package contains Microsoft Network Management SDK.</description>
+    <name>Microsoft Azure SDK for Private DNS Management</name>
+    <description>This package contains Microsoft Private DNS Management SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>
