@@ -187,6 +187,8 @@ public class InterceptorManager {
             }
 
             String rawBody = networkCallRecord.Response.get("Body");
+            byte[] bytes = new byte[0];
+
             if (rawBody != null) {
                 for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
                     if (rule.getValue() != null) {
@@ -194,15 +196,12 @@ public class InterceptorManager {
                     }
                 }
 
-                try {
-                    byte[] bytes = rawBody.getBytes("UTF-8");
-                    headers.set("Content-Length", String.valueOf(bytes.length));
-                } catch (IOException e) {
-                    return Mono.error(e);
-                }
+                bytes = rawBody.getBytes(StandardCharsets.UTF_8);
+                headers.set("Content-Length", String.valueOf(bytes.length));
             }
 
-            HttpResponse response = new MockHttpResponse(recordStatusCode, headers, rawBody);
+            HttpResponse response = new MockHttpResponse(recordStatusCode, headers, bytes)
+                    .withRequest(request);
             return Mono.just(response);
         }
     }
@@ -272,7 +271,7 @@ public class InterceptorManager {
         mapper.writeValue(recordFile, recordedData);
     }
 
-    private File getRecordFile(String testName) {
+    private static File getRecordFile(String testName) {
         URL folderUrl = InterceptorManager.class.getClassLoader().getResource(".");
         File folderFile = new File(folderUrl.getPath() + RECORD_FOLDER);
         if (!folderFile.exists()) {
@@ -292,7 +291,7 @@ public class InterceptorManager {
         return text;
     }
 
-    private String removeHost(String url) {
+    private static String removeHost(String url) {
         URI uri = URI.create(url);
         return String.format("%s?%s", uri.getPath(), uri.getQuery());
     }
