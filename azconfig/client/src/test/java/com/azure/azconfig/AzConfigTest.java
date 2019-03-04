@@ -9,6 +9,7 @@ import com.azure.azconfig.models.KeyValueFilter;
 import com.azure.azconfig.models.KeyValueListFilter;
 import com.azure.azconfig.models.RevisionFilter;
 import com.microsoft.azure.core.InterceptorManager;
+import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
 import com.microsoft.azure.v3.CloudException;
 import com.microsoft.rest.v3.http.HttpClientConfiguration;
@@ -49,12 +50,6 @@ public class AzConfigTest {
     private InterceptorManager interceptorManager;
     private AzConfigClient client;
     private String keyPrefix;
-
-    public enum TestMode {
-        PLAYBACK,
-        RECORD,
-        NONE
-    }
 
     @Rule
     public TestName testName = new TestName();

@@ -31,9 +31,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 
-import static com.microsoft.azure.core.TestMode.PLAYBACK;
-import static com.microsoft.azure.core.TestMode.RECORD;
-
 public class InterceptorManager {
 
     private final static String RECORD_FOLDER = "session-records/";
