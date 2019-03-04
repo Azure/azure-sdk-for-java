@@ -69,6 +69,9 @@ public interface Identifier extends HasInner<IdentifierInner>, Indexable, Refres
         interface WithSite {
            /**
             * Specifies resourceGroupName, name.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param name Name of the app
+            * @return the next definition stage
             */
             WithCreate withExistingSite(String resourceGroupName, String name);
         }
@@ -79,6 +82,8 @@ public interface Identifier extends HasInner<IdentifierInner>, Indexable, Refres
         interface WithIdentifierId {
             /**
              * Specifies identifierId.
+             * @param identifierId String representation of the identity
+             * @return the next definition stage
              */
             WithCreate withIdentifierId(String identifierId);
         }
@@ -89,6 +94,8 @@ public interface Identifier extends HasInner<IdentifierInner>, Indexable, Refres
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -117,6 +124,8 @@ public interface Identifier extends HasInner<IdentifierInner>, Indexable, Refres
         interface WithIdentifierId {
             /**
              * Specifies identifierId.
+             * @param identifierId String representation of the identity
+             * @return the next update stage
              */
             Update withIdentifierId(String identifierId);
         }
@@ -127,6 +136,8 @@ public interface Identifier extends HasInner<IdentifierInner>, Indexable, Refres
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }

@@ -193,10 +193,10 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
     }
 
     @Override
-    public Completable getServerFarmSkusAsync(String resourceGroupName, String name) {
+    public Observable<Object> getServerFarmSkusAsync(String resourceGroupName, String name) {
         AppServicePlansInner client = this.inner();
-        return client.getServerFarmSkusAsync(resourceGroupName, name).toCompletable();
-    }
+        return client.getServerFarmSkusAsync(resourceGroupName, name)
+    ;}
 
     @Override
     public Observable<Capability> listCapabilitiesAsync(String resourceGroupName, String name) {
@@ -247,9 +247,15 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
     }
 
     @Override
-    public Completable listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
+    public Observable<String> listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
         AppServicePlansInner client = this.inner();
-        return client.listWebAppsByHybridConnectionAsync(resourceGroupName, name, namespaceName, relayName).toCompletable();
+        return client.listWebAppsByHybridConnectionAsync(resourceGroupName, name, namespaceName, relayName)
+        .flatMapIterable(new Func1<Page<String>, Iterable<String>>() {
+            @Override
+            public Iterable<String> call(Page<String> page) {
+                return page.items();
+            }
+        });
     }
 
     @Override

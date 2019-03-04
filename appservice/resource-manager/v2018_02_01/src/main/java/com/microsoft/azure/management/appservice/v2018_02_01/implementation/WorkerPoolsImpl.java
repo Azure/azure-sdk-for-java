@@ -34,7 +34,7 @@ class WorkerPoolsImpl extends CreatableUpdatableImpl<WorkerPools, WorkerPoolReso
         this.manager = manager;
         // Set resource name
         this.workerPoolName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "hostingEnvironments");
         this.workerPoolName = IdParsingUtils.getValueFromIdByName(inner.id(), "workerPools");

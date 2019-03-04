@@ -31,7 +31,7 @@ class DomainOwnershipIdentifierImpl extends CreatableUpdatableImpl<DomainOwnersh
         this.manager = manager;
         // Set resource name
         this.name = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.domainName = IdParsingUtils.getValueFromIdByName(inner.id(), "domains");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "domainOwnershipIdentifiers");

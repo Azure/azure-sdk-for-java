@@ -25,7 +25,7 @@ class VnetInfoImpl extends CreatableUpdatableImpl<VnetInfo, VnetInfoInner, VnetI
         super(name, new VnetInfoInner());
         this.manager = manager;
         // Set resource name
-        this.slot = name;
+        this.vnetName = name;
         //
     }
 
@@ -33,8 +33,8 @@ class VnetInfoImpl extends CreatableUpdatableImpl<VnetInfo, VnetInfoInner, VnetI
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.slot = inner.name();
-        // resource ancestor names
+        this.vnetName = inner.name();
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.vnetName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualNetworkConnections");

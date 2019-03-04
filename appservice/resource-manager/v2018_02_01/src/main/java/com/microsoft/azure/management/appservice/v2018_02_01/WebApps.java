@@ -332,7 +332,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getWebSiteContainerLogsAsync(String resourceGroupName, String name);
+    Observable<InputStream> getWebSiteContainerLogsAsync(String resourceGroupName, String name);
 
     /**
      * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
@@ -355,7 +355,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getFunctionsAdminTokenAsync(String resourceGroupName, String name);
+    Observable<String> getFunctionsAdminTokenAsync(String resourceGroupName, String name);
 
     /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
@@ -524,7 +524,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startWebSiteNetworkTraceAsync(String resourceGroupName, String name);
+    Observable<String> startWebSiteNetworkTraceAsync(String resourceGroupName, String name);
 
     /**
      * Start capturing network packets for the site.
@@ -592,7 +592,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getProcessDumpAsync(String resourceGroupName, String name, String processId);
+    Observable<InputStream> getProcessDumpAsync(String resourceGroupName, String name, String processId);
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
@@ -604,7 +604,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions);
+    Observable<InputStream> listPublishingProfileXmlWithSecretsAsync(String resourceGroupName, String name, CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with POST.
@@ -1331,7 +1331,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getContainerLogsZipAsync(String resourceGroupName, String name);
+    Observable<InputStream> getContainerLogsZipAsync(String resourceGroupName, String name);
 
     /**
      * Gets the ZIP archived docker log files for the given site.
@@ -1343,7 +1343,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getContainerLogsZipSlotAsync(String resourceGroupName, String name, String slot);
+    Observable<InputStream> getContainerLogsZipSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Gets a continuous web job by its ID for an app, or a deployment slot.
@@ -2184,7 +2184,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getInstanceProcessDumpAsync(String resourceGroupName, String name, String processId, String instanceId);
+    Observable<InputStream> getInstanceProcessDumpAsync(String resourceGroupName, String name, String processId, String instanceId);
 
     /**
      * Gets all scale-out instances of an app.
@@ -2210,7 +2210,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getInstanceProcessDumpSlotAsync(String resourceGroupName, String name, String processId, String slot, String instanceId);
+    Observable<InputStream> getInstanceProcessDumpSlotAsync(String resourceGroupName, String name, String processId, String slot, String instanceId);
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
@@ -3289,7 +3289,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getWebSiteContainerLogsSlotAsync(String resourceGroupName, String name, String slot);
+    Observable<InputStream> getWebSiteContainerLogsSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information about the databases stored in a backup.
@@ -3314,7 +3314,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getFunctionsAdminTokenSlotAsync(String resourceGroupName, String name, String slot);
+    Observable<String> getFunctionsAdminTokenSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
@@ -3470,7 +3470,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
+    Observable<String> startWebSiteNetworkTraceSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Start capturing network packets for the site.
@@ -3544,7 +3544,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getProcessDumpSlotAsync(String resourceGroupName, String name, String processId, String slot);
+    Observable<InputStream> getProcessDumpSlotAsync(String resourceGroupName, String name, String processId, String slot);
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
@@ -3557,7 +3557,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions);
+    Observable<InputStream> listPublishingProfileXmlWithSecretsSlotAsync(String resourceGroupName, String name, String slot, CsmPublishingProfileOptions publishingProfileOptions);
 
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with POST.

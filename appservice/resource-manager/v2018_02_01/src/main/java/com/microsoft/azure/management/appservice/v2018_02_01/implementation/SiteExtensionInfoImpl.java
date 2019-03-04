@@ -34,7 +34,7 @@ class SiteExtensionInfoImpl extends CreatableUpdatableImpl<SiteExtensionInfo, Si
         this.manager = manager;
         // Set resource name
         this.siteExtensionId = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.siteExtensionId = IdParsingUtils.getValueFromIdByName(inner.id(), "siteextensions");
