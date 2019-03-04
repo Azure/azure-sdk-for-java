@@ -16,6 +16,7 @@ import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
+import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -161,9 +162,8 @@ public class InterceptorManager {
 
             count.incrementAndGet();
             if (networkCallRecord == null) {
-//                LoggerFactory.getLogger(request.callerMethod()).info("NOT FOUND - " + incomingMethod + " " + incomingUrl);
-//                LoggerFactory.getLogger(request.callerMethod()).info("Records requested: " + count);
-//                LoggerFactory.getLogger(request.callerMethod()).info("Remaining records " + recordedData.getNetworkCallRecords().size());
+                LoggerFactory.getLogger(InterceptorManager.class).warn("NOT FOUND - Method: {} URL: {}", incomingMethod, incomingUrl);
+                LoggerFactory.getLogger(InterceptorManager.class).warn("Records requested: {}. Remaining Records: {}.", count, recordedData.getNetworkCallRecords().size());
 
                 Assert.fail("==> Unexpected request: " + incomingMethod + " " + incomingUrl);
             }
