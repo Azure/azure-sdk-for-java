@@ -255,16 +255,16 @@ public final class AzConfigClient extends ServiceClient {
                                                             .flatMapIterable(i -> i));
     }
 
-    public Flux<KeyValue> listKeyValues(KeyValueListFilter filter, Function<Flux<RestPagedResponse<KeyValue>>, ? extends Publisher<KeyValue>> receiver) {
-        return listSinglePageAsync(filter)
+    public <T> Flux<T> listKeyValues(KeyValueListFilter filter, Function<Flux<RestPagedResponse<KeyValue>>, ? extends Flux<T>> receiver) {
+        Flux<RestPagedResponse<KeyValue>> p = listSinglePageAsync(filter)
                        .concatMap(page -> {
                            String nextPageLink = page.nextLink();
                            if (nextPageLink == null) {
                                return Flux.just(page);
                            }
-                           return Flux.just(page).concatMap(p -> listNextAsync(nextPageLink));
-                       })
-                       .flatMapIterable(RestPagedResponse::items);
+                           return Flux.just(page).concatWith(listNextAsync(nextPageLink));
+                       });
+        return receiver.apply(p);
     }
 
     /**
@@ -296,7 +296,7 @@ public final class AzConfigClient extends ServiceClient {
                            if (nextPageLink1 == null) {
                                return Flux.just(page);
                            }
-                           return Flux.just(page).concatMap(p -> listNextAsync(nextPageLink1));
+                           return Flux.just(page).concatWith(p -> listNextAsync(nextPageLink1));
                        });
     }
 
@@ -373,25 +373,24 @@ public final class AzConfigClient extends ServiceClient {
                                                               .flatMapIterable(i -> i));
     }
 
-    public Flux<KeyValue> listKeyValueRevisions(RevisionFilter filter, Function<Flux<RestPagedResponse<KeyValue>>, ? extends Publisher<KeyValue>> receiver) {
-        return listRevisionsSinglePageAsync(filter)
+    public <T> Flux<T> listKeyValueRevisions(RevisionFilter filter, Function<Flux<RestPagedResponse<KeyValue>>, ? extends Flux<T>> receiver) {
+        Flux<RestPagedResponse<KeyValue>> p = listRevisionsSinglePageAsync(filter)
                        .concatMap(page -> {
                            String nextPageLink = page.nextLink();
                            if (nextPageLink == null) {
                                return Flux.just(page);
                            }
-                           return Flux.just(page).concatMap(p -> listNextAsync(nextPageLink));
-                       })
-                       .flatMapIterable(RestPagedResponse::items);
+                           return Flux.just(page).concatWith(listNextAsync(nextPageLink));
+                       });
+        return receiver.apply(p);
     }
-
 
     /**
      * Gets all Revisions for KeyValue(s).
      *
      * @return the Single&lt;Page&lt;KeyValue&gt;&gt; object if successful.
      */
-    private Flux<RestPagedResponseImpl<KeyValue>> listRevisionsSinglePageAsync(RevisionFilter filter) {
+    private Flux<RestPagedResponse<KeyValue>> listRevisionsSinglePageAsync(RevisionFilter filter) {
         Mono<RestResponse<Map<String, String>, PageImpl<KeyValue>>> result;
         if (filter != null) {
             result = service.listKeyValueRevisions(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
@@ -411,16 +410,16 @@ public final class AzConfigClient extends ServiceClient {
                                                             .flatMapIterable(i -> i));
     }
 
-    public Flux<Label> listLabels(KeyLabelFilter filter, Function<Flux<RestPagedResponse<Label>>, ? extends Publisher<Label>> receiver) {
-        return listLabelsSinglePageAsync(filter)
+    public <T> Flux<T> listLabels(KeyLabelFilter filter, Function<Flux<RestPagedResponse<Label>>, ? extends Flux<T>> receiver) {
+        Flux<RestPagedResponse<Label>> p = listLabelsSinglePageAsync(filter)
                        .concatMap(page -> {
                            String nextPageLink = page.nextLink();
                            if (nextPageLink == null) {
                                return Flux.just(page);
                            }
-                           return Flux.just(page).concatMap(p -> listLabelsNextAsync(nextPageLink));
-                       })
-                       .flatMapIterable(RestPagedResponse::items);
+                           return Flux.just(page).concatWith(listLabelsNextAsync(nextPageLink));
+                       });
+        return receiver.apply(p);
     }
 
     /**
@@ -437,7 +436,7 @@ public final class AzConfigClient extends ServiceClient {
                            if (nextPageLink1 == null) {
                                return Flux.just(page);
                            }
-                           return Flux.just(page).concatMap(p -> listLabelsNextAsync(nextPageLink1));
+                           return Flux.just(page).concatWith(p -> listLabelsNextAsync(nextPageLink1));
                        });
     }
 
@@ -483,7 +482,7 @@ public final class AzConfigClient extends ServiceClient {
                            if (nextPageLink == null) {
                                return Flux.just(page);
                            }
-                           return Flux.just(page).concatMap(p1 -> listKeysNextAsync(nextPageLink));
+                           return Flux.just(page).concatWith(listKeysNextAsync(nextPageLink));
                        });
        return  receiver.apply(p);
     }
@@ -502,7 +501,7 @@ public final class AzConfigClient extends ServiceClient {
                     if (nextPageLink1 == null) {
                         return Flux.just(page);
                     }
-                    return Flux.just(page).concatMap(p -> listKeysNextAsync(nextPageLink1));
+                    return Flux.just(page).concatWith(listKeysNextAsync(nextPageLink1));
                 });
     }
 
