@@ -12,32 +12,23 @@
         <version>1.0.0-SNAPSHOT</version>
         <relativePath>../../pom.client.xml</relativePath>
     </parent>
+
+    <groupId>com.microsoft.azure</groupId>
     <artifactId>azconfig</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <name>Azure AzConfig</name>
-    <description>The Azure Config Java library.</description>
 
-    <licenses>
-        <license>
-            <name>The MIT License (MIT)</name>
-            <url>http://opensource.org/licenses/MIT</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+    <name>Azure App Configuration SDK component</name>
+    <description>The Azure App Configuration Java library.</description>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <legal>
-            <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-        <playbackServerPort>11080</playbackServerPort>
-    </properties>
+    <distributionManagement>
+        <site>
+            <id>azure-java-build-docs</id>
+            <url>${site.url}/site/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
 
-    <developers>
-        <developer>
-            <id>microsoft</id>
-            <name>Microsoft Corporation</name>
-        </developer>
-    </developers>
+    <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
 
     <build>
         <plugins>
