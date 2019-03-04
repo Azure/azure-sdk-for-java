@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * ARM resource for a app service enviroment.
+ * ARM resource for a app service environment.
  */
 @JsonFlatten
 public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
@@ -258,6 +258,19 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.hasLinuxWorkers")
     private Boolean hasLinuxWorkers;
+
+    /**
+     * Key Vault ID for ILB App Service Environment default SSL certificate.
+     */
+    @JsonProperty(value = "properties.sslCertKeyVaultId")
+    private String sslCertKeyVaultId;
+
+    /**
+     * Key Vault Secret Name for ILB App Service Environment default SSL
+     * certificate.
+     */
+    @JsonProperty(value = "properties.sslCertKeyVaultSecretName")
+    private String sslCertKeyVaultSecretName;
 
     /**
      * Get name of the App Service Environment.
@@ -813,6 +826,46 @@ public class AppServiceEnvironmentPatchResource extends ProxyOnlyResource {
      */
     public AppServiceEnvironmentPatchResource withHasLinuxWorkers(Boolean hasLinuxWorkers) {
         this.hasLinuxWorkers = hasLinuxWorkers;
+        return this;
+    }
+
+    /**
+     * Get key Vault ID for ILB App Service Environment default SSL certificate.
+     *
+     * @return the sslCertKeyVaultId value
+     */
+    public String sslCertKeyVaultId() {
+        return this.sslCertKeyVaultId;
+    }
+
+    /**
+     * Set key Vault ID for ILB App Service Environment default SSL certificate.
+     *
+     * @param sslCertKeyVaultId the sslCertKeyVaultId value to set
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withSslCertKeyVaultId(String sslCertKeyVaultId) {
+        this.sslCertKeyVaultId = sslCertKeyVaultId;
+        return this;
+    }
+
+    /**
+     * Get key Vault Secret Name for ILB App Service Environment default SSL certificate.
+     *
+     * @return the sslCertKeyVaultSecretName value
+     */
+    public String sslCertKeyVaultSecretName() {
+        return this.sslCertKeyVaultSecretName;
+    }
+
+    /**
+     * Set key Vault Secret Name for ILB App Service Environment default SSL certificate.
+     *
+     * @param sslCertKeyVaultSecretName the sslCertKeyVaultSecretName value to set
+     * @return the AppServiceEnvironmentPatchResource object itself.
+     */
+    public AppServiceEnvironmentPatchResource withSslCertKeyVaultSecretName(String sslCertKeyVaultSecretName) {
+        this.sslCertKeyVaultSecretName = sslCertKeyVaultSecretName;
         return this;
     }
 

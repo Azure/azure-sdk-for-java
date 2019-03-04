@@ -109,6 +109,14 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
     private String clientSecret;
 
     /**
+     * An alternative to the client secret, that is the thumbprint of a
+     * certificate used for signing purposes. This property acts as
+     * a replacement for the Client Secret. It is also optional.
+     */
+    @JsonProperty(value = "properties.clientSecretCertificateThumbprint")
+    private String clientSecretCertificateThumbprint;
+
+    /**
      * The OpenID Connect Issuer URI that represents the entity which issues
      * access tokens for this application.
      * When using Azure Active Directory, this value is the URI of the
@@ -452,6 +460,28 @@ public class SiteAuthSettingsInner extends ProxyOnlyResource {
      */
     public SiteAuthSettingsInner withClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
+        return this;
+    }
+
+    /**
+     * Get an alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as
+     a replacement for the Client Secret. It is also optional.
+     *
+     * @return the clientSecretCertificateThumbprint value
+     */
+    public String clientSecretCertificateThumbprint() {
+        return this.clientSecretCertificateThumbprint;
+    }
+
+    /**
+     * Set an alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts as
+     a replacement for the Client Secret. It is also optional.
+     *
+     * @param clientSecretCertificateThumbprint the clientSecretCertificateThumbprint value to set
+     * @return the SiteAuthSettingsInner object itself.
+     */
+    public SiteAuthSettingsInner withClientSecretCertificateThumbprint(String clientSecretCertificateThumbprint) {
+        this.clientSecretCertificateThumbprint = clientSecretCertificateThumbprint;
         return this;
     }
 

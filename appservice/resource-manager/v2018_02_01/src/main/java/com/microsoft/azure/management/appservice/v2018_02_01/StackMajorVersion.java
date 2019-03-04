@@ -41,6 +41,13 @@ public class StackMajorVersion {
     private List<StackMinorVersion> minorVersions;
 
     /**
+     * &lt;code&gt;true&lt;/code&gt; if this supports Application Insights;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     */
+    @JsonProperty(value = "applicationInsights")
+    private Boolean applicationInsights;
+
+    /**
      * Get application stack major version (display only).
      *
      * @return the displayVersion value
@@ -117,6 +124,26 @@ public class StackMajorVersion {
      */
     public StackMajorVersion withMinorVersions(List<StackMinorVersion> minorVersions) {
         this.minorVersions = minorVersions;
+        return this;
+    }
+
+    /**
+     * Get &lt;code&gt;true&lt;/code&gt; if this supports Application Insights; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     *
+     * @return the applicationInsights value
+     */
+    public Boolean applicationInsights() {
+        return this.applicationInsights;
+    }
+
+    /**
+     * Set &lt;code&gt;true&lt;/code&gt; if this supports Application Insights; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     *
+     * @param applicationInsights the applicationInsights value to set
+     * @return the StackMajorVersion object itself.
+     */
+    public StackMajorVersion withApplicationInsights(Boolean applicationInsights) {
+        this.applicationInsights = applicationInsights;
         return this;
     }
 

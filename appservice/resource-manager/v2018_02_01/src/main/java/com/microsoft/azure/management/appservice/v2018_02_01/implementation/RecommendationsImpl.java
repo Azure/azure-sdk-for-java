@@ -22,9 +22,9 @@ import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements Recommendations {
     private PagedListConverter<RecommendationInner, Recommendation> converter;
-    private final AppServiceManager manager;
+    private final CertificateRegistrationManager manager;
 
-    RecommendationsImpl(AppServiceManager manager) {
+    RecommendationsImpl(CertificateRegistrationManager manager) {
         super(manager.inner().recommendations());
         this.manager = manager;
         this.converter = new PagedListConverter<RecommendationInner, Recommendation>() {
@@ -35,7 +35,7 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
         };
     }
 
-    public AppServiceManager manager() {
+    public CertificateRegistrationManager manager() {
         return this.manager;
     }
 
@@ -53,6 +53,54 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
     public Completable disableRecommendationForSubscriptionAsync(String name) {
         RecommendationsInner client = this.inner();
         return client.disableRecommendationForSubscriptionAsync(name).toCompletable();
+    }
+
+    @Override
+    public Observable<Recommendation> listRecommendedRulesForHostingEnvironmentAsync(final String resourceGroupName, final String hostingEnvironmentName) {
+        RecommendationsInner client = this.inner();
+        return client.listRecommendedRulesForHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName)
+        .flatMapIterable(new Func1<Page<RecommendationInner>, Iterable<RecommendationInner>>() {
+            @Override
+            public Iterable<RecommendationInner> call(Page<RecommendationInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<RecommendationInner, Recommendation>() {
+            @Override
+            public Recommendation call(RecommendationInner inner) {
+                return new RecommendationImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable disableAllForHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String environmentName) {
+        RecommendationsInner client = this.inner();
+        return client.disableAllForHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName, environmentName).toCompletable();
+    }
+
+    @Override
+    public Completable resetAllFiltersForHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String environmentName) {
+        RecommendationsInner client = this.inner();
+        return client.resetAllFiltersForHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName, environmentName).toCompletable();
+    }
+
+    @Override
+    public Observable<RecommendationRule> getRuleDetailsByHostingEnvironmentAsync(String resourceGroupName, String hostingEnvironmentName, String name) {
+        RecommendationsInner client = this.inner();
+        return client.getRuleDetailsByHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName, name)
+        .map(new Func1<RecommendationRuleInner, RecommendationRule>() {
+            @Override
+            public RecommendationRule call(RecommendationRuleInner inner) {
+                return new RecommendationRuleImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Completable disableRecommendationForHostingEnvironmentAsync(String resourceGroupName, String name, String hostingEnvironmentName, String environmentName) {
+        RecommendationsInner client = this.inner();
+        return client.disableRecommendationForHostingEnvironmentAsync(resourceGroupName, name, hostingEnvironmentName, environmentName).toCompletable();
     }
 
     @Override
@@ -123,6 +171,24 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
             @Override
             public Recommendation call(RecommendationInner inner) {
                 return wrapModel(inner);
+            }
+        });
+    }
+
+    @Override
+    public Observable<Recommendation> listHistoryForHostingEnvironmentAsync(final String resourceGroupName, final String hostingEnvironmentName) {
+        RecommendationsInner client = this.inner();
+        return client.listHistoryForHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName)
+        .flatMapIterable(new Func1<Page<RecommendationInner>, Iterable<RecommendationInner>>() {
+            @Override
+            public Iterable<RecommendationInner> call(Page<RecommendationInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<RecommendationInner, Recommendation>() {
+            @Override
+            public Recommendation call(RecommendationInner inner) {
+                return new RecommendationImpl(inner, manager());
             }
         });
     }

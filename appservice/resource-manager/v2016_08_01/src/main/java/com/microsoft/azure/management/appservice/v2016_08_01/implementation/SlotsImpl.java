@@ -27,13 +27,21 @@ import com.microsoft.azure.management.appservice.v2016_08_01.ManagedServiceIdent
 import rx.functions.Func1;
 
 class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> implements Slots, Slots.Definition, Slots.Update {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String slot;
+    private Boolean cskipDnsRegistration;
+    private Boolean cskipCustomDomainVerification;
+    private Boolean cforceDnsRegistration;
+    private String cttlInSeconds;
+    private Boolean uskipDnsRegistration;
+    private Boolean uskipCustomDomainVerification;
+    private Boolean uforceDnsRegistration;
+    private String uttlInSeconds;
     private SitePatchResource updateParameter;
 
-    SlotsImpl(String name, AppServiceManager manager) {
+    SlotsImpl(String name, WebManager manager) {
         super(name, new SiteInner());
         this.manager = manager;
         // Set resource name
@@ -42,12 +50,12 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
         this.updateParameter = new SitePatchResource();
     }
 
-    SlotsImpl(SiteInner inner, AppServiceManager manager) {
+    SlotsImpl(SiteInner inner, WebManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.slot = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.slot = IdParsingUtils.getValueFromIdByName(inner.id(), "slots");
@@ -56,14 +64,14 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 
     @Override
     public Observable<Slots> createResourceAsync() {
         WebAppsInner client = this.manager().inner().webApps();
-        return client.createOrUpdateSlotAsync(this.resourceGroupName, this.name, this.slot, this.inner())
+        return client.createOrUpdateSlotAsync(this.resourceGroupName, this.name, this.slot, this.inner(), this.cskipDnsRegistration, this.cskipCustomDomainVerification, this.cforceDnsRegistration, this.cttlInSeconds)
             .map(new Func1<SiteInner, SiteInner>() {
                @Override
                public SiteInner call(SiteInner resource) {
@@ -77,7 +85,7 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     @Override
     public Observable<Slots> updateResourceAsync() {
         WebAppsInner client = this.manager().inner().webApps();
-        return client.updateSlotAsync(this.resourceGroupName, this.name, this.slot, this.updateParameter)
+        return client.updateSlotAsync(this.resourceGroupName, this.name, this.slot, this.updateParameter, this.uskipDnsRegistration, this.uskipCustomDomainVerification, this.uforceDnsRegistration, this.uttlInSeconds)
             .map(new Func1<SiteInner, SiteInner>() {
                @Override
                public SiteInner call(SiteInner resource) {
@@ -320,6 +328,46 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     @Override
     public SlotsImpl withTags(Map<String, String> tags) {
         this.inner().withTags(tags);
+        return this;
+    }
+
+    @Override
+    public SlotsImpl withSkipDnsRegistration(Boolean skipDnsRegistration) {
+        if (isInCreateMode()) {
+            this.cskipDnsRegistration = skipDnsRegistration;
+        } else {
+            this.uskipDnsRegistration = skipDnsRegistration;
+        }
+        return this;
+    }
+
+    @Override
+    public SlotsImpl withSkipCustomDomainVerification(Boolean skipCustomDomainVerification) {
+        if (isInCreateMode()) {
+            this.cskipCustomDomainVerification = skipCustomDomainVerification;
+        } else {
+            this.uskipCustomDomainVerification = skipCustomDomainVerification;
+        }
+        return this;
+    }
+
+    @Override
+    public SlotsImpl withForceDnsRegistration(Boolean forceDnsRegistration) {
+        if (isInCreateMode()) {
+            this.cforceDnsRegistration = forceDnsRegistration;
+        } else {
+            this.uforceDnsRegistration = forceDnsRegistration;
+        }
+        return this;
+    }
+
+    @Override
+    public SlotsImpl withTtlInSeconds(String ttlInSeconds) {
+        if (isInCreateMode()) {
+            this.cttlInSeconds = ttlInSeconds;
+        } else {
+            this.uttlInSeconds = ttlInSeconds;
+        }
         return this;
     }
 

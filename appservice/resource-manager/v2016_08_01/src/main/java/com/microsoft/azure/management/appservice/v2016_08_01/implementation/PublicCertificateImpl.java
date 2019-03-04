@@ -14,12 +14,12 @@ import rx.Observable;
 import com.microsoft.azure.management.appservice.v2016_08_01.PublicCertificateLocation;
 
 class PublicCertificateImpl extends CreatableUpdatableImpl<PublicCertificate, PublicCertificateInner, PublicCertificateImpl> implements PublicCertificate, PublicCertificate.Definition, PublicCertificate.Update {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String publicCertificateName;
 
-    PublicCertificateImpl(String name, AppServiceManager manager) {
+    PublicCertificateImpl(String name, WebManager manager) {
         super(name, new PublicCertificateInner());
         this.manager = manager;
         // Set resource name
@@ -27,12 +27,12 @@ class PublicCertificateImpl extends CreatableUpdatableImpl<PublicCertificate, Pu
         //
     }
 
-    PublicCertificateImpl(PublicCertificateInner inner, AppServiceManager manager) {
+    PublicCertificateImpl(PublicCertificateInner inner, WebManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.publicCertificateName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.publicCertificateName = IdParsingUtils.getValueFromIdByName(inner.id(), "publicCertificates");
@@ -40,7 +40,7 @@ class PublicCertificateImpl extends CreatableUpdatableImpl<PublicCertificate, Pu
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

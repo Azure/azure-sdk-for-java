@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.appservice.v2018_02_01.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import java.util.Map;
 
 /**
  * Type representing AppServiceCertificateResource.
  */
-public interface AppServiceCertificateResource extends HasInner<AppServiceCertificateResourceInner>, Indexable, Refreshable<AppServiceCertificateResource>, Updatable<AppServiceCertificateResource.Update>, HasManager<AppServiceManager> {
+public interface AppServiceCertificateResource extends HasInner<AppServiceCertificateResourceInner>, Indexable, Refreshable<AppServiceCertificateResource>, Updatable<AppServiceCertificateResource.Update>, HasManager<CertificateRegistrationManager> {
     /**
      * @return the id value.
      */
@@ -90,6 +90,9 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithCertificateOrder {
            /**
             * Specifies resourceGroupName, certificateOrderName.
+            * @param resourceGroupName Name of the resource group to which the resource belongs
+            * @param certificateOrderName Name of the certificate order
+            * @return the next definition stage
             */
             WithLocation withExistingCertificateOrder(String resourceGroupName, String certificateOrderName);
         }
@@ -100,6 +103,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location Resource Location
+            * @return the next definition stage
             */
             WithCreate withLocation(String location);
         }
@@ -110,6 +115,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKeyVaultId {
             /**
              * Specifies keyVaultId.
+             * @param keyVaultId Key Vault resource Id
+             * @return the next definition stage
              */
             WithCreate withKeyVaultId(String keyVaultId);
         }
@@ -120,6 +127,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKeyVaultSecretName {
             /**
              * Specifies keyVaultSecretName.
+             * @param keyVaultSecretName Key Vault secret name
+             * @return the next definition stage
              */
             WithCreate withKeyVaultSecretName(String keyVaultSecretName);
         }
@@ -130,6 +139,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next definition stage
              */
             WithCreate withKind(String kind);
         }
@@ -140,6 +151,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags Resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -168,6 +181,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKeyVaultId {
             /**
              * Specifies keyVaultId.
+             * @param keyVaultId Key Vault resource Id
+             * @return the next update stage
              */
             Update withKeyVaultId(String keyVaultId);
         }
@@ -178,6 +193,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKeyVaultSecretName {
             /**
              * Specifies keyVaultSecretName.
+             * @param keyVaultSecretName Key Vault secret name
+             * @return the next update stage
              */
             Update withKeyVaultSecretName(String keyVaultSecretName);
         }
@@ -188,6 +205,8 @@ public interface AppServiceCertificateResource extends HasInner<AppServiceCertif
         interface WithKind {
             /**
              * Specifies kind.
+             * @param kind Kind of resource
+             * @return the next update stage
              */
             Update withKind(String kind);
         }

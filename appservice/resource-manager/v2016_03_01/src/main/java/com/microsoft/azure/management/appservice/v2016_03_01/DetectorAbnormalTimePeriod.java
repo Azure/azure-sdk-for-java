@@ -17,13 +17,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DetectorAbnormalTimePeriod {
     /**
-     * Start time of the corelated event.
+     * Start time of the correlated event.
      */
     @JsonProperty(value = "startTime")
     private DateTime startTime;
 
     /**
-     * End time of the corelated event.
+     * End time of the correlated event.
      */
     @JsonProperty(value = "endTime")
     private DateTime endTime;
@@ -67,7 +67,7 @@ public class DetectorAbnormalTimePeriod {
     private List<Solution> solutions;
 
     /**
-     * Get start time of the corelated event.
+     * Get start time of the correlated event.
      *
      * @return the startTime value
      */
@@ -76,7 +76,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Set start time of the corelated event.
+     * Set start time of the correlated event.
      *
      * @param startTime the startTime value to set
      * @return the DetectorAbnormalTimePeriod object itself.
@@ -87,7 +87,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Get end time of the corelated event.
+     * Get end time of the correlated event.
      *
      * @return the endTime value
      */
@@ -96,7 +96,7 @@ public class DetectorAbnormalTimePeriod {
     }
 
     /**
-     * Set end time of the corelated event.
+     * Set end time of the correlated event.
      *
      * @param endTime the endTime value to set
      * @return the DetectorAbnormalTimePeriod object itself.

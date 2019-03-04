@@ -13,13 +13,13 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 
 class HybridConnectionImpl extends CreatableUpdatableImpl<HybridConnection, HybridConnectionInner, HybridConnectionImpl> implements HybridConnection, HybridConnection.Definition, HybridConnection.Update {
-    private final AppServiceManager manager;
+    private final WebManager manager;
     private String resourceGroupName;
     private String name;
     private String namespaceName;
     private String relayName;
 
-    HybridConnectionImpl(String name, AppServiceManager manager) {
+    HybridConnectionImpl(String name, WebManager manager) {
         super(name, new HybridConnectionInner());
         this.manager = manager;
         // Set resource name
@@ -27,12 +27,12 @@ class HybridConnectionImpl extends CreatableUpdatableImpl<HybridConnection, Hybr
         //
     }
 
-    HybridConnectionImpl(HybridConnectionInner inner, AppServiceManager manager) {
+    HybridConnectionImpl(HybridConnectionInner inner, WebManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.relayName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.name = IdParsingUtils.getValueFromIdByName(inner.id(), "sites");
         this.namespaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "hybridConnectionNamespaces");
@@ -41,7 +41,7 @@ class HybridConnectionImpl extends CreatableUpdatableImpl<HybridConnection, Hybr
     }
 
     @Override
-    public AppServiceManager manager() {
+    public WebManager manager() {
         return this.manager;
     }
 

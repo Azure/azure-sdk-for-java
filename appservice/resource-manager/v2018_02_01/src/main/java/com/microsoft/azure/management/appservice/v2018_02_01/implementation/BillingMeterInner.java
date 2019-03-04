@@ -49,6 +49,12 @@ public class BillingMeterInner extends ProxyOnlyResource {
     private String resourceType;
 
     /**
+     * App Service OS type meter used for.
+     */
+    @JsonProperty(value = "properties.osType")
+    private String osType;
+
+    /**
      * Get meter GUID onboarded in Commerce.
      *
      * @return the meterId value
@@ -145,6 +151,26 @@ public class BillingMeterInner extends ProxyOnlyResource {
      */
     public BillingMeterInner withResourceType(String resourceType) {
         this.resourceType = resourceType;
+        return this;
+    }
+
+    /**
+     * Get app Service OS type meter used for.
+     *
+     * @return the osType value
+     */
+    public String osType() {
+        return this.osType;
+    }
+
+    /**
+     * Set app Service OS type meter used for.
+     *
+     * @param osType the osType value to set
+     * @return the BillingMeterInner object itself.
+     */
+    public BillingMeterInner withOsType(String osType) {
+        this.osType = osType;
         return this;
     }
 

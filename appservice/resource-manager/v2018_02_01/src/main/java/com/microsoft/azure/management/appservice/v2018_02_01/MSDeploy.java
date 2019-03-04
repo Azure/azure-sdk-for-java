@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import java.util.Map;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -65,6 +66,13 @@ public class MSDeploy extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.appOffline")
     private Boolean appOffline;
+
+    /**
+     * List of Add-On packages. Add-On packages implicitly enable the Do Not
+     * Delete MSDeploy rule.
+     */
+    @JsonProperty(value = "properties.addOnPackages")
+    private List<MSDeployCore> addOnPackages;
 
     /**
      * Get package URI.
@@ -211,6 +219,26 @@ public class MSDeploy extends ProxyOnlyResource {
      */
     public MSDeploy withAppOffline(Boolean appOffline) {
         this.appOffline = appOffline;
+        return this;
+    }
+
+    /**
+     * Get list of Add-On packages. Add-On packages implicitly enable the Do Not Delete MSDeploy rule.
+     *
+     * @return the addOnPackages value
+     */
+    public List<MSDeployCore> addOnPackages() {
+        return this.addOnPackages;
+    }
+
+    /**
+     * Set list of Add-On packages. Add-On packages implicitly enable the Do Not Delete MSDeploy rule.
+     *
+     * @param addOnPackages the addOnPackages value to set
+     * @return the MSDeploy object itself.
+     */
+    public MSDeploy withAddOnPackages(List<MSDeployCore> addOnPackages) {
+        this.addOnPackages = addOnPackages;
         return this;
     }
 

@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import java.util.List;
 import org.joda.time.DateTime;
+import java.util.Map;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PushSettingsInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -62,8 +63,8 @@ public class SiteConfig {
     /**
      * Xenon App Framework and version.
      */
-    @JsonProperty(value = "xenonFxVersion")
-    private String xenonFxVersion;
+    @JsonProperty(value = "windowsFxVersion")
+    private String windowsFxVersion;
 
     /**
      * &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
@@ -122,6 +123,12 @@ public class SiteConfig {
      */
     @JsonProperty(value = "appSettings")
     private List<NameValuePair> appSettings;
+
+    /**
+     * User-provided Azure storage accounts.
+     */
+    @JsonProperty(value = "azureStorageAccounts")
+    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /**
      * Connection strings.
@@ -221,7 +228,7 @@ public class SiteConfig {
     private SiteLoadBalancing loadBalancing;
 
     /**
-     * This is work around for polymophic types.
+     * This is work around for polymorphic types.
      */
     @JsonProperty(value = "experiments")
     private Experiments experiments;
@@ -301,10 +308,22 @@ public class SiteConfig {
     private Integer xManagedServiceIdentityId;
 
     /**
-     * IP security restrictions.
+     * IP security restrictions for main.
      */
     @JsonProperty(value = "ipSecurityRestrictions")
     private List<IpSecurityRestriction> ipSecurityRestrictions;
+
+    /**
+     * IP security restrictions for scm.
+     */
+    @JsonProperty(value = "scmIpSecurityRestrictions")
+    private List<IpSecurityRestriction> scmIpSecurityRestrictions;
+
+    /**
+     * IP security restrictions for scm to use main.
+     */
+    @JsonProperty(value = "scmIpSecurityRestrictionsUseMain")
+    private Boolean scmIpSecurityRestrictionsUseMain;
 
     /**
      * Http20Enabled: configures a web site to allow clients to connect over
@@ -326,6 +345,13 @@ public class SiteConfig {
      */
     @JsonProperty(value = "ftpsState")
     private FtpsState ftpsState;
+
+    /**
+     * Number of reserved instances.
+     * This setting only applies to the Consumption Plan.
+     */
+    @JsonProperty(value = "reservedInstanceCount")
+    private Integer reservedInstanceCount;
 
     /**
      * Get number of workers.
@@ -470,20 +496,20 @@ public class SiteConfig {
     /**
      * Get xenon App Framework and version.
      *
-     * @return the xenonFxVersion value
+     * @return the windowsFxVersion value
      */
-    public String xenonFxVersion() {
-        return this.xenonFxVersion;
+    public String windowsFxVersion() {
+        return this.windowsFxVersion;
     }
 
     /**
      * Set xenon App Framework and version.
      *
-     * @param xenonFxVersion the xenonFxVersion value to set
+     * @param windowsFxVersion the windowsFxVersion value to set
      * @return the SiteConfig object itself.
      */
-    public SiteConfig withXenonFxVersion(String xenonFxVersion) {
-        this.xenonFxVersion = xenonFxVersion;
+    public SiteConfig withWindowsFxVersion(String windowsFxVersion) {
+        this.windowsFxVersion = windowsFxVersion;
         return this;
     }
 
@@ -664,6 +690,26 @@ public class SiteConfig {
      */
     public SiteConfig withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
+        return this;
+    }
+
+    /**
+     * Get user-provided Azure storage accounts.
+     *
+     * @return the azureStorageAccounts value
+     */
+    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
+        return this.azureStorageAccounts;
+    }
+
+    /**
+     * Set user-provided Azure storage accounts.
+     *
+     * @param azureStorageAccounts the azureStorageAccounts value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
+        this.azureStorageAccounts = azureStorageAccounts;
         return this;
     }
 
@@ -957,7 +1003,7 @@ public class SiteConfig {
     }
 
     /**
-     * Get this is work around for polymophic types.
+     * Get this is work around for polymorphic types.
      *
      * @return the experiments value
      */
@@ -966,7 +1012,7 @@ public class SiteConfig {
     }
 
     /**
-     * Set this is work around for polymophic types.
+     * Set this is work around for polymorphic types.
      *
      * @param experiments the experiments value to set
      * @return the SiteConfig object itself.
@@ -1217,7 +1263,7 @@ public class SiteConfig {
     }
 
     /**
-     * Get iP security restrictions.
+     * Get iP security restrictions for main.
      *
      * @return the ipSecurityRestrictions value
      */
@@ -1226,13 +1272,53 @@ public class SiteConfig {
     }
 
     /**
-     * Set iP security restrictions.
+     * Set iP security restrictions for main.
      *
      * @param ipSecurityRestrictions the ipSecurityRestrictions value to set
      * @return the SiteConfig object itself.
      */
     public SiteConfig withIpSecurityRestrictions(List<IpSecurityRestriction> ipSecurityRestrictions) {
         this.ipSecurityRestrictions = ipSecurityRestrictions;
+        return this;
+    }
+
+    /**
+     * Get iP security restrictions for scm.
+     *
+     * @return the scmIpSecurityRestrictions value
+     */
+    public List<IpSecurityRestriction> scmIpSecurityRestrictions() {
+        return this.scmIpSecurityRestrictions;
+    }
+
+    /**
+     * Set iP security restrictions for scm.
+     *
+     * @param scmIpSecurityRestrictions the scmIpSecurityRestrictions value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withScmIpSecurityRestrictions(List<IpSecurityRestriction> scmIpSecurityRestrictions) {
+        this.scmIpSecurityRestrictions = scmIpSecurityRestrictions;
+        return this;
+    }
+
+    /**
+     * Get iP security restrictions for scm to use main.
+     *
+     * @return the scmIpSecurityRestrictionsUseMain value
+     */
+    public Boolean scmIpSecurityRestrictionsUseMain() {
+        return this.scmIpSecurityRestrictionsUseMain;
+    }
+
+    /**
+     * Set iP security restrictions for scm to use main.
+     *
+     * @param scmIpSecurityRestrictionsUseMain the scmIpSecurityRestrictionsUseMain value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withScmIpSecurityRestrictionsUseMain(Boolean scmIpSecurityRestrictionsUseMain) {
+        this.scmIpSecurityRestrictionsUseMain = scmIpSecurityRestrictionsUseMain;
         return this;
     }
 
@@ -1293,6 +1379,28 @@ public class SiteConfig {
      */
     public SiteConfig withFtpsState(FtpsState ftpsState) {
         this.ftpsState = ftpsState;
+        return this;
+    }
+
+    /**
+     * Get number of reserved instances.
+     This setting only applies to the Consumption Plan.
+     *
+     * @return the reservedInstanceCount value
+     */
+    public Integer reservedInstanceCount() {
+        return this.reservedInstanceCount;
+    }
+
+    /**
+     * Set number of reserved instances.
+     This setting only applies to the Consumption Plan.
+     *
+     * @param reservedInstanceCount the reservedInstanceCount value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withReservedInstanceCount(Integer reservedInstanceCount) {
+        this.reservedInstanceCount = reservedInstanceCount;
         return this;
     }
 
