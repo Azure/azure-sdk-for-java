@@ -18,55 +18,61 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Image {
     /**
-     * The id property.
+     * Id of the image.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
-     * The created property.
+     * Date the image was created.
      */
     @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
-     * The width property.
+     * Width of the image.
      */
     @JsonProperty(value = "width", access = JsonProperty.Access.WRITE_ONLY)
     private int width;
 
     /**
-     * The height property.
+     * Height of the image.
      */
     @JsonProperty(value = "height", access = JsonProperty.Access.WRITE_ONLY)
     private int height;
 
     /**
-     * The imageUri property.
+     * The URI to the (resized) image used for training.
      */
-    @JsonProperty(value = "imageUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String imageUri;
+    @JsonProperty(value = "resizedImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String resizedImageUri;
 
     /**
-     * The thumbnailUri property.
+     * The URI to the thumbnail of the original image.
      */
     @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
 
     /**
-     * The tags property.
+     * The URI to the original uploaded image.
+     */
+    @JsonProperty(value = "originalImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    private String originalImageUri;
+
+    /**
+     * Tags associated with this image.
      */
     @JsonProperty(value = "tags", access = JsonProperty.Access.WRITE_ONLY)
     private List<ImageTag> tags;
 
     /**
-     * The regions property.
+     * Regions associated with this image.
      */
     @JsonProperty(value = "regions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ImageRegion> regions;
 
     /**
-     * Get the id value.
+     * Get id of the image.
      *
      * @return the id value
      */
@@ -75,7 +81,7 @@ public class Image {
     }
 
     /**
-     * Get the created value.
+     * Get date the image was created.
      *
      * @return the created value
      */
@@ -84,7 +90,7 @@ public class Image {
     }
 
     /**
-     * Get the width value.
+     * Get width of the image.
      *
      * @return the width value
      */
@@ -93,7 +99,7 @@ public class Image {
     }
 
     /**
-     * Get the height value.
+     * Get height of the image.
      *
      * @return the height value
      */
@@ -102,16 +108,16 @@ public class Image {
     }
 
     /**
-     * Get the imageUri value.
+     * Get the URI to the (resized) image used for training.
      *
-     * @return the imageUri value
+     * @return the resizedImageUri value
      */
-    public String imageUri() {
-        return this.imageUri;
+    public String resizedImageUri() {
+        return this.resizedImageUri;
     }
 
     /**
-     * Get the thumbnailUri value.
+     * Get the URI to the thumbnail of the original image.
      *
      * @return the thumbnailUri value
      */
@@ -120,7 +126,16 @@ public class Image {
     }
 
     /**
-     * Get the tags value.
+     * Get the URI to the original uploaded image.
+     *
+     * @return the originalImageUri value
+     */
+    public String originalImageUri() {
+        return this.originalImageUri;
+    }
+
+    /**
+     * Get tags associated with this image.
      *
      * @return the tags value
      */
@@ -129,7 +144,7 @@ public class Image {
     }
 
     /**
-     * Get the regions value.
+     * Get regions associated with this image.
      *
      * @return the regions value
      */

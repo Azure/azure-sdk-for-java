@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImageIdCreateEntry {
     /**
-     * The id property.
+     * Id of the image.
      */
     @JsonProperty(value = "id")
     private UUID id;
@@ -35,7 +35,7 @@ public class ImageIdCreateEntry {
     private List<Region> regions;
 
     /**
-     * Get the id value.
+     * Get id of the image.
      *
      * @return the id value
      */
@@ -44,7 +44,7 @@ public class ImageIdCreateEntry {
     }
 
     /**
-     * Set the id value.
+     * Set id of the image.
      *
      * @param id the id value to set
      * @return the ImageIdCreateEntry object itself.

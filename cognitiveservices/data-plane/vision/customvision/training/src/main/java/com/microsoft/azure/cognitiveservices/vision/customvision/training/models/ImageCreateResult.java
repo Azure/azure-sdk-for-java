@@ -15,28 +15,29 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImageCreateResult {
     /**
-     * The sourceUrl property.
+     * Source URL of the image.
      */
     @JsonProperty(value = "sourceUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceUrl;
 
     /**
-     * Possible values include: 'OK', 'OKDuplicate', 'ErrorSource',
-     * 'ErrorImageFormat', 'ErrorImageSize', 'ErrorStorage',
-     * 'ErrorLimitExceed', 'ErrorTagLimitExceed', 'ErrorRegionLimitExceed',
-     * 'ErrorUnknown'.
+     * Status of the image creation. Possible values include: 'OK',
+     * 'OKDuplicate', 'ErrorSource', 'ErrorImageFormat', 'ErrorImageSize',
+     * 'ErrorStorage', 'ErrorLimitExceed', 'ErrorTagLimitExceed',
+     * 'ErrorRegionLimitExceed', 'ErrorUnknown',
+     * 'ErrorNegativeAndRegularTagOnSameImage'.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private ImageUploadStatus status;
+    private ImageCreateStatus status;
 
     /**
-     * The image property.
+     * The image.
      */
     @JsonProperty(value = "image", access = JsonProperty.Access.WRITE_ONLY)
     private Image image;
 
     /**
-     * Get the sourceUrl value.
+     * Get source URL of the image.
      *
      * @return the sourceUrl value
      */
@@ -45,16 +46,16 @@ public class ImageCreateResult {
     }
 
     /**
-     * Get the status value.
+     * Get status of the image creation. Possible values include: 'OK', 'OKDuplicate', 'ErrorSource', 'ErrorImageFormat', 'ErrorImageSize', 'ErrorStorage', 'ErrorLimitExceed', 'ErrorTagLimitExceed', 'ErrorRegionLimitExceed', 'ErrorUnknown', 'ErrorNegativeAndRegularTagOnSameImage'.
      *
      * @return the status value
      */
-    public ImageUploadStatus status() {
+    public ImageCreateStatus status() {
         return this.status;
     }
 
     /**
-     * Get the image value.
+     * Get the image.
      *
      * @return the image value
      */

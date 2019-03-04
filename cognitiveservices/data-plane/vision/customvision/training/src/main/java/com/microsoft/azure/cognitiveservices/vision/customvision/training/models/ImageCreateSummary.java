@@ -16,19 +16,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImageCreateSummary {
     /**
-     * The isBatchSuccessful property.
+     * True if all of the images in the batch were created successfully,
+     * otherwise false.
      */
     @JsonProperty(value = "isBatchSuccessful", access = JsonProperty.Access.WRITE_ONLY)
     private boolean isBatchSuccessful;
 
     /**
-     * The images property.
+     * List of the image creation results.
      */
     @JsonProperty(value = "images", access = JsonProperty.Access.WRITE_ONLY)
     private List<ImageCreateResult> images;
 
     /**
-     * Get the isBatchSuccessful value.
+     * Get true if all of the images in the batch were created successfully, otherwise false.
      *
      * @return the isBatchSuccessful value
      */
@@ -37,7 +38,7 @@ public class ImageCreateSummary {
     }
 
     /**
-     * Get the images value.
+     * Get list of the image creation results.
      *
      * @return the images value
      */

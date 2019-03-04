@@ -12,17 +12,17 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ImageTagCreateBatch model.
+ * Batch of image tags.
  */
 public class ImageTagCreateBatch {
     /**
-     * The tags property.
+     * Image Tag entries to include in this batch.
      */
     @JsonProperty(value = "tags")
     private List<ImageTagCreateEntry> tags;
 
     /**
-     * Get the tags value.
+     * Get image Tag entries to include in this batch.
      *
      * @return the tags value
      */
@@ -31,7 +31,7 @@ public class ImageTagCreateBatch {
     }
 
     /**
-     * Set the tags value.
+     * Set image Tag entries to include in this batch.
      *
      * @param tags the tags value to set
      * @return the ImageTagCreateBatch object itself.

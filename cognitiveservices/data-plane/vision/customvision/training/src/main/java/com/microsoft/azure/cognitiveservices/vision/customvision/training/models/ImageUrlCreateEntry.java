@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImageUrlCreateEntry {
     /**
-     * The url property.
+     * Url of the image.
      */
     @JsonProperty(value = "url")
     private String url;
@@ -35,7 +35,7 @@ public class ImageUrlCreateEntry {
     private List<Region> regions;
 
     /**
-     * Get the url value.
+     * Get url of the image.
      *
      * @return the url value
      */
@@ -44,7 +44,7 @@ public class ImageUrlCreateEntry {
     }
 
     /**
-     * Set the url value.
+     * Set url of the image.
      *
      * @param url the url value to set
      * @return the ImageUrlCreateEntry object itself.

@@ -52,7 +52,7 @@ public class IterationPerformance {
     private Double averagePrecision;
 
     /**
-     * Get the perTagPerformance value.
+     * Get gets the per-tag performance details for this iteration.
      *
      * @return the perTagPerformance value
      */
@@ -61,7 +61,7 @@ public class IterationPerformance {
     }
 
     /**
-     * Get the precision value.
+     * Get gets the precision.
      *
      * @return the precision value
      */
@@ -70,7 +70,7 @@ public class IterationPerformance {
     }
 
     /**
-     * Get the precisionStdDeviation value.
+     * Get gets the standard deviation for the precision.
      *
      * @return the precisionStdDeviation value
      */
@@ -79,7 +79,7 @@ public class IterationPerformance {
     }
 
     /**
-     * Get the recall value.
+     * Get gets the recall.
      *
      * @return the recall value
      */
@@ -88,7 +88,7 @@ public class IterationPerformance {
     }
 
     /**
-     * Get the recallStdDeviation value.
+     * Get gets the standard deviation for the recall.
      *
      * @return the recallStdDeviation value
      */
@@ -97,7 +97,7 @@ public class IterationPerformance {
     }
 
     /**
-     * Get the averagePrecision value.
+     * Get gets the average precision when applicable.
      *
      * @return the averagePrecision value
      */
