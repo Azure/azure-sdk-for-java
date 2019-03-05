@@ -17,7 +17,7 @@
     <artifactId>azconfig</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>Microsoft Azure SDK for App Configuration</name>
+    <name>Azure App Configuration SDK component</name>
     <description>The Azure App Configuration Java library.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -29,6 +29,29 @@
     </distributionManagement>
 
     <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>write-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>
+                                ${project.build.outputDirectory}/maven.properties
+                            </outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
