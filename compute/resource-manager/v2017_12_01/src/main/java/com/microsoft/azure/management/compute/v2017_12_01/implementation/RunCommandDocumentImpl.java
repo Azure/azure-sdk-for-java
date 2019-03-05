@@ -23,6 +23,7 @@ class RunCommandDocumentImpl extends IndexableRefreshableWrapperImpl<RunCommandD
     RunCommandDocumentImpl(RunCommandDocumentInner inner,  ComputeManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.location = IdParsingUtils.getValueFromIdByName(inner.id(), "locations");
         this.commandId = IdParsingUtils.getValueFromIdByName(inner.id(), "runCommands");
     }
