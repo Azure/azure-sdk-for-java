@@ -7,6 +7,7 @@ package com.microsoft.azure.eventhubs.extensions.appender;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.AbstractManager;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public final class EventHubsManager extends AbstractManager {
     private EventHubClient eventHubSender;
 
     protected EventHubsManager(final String name, final String eventHubConnectionString) {
-        super(name);
+        super(LoggerContext.getContext(true), name);
         this.eventHubConnectionString = eventHubConnectionString;
     }
 
