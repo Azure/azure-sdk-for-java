@@ -31,7 +31,7 @@ public class ContainerServiceOrchestratorProfile {
     private String orchestratorVersion;
 
     /**
-     * Get the orchestratorType value.
+     * Get the orchestrator to use to manage container service cluster resources. Valid values are Kubernetes, Swarm, DCOS, DockerCE and Custom. Possible values include: 'Kubernetes', 'Swarm', 'DCOS', 'DockerCE', 'Custom'.
      *
      * @return the orchestratorType value
      */
@@ -40,7 +40,7 @@ public class ContainerServiceOrchestratorProfile {
     }
 
     /**
-     * Set the orchestratorType value.
+     * Set the orchestrator to use to manage container service cluster resources. Valid values are Kubernetes, Swarm, DCOS, DockerCE and Custom. Possible values include: 'Kubernetes', 'Swarm', 'DCOS', 'DockerCE', 'Custom'.
      *
      * @param orchestratorType the orchestratorType value to set
      * @return the ContainerServiceOrchestratorProfile object itself.
@@ -51,7 +51,7 @@ public class ContainerServiceOrchestratorProfile {
     }
 
     /**
-     * Get the orchestratorVersion value.
+     * Get the version of the orchestrator to use. You can specify the major.minor.patch part of the actual version.For example, you can specify version as "1.6.11".
      *
      * @return the orchestratorVersion value
      */
@@ -60,7 +60,7 @@ public class ContainerServiceOrchestratorProfile {
     }
 
     /**
-     * Set the orchestratorVersion value.
+     * Set the version of the orchestrator to use. You can specify the major.minor.patch part of the actual version.For example, you can specify version as "1.6.11".
      *
      * @param orchestratorVersion the orchestratorVersion value to set
      * @return the ContainerServiceOrchestratorProfile object itself.

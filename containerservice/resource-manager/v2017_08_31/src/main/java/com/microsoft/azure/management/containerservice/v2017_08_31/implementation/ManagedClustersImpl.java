@@ -80,41 +80,22 @@ class ManagedClustersImpl extends GroupableResourcesCoreImpl<ManagedCluster, Man
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<ManagedClusterInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ManagedClustersInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<ManagedClusterInner>, Observable<Page<ManagedClusterInner>>>() {
-            @Override
-            public Observable<Page<ManagedClusterInner>> call(Page<ManagedClusterInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ManagedCluster> listByResourceGroupAsync(String resourceGroupName) {
         ManagedClustersInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<ManagedClusterInner>, Observable<Page<ManagedClusterInner>>>() {
-            @Override
-            public Observable<Page<ManagedClusterInner>> call(Page<ManagedClusterInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ManagedClusterInner>, Iterable<ManagedClusterInner>>() {
             @Override
             public Iterable<ManagedClusterInner> call(Page<ManagedClusterInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ManagedClusterInner, ManagedCluster>() {
             @Override
             public ManagedCluster call(ManagedClusterInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -123,41 +104,22 @@ class ManagedClustersImpl extends GroupableResourcesCoreImpl<ManagedCluster, Man
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<ManagedClusterInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ManagedClustersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ManagedClusterInner>, Observable<Page<ManagedClusterInner>>>() {
-            @Override
-            public Observable<Page<ManagedClusterInner>> call(Page<ManagedClusterInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ManagedCluster> listAsync() {
         ManagedClustersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ManagedClusterInner>, Observable<Page<ManagedClusterInner>>>() {
-            @Override
-            public Observable<Page<ManagedClusterInner>> call(Page<ManagedClusterInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ManagedClusterInner>, Iterable<ManagedClusterInner>>() {
             @Override
             public Iterable<ManagedClusterInner> call(Page<ManagedClusterInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ManagedClusterInner, ManagedCluster>() {
             @Override
             public ManagedCluster call(ManagedClusterInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -175,8 +137,16 @@ class ManagedClustersImpl extends GroupableResourcesCoreImpl<ManagedCluster, Man
         return new ManagedClusterImpl(name, new ManagedClusterInner(), this.manager());
     }
 
-    private ManagedClusterAccessProfileImpl wrapModel(ManagedClusterAccessProfileInner inner) {
+    private ManagedClusterAccessProfileImpl wrapManagedClusterAccessProfileModel(ManagedClusterAccessProfileInner inner) {
         return  new ManagedClusterAccessProfileImpl(inner, manager());
+    }
+
+    private Observable<ManagedClusterAccessProfileInner> getManagedClusterAccessProfileInnerUsingManagedClustersInnerAsync(String id) {
+        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
+        String resourceName = IdParsingUtils.getValueFromIdByName(id, "managedClusters");
+        String roleName = IdParsingUtils.getValueFromIdByName(id, "accessProfiles");
+        ManagedClustersInner client = this.inner();
+        return client.getAccessProfilesAsync(resourceGroupName, resourceName, roleName);
     }
 
     @Override
@@ -186,9 +156,21 @@ class ManagedClustersImpl extends GroupableResourcesCoreImpl<ManagedCluster, Man
         .map(new Func1<ManagedClusterAccessProfileInner, ManagedClusterAccessProfile>() {
             @Override
             public ManagedClusterAccessProfile call(ManagedClusterAccessProfileInner inner) {
-                return wrapModel(inner);
+                return wrapManagedClusterAccessProfileModel(inner);
             }
        });
+    }
+
+    @Override
+    public Observable<ManagedClusterAccessProfile> getAccessProfileAsync(String resourceGroupName, String resourceName, String roleName) {
+        ManagedClustersInner client = this.inner();
+        return client.getAccessProfileAsync(resourceGroupName, resourceName, roleName)
+        .map(new Func1<ManagedClusterAccessProfileInner, ManagedClusterAccessProfile>() {
+            @Override
+            public ManagedClusterAccessProfile call(ManagedClusterAccessProfileInner inner) {
+                return new ManagedClusterAccessProfileImpl(inner, manager());
+            }
+        });
     }
 
     @Override
