@@ -561,4 +561,8 @@ class APISpec extends Specification {
             create(*_) >> policy
         }
     }
+
+    def getTestMode(){
+        return System.getenv("AZURE_TEST_MODE")
+    }
 }

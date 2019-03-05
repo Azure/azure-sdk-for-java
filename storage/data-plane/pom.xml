@@ -11,6 +11,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-client-sdk-parent</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../../pom.client.xml</relativePath>
+    </parent>
 
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
@@ -18,7 +24,15 @@
 
     <name>Azure Storage Blob</name>
     <description>The Azure Storage Java Blob library.</description>
-    <url>https://github.com/Azure/azure-storage-java</url>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+    <distributionManagement>
+        <site>
+            <id>azure-java-build-docs</id>
+            <url>${site.url}/site/${project.artifactId}</url>
+        </site>
+    </distributionManagement>
+
 
     <licenses>
         <license>
@@ -28,11 +42,7 @@
         </license>
     </licenses>
 
-    <scm>
-        <url>scm:git:https://github.com/Azure/azure-storage-java</url>
-        <connection>scm:git:git@github.com:Azure/azure-storage-java.git</connection>
-        <tag>HEAD</tag>
-    </scm>
+    <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,12 +50,6 @@
             <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     </properties>
 
-    <developers>
-        <developer>
-            <id>microsoft</id>
-            <name>Microsoft</name>
-        </developer>
-    </developers>
 
     <pluginRepositories>
         <pluginRepository>
@@ -62,52 +66,54 @@
     </pluginRepositories>
 
     <dependencies>
+
         <dependency>
             <groupId>com.microsoft.rest.v2</groupId>
             <artifactId>client-runtime</artifactId>
-            <version>2.0.2</version>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.25</version>
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.spockframework</groupId>
             <artifactId>spock-core</artifactId>
             <scope>test</scope>
-            <version>1.1-groovy-2.4</version>
         </dependency>
+
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>2.4.13</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
-            <version>3.2.7</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.objenesis</groupId>
             <artifactId>objenesis</artifactId>
-            <version>2.6</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>uk.org.lidalia</groupId>
             <artifactId>slf4j-test</artifactId>
-            <version>1.2.0</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>

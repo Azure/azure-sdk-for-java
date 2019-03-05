@@ -18,9 +18,11 @@ package com.microsoft.azure.storage
 import com.microsoft.azure.storage.blob.*
 import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
+import org.junit.Assume
 
 class ServiceAPITest extends APISpec {
     def setup() {
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase("RECORD"))
         RetentionPolicy disabled = new RetentionPolicy().withEnabled(false)
         primaryServiceURL.setProperties(new StorageServiceProperties()
                 .withStaticWebsite(new StaticWebsite().withEnabled(false))

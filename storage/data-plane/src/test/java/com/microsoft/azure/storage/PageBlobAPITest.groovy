@@ -20,6 +20,7 @@ import com.microsoft.azure.storage.blob.models.*
 import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
 import io.reactivex.Flowable
+import org.junit.Assume
 import spock.lang.Unroll
 
 import java.security.MessageDigest
@@ -28,6 +29,7 @@ class PageBlobAPITest extends APISpec {
     PageBlobURL bu
 
     def setup() {
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase("RECORD"))
         bu = cu.createPageBlobURL(generateBlobName())
         bu.create(PageBlobURL.PAGE_BYTES, null, null, null, null, null).blockingGet()
     }

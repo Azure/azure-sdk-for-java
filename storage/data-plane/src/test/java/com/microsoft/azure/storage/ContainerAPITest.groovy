@@ -25,6 +25,7 @@ import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Flowable
 import io.reactivex.Single
+import org.junit.Assume
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
@@ -34,6 +35,7 @@ class ContainerAPITest extends APISpec {
 
     def "Create all null"() {
         setup:
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase("RECORD"))
         // Overwrite the existing cu, which has already been created
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 

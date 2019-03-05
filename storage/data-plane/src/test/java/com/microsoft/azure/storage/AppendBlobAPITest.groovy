@@ -21,6 +21,7 @@ import com.microsoft.rest.v2.http.HttpPipeline
 import com.microsoft.rest.v2.http.UnexpectedLengthException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
+import org.junit.Assume
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -30,6 +31,7 @@ class AppendBlobAPITest extends APISpec {
     AppendBlobURL bu
 
     def setup() {
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase("RECORD"))
         bu = cu.createAppendBlobURL(generateBlobName())
         bu.create(null, null, null, null).blockingGet()
     }

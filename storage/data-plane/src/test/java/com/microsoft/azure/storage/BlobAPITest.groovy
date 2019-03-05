@@ -23,6 +23,7 @@ import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import io.reactivex.Single
+import org.junit.Assume
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
@@ -32,6 +33,7 @@ class BlobAPITest extends APISpec {
     BlobURL bu
 
     def setup() {
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase("RECORD"))
         bu = cu.createBlockBlobURL(generateBlobName())
         bu.upload(defaultFlowable, defaultDataSize, null, null,
                 null, null).blockingGet()

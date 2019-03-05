@@ -104,6 +104,8 @@
       <client-runtime.version>1.6.1</client-runtime.version>
       <commons-codec.version>1.10</commons-codec.version>
       <spotbugs.version>3.1.11</spotbugs.version>
+      <slf4j-api.version>1.7.25</slf4j-api.version>
+
 
       <!-- Test Dependency Versions -->
       <adal4j.version>1.4.0</adal4j.version>
@@ -136,6 +138,12 @@
       <maven-site-plugin.version>3.7.1</maven-site-plugin.version>
       <maven-project-info-reports-plugin.version>3.0.0</maven-project-info-reports-plugin.version>
       <commons-io.version>2.4</commons-io.version>
+      <spock-core.version>1.1-groovy-2.4</spock-core.version>
+      <groovy-all.version>2.4.13</groovy-all.version>
+      <cglib-nodep.version>3.2.7</cglib-nodep.version>
+      <objenesis.version>2.6</objenesis.version>
+      <slf4j-test.version>1.2.0</slf4j-test.version>
+      <client-runtime.version.v2>2.0.2</client-runtime.version.v2>
    </properties>
 
    <dependencyManagement>
@@ -154,12 +162,6 @@
             <version>${adal4j.version}</version>
          </dependency>
 
-         <!-- Other Microsoft Dependencies -->
-         <dependency>
-            <groupId>com.microsoft.rest</groupId>
-            <artifactId>client-runtime</artifactId>
-            <version>${client-runtime.version}</version>
-         </dependency>
 
          <!-- Jackson Dependencies -->
          <dependency>
@@ -180,6 +182,24 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
             <version>${commons-codec.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>com.microsoft.rest</groupId>
+            <artifactId>client-runtime</artifactId>
+            <version>${client-runtime.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>com.microsoft.rest.v2</groupId>
+            <artifactId>client-runtime</artifactId>
+            <version>${client-runtime.version.v2}</version>
          </dependency>
 
          <!-- Test dependencies -->
@@ -246,6 +266,40 @@
             <scope>test</scope>
          </dependency>
 
+         <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <scope>test</scope>
+            <version>${spock-core.version}</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>${groovy-all.version}</version>
+            <scope>test</scope>
+         </dependency>
+
+         <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>${cglib-nodep.version}</version>
+            <scope>test</scope>
+         </dependency>
+         <dependency>
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>${objenesis.version}</version>
+            <scope>test</scope>
+         </dependency>
+
+         <dependency>
+            <groupId>uk.org.lidalia</groupId>
+            <artifactId>slf4j-test</artifactId>
+            <version>${slf4j-test.version}</version>
+            <scope>test</scope>
+         </dependency>
+
       </dependencies>
    </dependencyManagement>
 
@@ -273,8 +327,8 @@
                <linkXRef>true</linkXRef>
 
                <!-- TODO soon - enable these failure modes -->
-               <failsOnError>false</failsOnError>
-               <failOnViolation>false</failOnViolation>
+               <failsOnError>true</failsOnError>
+               <failOnViolation>true</failOnViolation>
             </configuration>
             <executions>
                <execution>
@@ -615,8 +669,8 @@
                <linkXRef>true</linkXRef>
 
                <!-- TODO soon - enable these failure modes -->
-               <failsOnError>false</failsOnError>
-               <failOnViolation>false</failOnViolation>
+               <failsOnError>true</failsOnError>
+               <failOnViolation>true</failOnViolation>
             </configuration>
             <reportSets>
                <reportSet>
@@ -811,6 +865,7 @@
    <modules>
       <module>./batch/data-plane</module>
       <module>./keyvault/data-plane</module>
+      <module>./storage/data-plane</module>
    </modules>
 
 </project>

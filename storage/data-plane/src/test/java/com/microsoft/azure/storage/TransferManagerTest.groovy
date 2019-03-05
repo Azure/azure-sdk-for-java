@@ -11,6 +11,7 @@ import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.functions.Consumer
+import org.junit.Assume
 import org.reactivestreams.Publisher
 import org.reactivestreams.Subscriber
 import spock.lang.Unroll
@@ -37,6 +38,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload file"() {
         setup:
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase("RECORD"))
         def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:
