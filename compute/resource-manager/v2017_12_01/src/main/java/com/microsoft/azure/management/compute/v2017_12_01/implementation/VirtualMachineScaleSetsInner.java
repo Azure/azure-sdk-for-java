@@ -42,6 +42,10 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
+import com.microsoft.azure.LongRunningFinalState;
+import com.microsoft.azure.LongRunningOperationOptions;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -874,7 +878,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
         vmInstanceIDs.withInstanceIds(null);
         Observable<Response<ResponseBody>> observable = service.deallocate(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
@@ -952,7 +956,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
             vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Observable<Response<ResponseBody>> observable = service.deallocate(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1210,7 +1214,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs();
         vmInstanceIDs.withInstanceIds(instanceIds);
         Observable<Response<ResponseBody>> observable = service.deleteInstances(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -1933,7 +1937,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
         vmInstanceIDs.withInstanceIds(null);
         Observable<Response<ResponseBody>> observable = service.powerOff(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
     /**
      * Power off (stop) one or more virtual machines in a VM scale set. Note that resources are still attached and you are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
@@ -2011,7 +2015,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
             vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Observable<Response<ResponseBody>> observable = service.powerOff(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -2262,7 +2266,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
         vmInstanceIDs.withInstanceIds(null);
         Observable<Response<ResponseBody>> observable = service.restart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
     /**
      * Restarts one or more virtual machines in a VM scale set.
@@ -2340,7 +2344,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
             vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Observable<Response<ResponseBody>> observable = service.restart(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -2591,7 +2595,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
         vmInstanceIDs.withInstanceIds(null);
         Observable<Response<ResponseBody>> observable = service.start(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
     /**
      * Starts one or more virtual machines in a VM scale set.
@@ -2669,7 +2673,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
             vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Observable<Response<ResponseBody>> observable = service.start(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -2920,7 +2924,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
         vmInstanceIDs.withInstanceIds(null);
         Observable<Response<ResponseBody>> observable = service.redeploy(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
     /**
      * Redeploy one or more virtual machines in a VM scale set.
@@ -2998,7 +3002,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
             vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Observable<Response<ResponseBody>> observable = service.redeploy(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -3181,7 +3185,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3195,7 +3199,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3208,7 +3212,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3225,7 +3229,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3249,10 +3253,10 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
         vmInstanceIDs.withInstanceIds(null);
         Observable<Response<ResponseBody>> observable = service.performMaintenance(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3267,7 +3271,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3281,7 +3285,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3299,7 +3303,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3327,11 +3331,11 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
             vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Observable<Response<ResponseBody>> observable = service.performMaintenance(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3345,7 +3349,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3358,7 +3362,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3375,7 +3379,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3413,7 +3417,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3428,7 +3432,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3442,7 +3446,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3460,7 +3464,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
     }
 
     /**
-     * Perform maintenance on one or more virtual machines in a VM scale set.
+     * Perform maintenance on one or more virtual machines in a VM scale set. Operation on instances which are not eligible for perform maintenance will be failed. Please refer to best practices for more details: https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/virtual-machine-scale-sets-maintenance-notifications.
      *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
@@ -3585,7 +3589,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
         VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceRequiredIDs();
         vmInstanceIDs.withInstanceIds(instanceIds);
         Observable<Response<ResponseBody>> observable = service.updateInstances(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -3754,7 +3758,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
         vmInstanceIDs.withInstanceIds(null);
         Observable<Response<ResponseBody>> observable = service.reimage(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
     /**
      * Reimages (upgrade the operating system) one or more virtual machines in a VM scale set.
@@ -3832,7 +3836,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
             vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Observable<Response<ResponseBody>> observable = service.reimage(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
@@ -4083,7 +4087,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
         VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs = new VirtualMachineScaleSetVMInstanceIDs();
         vmInstanceIDs.withInstanceIds(null);
         Observable<Response<ResponseBody>> observable = service.reimageAll(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
     /**
      * Reimages all the disks ( including data disks ) in the virtual machines in a VM scale set. This operation is only supported for managed disks.
@@ -4161,7 +4165,7 @@ public class VirtualMachineScaleSetsInner implements InnerSupportsGet<VirtualMac
             vmInstanceIDs.withInstanceIds(instanceIds);
         }
         Observable<Response<ResponseBody>> observable = service.reimageAll(resourceGroupName, vmScaleSetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), vmInstanceIDs, this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new LongRunningOperationOptions().withFinalStateVia(LongRunningFinalState.AZURE_ASYNC_OPERATION), new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
 
     /**
