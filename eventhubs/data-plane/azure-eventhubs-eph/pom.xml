@@ -1,18 +1,22 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>azure-eventhubs-eph</artifactId>
+
+    <name>Microsoft Azure SDK for Event Hubs Eph</name>
+    <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
+    <version>2.2.0</version>
 
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-eventhubs-clients</artifactId>
         <version>2.0.0</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-
-    <version>2.2.0</version>
-
-    <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>azure-eventhubs-eph</artifactId>
-    <name>azure-eventhubs-eph</name>
 
     <scm>
         <url>scm:git:https://github.com/Azure/azure-event-hubs</url>
@@ -27,14 +31,11 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-storage</artifactId>
-            <version>8.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.8.5</version>
         </dependency>
     </dependencies>
 
-    <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
 </project>
