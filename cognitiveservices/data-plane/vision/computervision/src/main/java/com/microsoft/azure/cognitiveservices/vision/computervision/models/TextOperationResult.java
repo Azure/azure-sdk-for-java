@@ -11,7 +11,7 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The TextOperationResult model.
+ * Result of recognition text operation.
  */
 public class TextOperationResult {
     /**
@@ -22,13 +22,13 @@ public class TextOperationResult {
     private TextOperationStatusCodes status;
 
     /**
-     * The recognitionResult property.
+     * Text recognition result of the text operation.
      */
     @JsonProperty(value = "recognitionResult")
-    private RecognitionResult recognitionResult;
+    private TextRecognitionResult recognitionResult;
 
     /**
-     * Get the status value.
+     * Get status of the text operation. Possible values include: 'Not Started', 'Running', 'Failed', 'Succeeded'.
      *
      * @return the status value
      */
@@ -37,7 +37,7 @@ public class TextOperationResult {
     }
 
     /**
-     * Set the status value.
+     * Set status of the text operation. Possible values include: 'Not Started', 'Running', 'Failed', 'Succeeded'.
      *
      * @param status the status value to set
      * @return the TextOperationResult object itself.
@@ -48,21 +48,21 @@ public class TextOperationResult {
     }
 
     /**
-     * Get the recognitionResult value.
+     * Get text recognition result of the text operation.
      *
      * @return the recognitionResult value
      */
-    public RecognitionResult recognitionResult() {
+    public TextRecognitionResult recognitionResult() {
         return this.recognitionResult;
     }
 
     /**
-     * Set the recognitionResult value.
+     * Set text recognition result of the text operation.
      *
      * @param recognitionResult the recognitionResult value to set
      * @return the TextOperationResult object itself.
      */
-    public TextOperationResult withRecognitionResult(RecognitionResult recognitionResult) {
+    public TextOperationResult withRecognitionResult(TextRecognitionResult recognitionResult) {
         this.recognitionResult = recognitionResult;
         return this;
     }

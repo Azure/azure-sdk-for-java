@@ -12,23 +12,29 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Word model.
+ * Json object representing a recognized word.
  */
 public class Word {
     /**
-     * The boundingBox property.
+     * Bounding box of a recognized word.
      */
-    @JsonProperty(value = "boundingBox")
+    @JsonProperty(value = "boundingBox", required = true)
     private List<Integer> boundingBox;
 
     /**
-     * The text property.
+     * The text content of the word.
      */
-    @JsonProperty(value = "text")
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /**
-     * Get the boundingBox value.
+     * Qualitative confidence measure. Possible values include: 'High', 'Low'.
+     */
+    @JsonProperty(value = "confidence")
+    private TextRecognitionResultConfidenceClass confidence;
+
+    /**
+     * Get bounding box of a recognized word.
      *
      * @return the boundingBox value
      */
@@ -37,7 +43,7 @@ public class Word {
     }
 
     /**
-     * Set the boundingBox value.
+     * Set bounding box of a recognized word.
      *
      * @param boundingBox the boundingBox value to set
      * @return the Word object itself.
@@ -48,7 +54,7 @@ public class Word {
     }
 
     /**
-     * Get the text value.
+     * Get the text content of the word.
      *
      * @return the text value
      */
@@ -57,13 +63,33 @@ public class Word {
     }
 
     /**
-     * Set the text value.
+     * Set the text content of the word.
      *
      * @param text the text value to set
      * @return the Word object itself.
      */
     public Word withText(String text) {
         this.text = text;
+        return this;
+    }
+
+    /**
+     * Get qualitative confidence measure. Possible values include: 'High', 'Low'.
+     *
+     * @return the confidence value
+     */
+    public TextRecognitionResultConfidenceClass confidence() {
+        return this.confidence;
+    }
+
+    /**
+     * Set qualitative confidence measure. Possible values include: 'High', 'Low'.
+     *
+     * @param confidence the confidence value to set
+     * @return the Word object itself.
+     */
+    public Word withConfidence(TextRecognitionResultConfidenceClass confidence) {
+        this.confidence = confidence;
         return this;
     }
 

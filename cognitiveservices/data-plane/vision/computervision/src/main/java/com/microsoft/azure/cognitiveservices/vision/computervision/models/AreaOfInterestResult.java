@@ -11,15 +11,14 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Result of image analysis using a specific domain model including additional
- * metadata.
+ * Result of AreaOfInterest operation.
  */
-public class DomainModelResults {
+public class AreaOfInterestResult {
     /**
-     * Model-specific response.
+     * A bounding box for an area of interest inside an image.
      */
-    @JsonProperty(value = "result")
-    private Object result;
+    @JsonProperty(value = "areaOfInterest", access = JsonProperty.Access.WRITE_ONLY)
+    private BoundingRect areaOfInterest;
 
     /**
      * Id of the REST API request.
@@ -34,23 +33,12 @@ public class DomainModelResults {
     private ImageMetadata metadata;
 
     /**
-     * Get model-specific response.
+     * Get a bounding box for an area of interest inside an image.
      *
-     * @return the result value
+     * @return the areaOfInterest value
      */
-    public Object result() {
-        return this.result;
-    }
-
-    /**
-     * Set model-specific response.
-     *
-     * @param result the result value to set
-     * @return the DomainModelResults object itself.
-     */
-    public DomainModelResults withResult(Object result) {
-        this.result = result;
-        return this;
+    public BoundingRect areaOfInterest() {
+        return this.areaOfInterest;
     }
 
     /**
@@ -66,9 +54,9 @@ public class DomainModelResults {
      * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
-     * @return the DomainModelResults object itself.
+     * @return the AreaOfInterestResult object itself.
      */
-    public DomainModelResults withRequestId(String requestId) {
+    public AreaOfInterestResult withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -86,9 +74,9 @@ public class DomainModelResults {
      * Set the metadata value.
      *
      * @param metadata the metadata value to set
-     * @return the DomainModelResults object itself.
+     * @return the AreaOfInterestResult object itself.
      */
-    public DomainModelResults withMetadata(ImageMetadata metadata) {
+    public AreaOfInterestResult withMetadata(ImageMetadata metadata) {
         this.metadata = metadata;
         return this;
     }

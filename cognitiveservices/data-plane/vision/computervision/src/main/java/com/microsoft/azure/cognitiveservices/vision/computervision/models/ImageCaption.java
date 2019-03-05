@@ -27,7 +27,7 @@ public class ImageCaption {
     private double confidence;
 
     /**
-     * Get the text value.
+     * Get the text of the caption.
      *
      * @return the text value
      */
@@ -36,7 +36,7 @@ public class ImageCaption {
     }
 
     /**
-     * Set the text value.
+     * Set the text of the caption.
      *
      * @param text the text value to set
      * @return the ImageCaption object itself.
@@ -47,7 +47,7 @@ public class ImageCaption {
     }
 
     /**
-     * Get the confidence value.
+     * Get the level of confidence the service has in the caption.
      *
      * @return the confidence value
      */
@@ -56,7 +56,7 @@ public class ImageCaption {
     }
 
     /**
-     * Set the confidence value.
+     * Set the level of confidence the service has in the caption.
      *
      * @param confidence the confidence value to set
      * @return the ImageCaption object itself.
