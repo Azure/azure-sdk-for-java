@@ -12,67 +12,50 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The TextRecognitionResult model.
+ * Json object representing a recognized text region.
  */
 public class TextRecognitionResult {
     /**
-     * The lines property.
-     */
-    @JsonProperty(value = "lines", required = true)
-    private List<Line> lines;
-
-    /**
-     * The page property.
+     * The 1-based page number of the recognition result.
      */
     @JsonProperty(value = "page")
     private Integer page;
 
     /**
-     * The width property.
-     */
-    @JsonProperty(value = "width")
-    private Double width;
-
-    /**
-     * The height property.
-     */
-    @JsonProperty(value = "height")
-    private Double height;
-
-    /**
-     * The clockwiseOrientation property.
+     * The orientation of the image in degrees in the clockwise direction.
+     * Range between [0, 360).
      */
     @JsonProperty(value = "clockwiseOrientation")
     private Double clockwiseOrientation;
 
     /**
-     * Possible values include: 'pixel', 'inch'.
+     * The width of the image in pixels or the PDF in inches.
+     */
+    @JsonProperty(value = "width")
+    private Double width;
+
+    /**
+     * The height of the image in pixels or the PDF in inches.
+     */
+    @JsonProperty(value = "height")
+    private Double height;
+
+    /**
+     * The unit used in the Width, Height and BoundingBox. For images, the unit
+     * is "pixel". For PDF, the unit is "inch". Possible values include:
+     * 'pixel', 'inch'.
      */
     @JsonProperty(value = "unit")
     private TextRecognitionResultDimensionUnit unit;
 
     /**
-     * Get the lines value.
-     *
-     * @return the lines value
+     * A list of recognized text lines.
      */
-    public List<Line> lines() {
-        return this.lines;
-    }
+    @JsonProperty(value = "lines", required = true)
+    private List<Line> lines;
 
     /**
-     * Set the lines value.
-     *
-     * @param lines the lines value to set
-     * @return the TextRecognitionResult object itself.
-     */
-    public TextRecognitionResult withLines(List<Line> lines) {
-        this.lines = lines;
-        return this;
-    }
-
-    /**
-     * Get the page value.
+     * Get the 1-based page number of the recognition result.
      *
      * @return the page value
      */
@@ -81,7 +64,7 @@ public class TextRecognitionResult {
     }
 
     /**
-     * Set the page value.
+     * Set the 1-based page number of the recognition result.
      *
      * @param page the page value to set
      * @return the TextRecognitionResult object itself.
@@ -92,47 +75,7 @@ public class TextRecognitionResult {
     }
 
     /**
-     * Get the width value.
-     *
-     * @return the width value
-     */
-    public Double width() {
-        return this.width;
-    }
-
-    /**
-     * Set the width value.
-     *
-     * @param width the width value to set
-     * @return the TextRecognitionResult object itself.
-     */
-    public TextRecognitionResult withWidth(Double width) {
-        this.width = width;
-        return this;
-    }
-
-    /**
-     * Get the height value.
-     *
-     * @return the height value
-     */
-    public Double height() {
-        return this.height;
-    }
-
-    /**
-     * Set the height value.
-     *
-     * @param height the height value to set
-     * @return the TextRecognitionResult object itself.
-     */
-    public TextRecognitionResult withHeight(Double height) {
-        this.height = height;
-        return this;
-    }
-
-    /**
-     * Get the clockwiseOrientation value.
+     * Get the orientation of the image in degrees in the clockwise direction. Range between [0, 360).
      *
      * @return the clockwiseOrientation value
      */
@@ -141,7 +84,7 @@ public class TextRecognitionResult {
     }
 
     /**
-     * Set the clockwiseOrientation value.
+     * Set the orientation of the image in degrees in the clockwise direction. Range between [0, 360).
      *
      * @param clockwiseOrientation the clockwiseOrientation value to set
      * @return the TextRecognitionResult object itself.
@@ -152,7 +95,47 @@ public class TextRecognitionResult {
     }
 
     /**
-     * Get possible values include: 'pixel', 'inch'.
+     * Get the width of the image in pixels or the PDF in inches.
+     *
+     * @return the width value
+     */
+    public Double width() {
+        return this.width;
+    }
+
+    /**
+     * Set the width of the image in pixels or the PDF in inches.
+     *
+     * @param width the width value to set
+     * @return the TextRecognitionResult object itself.
+     */
+    public TextRecognitionResult withWidth(Double width) {
+        this.width = width;
+        return this;
+    }
+
+    /**
+     * Get the height of the image in pixels or the PDF in inches.
+     *
+     * @return the height value
+     */
+    public Double height() {
+        return this.height;
+    }
+
+    /**
+     * Set the height of the image in pixels or the PDF in inches.
+     *
+     * @param height the height value to set
+     * @return the TextRecognitionResult object itself.
+     */
+    public TextRecognitionResult withHeight(Double height) {
+        this.height = height;
+        return this;
+    }
+
+    /**
+     * Get the unit used in the Width, Height and BoundingBox. For images, the unit is "pixel". For PDF, the unit is "inch". Possible values include: 'pixel', 'inch'.
      *
      * @return the unit value
      */
@@ -161,13 +144,33 @@ public class TextRecognitionResult {
     }
 
     /**
-     * Set possible values include: 'pixel', 'inch'.
+     * Set the unit used in the Width, Height and BoundingBox. For images, the unit is "pixel". For PDF, the unit is "inch". Possible values include: 'pixel', 'inch'.
      *
      * @param unit the unit value to set
      * @return the TextRecognitionResult object itself.
      */
     public TextRecognitionResult withUnit(TextRecognitionResultDimensionUnit unit) {
         this.unit = unit;
+        return this;
+    }
+
+    /**
+     * Get a list of recognized text lines.
+     *
+     * @return the lines value
+     */
+    public List<Line> lines() {
+        return this.lines;
+    }
+
+    /**
+     * Set a list of recognized text lines.
+     *
+     * @param lines the lines value to set
+     * @return the TextRecognitionResult object itself.
+     */
+    public TextRecognitionResult withLines(List<Line> lines) {
+        this.lines = lines;
         return this;
     }
 

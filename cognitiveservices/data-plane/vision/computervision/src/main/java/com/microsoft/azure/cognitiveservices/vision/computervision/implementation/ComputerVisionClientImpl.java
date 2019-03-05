@@ -275,6 +275,10 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
         @POST("read/core/asyncBatchAnalyze")
         Observable<Response<ResponseBody>> batchReadFile(@Query("mode") TextRecognitionMode mode, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisionClient beginBatchReadFile" })
+        @POST("read/core/asyncBatchAnalyze")
+        Observable<Response<ResponseBody>> beginBatchReadFile(@Query("mode") TextRecognitionMode mode, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisionClient getReadOperationResult" })
         @GET("read/operations/{operationId}")
         Observable<Response<ResponseBody>> getReadOperationResult(@Path("operationId") String operationId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
@@ -1839,7 +1843,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void batchReadFile(String url, TextRecognitionMode mode) {
-        batchReadFileWithServiceResponseAsync(mode, url).toBlocking().single().body();
+        batchReadFileWithServiceResponseAsync(mode, url).toBlocking().last().body();
     }
 
     /**
@@ -1861,7 +1865,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @return the observable for the request
      */
     public Observable<Void> batchReadFileAsync(String url, TextRecognitionMode mode) {
         return batchReadFileWithServiceResponseAsync(mode, url).map(new Func1<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>, Void>() {
@@ -1878,7 +1882,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
      * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
      * @param url Publicly reachable URL of an image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     * @return the observable for the request
      */
     public Observable<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>> batchReadFileWithServiceResponseAsync(String url, TextRecognitionMode mode) {
         if (this.endpoint() == null) {
@@ -1892,13 +1896,80 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
+        Observable<Response<ResponseBody>> observable = service.batchReadFile(mode, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultWithHeadersAsync(observable, new TypeToken<Void>() { }.getType(), BatchReadFileHeaders.class);
+    }
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginBatchReadFile(String url, TextRecognitionMode mode) {
+        beginBatchReadFileWithServiceResponseAsync(mode, url).toBlocking().single().body();
+    }
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
+     * @param url Publicly reachable URL of an image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginBatchReadFileAsync(String url, TextRecognitionMode mode, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(beginBatchReadFileWithServiceResponseAsync(mode, url), serviceCallback);
+    }
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<Void> beginBatchReadFileAsync(String url, TextRecognitionMode mode) {
+        return beginBatchReadFileWithServiceResponseAsync(mode, url).map(new Func1<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, BatchReadFileHeaders> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read File interface, the response contains a field called "Operation-Location". The "Operation-Location" field contains the URL that you must use for your "Read Operation Result" operation to access OCR results.​.
+     *
+     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'
+     * @param url Publicly reachable URL of an image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>> beginBatchReadFileWithServiceResponseAsync(String url, TextRecognitionMode mode) {
+        if (this.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
+        }
+        if (mode == null) {
+            throw new IllegalArgumentException("Parameter mode is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
+        ImageUrl imageUrl = new ImageUrl();
+        imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.batchReadFile(mode, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
+        return service.beginBatchReadFile(mode, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, BatchReadFileHeaders>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<Void, BatchReadFileHeaders> clientResponse = batchReadFileDelegate(response);
+                        ServiceResponseWithHeaders<Void, BatchReadFileHeaders> clientResponse = beginBatchReadFileDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1907,7 +1978,7 @@ public class ComputerVisionClientImpl extends AzureServiceClient implements Comp
             });
     }
 
-    private ServiceResponseWithHeaders<Void, BatchReadFileHeaders> batchReadFileDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+    private ServiceResponseWithHeaders<Void, BatchReadFileHeaders> beginBatchReadFileDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<Void, ComputerVisionErrorException>newInstance(this.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
