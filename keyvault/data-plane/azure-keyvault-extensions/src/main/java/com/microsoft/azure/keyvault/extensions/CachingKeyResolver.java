@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.extensions;
 
@@ -14,6 +11,8 @@ import com.google.common.util.concurrent.MoreExecutors;
 import com.microsoft.azure.keyvault.KeyIdentifier;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.core.IKeyResolver;
+
+import java.util.concurrent.ExecutionException;
 
 /**
  * The key resolver that caches the key after resolving to {@link IKey}.
@@ -31,13 +30,7 @@ public class CachingKeyResolver implements IKeyResolver {
     public CachingKeyResolver(int capacity, final IKeyResolver keyResolver) {
         this.keyResolver = keyResolver;
         cache = CacheBuilder.newBuilder().maximumSize(capacity)
-                .build(new CacheLoader<String, ListenableFuture<IKey>>() {
-
-                    @Override
-                    public ListenableFuture<IKey> load(String kid) {
-                        return keyResolver.resolveKeyAsync(kid);
-                    }
-                });
+                .build(new CachingKeyResolverCacheLoader(keyResolver));
     }
 
     @Override
@@ -46,20 +39,33 @@ public class CachingKeyResolver implements IKeyResolver {
         if (keyIdentifier.version() == null) {
             final ListenableFuture<IKey> key = keyResolver.resolveKeyAsync(kid);
             key.addListener(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        cache.put(key.get().getKid(), key);
-                                    } catch (Exception e) {
-                                        // Key caching will occur on first read
-                                    }
-                                }
-                            },
-                    MoreExecutors.directExecutor()
+                @Override
+                public void run() {
+                    try {
+                        cache.put(key.get().getKid(), key);
+                    } catch (InterruptedException | ExecutionException e) {
+                        // Key caching will occur on first read
+                    }
+                }
+            }, MoreExecutors.directExecutor()
             );
             return key;
         } else {
             return cache.getUnchecked(kid);
+        }
+    }
+
+    private static class CachingKeyResolverCacheLoader extends CacheLoader<String, ListenableFuture<IKey>> {
+
+        private final IKeyResolver keyResolver;
+
+        CachingKeyResolverCacheLoader(IKeyResolver keyResolver) {
+            this.keyResolver = keyResolver;
+        }
+
+        @Override
+        public ListenableFuture<IKey> load(String kid) {
+            return keyResolver.resolveKeyAsync(kid);
         }
     }
 }

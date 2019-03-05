@@ -1,8 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.keyvault.cryptography.algorithms;
 
 public class Es256 extends Ecdsa {
-    public final static String ALGORITHM_NAME = "ES256";
-	
+    public static final String ALGORITHM_NAME = "ES256";
+
     @Override
     public int getDigestLength() {
         return 32;

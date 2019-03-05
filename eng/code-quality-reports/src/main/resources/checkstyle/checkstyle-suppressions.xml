@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+
+<suppressions>
+  <suppress checks="Javadoc" files="Test[s]?.*\.java"/>
+  <suppress checks="Javadoc" files=".*Test[s]?\.java"/>
+  <suppress checks="Javadoc" files=".*Test[s]?Base\.java"/>
+  <suppress checks="Javadoc" files=".*CoverageReporter\.java"/>
+  <suppress checks="Header" files=".*package-info.java"/>
+
+  <!-- Files licensed with alternate license in the header -->
+  <suppress checks="Header" files=".*AesKwBCProviderTest.java"/>
+  <suppress checks="Header" files=".*AesKwTest.java"/>
+  <suppress checks="Header" files=".*SymmetricKeyBCProviderTest.java"/>
+  <suppress checks="Header" files=".*SymmetricKeyTest.java"/>
+  <suppress checks="Header" files=".*CachingKeyResolverTest.java"/>
+  <suppress checks="Header" files=".*KeyVaultKeyResolverBCProviderTest.java"/>
+  <suppress checks="Header" files=".*KeyVaultKeyResolverDefaultProviderTest.java"/>
+
+  <!-- Public API already released with incorrect upper-case naming pattern -->
+  <suppress checks="MethodName" files="AsymmetricEncryptionAlgorithm.java"/>
+  <suppress checks="MethodName" files="KeyWrapAlgorithm.java"/>
+  <suppress checks="MethodName" files="SignatureEncoding.java"/>
+  <suppress checks="MethodName" files="SymmetricEncryptionAlgorithm.java"/>
+  <suppress checks="MethodName" files="RsaSignature.java"/>
+
+  <!-- Public API already released with incorrect constant variable naming -->
+  <suppress checks="ConstantName" files="AlgorithmResolver.java"/>
+  <suppress checks="ConstantName" files="RsaKey.java"/>
+  <suppress checks="ConstantName" files="SymmetricKey.java"/>
+  <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
+  <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
+</suppressions>

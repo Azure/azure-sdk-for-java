@@ -1,12 +1,11 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.messagesecurity;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -35,7 +34,12 @@ import okio.Buffer;
 public class HttpMessageSecurity {
     private static final String AUTHENTICATE = "Authorization";
     private static final String BEARER_TOKEP_REFIX = "Bearer ";
-
+    /**
+     * Encoding for JWS and JWE header and contents specified in:
+     * https://tools.ietf.org/html/rfc7515
+     * https://tools.ietf.org/html/rfc7516
+     */
+    private static final Charset MESSAGE_ENCODING = StandardCharsets.UTF_8;
     private boolean testMode = false;
     private String clientSecurityToken;
     private JsonWebKey clientSignatureKey;
@@ -176,7 +180,7 @@ public class HttpMessageSecurity {
 
             String jwsHeaderJsonb64 = MessageSecurityHelper.stringToBase64Url(jwsHeader.serialize());
             String protectedPayload = MessageSecurityHelper.stringToBase64Url(jweObject.serialize());
-            byte[] data = (jwsHeaderJsonb64 + "." + protectedPayload).getBytes();
+            byte[] data = (jwsHeaderJsonb64 + "." + protectedPayload).getBytes(MESSAGE_ENCODING);
 
             RsaKey clientSignatureRsaKey = new RsaKey(clientSignatureKey.kid(), clientSignatureKey.toRSA(true));
             Pair<byte[], String> signature = clientSignatureRsaKey.signAsync(getSha256(data), "RS256").get();
@@ -226,7 +230,7 @@ public class HttpMessageSecurity {
                 throw new IOException("Invalid protected response");
             }
 
-            byte[] data = (jwsObject.originalProtected() + "." + jwsObject.payload()).getBytes();
+            byte[] data = (jwsObject.originalProtected() + "." + jwsObject.payload()).getBytes(MESSAGE_ENCODING);
             byte[] signature = MessageSecurityHelper.base64UrltoByteArray(jwsObject.signature());
 
             RsaKey serverSignatureRsaKey = new RsaKey(serverSignatureKey.kid(), serverSignatureKey.toRSA(false));
@@ -277,8 +281,10 @@ public class HttpMessageSecurity {
     /**
      * Encrypt provided payload and return proper JWEObject.
      *
-     * @param payload
-     *            string to be encrypted.
+     * @param payload Content to be encrypted. Content will be encrypted with
+     *                UTF-8 representation of contents as per
+     *                https://tools.ietf.org/html/rfc7515. It can
+     *                represent anything.
      *
      * @return JWEObject with encrypted payload.
      * 
@@ -299,12 +305,12 @@ public class HttpMessageSecurity {
                     .encryptAsync(aesKeyBytes, null, null, "RSA-OAEP").get();
 
             Triple<byte[], byte[], String> cipher = aesKey
-                    .encryptAsync(payload.getBytes(), iv,
-                            MessageSecurityHelper.stringToBase64Url(jweHeader.serialize()).getBytes(), "A128CBC-HS256")
+                    .encryptAsync(payload.getBytes(MESSAGE_ENCODING), iv,
+                            MessageSecurityHelper.stringToBase64Url(jweHeader.serialize()).getBytes(MESSAGE_ENCODING), "A128CBC-HS256")
                     .get();
 
             JWEObject jweObject = new JWEObject(jweHeader,
-                    MessageSecurityHelper.bytesToBase64Url((!testMode) ? encryptedKey.getLeft() : "key".getBytes()),
+                    MessageSecurityHelper.bytesToBase64Url((!testMode) ? encryptedKey.getLeft() : "key".getBytes(MESSAGE_ENCODING)),
                     MessageSecurityHelper.bytesToBase64Url(iv),
                     MessageSecurityHelper.bytesToBase64Url(cipher.getLeft()),
                     MessageSecurityHelper.bytesToBase64Url(cipher.getMiddle()));
@@ -348,10 +354,10 @@ public class HttpMessageSecurity {
             SymmetricKey aesKey = new SymmetricKey(UUID.randomUUID().toString(), aesKeyBytes);
             byte[] result = aesKey.decryptAsync(MessageSecurityHelper.base64UrltoByteArray(jweObject.cipherText()),
                     MessageSecurityHelper.base64UrltoByteArray(jweObject.iv()),
-                    jweObject.originalProtected().getBytes(),
+                    jweObject.originalProtected().getBytes(MESSAGE_ENCODING),
                     MessageSecurityHelper.base64UrltoByteArray(jweObject.tag()), "A128CBC-HS256").get();
 
-            return new String(result);
+            return new String(result, MESSAGE_ENCODING);
         } catch (ExecutionException e) {
             // unexpected;
             return null;
@@ -388,7 +394,7 @@ public class HttpMessageSecurity {
             SecureRandom random = new SecureRandom();
             random.nextBytes(bytes);
         } else {
-            bytes = "TEST1234TEST1234TEST1234TEST1234".getBytes();
+            bytes = "TEST1234TEST1234TEST1234TEST1234".getBytes(MESSAGE_ENCODING);
         }
         return bytes;
     }
@@ -404,7 +410,7 @@ public class HttpMessageSecurity {
             SecureRandom random = new SecureRandom();
             random.nextBytes(bytes);
         } else {
-            bytes = "TEST1234TEST1234".getBytes();
+            bytes = "TEST1234TEST1234".getBytes(MESSAGE_ENCODING);
         }
         return bytes;
     }

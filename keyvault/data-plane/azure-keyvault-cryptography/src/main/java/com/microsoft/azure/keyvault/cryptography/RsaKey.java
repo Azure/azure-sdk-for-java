@@ -1,12 +1,10 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.cryptography;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -24,35 +22,39 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Rs256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.RsaOaep;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
 public class RsaKey implements IKey {
 
-    public static int KeySize1024 = 1024;
-    public static int KeySize2048 = 2048;
-    public static int KeySize4096 = 4096;
+    public static final int KeySize1024 = 1024;
+    public static final int KeySize2048 = 2048;
+    public static final int KeySize4096 = 4096;
 
     public static int getDefaultKeySize() {
         return RsaKey.KeySize2048;
     }
 
-    private final String   _kid;
-    private final KeyPair  _keyPair;
-    private final Provider _provider;
+    private final String   kid;
+    private final KeyPair  keyPair;
+    private final Provider provider;
 
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with a 2048 size keypair and a randomly generated kid.
      * @throws NoSuchAlgorithmException
      */
     public RsaKey() throws NoSuchAlgorithmException {
-		this(UUID.randomUUID().toString());
+        this(UUID.randomUUID().toString());
     }
-    
+
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with a 2048 size keypair and the kid given.
-     * @param kid 
+     * @param kid
      * @throws NoSuchAlgorithmException
      */
     public RsaKey(String kid) throws NoSuchAlgorithmException {
@@ -61,19 +63,19 @@ public class RsaKey implements IKey {
 
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with size keySize and the kid given.
      * @param kid
      * @param keySize
      * @throws NoSuchAlgorithmException
      */
     public RsaKey(String kid, int keySize) throws NoSuchAlgorithmException {
-    	this(kid, keySize, null);
+        this(kid, keySize, null);
     }
-    
+
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with size keySize and the kid given. The given provider is used for algorithm implementation.
      * @param kid
      * @param keySize
@@ -90,26 +92,26 @@ public class RsaKey implements IKey {
 
         generator.initialize(keySize);
 
-        _kid      = kid;
-        _keyPair  = generator.generateKeyPair();
-        _provider = provider;
+        this.kid = kid;
+        this.keyPair = generator.generateKeyPair();
+        this.provider = provider;
     }
 
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with the given KeyPair.
      * The keyPair must be an RSAKey.
      * @param kid
      * @param keyPair
      */
     public RsaKey(String kid, KeyPair keyPair) {
-    	this(kid, keyPair, null);
+        this(kid, keyPair, null);
     }
 
     /**
      * Constructor.
-     * 
+     *
      * Generates a new RsaKey with given KeyPair. The given provider is used for algorithm implementation.
      * The keyPair must be an RSAKey.
      * @param kid
@@ -118,10 +120,10 @@ public class RsaKey implements IKey {
      */
     public RsaKey(String kid, KeyPair keyPair, Provider provider) {
 
-    	if (Strings.isNullOrWhiteSpace(kid)) {
-    		throw new IllegalArgumentException("Please provide a kid");
-    	}
-    	
+        if (Strings.isNullOrWhiteSpace(kid)) {
+            throw new IllegalArgumentException("Please provide a kid");
+        }
+
         if (keyPair == null) {
             throw new IllegalArgumentException("Please provide a KeyPair");
         }
@@ -129,10 +131,10 @@ public class RsaKey implements IKey {
         if (keyPair.getPublic() == null || !(keyPair.getPublic() instanceof RSAPublicKey)) {
             throw new IllegalArgumentException("The KeyPair is not an RsaKey");
         }
-        
-        _kid      = kid;
-        _keyPair  = keyPair;
-        _provider = provider;
+
+        this.kid = kid;
+        this.keyPair = keyPair;
+        this.provider = provider;
     }
 
     /**
@@ -141,41 +143,41 @@ public class RsaKey implements IKey {
      * @return RsaKey
      */
     public static RsaKey fromJsonWebKey(JsonWebKey jwk) {
-    	return fromJsonWebKey(jwk, false, null);
+        return fromJsonWebKey(jwk, false, null);
     }
-    
+
     /**
-	 * Converts JSON web key to RsaKey and include the private key if set to true.
+     * Converts JSON web key to RsaKey and include the private key if set to true.
      * @param jwk
      * @param includePrivateParameters true if the RSA key pair should include the private key. False otherwise.
      * @return RsaKey
      */
-	public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters) {
-		return fromJsonWebKey(jwk, includePrivateParameters, null);
-	}
-	
+    public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters) {
+        return fromJsonWebKey(jwk, includePrivateParameters, null);
+    }
+
     /**
      * Converts JSON web key to RsaKey and include the private key if set to true.
      * @param provider the Java security provider.
      * @param includePrivateParameters true if the RSA key pair should include the private key. False otherwise.
      * @return RsaKey
      */
-	public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters, Provider provider) {
-		if (jwk.kid() != null) {
-			return new RsaKey(jwk.kid(), jwk.toRSA(includePrivateParameters, provider));
-		} else {
-			throw new IllegalArgumentException("Json Web Key must have a kid");
-		}
-	}
-	
-	/**
-	 * Converts RsaKey to JSON web key.
-	 * @return
-	 */
-	public JsonWebKey toJsonWebKey() {
-		return JsonWebKey.fromRSA(_keyPair);
-	}
-	
+    public static RsaKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters, Provider provider) {
+        if (jwk.kid() != null) {
+            return new RsaKey(jwk.kid(), jwk.toRSA(includePrivateParameters, provider));
+        } else {
+            throw new IllegalArgumentException("Json Web Key must have a kid");
+        }
+    }
+
+    /**
+     * Converts RsaKey to JSON web key.
+     * @return
+     */
+    public JsonWebKey toJsonWebKey() {
+        return JsonWebKey.fromRSA(keyPair);
+    }
+
     @Override
     public String getDefaultEncryptionAlgorithm() {
         return RsaOaep.ALGORITHM_NAME;
@@ -188,18 +190,18 @@ public class RsaKey implements IKey {
 
     @Override
     public String getDefaultSignatureAlgorithm() {
-    	return Rs256.ALGORITHM_NAME;
+        return Rs256.ALGORITHM_NAME;
     }
 
     @Override
     public String getKid() {
-        return _kid;
+        return kid;
     }
 
     public KeyPair getKeyPair() {
-    	return _keyPair;
+        return keyPair;
     }
-    
+
     @Override
     public ListenableFuture<byte[]> decryptAsync(final byte[] ciphertext, final byte[] iv, final byte[] authenticationData, final byte[] authenticationTag, final String algorithm) throws NoSuchAlgorithmException {
 
@@ -213,18 +215,18 @@ public class RsaKey implements IKey {
         }
 
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform         transform;
         ListenableFuture<byte[]> result;
 
         try {
-            transform = algo.CreateDecryptor(_keyPair, _provider);
+            transform = algo.CreateDecryptor(keyPair, provider);
             result    = Futures.immediateFuture(transform.doFinal(ciphertext));
         } catch (Exception e) {
             result    = Futures.immediateFailedFuture(e);
@@ -243,20 +245,20 @@ public class RsaKey implements IKey {
         // Interpret the requested algorithm
         String    algorithmName = (Strings.isNullOrWhiteSpace(algorithm) ? getDefaultEncryptionAlgorithm() : algorithm);
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithmName);
         }
-        
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform                                 transform;
         ListenableFuture<Triple<byte[], byte[], String>> result;
 
         try {
-            transform = algo.CreateEncryptor(_keyPair, _provider);
+            transform = algo.CreateEncryptor(keyPair, provider);
             result    = Futures.immediateFuture(Triple.of(transform.doFinal(plaintext), (byte[]) null, algorithmName));
-        } catch (Exception e) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
             result    = Futures.immediateFailedFuture(e);
         }
 
@@ -273,20 +275,20 @@ public class RsaKey implements IKey {
         // Interpret the requested algorithm
         String    algorithmName = (Strings.isNullOrWhiteSpace(algorithm) ? getDefaultKeyWrapAlgorithm() : algorithm);
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithmName);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithmName);
         }
-        
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform                       transform;
         ListenableFuture<Pair<byte[], String>> result;
 
         try {
-            transform = algo.CreateEncryptor(_keyPair, _provider);
+            transform = algo.CreateEncryptor(keyPair, provider);
             result    = Futures.immediateFuture(Pair.of(transform.doFinal(key), algorithmName));
-        } catch (Exception e) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
             result    = Futures.immediateFailedFuture(e);
         }
 
@@ -307,20 +309,20 @@ public class RsaKey implements IKey {
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricEncryptionAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm)baseAlgorithm;
+
+        AsymmetricEncryptionAlgorithm algo = (AsymmetricEncryptionAlgorithm) baseAlgorithm;
 
         ICryptoTransform         transform;
         ListenableFuture<byte[]> result;
 
         try {
-            transform = algo.CreateDecryptor(_keyPair, _provider);
+            transform = algo.CreateDecryptor(keyPair, provider);
             result    = Futures.immediateFuture(transform.doFinal(encryptedKey));
-        } catch (Exception e) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
             result    = Futures.immediateFailedFuture(e);
         }
 
@@ -341,20 +343,20 @@ public class RsaKey implements IKey {
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricSignatureAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        Rs256 algo = (Rs256)baseAlgorithm;
 
-        ISignatureTransform signer = algo.createSignatureTransform(_keyPair);
-        
+        Rs256 algo = (Rs256) baseAlgorithm;
+
+        ISignatureTransform signer = algo.createSignatureTransform(keyPair);
+
         try {
-			return Futures.immediateFuture(Pair.of(signer.sign(digest), Rs256.ALGORITHM_NAME));
-		} catch (Exception e) {
-			return Futures.immediateFailedFuture(e);
-		}
+            return Futures.immediateFuture(Pair.of(signer.sign(digest), Rs256.ALGORITHM_NAME));
+        } catch (Exception e) {
+            return Futures.immediateFailedFuture(e);
+        }
     }
 
     @Override
@@ -371,20 +373,20 @@ public class RsaKey implements IKey {
 
         // Interpret the requested algorithm
         Algorithm baseAlgorithm = AlgorithmResolver.Default.get(algorithm);
-        
+
         if (baseAlgorithm == null || !(baseAlgorithm instanceof AsymmetricSignatureAlgorithm)) {
             throw new NoSuchAlgorithmException(algorithm);
         }
-        
-        Rs256 algo = (Rs256)baseAlgorithm;
 
-        ISignatureTransform signer = algo.createSignatureTransform(_keyPair);
-        
+        Rs256 algo = (Rs256) baseAlgorithm;
+
+        ISignatureTransform signer = algo.createSignatureTransform(keyPair);
+
         try {
-			return Futures.immediateFuture(signer.verify(digest, signature));
-		} catch (Exception e) {
-			return Futures.immediateFailedFuture(e);
-		}
+            return Futures.immediateFuture(signer.verify(digest, signature));
+        } catch (Exception e) {
+            return Futures.immediateFailedFuture(e);
+        }
     }
 
     @Override

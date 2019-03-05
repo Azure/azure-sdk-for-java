@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.cryptography.algorithms;
 
@@ -23,65 +20,65 @@ import com.microsoft.azure.keyvault.cryptography.KeyWrapAlgorithm;
 
 public abstract class AesKw extends KeyWrapAlgorithm {
 
-    static final byte[] _defaultIv  = new byte[] { (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6 };
-    static final String _cipherName = "AESWrap";
+    static final byte[] DEFAULT_IV = new byte[] { (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6 };
+    static final String CIPHER_NAME = "AESWrap";
 
-    class AesKwDecryptor implements ICryptoTransform {
+    static class AesKwDecryptor implements ICryptoTransform {
 
-        final Cipher _cipher;
+        final Cipher cipher;
 
         AesKwDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             if (provider == null) {
-                _cipher = Cipher.getInstance(_cipherName);
+                cipher = Cipher.getInstance(CIPHER_NAME);
             } else {
-                _cipher = Cipher.getInstance(_cipherName, provider);
+                cipher = Cipher.getInstance(CIPHER_NAME, provider);
             }
 
             // The default provider does not support the specification of IV. This
             // is guarded by the CreateEncrypter wrapper method and the iv parameter
             // can be ignored when using the default provider 
-            if (provider == null ) {
-                _cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"));
+            if (provider == null) {
+                cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"));
             } else {
-                _cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+                cipher.init(Cipher.UNWRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
             }
         }
 
         @Override
         public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException {
 
-            return _cipher.unwrap(plaintext, "AESWrap", Cipher.SECRET_KEY).getEncoded();
+            return cipher.unwrap(plaintext, "AESWrap", Cipher.SECRET_KEY).getEncoded();
         }
 
     }
 
-    class AesKwEncryptor implements ICryptoTransform {
+    static class AesKwEncryptor implements ICryptoTransform {
 
-        final Cipher _cipher;
+        final Cipher cipher;
 
         AesKwEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             if (provider == null) {
-                _cipher = Cipher.getInstance(_cipherName);
+                cipher = Cipher.getInstance(CIPHER_NAME);
             } else {
-                _cipher = Cipher.getInstance(_cipherName, provider);
+                cipher = Cipher.getInstance(CIPHER_NAME, provider);
             }
 
             // The default provider does not support the specification of IV. This
             // is guarded by the CreateEncrypter wrapper method and the iv parameter
             // can be ignored when using the default provider 
-            if (provider == null ) {
-                _cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"));
+            if (provider == null) {
+                cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"));
             } else {
-                _cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
+                cipher.init(Cipher.WRAP_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
             }
         }
 
         @Override
         public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
 
-            return _cipher.wrap(new SecretKeySpec(plaintext, "AES"));
+            return cipher.wrap(new SecretKeySpec(plaintext, "AES"));
         }
 
     }
@@ -119,18 +116,18 @@ public abstract class AesKw extends KeyWrapAlgorithm {
             throw new IllegalArgumentException("key length must be 128, 192 or 256 bits");
         }
 
-        if (iv != null ) {
-        	// iv length must be 64 bits
-        	if ( iv.length != 8) {
-	            throw new IllegalArgumentException("iv length must be 64 bits");
-        	}
-        	// iv cannot be specified with the default provider
-        	if (provider == null) {
-        		throw new IllegalArgumentException("user specified iv is not supported with the default provider");
-        	}
+        if (iv != null) {
+            // iv length must be 64 bits
+            if (iv.length != 8) {
+                throw new IllegalArgumentException("iv length must be 64 bits");
+            }
+            // iv cannot be specified with the default provider
+            if (provider == null) {
+                throw new IllegalArgumentException("user specified iv is not supported with the default provider");
+            }
         }
 
-        return new AesKwEncryptor(key, iv == null ? _defaultIv : iv, provider);
+        return new AesKwEncryptor(key, iv == null ? DEFAULT_IV : iv, provider);
 
     }
 
@@ -163,18 +160,17 @@ public abstract class AesKw extends KeyWrapAlgorithm {
         }
 
 
-        if (iv != null ) {
-        	// iv length must be 64 bits
-        	if ( iv.length != 8) {
-	            throw new IllegalArgumentException("iv length must be 64 bits");
-        	}
-        	// iv cannot be specified with the default provider
-        	if (provider == null) {
-        		throw new IllegalArgumentException("user specified iv is not supported with the default provider");
-        	}
+        if (iv != null) {
+            // iv length must be 64 bits
+            if (iv.length != 8) {
+                throw new IllegalArgumentException("iv length must be 64 bits");
+            }
+            // iv cannot be specified with the default provider
+            if (provider == null) {
+                throw new IllegalArgumentException("user specified iv is not supported with the default provider");
+            }
         }
 
-        return new AesKwDecryptor(key, iv == null ? _defaultIv : iv, provider);
+        return new AesKwDecryptor(key, iv == null ? DEFAULT_IV : iv, provider);
     }
-
 }

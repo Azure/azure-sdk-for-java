@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.keyvault.extensions.test;
 
 import com.microsoft.aad.adal4j.AuthenticationContext;

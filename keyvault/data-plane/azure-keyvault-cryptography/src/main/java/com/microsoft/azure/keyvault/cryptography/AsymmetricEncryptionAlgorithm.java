@@ -1,8 +1,5 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.microsoft.azure.keyvault.cryptography;
 
@@ -31,9 +28,8 @@ public abstract class AsymmetricEncryptionAlgorithm extends EncryptionAlgorithm 
     /**
      * Creates a {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation for encryption that
      * uses the specified {@link java.security.KeyPair} and the default {@link java.security.Provider} provider.
-	 *
-     * @param keyPair
-     * 			The key pair to use.
+     *
+     * @param keyPair The key pair to use.
      * @return
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
@@ -44,11 +40,9 @@ public abstract class AsymmetricEncryptionAlgorithm extends EncryptionAlgorithm 
     /**
      * Creates a {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation for encryption that
      * uses the specified {@link java.security.KeyPair} and {@link java.security.Provider}.
-	 *
-     * @param keyPair
-     * 			The key pair to use.
-     * @param provider
-     * 			The provider to use.
+     *
+     * @param keyPair The key pair to use.
+     * @param provider The provider to use.
      * @return
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
@@ -59,9 +53,8 @@ public abstract class AsymmetricEncryptionAlgorithm extends EncryptionAlgorithm 
     /**
      * Creates a {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation for decryption that
      * uses the specified {@link java.security.KeyPair} and the default {@link java.security.Provider} provider.
-	 *
-     * @param keyPair
-     * 			The key pair to use.
+     *
+     * @param keyPair The key pair to use.
      * @return
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
@@ -72,11 +65,9 @@ public abstract class AsymmetricEncryptionAlgorithm extends EncryptionAlgorithm 
     /**
      * Creates a {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation for decryption that
      * uses the specified {@link java.security.KeyPair} and {@link java.security.Provider}.
-	 *
-     * @param keyPair
-     * 			The key pair to use.
-     * @param provider
-     * 			The provider to use.
+     *
+     * @param keyPair The key pair to use.
+     * @param provider The provider to use.
      * @return
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
