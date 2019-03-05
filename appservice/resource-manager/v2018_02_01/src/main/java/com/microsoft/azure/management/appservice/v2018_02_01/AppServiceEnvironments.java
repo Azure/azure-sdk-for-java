@@ -180,7 +180,7 @@ public interface AppServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InboundEnvironmentEndpoint> getInboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name);
+    Observable<InboundEnvironmentEndpoint> getInboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name);
 
     /**
      * Get global metric definitions of an App Service Environment.
@@ -423,7 +423,7 @@ public interface AppServiceEnvironments {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<OutboundEnvironmentEndpoint> getOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name);
+    Observable<OutboundEnvironmentEndpoint> getOutboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name);
 
     /**
      * Get all App Service plans in an App Service Environment.
