@@ -182,6 +182,12 @@
             <version>${commons-codec.version}</version>
          </dependency>
 
+         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+         </dependency>
+
          <!-- Test dependencies -->
          <dependency>
             <groupId>com.microsoft.azure</groupId>
@@ -246,12 +252,6 @@
             <scope>test</scope>
          </dependency>
 
-         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j-api.version}</version>
-            <scope>test</scope>
-         </dependency>
       </dependencies>
    </dependencyManagement>
 
