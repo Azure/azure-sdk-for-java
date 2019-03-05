@@ -93,6 +93,19 @@
         </configuration>
       </plugin>
 
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <outputDirectory>${basedir}/target/test-classes/session-records</outputDirectory>
+          <resources>
+            <resource>
+              <directory>${basedir}/src/test/resources/test-recordings</directory>
+            </resource>
+          </resources>
+        </configuration>
+      </plugin>
+
     </plugins>
 
   </build>
