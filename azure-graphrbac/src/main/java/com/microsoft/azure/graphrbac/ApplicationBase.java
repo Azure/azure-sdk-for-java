@@ -12,22 +12,12 @@ import java.util.List;
 import com.microsoft.azure.graphrbac.implementation.KeyCredentialInner;
 import com.microsoft.azure.graphrbac.implementation.PasswordCredentialInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.microsoft.azure.graphrbac.implementation.DirectoryObjectInner;
 
 /**
- * Common properties used by GET, POST and PATCH.
+ * Active Directive Application common properties shared among GET, POST and
+ * PATCH.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("ApplicationBase")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ApplicationCreateParameters", value = ApplicationCreateParameters.class),
-    @JsonSubTypes.Type(name = "ApplicationUpdateParameters", value = ApplicationUpdateParameters.class),
-    @JsonSubTypes.Type(name = "Application", value = ApplicationInner.class)
-})
-public class ApplicationBase extends DirectoryObjectInner {
+public class ApplicationBase {
     /**
      * A property on the application to indicate if the application accepts
      * other IDPs or not or partially accepts.

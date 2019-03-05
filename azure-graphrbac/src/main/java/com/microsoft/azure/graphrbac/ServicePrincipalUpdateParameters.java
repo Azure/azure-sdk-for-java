@@ -10,7 +10,7 @@ package com.microsoft.azure.graphrbac;
 
 
 /**
- * Request parameters for updating a new application.
+ * Request parameters for update an existing service principal.
  */
-public class ApplicationUpdateParameters extends ApplicationBase {
+public class ServicePrincipalUpdateParameters extends ServicePrincipalBase {
 }

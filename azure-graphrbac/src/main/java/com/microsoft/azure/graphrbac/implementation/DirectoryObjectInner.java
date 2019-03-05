@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("DirectoryObject")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "ApplicationBase", value = ApplicationBase.class),
+    @JsonSubTypes.Type(name = "Application", value = ApplicationInner.class),
     @JsonSubTypes.Type(name = "Group", value = ADGroupInner.class),
     @JsonSubTypes.Type(name = "ServicePrincipal", value = ServicePrincipalInner.class),
     @JsonSubTypes.Type(name = "User", value = UserInner.class)

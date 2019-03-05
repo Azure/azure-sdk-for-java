@@ -8,14 +8,36 @@
 
 package com.microsoft.azure.graphrbac;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.microsoft.azure.graphrbac.implementation.ServicePrincipalInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request parameters for creating a new service principal.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("ServicePrincipalCreateParameters")
-public class ServicePrincipalCreateParameters extends ServicePrincipalInner {
+public class ServicePrincipalCreateParameters extends ServicePrincipalBase {
+    /**
+     * The application ID.
+     */
+    @JsonProperty(value = "appId", required = true)
+    private String appId;
+
+    /**
+     * Get the application ID.
+     *
+     * @return the appId value
+     */
+    public String appId() {
+        return this.appId;
+    }
+
+    /**
+     * Set the application ID.
+     *
+     * @param appId the appId value to set
+     * @return the ServicePrincipalCreateParameters object itself.
+     */
+    public ServicePrincipalCreateParameters withAppId(String appId) {
+        this.appId = appId;
+        return this;
+    }
+
 }

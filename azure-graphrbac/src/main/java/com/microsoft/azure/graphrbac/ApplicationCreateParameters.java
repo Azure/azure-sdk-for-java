@@ -8,13 +8,9 @@
 
 package com.microsoft.azure.graphrbac;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Request parameters for creating a new application.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("ApplicationCreateParameters")
 public class ApplicationCreateParameters extends ApplicationBase {
 }

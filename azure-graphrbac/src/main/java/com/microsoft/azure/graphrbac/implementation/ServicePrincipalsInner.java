@@ -15,6 +15,7 @@ import com.microsoft.azure.graphrbac.GraphErrorException;
 import com.microsoft.azure.graphrbac.KeyCredentialsUpdateParameters;
 import com.microsoft.azure.graphrbac.PasswordCredentialsUpdateParameters;
 import com.microsoft.azure.graphrbac.ServicePrincipalCreateParameters;
+import com.microsoft.azure.graphrbac.ServicePrincipalUpdateParameters;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -75,7 +76,7 @@ public class ServicePrincipalsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.ServicePrincipals update" })
         @PATCH("{tenantID}/servicePrincipals/{objectId}")
-        Observable<Response<ResponseBody>> update(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Body ServicePrincipalInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("objectId") String objectId, @Path("tenantID") String tenantID, @Body ServicePrincipalUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.ServicePrincipals delete" })
         @HTTP(path = "{tenantID}/servicePrincipals/{objectId}", method = "DELETE", hasBody = true)
@@ -417,7 +418,7 @@ public class ServicePrincipalsInner {
      * @throws GraphErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void update(String objectId, ServicePrincipalInner parameters) {
+    public void update(String objectId, ServicePrincipalUpdateParameters parameters) {
         updateWithServiceResponseAsync(objectId, parameters).toBlocking().single().body();
     }
 
@@ -430,7 +431,7 @@ public class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateAsync(String objectId, ServicePrincipalInner parameters, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> updateAsync(String objectId, ServicePrincipalUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(updateWithServiceResponseAsync(objectId, parameters), serviceCallback);
     }
 
@@ -442,7 +443,7 @@ public class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateAsync(String objectId, ServicePrincipalInner parameters) {
+    public Observable<Void> updateAsync(String objectId, ServicePrincipalUpdateParameters parameters) {
         return updateWithServiceResponseAsync(objectId, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -459,7 +460,7 @@ public class ServicePrincipalsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String objectId, ServicePrincipalInner parameters) {
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String objectId, ServicePrincipalUpdateParameters parameters) {
         if (objectId == null) {
             throw new IllegalArgumentException("Parameter objectId is required and cannot be null.");
         }

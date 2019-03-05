@@ -13,6 +13,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.graphrbac.AddOwnerParameters;
 import com.microsoft.azure.graphrbac.ApplicationCreateParameters;
+import com.microsoft.azure.graphrbac.ApplicationUpdateParameters;
 import com.microsoft.azure.graphrbac.GraphErrorException;
 import com.microsoft.azure.graphrbac.KeyCredentialsUpdateParameters;
 import com.microsoft.azure.graphrbac.PasswordCredentialsUpdateParameters;
@@ -84,7 +85,7 @@ public class ApplicationsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Applications patch" })
         @PATCH("{tenantID}/applications/{applicationObjectId}")
-        Observable<Response<ResponseBody>> patch(@Path("applicationObjectId") String applicationObjectId, @Path("tenantID") String tenantID, @Body ApplicationInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> patch(@Path("applicationObjectId") String applicationObjectId, @Path("tenantID") String tenantID, @Body ApplicationUpdateParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Applications listOwners" })
         @GET("{tenantID}/applications/{applicationObjectId}/owners")
@@ -583,7 +584,7 @@ public class ApplicationsInner {
      * @throws GraphErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void patch(String applicationObjectId, ApplicationInner parameters) {
+    public void patch(String applicationObjectId, ApplicationUpdateParameters parameters) {
         patchWithServiceResponseAsync(applicationObjectId, parameters).toBlocking().single().body();
     }
 
@@ -596,7 +597,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> patchAsync(String applicationObjectId, ApplicationInner parameters, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> patchAsync(String applicationObjectId, ApplicationUpdateParameters parameters, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(patchWithServiceResponseAsync(applicationObjectId, parameters), serviceCallback);
     }
 
@@ -608,7 +609,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> patchAsync(String applicationObjectId, ApplicationInner parameters) {
+    public Observable<Void> patchAsync(String applicationObjectId, ApplicationUpdateParameters parameters) {
         return patchWithServiceResponseAsync(applicationObjectId, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -625,7 +626,7 @@ public class ApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> patchWithServiceResponseAsync(String applicationObjectId, ApplicationInner parameters) {
+    public Observable<ServiceResponse<Void>> patchWithServiceResponseAsync(String applicationObjectId, ApplicationUpdateParameters parameters) {
         if (applicationObjectId == null) {
             throw new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null.");
         }

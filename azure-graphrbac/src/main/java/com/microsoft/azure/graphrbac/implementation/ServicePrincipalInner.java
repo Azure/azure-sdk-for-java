@@ -14,16 +14,12 @@ import com.microsoft.azure.graphrbac.OAuth2Permission;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
  * Active Directory service principal information.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ServicePrincipal")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ServicePrincipalCreateParameters", value = ServicePrincipalCreateParameters.class)
-})
 public class ServicePrincipalInner extends DirectoryObjectInner {
     /**
      * whether or not the service principal account is enabled.
