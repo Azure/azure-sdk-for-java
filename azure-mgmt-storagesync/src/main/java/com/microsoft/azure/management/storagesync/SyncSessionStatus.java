@@ -19,13 +19,13 @@ public class SyncSessionStatus {
     /**
      * Last sync result (HResult).
      */
-    @JsonProperty(value = "lastSyncResult", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int lastSyncResult;
+    @JsonProperty(value = "lastSyncResult", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer lastSyncResult;
 
     /**
      * Last sync timestamp.
      */
-    @JsonProperty(value = "lastSyncTimestamp", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastSyncTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastSyncTimestamp;
 
     /**
@@ -37,8 +37,8 @@ public class SyncSessionStatus {
     /**
      * Last sync per item error count.
      */
-    @JsonProperty(value = "lastSyncPerItemErrorCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private long lastSyncPerItemErrorCount;
+    @JsonProperty(value = "lastSyncPerItemErrorCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Long lastSyncPerItemErrorCount;
 
     /**
      * Count of persistent files not syncing. Reserved for future use.
@@ -64,7 +64,7 @@ public class SyncSessionStatus {
      *
      * @return the lastSyncResult value
      */
-    public int lastSyncResult() {
+    public Integer lastSyncResult() {
         return this.lastSyncResult;
     }
 
@@ -91,7 +91,7 @@ public class SyncSessionStatus {
      *
      * @return the lastSyncPerItemErrorCount value
      */
-    public long lastSyncPerItemErrorCount() {
+    public Long lastSyncPerItemErrorCount() {
         return this.lastSyncPerItemErrorCount;
     }
 

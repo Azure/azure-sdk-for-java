@@ -18,20 +18,20 @@ public class SyncActivityStatus {
     /**
      * Timestamp when properties were updated.
      */
-    @JsonProperty(value = "timestamp", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime timestamp;
 
     /**
      * Per item error count.
      */
-    @JsonProperty(value = "perItemErrorCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private long perItemErrorCount;
+    @JsonProperty(value = "perItemErrorCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Long perItemErrorCount;
 
     /**
      * Applied item count.
      */
-    @JsonProperty(value = "appliedItemCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private long appliedItemCount;
+    @JsonProperty(value = "appliedItemCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Long appliedItemCount;
 
     /**
      * Total item count (if available).
@@ -42,8 +42,8 @@ public class SyncActivityStatus {
     /**
      * Applied bytes.
      */
-    @JsonProperty(value = "appliedBytes", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private long appliedBytes;
+    @JsonProperty(value = "appliedBytes", access = JsonProperty.Access.WRITE_ONLY)
+    private Long appliedBytes;
 
     /**
      * Total bytes (if available).
@@ -65,7 +65,7 @@ public class SyncActivityStatus {
      *
      * @return the perItemErrorCount value
      */
-    public long perItemErrorCount() {
+    public Long perItemErrorCount() {
         return this.perItemErrorCount;
     }
 
@@ -74,7 +74,7 @@ public class SyncActivityStatus {
      *
      * @return the appliedItemCount value
      */
-    public long appliedItemCount() {
+    public Long appliedItemCount() {
         return this.appliedItemCount;
     }
 
@@ -92,7 +92,7 @@ public class SyncActivityStatus {
      *
      * @return the appliedBytes value
      */
-    public long appliedBytes() {
+    public Long appliedBytes() {
         return this.appliedBytes;
     }
 

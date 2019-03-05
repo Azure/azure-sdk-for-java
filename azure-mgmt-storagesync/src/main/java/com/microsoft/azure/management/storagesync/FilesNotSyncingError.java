@@ -17,27 +17,27 @@ public class FilesNotSyncingError {
     /**
      * Error code (HResult).
      */
-    @JsonProperty(value = "errorCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int errorCode;
+    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer errorCode;
 
     /**
      * Count of persistent files not syncing with the specified error code.
      */
-    @JsonProperty(value = "persistentCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private long persistentCount;
+    @JsonProperty(value = "persistentCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Long persistentCount;
 
     /**
      * Count of transient files not syncing with the specified error code.
      */
-    @JsonProperty(value = "transientCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private long transientCount;
+    @JsonProperty(value = "transientCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Long transientCount;
 
     /**
      * Get error code (HResult).
      *
      * @return the errorCode value
      */
-    public int errorCode() {
+    public Integer errorCode() {
         return this.errorCode;
     }
 
@@ -46,7 +46,7 @@ public class FilesNotSyncingError {
      *
      * @return the persistentCount value
      */
-    public long persistentCount() {
+    public Long persistentCount() {
         return this.persistentCount;
     }
 
@@ -55,7 +55,7 @@ public class FilesNotSyncingError {
      *
      * @return the transientCount value
      */
-    public long transientCount() {
+    public Long transientCount() {
         return this.transientCount;
     }
 
