@@ -14,7 +14,6 @@ import com.microsoft.azure.utils.SdkContext;
 import com.microsoft.azure.v3.CloudException;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
-import com.microsoft.rest.v3.http.ProxyOptions;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
@@ -30,14 +29,13 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
@@ -47,26 +45,23 @@ import static com.azure.applicationconfig.AzConfigClient.SDK_VERSION;
 
 public class AzConfigTest {
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
-    private static String playbackUri = null;
-    private static TestMode testMode = null;
 
     private final Logger logger = LoggerFactory.getLogger(AzConfigTest.class);
 
     private InterceptorManager interceptorManager;
     private AzConfigClient client;
     private String keyPrefix;
+    private String playbackUri = null;
+    private TestMode testMode = null;
 
     @Rule
     public TestName testName = new TestName();
 
-    @BeforeClass
-    public static void beforeClass() throws IOException {
-        initTestMode();
-        initPlaybackUri();
-    }
-
     @Before
     public void beforeTest() throws Exception {
+        initTestMode();
+        initPlaybackUri();
+
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
 
         ApplicationConfigCredentials credentials;
@@ -90,7 +85,6 @@ public class AzConfigTest {
             System.out.println("RECORD MODE");
 
             connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
-            HttpClientConfiguration configuration = new HttpClientConfiguration().withProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
             credentials = AzConfigClient.AzConfigCredentials.parseConnectionString(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.initRecordPolicy());
@@ -125,7 +119,7 @@ public class AzConfigTest {
         return policies;
     }
 
-    private static void initPlaybackUri() throws IOException {
+    private void initPlaybackUri() throws IOException {
         if (isPlaybackMode()) {
             Properties mavenProps = new Properties();
             InputStream in = AzConfigTest.class.getResourceAsStream("/maven.properties");
@@ -142,11 +136,11 @@ public class AzConfigTest {
         }
     }
 
-    private static boolean isPlaybackMode() {
+    private boolean isPlaybackMode() {
         if (testMode == null) {
             try {
                 initTestMode();
-            } catch (IOException e) {
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
                 throw new RuntimeException("Can't init test mode.");
             }
@@ -154,20 +148,18 @@ public class AzConfigTest {
         return testMode == TestMode.PLAYBACK;
     }
 
-    private static void initTestMode() throws IOException {
+    private void initTestMode() throws IllegalArgumentException {
         String azureTestMode = System.getenv("AZURE_TEST_MODE");
+
         if (azureTestMode != null) {
-            if (azureTestMode.equalsIgnoreCase("Record")) {
-                testMode = TestMode.RECORD;
-            } else if (azureTestMode.equalsIgnoreCase("Playback")) {
-                testMode = TestMode.PLAYBACK;
-            } else if (azureTestMode.equalsIgnoreCase("None")) {
-                testMode = TestMode.NONE;
-            } else {
-                throw new IOException("Unknown AZURE_TEST_MODE: " + azureTestMode);
+            try {
+                testMode = TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException e) {
+                logger.error("Could not parse '{}' into TestEnum.", azureTestMode);
+                throw e;
             }
         } else {
-            //System.out.print("Environment variable 'AZURE_TEST_MODE' has not been set yet. Using 'Playback' mode.");
+            logger.info("Environment variable 'AZURE_TEST_MODE' has not been set yet. Using 'Playback' mode.");
             testMode = TestMode.PLAYBACK;
         }
     }
