@@ -28,6 +28,9 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,6 +49,8 @@ public class AzConfigTest {
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     private static String playbackUri = null;
     private static TestMode testMode = null;
+
+    private final Logger logger = LoggerFactory.getLogger(AzConfigTest.class);
 
     private InterceptorManager interceptorManager;
     private AzConfigClient client;
@@ -85,9 +90,8 @@ public class AzConfigTest {
             System.out.println("RECORD MODE");
 
             connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
-            Objects.requireNonNull(connectionString, "ConnectionString must be set to record data.");
-
-            credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
+            HttpClientConfiguration configuration = new HttpClientConfiguration().withProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
+            credentials = AzConfigClient.AzConfigCredentials.parseConnectionString(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.initRecordPolicy());
 
@@ -175,18 +179,23 @@ public class AzConfigTest {
     }
 
     private void cleanUpResources() {
-//        client.getKeyValues(new KeyValueListFilter().withKey(keyPrefix)).blockingForEach(keyValuePage -> {
-//            for (KeyValue keyValue : keyValuePage.items()) {
-//                client.unlockKeyValue(keyValue.key(), keyValue.label(), null).blockingGet();
-//                client.deleteKeyValue(keyValue.key(), keyValue.label(), null).blockingGet();
-//            }
-//        });
+        client.listKeyValues(new KeyValueListFilter().withKey(keyPrefix))
+                .subscribe(keyValue -> {
+                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", keyValue.key(), keyValue.label(), keyValue.isLocked());
+                    client.unlockKeyValue(keyValue.key(), keyValue.label(), null)
+                            .subscribe(response -> {
+                                KeyValue kv = response.body();
+                                client.deleteKeyValue(kv.key(), kv.label(), null).block();
+                            }, error -> logger.warn("Unable to unlock key: {}, label: {}", keyValue.key(), keyValue.label()));
+                }, error -> {
+                    logger.error("Error fetching keyValues. {}", error);
+                }, () -> {
+                    logger.info("Complete.");
+                });
     }
 
     @Test
     public void listWithKeyAndLabel() {
-//        KeyValue kv = client.getKeyValues(null).flatMapIterable(Page::items).blockingFirst();
-
         String key = SdkContext.randomResourceName(keyPrefix, 16);
         String label = SdkContext.randomResourceName("lbl", 8);
         KeyValue kv = new KeyValue().withKey(key).withValue("myValue").withLabel(label);
@@ -212,7 +221,7 @@ public class AzConfigTest {
 
     @Test
     public void getWithLabel() {
-        String key = SdkContext.randomResourceName(keyPrefix,16);
+        String key = SdkContext.randomResourceName(keyPrefix, 16);
         KeyValue kv = new KeyValue().withKey(key).withValue("myValue").withLabel("myLabel");
         client.setKeyValue(kv).block();
         kv = client.getKeyValue(key, new KeyValueFilter().withLabel("myLabel")).block().body();
@@ -224,13 +233,13 @@ public class AzConfigTest {
             Assert.fail("Should not be able to get a keyValue with non-existent label");
         } catch (Exception ex) {
             Assert.assertTrue(ex instanceof CloudException);
-            Assert.assertEquals(404, ((CloudException)ex).response().statusCode());
+            Assert.assertEquals(404, ((CloudException) ex).response().statusCode());
         }
     }
 
     @Test
     public void getWithEtag() {
-        String key = SdkContext.randomResourceName(keyPrefix,16);
+        String key = SdkContext.randomResourceName(keyPrefix, 16);
         KeyValue kv = client.setKeyValue(new KeyValue().withKey(key).withValue("myValue")).block().body();
         String etag = kv.etag();
         try {
