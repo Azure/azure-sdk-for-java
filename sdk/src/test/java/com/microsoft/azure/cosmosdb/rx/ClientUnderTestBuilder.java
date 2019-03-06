@@ -31,7 +31,6 @@ public class ClientUnderTestBuilder extends Builder {
         this.configs = builder.configs;
         this.connectionPolicy = builder.connectionPolicy;
         this.desiredConsistencyLevel = builder.desiredConsistencyLevel;
-        this.eventLoopSize = builder.eventLoopSize;
         this.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
         this.serviceEndpoint = builder.serviceEndpoint;
     }
@@ -43,7 +42,6 @@ public class ClientUnderTestBuilder extends Builder {
             this.masterKeyOrResourceToken,
             this.connectionPolicy,
             this.desiredConsistencyLevel,
-            this.configs,
-            this.eventLoopSize);
+            this.configs);
     }
 }

@@ -68,7 +68,7 @@ public class SpyClientUnderTestFactory {
 
 
         ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, -1);
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs);
             init();
         }
 
@@ -128,7 +128,7 @@ public class SpyClientUnderTestFactory {
                 Collections.synchronizedList(new ArrayList<Pair<HttpClientRequest<ByteBuf>, Future<HttpResponseHeaders>>>());
 
         ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, -1);
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs);
             init();
         }
 
@@ -187,7 +187,8 @@ public class SpyClientUnderTestFactory {
                 Collections.synchronizedList(new ArrayList<Pair<HttpClientRequest<ByteBuf>, Future<HttpResponseHeaders>>>());
 
         DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, new Configs(), -1);
+            // TODO: DANOBLE: ensure the configs instance instantiated here specifies Protocol.Https
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, new Configs());
             assert connectionPolicy.getConnectionMode() == ConnectionMode.Direct;
             init();
         }

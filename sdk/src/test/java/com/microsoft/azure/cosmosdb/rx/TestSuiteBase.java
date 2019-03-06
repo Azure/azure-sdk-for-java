@@ -333,26 +333,26 @@ public class TestSuiteBase {
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         Collection<ArrayList<CompositePath>> compositeIndexes = new ArrayList<ArrayList<CompositePath>>();
-        
+
         //Simple
         ArrayList<CompositePath> compositeIndexSimple = new ArrayList<CompositePath>();
         CompositePath compositePath1 = new CompositePath();
         compositePath1.setPath("/" + NUMBER_FIELD);
         compositePath1.setOrder(CompositePathSortOrder.Ascending);
-        
+
         CompositePath compositePath2 = new CompositePath();
         compositePath2.setPath("/" + STRING_FIELD);
         compositePath2.setOrder(CompositePathSortOrder.Descending);
-        
+
         compositeIndexSimple.add(compositePath1);
         compositeIndexSimple.add(compositePath2);
-        
+
         //Max Columns
         ArrayList<CompositePath> compositeIndexMaxColumns = new ArrayList<CompositePath>();
         CompositePath compositePath3 = new CompositePath();
         compositePath3.setPath("/" + NUMBER_FIELD);
         compositePath3.setOrder(CompositePathSortOrder.Descending);
-        
+
         CompositePath compositePath4 = new CompositePath();
         compositePath4.setPath("/" + STRING_FIELD);
         compositePath4.setOrder(CompositePathSortOrder.Ascending);
@@ -360,7 +360,7 @@ public class TestSuiteBase {
         CompositePath compositePath5 = new CompositePath();
         compositePath5.setPath("/" + NUMBER_FIELD_2);
         compositePath5.setOrder(CompositePathSortOrder.Descending);
-        
+
         CompositePath compositePath6 = new CompositePath();
         compositePath6.setPath("/" + STRING_FIELD_2);
         compositePath6.setOrder(CompositePathSortOrder.Ascending);
@@ -369,13 +369,13 @@ public class TestSuiteBase {
         compositeIndexMaxColumns.add(compositePath4);
         compositeIndexMaxColumns.add(compositePath5);
         compositeIndexMaxColumns.add(compositePath6);
-        
+
         //Primitive Values
         ArrayList<CompositePath> compositeIndexPrimitiveValues = new ArrayList<CompositePath>();
         CompositePath compositePath7 = new CompositePath();
         compositePath7.setPath("/" + NUMBER_FIELD);
         compositePath7.setOrder(CompositePathSortOrder.Descending);
-        
+
         CompositePath compositePath8 = new CompositePath();
         compositePath8.setPath("/" + STRING_FIELD);
         compositePath8.setOrder(CompositePathSortOrder.Ascending);
@@ -383,7 +383,7 @@ public class TestSuiteBase {
         CompositePath compositePath9 = new CompositePath();
         compositePath9.setPath("/" + BOOL_FIELD);
         compositePath9.setOrder(CompositePathSortOrder.Descending);
-        
+
         CompositePath compositePath10 = new CompositePath();
         compositePath10.setPath("/" + NULL_FIELD);
         compositePath10.setOrder(CompositePathSortOrder.Ascending);
@@ -397,16 +397,16 @@ public class TestSuiteBase {
         ArrayList<CompositePath> compositeIndexLongStrings = new ArrayList<CompositePath>();
         CompositePath compositePath11 = new CompositePath();
         compositePath11.setPath("/" + STRING_FIELD);
-        
+
         CompositePath compositePath12 = new CompositePath();
         compositePath12.setPath("/" + SHORT_STRING_FIELD);
 
         CompositePath compositePath13 = new CompositePath();
         compositePath13.setPath("/" + MEDIUM_STRING_FIELD);
-        
+
         CompositePath compositePath14 = new CompositePath();
         compositePath14.setPath("/" + LONG_STRING_FIELD);
-        
+
         compositeIndexLongStrings.add(compositePath11);
         compositeIndexLongStrings.add(compositePath12);
         compositeIndexLongStrings.add(compositePath13);
@@ -416,10 +416,10 @@ public class TestSuiteBase {
         compositeIndexes.add(compositeIndexMaxColumns);
         compositeIndexes.add(compositeIndexPrimitiveValues);
         compositeIndexes.add(compositeIndexLongStrings);
-        
+
         indexingPolicy.setCompositeIndexes(compositeIndexes);
         documentCollection.setIndexingPolicy(indexingPolicy);
-        
+
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         ArrayList<String> partitionKeyPaths = new ArrayList<String>();
         partitionKeyPaths.add("/" + PARTITION_KEY);
@@ -427,7 +427,7 @@ public class TestSuiteBase {
         documentCollection.setPartitionKey(partitionKeyDefinition);
 
         documentCollection.setId(UUID.randomUUID().toString());
-        
+
         return documentCollection;
     }
 

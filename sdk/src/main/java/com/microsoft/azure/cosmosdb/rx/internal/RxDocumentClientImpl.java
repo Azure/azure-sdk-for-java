@@ -36,7 +36,6 @@ import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.DatabaseAccount;
 import com.microsoft.azure.cosmosdb.DatabaseAccountManagerInternal;
 import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedOptionsBase;
@@ -93,9 +92,6 @@ import com.microsoft.azure.cosmosdb.rx.internal.query.IDocumentQueryClient;
 import com.microsoft.azure.cosmosdb.rx.internal.query.IDocumentQueryExecutionContext;
 import com.microsoft.azure.cosmosdb.rx.internal.query.Paginator;
 import io.netty.buffer.ByteBuf;
-import io.reactivex.netty.RxNetty;
-import io.reactivex.netty.channel.RxEventLoopProvider;
-import io.reactivex.netty.channel.SingleNioLoopProvider;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClientBuilder;
 import org.apache.commons.lang3.StringUtils;
@@ -170,9 +166,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 List<Permission> permissionFeed,
                                 ConnectionPolicy connectionPolicy,
                                 ConsistencyLevel consistencyLevel,
-                                Configs configs,
-                                int eventLoopSize) {
-        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, eventLoopSize);
+                                Configs configs) {
+        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -216,7 +211,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     public RxDocumentClientImpl(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy,
-                                ConsistencyLevel consistencyLevel, Configs configs, int eventLoopSize) {
+                                ConsistencyLevel consistencyLevel, Configs configs) {
 
         logger.info(
                 "Initializing DocumentClient with"
@@ -254,23 +249,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             userAgentContainer.setSuffix(userAgentSuffix);
         }
 
-        if (eventLoopSize <= 0) {
-            int cpuCount = Runtime.getRuntime().availableProcessors();
-            eventLoopSize = cpuCount;
-            logger.debug(
-                    "Auto configuring eventLoop size CPU cores [{}], eventLoopSize [{}]",
-                    cpuCount, eventLoopSize);
-        }
-
-        logger.debug("EventLoop size [{}]", eventLoopSize);
-
-        synchronized (RxDocumentClientImpl.class) {
-            SingleNioLoopProvider rxEventLoopProvider = new SingleNioLoopProvider(1, eventLoopSize);
-            RxEventLoopProvider oldEventLoopProvider = RxNetty.useEventLoopProvider(rxEventLoopProvider);
-            this.rxClient = httpClientBuilder().build();
-            RxNetty.useEventLoopProvider(oldEventLoopProvider);
-        }
-
+        this.rxClient = httpClientBuilder().build();
         this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
         this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
     }

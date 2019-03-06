@@ -27,7 +27,6 @@ import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.ISessionContainer;
 import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
 import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
-import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyAndResourceTokenPair;
 
 import io.netty.buffer.ByteBuf;
 import io.reactivex.netty.client.RxClient;
@@ -42,7 +41,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doAnswer;
@@ -63,9 +61,8 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      String masterKey,
                                      ConnectionPolicy connectionPolicy,
                                      ConsistencyLevel consistencyLevel,
-                                     Configs configs,
-                                     int eventLoopSize) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, eventLoopSize);
+                                     Configs configs) {
+        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs);
         init();
     }
 

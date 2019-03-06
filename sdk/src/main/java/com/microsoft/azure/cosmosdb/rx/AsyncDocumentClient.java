@@ -113,7 +113,6 @@ public interface AsyncDocumentClient {
         List<Permission> permissionFeed;
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
-        int eventLoopSize = -1;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -167,19 +166,6 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        /**
-         * NOTE: This is experimental and internal only.
-         * If sets, modifies the event loop size and the computation pool size.
-         *
-         * @param eventLoopSize the size of the event loop (the number of event loop threads).
-         * @return current Builder.
-         */
-        Builder withWorkers(int eventLoopSize) {
-            ifThrowIllegalArgException(eventLoopSize <= 0, "invalid event loop size");
-            this.eventLoopSize = eventLoopSize;
-            return this;
-        }
-
         Builder withConfigs(Configs configs) {
             this.configs = configs;
             return this;
@@ -208,8 +194,8 @@ public interface AsyncDocumentClient {
                                                                    permissionFeed,
                                                                    connectionPolicy,
                                                                    desiredConsistencyLevel,
-                                                                   configs,
-                                                                   eventLoopSize);
+                                                                   configs
+            );
             client.init();
             return client;
         }
