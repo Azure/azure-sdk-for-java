@@ -518,7 +518,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
         // Hence Playback of this test is disabled.
         Assume.assumeTrue("This Test only runs in Live/Record mode", getTestMode().equalsIgnoreCase(RECORD_MODE));
-        
+
         //Normal Batch Client without interceptor is used for this test, as it is not supposed to be recorded.
         if(!isRecordMode()){
             return;

@@ -530,7 +530,11 @@ public class BatchIntegrationTestBase {
     }
 
     String getTestMode() {
-        return System.getenv("AZURE_TEST_MODE");
+        String testMode =  System.getenv("AZURE_TEST_MODE");
+        if (testMode == null){
+            testMode = "PLAYBACK";
+        }
+        return testMode;
     }
 
 }
