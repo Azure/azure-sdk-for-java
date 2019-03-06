@@ -4,4 +4,4 @@
 /**
  * This package contains classes for AzConfig Service SDK.
  */
-package com.azure.azconfig.implementation;
+package com.azure.applicationconfig.implementation;

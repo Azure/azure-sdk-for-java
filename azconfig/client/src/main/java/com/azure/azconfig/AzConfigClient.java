@@ -1,18 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.azconfig;
+package com.azure.applicationconfig;
 
-import com.azure.azconfig.implementation.PageImpl;
-import com.azure.azconfig.implementation.RestPagedResponseImpl;
-import com.azure.azconfig.models.ETagFilter;
-import com.azure.azconfig.models.Key;
-import com.azure.azconfig.models.KeyLabelFilter;
-import com.azure.azconfig.models.KeyValueFilter;
-import com.azure.azconfig.models.KeyValue;
-import com.azure.azconfig.models.KeyValueCreateUpdateParameters;
-import com.azure.azconfig.models.KeyValueListFilter;
-import com.azure.azconfig.models.Label;
-import com.azure.azconfig.models.RevisionFilter;
+import com.azure.applicationconfig.implementation.PageImpl;
+import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
+import com.azure.applicationconfig.models.ETagFilter;
+import com.azure.applicationconfig.models.Key;
+import com.azure.applicationconfig.models.KeyLabelFilter;
+import com.azure.applicationconfig.models.KeyValueFilter;
+import com.azure.applicationconfig.models.KeyValue;
+import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
+import com.azure.applicationconfig.models.KeyValueListFilter;
+import com.azure.applicationconfig.models.Label;
+import com.azure.applicationconfig.models.RevisionFilter;
 import com.microsoft.azure.v3.CloudException;
 import com.microsoft.rest.v3.RestPagedResponse;
 import com.microsoft.rest.v3.RestProxy;

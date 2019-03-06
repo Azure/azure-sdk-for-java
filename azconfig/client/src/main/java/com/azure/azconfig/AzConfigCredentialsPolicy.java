@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.azconfig;
+package com.azure.applicationconfig;
 
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpPipelineLogLevel;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import reactor.core.publisher.Mono;
@@ -68,7 +68,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
      * @return A {@link Mono} representing the HTTP response that will arrive asynchronously.
      */
     @Override
-    public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         context.httpRequest().headers().set(HOST_HEADER, credentials.baseUri().getHost());
         if (context.httpRequest().headers().value(DATE_HEADER) == null) {
             OffsetDateTime now = Instant.now().atOffset(ZoneOffset.UTC);

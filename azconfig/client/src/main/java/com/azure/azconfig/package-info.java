@@ -4,4 +4,4 @@
 /**
  * This package contains the classes for AzConfigClient.
  */
-package com.azure.azconfig;
+package com.azure.applicationconfig;

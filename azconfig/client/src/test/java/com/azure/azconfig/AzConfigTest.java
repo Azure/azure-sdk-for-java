@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.azconfig;
+package com.azure.applicationconfig;
 
-import com.azure.azconfig.models.Key;
-import com.azure.azconfig.models.KeyLabelFilter;
-import com.azure.azconfig.models.KeyValue;
-import com.azure.azconfig.models.KeyValueFilter;
-import com.azure.azconfig.models.KeyValueListFilter;
-import com.azure.azconfig.models.RevisionFilter;
+import com.azure.applicationconfig.models.Key;
+import com.azure.applicationconfig.models.KeyLabelFilter;
+import com.azure.applicationconfig.models.KeyValue;
+import com.azure.applicationconfig.models.KeyValueFilter;
+import com.azure.applicationconfig.models.KeyValueListFilter;
+import com.azure.applicationconfig.models.RevisionFilter;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;

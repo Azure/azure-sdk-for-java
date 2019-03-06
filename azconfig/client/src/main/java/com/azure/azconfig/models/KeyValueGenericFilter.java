@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.azconfig.models;
+package com.azure.applicationconfig.models;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;

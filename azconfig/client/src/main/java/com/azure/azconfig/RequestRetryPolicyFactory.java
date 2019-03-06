@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 //
-//package com.azure.azconfig;
+//package com.azure.applicationconfig;
 //
 //import com.microsoft.rest.v3.http.HttpRequest;
 //import com.microsoft.rest.v3.http.HttpResponse;

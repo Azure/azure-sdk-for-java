@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.azconfig.implementation;
+package com.azure.applicationconfig.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.v3.Page;

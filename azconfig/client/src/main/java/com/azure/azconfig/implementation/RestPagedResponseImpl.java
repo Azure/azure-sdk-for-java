@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.azconfig.implementation;
+package com.azure.applicationconfig.implementation;
 
 import com.microsoft.rest.v3.RestPagedResponse;
 import com.microsoft.rest.v3.http.HttpRequest;
