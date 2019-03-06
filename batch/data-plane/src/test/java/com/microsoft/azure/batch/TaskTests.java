@@ -517,6 +517,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         //This test does not run in Playback mode. It only runs in Record/Live mode.
         // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
         // Hence Playback of this test is disabled.
+        createClient(AuthMode.SharedKey);
         if(!isRecordMode()){
             return;
         }
