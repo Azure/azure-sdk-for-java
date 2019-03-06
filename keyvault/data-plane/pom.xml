@@ -3,7 +3,8 @@
  Licensed under the MIT License. See License.txt in the project root for
  license information.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
@@ -28,7 +29,9 @@
     </site>
   </distributionManagement>
 
-  <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
 
   <properties>
     <azure-keyvault.version>1.2.0</azure-keyvault.version>
@@ -72,22 +75,22 @@
 
   <build>
 
-      <plugins>
+    <plugins>
 
-        <!-- This plugin is used to compile the sources of your project. -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.7</source>
-            <target>1.7</target>
-            <showWarnings>true</showWarnings>
-            <showDeprecation>true</showDeprecation>
-            <compilerArgument>-Xlint:unchecked</compilerArgument>
-          </configuration>
-        </plugin>
+      <!-- This plugin is used to compile the sources of your project. -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+          <showWarnings>true</showWarnings>
+          <showDeprecation>true</showDeprecation>
+          <compilerArgument>-Xlint:unchecked</compilerArgument>
+        </configuration>
+      </plugin>
 
-      </plugins>
+    </plugins>
 
   </build>
 

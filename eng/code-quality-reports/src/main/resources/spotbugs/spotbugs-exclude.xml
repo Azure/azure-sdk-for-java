@@ -24,9 +24,17 @@
         <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
     </Match>
 
-    <!-- Ignoring dropped exception because it existed in current SDK when migrated. -->
+    <!-- KeyVaultKey.DecryptResultTransform and SignResultTransform were not created with the
+    intention that a null could be passed in. In the original code, it would have thrown a
+    NullReferenceException. -->
     <Match>
-        <Class name="com.microsoft.azure.keyvault.extensions.CachingKeyResolver$2" />
+        <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
+        <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
+    </Match>
+
+    <!-- Ignoring dropped exception and catch Exception because it existed in current SDK when migrated. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.CachingKeyResolver\$[0-9]+" />
         <Method name="run" />
         <Bug pattern="DE_MIGHT_IGNORE"/>
     </Match>
@@ -37,6 +45,13 @@
         <Class name="com.microsoft.azure.keyvault.cryptography.EcKey"/>
         <Field name="defaultEncryptionAlgorithm"/>
         <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
+    </Match>
+
+    <!-- These KeyVault classes are publicly released APIs that intentionally return null rather
+    than an empty array. -->
+    <Match>
+        <Class name="~com\.microsoft\.azure\.keyvault\.(cryptography|models|webkey)\.[\w]+"/>
+        <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
     </Match>
 
     <!-- Suppress non-null warning in the case that we change the code and it is possible for

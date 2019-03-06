@@ -4,6 +4,7 @@
 package com.microsoft.azure.keyvault.cryptography;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -20,6 +21,10 @@ import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Rs256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.RsaOaep;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class RsaKey implements IKey {
 
@@ -253,7 +258,7 @@ public class RsaKey implements IKey {
         try {
             transform = algo.CreateEncryptor(keyPair, provider);
             result    = Futures.immediateFuture(Triple.of(transform.doFinal(plaintext), (byte[]) null, algorithmName));
-        } catch (Exception e) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
             result    = Futures.immediateFailedFuture(e);
         }
 
@@ -283,7 +288,7 @@ public class RsaKey implements IKey {
         try {
             transform = algo.CreateEncryptor(keyPair, provider);
             result    = Futures.immediateFuture(Pair.of(transform.doFinal(key), algorithmName));
-        } catch (Exception e) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
             result    = Futures.immediateFailedFuture(e);
         }
 
@@ -317,7 +322,7 @@ public class RsaKey implements IKey {
         try {
             transform = algo.CreateDecryptor(keyPair, provider);
             result    = Futures.immediateFuture(transform.doFinal(encryptedKey));
-        } catch (Exception e) {
+        } catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException | BadPaddingException e) {
             result    = Futures.immediateFailedFuture(e);
         }
 
