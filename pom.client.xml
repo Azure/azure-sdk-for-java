@@ -108,6 +108,9 @@
     <spotbugs.version>3.1.11</spotbugs.version>
     <slf4j-api.version>1.7.5</slf4j-api.version>
 
+    <azure-client-runtime-v3.version>3.0.0-SNAPSHOT</azure-client-runtime-v3.version>
+    <client-runtime-v3.version>3.0.0-SNAPSHOT</client-runtime-v3.version>
+
     <!-- Test Dependency Versions -->
     <adal4j.version>1.4.0</adal4j.version>
     <bcprov-jdk15on.version>1.59</bcprov-jdk15on.version>
@@ -152,6 +155,12 @@
       </dependency>
 
       <dependency>
+        <groupId>com.microsoft.azure.v3</groupId>
+        <artifactId>azure-client-runtime</artifactId>
+        <version>${azure-client-runtime-v3.version}</version>
+      </dependency>
+
+      <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>adal4j</artifactId>
         <version>${adal4j.version}</version>
@@ -162,6 +171,12 @@
         <groupId>com.microsoft.rest</groupId>
         <artifactId>client-runtime</artifactId>
         <version>${client-runtime.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.rest.v3</groupId>
+        <artifactId>client-runtime</artifactId>
+        <version>${client-runtime-v3.version}</version>
       </dependency>
 
       <!-- Jackson Dependencies -->
