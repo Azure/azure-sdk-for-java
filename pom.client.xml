@@ -109,6 +109,7 @@
     <proton-j-version>0.31.0</proton-j-version>
     <qpid-proton-j-extensions-version>1.1.0</qpid-proton-j-extensions-version>
     <log4j-api.version>2.11.1</log4j-api.version>
+    <slf4j-api.version>1.7.5</slf4j-api.version>
 
     <!-- Test Dependency Versions -->
     <adal4j.version>1.4.0</adal4j.version>
@@ -204,6 +205,12 @@
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-api</artifactId>
         <version>${log4j-api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-api.version}</version>
       </dependency>
 
       <!-- Test dependencies -->
