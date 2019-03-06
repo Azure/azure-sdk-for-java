@@ -12,6 +12,7 @@ import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
 import com.microsoft.azure.v3.CloudException;
+import com.microsoft.rest.v3.RestResponse;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
@@ -159,19 +160,26 @@ public class AzConfigTest {
     }
 
     private void cleanUpResources() {
+        if (isPlaybackMode()) {
+            return;
+        }
+
+        logger.info("Cleaning up created key values.");
         client.listKeyValues(new KeyValueListFilter().withKey(keyPrefix))
-                .subscribe(keyValue -> {
+                .flatMap(keyValue -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", keyValue.key(), keyValue.label(), keyValue.isLocked());
-                    client.unlockKeyValue(keyValue.key(), keyValue.label(), null)
-                            .subscribe(response -> {
-                                KeyValue kv = response.body();
-                                client.deleteKeyValue(kv.key(), kv.label(), null).block();
-                            }, error -> logger.warn("Unable to unlock key: {}, label: {}", keyValue.key(), keyValue.label()));
-                }, error -> {
-                    logger.error("Error fetching keyValues. {}", error);
-                }, () -> {
-                    logger.info("Complete.");
-                });
+
+                    if (keyValue.isLocked()) {
+                        return client.unlockKeyValue(keyValue.key(), keyValue.label(), null).flatMap(response -> {
+                            KeyValue kv = response.body();
+                            return client.deleteKeyValue(kv.key(), kv.label(), null);
+                        });
+                    } else {
+                        return client.deleteKeyValue(keyValue.key(), keyValue.label(), null);
+                    }
+                }).blockLast();
+
+        logger.info("Finished cleaning up values.");
     }
 
     @Test
