@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.4.3
+* Fixed resource leak issue on closing client
+
 ### 2.4.2
 * Fixed bugs in continuation token support for cross partition queries
 
