@@ -35,7 +35,6 @@ import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.http.policy.RetryPolicy;
 import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
-import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
