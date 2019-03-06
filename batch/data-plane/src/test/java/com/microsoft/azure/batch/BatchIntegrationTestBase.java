@@ -59,14 +59,19 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 /**
  * The base for batch dataplane tests.
  */
 public class BatchIntegrationTestBase {
+    public static final int SEC_TO_MILLIS = 1000;
     static BatchClient batchClient;
     static BatchClient alternativeBatchClient;
     static final int MAX_LEN_ID = 64;
+    static Logger logger;
 
     public enum AuthMode {
         AAD, SharedKey
@@ -130,6 +135,7 @@ public class BatchIntegrationTestBase {
 
     @BeforeClass
     public static void beforeClass() throws IOException {
+        logger = Logger.getLogger("BatchIntegrationTestBase");
         printThreadInfo("beforeclass");
         initTestMode();
         initPlaybackUri();
@@ -270,7 +276,7 @@ public class BatchIntegrationTestBase {
         String poolOsVersion = "*";
 
         // 10 minutes
-        long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
+        long poolSteadyTimeoutInSeconds = 10 * 60 * SEC_TO_MILLIS;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -285,6 +291,8 @@ public class BatchIntegrationTestBase {
                     .withTargetDedicatedNodes(poolVmCount).withVmSize(poolVmSize)
                     .withCloudServiceConfiguration(configuration).withUserAccounts(userList);
             batchClient.poolOperations().createPool(addParameter);
+        } else {
+            logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
         }
 
         long startTime = System.currentTimeMillis();
@@ -300,7 +308,7 @@ public class BatchIntegrationTestBase {
                 break;
             }
             System.out.println("wait 30 seconds for pool steady...");
-            Thread.sleep(30 * 1000);
+            Thread.sleep(30 * SEC_TO_MILLIS);
             elapsedTime = (new Date()).getTime() - startTime;
         }
 
@@ -309,13 +317,17 @@ public class BatchIntegrationTestBase {
         return batchClient.poolOperations().getPool(poolId);
     }
 
+    private static LogRecord createLogRecord(Level logLevel, String message) {
+        return new LogRecord(Level.INFO,  message);
+    }
+
     static CloudPool createIfNotExistIaaSPool(String poolId) throws Exception {
         // Create a pool with 3 Small VMs
         String poolVmSize = "STANDARD_A1";
         int poolVmCount = 1;
 
         // 10 minutes
-        long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
+        long poolSteadyTimeoutInSeconds = 10 * 60 * SEC_TO_MILLIS;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -333,6 +345,8 @@ public class BatchIntegrationTestBase {
                     .withTargetDedicatedNodes(poolVmCount).withVmSize(poolVmSize)
                     .withVirtualMachineConfiguration(configuration).withUserAccounts(userList);
             batchClient.poolOperations().createPool(addParameter);
+        } else {
+            logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
         }
 
         long startTime = System.currentTimeMillis();
@@ -348,7 +362,7 @@ public class BatchIntegrationTestBase {
                 break;
             }
             System.out.println("wait 30 seconds for pool steady...");
-            Thread.sleep(30 * 1000);
+            Thread.sleep(30 * SEC_TO_MILLIS);
             elapsedTime = (new Date()).getTime() - startTime;
         }
 
@@ -451,7 +465,7 @@ public class BatchIntegrationTestBase {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
 
-        while (elapsedTime < expiryTimeInSeconds * 1000) {
+        while (elapsedTime < expiryTimeInSeconds * SEC_TO_MILLIS) {
             List<CloudTask> taskCollection = client.taskOperations().listTasks(jobId,
                     new DetailLevel.Builder().withSelectClause("id, state").build());
 
@@ -469,7 +483,7 @@ public class BatchIntegrationTestBase {
             }
 
             // Check again after 10 seconds
-            Thread.sleep(10 * 1000);
+            Thread.sleep(10 * SEC_TO_MILLIS);
             elapsedTime = (new Date()).getTime() - startTime;
         }
 

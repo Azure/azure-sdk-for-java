@@ -405,7 +405,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             batchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
 
             //The Waiting period is only needed in record mode.
-            threadSleepInRecordMode(30 * 1000);
+            threadSleepInRecordMode(30 * SEC_TO_MILLIS);
 
             // Test Job count
             counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);
@@ -517,6 +517,8 @@ public class TaskTests  extends BatchIntegrationTestBase {
         //This test does not run in Playback mode. It only runs in Record/Live mode.
         // This test uses multi threading. Playing back the test doesn't match its recorded sequence always.
         // Hence Playback of this test is disabled.
+
+        //Normal Batch Client without interceptor is used for this test, as it is not supposed to be recorded.
         createClient(AuthMode.SharedKey);
         if(!isRecordMode()){
             return;

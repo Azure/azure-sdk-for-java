@@ -80,7 +80,7 @@ public class JobTests extends BatchIntegrationTestBase {
                 }
             }
 
-            Thread.sleep(1000);
+            Thread.sleep(1 * SEC_TO_MILLIS);
         }
         finally {
             try {
@@ -110,7 +110,7 @@ public class JobTests extends BatchIntegrationTestBase {
             job = batchClient.jobOperations().getJob(jobId);
             Assert.assertEquals(JobState.DISABLING, job.state());
 
-            Thread.sleep(5 * 1000);
+            Thread.sleep(5 * SEC_TO_MILLIS);
             job = batchClient.jobOperations().getJob(jobId);
             Assert.assertEquals(JobState.DISABLED, job.state());
 
@@ -127,7 +127,7 @@ public class JobTests extends BatchIntegrationTestBase {
             job = batchClient.jobOperations().getJob(jobId);
             Assert.assertEquals(JobState.TERMINATING, job.state());
 
-            Thread.sleep(2 * 1000);
+            Thread.sleep(2 * SEC_TO_MILLIS);
             job = batchClient.jobOperations().getJob(jobId);
             Assert.assertEquals(JobState.COMPLETED, job.state());
         }
