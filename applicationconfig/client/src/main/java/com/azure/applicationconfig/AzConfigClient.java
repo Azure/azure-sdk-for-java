@@ -481,7 +481,7 @@ public final class AzConfigClient extends ServiceClient {
                            }
                            return Flux.just(page).concatWith(listKeysNextAsync(nextPageLink));
                        });
-       return  receiver.apply(p);
+        return receiver.apply(p);
     }
 
     /**
