@@ -13,12 +13,13 @@ import java.util.List;
 
 public class JobScheduleTests extends BatchIntegrationTestBase {
     static CloudPool livePool;
+    static String poolId;
 
     @BeforeClass
     public static void setup() throws Exception {
+        poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
             createClient(AuthMode.SharedKey);
-            String poolId = getStringIdWithUserNamePrefix("-testpool");
             livePool = createIfNotExistPaaSPool(poolId);
             Assert.assertNotNull(livePool);
         }
@@ -40,9 +41,8 @@ public class JobScheduleTests extends BatchIntegrationTestBase {
         String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-canCRUD");
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(livePool.id());
-        }
+        poolInfo.withPoolId(poolId);
+
         Schedule schedule = new Schedule().withDoNotRunUntil(DateTime.now()).withDoNotRunAfter(DateTime.now().plusHours(5)).withStartWindow(Period.days(5));
         JobSpecification spec = new JobSpecification().withPriority(100).withPoolInfo(poolInfo);
         batchClient.jobScheduleOperations().createJobSchedule(jobScheduleId, schedule, spec);
@@ -104,9 +104,8 @@ public class JobScheduleTests extends BatchIntegrationTestBase {
         String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-updateJobScheduleState");
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(livePool.id());
-        }
+        poolInfo.withPoolId(poolId);
+
         JobSpecification spec = new JobSpecification().withPriority(100).withPoolInfo(poolInfo);
         Schedule schedule = new Schedule().withDoNotRunUntil(DateTime.now()).withDoNotRunAfter(DateTime.now().plusHours(5)).withStartWindow(Period.days(5));
         batchClient.jobScheduleOperations().createJobSchedule(jobScheduleId, schedule, spec);

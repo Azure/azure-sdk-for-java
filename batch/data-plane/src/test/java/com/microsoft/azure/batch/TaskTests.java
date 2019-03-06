@@ -18,16 +18,18 @@ import java.util.concurrent.TimeUnit;
 public class TaskTests  extends BatchIntegrationTestBase {
     private static CloudPool livePool;
     private static CloudPool liveIaaSPool;
+    static String livePoolId;
+    private static String liveIaasPoolId;
 
     @BeforeClass
     public static void setup() throws Exception {
+        livePoolId = getStringIdWithUserNamePrefix("-testpool");
+        liveIaasPoolId = getStringIdWithUserNamePrefix("-testIaaSpool");
         try {
             if(isRecordMode()) {
                 createClient(AuthMode.SharedKey);
-                String poolId = getStringIdWithUserNamePrefix("-testpool");
-                livePool = createIfNotExistPaaSPool(poolId);
-                poolId = getStringIdWithUserNamePrefix("-testIaaSpool");
-                liveIaaSPool = createIfNotExistIaaSPool(poolId);
+                livePool = createIfNotExistPaaSPool(livePoolId);
+                liveIaaSPool = createIfNotExistIaaSPool(liveIaasPoolId);
                 Assert.assertNotNull(livePool);
             }
         } catch (BatchErrorException e) {
@@ -64,9 +66,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         String jobId = getStringIdWithUserNamePrefix("-canCRUDTest");
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(livePool.id());
-        }
+        poolInfo.withPoolId(livePoolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
         String storageAccountName = System.getenv("STORAGE_ACCOUNT_NAME");
         String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
@@ -174,9 +174,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(livePool.id());
-        }
+        poolInfo.withPoolId(livePoolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         try {
@@ -218,9 +216,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         String storageAccountKey = System.getenv("STORAGE_ACCOUNT_KEY");
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(liveIaaSPool.id());
-        }
+        poolInfo.withPoolId(liveIaasPoolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
         CloudBlobContainer container = null;
         String containerUrl = "";
@@ -312,9 +308,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         String jobId = getStringIdWithUserNamePrefix("-testAddMultiTasks");
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(livePool.id());
-        }
+        poolInfo.withPoolId(livePoolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         int TASK_COUNT=1000;
@@ -386,9 +380,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         String jobId = getStringIdWithUserNamePrefix("-testGetTaskCounts");
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(livePool.id());
-        }
+        poolInfo.withPoolId(livePoolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         int TASK_COUNT=1000;
@@ -413,9 +405,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             batchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
 
             //The Waiting period is only needed in record mode.
-            if(isRecordMode()) {
-                TimeUnit.SECONDS.sleep(30);
-            }
+            threadSleepInRecordMode(30 * 1000);
 
             // Test Job count
             counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);
@@ -436,9 +426,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(liveIaaSPool.id());
-        }
+        poolInfo.withPoolId(liveIaasPoolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         TaskAddParameter taskToAdd = new TaskAddParameter();
@@ -481,9 +469,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(liveIaaSPool.id());
-        }
+        poolInfo.withPoolId(liveIaasPoolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         List<TaskAddParameter> tasksToAdd = new ArrayList<TaskAddParameter>();
@@ -538,9 +524,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
         String taskId = "mytask";
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(liveIaaSPool.id());
-        }
+        poolInfo.withPoolId(liveIaasPoolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         List<TaskAddParameter> tasksToAdd = new ArrayList<TaskAddParameter>();

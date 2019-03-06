@@ -10,12 +10,13 @@ import java.util.List;
 
 public class JobTests extends BatchIntegrationTestBase {
     private static CloudPool livePool;
+    static String poolId;
 
     @BeforeClass
     public static void setup() throws Exception {
+        poolId = getStringIdWithUserNamePrefix("-testpool");
         if(isRecordMode()) {
             createClient(AuthMode.SharedKey);
-            String poolId = getStringIdWithUserNamePrefix("-testpool");
             livePool = createIfNotExistPaaSPool(poolId);
             Assert.assertNotNull(livePool);
         }
@@ -37,9 +38,7 @@ public class JobTests extends BatchIntegrationTestBase {
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUD");
 
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(livePool.id());
-        }
+        poolInfo.withPoolId(poolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         try {
@@ -98,9 +97,8 @@ public class JobTests extends BatchIntegrationTestBase {
         // CREATE
         String jobId = getStringIdWithUserNamePrefix("-Job-CanUpdateState");
         PoolInformation poolInfo = new PoolInformation();
-        if(isRecordMode()) {
-            poolInfo.withPoolId(livePool.id());
-        }
+        poolInfo.withPoolId(poolId);
+
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         try {

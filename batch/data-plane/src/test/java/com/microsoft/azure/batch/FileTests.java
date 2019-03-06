@@ -49,9 +49,8 @@ public class FileTests extends BatchIntegrationTestBase {
         try {
 
             PoolInformation poolInfo = new PoolInformation();
-            if(isRecordMode()) {
-                poolInfo.withPoolId(livePool.id());
-            }
+            poolInfo.withPoolId(poolId);
+
             batchClient.jobOperations().createJob(jobId, poolInfo);
             TaskAddParameter taskToAdd = new TaskAddParameter();
             taskToAdd.withId(taskId)
@@ -115,9 +114,8 @@ public class FileTests extends BatchIntegrationTestBase {
 
         try {
             PoolInformation poolInfo = new PoolInformation();
-            if(isRecordMode()) {
-                poolInfo.withPoolId(livePool.id());
-            }
+            poolInfo.withPoolId(poolId);
+
             batchClient.jobOperations().createJob(jobId, poolInfo);
             TaskAddParameter taskToAdd = new TaskAddParameter();
             taskToAdd.withId(taskId)

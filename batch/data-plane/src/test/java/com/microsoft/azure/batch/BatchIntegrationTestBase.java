@@ -81,7 +81,7 @@ public class BatchIntegrationTestBase {
 
 
     private static void initTestMode() throws IOException {
-        String azureTestMode = "PLAYBACK";
+        String azureTestMode = System.getenv("AZURE_TEST_MODE");
         if (azureTestMode != null) {
             if (azureTestMode.equalsIgnoreCase("Record")) {
                 testMode = TestBase.TestMode.RECORD;
