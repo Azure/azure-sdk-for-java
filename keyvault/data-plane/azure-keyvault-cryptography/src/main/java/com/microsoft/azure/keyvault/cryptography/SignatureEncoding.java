@@ -47,7 +47,7 @@ public final class SignatureEncoding {
     public static byte[] fromAsn1Der(byte[] asn1DerSignature, Ecdsa algorithm) {
 
         try {
-            return Asn1DerSignatureEncoding.Decode(asn1DerSignature, algorithm);
+            return Asn1DerSignatureEncoding.decode(asn1DerSignature, algorithm);
         } catch (IllegalArgumentException ex) {
             throw (IllegalArgumentException) new IllegalArgumentException(
                     ex.getMessage() + " " + Hex.encodeHexString(asn1DerSignature)).initCause(ex);
@@ -84,7 +84,7 @@ public final class SignatureEncoding {
     */
     public static byte[] toAsn1Der(byte[] signature, Ecdsa algorithm) {
         try {
-            return Asn1DerSignatureEncoding.Encode(signature, algorithm);
+            return Asn1DerSignatureEncoding.encode(signature, algorithm);
         } catch (IllegalArgumentException ex) {
             throw (IllegalArgumentException) new IllegalArgumentException(
                     ex.getMessage() + " " + Hex.encodeHexString(signature)).initCause(ex);
@@ -110,7 +110,7 @@ final class Asn1DerSignatureEncoding {
 
     }
 
-    public static byte[] Encode(byte[] signature, Ecdsa algorithm) {
+    public static byte[] encode(byte[] signature, Ecdsa algorithm) {
         int coordLength = algorithm.getCoordLength();
 
         // verify that the signature is the correct length for the given algorithm
@@ -144,7 +144,7 @@ final class Asn1DerSignatureEncoding {
         return asn1DerSignature.toByteArray();
     }
 
-    public static byte[] Decode(byte[] bytes, Ecdsa algorithm) {
+    public static byte[] decode(byte[] bytes, Ecdsa algorithm) {
         int coordLength = algorithm.getCoordLength();
 
         ByteArrayInputStream asn1DerSignature = new ByteArrayInputStream(bytes);
