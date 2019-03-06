@@ -19,7 +19,7 @@ public class KeyValueFilter extends KeyValueGenericFilter<KeyValueFilter> {
      * @return 'If-Match' header value to be added
      */
     public String ifMatch() {
-        return ifMatch;
+        return "\"" + ifMatch + "\"";
     }
 
     /**
@@ -35,6 +35,6 @@ public class KeyValueFilter extends KeyValueGenericFilter<KeyValueFilter> {
      * @return 'If-None-Match' header value to be added
      */
     public String ifNoneMatch() {
-        return ifNoneMatch;
+        return "\"" + ifNoneMatch + "\"";
     }
 }
