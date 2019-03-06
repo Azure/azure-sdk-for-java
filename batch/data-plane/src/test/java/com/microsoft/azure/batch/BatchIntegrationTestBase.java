@@ -67,6 +67,7 @@ import java.util.logging.Logger;
  * The base for batch dataplane tests.
  */
 public class BatchIntegrationTestBase {
+    public static final String RECORD_MODE = "RECORD";
     public static final int SEC_TO_MILLIS = 1000;
     static BatchClient batchClient;
     static BatchClient alternativeBatchClient;
@@ -526,6 +527,10 @@ public class BatchIntegrationTestBase {
         if (isRecordMode()) {
             Thread.sleep(millis);
         }
+    }
+
+    String getTestMode() {
+        return System.getenv("AZURE_TEST_MODE");
     }
 
 }
