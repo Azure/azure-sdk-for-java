@@ -129,3 +129,6 @@ If you would like to become an active contributor to this project please follow 
 * [Azure Key Vault General Documentation](https://docs.microsoft.com/en-us/azure/key-vault/)
 * [Azure Key Vault REST API Reference](https://docs.microsoft.com/en-us/rest/api/keyvault/)
 * [Azure Active Directory Documenation](https://docs.microsoft.com/en-us/azure/active-directory/)
+
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fkeyvault%2Fdata-plane%2FREADME.png)
