@@ -90,16 +90,6 @@ public class AzConfigTest {
 
             pipeline = new HttpPipeline(policies.toArray(new HttpPipelinePolicy[0]));
 
-//            pipeline = new HttpPipelineBuilder(new HttpPipelineOptions().withHttpClient(NettyClient.createDefault()))
-//                               .withRequestPolicy(new UserAgentPolicyFactory(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)))
-//                               .withRequestPolicy(new RequestIdPolicyFactory())
-//                               .withRequestPolicy(new AzConfigCredentialsPolicyFactory(credentials))
-//                               .withRequestPolicy(new RequestRetryPolicyFactory())
-//                               .withRequestPolicy(new TimeoutPolicyFactory(3, ChronoUnit.MINUTES))
-//                               .withRequestPolicy(interceptorManager.initRecordPolicy())
-//                               .withHttpClient(NettyClient.createDefault(configuration))
-//                               .withRequestPolicy(new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY_AND_HEADERS, true))
-//                               .withDecodingPolicy().build();
             interceptorManager.addTextReplacementRule(credentials.baseUri().toString(), playbackUri);
         }
         client = AzConfigClient.create(connectionString, pipeline);
@@ -112,7 +102,6 @@ public class AzConfigTest {
         policies.add(new RequestIdPolicy());
         policies.add(new AzConfigCredentialsPolicy(credentials));
         policies.add(new RetryPolicy());
-        //        policies.add(new RequestRetryPolicyFactory()); // todo - do we really need custom retry policy here?
         policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         return policies;
