@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suppressions PUBLIC
-    "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
-    "http://www.puppycrawl.com/dtds/suppressions_1_0.dtd">
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
   <suppress checks="Javadoc" files="Test[s]?.*\.java"/>
@@ -30,4 +30,6 @@
   <suppress checks="ConstantName" files="AlgorithmResolver.java"/>
   <suppress checks="ConstantName" files="RsaKey.java"/>
   <suppress checks="ConstantName" files="SymmetricKey.java"/>
+  <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
+  <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
 </suppressions>

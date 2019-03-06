@@ -46,7 +46,7 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             // Create the AES provider
             inner = new AesCbc.AesCbcDecryptor(parameters.getLeft(), iv, provider);
 
-            aadLength = toBigEndian(authenticationData.length * 8);
+            aadLength = toBigEndian(authenticationData.length * 8L);
 
             // Save the tag
             tag = authenticationTag;
@@ -104,7 +104,7 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
             // Create the AES encryptor
             this.inner = new AesCbc.AesCbcEncryptor(parameters.getLeft(), iv, provider);
 
-            this.aadLength = toBigEndian(authenticationData.length * 8);
+            this.aadLength = toBigEndian(authenticationData.length * 8L);
 
             // Prime the hash.
             hmac.update(authenticationData);
@@ -263,7 +263,7 @@ public abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         return Triple.of(aesKey, hmacKey, hmac);
     }
 
-    static byte[] toBigEndian(long i) {
+    private static byte[] toBigEndian(long i) {
 
         byte[] shortRepresentation = BigInteger.valueOf(i).toByteArray();
         byte[] longRepresentation = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 };

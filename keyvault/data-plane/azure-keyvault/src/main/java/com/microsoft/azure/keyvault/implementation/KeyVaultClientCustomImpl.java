@@ -5,6 +5,7 @@ package com.microsoft.azure.keyvault.implementation;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.google.common.base.Joiner;
 import com.microsoft.azure.ListOperationCallback;
@@ -1840,8 +1841,11 @@ public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements 
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
+
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        return service
+        KeyVaultClientService clientService = Objects.requireNonNull(service, "Service has not been initialized. Call this.initializeService() before using this method.");
+
+        return clientService
                 .getPendingCertificateSigningRequest(certificateName, this.apiVersion(), this.acceptLanguage(),
                         parameterizedHost, this.userAgent())
                 .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<String>>>() {
