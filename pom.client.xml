@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
   <artifactId>azure-client-sdk-parent</artifactId>
@@ -91,7 +91,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+    <legal>
+      <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
     <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
@@ -391,7 +392,9 @@
             <doctitle>Azure SDK for Java Reference Documentation</doctitle>
             <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
             <failOnError>false</failOnError>
-            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt; site for more Java documentation, including quick starts, tutorials, and code samples.</footer>
+            <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;
+              site for more Java documentation, including quick starts, tutorials, and code samples.
+            </footer>
             <linksource>false</linksource>
             <excludePackageNames>com.microsoft.azure.template</excludePackageNames>
             <groups>
@@ -478,7 +481,7 @@
         </plugin>
 
         <!-- This plugin is used to prepare and perform a release for the project with Maven.
-                  It has no influence on Maven build itself. -->
+              It has no influence on Maven build itself. -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
@@ -508,7 +511,7 @@
         </plugin>
 
         <!--This plugin's configuration is used to store Eclipse m2e settings only.
-                It has no influence on the Maven build itself.-->
+            It has no influence on the Maven build itself.-->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
           <artifactId>lifecycle-mapping</artifactId>
@@ -526,7 +529,7 @@
                     </goals>
                   </pluginExecutionFilter>
                   <action>
-                    <ignore />
+                    <ignore/>
                   </action>
                 </pluginExecution>
               </pluginExecutions>
@@ -713,11 +716,11 @@
   <profiles>
 
     <!--
-        By default we build against our baseline, Java 8, but we also want to ensure compatibility
-        against the latest Java LTS release, currently Java 11. We therefore have two profiles:
-          * The default 'java8', which will perform a build using Java 8 as its target.
-          * The non-default 'java-lts' profile, which will build against the current LTS release.
-      -->
+     By default we build against our baseline, Java 8, but we also want to ensure compatibility
+     against the latest Java LTS release, currently Java 11. We therefore have two profiles:
+       * The default 'java8', which will perform a build using Java 8 as its target.
+       * The non-default 'java-lts' profile, which will build against the current LTS release.
+   -->
     <profile>
       <id>java8</id>
       <activation>
@@ -770,9 +773,9 @@
     </profile>
 
     <!-- Customise the javadoc plugin to not include module directories in links. We don't
-           currently use modules, so search results were being directed to an 'undefined'
-           directory (for an 'undefined' module). This no-module-directories flag fixes 
-           this, but it is only required for JDK 9+ -->
+         currently use modules, so search results were being directed to an 'undefined'
+         directory (for an 'undefined' module). This no-module-directories flag fixes
+         this, but it is only required for JDK 9+ -->
     <profile>
       <id>javadoc-no-modules-fix</id>
       <activation>
