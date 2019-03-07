@@ -27,10 +27,10 @@ public class CopyProgress {
     private String accountId;
 
     /**
-     * Amount of data uploaded by the job as of now.
+     * The bytesSentToCloud property.
      */
     @JsonProperty(value = "bytesSentToCloud", access = JsonProperty.Access.WRITE_ONLY)
-    private Long bytesSentToCloud;
+    private String bytesSentToCloud;
 
     /**
      * Total amount of data to be processed by the job.
@@ -69,11 +69,11 @@ public class CopyProgress {
     }
 
     /**
-     * Get amount of data uploaded by the job as of now.
+     * Get the bytesSentToCloud value.
      *
      * @return the bytesSentToCloud value
      */
-    public Long bytesSentToCloud() {
+    public String bytesSentToCloud() {
         return this.bytesSentToCloud;
     }
 
