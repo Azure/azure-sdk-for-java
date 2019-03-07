@@ -12,6 +12,8 @@ import com.microsoft.azure.keyvault.KeyIdentifier;
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.core.IKeyResolver;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * The key resolver that caches the key after resolving to {@link IKey}.
  */
@@ -41,7 +43,7 @@ public class CachingKeyResolver implements IKeyResolver {
                 public void run() {
                     try {
                         cache.put(key.get().getKid(), key);
-                    } catch (Exception e) {
+                    } catch (InterruptedException | ExecutionException e) {
                         // Key caching will occur on first read
                     }
                 }
