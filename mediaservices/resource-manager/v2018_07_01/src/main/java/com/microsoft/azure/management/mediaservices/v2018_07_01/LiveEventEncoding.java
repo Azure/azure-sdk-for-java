@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class LiveEventEncoding {
     /**
      * The encoding type for Live Event.  This value is specified at creation
-     * time and cannot be updated. Possible values include: 'None', 'Basic'.
+     * time and cannot be updated. Possible values include: 'None', 'Basic',
+     * 'Standard'.
      */
     @JsonProperty(value = "encodingType")
     private LiveEventEncodingType encodingType;
@@ -29,7 +30,7 @@ public class LiveEventEncoding {
     private String presetName;
 
     /**
-     * Get the encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'None', 'Basic'.
+     * Get the encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'None', 'Basic', 'Standard'.
      *
      * @return the encodingType value
      */
@@ -38,7 +39,7 @@ public class LiveEventEncoding {
     }
 
     /**
-     * Set the encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'None', 'Basic'.
+     * Set the encoding type for Live Event.  This value is specified at creation time and cannot be updated. Possible values include: 'None', 'Basic', 'Standard'.
      *
      * @param encodingType the encodingType value to set
      * @return the LiveEventEncoding object itself.

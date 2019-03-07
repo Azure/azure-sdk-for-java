@@ -35,8 +35,13 @@ public class EnvelopeEncryption {
     private StreamingPolicyContentKeys contentKeys;
 
     /**
-     * KeyAcquistionUrlTemplate is used to point to user specified service to
-     * delivery content keys.
+     * Template for the URL of the custom service delivering keys to end user
+     * players.  Not required when using Azure Media Services for issuing keys.
+     * The template supports replaceable tokens that the service will update at
+     * runtime with the value specific to the request.  The currently supported
+     * token values are {AlternativeMediaId}, which is replaced with the value
+     * of StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is
+     * replaced with the value of identifier of the key being requested.
      */
     @JsonProperty(value = "customKeyAcquisitionUrlTemplate")
     private String customKeyAcquisitionUrlTemplate;
@@ -102,7 +107,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Get keyAcquistionUrlTemplate is used to point to user specified service to delivery content keys.
+     * Get template for the URL of the custom service delivering keys to end user players.  Not required when using Azure Media Services for issuing keys.  The template supports replaceable tokens that the service will update at runtime with the value specific to the request.  The currently supported token values are {AlternativeMediaId}, which is replaced with the value of StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being requested.
      *
      * @return the customKeyAcquisitionUrlTemplate value
      */
@@ -111,7 +116,7 @@ public class EnvelopeEncryption {
     }
 
     /**
-     * Set keyAcquistionUrlTemplate is used to point to user specified service to delivery content keys.
+     * Set template for the URL of the custom service delivering keys to end user players.  Not required when using Azure Media Services for issuing keys.  The template supports replaceable tokens that the service will update at runtime with the value specific to the request.  The currently supported token values are {AlternativeMediaId}, which is replaced with the value of StreamingLocatorId.AlternativeMediaId, and {ContentKeyId}, which is replaced with the value of identifier of the key being requested.
      *
      * @param customKeyAcquisitionUrlTemplate the customKeyAcquisitionUrlTemplate value to set
      * @return the EnvelopeEncryption object itself.

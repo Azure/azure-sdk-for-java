@@ -32,7 +32,7 @@ public class Image extends Video {
      * tells the encoder to select the best thumbnail from the first few
      * seconds of the video.
      */
-    @JsonProperty(value = "start")
+    @JsonProperty(value = "start", required = true)
     private String start;
 
     /**
