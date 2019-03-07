@@ -7,20 +7,20 @@
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
-      "date" : "Thu, 28 Feb 2019 23:10:48 GMT",
+      "date" : "Thu, 07 Mar 2019 19:55:19 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
-      "sync-token" : "zAJw6V16=MjotMSMxNDA3OTY=;sn=140796",
+      "sync-token" : "zAJw6V16=MjotMSMxNDYzMzc=;sn=146337",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=15724800; includeSubDomains;",
-      "last-modified" : "Thu, 28 Feb 2019 23:10:49 GMT",
-      "etag" : "\"nwNeKhpXzKBDpNTzesW0vvQq7xA\"",
+      "last-modified" : "Thu, 07 Mar 2019 19:55:20 GMT",
+      "etag" : "\"0oWLvxEUF7k57ck9AKYdc2FbLKU\"",
       "connection" : "keep-alive",
       "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
-      "x-ms-request-id" : "3f2f0464-0003-435e-8282-e4e015f787f4",
-      "Body" : "{\"etag\":\"nwNeKhpXzKBDpNTzesW0vvQq7xA\",\"key\":\"myNewKey5\",\"label\":null,\"content_type\":null,\"value\":\"myNewValue5\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-02-28T23:10:49+00:00\"}",
-      "x-ms-client-request-id" : "4fa34b19-fa58-4099-8855-bcb2d3f1befb"
+      "x-ms-request-id" : "abe68c71-517f-47a8-886e-ede63d1efb6f",
+      "Body" : "{\"etag\":\"0oWLvxEUF7k57ck9AKYdc2FbLKU\",\"key\":\"myNewKey5\",\"label\":null,\"content_type\":null,\"value\":\"myNewValue5\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-07T19:55:20+00:00\"}",
+      "x-ms-client-request-id" : "9a173646-37fe-40bc-bc1e-91d774e32d89"
     }
   }, {
     "Method" : "DELETE",
@@ -30,21 +30,41 @@
       "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
     },
     "Response" : {
-      "date" : "Thu, 28 Feb 2019 23:10:48 GMT",
+      "date" : "Thu, 07 Mar 2019 19:55:19 GMT",
       "server" : "nginx/1.13.9",
       "transfer-encoding" : "chunked",
-      "sync-token" : "zAJw6V16=MjotMSMxNDA3OTc=;sn=140797",
+      "sync-token" : "zAJw6V16=MjotMSMxNDYzMzg=;sn=146338",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=15724800; includeSubDomains;",
-      "last-modified" : "Thu, 28 Feb 2019 23:10:49 GMT",
-      "etag" : "\"nwNeKhpXzKBDpNTzesW0vvQq7xA\"",
+      "last-modified" : "Thu, 07 Mar 2019 19:55:20 GMT",
+      "etag" : "\"0oWLvxEUF7k57ck9AKYdc2FbLKU\"",
       "connection" : "keep-alive",
       "content-type" : "application/vnd.microsoft.appconfig.kv+json; charset=utf-8",
-      "x-ms-request-id" : "493a0c66-763d-45b2-a9c7-607a3e346c1a",
-      "Body" : "{\"etag\":\"nwNeKhpXzKBDpNTzesW0vvQq7xA\",\"key\":\"myNewKey5\",\"label\":null,\"content_type\":null,\"value\":\"myNewValue5\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-02-28T23:10:49+00:00\"}",
-      "x-ms-client-request-id" : "753a9d26-4c4e-43dd-aed4-1663381c4994"
+      "x-ms-request-id" : "d4c1df54-103b-4bf3-a2e0-15af73dc89d7",
+      "Body" : "{\"etag\":\"0oWLvxEUF7k57ck9AKYdc2FbLKU\",\"key\":\"myNewKey5\",\"label\":null,\"content_type\":null,\"value\":\"myNewValue5\",\"tags\":{},\"locked\":false,\"last_modified\":\"2019-03-07T19:55:20+00:00\"}",
+      "x-ms-client-request-id" : "2931c0ab-ebb8-4e83-82c4-6e8aed7129d5"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/kv?key=key95227%2a",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/Azure-Configuration (1.0.0-SNAPSHOT)",
+      "Content-Type" : "application/vnd.microsoft.azconfig.kv+json"
+    },
+    "Response" : {
+      "date" : "Thu, 07 Mar 2019 19:55:20 GMT",
+      "server" : "nginx/1.13.9",
+      "transfer-encoding" : "chunked",
+      "connection" : "keep-alive",
+      "content-type" : "application/vnd.microsoft.appconfig.kvset+json; charset=utf-8",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "6a335325-ddd2-4013-a606-6b1fc1b361e3",
+      "Body" : "{\"items\":[]}",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains;",
+      "x-ms-client-request-id" : "6aa992ef-49fd-45ab-b05b-21c5751d0f60"
     }
   } ],
-  "variables" : [ "key22110" ]
+  "variables" : [ "key95227" ]
 }
