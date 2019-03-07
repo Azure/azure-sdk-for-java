@@ -476,17 +476,17 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             final Type syncReturnType = asyncReturnType.getActualTypeArguments()[0];
             if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Void.class)) {
                 result = false;
-            } else if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, RestResponse.class)) {
-                result = restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType, RestResponse.class));
+            } else if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, RestResponseBase.class)) {
+                result = restResponseBaseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType, RestResponseBase.class));
             }
-        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, RestResponse.class)) {
-            result = restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(returnType, RestResponse.class));
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, RestResponseBase.class)) {
+            result = restResponseBaseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(returnType, RestResponseBase.class));
         }
 
         return result;
     }
 
-    private static boolean restResponseTypeExpectsBody(ParameterizedType restResponseReturnType) {
+    private static boolean restResponseBaseTypeExpectsBody(ParameterizedType restResponseReturnType) {
         boolean result = true;
 
         final Type[] restResponseTypeArguments = restResponseReturnType.getActualTypeArguments();

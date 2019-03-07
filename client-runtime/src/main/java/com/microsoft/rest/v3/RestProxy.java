@@ -408,14 +408,14 @@ public class RestProxy implements InvocationHandler {
     }
 
     /**
-     * @param entityType the RestResponse subtype to get a constructor for.
-     * @return a Constructor which produces an instance of a RestResponse subtype.
+     * @param entityType the RestResponseBase subtype to get a constructor for.
+     * @return a Constructor which produces an instance of a RestResponseBase subtype.
      */
     @SuppressWarnings("unchecked")
-    public Constructor<? extends RestResponse<?, ?>> getRestResponseConstructor(Type entityType) {
-        Class<? extends RestResponse<?, ?>> rawEntityType = (Class<? extends RestResponse<?, ?>>) TypeUtil.getRawClass(entityType);
+    public Constructor<? extends RestResponseBase<?, ?>> getRestResponseConstructor(Type entityType) {
+        Class<? extends RestResponseBase<?, ?>> rawEntityType = (Class<? extends RestResponseBase<?, ?>>) TypeUtil.getRawClass(entityType);
         try {
-            Constructor<? extends RestResponse<?, ?>> ctor = null;
+            Constructor<? extends RestResponseBase<?, ?>> ctor = null;
             for (Constructor<?> c : rawEntityType.getDeclaredConstructors()) {
                 // Generic constructor arguments turn into Object.
                 // Because some child class constructors have a more specific concrete type,
@@ -424,7 +424,7 @@ public class RestProxy implements InvocationHandler {
                         && c.getParameterTypes()[0].equals(HttpRequest.class)
                         && c.getParameterTypes()[1].equals(Integer.TYPE)
                         && c.getParameterTypes()[3].equals(Map.class)) {
-                    ctor = (Constructor<? extends RestResponse<?, ?>>) c;
+                    ctor = (Constructor<? extends RestResponseBase<?, ?>>) c;
                 }
             }
             if (ctor == null) {
@@ -441,29 +441,29 @@ public class RestProxy implements InvocationHandler {
         //
         try {
             Mono<?> asyncResult;
-            if (TypeUtil.isTypeOrSubTypeOf(entityType, RestResponse.class)) {
-                // entityType = ? extends RestResponse<THeaders, TBody>
-                Constructor<? extends RestResponse<?, ?>> responseConstructor = getRestResponseConstructor(entityType);
+            if (TypeUtil.isTypeOrSubTypeOf(entityType, RestResponseBase.class)) {
+                // entityType = ? extends RestResponseBase<THeaders, TBody>
+                Constructor<? extends RestResponseBase<?, ?>> responseConstructor = getRestResponseConstructor(entityType);
 
-                Type[] deserializedTypes = TypeUtil.getTypeArguments(TypeUtil.getSuperType(entityType, RestResponse.class));
+                Type[] deserializedTypes = TypeUtil.getTypeArguments(TypeUtil.getSuperType(entityType, RestResponseBase.class));
 
                 HttpHeaders responseHeaders = response.sourceResponse().headers();
                 Object deserializedHeaders = response.decodedHeaders().block();
 
                 Type bodyType = deserializedTypes[1];
                 if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                    // entityType = ? extends RestResponse<THeaders, Void>
+                    // entityType = ? extends RestResponseBase<THeaders, Void>
                     asyncResult = response.sourceResponse().body().ignoreElements()
                             .then(Mono.just(responseConstructor.newInstance(response.sourceResponse().request(), responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
                 } else {
                     final Map<String, String> rawHeaders = responseHeaders.toMap();
-                    // entityType = ? extends RestResponse<THeaders, byte[]>,
-                    // entityType = ? extends RestResponse<THeaders, Base64Url>
-                    // entityType = ? extends RestResponse<THeaders, Flux<ByteBuf>>
-                    // entityType = ? extends RestResponse<THeaders, Boolean>
-                    // entityType = ? extends RestResponse<THeaders, VirtualMachine>
+                    // entityType = ? extends RestResponseBase<THeaders, byte[]>,
+                    // entityType = ? extends RestResponseBase<THeaders, Base64Url>
+                    // entityType = ? extends RestResponseBase<THeaders, Flux<ByteBuf>>
+                    // entityType = ? extends RestResponseBase<THeaders, Boolean>
+                    // entityType = ? extends RestResponseBase<THeaders, VirtualMachine>
                     asyncResult = handleBodyReturnType(response, methodParser, bodyType)
-                            .map((Function<Object, RestResponse<?, ?>>) bodyAsObject -> {
+                            .map((Function<Object, RestResponseBase<?, ?>>) bodyAsObject -> {
                                 try {
                                     return responseConstructor.newInstance(response.sourceResponse().request(), responseStatusCode, deserializedHeaders, rawHeaders, bodyAsObject);
                                 } catch (IllegalAccessException iae) {
@@ -474,7 +474,7 @@ public class RestProxy implements InvocationHandler {
                                     throw reactor.core.Exceptions.propagate(ie);
                                 }
                             })
-                            .switchIfEmpty(Mono.defer((Supplier<Mono<RestResponse<?, ?>>>) () -> {
+                            .switchIfEmpty(Mono.defer((Supplier<Mono<RestResponseBase<?, ?>>>) () -> {
                                 try {
                                 return Mono.just(responseConstructor.newInstance(response.sourceResponse().request(), responseStatusCode, deserializedHeaders, rawHeaders, null));
                                 } catch (IllegalAccessException iae) {
@@ -551,7 +551,7 @@ public class RestProxy implements InvocationHandler {
                 // ProxyMethod ReturnType: Mono<Void>
                 result = asyncExpectedResponse.then();
             } else {
-                // ProxyMethod ReturnType: Mono<? extends RestResponse<?, ?>>
+                // ProxyMethod ReturnType: Mono<? extends RestResponseBase<?, ?>>
                 result = asyncExpectedResponse.flatMap(response ->
                         handleRestResponseReturnType(response, methodParser, monoTypeParam));
             }

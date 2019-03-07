@@ -3,7 +3,7 @@ package com.microsoft.azure.v3;
 import com.microsoft.rest.v3.InvalidReturnTypeException;
 import com.microsoft.rest.v3.http.ContentType;
 import com.microsoft.rest.v3.RestException;
-import com.microsoft.rest.v3.RestResponse;
+import com.microsoft.rest.v3.RestResponseBase;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
@@ -419,7 +419,7 @@ public abstract class AzureProxyToRestProxyTests {
     private interface Service10 {
         @HEAD("anything")
         @ExpectedResponses({200})
-        RestResponse<Void, Void> restResponseHead();
+        RestResponseBase<Void, Void> restResponseHead();
 
 
         @HEAD("anything")
@@ -428,7 +428,7 @@ public abstract class AzureProxyToRestProxyTests {
 
         @HEAD("anything")
         @ExpectedResponses({200})
-        Mono<RestResponse<Void, Void>> restResponseHeadAsync();
+        Mono<RestResponseBase<Void, Void>> restResponseHeadAsync();
 
         @HEAD("anything")
         @ExpectedResponses({200})
@@ -437,7 +437,7 @@ public abstract class AzureProxyToRestProxyTests {
 
     @Test
     public void SyncRestResponseHeadRequest() {
-        RestResponse<?, ?> res = createService(Service10.class)
+        RestResponseBase<?, ?> res = createService(Service10.class)
                 .restResponseHead();
         assertNull(res.body());
     }
@@ -450,7 +450,7 @@ public abstract class AzureProxyToRestProxyTests {
 
     @Test
     public void AsyncRestResponseHeadRequest() {
-        RestResponse<?, ?> res = createService(Service10.class)
+        RestResponseBase<?, ?> res = createService(Service10.class)
                 .restResponseHeadAsync()
                 .block();
 

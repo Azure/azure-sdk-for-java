@@ -6,7 +6,7 @@
 
 package com.microsoft.rest.v3.serializer;
 
-import com.microsoft.rest.v3.RestResponse;
+import com.microsoft.rest.v3.RestResponseBase;
 import com.microsoft.rest.v3.annotations.HeaderCollection;
 import com.microsoft.rest.v3.util.TypeUtil;
 import reactor.core.publisher.Mono;
@@ -42,8 +42,8 @@ public interface HttpResponseDecodeData {
         if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
             token = TypeUtil.getTypeArgument(token);
         }
-        if (TypeUtil.isTypeOrSubTypeOf(token, RestResponse.class)) {
-            headersType = TypeUtil.getTypeArguments(TypeUtil.getSuperType(token, RestResponse.class))[0];
+        if (TypeUtil.isTypeOrSubTypeOf(token, RestResponseBase.class)) {
+            headersType = TypeUtil.getTypeArguments(TypeUtil.getSuperType(token, RestResponseBase.class))[0];
         }
         return headersType;
     }

@@ -9,7 +9,7 @@ package com.microsoft.rest.v3.serializer;
 import com.microsoft.rest.v3.Base64Url;
 import com.microsoft.rest.v3.DateTimeRfc1123;
 import com.microsoft.rest.v3.RestException;
-import com.microsoft.rest.v3.RestResponse;
+import com.microsoft.rest.v3.RestResponseBase;
 import com.microsoft.rest.v3.UnixTime;
 import com.microsoft.rest.v3.annotations.ReturnValueWireType;
 import com.microsoft.rest.v3.http.HttpMethod;
@@ -205,7 +205,7 @@ final class HttpResponseBodyDecoder {
 
                 wireResponseType = TypeUtil.createParameterizedType(
                         (Class<?>) ((ParameterizedType) resultType).getRawType(), wireResponseElementType);
-            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
+            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType, RestResponseBase.class)) {
                 Type[] typeArguments = TypeUtil.getTypeArguments(resultType);
                 final Type resultValueType = typeArguments[1];
                 final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
@@ -271,16 +271,16 @@ final class HttpResponseBodyDecoder {
                     }
                     //
                     result = wireResponseMap;
-                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
-                    RestResponse<?, ?> restResponse = (RestResponse<?, ?>) wireResponse;
-                    Object wireResponseBody = restResponse.body();
+                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, RestResponseBase.class)) {
+                    RestResponseBase<?, ?> restResponseBase = (RestResponseBase<?, ?>) wireResponse;
+                    Object wireResponseBody = restResponseBase.body();
 
-                    // TODO: anuchan - RestProxy is always in charge of creating RestResponse--so this doesn't seem right
+                    // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't seem right
                     Object resultBody = convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
-                        result = new RestResponse<>(restResponse.request(), restResponse.statusCode(), restResponse.headers(), restResponse.rawHeaders(), resultBody);
+                        result = new RestResponseBase<>(restResponseBase.request(), restResponseBase.statusCode(), restResponseBase.headers(), restResponseBase.rawHeaders(), resultBody);
                     } else {
-                        result = restResponse;
+                        result = restResponseBase;
                     }
                 }
             }
@@ -299,10 +299,10 @@ final class HttpResponseBodyDecoder {
      *               {@code Flux<Foo> getFoos(args);}
      *          where Foo is the REST API 'returned entity'.
      *
-     *      2. OR content (body) of {@link RestResponse} emitted by the reactor publisher returned from proxy method
+     *      2. OR content (body) of {@link RestResponseBase} emitted by the reactor publisher returned from proxy method
      *
-     *          e.g. {@code Mono<RestResponse<headers, Foo>> getFoo(args);}
-     *               {@code Flux<RestResponse<headers, Foo>> getFoos(args);}
+     *          e.g. {@code Mono<RestResponseBase<headers, Foo>> getFoo(args);}
+     *               {@code Flux<RestResponseBase<headers, Foo>> getFoos(args);}
      *          where Foo is the REST API return entity.
      *
      * @return the entity type.
@@ -324,8 +324,8 @@ final class HttpResponseBodyDecoder {
                 }
             }
 
-            if (TypeUtil.isTypeOrSubTypeOf(token, RestResponse.class)) {
-                token = TypeUtil.getSuperType(token, RestResponse.class);
+            if (TypeUtil.isTypeOrSubTypeOf(token, RestResponseBase.class)) {
+                token = TypeUtil.getSuperType(token, RestResponseBase.class);
                 token = TypeUtil.getTypeArguments(token)[1];
             }
 

@@ -7,7 +7,7 @@
 package com.microsoft.rest.v3.serializer;
 
 import com.microsoft.rest.v3.RestException;
-import com.microsoft.rest.v3.RestResponse;
+import com.microsoft.rest.v3.RestResponseBase;
 import com.microsoft.rest.v3.annotations.HeaderCollection;
 import com.microsoft.rest.v3.http.HttpHeader;
 import com.microsoft.rest.v3.http.HttpHeaders;
@@ -60,10 +60,10 @@ final class HttpResponseHeaderDecoder {
      *      1. header names same as name of a properties in the entity.
      *      2. header names start with value of {@link HeaderCollection} annotation applied to the properties in the entity.
      *
-     * When needed, the 'header entity' types must be declared as first generic argument of {@link RestResponse} returned
+     * When needed, the 'header entity' types must be declared as first generic argument of {@link RestResponseBase} returned
      * by java proxy method corresponding to the REST API.
      * e.g.
-     * {@code Mono<RestResponse<FooMetadataHeaders, Void>> getMetadata(args);}
+     * {@code Mono<RestResponseBase<FooMetadataHeaders, Void>> getMetadata(args);}
      * {@code
      *      class FooMetadataHeaders {
      *          String name;

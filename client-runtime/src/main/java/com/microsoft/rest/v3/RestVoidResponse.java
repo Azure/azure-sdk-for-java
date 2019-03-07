@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * REST response containing only a status code and raw headers.
  */
-public final class RestVoidResponse extends RestResponse<Void, Void> {
+public final class RestVoidResponse extends RestResponseBase<Void, Void> {
     /**
      * Creates RestVoidResponse.
      *

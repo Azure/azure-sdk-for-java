@@ -11,67 +11,33 @@ import com.microsoft.rest.v3.http.HttpRequest;
 import java.util.Map;
 
 /**
- * The response of a REST request.
+ * REST response with a strongly-typed content specified.
  *
- * @param <THeaders> The deserialized type of the response headers.
- * @param <TBody> The deserialized type of the response body.
+ * @param <T> The deserialized type of the response content.
  */
-public class RestResponse<THeaders, TBody> {
-    private final HttpRequest request;
-    private final int statusCode;
-    private final THeaders headers;
-    private final Map<String, String> rawHeaders;
-    private final TBody body;
-
+public final class RestResponse<T> extends RestResponseBase<Void, T> {
     /**
-     * Create RestResponse.
+     * Creates RestResponse.
      *
      * @param request the request which resulted in this response
      * @param statusCode the status code of the HTTP response
-     * @param headers the deserialized headers of the HTTP response
      * @param rawHeaders the raw headers of the HTTP response
      * @param body the deserialized body
      */
-    public RestResponse(HttpRequest request, int statusCode, THeaders headers, Map<String, String> rawHeaders, TBody body) {
-        this.request = request;
-        this.statusCode = statusCode;
-        this.headers = headers;
-        this.rawHeaders = rawHeaders;
-        this.body = body;
+    public RestResponse(HttpRequest request, int statusCode, Map<String, String> rawHeaders, T body) {
+        super(request, statusCode, null, rawHeaders, body);
+    }
+
+    // Used for uniform reflective creation in RestProxy.
+    @SuppressWarnings("unused")
+    RestResponse(HttpRequest request, int statusCode, Void headers, Map<String, String> rawHeaders, T body) {
+        super(request, statusCode, headers, rawHeaders, body);
     }
 
     /**
-     * @return the request which resulted in this RestResponse.
+     * @return the deserialized body of the HTTP response
      */
-    public HttpRequest request() {
-        return request;
-    }
-
-    /**
-     * @return the status code of the HTTP response.
-     */
-    public int statusCode() {
-        return statusCode;
-    }
-
-    /**
-     * @return the deserialized headers of the HTTP response.
-     */
-    public THeaders headers() {
-        return headers;
-    }
-
-    /**
-     * @return a Map containing the raw HTTP response headers.
-     */
-    public Map<String, String> rawHeaders() {
-        return rawHeaders;
-    }
-
-    /**
-     * @return the deserialized body of the HTTP response.
-     */
-    public TBody body() {
-        return body;
+    public T body() {
+        return super.body();
     }
 }

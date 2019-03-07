@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * REST response with a streaming content.
  */
-public final class RestStreamResponse extends RestResponse<Void, Flux<ByteBuf>> implements Closeable {
+public final class RestStreamResponse extends RestResponseBase<Void, Flux<ByteBuf>> implements Closeable {
     /**
      * Creates RestStreamResponse.
      *
