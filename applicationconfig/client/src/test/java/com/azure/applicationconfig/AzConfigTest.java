@@ -13,8 +13,12 @@ import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
 import com.microsoft.azure.v3.CloudException;
 import com.microsoft.rest.v3.RestResponse;
+import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpPipeline;
+import com.microsoft.rest.v3.http.HttpPipelineLogLevel;
+import com.microsoft.rest.v3.http.HttpPipelineLogger;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
+import com.microsoft.rest.v3.http.Slf4jLogger;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
@@ -63,13 +67,17 @@ public class AzConfigTest {
         initPlaybackUri();
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
+<<<<<<< HEAD
 
         ApplicationConfigCredentials credentials;
+=======
+        HttpPipelineOptions pipelineOptions = new HttpPipelineOptions(new Slf4jLogger(logger).withMinimumLogLevel(HttpPipelineLogLevel.INFO));
+        AzConfigClient.AzConfigCredentials credentials;
+>>>>>>> 74491aa9fe... Updating AzConfigTest to use HttpClient that enables wiretapping
         HttpPipeline pipeline;
-        String connectionString;
 
         if (isPlaybackMode()) {
-            System.out.println("PLAYBACK MODE");
+            logger.info("PLAYBACK MODE");
 
             connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
             credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
@@ -77,19 +85,22 @@ public class AzConfigTest {
 
             pipeline = new HttpPipeline(
                     interceptorManager.initPlaybackClient(),
-                    new HttpPipelineOptions(null),
+                    pipelineOptions,
                     policies.toArray(new HttpPipelinePolicy[0]));
 
             System.out.println(playbackUri);
         } else {
-            System.out.println("RECORD MODE");
+            logger.info("RECORD MODE");
 
-            connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
+            String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
+            Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
+
             credentials = AzConfigClient.AzConfigCredentials.parseConnectionString(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.initRecordPolicy());
 
-            pipeline = new HttpPipeline(policies.toArray(new HttpPipelinePolicy[0]));
+            HttpClient httpClient = HttpClient.createDefault().wiretap(true);
+            pipeline = new HttpPipeline(httpClient, pipelineOptions, policies.toArray(new HttpPipelinePolicy[0]));
 
             interceptorManager.addTextReplacementRule(credentials.baseUri().toString(), playbackUri);
         }
@@ -98,7 +109,7 @@ public class AzConfigTest {
     }
 
     private static List<HttpPipelinePolicy> getDefaultPolicies(ApplicationConfigCredentials credentials) {
-        List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
         policies.add(new RequestIdPolicy());
         policies.add(new AzConfigCredentialsPolicy(credentials));
@@ -231,8 +242,10 @@ public class AzConfigTest {
         KeyValue kv = client.setKeyValue(new KeyValue().withKey(key).withValue("myValue")).block().body();
         String etag = kv.etag();
         try {
-            kv = client.getKeyValue(key, new KeyValueFilter().withIfNoneMatch("\"" + etag + "\"")).block().body();
+            RestResponse<Map<String, String>, KeyValue> response = client.getKeyValue(key, new KeyValueFilter().withIfNoneMatch(etag)).block();
+            Assert.fail("Should have thrown an exception");
         } catch (Exception ex) {
+            logger.info("Exception thrown.");
             Assert.assertTrue(ex instanceof CloudException);
             // etag has not changed, so getting 304 NotModified code according to service spec
             Assert.assertTrue(ex.getMessage().contains("304"));
