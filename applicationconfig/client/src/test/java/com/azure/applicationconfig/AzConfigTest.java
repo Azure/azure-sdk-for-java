@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -191,21 +192,35 @@ public class AzConfigTest {
         logger.info("Finished cleaning up values.");
     }
 
+    /**
+     * Verifies that a KeyValue can be added with a label, and that we can fetch that KeyValue from the service when
+     * filtering by either its label or just its key.
+     */
     @Test
     public void listWithKeyAndLabel() {
-        String key = SdkContext.randomResourceName(keyPrefix, 16);
-        String label = SdkContext.randomResourceName("lbl", 8);
-        KeyValue kv = new KeyValue().withKey(key).withValue("myValue").withLabel(label);
+        final String value  = "myValue";
+        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final String label = SdkContext.randomResourceName("lbl", 8);
+        final KeyValue expected = new KeyValue().withKey(key).withValue(value).withLabel(label);
 
-        client.setKeyValue(kv).block();
+        StepVerifier.create(client.setKeyValue(expected))
+                .assertNext(response -> {
+                    Assert.assertNotNull(response);
+                    Assert.assertNotNull(response.body().etag());
+                    assertEquals(expected, response.body(), null);
+                })
+                .expectComplete()
+                .verify();
 
-        kv = client.listKeyValues(new KeyValueListFilter().withKey(key).withLabel(label)).blockFirst();
-        Assert.assertEquals(key, kv.key());
-        Assert.assertEquals(label, kv.label());
+        StepVerifier.create(client.listKeyValues(new KeyValueListFilter().withKey(key).withLabel(label)))
+                .assertNext(keyValue -> assertEquals(expected, keyValue, null))
+                .expectComplete()
+                .verify();
 
-        kv = client.listKeyValues(new KeyValueListFilter().withKey(key)).blockFirst();
-        Assert.assertEquals(key, kv.key());
-        Assert.assertEquals(label, kv.label());
+        StepVerifier.create(client.listKeyValues(new KeyValueListFilter().withKey(key)))
+                .assertNext(keyValue -> assertEquals(expected, keyValue, null))
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -314,5 +329,22 @@ public class AzConfigTest {
 
         List<Key> keys = client.listKeys(new KeyLabelFilter().withName(keyPrefix + "*")).collectList().block();
         Assert.assertEquals(3, keys.size());
+    }
+
+    private static void assertEquals(KeyValue expected, KeyValue actual, String expectedETag) {
+        if (expected == null) {
+            Assert.assertNull(actual);
+            return;
+        }
+
+        Assert.assertNotNull(actual);
+        Assert.assertEquals(expected.key(), actual.key());
+        Assert.assertEquals(expected.label(), actual.label());
+        Assert.assertEquals(expected.value(), actual.value());
+        Assert.assertEquals(expected.contentType(), actual.contentType());
+
+        if (expectedETag != null) {
+            Assert.assertEquals(expected.etag(), actual.etag());
+        }
     }
 }
