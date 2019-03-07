@@ -518,8 +518,6 @@ public class BatchIntegrationTestBase {
         return s;
     }
 
-
-
     static void threadSleepInRecordMode(long millis) throws InterruptedException {
         // Called for long timeouts which should only happen in Record mode.
         // Speeds up the tests in Playback mode.
