@@ -68,7 +68,7 @@ import java.util.logging.Logger;
  */
 public class BatchIntegrationTestBase {
     public static final String RECORD_MODE = "RECORD";
-    public static final int SEC_TO_MILLIS = 1000;
+    public static final int 1000 = 1000;
     static BatchClient batchClient;
     static BatchClient alternativeBatchClient;
     static final int MAX_LEN_ID = 64;
@@ -277,7 +277,7 @@ public class BatchIntegrationTestBase {
         String poolOsVersion = "*";
 
         // 10 minutes
-        long poolSteadyTimeoutInSeconds = 10 * 60 * SEC_TO_MILLIS;
+        long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -309,7 +309,7 @@ public class BatchIntegrationTestBase {
                 break;
             }
             System.out.println("wait 30 seconds for pool steady...");
-            Thread.sleep(30 * SEC_TO_MILLIS);
+            Thread.sleep(30 * 1000);
             elapsedTime = (new Date()).getTime() - startTime;
         }
 
@@ -328,7 +328,7 @@ public class BatchIntegrationTestBase {
         int poolVmCount = 1;
 
         // 10 minutes
-        long poolSteadyTimeoutInSeconds = 10 * 60 * SEC_TO_MILLIS;
+        long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -363,7 +363,7 @@ public class BatchIntegrationTestBase {
                 break;
             }
             System.out.println("wait 30 seconds for pool steady...");
-            Thread.sleep(30 * SEC_TO_MILLIS);
+            Thread.sleep(30 * 1000);
             elapsedTime = (new Date()).getTime() - startTime;
         }
 
@@ -466,7 +466,7 @@ public class BatchIntegrationTestBase {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
 
-        while (elapsedTime < expiryTimeInSeconds * SEC_TO_MILLIS) {
+        while (elapsedTime < expiryTimeInSeconds * 1000) {
             List<CloudTask> taskCollection = client.taskOperations().listTasks(jobId,
                     new DetailLevel.Builder().withSelectClause("id, state").build());
 
@@ -484,7 +484,7 @@ public class BatchIntegrationTestBase {
             }
 
             // Check again after 10 seconds
-            Thread.sleep(10 * SEC_TO_MILLIS);
+            Thread.sleep(10 * 1000);
             elapsedTime = (new Date()).getTime() - startTime;
         }
 

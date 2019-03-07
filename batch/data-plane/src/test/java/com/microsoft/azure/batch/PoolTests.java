@@ -6,6 +6,8 @@ package com.microsoft.azure.batch;
 import org.junit.*;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
+
 import com.microsoft.azure.batch.protocol.models.*;
 
 public class PoolTests extends BatchIntegrationTestBase {
@@ -63,7 +65,8 @@ public class PoolTests extends BatchIntegrationTestBase {
         int POOL_LOW_PRI_VM_COUNT = 2;
 
         // 10 minutes
-        long POOL_STEADY_TIMEOUT_IN_MILLISECONDS = 10 * 60 * SEC_TO_MILLIS;
+        long POOL_STEADY_TIMEOUT_IN_MILLISECONDS = 10 * 60 * 1000;
+        TimeUnit.SECONDS.toMillis(30);
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -107,7 +110,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 }
 
                 System.out.println("wait 120 seconds for pool steady...");
-                threadSleepInRecordMode(120 * SEC_TO_MILLIS);
+                threadSleepInRecordMode(120 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
 
@@ -165,7 +168,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 }
 
                 System.out.println("wait 15 seconds for pool delete...");
-                threadSleepInRecordMode(15 * SEC_TO_MILLIS);
+                threadSleepInRecordMode(15 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assert.assertTrue(deleted);
@@ -374,7 +377,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         String POOL_OS_VERSION = "*";
 
         // 10 minutes
-        long POOL_STEADY_TIMEOUT_IN_SECONDS = 10 * 60 * SEC_TO_MILLIS;
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 10 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -406,7 +409,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 }
 
                 System.out.println("wait 30 seconds for pool steady...");
-                threadSleepInRecordMode(30 * SEC_TO_MILLIS);
+                threadSleepInRecordMode(30 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
 
@@ -438,7 +441,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 }
 
                 System.out.println("wait 15 seconds for pool delete...");
-                threadSleepInRecordMode(15 * SEC_TO_MILLIS);
+                threadSleepInRecordMode(15 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assert.assertTrue(deleted);
@@ -464,7 +467,7 @@ public class PoolTests extends BatchIntegrationTestBase {
         String POOL_OS_FAMILY = "4";
         String POOL_OS_VERSION = "*";
         // 15 minutes
-        long POOL_STEADY_TIMEOUT_IN_SECONDS = 15 * 60 * SEC_TO_MILLIS;
+        long POOL_STEADY_TIMEOUT_IN_SECONDS = 15 * 60 * 1000;
 
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
@@ -502,7 +505,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 }
 
                 System.out.println("wait 30 seconds for pool steady...");
-                threadSleepInRecordMode(30 * SEC_TO_MILLIS);
+                threadSleepInRecordMode(30 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
 
@@ -572,7 +575,7 @@ public class PoolTests extends BatchIntegrationTestBase {
                 }
 
                 System.out.println("wait 5 seconds for pool delete...");
-                threadSleepInRecordMode(5 * SEC_TO_MILLIS);
+                threadSleepInRecordMode(5 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assert.assertTrue(deleted);

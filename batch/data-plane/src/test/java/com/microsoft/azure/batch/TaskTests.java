@@ -405,7 +405,7 @@ public class TaskTests  extends BatchIntegrationTestBase {
             batchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
 
             //The Waiting period is only needed in record mode.
-            threadSleepInRecordMode(30 * SEC_TO_MILLIS);
+            threadSleepInRecordMode(30 * 1000);
 
             // Test Job count
             counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);

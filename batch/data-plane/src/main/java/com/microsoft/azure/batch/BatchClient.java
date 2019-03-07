@@ -72,7 +72,6 @@ public class BatchClient {
     }
 
     private BatchClient(RestClient restClient, String baseUrl) {
-
         this.protocolLayer = new BatchServiceClientImpl(restClient).withBatchUrl(baseUrl);
         this.customBehaviors = new LinkedList<>();
         this.customBehaviors.add(new ClientRequestIdInterceptor());

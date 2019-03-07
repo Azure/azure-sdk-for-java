@@ -88,7 +88,7 @@ public class JobScheduleTests extends BatchIntegrationTestBase {
                 }
             }
 
-            Thread.sleep(1* SEC_TO_MILLIS);
+            Thread.sleep(1* 1000);
         } finally {
             try {
                 batchClient.jobScheduleOperations().deleteJobSchedule(jobScheduleId);
@@ -127,7 +127,7 @@ public class JobScheduleTests extends BatchIntegrationTestBase {
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
             Assert.assertTrue(jobSchedule.state() == JobScheduleState.TERMINATING || jobSchedule.state() == JobScheduleState.COMPLETED);
 
-            Thread.sleep(2 * SEC_TO_MILLIS);
+            Thread.sleep(2 * 1000);
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
             Assert.assertEquals(JobScheduleState.COMPLETED, jobSchedule.state());
 
