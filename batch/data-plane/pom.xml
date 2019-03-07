@@ -68,6 +68,19 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-resources</artifactId>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-resources</artifactId>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
   <build>
     <plugins>
@@ -80,6 +93,19 @@
           <target>1.7</target>
           <showWarnings>true</showWarnings>
           <showDeprecation>true</showDeprecation>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <outputDirectory>${basedir}/target/test-classes/session-records</outputDirectory>
+          <resources>
+            <resource>
+              <directory>${basedir}/src/test/resources/test-recordings</directory>
+            </resource>
+          </resources>
         </configuration>
       </plugin>
 
