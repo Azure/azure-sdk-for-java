@@ -176,7 +176,7 @@ public class AzConfigTest {
         }
 
         logger.info("Cleaning up created key values.");
-        client.listKeyValues(new KeyValueListFilter().withKey(keyPrefix))
+        client.listKeyValues(new KeyValueListFilter().withKey(keyPrefix + "*"))
                 .flatMap(keyValue -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", keyValue.key(), keyValue.label(), keyValue.isLocked());
 
