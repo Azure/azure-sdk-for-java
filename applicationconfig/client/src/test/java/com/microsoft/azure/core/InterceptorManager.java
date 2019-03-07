@@ -13,6 +13,7 @@ import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
+import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -34,56 +35,53 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 
 public class InterceptorManager {
-
-    private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
-
     private final static String RECORD_FOLDER = "session-records/";
 
-    private Map<String, String> textReplacementRules = new HashMap<>();
-    // Stores a map of all the HTTP properties in a session
-    // A state machine ensuring a test is always reset before another one is setup
-
-    protected RecordedData recordedData;
-
+    private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
+    private final Map<String, String> textReplacementRules = new HashMap<>();
     private final String testName;
     private final TestMode testMode;
 
+    // Stores a map of all the HTTP properties in a session
+    // A state machine ensuring a test is always reset before another one is setup
+    private final RecordedData recordedData;
 
-    private InterceptorManager(String testName, TestMode testMode) {
+    private InterceptorManager(String testName, TestMode testMode) throws IOException {
         this.testName = testName;
         this.testMode = testMode;
-    }
 
-    public void addTextReplacementRule(String regex, String replacement) {
-        textReplacementRules.put(regex, replacement);
+        this.recordedData = testMode == TestMode.PLAYBACK
+                ? readDataFromFile()
+                : new RecordedData();
     }
 
     // factory method
-    public static InterceptorManager create(String testName, TestMode testMode) {
+    public static InterceptorManager create(String testName, TestMode testMode) throws IOException {
         InterceptorManager interceptorManager = new InterceptorManager(testName, testMode);
+
+        //TODO: Do we need this?
         SdkContext.setResourceNamerFactory(new TestResourceNamerFactory(interceptorManager));
         SdkContext.setDelayProvider(new TestDelayProvider(interceptorManager.isRecordMode()));
-//        SdkContext.setRxScheduler(Schedulers.trampoline());
 
         return interceptorManager;
     }
 
-    public boolean isRecordMode() {
-        return testMode == TestMode.RECORD;
-    }
+    public boolean isRecordMode() { return testMode == TestMode.RECORD; }
 
     public boolean isPlaybackMode() {
         return testMode == TestMode.PLAYBACK;
     }
 
-    public RecordPolicy initRecordPolicy() {
-        recordedData = new RecordedData();
+    public RecordPolicy getRecordPolicy() {
         return new RecordPolicy();
     }
 
-    public HttpClient initPlaybackClient() throws IOException {
-        readDataFromFile();
+    public HttpClient getPlaybackClient() {
         return new PlaybackClient();
+    }
+
+    public void addTextReplacementRule(String regex, String replacement) {
+        textReplacementRules.put(regex, replacement);
     }
 
     public void finalizeInterceptor() throws IOException {
@@ -257,12 +255,14 @@ public class InterceptorManager {
         }
     }
 
-    private void readDataFromFile() throws IOException {
+    private RecordedData readDataFromFile() throws IOException {
         File recordFile = getRecordFile(testName);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        recordedData = mapper.readValue(recordFile, RecordedData.class);
-        System.out.println("Total records " + recordedData.getNetworkCallRecords().size());
+        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        RecordedData recordedData = mapper.readValue(recordFile, RecordedData.class);
+
+        logger.info("Total records: {}", this.recordedData.getNetworkCallRecords().size());
+
+        return recordedData;
     }
 
     private void writeDataToFile() throws IOException {
@@ -298,14 +298,16 @@ public class InterceptorManager {
         return String.format("%s?%s", uri.getPath(), uri.getQuery());
     }
 
+    //TODO: Do we really need this method?
     public void pushVariable(String variable) {
-        if (isRecordMode()) {
+        if (this.isRecordMode()) {
             synchronized (recordedData.getVariables()) {
                 recordedData.getVariables().add(variable);
             }
         }
     }
 
+    //TODO: Do we really need this method?
     public String popVariable() {
         synchronized (recordedData.getVariables()) {
             return recordedData.getVariables().remove();
