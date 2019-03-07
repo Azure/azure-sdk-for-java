@@ -16,7 +16,6 @@ import com.microsoft.rest.v3.RestResponse;
 import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpPipelineLogLevel;
-import com.microsoft.rest.v3.http.HttpPipelineLogger;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.Slf4jLogger;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
@@ -122,12 +121,15 @@ public class AzConfigTest {
     private void initPlaybackUri() throws IOException {
         if (isPlaybackMode()) {
             Properties mavenProps = new Properties();
-            InputStream in = AzConfigTest.class.getResourceAsStream("/maven.properties");
-            if (in == null) {
-                throw new IOException(
-                        "The file \"maven.properties\" has not been generated yet. Please execute \"mvn compile\" to generate the file.");
+
+            try (InputStream in = AzConfigTest.class.getResourceAsStream("/maven.properties")) {
+                if (in == null) {
+                    throw new IOException(
+                            "The file \"maven.properties\" has not been generated yet. Please execute \"mvn compile\" to generate the file.");
+                }
+                mavenProps.load(in);
             }
-            mavenProps.load(in);
+
             String port = mavenProps.getProperty("playbackServerPort");
             // 11080 and 11081 needs to be in sync with values in jetty.xml file
             playbackUri = PLAYBACK_URI_BASE + port;
