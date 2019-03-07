@@ -8,21 +8,21 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.junit.*;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class JobScheduleTests extends BatchTestBase {
+public class JobScheduleTests extends BatchIntegrationTestBase {
     static CloudPool livePool;
+    static String poolId;
 
     @BeforeClass
     public static void setup() throws Exception {
-        String testMode = getTestMode();
-        Assume.assumeTrue("Tests only run in Record/Live mode", testMode.equals("RECORD"));
-        createClient(AuthMode.SharedKey);
-        String poolId = getStringIdWithUserNamePrefix("-testpool");
-        livePool = createIfNotExistPaaSPool(poolId);
-        Assert.assertNotNull(livePool);
+        poolId = getStringIdWithUserNamePrefix("-testpool");
+        if(isRecordMode()) {
+            createClient(AuthMode.SharedKey);
+            livePool = createIfNotExistPaaSPool(poolId);
+            Assert.assertNotNull(livePool);
+        }
     }
 
     @AfterClass
@@ -38,10 +38,11 @@ public class JobScheduleTests extends BatchTestBase {
     @Test
     public void canCRUDJobSchedule() throws Exception {
         // CREATE
-        String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-canCRUD");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        poolInfo.withPoolId(poolId);
+
         Schedule schedule = new Schedule().withDoNotRunUntil(DateTime.now()).withDoNotRunAfter(DateTime.now().plusHours(5)).withStartWindow(Period.days(5));
         JobSpecification spec = new JobSpecification().withPriority(100).withPoolInfo(poolInfo);
         batchClient.jobScheduleOperations().createJobSchedule(jobScheduleId, schedule, spec);
@@ -54,7 +55,11 @@ public class JobScheduleTests extends BatchTestBase {
             Assert.assertNotNull(jobSchedule);
             Assert.assertEquals(jobScheduleId, jobSchedule.id());
             Assert.assertEquals((Integer) 100, jobSchedule.jobSpecification().priority());
-            Assert.assertTrue(jobSchedule.schedule().doNotRunAfter().compareTo(DateTime.now()) > 0);
+            //This case will only hold true during live mode as recorded job schedule time will be in the past.
+            //Hence, this assertion should only run in Record/Live mode.
+            if(isRecordMode()) {
+                Assert.assertTrue(jobSchedule.schedule().doNotRunAfter().compareTo(DateTime.now()) > 0);
+            }
 
             // LIST
             List<CloudJobSchedule> jobSchedules = batchClient.jobScheduleOperations().listJobSchedules(new DetailLevel.Builder().withFilterClause(String.format("id eq '%s'", jobScheduleId)).build());
@@ -83,7 +88,7 @@ public class JobScheduleTests extends BatchTestBase {
                 }
             }
 
-            Thread.sleep(1000);
+            Thread.sleep(1* 1000);
         } finally {
             try {
                 batchClient.jobScheduleOperations().deleteJobSchedule(jobScheduleId);
@@ -96,10 +101,11 @@ public class JobScheduleTests extends BatchTestBase {
     @Test
     public void canUpdateJobScheduleState() throws Exception {
         // CREATE
-        String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-updateJobScheduleState");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        poolInfo.withPoolId(poolId);
+
         JobSpecification spec = new JobSpecification().withPriority(100).withPoolInfo(poolInfo);
         Schedule schedule = new Schedule().withDoNotRunUntil(DateTime.now()).withDoNotRunAfter(DateTime.now().plusHours(5)).withStartWindow(Period.days(5));
         batchClient.jobScheduleOperations().createJobSchedule(jobScheduleId, schedule, spec);
@@ -144,5 +150,4 @@ public class JobScheduleTests extends BatchTestBase {
             }
         }
     }
-
 }

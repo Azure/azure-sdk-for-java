@@ -6,20 +6,20 @@ package com.microsoft.azure.batch;
 import com.microsoft.azure.batch.protocol.models.*;
 import org.junit.*;
 
-import java.util.Date;
 import java.util.List;
 
-public class JobTests extends BatchTestBase {
+public class JobTests extends BatchIntegrationTestBase {
     private static CloudPool livePool;
+    static String poolId;
 
     @BeforeClass
     public static void setup() throws Exception {
-        String testMode = getTestMode();
-        Assume.assumeTrue("Tests only run in Record/Live mode", testMode.equals("RECORD"));
-        createClient(AuthMode.SharedKey);
-        String poolId = getStringIdWithUserNamePrefix("-testpool");
-        livePool = createIfNotExistPaaSPool(poolId);
-        Assert.assertNotNull(livePool);
+        poolId = getStringIdWithUserNamePrefix("-testpool");
+        if(isRecordMode()) {
+            createClient(AuthMode.SharedKey);
+            livePool = createIfNotExistPaaSPool(poolId);
+            Assert.assertNotNull(livePool);
+        }
     }
 
     @AfterClass
@@ -35,10 +35,10 @@ public class JobTests extends BatchTestBase {
     @Test
     public void canCRUDJob() throws Exception {
         // CREATE
-        String jobId = getStringIdWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String jobId = getStringIdWithUserNamePrefix("-Job-canCRUD");
 
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        poolInfo.withPoolId(poolId);
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         try {
@@ -80,7 +80,7 @@ public class JobTests extends BatchTestBase {
                 }
             }
 
-            Thread.sleep(1000);
+            Thread.sleep(1 * 1000);
         }
         finally {
             try {
@@ -95,10 +95,10 @@ public class JobTests extends BatchTestBase {
     @Test
     public void canUpdateJobState() throws Exception {
         // CREATE
-        String jobId = getStringIdWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
-
+        String jobId = getStringIdWithUserNamePrefix("-Job-CanUpdateState");
         PoolInformation poolInfo = new PoolInformation();
-        poolInfo.withPoolId(livePool.id());
+        poolInfo.withPoolId(poolId);
+
         batchClient.jobOperations().createJob(jobId, poolInfo);
 
         try {
