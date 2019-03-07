@@ -123,10 +123,12 @@ public class InterceptorManager {
 
                 return extractResponseData(bufferedResponse).map(responseData -> {
                     networkCallRecord.Response = responseData;
-                    // remove pre-added header if this is a waiting or redirection
-                    if (networkCallRecord.Response.get("Body").contains("<Status>InProgress</Status>")
+                    String body = networkCallRecord.Response.get("Body");
+
+                    // Remove pre-added header if this is a waiting or redirection
+                    if (body != null && body.contains("<Status>InProgress</Status>")
                             || Integer.parseInt(networkCallRecord.Response.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
-                        // Do nothing
+                        logger.info("Waiting for a response or redirection.");
                     } else {
                         synchronized (recordedData.getNetworkCallRecords()) {
                             recordedData.getNetworkCallRecords().add(networkCallRecord);
@@ -228,15 +230,17 @@ public class InterceptorManager {
             responseData.put("retry-after", "0");
         }
 
-        Mono<Map<String, String>> result;
-        if (response.headerValue("content-encoding") == null) {
-            result = response.bodyAsString().map(content -> {
+        String contentType = response.headerValue("content-type");
+        if (contentType == null) {
+            return Mono.just(responseData);
+        } else if (contentType.contains("json") || response.headerValue("content-encoding") == null) {
+            return response.bodyAsString().map(content -> {
                 content = applyReplacementRule(content);
                 responseData.put("Body", content);
                 return responseData;
             });
         } else {
-            result = response.bodyAsByteArray().map(bytes -> {
+            return response.bodyAsByteArray().map(bytes -> {
                 try {
                     GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
                     String content = IOUtils.toString(gis, StandardCharsets.UTF_8);
@@ -251,8 +255,6 @@ public class InterceptorManager {
                 }
             });
         }
-
-        return result;
     }
 
     private void readDataFromFile() throws IOException {
