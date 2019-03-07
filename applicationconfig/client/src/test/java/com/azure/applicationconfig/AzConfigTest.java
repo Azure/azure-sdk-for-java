@@ -55,16 +55,14 @@ public class AzConfigTest {
     private InterceptorManager interceptorManager;
     private AzConfigClient client;
     private String keyPrefix;
-    private String playbackUri = null;
-    private TestMode testMode = null;
 
     @Rule
     public TestName testName = new TestName();
 
     @Before
     public void beforeTest() throws Exception {
-        initTestMode();
-        initPlaybackUri();
+        TestMode testMode = getTestMode();
+        String playbackUri = getPlaybackUri(testMode);
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
 <<<<<<< HEAD
@@ -76,7 +74,7 @@ public class AzConfigTest {
 >>>>>>> 74491aa9fe... Updating AzConfigTest to use HttpClient that enables wiretapping
         HttpPipeline pipeline;
 
-        if (isPlaybackMode()) {
+        if (interceptorManager.isPlaybackMode()) {
             logger.info("PLAYBACK MODE");
 
             connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
@@ -84,7 +82,7 @@ public class AzConfigTest {
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
 
             pipeline = new HttpPipeline(
-                    interceptorManager.initPlaybackClient(),
+                    interceptorManager.getPlaybackClient(),
                     pipelineOptions,
                     policies.toArray(new HttpPipelinePolicy[0]));
 
@@ -97,7 +95,7 @@ public class AzConfigTest {
 
             credentials = AzConfigClient.AzConfigCredentials.parseConnectionString(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
-            policies.add(interceptorManager.initRecordPolicy());
+            policies.add(interceptorManager.getRecordPolicy());
 
             HttpClient httpClient = HttpClient.createDefault().wiretap(true);
             pipeline = new HttpPipeline(httpClient, pipelineOptions, policies.toArray(new HttpPipelinePolicy[0]));
@@ -119,8 +117,8 @@ public class AzConfigTest {
         return policies;
     }
 
-    private void initPlaybackUri() throws IOException {
-        if (isPlaybackMode()) {
+    private static String getPlaybackUri(TestMode testMode) throws IOException {
+        if (testMode == TestMode.RECORD) {
             Properties mavenProps = new Properties();
 
             try (InputStream in = AzConfigTest.class.getResourceAsStream("/maven.properties")) {
@@ -133,37 +131,25 @@ public class AzConfigTest {
 
             String port = mavenProps.getProperty("playbackServerPort");
             // 11080 and 11081 needs to be in sync with values in jetty.xml file
-            playbackUri = PLAYBACK_URI_BASE + port;
+            return PLAYBACK_URI_BASE + port;
         } else {
-            playbackUri = PLAYBACK_URI_BASE + "1234";
+            return PLAYBACK_URI_BASE + "1234";
         }
     }
 
-    private boolean isPlaybackMode() {
-        if (testMode == null) {
-            try {
-                initTestMode();
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Can't init test mode.");
-            }
-        }
-        return testMode == TestMode.PLAYBACK;
-    }
-
-    private void initTestMode() throws IllegalArgumentException {
+    private TestMode getTestMode() throws IllegalArgumentException {
         String azureTestMode = System.getenv("AZURE_TEST_MODE");
 
         if (azureTestMode != null) {
             try {
-                testMode = TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
             } catch (IllegalArgumentException e) {
                 logger.error("Could not parse '{}' into TestEnum.", azureTestMode);
                 throw e;
             }
         } else {
             logger.info("Environment variable 'AZURE_TEST_MODE' has not been set yet. Using 'Playback' mode.");
-            testMode = TestMode.PLAYBACK;
+            return TestMode.PLAYBACK;
         }
     }
 
