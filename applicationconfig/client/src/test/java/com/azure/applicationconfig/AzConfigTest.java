@@ -171,10 +171,6 @@ public class AzConfigTest {
     }
 
     private void cleanUpResources() {
-        if (isPlaybackMode()) {
-            return;
-        }
-
         logger.info("Cleaning up created key values.");
         client.listKeyValues(new KeyValueListFilter().withKey(keyPrefix + "*"))
                 .flatMap(keyValue -> {
