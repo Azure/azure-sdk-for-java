@@ -68,7 +68,6 @@ import java.util.logging.Logger;
  */
 public class BatchIntegrationTestBase {
     public static final String RECORD_MODE = "RECORD";
-    public static final int 1000 = 1000;
     static BatchClient batchClient;
     static BatchClient alternativeBatchClient;
     static final int MAX_LEN_ID = 64;
