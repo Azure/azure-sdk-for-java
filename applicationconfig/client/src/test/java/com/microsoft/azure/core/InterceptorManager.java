@@ -266,7 +266,7 @@ public class InterceptorManager implements Closeable {
         ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         RecordedData recordedData = mapper.readValue(recordFile, RecordedData.class);
 
-        logger.info("Total records: {}", this.recordedData.getNetworkCallRecords().size());
+        logger.info("Total records: {}", recordedData.getNetworkCallRecords().size());
 
         return recordedData;
     }
