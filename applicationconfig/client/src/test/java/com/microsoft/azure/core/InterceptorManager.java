@@ -14,6 +14,7 @@ import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
+import com.sun.xml.internal.ws.Closeable;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -34,7 +35,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 
-public class InterceptorManager {
+public class InterceptorManager implements Closeable {
     private final static String RECORD_FOLDER = "session-records/";
 
     private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
@@ -84,10 +85,15 @@ public class InterceptorManager {
         textReplacementRules.put(regex, replacement);
     }
 
-    public void finalizeInterceptor() throws IOException {
+    @Override
+    public void close() {
         switch (testMode) {
             case RECORD:
-                writeDataToFile();
+                try {
+                    writeDataToFile();
+                } catch (IOException e) {
+                    logger.error("Unable to write data to playback file.", e);
+                }
                 break;
             case PLAYBACK:
                 // Do nothing

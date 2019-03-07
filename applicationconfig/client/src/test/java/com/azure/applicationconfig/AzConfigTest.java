@@ -154,9 +154,9 @@ public class AzConfigTest {
     }
 
     @After
-    public void afterTest() throws IOException {
+    public void afterTest() {
         cleanUpResources();
-        interceptorManager.finalizeInterceptor();
+        interceptorManager.close();
     }
 
     private void cleanUpResources() {
