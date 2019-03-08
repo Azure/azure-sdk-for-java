@@ -308,4 +308,74 @@ class AppendBlobAPITest extends APISpec {
         then:
         notThrown(RuntimeException)
     }
+
+
+    @Unroll
+    def "Stage block illegal arguments"() {
+        setup:
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        bu.upload(defaultFlowable, defaultDataSize, null, null,
+                null, null).blockingGet()
+
+        when:
+        bu.stageBlock(blockID, data, dataSize, null, null).blockingGet()
+
+        then:
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
+
+        where:
+        blockID      | data            | dataSize            | exceptionType
+        null         | defaultFlowable | defaultDataSize     | IllegalArgumentException
+        getBlockID() | null            | defaultDataSize     | IllegalArgumentException
+        getBlockID() | defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
+        getBlockID() | defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
+    }
+
+
+    @Unroll
+    def "Upload page IA"() {
+        setup:
+        PageBlobURL bu = cu.createPageBlobURL(generateBlobName())
+        bu.create(PageBlobURL.PAGE_BYTES, null, null, null, null, null).blockingGet()
+
+        when:
+        bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES * 2 - 1), data,
+                null, null).blockingGet()
+
+        then:
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
+
+        where:
+        data                                                     | exceptionType
+        null                                                     | IllegalArgumentException
+        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))     | UnexpectedLengthException
+        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES * 3)) | UnexpectedLengthException
+    }
+
+
+    @Unroll
+    def "Upload illegal argument"() {
+        BlockBlobURL bu = cu.createBlockBlobURL(generateBlobName())
+        bu.upload(defaultFlowable, defaultDataSize, null, null,
+                null, null).blockingGet()
+
+        when:
+        bu.upload(data, dataSize, null, null, null, null).blockingGet()
+
+        then:
+        def e = thrown(Exception)
+        exceptionType.isInstance(e)
+
+        where:
+        data            | dataSize            | exceptionType
+        null            | defaultDataSize     | IllegalArgumentException
+        defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
+        defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
+    }
+
+    def getBlockID() {
+        return new String(Base64.encoder.encode(UUID.randomUUID().toString().bytes))
+    }
 }

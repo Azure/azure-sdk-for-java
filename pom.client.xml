@@ -863,8 +863,8 @@
    </profiles>
 
    <modules>
-      <module>./batch/data-plane</module>
-      <module>./keyvault/data-plane</module>
+      <!--module>./batch/data-plane</module-->
+      <!--module>./keyvault/data-plane</module-->
       <module>./storage/data-plane</module>
    </modules>
 

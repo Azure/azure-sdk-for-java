@@ -61,22 +61,6 @@ class BlockBlobAPITest extends APISpec {
         bu.stageBlock(getBlockID(), defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
-    @Unroll
-    def "Stage block illegal arguments"() {
-        when:
-        bu.stageBlock(blockID, data, dataSize, null, null).blockingGet()
-
-        then:
-        def e = thrown(Exception)
-        exceptionType.isInstance(e)
-
-        where:
-        blockID      | data            | dataSize            | exceptionType
-        null         | defaultFlowable | defaultDataSize     | IllegalArgumentException
-        getBlockID() | null            | defaultDataSize     | IllegalArgumentException
-        getBlockID() | defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
-        getBlockID() | defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
-    }
 
     def "Stage block empty body"() {
         when:
@@ -590,7 +574,7 @@ class BlockBlobAPITest extends APISpec {
         bu.upload(defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
-    @Unroll
+   /* @Unroll
     def "Upload illegal argument"() {
         when:
         bu.upload(data, dataSize, null, null, null, null).blockingGet()
@@ -604,7 +588,7 @@ class BlockBlobAPITest extends APISpec {
         null            | defaultDataSize     | IllegalArgumentException
         defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
         defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
-    }
+    }*/
 
     def "Upload empty body"() {
         expect:

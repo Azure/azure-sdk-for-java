@@ -82,11 +82,11 @@ class APISpec extends Specification {
     /*
     Credentials for various kinds of accounts.
      */
-    static SharedKeyCredentials primaryCreds = getGenericCreds("")
+    static SharedKeyCredentials primaryCreds = getGenericCreds("PRIMARY_STORAGE_")
 
     static ServiceURL primaryServiceURL = getGenericServiceURL(primaryCreds)
 
-    static SharedKeyCredentials alternateCreds = getGenericCreds("SECONDARY_")
+    static SharedKeyCredentials alternateCreds = getGenericCreds("SECONDARY_STORAGE_")
 
     /*
     URLs to various kinds of accounts.
@@ -95,7 +95,7 @@ class APISpec extends Specification {
 
     static ServiceURL blobStorageServiceURL = getGenericServiceURL(getGenericCreds("BLOB_STORAGE_"))
 
-    static ServiceURL premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_"))
+    static ServiceURL premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
 
     /*
     Constants for testing that the context parameter is properly passed to the pipeline.
@@ -216,7 +216,7 @@ class APISpec extends Specification {
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, new PipelineOptions())
 
         ServiceURL serviceURL = new ServiceURL(
-                new URL("http://" + System.getenv().get("ACCOUNT_NAME") + ".blob.core.windows.net"), pipeline)
+                new URL("http://" + System.getenv().get("PRIMARY_STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net"), pipeline)
         // There should not be more than 5000 containers from these tests
         for (ContainerItem c : serviceURL.listContainersSegment(null,
                 new ListContainersOptions().withPrefix(containerPrefix), null).blockingGet()
@@ -266,7 +266,7 @@ class APISpec extends Specification {
         /*
         We'll let primary creds throw and crash if there are no credentials specified because everything else will fail.
          */
-        primaryCreds = getGenericCreds("")
+        primaryCreds = getGenericCreds("PRIMARY_STORAGE_")
         primaryServiceURL = getGenericServiceURL(primaryCreds)
 
         /*
@@ -276,7 +276,7 @@ class APISpec extends Specification {
         something in the future.
          */
         try {
-            alternateCreds = getGenericCreds("SECONDARY_")
+            alternateCreds = getGenericCreds("SECONDARY_STORAGE_")
             alternateServiceURL = getGenericServiceURL(alternateCreds)
         }
         catch (Exception e) {
@@ -287,7 +287,7 @@ class APISpec extends Specification {
         catch (Exception e) {
         }
         try {
-            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_"))
+            premiumServiceURL = getGenericServiceURL(getGenericCreds("PREMIUM_STORAGE_"))
         }
         catch (Exception e) {
         }

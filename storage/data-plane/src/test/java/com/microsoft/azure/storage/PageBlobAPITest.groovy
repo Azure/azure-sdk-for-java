@@ -199,22 +199,6 @@ class PageBlobAPITest extends APISpec {
                 Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES)))
     }
 
-    @Unroll
-    def "Upload page IA"() {
-        when:
-        bu.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES * 2 - 1), data,
-                null, null).blockingGet()
-
-        then:
-        def e = thrown(Exception)
-        exceptionType.isInstance(e)
-
-        where:
-        data                                                     | exceptionType
-        null                                                     | IllegalArgumentException
-        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES))     | UnexpectedLengthException
-        Flowable.just(getRandomData(PageBlobURL.PAGE_BYTES * 3)) | UnexpectedLengthException
-    }
 
     @Unroll
     def "Upload page AC"() {
