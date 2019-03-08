@@ -66,7 +66,9 @@ public class InterceptorManager implements Closeable {
         return interceptorManager;
     }
 
-    public boolean isRecordMode() { return testMode == TestMode.RECORD; }
+    public boolean isRecordMode() {
+        return testMode == TestMode.RECORD;
+    }
 
     public boolean isPlaybackMode() {
         return testMode == TestMode.PLAYBACK;
@@ -99,7 +101,7 @@ public class InterceptorManager implements Closeable {
                 break;
             default:
                 System.out.println("==> Unknown AZURE_TEST_MODE: " + testMode);
-        };
+        }
     }
 
     public class RecordPolicy implements HttpPipelinePolicy {
@@ -146,6 +148,7 @@ public class InterceptorManager implements Closeable {
 
     final class PlaybackClient extends HttpClient {
         AtomicInteger count = new AtomicInteger(0);
+
         @Override
         public Mono<HttpResponse> send(final HttpRequest request) {
             return Mono.defer(() -> playbackHttpResponse(request));
