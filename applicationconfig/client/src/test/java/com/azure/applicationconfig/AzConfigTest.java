@@ -207,10 +207,17 @@ public class AzConfigTest {
 
     @Test
     public void crudKeyValue() {
-        KeyValue newKeyValue = new KeyValue().withKey("myNewKey5").withValue("myNewValue5");
-        client.setKeyValue(newKeyValue).block().body();
+        String key = SdkContext.randomResourceName(keyPrefix, 8);
+        KeyValue newKeyValue = new KeyValue().withKey(key).withValue("myNewValue5");
+        StepVerifier.create(client.setKeyValue(newKeyValue))
+                .assertNext(response -> assertEquals(newKeyValue, response, 200))
+                .expectComplete()
+                .verify();
 
-        KeyValue kv = client.deleteKeyValue(newKeyValue.key()).block().body();
+        StepVerifier.create(client.deleteKeyValue(newKeyValue.key()))
+                .assertNext(response -> assertEquals(newKeyValue, response, 200))
+                .expectComplete()
+                .verify();
     }
 
     @Test
