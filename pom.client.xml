@@ -840,8 +840,8 @@
 
   <modules>
     <module>./batch/data-plane</module>
-    <module>./keyvault/data-plane</module>
     <module>./eventhubs/data-plane</module>
+    <module>./keyvault/data-plane</module>
   </modules>
 
 </project>

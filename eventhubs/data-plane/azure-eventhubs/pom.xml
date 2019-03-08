@@ -4,21 +4,30 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>azure-eventhubs</artifactId>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-eventhubs</artifactId>
 
-    <name>Microsoft Azure SDK for Event Hubs</name>
-    <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
+  <name>Microsoft Azure SDK for Event Hubs</name>
+  <description>Libraries built on Microsoft Azure Event Hubs</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-    <parent>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-eventhubs-clients</artifactId>
-        <version>2.0.0</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
+  <parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-eventhubs-clients</artifactId>
+    <version>2.0.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-    <scm>
-        <url>scm:git:https://github.com/Azure/azure-event-hubs-java</url>
-    </scm>
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+  <scm>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
 
 </project>
