@@ -184,13 +184,13 @@ public class AzConfigTest {
      */
     @Test
     public void listWithKeyAndLabel() {
-        final String value = "myValue";
+        final String value  = "myValue";
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName("lbl", 8);
         final KeyValue expected = new KeyValue().withKey(key).withValue(value).withLabel(label);
 
         StepVerifier.create(client.setKeyValue(expected))
-                .assertNext(response -> assertEquals(expected, response, 200))
+                .assertNext(response -> assertEquals(expected, response))
                 .expectComplete()
                 .verify();
 
@@ -210,12 +210,12 @@ public class AzConfigTest {
         String key = SdkContext.randomResourceName(keyPrefix, 8);
         KeyValue newKeyValue = new KeyValue().withKey(key).withValue("myNewValue5");
         StepVerifier.create(client.setKeyValue(newKeyValue))
-                .assertNext(response -> assertEquals(newKeyValue, response, 200))
+                .assertNext(response -> assertEquals(newKeyValue, response))
                 .expectComplete()
                 .verify();
 
         StepVerifier.create(client.deleteKeyValue(newKeyValue.key()))
-                .assertNext(response -> assertEquals(newKeyValue, response, 200))
+                .assertNext(response -> assertEquals(newKeyValue, response))
                 .expectComplete()
                 .verify();
     }
@@ -227,36 +227,46 @@ public class AzConfigTest {
         final KeyValue kv = new KeyValue().withKey(key).withValue("myValue").withLabel(label);
 
         StepVerifier.create(client.setKeyValue(kv))
-                .assertNext(response -> assertEquals(kv, response, 200))
+                .assertNext(response -> assertEquals(kv, response))
                 .expectComplete()
                 .verify();
 
         StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myLabel")))
-                .assertNext(response -> assertEquals(kv, response, 200))
+                .assertNext(response -> assertEquals(kv, response))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myNonExistingLabel")))
-                .expectError()
-                .verify();
+            StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myNonExistingLabel")))
+                    .expectErrorSatisfies(error -> {
+                        Assert.assertTrue(error instanceof CloudException);
+                        Assert.assertEquals(404, ((CloudException) error).response().statusCode());
+                    })
+                    .verify();
     }
 
     @Test
     public void getWithEtag() {
         String key = SdkContext.randomResourceName(keyPrefix, 16);
-        KeyValue kv = client.setKeyValue(new KeyValue().withKey(key).withValue("myValue")).block().body();
-        String etag = kv.etag();
-        try {
-            RestResponse<Map<String, String>, KeyValue> response = client.getKeyValue(key, new KeyValueFilter().withIfNoneMatch(etag)).block();
-            Assert.fail("Should have thrown an exception");
-        } catch (Exception ex) {
-            logger.info("Exception thrown.");
-            Assert.assertTrue(ex instanceof CloudException);
-            // etag has not changed, so getting 304 NotModified code according to service spec
-            Assert.assertTrue(ex.getMessage().contains("304"));
-        }
-        kv = client.setKeyValue(new KeyValue().withKey(key).withValue("myValue")).block().body();
-        Assert.assertEquals("myValue", kv.value());
+        KeyValue expected = new KeyValue().withKey(key).withValue("myValue");
+        KeyValue newExpected = new KeyValue().withKey(key).withValue("myNewValue");
+        RestResponse<Map<String, String>, KeyValue> block = client.setKeyValue(expected).single().block();
+
+        Assert.assertNotNull(block);
+        assertEquals(expected, block);
+
+        String etag = block.body().etag();
+        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withIfNoneMatch(etag)))
+                .expectErrorSatisfies(ex -> {
+                    Assert.assertTrue(ex instanceof CloudException);
+                    // etag has not changed, so getting 304 NotModified code according to service spec
+                    Assert.assertTrue(ex.getMessage().contains("304"));
+                })
+                .verify();
+
+        StepVerifier.create(client.setKeyValue(newExpected))
+                .assertNext(response -> assertEquals(newExpected, response))
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -324,9 +334,9 @@ public class AzConfigTest {
     }
 
 
-    private static void assertEquals(KeyValue expected, RestResponse<Map<String, String>, KeyValue> response, int statusCode) {
+    private static void assertEquals(KeyValue expected, RestResponse<Map<String, String>, KeyValue> response) {
         Assert.assertNotNull(response);
-        Assert.assertEquals(statusCode, response.statusCode());
+        Assert.assertEquals(200, response.statusCode());
 
         if (expected == null) {
             Assert.assertNull(response.body());
