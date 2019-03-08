@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -300,15 +301,38 @@ public class AzConfigTest {
 
     @Test
     public void listRevisions() {
-        String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        KeyValue newKeyValue = new KeyValue().withKey(keyName).withValue("myValue");
+        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final KeyValue original = new KeyValue().withKey(keyName).withValue("myValue");
+        final KeyValue updated = new KeyValue().withKey(keyName).withValue("anotherValue");
+        final HashSet<String> expected = new HashSet<>();
+        expected.add(original.value());
+        expected.add(updated.value());
 
-        newKeyValue = client.setKeyValue(newKeyValue, null).block().body();
-        KeyValue updatedNewKeyValue = client.setKeyValue(newKeyValue.withValue("myNewValue"), null).block().body();
+        // Create two different revisions of the same key.
+        StepVerifier.create(client.setKeyValue(original))
+                .assertNext(response -> assertEquals(original, response))
+                .expectComplete()
+                .verify();
+        StepVerifier.create(client.setKeyValue(updated))
+                .assertNext(response -> assertEquals(updated, response))
+                .expectComplete()
+                .verify();
 
         // Get all revisions for a key
-        Long revisions = client.listKeyValueRevisions(new RevisionFilter().withKey(keyPrefix + "*")).count().block();
-        Assert.assertEquals(Long.valueOf(2L), revisions);
+        StepVerifier.create(client.listKeyValueRevisions(new RevisionFilter().withKey(keyPrefix + "*")))
+                .assertNext(response -> {
+                    Assert.assertEquals(keyName, response.key());
+                    Assert.assertTrue(expected.remove(response.value()));
+                })
+                .assertNext(response -> {
+                    Assert.assertEquals(keyName, response.key());
+                    Assert.assertTrue(expected.remove(response.value()));
+                })
+                .expectComplete()
+                .verify();
+
+        Assert.assertTrue(expected.isEmpty());
+//        Assert.assertEquals(Long.valueOf(2L), revisions);
     }
 
     @Test
