@@ -234,6 +234,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload file AC fail"() {
         setup:
+        System.out.println("Upload File AC fail test")
         bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         setupBlobLeaseCondition(bu, leaseID)
@@ -277,6 +278,7 @@ class TransferManagerTest extends APISpec {
 
     def "Upload replayable flowable"() {
         setup:
+        System.out.println("Upload replayable flowable")
         // Write default data to a file
         File file = File.createTempFile(UUID.randomUUID().toString(), ".txt")
         file.deleteOnExit()
@@ -323,6 +325,7 @@ class TransferManagerTest extends APISpec {
 
     def "Upload options fail"() {
         when:
+        System.out.println("Upload options fail")
         new TransferManagerUploadToBlockBlobOptions(null, null, null, null, -1)
 
         then:
@@ -336,6 +339,7 @@ class TransferManagerTest extends APISpec {
 
     def "Upload file progress sequential"() {
         setup:
+        System.out.println("Upload file progress sequential")
         def channel = AsynchronousFileChannel.open(getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES - 1).toPath())
         def mockReceiver = Mock(IProgressReceiver)
         def prevCount = 0
@@ -373,6 +377,7 @@ class TransferManagerTest extends APISpec {
 
     def "Upload file progress parallel"() {
         setup:
+        System.out.println("Upload file progress parallel")
         def channel = AsynchronousFileChannel.open(getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1).toPath())
         def numBlocks = channel.size() / BlockBlobURL.MAX_STAGE_BLOCK_BYTES
         long prevCount = 0
@@ -412,6 +417,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download file"() {
         setup:
+        System.out.println("Download file")
         def channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
                 .blockingGet()
@@ -466,6 +472,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download file range"() {
         setup:
+        System.out.println("Download file range")
         def channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ, StandardOpenOption.WRITE)
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
                 .blockingGet()
@@ -512,6 +519,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download file AC"() {
         setup:
+        System.out.println("Download file AC")
         def channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
                 StandardOpenOption.WRITE)
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
@@ -550,6 +558,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download file AC fail"() {
         setup:
+        System.out.println("Download file AC fail")
         def channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
                 StandardOpenOption.WRITE)
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
@@ -584,6 +593,7 @@ class TransferManagerTest extends APISpec {
 
     def "Download file etag lock"() {
         setup:
+        System.out.println("Download file etag lock")
         bu.upload(Flowable.just(getRandomData(1 * 1024 * 1024)), 1 * 1024 * 1024, null, null,
                 null, null).blockingGet()
         def outChannel = AsynchronousFileChannel.open(getRandomFile(0).toPath(), StandardOpenOption.WRITE,
@@ -632,6 +642,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download file options"() {
         setup:
+        System.out.println("Download file options")
         def channel = AsynchronousFileChannel.open(getRandomFile(defaultDataSize).toPath(), StandardOpenOption.READ,
                 StandardOpenOption.WRITE)
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES, null)
@@ -662,6 +673,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download file IA null"() {
         when:
+        System.out.println("Download file IA null")
         TransferManager.downloadBlobToFile(file, blobURL, null, null).blockingGet()
 
         then:
@@ -681,6 +693,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download options fail"() {
         when:
+        System.out.println("Download options fail")
         new TransferManagerDownloadFromBlobOptions(blockSize, null, null, null, parallelism
         )
 
@@ -708,6 +721,7 @@ class TransferManagerTest extends APISpec {
         def prevCount = 0
 
         when:
+        System.out.println("Download options progress receiver")
         TransferManager.downloadBlobToFile(outChannel, bu, null,
                 new TransferManagerDownloadFromBlobOptions(null, mockReceiver, null,
                         new ReliableDownloadOptions().withMaxRetryRequests(3), 20)).blockingGet()
@@ -739,6 +753,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload NRF"() {
         when:
+        System.out.println("upload NRF")
         def data = getRandomData(dataSize)
         TransferManager.uploadFromNonReplayableFlowable(Flowable.just(data), bu, bufferSize, numBuffs, null)
                 .blockingGet()
@@ -780,6 +795,7 @@ class TransferManagerTest extends APISpec {
         it will be chunked appropriately.
          */
         setup:
+        System.out.println("upload NRF chunked source")
         TransferManager.uploadFromNonReplayableFlowable(Flowable.fromIterable(dataList), bu, bufferSize, numBuffers,
                 null).blockingGet()
 
@@ -800,6 +816,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload NRF illegal arguments null"() {
         when:
+        System.out.println("upload NRF illegal arguments null")
         TransferManager.uploadFromNonReplayableFlowable(source, url, 4, 4, null)
 
         then:
@@ -814,6 +831,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload NRF illegal args out of bounds"() {
         when:
+        System.out.println("upload NRF illegal args out of bounds")
         TransferManager.uploadFromNonReplayableFlowable(Flowable.just(defaultData), bu, bufferSize, numBuffs, null)
 
         then:
@@ -829,6 +847,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload NRF headers"() {
         when:
+        System.out.println("upload NRF headers")
         TransferManager.uploadFromNonReplayableFlowable(Flowable.just(defaultData), bu, 10, 2,
                 new TransferManagerUploadToBlockBlobOptions(null, new BlobHTTPHeaders()
                         .withBlobCacheControl(cacheControl).withBlobContentDisposition(contentDisposition)
@@ -854,6 +873,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload NRF metadata"() {
         setup:
+        System.out.println("upload NRF metadata")
         Metadata metadata = new Metadata()
         if (key1 != null) {
             metadata.put(key1, value1)
@@ -880,6 +900,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload NRF AC"() {
         setup:
+        System.out.println("upload NRF AC")
         bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -906,6 +927,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload NRF AC fail"() {
         setup:
+        System.out.println("upload NRF AC fail")
         bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         noneMatch = setupBlobMatchCondition(bu, noneMatch)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
@@ -935,6 +957,7 @@ class TransferManagerTest extends APISpec {
 
     def "Upload NRF progress"() {
         setup:
+        System.out.println("upload NRF progress ")
         def data = getRandomData(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 1)
         def numBlocks = data.remaining() / BlockBlobURL.MAX_STAGE_BLOCK_BYTES
         long prevCount = 0
@@ -970,6 +993,8 @@ class TransferManagerTest extends APISpec {
 
     def "Upload NRF network error"() {
         setup:
+
+        System.out.println("upload NRF network error")
         /*
          This test uses a Flowable that does not allow multiple subscriptions and therefore ensures that we are
          buffering properly to allow for retries even given this source behavior.
