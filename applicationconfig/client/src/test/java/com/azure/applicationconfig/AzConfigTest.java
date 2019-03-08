@@ -271,22 +271,31 @@ public class AzConfigTest {
 
     @Test
     public void lockUnlockKeyValue() {
-        String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        KeyValue newKeyValue = new KeyValue().withKey(keyName).withValue("myKeyValue");
-        KeyValue newKv = client.setKeyValue(newKeyValue).block().body();
-        try {
-            newKv = client.lockKeyValue(keyName).block().body();
-            newKv.withValue("myNewKeyValue");
-            client.setKeyValue(newKv).block();
-            Assert.fail("Should not be able to modify locked value");
-        } catch (Exception ex) {
-            Assert.assertTrue(ex instanceof CloudException);
-            Assert.assertEquals(HttpResponseStatus.CONFLICT.code(), ((CloudException) ex).response().statusCode());
-        }
-        client.unlockKeyValue(keyName).block();
-        KeyValue updatedKv = new KeyValue().withKey(keyName).withValue("myUpdatedValue");
-        newKeyValue = client.setKeyValue(updatedKv).block().body();
-        Assert.assertEquals("myUpdatedValue", newKeyValue.value());
+        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final KeyValue expected = new KeyValue().withKey(keyName).withValue("myKeyValue");
+        final KeyValue updated = new KeyValue().withKey(keyName).withValue("Some new value");
+        final KeyValue updated2 = new KeyValue().withKey(keyName).withValue("Some new value, again.");
+
+        StepVerifier.create(client.setKeyValue(expected))
+                .assertNext(response -> assertEquals(expected, response))
+                .expectComplete()
+                .verify();
+
+        StepVerifier.create(client.lockKeyValue(expected.key()))
+                .assertNext(response -> assertEquals(expected, response))
+                .expectComplete()
+                .verify();
+
+        StepVerifier.create(client.setKeyValue(updated))
+                .expectErrorSatisfies(ex -> {
+                    Assert.assertTrue(ex instanceof CloudException);
+                    Assert.assertEquals(HttpResponseStatus.CONFLICT.code(), ((CloudException) ex).response().statusCode());
+                }).verify();
+
+        StepVerifier.create(client.unlockKeyValue(keyName).flatMap(response -> client.setKeyValue(updated2)))
+                .assertNext(response -> assertEquals(updated2, response))
+                .expectComplete()
+                .verify();
     }
 
     @Test
@@ -332,7 +341,6 @@ public class AzConfigTest {
         List<Key> keys = client.listKeys(new KeyLabelFilter().withName(keyPrefix + "*")).collectList().block();
         Assert.assertEquals(3, keys.size());
     }
-
 
     private static void assertEquals(KeyValue expected, RestResponse<Map<String, String>, KeyValue> response) {
         Assert.assertNotNull(response);
