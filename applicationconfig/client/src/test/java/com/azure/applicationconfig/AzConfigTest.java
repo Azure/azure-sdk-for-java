@@ -184,7 +184,7 @@ public class AzConfigTest {
      */
     @Test
     public void listWithKeyAndLabel() {
-        final String value  = "myValue";
+        final String value = "myValue";
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName("lbl", 8);
         final KeyValue expected = new KeyValue().withKey(key).withValue(value).withLabel(label);
@@ -222,20 +222,23 @@ public class AzConfigTest {
 
     @Test
     public void getWithLabel() {
-        String key = SdkContext.randomResourceName(keyPrefix, 16);
-        KeyValue kv = new KeyValue().withKey(key).withValue("myValue").withLabel("myLabel");
-        client.setKeyValue(kv).block();
-        kv = client.getKeyValue(key, new KeyValueFilter().withLabel("myLabel")).block().body();
-        Assert.assertNotNull(kv);
-        Assert.assertEquals("myLabel", kv.label());
-        Assert.assertEquals("myValue", kv.value());
-        try {
-            kv = client.getKeyValue(key, new KeyValueFilter().withLabel("myNonExistingLabel")).block().body();
-            Assert.fail("Should not be able to get a keyValue with non-existent label");
-        } catch (Exception ex) {
-            Assert.assertTrue(ex instanceof CloudException);
-            Assert.assertEquals(404, ((CloudException) ex).response().statusCode());
-        }
+        final String label = "myLabel";
+        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final KeyValue kv = new KeyValue().withKey(key).withValue("myValue").withLabel(label);
+
+        StepVerifier.create(client.setKeyValue(kv))
+                .assertNext(response -> assertEquals(kv, response, 200))
+                .expectComplete()
+                .verify();
+
+        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myLabel")))
+                .assertNext(response -> assertEquals(kv, response, 200))
+                .expectComplete()
+                .verify();
+
+        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myNonExistingLabel")))
+                .expectError()
+                .verify();
     }
 
     @Test
