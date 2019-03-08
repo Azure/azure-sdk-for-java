@@ -58,12 +58,6 @@ public class ApplicationBase {
     private Boolean availableToOtherTenants;
 
     /**
-     * The display name of the application.
-     */
-    @JsonProperty(value = "displayName")
-    private String displayName;
-
-    /**
      * A URL provided by the author of the application to report errors when
      * using the application.
      */
@@ -75,12 +69,6 @@ public class ApplicationBase {
      */
     @JsonProperty(value = "homepage")
     private String homepage;
-
-    /**
-     * A collection of URIs for the application.
-     */
-    @JsonProperty(value = "identifierUris")
-    private List<String> identifierUris;
 
     /**
      * urls with more informations of the application.
@@ -338,26 +326,6 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the display name of the application.
-     *
-     * @return the displayName value
-     */
-    public String displayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Set the display name of the application.
-     *
-     * @param displayName the displayName value to set
-     * @return the ApplicationBase object itself.
-     */
-    public ApplicationBase withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
      * Get a URL provided by the author of the application to report errors when using the application.
      *
      * @return the errorUrl value
@@ -394,26 +362,6 @@ public class ApplicationBase {
      */
     public ApplicationBase withHomepage(String homepage) {
         this.homepage = homepage;
-        return this;
-    }
-
-    /**
-     * Get a collection of URIs for the application.
-     *
-     * @return the identifierUris value
-     */
-    public List<String> identifierUris() {
-        return this.identifierUris;
-    }
-
-    /**
-     * Set a collection of URIs for the application.
-     *
-     * @param identifierUris the identifierUris value to set
-     * @return the ApplicationBase object itself.
-     */
-    public ApplicationBase withIdentifierUris(List<String> identifierUris) {
-        this.identifierUris = identifierUris;
         return this;
     }
 

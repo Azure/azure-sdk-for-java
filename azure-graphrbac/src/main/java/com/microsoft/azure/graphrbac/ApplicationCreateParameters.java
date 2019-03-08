@@ -8,9 +8,63 @@
 
 package com.microsoft.azure.graphrbac;
 
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request parameters for creating a new application.
  */
 public class ApplicationCreateParameters extends ApplicationBase {
+    /**
+     * The display name of the application.
+     */
+    @JsonProperty(value = "displayName", required = true)
+    private String displayName;
+
+    /**
+     * A collection of URIs for the application.
+     */
+    @JsonProperty(value = "identifierUris", required = true)
+    private List<String> identifierUris;
+
+    /**
+     * Get the display name of the application.
+     *
+     * @return the displayName value
+     */
+    public String displayName() {
+        return this.displayName;
+    }
+
+    /**
+     * Set the display name of the application.
+     *
+     * @param displayName the displayName value to set
+     * @return the ApplicationCreateParameters object itself.
+     */
+    public ApplicationCreateParameters withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
+     * Get a collection of URIs for the application.
+     *
+     * @return the identifierUris value
+     */
+    public List<String> identifierUris() {
+        return this.identifierUris;
+    }
+
+    /**
+     * Set a collection of URIs for the application.
+     *
+     * @param identifierUris the identifierUris value to set
+     * @return the ApplicationCreateParameters object itself.
+     */
+    public ApplicationCreateParameters withIdentifierUris(List<String> identifierUris) {
+        this.identifierUris = identifierUris;
+        return this;
+    }
+
 }
