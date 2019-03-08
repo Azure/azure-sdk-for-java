@@ -32,6 +32,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
@@ -337,18 +338,53 @@ public class AzConfigTest {
 
     @Test
     public void listLabels() {
-        String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        String label1 = keyPrefix + "-lbl1";
-        String label2 = keyPrefix + "-lbl2";
-        String label3 = keyPrefix + "-lbl3";
-        client.setKeyValue(new KeyValue().withKey(keyName).withValue("value1").withLabel(label1)).block();
-        client.setKeyValue(new KeyValue().withKey(keyName).withValue("value2").withLabel(label2)).block();
-        client.setKeyValue(new KeyValue().withKey(keyName).withValue("value3").withLabel(label3)).block();
+        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
+        final KeyValue value1 = new KeyValue().withKey(keyName).withValue("value1").withLabel(keyPrefix + "-lbl1");
+        final KeyValue value2 = new KeyValue().withKey(keyName).withValue("value2").withLabel(keyPrefix + "-lbl2");
+        final KeyValue value3 = new KeyValue().withKey(keyName).withValue("value3").withLabel(keyPrefix + "-lbl3");
+        final KeyLabelFilter filter = new KeyLabelFilter()
+                .withName(keyPrefix + "-lbl*")
+                .withFields("name")
+                .withFields("kv_count")
+                .withFields("last_modifier");
+        final HashMap<String, KeyValue> expected = new HashMap<>();
+        expected.put(value1.label(), value1);
+        expected.put(value2.label(), value2);
+        expected.put(value3.label(), value3);
 
-//        List<Label> labels = client.listLabels(new KeyLabelFilter().withName(keyPrefix + "-lbl*")).blockFirst().items();
-//        Assert.assertEquals(3, labels.size());
-//        Assert.assertEquals(1, labels.get(0).kvCount());
-//        Assert.assertTrue(Pattern.matches(keyPrefix + "-lbl\\d", labels.get(0).name()));
+        StepVerifier.create(Flux.merge(
+                client.setKeyValue(value1),
+                client.setKeyValue(value2),
+                client.setKeyValue(value3)))
+                .assertNext(response -> assertMapContainsLabel(expected, response))
+                .assertNext(response -> assertMapContainsLabel(expected, response))
+                .assertNext(response -> assertMapContainsLabel(expected, response))
+                .expectComplete()
+                .verify();
+
+        StepVerifier.create(client.listLabels(filter))
+                .assertNext(label -> {
+                    Assert.assertNotNull(label);
+                    KeyValue value = expected.remove(label.name());
+                    Assert.assertNotNull(value);
+                    Assert.assertEquals(1, label.kvCount());
+                })
+                .assertNext(label -> {
+                    Assert.assertNotNull(label);
+                    KeyValue value = expected.remove(label.name());
+                    Assert.assertNotNull(value);
+                    Assert.assertEquals(1, label.kvCount());
+                })
+                .assertNext(label -> {
+                    Assert.assertNotNull(label);
+                    KeyValue value = expected.remove(label.name());
+                    Assert.assertNotNull(value);
+                    Assert.assertEquals(1, label.kvCount());
+                })
+                .expectComplete()
+                .verify();
+
+        Assert.assertTrue(expected.isEmpty());
     }
 
     @Test
@@ -364,6 +400,16 @@ public class AzConfigTest {
 
         List<Key> keys = client.listKeys(new KeyLabelFilter().withName(keyPrefix + "*")).collectList().block();
         Assert.assertEquals(3, keys.size());
+    }
+
+    private static void assertMapContainsLabel(HashMap<String, KeyValue> map,
+                                               RestResponse<Map<String, String>, KeyValue> response) {
+        Assert.assertNotNull(response);
+        Assert.assertNotNull(response.body());
+
+        KeyValue fetched = map.getOrDefault(response.body().label(), null);
+        Assert.assertNotNull(fetched);
+        assertEquals(fetched, response);
     }
 
     private static void assertEquals(KeyValue expected, RestResponse<Map<String, String>, KeyValue> response) {
