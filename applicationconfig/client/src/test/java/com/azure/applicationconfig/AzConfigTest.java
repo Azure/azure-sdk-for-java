@@ -333,7 +333,6 @@ public class AzConfigTest {
                 .verify();
 
         Assert.assertTrue(expected.isEmpty());
-//        Assert.assertEquals(Long.valueOf(2L), revisions);
     }
 
     @Test
@@ -389,16 +388,23 @@ public class AzConfigTest {
 
     @Test
     public void listKeys() {
-        String key1 = keyPrefix + "-1";
-        String key2 = keyPrefix + "-2";
-        String key3 = keyPrefix + "-3";
-//        client.getKeyValue("key69076343820", null).block();
-        Map<String, String> tags = new HashMap<>();
-        client.setKeyValue(new KeyValue().withKey(key1).withValue("value1").withLabel("label1").withContentType("testContentType").withTags(tags)).block();
-        client.setKeyValue(new KeyValue().withKey(key2).withValue("value2").withLabel("label2")).block();
-        client.setKeyValue(new KeyValue().withKey(key3).withValue("value3").withLabel("label3")).block();
+        final Map<String, String> tags = new HashMap<>();
+        final KeyValue key1 = new KeyValue().withKey(keyPrefix + "-1").withValue("value1").withLabel("label1").withContentType("testContentType").withTags(tags);
+        final KeyValue key2 = new KeyValue().withKey(keyPrefix + "-2").withValue("value2").withLabel("label2");
+        final KeyValue key3 = new KeyValue().withKey(keyPrefix + "-3").withValue("value3").withLabel("label3");
+        final KeyLabelFilter filter = new KeyLabelFilter().withName(keyPrefix + "*");
+        final HashMap<String, KeyValue> expected = new HashMap<>();
 
-        List<Key> keys = client.listKeys(new KeyLabelFilter().withName(keyPrefix + "*")).collectList().block();
+        StepVerifier.create(Flux.merge(
+                client.setKeyValue(key1),
+                client.setKeyValue(key2),
+                client.setKeyValue(key3)
+        ))
+                .expectNextCount(3)
+                .expectComplete()
+                .verify();
+
+        List<Key> keys = client.listKeys(filter).collectList().block();
         Assert.assertEquals(3, keys.size());
     }
 
