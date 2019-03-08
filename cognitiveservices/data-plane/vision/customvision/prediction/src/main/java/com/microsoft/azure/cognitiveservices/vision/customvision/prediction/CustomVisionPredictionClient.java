@@ -122,49 +122,49 @@ public interface CustomVisionPredictionClient {
      * Classify an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction classifyImageUrl(UUID projectId, String publishedModelName);
+    ImagePrediction classifyImageUrl(UUID projectId, String publishedName);
 
     /**
      * Classify an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedModelName, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Classify an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedModelName);
+    Observable<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName);
 
     /**
      * Classify an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithServiceResponseAsync(UUID projectId, String publishedModelName);
+    Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithServiceResponseAsync(UUID projectId, String publishedName);
     /**
      * Classify an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -172,189 +172,189 @@ public interface CustomVisionPredictionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction classifyImageUrl(UUID projectId, String publishedModelName, String application, String url);
-
-    /**
-     * Classify an image url and saves the result.
-     *
-     * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
-     * @param url Url of the image.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedModelName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback);
+    ImagePrediction classifyImageUrl(UUID projectId, String publishedName, String application, String url);
 
     /**
      * Classify an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImagePrediction object
+     * @return the {@link ServiceFuture} object
      */
-    Observable<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedModelName, String application, String url);
+    ServiceFuture<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Classify an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithServiceResponseAsync(UUID projectId, String publishedModelName, String application, String url);
+    Observable<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String application, String url);
+
+    /**
+     * Classify an image url and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param application Optional. Specifies the name of application using the endpoint.
+     * @param url Url of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String application, String url);
 
     /**
      * Classify an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction classifyImage(UUID projectId, String publishedModelName, byte[] imageData);
+    ImagePrediction classifyImage(UUID projectId, String publishedName, byte[] imageData);
 
     /**
      * Classify an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> classifyImageAsync(UUID projectId, String publishedModelName, byte[] imageData, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> classifyImageAsync(UUID projectId, String publishedName, byte[] imageData, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Classify an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> classifyImageAsync(UUID projectId, String publishedModelName, byte[] imageData);
+    Observable<ImagePrediction> classifyImageAsync(UUID projectId, String publishedName, byte[] imageData);
 
     /**
      * Classify an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> classifyImageWithServiceResponseAsync(UUID projectId, String publishedModelName, byte[] imageData);
+    Observable<ServiceResponse<ImagePrediction>> classifyImageWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData);
     /**
      * Classify an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction classifyImage(UUID projectId, String publishedModelName, byte[] imageData, String application);
-
-    /**
-     * Classify an image and saves the result.
-     *
-     * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
-     * @param application Optional. Specifies the name of application using the endpoint.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<ImagePrediction> classifyImageAsync(UUID projectId, String publishedModelName, byte[] imageData, String application, final ServiceCallback<ImagePrediction> serviceCallback);
+    ImagePrediction classifyImage(UUID projectId, String publishedName, byte[] imageData, String application);
 
     /**
      * Classify an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @param application Optional. Specifies the name of application using the endpoint.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImagePrediction object
+     * @return the {@link ServiceFuture} object
      */
-    Observable<ImagePrediction> classifyImageAsync(UUID projectId, String publishedModelName, byte[] imageData, String application);
+    ServiceFuture<ImagePrediction> classifyImageAsync(UUID projectId, String publishedName, byte[] imageData, String application, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Classify an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> classifyImageWithServiceResponseAsync(UUID projectId, String publishedModelName, byte[] imageData, String application);
+    Observable<ImagePrediction> classifyImageAsync(UUID projectId, String publishedName, byte[] imageData, String application);
+
+    /**
+     * Classify an image and saves the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
+     * @param application Optional. Specifies the name of application using the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    Observable<ServiceResponse<ImagePrediction>> classifyImageWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, String application);
 
     /**
      * Classify an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction classifyImageUrlWithNoStore(UUID projectId, String publishedModelName);
+    ImagePrediction classifyImageUrlWithNoStore(UUID projectId, String publishedName);
 
     /**
      * Classify an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedModelName, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Classify an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedModelName);
+    Observable<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName);
 
     /**
      * Classify an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedModelName);
+    Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName);
     /**
      * Classify an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -362,189 +362,189 @@ public interface CustomVisionPredictionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction classifyImageUrlWithNoStore(UUID projectId, String publishedModelName, String application, String url);
-
-    /**
-     * Classify an image url without saving the result.
-     *
-     * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
-     * @param url Url of the image.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedModelName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback);
+    ImagePrediction classifyImageUrlWithNoStore(UUID projectId, String publishedName, String application, String url);
 
     /**
      * Classify an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImagePrediction object
+     * @return the {@link ServiceFuture} object
      */
-    Observable<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedModelName, String application, String url);
+    ServiceFuture<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Classify an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedModelName, String application, String url);
+    Observable<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String application, String url);
+
+    /**
+     * Classify an image url without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param application Optional. Specifies the name of application using the endpoint.
+     * @param url Url of the image.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String application, String url);
 
     /**
      * Classify an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction classifyImageWithNoStore(UUID projectId, String publishedModelName, byte[] imageData);
+    ImagePrediction classifyImageWithNoStore(UUID projectId, String publishedName, byte[] imageData);
 
     /**
      * Classify an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedModelName, byte[] imageData, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Classify an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedModelName, byte[] imageData);
+    Observable<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData);
 
     /**
      * Classify an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> classifyImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedModelName, byte[] imageData);
+    Observable<ServiceResponse<ImagePrediction>> classifyImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData);
     /**
      * Classify an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction classifyImageWithNoStore(UUID projectId, String publishedModelName, byte[] imageData, String application);
-
-    /**
-     * Classify an image without saving the result.
-     *
-     * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
-     * @param application Optional. Specifies the name of application using the endpoint.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedModelName, byte[] imageData, String application, final ServiceCallback<ImagePrediction> serviceCallback);
+    ImagePrediction classifyImageWithNoStore(UUID projectId, String publishedName, byte[] imageData, String application);
 
     /**
      * Classify an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @param application Optional. Specifies the name of application using the endpoint.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImagePrediction object
+     * @return the {@link ServiceFuture} object
      */
-    Observable<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedModelName, byte[] imageData, String application);
+    ServiceFuture<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, String application, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Classify an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> classifyImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedModelName, byte[] imageData, String application);
+    Observable<ImagePrediction> classifyImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, String application);
+
+    /**
+     * Classify an image without saving the result.
+     *
+     * @param projectId The project id.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
+     * @param application Optional. Specifies the name of application using the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    Observable<ServiceResponse<ImagePrediction>> classifyImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, String application);
 
     /**
      * Detect objects in an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction detectImageUrl(UUID projectId, String publishedModelName);
+    ImagePrediction detectImageUrl(UUID projectId, String publishedName);
 
     /**
      * Detect objects in an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedModelName, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Detect objects in an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedModelName);
+    Observable<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName);
 
     /**
      * Detect objects in an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithServiceResponseAsync(UUID projectId, String publishedModelName);
+    Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithServiceResponseAsync(UUID projectId, String publishedName);
     /**
      * Detect objects in an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -552,189 +552,189 @@ public interface CustomVisionPredictionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction detectImageUrl(UUID projectId, String publishedModelName, String application, String url);
+    ImagePrediction detectImageUrl(UUID projectId, String publishedName, String application, String url);
 
     /**
      * Detect objects in an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedModelName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Detect objects in an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedModelName, String application, String url);
+    Observable<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String application, String url);
 
     /**
      * Detect objects in an image url and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithServiceResponseAsync(UUID projectId, String publishedModelName, String application, String url);
+    Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String application, String url);
 
     /**
      * Detect objects in an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction detectImage(UUID projectId, String publishedModelName, byte[] imageData);
+    ImagePrediction detectImage(UUID projectId, String publishedName, byte[] imageData);
 
     /**
      * Detect objects in an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> detectImageAsync(UUID projectId, String publishedModelName, byte[] imageData, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> detectImageAsync(UUID projectId, String publishedName, byte[] imageData, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Detect objects in an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> detectImageAsync(UUID projectId, String publishedModelName, byte[] imageData);
+    Observable<ImagePrediction> detectImageAsync(UUID projectId, String publishedName, byte[] imageData);
 
     /**
      * Detect objects in an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> detectImageWithServiceResponseAsync(UUID projectId, String publishedModelName, byte[] imageData);
+    Observable<ServiceResponse<ImagePrediction>> detectImageWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData);
     /**
      * Detect objects in an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction detectImage(UUID projectId, String publishedModelName, byte[] imageData, String application);
+    ImagePrediction detectImage(UUID projectId, String publishedName, byte[] imageData, String application);
 
     /**
      * Detect objects in an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> detectImageAsync(UUID projectId, String publishedModelName, byte[] imageData, String application, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> detectImageAsync(UUID projectId, String publishedName, byte[] imageData, String application, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Detect objects in an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> detectImageAsync(UUID projectId, String publishedModelName, byte[] imageData, String application);
+    Observable<ImagePrediction> detectImageAsync(UUID projectId, String publishedName, byte[] imageData, String application);
 
     /**
      * Detect objects in an image and saves the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 4MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> detectImageWithServiceResponseAsync(UUID projectId, String publishedModelName, byte[] imageData, String application);
+    Observable<ServiceResponse<ImagePrediction>> detectImageWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, String application);
 
     /**
      * Detect objects in an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction detectImageUrlWithNoStore(UUID projectId, String publishedModelName);
+    ImagePrediction detectImageUrlWithNoStore(UUID projectId, String publishedName);
 
     /**
      * Detect objects in an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedModelName, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Detect objects in an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedModelName);
+    Observable<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName);
 
     /**
      * Detect objects in an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedModelName);
+    Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName);
     /**
      * Detect objects in an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -742,140 +742,140 @@ public interface CustomVisionPredictionClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction detectImageUrlWithNoStore(UUID projectId, String publishedModelName, String application, String url);
+    ImagePrediction detectImageUrlWithNoStore(UUID projectId, String publishedName, String application, String url);
 
     /**
      * Detect objects in an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedModelName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Detect objects in an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedModelName, String application, String url);
+    Observable<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String application, String url);
 
     /**
      * Detect objects in an image url without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
+     * @param publishedName Specifies the name of the model to evaluate against.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedModelName, String application, String url);
+    Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String application, String url);
 
     /**
      * Detect objects in an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction detectImageWithNoStore(UUID projectId, String publishedModelName, byte[] imageData);
+    ImagePrediction detectImageWithNoStore(UUID projectId, String publishedName, byte[] imageData);
 
     /**
      * Detect objects in an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedModelName, byte[] imageData, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Detect objects in an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedModelName, byte[] imageData);
+    Observable<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData);
 
     /**
      * Detect objects in an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> detectImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedModelName, byte[] imageData);
+    Observable<ServiceResponse<ImagePrediction>> detectImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData);
     /**
      * Detect objects in an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction detectImageWithNoStore(UUID projectId, String publishedModelName, byte[] imageData, String application);
+    ImagePrediction detectImageWithNoStore(UUID projectId, String publishedName, byte[] imageData, String application);
 
     /**
      * Detect objects in an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedModelName, byte[] imageData, String application, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, String application, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Detect objects in an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedModelName, byte[] imageData, String application);
+    Observable<ImagePrediction> detectImageWithNoStoreAsync(UUID projectId, String publishedName, byte[] imageData, String application);
 
     /**
      * Detect objects in an image without saving the result.
      *
      * @param projectId The project id.
-     * @param publishedModelName Specifies the name of the model to evaluate against.
-     * @param imageData Binary image data.
+     * @param publishedName Specifies the name of the model to evaluate against.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 0MB.
      * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> detectImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedModelName, byte[] imageData, String application);
+    Observable<ServiceResponse<ImagePrediction>> detectImageWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, byte[] imageData, String application);
 
 }

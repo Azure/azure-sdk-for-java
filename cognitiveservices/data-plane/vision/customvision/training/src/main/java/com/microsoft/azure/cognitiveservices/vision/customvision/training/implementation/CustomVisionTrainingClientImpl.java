@@ -369,6 +369,10 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         @PATCH("projects/{projectId}")
         Observable<Response<ResponseBody>> updateProject(@Path("projectId") UUID projectId, @Body Project updatedProject, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.CustomVisionTrainingClient trainProject" })
+        @POST("projects/{projectId}/train")
+        Observable<Response<ResponseBody>> trainProject(@Path("projectId") UUID projectId, @Query("trainingType") String trainingType, @Query("reservedBudgetInHours") Integer reservedBudgetInHours, @Query("forceTrain") Boolean forceTrain, @Query("notificationEmailAddress") String notificationEmailAddress, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.CustomVisionTrainingClient getIterations" })
         @GET("projects/{projectId}/iterations")
         Observable<Response<ResponseBody>> getIterations(@Path("projectId") UUID projectId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
@@ -385,13 +389,9 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         @PATCH("projects/{projectId}/iterations/{iterationId}")
         Observable<Response<ResponseBody>> updateIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Body Iteration updatedIteration, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.CustomVisionTrainingClient trainProject" })
-        @POST("projects/{projectId}/train")
-        Observable<Response<ResponseBody>> trainProject(@Path("projectId") UUID projectId, @Query("trainingType") String trainingType, @Query("reservedBudgetInHours") Integer reservedBudgetInHours, @Query("forceTrain") Boolean forceTrain, @Query("notificationEmailAddress") String notificationEmailAddress, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.CustomVisionTrainingClient publishIteration" })
         @POST("projects/{projectId}/iterations/{iterationId}/publish")
-        Observable<Response<ResponseBody>> publishIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("name") String name, @Query("predictionId") String predictionId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> publishIteration(@Path("projectId") UUID projectId, @Path("iterationId") UUID iterationId, @Query("publishName") String publishName, @Query("predictionId") String predictionId, @Header("Training-Key") String apiKey, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.customvision.training.CustomVisionTrainingClient unpublishIteration" })
         @HTTP(path = "projects/{projectId}/iterations/{iterationId}/publish", method = "DELETE", hasBody = true)
@@ -2052,7 +2052,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      multiple image files can be sent at once, with a maximum of 64 files.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2068,7 +2068,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      multiple image files can be sent at once, with a maximum of 64 files.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -2083,7 +2083,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      multiple image files can be sent at once, with a maximum of 64 files.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
@@ -2102,7 +2102,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      multiple image files can be sent at once, with a maximum of 64 files.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
@@ -2142,7 +2142,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      multiple image files can be sent at once, with a maximum of 64 files.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param tagIds The tags ids with which to tag each image. Limited to 20.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
@@ -2159,7 +2159,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      multiple image files can be sent at once, with a maximum of 64 files.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param tagIds The tags ids with which to tag each image. Limited to 20.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2175,7 +2175,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      multiple image files can be sent at once, with a maximum of 64 files.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param tagIds The tags ids with which to tag each image. Limited to 20.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
@@ -2195,7 +2195,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      multiple image files can be sent at once, with a maximum of 64 files.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param tagIds The tags ids with which to tag each image. Limited to 20.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
@@ -2955,7 +2955,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2969,7 +2969,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -2982,7 +2982,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
@@ -2999,7 +2999,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
@@ -3037,7 +3037,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
                  The default iteration for the project will be used when not specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3053,7 +3053,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
                  The default iteration for the project will be used when not specified.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -3068,7 +3068,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
                  The default iteration for the project will be used when not specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3087,7 +3087,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image.
      *
      * @param projectId The project id.
-     * @param imageData Binary image data.
+     * @param imageData Binary image data. Supported formats are JPEG, GIF, PNG, and BMP. Supports images up to 6MB.
      * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
                  The default iteration for the project will be used when not specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -3951,7 +3951,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         final String classificationType = null;
         final List<String> targetExportPlatforms = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        String targetExportPlatformsConverted = this.serializerAdapter().serializeList(targetExportPlatforms, CollectionFormat.MULTI);
+        String targetExportPlatformsConverted = this.serializerAdapter().serializeList(targetExportPlatforms, CollectionFormat.CSV);
         return service.createProject(name, description, domainId, classificationType, targetExportPlatformsConverted, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Project>>>() {
                 @Override
@@ -4042,7 +4042,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         }
         Validator.validate(targetExportPlatforms);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        String targetExportPlatformsConverted = this.serializerAdapter().serializeList(targetExportPlatforms, CollectionFormat.MULTI);
+        String targetExportPlatformsConverted = this.serializerAdapter().serializeList(targetExportPlatforms, CollectionFormat.CSV);
         return service.createProject(name, description, domainId, classificationType, targetExportPlatformsConverted, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Project>>>() {
                 @Override
@@ -4307,6 +4307,179 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
     private ServiceResponse<Project> updateProjectDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<Project, CustomVisionErrorException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<Project>() { }.getType())
+                .registerError(CustomVisionErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Iteration object if successful.
+     */
+    public Iteration trainProject(UUID projectId) {
+        return trainProjectWithServiceResponseAsync(projectId).toBlocking().single().body();
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Iteration> trainProjectAsync(UUID projectId, final ServiceCallback<Iteration> serviceCallback) {
+        return ServiceFuture.fromResponse(trainProjectWithServiceResponseAsync(projectId), serviceCallback);
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<Iteration> trainProjectAsync(UUID projectId) {
+        return trainProjectWithServiceResponseAsync(projectId).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
+            @Override
+            public Iteration call(ServiceResponse<Iteration> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<ServiceResponse<Iteration>> trainProjectWithServiceResponseAsync(UUID projectId) {
+        if (this.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
+        }
+        final String trainingType = null;
+        final Integer reservedBudgetInHours = null;
+        final Boolean forceTrain = null;
+        final String notificationEmailAddress = null;
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
+        return service.trainProject(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
+                @Override
+                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Iteration> clientResponse = trainProjectDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainingType The type of training to use to train the project (default: Regular). Possible values include: 'Regular', 'Advanced'
+     * @param reservedBudgetInHours The number of hours reserved as budget for training (if applicable).
+     * @param forceTrain Whether to force train even if dataset and configuration does not change (default: false).
+     * @param notificationEmailAddress The email address to send notification to when training finishes (default: null).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the Iteration object if successful.
+     */
+    public Iteration trainProject(UUID projectId, String trainingType, Integer reservedBudgetInHours, Boolean forceTrain, String notificationEmailAddress) {
+        return trainProjectWithServiceResponseAsync(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress).toBlocking().single().body();
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainingType The type of training to use to train the project (default: Regular). Possible values include: 'Regular', 'Advanced'
+     * @param reservedBudgetInHours The number of hours reserved as budget for training (if applicable).
+     * @param forceTrain Whether to force train even if dataset and configuration does not change (default: false).
+     * @param notificationEmailAddress The email address to send notification to when training finishes (default: null).
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Iteration> trainProjectAsync(UUID projectId, String trainingType, Integer reservedBudgetInHours, Boolean forceTrain, String notificationEmailAddress, final ServiceCallback<Iteration> serviceCallback) {
+        return ServiceFuture.fromResponse(trainProjectWithServiceResponseAsync(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress), serviceCallback);
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainingType The type of training to use to train the project (default: Regular). Possible values include: 'Regular', 'Advanced'
+     * @param reservedBudgetInHours The number of hours reserved as budget for training (if applicable).
+     * @param forceTrain Whether to force train even if dataset and configuration does not change (default: false).
+     * @param notificationEmailAddress The email address to send notification to when training finishes (default: null).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<Iteration> trainProjectAsync(UUID projectId, String trainingType, Integer reservedBudgetInHours, Boolean forceTrain, String notificationEmailAddress) {
+        return trainProjectWithServiceResponseAsync(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
+            @Override
+            public Iteration call(ServiceResponse<Iteration> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Queues project for training.
+     *
+     * @param projectId The project id.
+     * @param trainingType The type of training to use to train the project (default: Regular). Possible values include: 'Regular', 'Advanced'
+     * @param reservedBudgetInHours The number of hours reserved as budget for training (if applicable).
+     * @param forceTrain Whether to force train even if dataset and configuration does not change (default: false).
+     * @param notificationEmailAddress The email address to send notification to when training finishes (default: null).
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the Iteration object
+     */
+    public Observable<ServiceResponse<Iteration>> trainProjectWithServiceResponseAsync(UUID projectId, String trainingType, Integer reservedBudgetInHours, Boolean forceTrain, String notificationEmailAddress) {
+        if (this.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
+        }
+        if (projectId == null) {
+            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
+        }
+        if (this.apiKey() == null) {
+            throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
+        return service.trainProject(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
+                @Override
+                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Iteration> clientResponse = trainProjectDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Iteration> trainProjectDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<Iteration, CustomVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<Iteration>() { }.getType())
                 .registerError(CustomVisionErrorException.class)
                 .build(response);
     }
@@ -4741,192 +4914,19 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
     }
 
     /**
-     * Queues project for training.
-     *
-     * @param projectId The project id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CustomVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Iteration object if successful.
-     */
-    public Iteration trainProject(UUID projectId) {
-        return trainProjectWithServiceResponseAsync(projectId).toBlocking().single().body();
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Iteration> trainProjectAsync(UUID projectId, final ServiceCallback<Iteration> serviceCallback) {
-        return ServiceFuture.fromResponse(trainProjectWithServiceResponseAsync(projectId), serviceCallback);
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    public Observable<Iteration> trainProjectAsync(UUID projectId) {
-        return trainProjectWithServiceResponseAsync(projectId).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
-            @Override
-            public Iteration call(ServiceResponse<Iteration> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    public Observable<ServiceResponse<Iteration>> trainProjectWithServiceResponseAsync(UUID projectId) {
-        if (this.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
-        }
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
-        }
-        final String trainingType = null;
-        final Integer reservedBudgetInHours = null;
-        final Boolean forceTrain = null;
-        final String notificationEmailAddress = null;
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.trainProject(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
-                @Override
-                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Iteration> clientResponse = trainProjectDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id.
-     * @param trainingType The type of training to use to train the project (default: Regular). Possible values include: 'Regular', 'Advanced'
-     * @param reservedBudgetInHours The number of hours reserved as budget for training (if applicable).
-     * @param forceTrain Whether to force train even if dataset and configuration does not change (default: false).
-     * @param notificationEmailAddress The email address to send notification to when training finishes (default: null).
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CustomVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Iteration object if successful.
-     */
-    public Iteration trainProject(UUID projectId, String trainingType, Integer reservedBudgetInHours, Boolean forceTrain, String notificationEmailAddress) {
-        return trainProjectWithServiceResponseAsync(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress).toBlocking().single().body();
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id.
-     * @param trainingType The type of training to use to train the project (default: Regular). Possible values include: 'Regular', 'Advanced'
-     * @param reservedBudgetInHours The number of hours reserved as budget for training (if applicable).
-     * @param forceTrain Whether to force train even if dataset and configuration does not change (default: false).
-     * @param notificationEmailAddress The email address to send notification to when training finishes (default: null).
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Iteration> trainProjectAsync(UUID projectId, String trainingType, Integer reservedBudgetInHours, Boolean forceTrain, String notificationEmailAddress, final ServiceCallback<Iteration> serviceCallback) {
-        return ServiceFuture.fromResponse(trainProjectWithServiceResponseAsync(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress), serviceCallback);
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id.
-     * @param trainingType The type of training to use to train the project (default: Regular). Possible values include: 'Regular', 'Advanced'
-     * @param reservedBudgetInHours The number of hours reserved as budget for training (if applicable).
-     * @param forceTrain Whether to force train even if dataset and configuration does not change (default: false).
-     * @param notificationEmailAddress The email address to send notification to when training finishes (default: null).
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    public Observable<Iteration> trainProjectAsync(UUID projectId, String trainingType, Integer reservedBudgetInHours, Boolean forceTrain, String notificationEmailAddress) {
-        return trainProjectWithServiceResponseAsync(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
-            @Override
-            public Iteration call(ServiceResponse<Iteration> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Queues project for training.
-     *
-     * @param projectId The project id.
-     * @param trainingType The type of training to use to train the project (default: Regular). Possible values include: 'Regular', 'Advanced'
-     * @param reservedBudgetInHours The number of hours reserved as budget for training (if applicable).
-     * @param forceTrain Whether to force train even if dataset and configuration does not change (default: false).
-     * @param notificationEmailAddress The email address to send notification to when training finishes (default: null).
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    public Observable<ServiceResponse<Iteration>> trainProjectWithServiceResponseAsync(UUID projectId, String trainingType, Integer reservedBudgetInHours, Boolean forceTrain, String notificationEmailAddress) {
-        if (this.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
-        }
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (this.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
-        }
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.trainProject(projectId, trainingType, reservedBudgetInHours, forceTrain, notificationEmailAddress, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
-                @Override
-                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Iteration> clientResponse = trainProjectDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Iteration> trainProjectDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<Iteration, CustomVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<Iteration>() { }.getType())
-                .registerError(CustomVisionErrorException.class)
-                .build(response);
-    }
-
-    /**
      * Publish a specific iteration.
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param name The updated iteration name.
+     * @param publishName The name to give the published iteration.
      * @param predictionId The id of the prediction resource to publish to.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the boolean object if successful.
      */
-    public boolean publishIteration(UUID projectId, UUID iterationId, String name, String predictionId) {
-        return publishIterationWithServiceResponseAsync(projectId, iterationId, name, predictionId).toBlocking().single().body();
+    public boolean publishIteration(UUID projectId, UUID iterationId, String publishName, String predictionId) {
+        return publishIterationWithServiceResponseAsync(projectId, iterationId, publishName, predictionId).toBlocking().single().body();
     }
 
     /**
@@ -4934,14 +4934,14 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param name The updated iteration name.
+     * @param publishName The name to give the published iteration.
      * @param predictionId The id of the prediction resource to publish to.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Boolean> publishIterationAsync(UUID projectId, UUID iterationId, String name, String predictionId, final ServiceCallback<Boolean> serviceCallback) {
-        return ServiceFuture.fromResponse(publishIterationWithServiceResponseAsync(projectId, iterationId, name, predictionId), serviceCallback);
+    public ServiceFuture<Boolean> publishIterationAsync(UUID projectId, UUID iterationId, String publishName, String predictionId, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceFuture.fromResponse(publishIterationWithServiceResponseAsync(projectId, iterationId, publishName, predictionId), serviceCallback);
     }
 
     /**
@@ -4949,13 +4949,13 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param name The updated iteration name.
+     * @param publishName The name to give the published iteration.
      * @param predictionId The id of the prediction resource to publish to.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Boolean object
      */
-    public Observable<Boolean> publishIterationAsync(UUID projectId, UUID iterationId, String name, String predictionId) {
-        return publishIterationWithServiceResponseAsync(projectId, iterationId, name, predictionId).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
+    public Observable<Boolean> publishIterationAsync(UUID projectId, UUID iterationId, String publishName, String predictionId) {
+        return publishIterationWithServiceResponseAsync(projectId, iterationId, publishName, predictionId).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
             @Override
             public Boolean call(ServiceResponse<Boolean> response) {
                 return response.body();
@@ -4968,12 +4968,12 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param name The updated iteration name.
+     * @param publishName The name to give the published iteration.
      * @param predictionId The id of the prediction resource to publish to.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Boolean object
      */
-    public Observable<ServiceResponse<Boolean>> publishIterationWithServiceResponseAsync(UUID projectId, UUID iterationId, String name, String predictionId) {
+    public Observable<ServiceResponse<Boolean>> publishIterationWithServiceResponseAsync(UUID projectId, UUID iterationId, String publishName, String predictionId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -4983,8 +4983,8 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         if (iterationId == null) {
             throw new IllegalArgumentException("Parameter iterationId is required and cannot be null.");
         }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        if (publishName == null) {
+            throw new IllegalArgumentException("Parameter publishName is required and cannot be null.");
         }
         if (predictionId == null) {
             throw new IllegalArgumentException("Parameter predictionId is required and cannot be null.");
@@ -4993,7 +4993,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.publishIteration(projectId, iterationId, name, predictionId, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.publishIteration(projectId, iterationId, publishName, predictionId, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Boolean>>>() {
                 @Override
                 public Observable<ServiceResponse<Boolean>> call(Response<ResponseBody> response) {
@@ -5193,7 +5193,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -5208,7 +5208,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -5222,7 +5222,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
      */
@@ -5240,7 +5240,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
      */
@@ -5281,7 +5281,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @param flavor The flavor of the target platform. Possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12', 'ARM'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
@@ -5297,7 +5297,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @param flavor The flavor of the target platform. Possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12', 'ARM'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -5312,7 +5312,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @param flavor The flavor of the target platform. Possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12', 'ARM'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
@@ -5331,7 +5331,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId The project id.
      * @param iterationId The iteration id.
-     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX'
+     * @param platform The target platform. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'
      * @param flavor The flavor of the target platform. Possible values include: 'Linux', 'Windows', 'ONNX10', 'ONNX12', 'ARM'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Export object
