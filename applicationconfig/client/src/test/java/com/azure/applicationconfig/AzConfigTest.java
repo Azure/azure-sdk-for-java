@@ -182,7 +182,7 @@ public class AzConfigTest {
      */
     @Test
     public void listWithKeyAndLabel() {
-        final String value  = "myValue";
+        final String value = "myValue";
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName("lbl", 8);
         final KeyValue expected = new KeyValue().withKey(key).withValue(value).withLabel(label);
@@ -235,12 +235,12 @@ public class AzConfigTest {
                 .expectComplete()
                 .verify();
 
-            StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myNonExistingLabel")))
-                    .expectErrorSatisfies(error -> {
-                        Assert.assertTrue(error instanceof CloudException);
-                        Assert.assertEquals(404, ((CloudException) error).response().statusCode());
-                    })
-                    .verify();
+        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myNonExistingLabel")))
+                .expectErrorSatisfies(error -> {
+                    Assert.assertTrue(error instanceof CloudException);
+                    Assert.assertEquals(404, ((CloudException) error).response().statusCode());
+                })
+                .verify();
     }
 
     @Test
