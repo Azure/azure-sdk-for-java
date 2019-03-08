@@ -6,60 +6,37 @@
 
 package com.microsoft.rest.v3.http;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.microsoft.rest.v3.ExpandableStringEnum;
-
-import java.util.Collection;
-
 /**
  * The HTTP request methods.
  */
-public class HttpMethod extends ExpandableStringEnum<HttpMethod> {
+public enum HttpMethod {
     /**
      * The HTTP GET method.
      */
-    public static final HttpMethod GET = fromString("GET");
+    GET,
 
     /**
      * The HTTP PUT method.
      */
-    public static final HttpMethod PUT = fromString("PUT");
+    PUT,
 
     /**
      * The HTTP POST method.
      */
-    public static final HttpMethod POST = fromString("POST");
+    POST,
 
     /**
      * The HTTP PATCH method.
      */
-    public static final HttpMethod PATCH = fromString("PATCH");
+    PATCH,
 
     /**
      * The HTTP DELETE method.
      */
-    public static final HttpMethod DELETE = fromString("DELETE");
+    DELETE,
 
     /**
      * The HTTP HEAD method.
      */
-    public static final HttpMethod HEAD = fromString("HEAD");
-
-    /**
-     * Creates or finds a HttpMethod from its string representation.
-     *
-     * @param name a name to look for
-     * @return the corresponding HttpMethod
-     */
-    @JsonCreator
-    public static HttpMethod fromString(String name) {
-        return fromString(name, HttpMethod.class);
-    }
-
-    /**
-     * @return known HttpMethod values
-     */
-    public static Collection<HttpMethod> values() {
-        return values(HttpMethod.class);
-    }
+    HEAD,
 }

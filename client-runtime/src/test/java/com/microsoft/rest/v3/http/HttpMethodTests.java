@@ -40,18 +40,4 @@ public class HttpMethodTests {
     {
         assertEquals("HEAD", HttpMethod.HEAD.toString());
     }
-
-    @Test
-    public void fromStringWithExisting()
-    {
-        assertSame(HttpMethod.POST, HttpMethod.fromString("POST"));
-    }
-
-    @Test
-    public void fromStringWithNonExisting()
-    {
-        final HttpMethod test = HttpMethod.fromString("TEST");
-        assertEquals("TEST", test.toString());
-        assertSame(test, HttpMethod.fromString("TEST"));
-    }
 }

@@ -13,8 +13,8 @@ import static org.junit.Assert.*;
 public class HttpRequestTests {
     @Test
     public void constructor() throws MalformedURLException {
-        final HttpRequest request = new HttpRequest(HttpMethod.fromString("request http method"), new URL("http://request.url"));
-        assertEquals(HttpMethod.fromString("request http method"), request.httpMethod());
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, new URL("http://request.url"));
+        assertEquals(HttpMethod.POST, request.httpMethod());
         assertEquals(new URL("http://request.url"), request.url());
     }
 
@@ -25,7 +25,7 @@ public class HttpRequestTests {
         headers.set("other-header", "other-value");
 
         final HttpRequest request = new HttpRequest(
-                HttpMethod.fromString("request http method"),
+                HttpMethod.PUT,
                 new URL("http://request.url"),
                 headers,
                 Flux.just(Unpooled.buffer(0, 0)));
