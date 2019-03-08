@@ -7,11 +7,11 @@
 package com.microsoft.rest.v3.http.policy;
 
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
-import com.microsoft.rest.v3.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.UrlBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -22,37 +22,24 @@ import java.net.MalformedURLException;
 public class PortPolicy implements HttpPipelinePolicy {
     private final int port;
     private final boolean overwrite;
-    private final HttpPipelineOptions options;
-
-    /**
-     * Create a new PortPolicy object.
-     *
-     * @param port The port to set on every HttpRequest.
-     */
-    public PortPolicy(int port) {
-        this(port, true, new HttpPipelineOptions(null));
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(PortPolicy.class);
 
     /**
      * Create a new PortPolicy object.
      *
      * @param port The port to set.
      * @param overwrite Whether or not to overwrite a HttpRequest's port if it already has one.
-     * @param options the request options
      */
-    public PortPolicy(int port, boolean overwrite, HttpPipelineOptions options) {
+    public PortPolicy(int port, boolean overwrite) {
         this.port = port;
         this.overwrite = overwrite;
-        this.options = options;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());
         if (overwrite || urlBuilder.port() == null) {
-            if (options.shouldLog(HttpPipelineLogLevel.INFO)) {
-                options.log(HttpPipelineLogLevel.INFO, "Changing port to {0}", port);
-            }
+            LOGGER.info("Changing port to {0}", port);
 
             try {
                 context.httpRequest().withUrl(urlBuilder.withPort(port).toURL());

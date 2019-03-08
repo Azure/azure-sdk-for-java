@@ -15,7 +15,6 @@ import java.util.Optional;
 public final class HttpPipelineCallContext {
     private HttpRequest httpRequest;
     private ContextData data;
-    private final HttpPipelineOptions requestPolicyOptions;
 
     //<editor-fold defaultstate="collapsed" desc="Package internal methods">
     /**
@@ -24,12 +23,11 @@ public final class HttpPipelineCallContext {
      * Creates HttpPipelineCallContext.
      *
      * @param httpRequest the request for which context needs to be created
-     * @param requestPolicyOptions the policy options
      *
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
-    HttpPipelineCallContext(HttpRequest httpRequest, HttpPipelineOptions requestPolicyOptions) {
-       this(httpRequest, ContextData.NONE, requestPolicyOptions);
+    HttpPipelineCallContext(HttpRequest httpRequest) {
+       this(httpRequest, ContextData.NONE);
     }
 
     /**
@@ -39,17 +37,15 @@ public final class HttpPipelineCallContext {
      *
      * @param httpRequest the request for which context needs to be created
      * @param data the data to associate with this context
-     * @param requestPolicyOptions the policy options
      *
      * @throws IllegalArgumentException if there are multiple policies with same name
      */
-    HttpPipelineCallContext(HttpRequest httpRequest, ContextData data, HttpPipelineOptions requestPolicyOptions) {
+    HttpPipelineCallContext(HttpRequest httpRequest, ContextData data) {
         Objects.requireNonNull(httpRequest);
         Objects.requireNonNull(data);
         //
         this.httpRequest = httpRequest;
         this.data = data;
-        this.requestPolicyOptions = requestPolicyOptions;
     }
     //</editor-fold>
 
@@ -93,15 +89,6 @@ public final class HttpPipelineCallContext {
     public HttpPipelineCallContext withHttpRequest(HttpRequest request) {
         this.httpRequest = request;
         return this;
-    }
-
-    /**
-     * Get the policy options.
-     *
-     * @return the policy options
-     */
-    public HttpPipelineOptions requestPolicyOptions() {
-        return this.requestPolicyOptions;
     }
 
     //</editor-fold>

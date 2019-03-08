@@ -15,7 +15,6 @@ import com.microsoft.rest.v3.http.policy.CredentialsPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.MockHttpClient;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,7 +33,6 @@ public class CredentialsTests {
         };
         //
         final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient(),
-                new HttpPipelineOptions(null),
                 new CredentialsPolicy(credentials),
                 auditorPolicy);
 
@@ -54,7 +52,6 @@ public class CredentialsTests {
         };
 
         final HttpPipeline pipeline = new HttpPipeline(new MockHttpClient(),
-                new HttpPipelineOptions(null),
                 new CredentialsPolicy(credentials),
                 auditorPolicy);
 

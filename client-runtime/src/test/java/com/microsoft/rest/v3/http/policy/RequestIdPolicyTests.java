@@ -9,7 +9,6 @@ package com.microsoft.rest.v3.http.policy;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpMethod;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.MockHttpClient;
@@ -83,7 +82,6 @@ public class RequestIdPolicyTests {
                 return Mono.just(mockResponse);
             }
         },
-        new HttpPipelineOptions(null),
         new RequestIdPolicy());
 
         pipeline.send(new HttpRequest(HttpMethod.GET, new URL("http://localhost/"))).block();
@@ -109,7 +107,6 @@ public class RequestIdPolicyTests {
                 return Mono.just(mockResponse);
             }
         },
-        new HttpPipelineOptions(null),
         new RequestIdPolicy(),
         new RetryPolicy(1, Duration.of(0, ChronoUnit.SECONDS)));
 

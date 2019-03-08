@@ -3,7 +3,6 @@ package com.microsoft.rest.v3.http.policy;
 import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpMethod;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import org.junit.Test;
@@ -33,7 +32,7 @@ public class HostPolicyTests {
             public Mono<HttpResponse> send(HttpRequest request) {
                 return Mono.empty(); // NOP
             }
-        }, new HttpPipelineOptions(null),
+        },
         new HostPolicy(host),
         (context, next) -> {
             assertEquals(expectedUrl, context.httpRequest().url().toString());

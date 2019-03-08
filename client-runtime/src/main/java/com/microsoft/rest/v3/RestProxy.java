@@ -20,7 +20,6 @@ import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.UrlBuilder;
 import com.microsoft.rest.v3.http.policy.CookiePolicy;
 import com.microsoft.rest.v3.http.policy.CredentialsPolicy;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.policy.RetryPolicy;
 import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
 import com.microsoft.rest.v3.serializer.HttpResponseDecoder;
@@ -616,8 +615,7 @@ public class RestProxy implements InvocationHandler {
         if (credentialsPolicy != null) {
             policies.add(credentialsPolicy);
         }
-        return new HttpPipeline(new HttpPipelineOptions(null),
-                policies.toArray(new HttpPipelinePolicy[policies.size()]));
+        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()]));
     }
 
     /**

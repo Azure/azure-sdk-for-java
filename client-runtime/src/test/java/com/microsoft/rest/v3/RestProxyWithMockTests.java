@@ -13,7 +13,6 @@ import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.MockHttpClient;
 import com.microsoft.rest.v3.http.MockHttpResponse;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 
@@ -169,7 +168,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                                 "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
                         return Mono.just(response);
                     }
-                }, new HttpPipelineOptions(null)));
+                }));
 
         try {
             service.get();
@@ -192,7 +191,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                         HttpResponse response = new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
                         return Mono.just(response);
                     }
-                }, new HttpPipelineOptions(null)));
+                }));
 
         try {
             service.get();
@@ -217,7 +216,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                                 "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
                         return Mono.just(response);
                     }
-                }, new HttpPipelineOptions(null)));
+                }));
 
         try {
             service.get();
@@ -240,7 +239,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                         HttpResponse response = new MockHttpResponse(request, 200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
                         return Mono.just(response);
                     }
-                }, new HttpPipelineOptions(null)));
+                }));
 
         try {
             service.get();

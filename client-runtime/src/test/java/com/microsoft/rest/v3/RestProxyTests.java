@@ -23,7 +23,6 @@ import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
 import com.microsoft.rest.v3.util.FluxUtil;
@@ -1326,7 +1325,6 @@ public abstract class RestProxyTests {
         // Order in which policies applied will be the order in which they added to builder
         //
         final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
-                new HttpPipelineOptions(null),
                 new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS, true));
         //
         RestResponseBase<Void, HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream, Files.size(filePath));
@@ -1431,8 +1429,7 @@ public abstract class RestProxyTests {
     }
 
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
-        final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
-                new HttpPipelineOptions(null));
+        final HttpPipeline httpPipeline = new HttpPipeline(httpClient);
 
         return RestProxy.create(serviceClass, httpPipeline, serializer);
     }

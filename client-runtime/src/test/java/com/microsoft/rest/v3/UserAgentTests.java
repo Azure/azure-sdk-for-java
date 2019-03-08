@@ -12,7 +12,6 @@ import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.MockHttpClient;
 import com.microsoft.rest.v3.http.MockHttpResponse;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
 import org.junit.Assert;
 import org.junit.Test;
@@ -33,7 +32,6 @@ public class UserAgentTests {
                     return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
             },
-            new HttpPipelineOptions(null),
             new UserAgentPolicy("AutoRest-Java"));
 
         HttpResponse response = pipeline.send(new HttpRequest(
@@ -52,7 +50,6 @@ public class UserAgentTests {
                     return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
             },
-            new HttpPipelineOptions(null),
             new UserAgentPolicy("Awesome"));
 
         HttpResponse response = pipeline.send(new HttpRequest(HttpMethod.GET,

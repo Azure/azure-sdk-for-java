@@ -26,7 +26,6 @@ import com.microsoft.rest.v3.http.policy.AddDatePolicy;
 import com.microsoft.rest.v3.http.policy.AddHeadersPolicy;
 import com.microsoft.rest.v3.http.policy.HostPolicy;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.util.FlowableUtils;
 import com.microsoft.rest.v3.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
@@ -116,8 +115,7 @@ public class RestProxyStressTests {
         polices.add(new HttpLoggingPolicy(HttpLogDetailLevel.BASIC, false));
         //
         service = RestProxy.create(IOService.class,
-                new HttpPipeline(new HttpPipelineOptions(null),
-                        polices.toArray(new HttpPipelinePolicy[polices.size()])));
+                new HttpPipeline(polices.toArray(new HttpPipelinePolicy[polices.size()])));
 
         TEMP_FOLDER_PATH = Paths.get(tempFolderPath);
         create100MFiles(false);
@@ -512,7 +510,7 @@ public class RestProxyStressTests {
         }
 
         final IOService innerService = RestProxy.create(IOService.class,
-                new HttpPipeline(new HttpPipelineOptions(null), policies.toArray(new HttpPipelinePolicy[policies.size()])));
+                new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()])));
 
         // When running with MockServer, connections sometimes get dropped,
         // but this doesn't seem to result in any bad behavior as long as we retry.

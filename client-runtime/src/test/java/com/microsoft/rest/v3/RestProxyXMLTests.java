@@ -22,7 +22,6 @@ import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.MockHttpResponse;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.serializer.SerializerEncoding;
 import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
 import com.microsoft.rest.v3.util.FluxUtil;
@@ -80,8 +79,7 @@ public class RestProxyXMLTests {
     @Test
     public void canReadXMLResponse() throws Exception {
         //
-        final HttpPipeline pipeline = new HttpPipeline(new MockXMLHTTPClient(),
-                new HttpPipelineOptions(null));
+        final HttpPipeline pipeline = new HttpPipeline(new MockXMLHTTPClient());
 
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
@@ -130,8 +128,7 @@ public class RestProxyXMLTests {
         JacksonAdapter serializer = new JacksonAdapter();
         MockXMLReceiverClient httpClient = new MockXMLReceiverClient();
         //
-        final HttpPipeline pipeline = new HttpPipeline(httpClient,
-                new HttpPipelineOptions(null));
+        final HttpPipeline pipeline = new HttpPipeline(httpClient);
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class,
                 pipeline,
@@ -165,8 +162,7 @@ public class RestProxyXMLTests {
     public void canDeserializeXMLWithAttributes() throws Exception {
         JacksonAdapter serializer = new JacksonAdapter();
         //
-        final HttpPipeline pipeline = new HttpPipeline(new MockXMLHTTPClient(),
-                new HttpPipelineOptions(null));
+        final HttpPipeline pipeline = new HttpPipeline(new MockXMLHTTPClient());
 
         //
         MyXMLServiceWithAttributes myXMLService = RestProxy.create(

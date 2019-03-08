@@ -7,11 +7,11 @@
 package com.microsoft.rest.v3.http.policy;
 
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
-import com.microsoft.rest.v3.http.HttpPipelineLogLevel;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.UrlBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -21,7 +21,7 @@ import java.net.MalformedURLException;
  */
 public class HostPolicy implements HttpPipelinePolicy {
     private final String host;
-    private final HttpPipelineOptions options;
+    private static final Logger LOGGER = LoggerFactory.getLogger(HostPolicy.class);
 
     /**
      * Create HostPolicy.
@@ -29,25 +29,12 @@ public class HostPolicy implements HttpPipelinePolicy {
      * @param host The host to set on every HttpRequest.
      */
     public HostPolicy(String host) {
-        this(host, new HttpPipelineOptions(null));
-    }
-
-    /**
-     * Create HostPolicy.
-     *
-     * @param host The host to set on every HttpRequest.
-     * @param options the request options
-     */
-    public HostPolicy(String host, HttpPipelineOptions options) {
         this.host = host;
-        this.options = options;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if (options.shouldLog(HttpPipelineLogLevel.INFO)) {
-            options.log(HttpPipelineLogLevel.INFO, "Setting host to {0}", host);
-        }
+        LOGGER.info("Setting host to {0}", host);
 
         Mono<HttpResponse> result;
         final UrlBuilder urlBuilder = UrlBuilder.parse(context.httpRequest().url());

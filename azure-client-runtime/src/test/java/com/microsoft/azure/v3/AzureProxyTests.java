@@ -11,7 +11,6 @@ import com.microsoft.rest.v3.RestException;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
 import com.microsoft.rest.v3.InvalidReturnTypeException;
@@ -852,8 +851,7 @@ public class AzureProxyTests {
     }
 
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
-        HttpPipeline pipeline = new HttpPipeline(httpClient,
-                new HttpPipelineOptions(null));
+        HttpPipeline pipeline = new HttpPipeline(httpClient);
 
         return AzureProxy.create(serviceClass, null, pipeline, serializer);
     }

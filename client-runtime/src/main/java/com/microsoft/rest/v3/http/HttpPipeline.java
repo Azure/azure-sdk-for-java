@@ -16,7 +16,6 @@ import java.util.Objects;
  */
 public final class HttpPipeline {
     private final HttpClient httpClient;
-    private final HttpPipelineOptions requestPolicyOptions;
     private final HttpPipelinePolicy[] pipelinePolicies;
 
     /**
@@ -24,15 +23,13 @@ public final class HttpPipeline {
      * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
      *
      * @param httpClient the http client to write request to wire and receive response from wire.
-     * @param requestPolicyOptions optional properties that gets available in {@link HttpPipelineCallContext} for policies.
      * @param pipelinePolicies pipeline policies in the order they need to applied
      */
-    public HttpPipeline(HttpClient httpClient, HttpPipelineOptions requestPolicyOptions, HttpPipelinePolicy... pipelinePolicies) {
+    public HttpPipeline(HttpClient httpClient, HttpPipelinePolicy... pipelinePolicies) {
         Objects.requireNonNull(pipelinePolicies);
         Objects.requireNonNull(httpClient);
         this.pipelinePolicies = pipelinePolicies;
         this.httpClient = httpClient;
-        this.requestPolicyOptions = requestPolicyOptions;
     }
 
     /**
@@ -42,28 +39,12 @@ public final class HttpPipeline {
      * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
      * receive response from wire.
      *
-     * @param requestPolicyOptions optional properties that gets available in {@link HttpPipelineCallContext} for policies.
-     * @param pipelinePolicies pipeline policies in the order they need to applied
-     */
-    public HttpPipeline(HttpPipelineOptions requestPolicyOptions, HttpPipelinePolicy... pipelinePolicies) {
-        Objects.requireNonNull(pipelinePolicies);
-        this.pipelinePolicies = pipelinePolicies;
-        this.httpClient = HttpClient.createDefault();
-        this.requestPolicyOptions = requestPolicyOptions;
-    }
-
-    /**
-     * Creates a HttpPipeline holding array of policies that gets applied
-     * to all request initiated through {@link HttpPipeline#send(HttpPipelineCallContext)}
-     * and it's response.
-     *
-     * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
-     * receive response from wire.
-     *
      * @param pipelinePolicies pipeline policies in the order they need to applied
      */
     public HttpPipeline(HttpPipelinePolicy... pipelinePolicies) {
-        this(new HttpPipelineOptions(null), pipelinePolicies);
+        Objects.requireNonNull(pipelinePolicies);
+        this.pipelinePolicies = pipelinePolicies;
+        this.httpClient = HttpClient.createDefault();
     }
 
     /**
@@ -91,7 +72,7 @@ public final class HttpPipeline {
      * @return the request context
      */
     public HttpPipelineCallContext newContext(HttpRequest httpRequest) {
-        return new HttpPipelineCallContext(httpRequest, this.requestPolicyOptions);
+        return new HttpPipelineCallContext(httpRequest);
     }
 
     /**
@@ -102,7 +83,7 @@ public final class HttpPipeline {
      * @return the request context
      */
     public HttpPipelineCallContext newContext(HttpRequest httpRequest, ContextData data) {
-        return new HttpPipelineCallContext(httpRequest, data, this.requestPolicyOptions);
+        return new HttpPipelineCallContext(httpRequest, data);
     }
 
     /**

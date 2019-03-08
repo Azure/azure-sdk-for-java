@@ -24,8 +24,8 @@ public class HttpPipelineTests {
 
     @Test
     public void withRequestPolicy() {
-        HttpPipeline pipeline = new HttpPipeline(new PortPolicy(80),
-                new ProtocolPolicy("ftp"),
+        HttpPipeline pipeline = new HttpPipeline(new PortPolicy(80, true),
+                new ProtocolPolicy("ftp", true),
                 new RetryPolicy());
 
         assertEquals(3, pipeline.pipelinePolicies().length);
@@ -38,14 +38,12 @@ public class HttpPipelineTests {
 
     @Test
     public void withRequestOptions() throws MalformedURLException {
-        HttpPipeline pipeline = new HttpPipeline(new HttpPipelineOptions(null),
-                new PortPolicy(80),
-                new ProtocolPolicy("ftp"),
+        HttpPipeline pipeline = new HttpPipeline(new PortPolicy(80, true),
+                new ProtocolPolicy("ftp", true),
                 new RetryPolicy());
 
         HttpPipelineCallContext context = pipeline.newContext(new HttpRequest(HttpMethod.GET, new URL("http://foo.com")));
         assertNotNull(context);
-        assertNotNull(context.requestPolicyOptions());
         assertNotNull(pipeline.httpClient());
         assertTrue(pipeline.httpClient() instanceof ReactorNettyClient);
     }
@@ -62,7 +60,7 @@ public class HttpPipelineTests {
                 assertEquals(expectedUrl, request.url());
                 return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
             }
-        }, new HttpPipelineOptions(null));
+        });
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
@@ -86,7 +84,6 @@ public class HttpPipelineTests {
         };
 
         final HttpPipeline httpPipeline = new HttpPipeline(httpClient,
-                new HttpPipelineOptions(null),
                 new UserAgentPolicy(expectedUserAgent));
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
@@ -111,7 +108,6 @@ public class HttpPipelineTests {
                     return Mono.<HttpResponse>just(new MockHttpResponse(request, 200));
                 }
             },
-            new HttpPipelineOptions(null),
             new RequestIdPolicy());
 
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
