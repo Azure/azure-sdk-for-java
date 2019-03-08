@@ -13,8 +13,6 @@ import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
-import com.microsoft.rest.v3.serializer.SerializerAdapter;
-import com.sun.xml.internal.ws.Closeable;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -24,6 +22,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
