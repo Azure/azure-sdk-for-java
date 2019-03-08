@@ -27,6 +27,7 @@ import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayRequ
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayRewriteRuleSet;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayRedirectConfiguration;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayWebApplicationFirewallConfiguration;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayAutoscaleConfiguration;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayCustomError;
 import com.microsoft.azure.management.network.v2018_12_01.ManagedServiceIdentity;
@@ -149,6 +150,12 @@ public class ApplicationGatewayInner extends Resource {
      */
     @JsonProperty(value = "properties.webApplicationFirewallConfiguration")
     private ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration;
+
+    /**
+     * Reference of the FirewallPolicy resource.
+     */
+    @JsonProperty(value = "properties.firewallPolicy")
+    private SubResource firewallPolicy;
 
     /**
      * Whether HTTP2 is enabled on the application gateway resource.
@@ -558,6 +565,26 @@ public class ApplicationGatewayInner extends Resource {
      */
     public ApplicationGatewayInner withWebApplicationFirewallConfiguration(ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration) {
         this.webApplicationFirewallConfiguration = webApplicationFirewallConfiguration;
+        return this;
+    }
+
+    /**
+     * Get reference of the FirewallPolicy resource.
+     *
+     * @return the firewallPolicy value
+     */
+    public SubResource firewallPolicy() {
+        return this.firewallPolicy;
+    }
+
+    /**
+     * Set reference of the FirewallPolicy resource.
+     *
+     * @param firewallPolicy the firewallPolicy value to set
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withFirewallPolicy(SubResource firewallPolicy) {
+        this.firewallPolicy = firewallPolicy;
         return this;
     }
 
