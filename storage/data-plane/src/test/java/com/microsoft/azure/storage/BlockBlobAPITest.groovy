@@ -31,7 +31,7 @@ class BlockBlobAPITest extends APISpec {
     BlockBlobURL bu
 
     def setup() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase("RECORD"))
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(""))
         bu = cu.createBlockBlobURL(generateBlobName())
         bu.upload(defaultFlowable, defaultDataSize, null, null,
                 null, null).blockingGet()

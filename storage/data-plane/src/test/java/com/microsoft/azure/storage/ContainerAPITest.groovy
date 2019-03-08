@@ -35,7 +35,7 @@ class ContainerAPITest extends APISpec {
 
     def "Create all null"() {
         setup:
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase("RECORD"))
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(""))
         // Overwrite the existing cu, which has already been created
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 

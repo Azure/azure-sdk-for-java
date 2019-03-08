@@ -42,6 +42,7 @@ class TransferManagerTest extends APISpec {
         def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:
+        System.out.println("Upload File Test")
         // Block length will be ignored for single shot.
         CommonRestResponse response = TransferManager.uploadFileToBlockBlob(channel,
                 bu, (int) (BlockBlobURL.MAX_STAGE_BLOCK_BYTES / 10),
@@ -97,6 +98,7 @@ class TransferManagerTest extends APISpec {
         def channel = AsynchronousFileChannel.open(getRandomFile(fileSize).toPath())
 
         when:
+        System.out.println("Upload File Illegal arguments blocks")
         TransferManager.uploadFileToBlockBlob(channel, bu,
                 blockLength, null).blockingGet()
 
@@ -124,12 +126,13 @@ class TransferManagerTest extends APISpec {
             fos.write(defaultData.array())
             fos.close()
         } else {
-            file = getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10)
+            file = getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES/4 + 10)
         }
 
         def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:
+        System.out.println("Upload File headers")
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
                 new TransferManagerUploadToBlockBlobOptions(null, new BlobHTTPHeaders()
                         .withBlobCacheControl(cacheControl).withBlobContentDisposition(contentDisposition)
@@ -171,6 +174,7 @@ class TransferManagerTest extends APISpec {
         def channel = AsynchronousFileChannel.open(getRandomFile(dataSize).toPath())
 
         when:
+        System.out.println("Upload File metadata")
         TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
                 new TransferManagerUploadToBlockBlobOptions(null, null, metadata, null, null)).blockingGet()
         BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
@@ -193,6 +197,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload file AC"() {
         setup:
+        System.out.println("Upload File AC test")
         bu.upload(defaultFlowable, defaultDataSize, null, null, null, null).blockingGet()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)

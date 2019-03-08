@@ -99,11 +99,11 @@ public class Samples {
     }
 
     private String getAccountName() {
-        return System.getenv("ACCOUNT_NAME");
+        return System.getenv("PRIMARY_STORAGE_ACCOUNT_NAME");
     }
 
     private String getAccountKey() {
-        return System.getenv("ACCOUNT_KEY");
+        return System.getenv("PRIMARY_STORAGE_ACCOUNT_KEY");
     }
 
     /**

@@ -31,7 +31,7 @@ class AppendBlobAPITest extends APISpec {
     AppendBlobURL bu
 
     def setup() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase("RECORD"))
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(""))
         bu = cu.createAppendBlobURL(generateBlobName())
         bu.create(null, null, null, null).blockingGet()
     }
