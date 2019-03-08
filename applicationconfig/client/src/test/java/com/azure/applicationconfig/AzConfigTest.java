@@ -63,17 +63,13 @@ public class AzConfigTest {
 
     @Before
     public void beforeTest() throws Exception {
-        TestMode testMode = getTestMode();
-        String playbackUri = getPlaybackUri(testMode);
+        final TestMode testMode = getTestMode();
+        final String playbackUri = getPlaybackUri(testMode);
+        final HttpPipelineOptions pipelineOptions = new HttpPipelineOptions(new Slf4jLogger(logger).withMinimumLogLevel(HttpPipelineLogLevel.INFO));
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
-<<<<<<< HEAD
-
         ApplicationConfigCredentials credentials;
-=======
         HttpPipelineOptions pipelineOptions = new HttpPipelineOptions(new Slf4jLogger(logger).withMinimumLogLevel(HttpPipelineLogLevel.INFO));
-        AzConfigClient.AzConfigCredentials credentials;
->>>>>>> 74491aa9fe... Updating AzConfigTest to use HttpClient that enables wiretapping
         HttpPipeline pipeline;
 
         if (interceptorManager.isPlaybackMode()) {
@@ -140,7 +136,7 @@ public class AzConfigTest {
     }
 
     private TestMode getTestMode() throws IllegalArgumentException {
-        String azureTestMode = System.getenv("AZURE_TEST_MODE");
+        final String azureTestMode = System.getenv("AZURE_TEST_MODE");
 
         if (azureTestMode != null) {
             try {
@@ -209,8 +205,9 @@ public class AzConfigTest {
 
     @Test
     public void crudKeyValue() {
-        String key = SdkContext.randomResourceName(keyPrefix, 8);
-        KeyValue newKeyValue = new KeyValue().withKey(key).withValue("myNewValue5");
+        final String key = SdkContext.randomResourceName(keyPrefix, 8);
+        final KeyValue newKeyValue = new KeyValue().withKey(key).withValue("myNewValue5");
+
         StepVerifier.create(client.setKeyValue(newKeyValue))
                 .assertNext(response -> assertEquals(newKeyValue, response))
                 .expectComplete()
@@ -248,10 +245,10 @@ public class AzConfigTest {
 
     @Test
     public void getWithEtag() {
-        String key = SdkContext.randomResourceName(keyPrefix, 16);
-        KeyValue expected = new KeyValue().withKey(key).withValue("myValue");
-        KeyValue newExpected = new KeyValue().withKey(key).withValue("myNewValue");
-        RestResponse<Map<String, String>, KeyValue> block = client.setKeyValue(expected).single().block();
+        final String key = SdkContext.randomResourceName(keyPrefix, 16);
+        final KeyValue expected = new KeyValue().withKey(key).withValue("myValue");
+        final KeyValue newExpected = new KeyValue().withKey(key).withValue("myNewValue");
+        final RestResponse<Map<String, String>, KeyValue> block = client.setKeyValue(expected).single().block();
 
         Assert.assertNotNull(block);
         assertEquals(expected, block);
