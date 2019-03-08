@@ -190,21 +190,17 @@ public class AzConfigTest {
         final KeyValue expected = new KeyValue().withKey(key).withValue(value).withLabel(label);
 
         StepVerifier.create(client.setKeyValue(expected))
-                .assertNext(response -> {
-                    Assert.assertNotNull(response);
-                    Assert.assertNotNull(response.body().etag());
-                    assertEquals(expected, response.body(), null);
-                })
+                .assertNext(response -> assertEquals(expected, response, 200))
                 .expectComplete()
                 .verify();
 
         StepVerifier.create(client.listKeyValues(new KeyValueListFilter().withKey(key).withLabel(label)))
-                .assertNext(keyValue -> assertEquals(expected, keyValue, null))
+                .assertNext(keyValue -> assertEquals(expected, keyValue))
                 .expectComplete()
                 .verify();
 
         StepVerifier.create(client.listKeyValues(new KeyValueListFilter().withKey(key)))
-                .assertNext(keyValue -> assertEquals(expected, keyValue, null))
+                .assertNext(keyValue -> assertEquals(expected, keyValue))
                 .expectComplete()
                 .verify();
     }
@@ -212,7 +208,7 @@ public class AzConfigTest {
     @Test
     public void crudKeyValue() {
         KeyValue newKeyValue = new KeyValue().withKey("myNewKey5").withValue("myNewValue5");
-        KeyValue newKv = client.setKeyValue(newKeyValue).block().body();
+        client.setKeyValue(newKeyValue).block().body();
 
         KeyValue kv = client.deleteKeyValue(newKeyValue.key()).block().body();
     }
@@ -317,7 +313,20 @@ public class AzConfigTest {
         Assert.assertEquals(3, keys.size());
     }
 
-    private static void assertEquals(KeyValue expected, KeyValue actual, String expectedETag) {
+
+    private static void assertEquals(KeyValue expected, RestResponse<Map<String, String>, KeyValue> response, int statusCode) {
+        Assert.assertNotNull(response);
+        Assert.assertEquals(statusCode, response.statusCode());
+
+        if (expected == null) {
+            Assert.assertNull(response.body());
+            return;
+        }
+
+        assertEquals(expected, response.body());
+    }
+
+    private static void assertEquals(KeyValue expected, KeyValue actual) {
         if (expected == null) {
             Assert.assertNull(actual);
             return;
@@ -328,9 +337,5 @@ public class AzConfigTest {
         Assert.assertEquals(expected.label(), actual.label());
         Assert.assertEquals(expected.value(), actual.value());
         Assert.assertEquals(expected.contentType(), actual.contentType());
-
-        if (expectedETag != null) {
-            Assert.assertEquals(expected.etag(), actual.etag());
-        }
     }
 }
