@@ -95,10 +95,28 @@ jobs:
           publishJUnitResults: false
           goals: 'site:site site:stage'
 
+      - script: |
+          git clone https://github.com/JonathanGiles/DependencyChecker.git
+          mkdir input && cp dependencies.json input/
+        displayName: 'Download dependency checker'
+
+      - task: Maven@3
+        displayName: 'Analyze dependencies'
+        inputs:
+          mavenPomFile: 'DependencyChecker/pom.xml'
+          options: '-Dexec.args="-showall"'
+          mavenOptions: '$(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: '1.11'
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
+          goals: 'clean package exec:java'
+
       - powershell: |
           copy -r target/staging $(Build.ArtifactStagingDirectory)
           copy eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
           copy eng/spotbugs-aggregate-report/target/spotbugs/spotbugsXml.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
+          copy output/dependencies.html (Join-Path $(Build.ArtifactStagingDirectory) "staging")
         displayName: 'Copy reports to artifact staging'
 
       - task: PublishBuildArtifacts@1
