@@ -10,8 +10,8 @@ package com.microsoft.azure.management.network.v2018_12_01.implementation;
 
 import com.microsoft.azure.management.network.v2018_12_01.PolicySettings;
 import java.util.List;
-import com.microsoft.azure.management.network.v2018_12_01.CustomRule;
-import com.microsoft.azure.management.network.v2018_12_01.WebApplicationFirewallPolicyPropertiesFormat;
+import com.microsoft.azure.management.network.v2018_12_01.WebApplicationFirewallCustomRule;
+import com.microsoft.azure.management.network.v2018_12_01.WebApplicationFirewallPolicyResourceState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.rest.SkipParentValidation;
@@ -33,7 +33,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
      * Describes custom rules inside the policy.
      */
     @JsonProperty(value = "properties.customRules")
-    private List<CustomRule> customRules;
+    private List<WebApplicationFirewallCustomRule> customRules;
 
     /**
      * A collection of references to application gateways.
@@ -53,7 +53,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
      * 'Disabled', 'Deleting'.
      */
     @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private WebApplicationFirewallPolicyPropertiesFormat resourceState;
+    private WebApplicationFirewallPolicyResourceState resourceState;
 
     /**
      * Gets a unique read-only string that changes whenever the resource is
@@ -93,7 +93,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
      *
      * @return the customRules value
      */
-    public List<CustomRule> customRules() {
+    public List<WebApplicationFirewallCustomRule> customRules() {
         return this.customRules;
     }
 
@@ -103,7 +103,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
      * @param customRules the customRules value to set
      * @return the WebApplicationFirewallPolicyInner object itself.
      */
-    public WebApplicationFirewallPolicyInner withCustomRules(List<CustomRule> customRules) {
+    public WebApplicationFirewallPolicyInner withCustomRules(List<WebApplicationFirewallCustomRule> customRules) {
         this.customRules = customRules;
         return this;
     }
@@ -131,7 +131,7 @@ public class WebApplicationFirewallPolicyInner extends Resource {
      *
      * @return the resourceState value
      */
-    public WebApplicationFirewallPolicyPropertiesFormat resourceState() {
+    public WebApplicationFirewallPolicyResourceState resourceState() {
         return this.resourceState;
     }
 

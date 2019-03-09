@@ -13,8 +13,8 @@ import com.microsoft.azure.management.network.v2018_12_01.WebApplicationFirewall
 import rx.Observable;
 import com.microsoft.azure.management.network.v2018_12_01.PolicySettings;
 import java.util.List;
-import com.microsoft.azure.management.network.v2018_12_01.CustomRule;
-import com.microsoft.azure.management.network.v2018_12_01.WebApplicationFirewallPolicyPropertiesFormat;
+import com.microsoft.azure.management.network.v2018_12_01.WebApplicationFirewallCustomRule;
+import com.microsoft.azure.management.network.v2018_12_01.WebApplicationFirewallPolicyResourceState;
 import java.util.ArrayList;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGateway;
 
@@ -61,7 +61,7 @@ class WebApplicationFirewallPolicyImpl extends GroupableResourceCoreImpl<WebAppl
     }
 
     @Override
-    public List<CustomRule> customRules() {
+    public List<WebApplicationFirewallCustomRule> customRules() {
         return this.inner().customRules();
     }
 
@@ -81,12 +81,12 @@ class WebApplicationFirewallPolicyImpl extends GroupableResourceCoreImpl<WebAppl
     }
 
     @Override
-    public WebApplicationFirewallPolicyPropertiesFormat resourceState() {
+    public WebApplicationFirewallPolicyResourceState resourceState() {
         return this.inner().resourceState();
     }
 
     @Override
-    public WebApplicationFirewallPolicyImpl withCustomRules(List<CustomRule> customRules) {
+    public WebApplicationFirewallPolicyImpl withCustomRules(List<WebApplicationFirewallCustomRule> customRules) {
         this.inner().withCustomRules(customRules);
         return this;
     }

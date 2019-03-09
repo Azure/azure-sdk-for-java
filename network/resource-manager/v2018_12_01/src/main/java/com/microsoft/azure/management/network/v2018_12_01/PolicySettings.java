@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PolicySettings {
     /**
-     * describes if the policy is in enabled state or disabled state. Possible
+     * Describes if the policy is in enabled state or disabled state. Possible
      * values include: 'Disabled', 'Enabled'.
      */
     @JsonProperty(value = "enabledState")

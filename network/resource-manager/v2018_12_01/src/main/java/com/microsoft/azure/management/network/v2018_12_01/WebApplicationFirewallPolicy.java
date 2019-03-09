@@ -33,7 +33,7 @@ public interface WebApplicationFirewallPolicy extends HasInner<WebApplicationFir
     /**
      * @return the customRules value.
      */
-    List<CustomRule> customRules();
+    List<WebApplicationFirewallCustomRule> customRules();
 
     /**
      * @return the etag value.
@@ -53,7 +53,7 @@ public interface WebApplicationFirewallPolicy extends HasInner<WebApplicationFir
     /**
      * @return the resourceState value.
      */
-    WebApplicationFirewallPolicyPropertiesFormat resourceState();
+    WebApplicationFirewallPolicyResourceState resourceState();
 
     /**
      * The entirety of the WebApplicationFirewallPolicy definition.
@@ -86,7 +86,7 @@ public interface WebApplicationFirewallPolicy extends HasInner<WebApplicationFir
              * @param customRules Describes custom rules inside the policy
              * @return the next definition stage
              */
-            WithCreate withCustomRules(List<CustomRule> customRules);
+            WithCreate withCustomRules(List<WebApplicationFirewallCustomRule> customRules);
         }
 
         /**
@@ -140,7 +140,7 @@ public interface WebApplicationFirewallPolicy extends HasInner<WebApplicationFir
              * @param customRules Describes custom rules inside the policy
              * @return the next update stage
              */
-            Update withCustomRules(List<CustomRule> customRules);
+            Update withCustomRules(List<WebApplicationFirewallCustomRule> customRules);
         }
 
         /**
