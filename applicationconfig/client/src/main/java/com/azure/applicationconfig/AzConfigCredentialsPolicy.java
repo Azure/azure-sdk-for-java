@@ -10,7 +10,11 @@ import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.EmptyByteBuf;
+import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -75,7 +79,32 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
             String utcNowString = DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(now);
             context.httpRequest().headers().set(DATE_HEADER, utcNowString);
         }
-        String contentHash = getContentHash(context.httpRequest().body() == null ? new byte[0] : context.httpRequest().body().blockFirst().array());
+
+        Flux<ByteBuf> contents = context.httpRequest().body() == null
+                ? Flux.just(new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT))
+                : context.httpRequest().body();
+
+        String contentHash =
+        contents.defaultIfEmpty(new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT))
+                .collect(() -> {
+                    try {
+                        return MessageDigest.getInstance("SHA-256");
+                    } catch (NoSuchAlgorithmException e) {
+                        return null;
+                    }
+                }, (messageDigest, byteBuffer) -> {
+                    if (messageDigest != null) {
+                        messageDigest.update(byteBuffer.nioBuffer());
+                    }
+                })
+                .flatMap(messageDigest -> messageDigest == null
+                        ? Mono.error(new NoSuchAlgorithmException("Unable to locate SHA-256 algorithm."))
+                        : Mono.just(Base64.getEncoder().encodeToString(messageDigest.digest()))
+                )
+                .single()
+                .block();
+
+//        String contentHash = getContentHash(context.httpRequest().body() == null ? new byte[0] : context.httpRequest().body().blockFirst().array());
         context.httpRequest().headers().set(CONTENT_HASH_HEADER, contentHash);
         context.httpRequest().headers().set(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
         context.httpRequest().headers().set(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
