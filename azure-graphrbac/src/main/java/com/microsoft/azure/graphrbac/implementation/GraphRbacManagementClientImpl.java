@@ -237,6 +237,19 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The OAuth2PermissionGrantsInner object to access its operations.
+     */
+    private OAuth2PermissionGrantsInner oAuth2PermissionGrants;
+
+    /**
+     * Gets the OAuth2PermissionGrantsInner object to access its operations.
+     * @return the OAuth2PermissionGrantsInner object.
+     */
+    public OAuth2PermissionGrantsInner oAuth2PermissionGrants() {
+        return this.oAuth2PermissionGrants;
+    }
+
+    /**
      * The OAuth2sInner object to access its operations.
      */
     private OAuth2sInner oAuth2s;
@@ -292,6 +305,7 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
         this.users = new UsersInner(restClient().retrofit(), this);
         this.objects = new ObjectsInner(restClient().retrofit(), this);
         this.domains = new DomainsInner(restClient().retrofit(), this);
+        this.oAuth2PermissionGrants = new OAuth2PermissionGrantsInner(restClient().retrofit(), this);
         this.oAuth2s = new OAuth2sInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
