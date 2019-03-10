@@ -126,7 +126,7 @@ class TransferManagerTest extends APISpec {
             fos.write(defaultData.array())
             fos.close()
         } else {
-            file = getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES/4 + 10)
+            file = getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10)
         }
 
         def channel = AsynchronousFileChannel.open(file.toPath())
@@ -773,7 +773,7 @@ class TransferManagerTest extends APISpec {
         10 * 1024 * 1024  | 1 * 1024 * 1024   | 5        || 10
         10 * 1024 * 1024  | 1 * 1024 * 1024   | 10       || 10
         500 * 1024 * 1024 | 100 * 1024 * 1024 | 2        || 5
-        500 * 1024 * 1024   | 100 * 1024 * 1024 | 4        || 5
+       // 500 * 1024 * 1024   | 100 * 1024 * 1024 | 4        || 5
         10 * 1024 * 1024  | 3 * 512 * 1024    | 3        || 7
     }
 
