@@ -58,7 +58,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
      * Initializes a new instance of AzConfigCredentialsPolicy based on credentials.
      *
      * @param credentials for the Configuration Store in Azure
-     * @param options the request options
+     * @param options     the request options
      */
     AzConfigCredentialsPolicy(AzConfigClient.AzConfigCredentials credentials, HttpPipelineOptions options) {
         this.credentials = credentials;
@@ -79,13 +79,14 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
             String utcNowString = DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(now);
             context.httpRequest().headers().set(DATE_HEADER, utcNowString);
         }
+        context.httpRequest().headers().set(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
+        context.httpRequest().headers().set(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
 
         Flux<ByteBuf> contents = context.httpRequest().body() == null
                 ? Flux.just(new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT))
                 : context.httpRequest().body();
 
-        String contentHash =
-        contents.defaultIfEmpty(new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT))
+        return contents.defaultIfEmpty(new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT))
                 .collect(() -> {
                     try {
                         return MessageDigest.getInstance("SHA-256");
@@ -102,35 +103,34 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                         : Mono.just(Base64.getEncoder().encodeToString(messageDigest.digest()))
                 )
                 .single()
-                .block();
+                .flatMap(contentHash -> {
+                    context.httpRequest().headers().set(CONTENT_HASH_HEADER, contentHash);
 
-//        String contentHash = getContentHash(context.httpRequest().body() == null ? new byte[0] : context.httpRequest().body().blockFirst().array());
-        context.httpRequest().headers().set(CONTENT_HASH_HEADER, contentHash);
-        context.httpRequest().headers().set(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
-        context.httpRequest().headers().set(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
-        final String stringToSign = buildStringToSign(context.httpRequest());
-        try {
-            Mac sha256HMAC = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secretKey = new SecretKeySpec(credentials.secret(), "HmacSHA256");
-            sha256HMAC.init(secretKey);
+                    final String stringToSign = buildStringToSign(context.httpRequest());
+                    try {
+                        Mac sha256HMAC = Mac.getInstance("HmacSHA256");
+                        SecretKeySpec secretKey = new SecretKeySpec(credentials.secret(), "HmacSHA256");
+                        sha256HMAC.init(secretKey);
 
-            String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
-            String signedString = String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s", credentials.credential(), SIGNED_HEADERS, signature);
-            context.httpRequest().headers().set(AUTHORIZATION_HEADER, signedString);
-        } catch (Exception e) {
-            return Mono.error(e);
-        }
+                        String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
+                        String signedString = String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s", credentials.credential(), SIGNED_HEADERS, signature);
+                        context.httpRequest().headers().set(AUTHORIZATION_HEADER, signedString);
+                    } catch (Exception e) {
+                        return Mono.error(e);
+                    }
 
-        Mono<HttpResponse> response = next.process();
-        return response.doOnSuccess(httpResponse -> {
-            if (httpResponse.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
-                if (options.shouldLog(HttpPipelineLogLevel.ERROR)) {
-                    options.log(HttpPipelineLogLevel.ERROR,
-                            "===== HTTP Unauthorized status, String-to-Sign:%n'%s'%n==================%n",
-                            stringToSign);
-                }
-            }
-        });
+                    return next.process().doOnSuccess(httpResponse -> {
+                        Objects.requireNonNull(httpResponse, "HttpResponse is required.");
+
+                        if (httpResponse.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
+                            if (options.shouldLog(HttpPipelineLogLevel.ERROR)) {
+                                options.log(HttpPipelineLogLevel.ERROR,
+                                        "===== HTTP Unauthorized status, String-to-Sign:%n'%s'%n==================%n",
+                                        stringToSign);
+                            }
+                        }
+                    });
+                });
     }
 
     /**
