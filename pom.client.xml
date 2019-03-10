@@ -821,9 +821,9 @@
   </profiles>
 
   <modules>
+    <module>./azconfig/client</module>
     <module>./batch/data-plane</module>
     <module>./keyvault/data-plane</module>
-    <module>./azconfig/client</module>
   </modules>
 
 </project>
