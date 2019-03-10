@@ -50,6 +50,14 @@ class LoggingTest extends APISpec {
     just keep it from growing too large.
      */
     def setupSpec() {
+       /* File logsDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs")
+        for (File file : logsDir.listFiles()) {
+            file.delete()
+        }*/
+    }
+
+
+    def cleanupSpec() {
         File logsDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs")
         for (File file : logsDir.listFiles()) {
             file.delete()

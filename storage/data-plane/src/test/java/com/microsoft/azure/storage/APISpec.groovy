@@ -181,8 +181,6 @@ class APISpec extends Specification {
         return new SharedKeyCredentials(accountName, accountKey)
     }
 
-
-
     static HttpClient getHttpClient() {
         if (enableDebugging) {
             HttpClientConfiguration configuration = new HttpClientConfiguration(
