@@ -833,7 +833,7 @@
         </property>
       </activation>
       <modules>
-        <module>./template/client</module>
+        <module>./sdk/template/azure-sdk-template</module>
       </modules>
     </profile>
   </profiles>
