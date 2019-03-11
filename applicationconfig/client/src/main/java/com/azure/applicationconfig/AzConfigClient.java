@@ -31,6 +31,7 @@ import com.microsoft.rest.v3.annotations.PathParam;
 import com.microsoft.rest.v3.annotations.QueryParam;
 import com.microsoft.rest.v3.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v3.http.HttpPipeline;
+import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.http.policy.RetryPolicy;
@@ -57,24 +58,12 @@ public final class AzConfigClient extends ServiceClient {
     private URL baseUri;
     private AzConfigService service;
 
-    /**
-     * Create a new instance of AzConfigClient that uses connectionString for authentication.
-     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
-     * @return an instance of AzConfigClient
-     */
-    public static AzConfigClient create(String connectionString) {
-        return create(connectionString, new PipelineOptions());
+    public static AzConfigClient create(AzConfigCredentials credentials) {
+        return create(credentials, HttpLogDetailLevel.BASIC);
     }
 
-    /**
-     * Create a new instance of AzConfigClient with pipeline options that uses connectionString for authentication.
-     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
-     * @param pipelineOptions pipeline options
-     * @return an instance of AzConfigClient
-     */
-    public static AzConfigClient create(String connectionString, PipelineOptions pipelineOptions) {
-        AzConfigCredentials credentials = AzConfigCredentials.parseConnectionString(connectionString);
-        return new AzConfigClient(credentials, pipelineOptions);
+    public static AzConfigClient create(AzConfigCredentials credentials, HttpLogDetailLevel logLevel) {
+        return create(credentials, createPipeline(credentials, logLevel));
     }
 
     /**
@@ -86,10 +75,6 @@ public final class AzConfigClient extends ServiceClient {
 
     public static AzConfigClient create(AzConfigCredentials credentials, HttpPipeline pipeline) {
         return new AzConfigClient(credentials, pipeline);
-    }
-
-    private AzConfigClient(AzConfigCredentials credentials, PipelineOptions pipelineOptions) {
-        this(credentials, createPipeline(credentials, pipelineOptions));
     }
 
     private AzConfigClient(AzConfigCredentials credentials, HttpPipeline pipeline) {
@@ -533,22 +518,17 @@ public final class AzConfigClient extends ServiceClient {
      * @param credentials credentials the pipeline will use to authenticate the requests
      * @return the pipeline
      */
-    private static HttpPipeline createPipeline(AzConfigCredentials credentials, PipelineOptions pipelineOptions) {
-        if (pipelineOptions == null) {
-            throw new IllegalArgumentException("pipelineOptions cannot be null.");
-        }
+    private static HttpPipeline createPipeline(AzConfigCredentials credentials, HttpLogDetailLevel logLevel) {
         // Closest to API goes first, closest to wire goes last.
-//        ArrayList<RequestPolicyFactory> factories = new ArrayList<>();
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
 
         policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
         policies.add(new RequestIdPolicy());
         policies.add(new AzConfigCredentialsPolicy(credentials));
         policies.add(new RetryPolicy());
-//        policies.add(new RequestRetryPolicyFactory()); // todo - do we really need custom retry policy here?
-        policies.add(new HttpLoggingPolicy(pipelineOptions.httpLogDetailLevel()));
+        policies.add(new HttpLoggingPolicy(logLevel));
 
-        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()]));
+        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[0]));
     }
 
     static class AzConfigCredentials {
