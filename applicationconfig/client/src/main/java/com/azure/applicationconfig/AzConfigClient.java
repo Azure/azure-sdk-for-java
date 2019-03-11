@@ -64,9 +64,7 @@ public final class AzConfigClient extends ServiceClient {
      * @return an instance of AzConfigClient
      */
     public static AzConfigClient create(String connectionString) {
-        return create(
-                connectionString,
-                HttpLogDetailLevel.BASIC);
+        return create(connectionString, HttpLogDetailLevel.BASIC);
     }
 
     /**
