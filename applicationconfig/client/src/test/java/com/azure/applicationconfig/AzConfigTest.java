@@ -12,7 +12,6 @@ import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
 import com.microsoft.azure.v3.CloudException;
-import com.microsoft.rest.v3.http.HttpClientConfiguration;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.ProxyOptions;
@@ -37,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
 import static com.azure.applicationconfig.AzConfigClient.SDK_NAME;
@@ -83,8 +83,9 @@ public class AzConfigTest {
         } else {
             System.out.println("RECORD MODE");
 
-            connectionString =  System.getenv("AZCONFIG_CONNECTION_STRING");
-            HttpClientConfiguration configuration = new HttpClientConfiguration().withProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
+            connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
+            Objects.requireNonNull(connectionString, "ConnectionString must be set to record data.");
+
             credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.initRecordPolicy());
@@ -103,7 +104,7 @@ public class AzConfigTest {
 //                               .withDecodingPolicy().build();
             interceptorManager.addTextReplacementRule(credentials.baseUri().toString(), playbackUri);
         }
-        client = AzConfigClient.create(credentials, pipeline);
+        client = AzConfigClient.create(connectionString, pipeline);
         keyPrefix = SdkContext.randomResourceName("key", 8);
     }
 
