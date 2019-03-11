@@ -4,9 +4,7 @@ package com.azure.applicationconfig;
 
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
-import com.microsoft.rest.v3.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
@@ -25,16 +23,12 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.AbstractMap;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -114,15 +108,17 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                         return Mono.error(e);
                     }
 
-                    return next.process().doOnSuccess(httpResponse -> {
-                        Objects.requireNonNull(httpResponse, "HttpResponse is required.");
-
-                        if (httpResponse.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
-                            logger.error("HTTP Unauthorized status, String-to-Sign:'{}'",
-                                    httpResponse.headers().value(AUTHORIZATION_HEADER));
-                        }
-                    });
+                    return next.process().doOnSuccess(this::logResponseDelegate);
                 });
+    }
+
+    private void logResponseDelegate(HttpResponse response) {
+        Objects.requireNonNull(response, "HttpResponse is required.");
+
+        if (response.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
+            logger.error("HTTP Unauthorized status, String-to-Sign:'{}'",
+                    response.headers().value(AUTHORIZATION_HEADER));
+        }
     }
 
     private class AuthorizationHeaderProvider {
