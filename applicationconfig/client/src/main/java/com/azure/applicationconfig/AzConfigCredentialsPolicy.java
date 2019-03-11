@@ -14,6 +14,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.EmptyByteBuf;
 import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -44,7 +46,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
     private static final String ACCEPT_HEADER = "Accept";
 
     private final AzConfigClient.AzConfigCredentials credentials;
-    private final HttpPipelineOptions options;
+    private final Logger logger = LoggerFactory.getLogger(AzConfigCredentialsPolicy.class);
 
     /**
      * Initializes a new instance of AzConfigCredentialsPolicy based on credentials.
@@ -52,18 +54,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
      * @param credentials for the Configuration Store in Azure
      */
     AzConfigCredentialsPolicy(AzConfigClient.AzConfigCredentials credentials) {
-        this(credentials, new HttpPipelineOptions(null));
-    }
-
-    /**
-     * Initializes a new instance of AzConfigCredentialsPolicy based on credentials.
-     *
-     * @param credentials for the Configuration Store in Azure
-     * @param options     the request options
-     */
-    AzConfigCredentialsPolicy(AzConfigClient.AzConfigCredentials credentials, HttpPipelineOptions options) {
         this.credentials = credentials;
-        this.options = options;
     }
 
     /**
@@ -125,11 +116,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                         Objects.requireNonNull(httpResponse, "HttpResponse is required.");
 
                         if (httpResponse.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
-                            if (options.shouldLog(HttpPipelineLogLevel.ERROR)) {
-                                options.log(HttpPipelineLogLevel.ERROR,
-                                        "===== HTTP Unauthorized status, String-to-Sign:%n'%s'%n==================%n",
-                                        stringToSign);
-                            }
+                            logger.error("HTTP Unauthorized status, String-to-Sign:'{}'", stringToSign);
                         }
                     });
                 });
