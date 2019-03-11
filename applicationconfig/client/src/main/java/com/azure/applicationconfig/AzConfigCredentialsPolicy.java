@@ -67,8 +67,8 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         context.httpRequest().headers().set(HOST_HEADER, credentials.baseUri().getHost());
         if (context.httpRequest().headers().value(DATE_HEADER) == null) {
-            OffsetDateTime now = Instant.now().atOffset(ZoneOffset.UTC);
-            String utcNowString = DateTimeFormatter.RFC_1123_DATE_TIME.toFormat().format(now);
+            OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
+            String utcNowString = now.format(DateTimeFormatter.RFC_1123_DATE_TIME);
             context.httpRequest().headers().set(DATE_HEADER, utcNowString);
         }
         context.httpRequest().headers().set(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
