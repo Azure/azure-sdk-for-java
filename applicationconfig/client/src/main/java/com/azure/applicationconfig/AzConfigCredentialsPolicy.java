@@ -46,7 +46,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
     private static final String CONTENT_TYPE_HEADER = "Content-Type";
     private static final String ACCEPT_HEADER = "Accept";
 
-    private final AzConfigClient.AzConfigCredentials credentials;
+    private final ApplicationConfigCredentials credentials;
     private final AuthorizationHeaderProvider provider = new AuthorizationHeaderProvider();
     private final Logger logger = LoggerFactory.getLogger(AzConfigCredentialsPolicy.class);
 
@@ -55,7 +55,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
      *
      * @param credentials for the Configuration Store in Azure
      */
-    AzConfigCredentialsPolicy(AzConfigClient.AzConfigCredentials credentials) {
+    AzConfigCredentialsPolicy(ApplicationConfigCredentials credentials) {
         this.credentials = credentials;
     }
 

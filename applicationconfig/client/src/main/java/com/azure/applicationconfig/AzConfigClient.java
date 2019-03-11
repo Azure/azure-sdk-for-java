@@ -58,11 +58,11 @@ public final class AzConfigClient extends ServiceClient {
     private URL baseUri;
     private AzConfigService service;
 
-    public static AzConfigClient create(AzConfigCredentials credentials) {
+    public static AzConfigClient create(ApplicationConfigCredentials credentials) {
         return create(credentials, HttpLogDetailLevel.BASIC);
     }
 
-    public static AzConfigClient create(AzConfigCredentials credentials, HttpLogDetailLevel logLevel) {
+    public static AzConfigClient create(ApplicationConfigCredentials credentials, HttpLogDetailLevel logLevel) {
         return create(credentials, createPipeline(credentials, logLevel));
     }
 
@@ -72,15 +72,14 @@ public final class AzConfigClient extends ServiceClient {
      * @param pipeline pre-defined pipeline
      * @return an instance of AzConfigClient
      */
-
-    public static AzConfigClient create(AzConfigCredentials credentials, HttpPipeline pipeline) {
+    public static AzConfigClient create(ApplicationConfigCredentials credentials, HttpPipeline pipeline) {
         return new AzConfigClient(credentials, pipeline);
     }
 
-    private AzConfigClient(AzConfigCredentials credentials, HttpPipeline pipeline) {
+    private AzConfigClient(ApplicationConfigCredentials credentials, HttpPipeline pipeline) {
         super(pipeline);
         this.service = RestProxy.create(AzConfigService.class, pipeline);
-        baseUri = credentials.baseUri;
+        baseUri = credentials.baseUri();
     }
 
     /**
@@ -518,7 +517,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param credentials credentials the pipeline will use to authenticate the requests
      * @return the pipeline
      */
-    private static HttpPipeline createPipeline(AzConfigCredentials credentials, HttpLogDetailLevel logLevel) {
+    private static HttpPipeline createPipeline(ApplicationConfigCredentials credentials, HttpLogDetailLevel logLevel) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
 
@@ -529,58 +528,5 @@ public final class AzConfigClient extends ServiceClient {
         policies.add(new HttpLoggingPolicy(logLevel));
 
         return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[0]));
-    }
-
-    static class AzConfigCredentials {
-        private URL baseUri;
-        private String credential;
-        private byte[] secret;
-
-        URL baseUri() {
-            return baseUri;
-        }
-
-        String credential() {
-            return credential;
-        }
-
-        byte[] secret() {
-            return secret;
-        }
-
-        static AzConfigCredentials parseConnectionString(String connectionString) {
-            if (connectionString == null || connectionString.isEmpty()) {
-                throw new IllegalArgumentException(connectionString);
-            }
-
-            // Parse connection string
-            String[] args = connectionString.split(";");
-            if (args.length < 3) {
-                throw new IllegalArgumentException("invalid connection string segment count");
-            }
-
-            String endpointString = "endpoint=";
-            String idString = "id=";
-            String secretString = "secret=";
-
-            AzConfigCredentials credentials = new AzConfigCredentials();
-
-            for (String arg : args) {
-                String segment = arg.trim();
-                try {
-                    if (segment.toLowerCase().startsWith(endpointString)) {
-                        credentials.baseUri = new URL(segment.substring(segment.indexOf('=') + 1));
-                    } else if (segment.toLowerCase().startsWith(idString)) {
-                        credentials.credential = segment.substring(segment.indexOf('=') + 1);
-                    } else if (segment.toLowerCase().startsWith(secretString)) {
-                        String secretBase64 = segment.substring(segment.indexOf('=') + 1);
-                        credentials.secret = Base64.getDecoder().decode(secretBase64);
-                    }
-                } catch (MalformedURLException ex) {
-                    throw new IllegalArgumentException(ex);
-                }
-            }
-            return credentials;
-        }
     }
 }
