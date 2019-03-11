@@ -62,7 +62,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
     public void sendSmallEventsFullBatchPartitionKeyTest()
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         final BatchOptions options = new BatchOptions()
-                .with(o -> o.partitionKey = UUID.randomUUID().toString());
+                .with(o -> o.setPartitionKey(UUID.randomUUID().toString()));
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
         while (batchEvents.tryAdd(EventData.create("a".getBytes()))) ;
@@ -75,7 +75,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         final String partitionKey = UUID.randomUUID().toString();
 
-        final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = partitionKey);
+        final BatchOptions options = new BatchOptions().with(o -> o.setPartitionKey(partitionKey));
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
         int count = 0;
@@ -180,7 +180,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
 
         final String partitionKey = UUID.randomUUID().toString();
-        final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = partitionKey);
+        final BatchOptions options = new BatchOptions().with(o -> o.setPartitionKey(partitionKey));
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
         int count = 0;
@@ -204,7 +204,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
 
 
-        final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = UUID.randomUUID().toString());
+        final BatchOptions options = new BatchOptions().with(o -> o.setPartitionKey(UUID.randomUUID().toString()));
         final EventDataBatch batchEvents = sender.createBatch(options);
 
         int count = 0;

@@ -70,16 +70,16 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                     int maxSize = this.createInternalSender().thenApplyAsync(
                             (aVoid) -> this.sender.getMaxMessageSize(),
                             this.executor).get();
-                    if (options.maxMessageSize == null) {
-                        return new EventDataBatchImpl(maxSize, options.partitionKey);
+                    if (options.getMaxMessageSize() == null) {
+                        return new EventDataBatchImpl(maxSize, options.getPartitionKey());
                     }
 
-                    if (options.maxMessageSize > maxSize) {
+                    if (options.getMaxMessageSize() > maxSize) {
                         throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of " +
-                                options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
+                                options.getMaxMessageSize() + ". The maximum allowed size is " + maxSize + ".");
                     }
 
-                    return new EventDataBatchImpl(options.maxMessageSize, options.partitionKey);
+                    return new EventDataBatchImpl(options.getMaxMessageSize(), options.getPartitionKey());
                 }
         );
     }

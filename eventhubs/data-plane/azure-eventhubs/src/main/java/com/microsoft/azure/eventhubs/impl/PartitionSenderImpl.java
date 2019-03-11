@@ -53,23 +53,23 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
     }
 
     public EventDataBatch createBatch(BatchOptions options) {
-        if (!StringUtil.isNullOrEmpty(options.partitionKey)) {
+        if (!StringUtil.isNullOrEmpty(options.getPartitionKey())) {
             throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to " +
                     "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions.");
         }
 
         int maxSize = this.internalSender.getMaxMessageSize();
 
-        if (options.maxMessageSize == null) {
+        if (options.getMaxMessageSize() == null) {
             return new EventDataBatchImpl(maxSize, null);
         }
 
-        if (options.maxMessageSize > maxSize) {
+        if (options.getMaxMessageSize() > maxSize) {
             throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of " +
-                    options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
+                    options.getMaxMessageSize() + ". The maximum allowed size is " + maxSize + ".");
         }
 
-        return new EventDataBatchImpl(options.maxMessageSize, null);
+        return new EventDataBatchImpl(options.getMaxMessageSize(), null);
     }
 
     public final CompletableFuture<Void> send(EventData data) {
