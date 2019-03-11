@@ -58,8 +58,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         // after creating the socket to proxy
         final String hostName = event.getConnection().getHostname();
         final ProxyHandler proxyHandler = new ProxyHandlerImpl();
-        final Map<String, String> proxyHeader = getAuthorizationHeader();
-        proxy.configure(hostName, proxyHeader, proxyHandler, transport);
+        proxy.configure(hostName, null, proxyHandler, transport);
 
         transport.addTransportLayer(proxy);
 
@@ -117,38 +116,6 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
     public int getRemotePort() {
         final InetSocketAddress socketAddress = getProxyAddress();
         return socketAddress.getPort();
-    }
-
-    private Map<String, String> getAuthorizationHeader() {
-        final PasswordAuthentication authentication = Authenticator.requestPasswordAuthentication(
-                getRemoteHostName(),
-                null,
-                getRemotePort(),
-                "https",
-                "Event Hubs client websocket proxy support",
-                "basic",
-                null,
-                Authenticator.RequestorType.PROXY);
-        if (authentication == null) {
-            return null;
-        }
-
-        final String proxyUserName = authentication.getUserName();
-        final String proxyPassword = authentication.getPassword() != null
-                ? new String(authentication.getPassword())
-                : null;
-        if (StringUtil.isNullOrEmpty(proxyUserName)
-                || StringUtil.isNullOrEmpty(proxyPassword)) {
-            return null;
-        }
-
-        final HashMap<String, String> proxyAuthorizationHeader = new HashMap<>();
-        // https://tools.ietf.org/html/rfc7617
-        final String usernamePasswordPair = proxyUserName + ":" + proxyPassword;
-        proxyAuthorizationHeader.put(
-                "Proxy-Authorization",
-                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes()));
-        return proxyAuthorizationHeader;
     }
 
     private InetSocketAddress getProxyAddress() {
