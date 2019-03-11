@@ -67,21 +67,11 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Map<String, String> mapped = new HashMap<>();
-        mapped.put(HOST_HEADER, credentials.baseUri().getHost());
-        mapped.put(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
-        mapped.put(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
-
-        if (context.httpRequest().headers().value(DATE_HEADER) == null) {
-            String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
-            mapped.put(DATE_HEADER, utcNow);
-        }
-
-        Flux<ByteBuf> contents = context.httpRequest().body() == null
-                ? Flux.just(new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT))
+        final Flux<ByteBuf> contents = context.httpRequest().body() == null
+                ? Flux.just(getEmptyBuffer())
                 : context.httpRequest().body();
 
-        return contents.defaultIfEmpty(new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT))
+        return contents.defaultIfEmpty(getEmptyBuffer())
                 .collect(() -> {
                     try {
                         return MessageDigest.getInstance("SHA-256");
@@ -93,12 +83,16 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                         messageDigest.update(byteBuffer.nioBuffer());
                     }
                 })
-                .flatMap(messageDigest -> messageDigest == null
-                        ? Mono.error(new NoSuchAlgorithmException("Unable to locate SHA-256 algorithm."))
-                        : Mono.just(Base64.getEncoder().encodeToString(messageDigest.digest()))
-                )
-                .flatMap(contentHash -> {
+                .flatMap(messageDigest -> {
+                    if (messageDigest == null) {
+                        return Mono.error(new NoSuchAlgorithmException("Unable to locate SHA-256 algorithm."));
+                    }
+
+                    final Map<String, String> mapped = getDefaultHeaders(context.httpRequest().headers());
+                    final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
+
                     mapped.put(CONTENT_HASH_HEADER, contentHash);
+
                     mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
 
                     try {
@@ -110,6 +104,25 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
 
                     return next.process().doOnSuccess(this::logResponseDelegate);
                 });
+    }
+
+    private Map<String, String> getDefaultHeaders(HttpHeaders currentHeaders) {
+        final Map<String, String> mapped = new HashMap<>();
+
+        mapped.put(HOST_HEADER, credentials.baseUri().getHost());
+        mapped.put(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
+        mapped.put(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
+
+        if (currentHeaders.value(DATE_HEADER) == null) {
+            String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
+            mapped.put(DATE_HEADER, utcNow);
+        }
+
+        return mapped;
+    }
+
+    private ByteBuf getEmptyBuffer() {
+        return new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT);
     }
 
     private void logResponseDelegate(HttpResponse response) {
@@ -127,12 +140,12 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
 
         private String getAuthenticationHeaderValue(final HttpRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
             final String stringToSign = provider.getStringToSign(request);
+            final Mac sha256HMAC = Mac.getInstance("HmacSHA256");
+            final SecretKeySpec secretKey = new SecretKeySpec(credentials.secret(), "HmacSHA256");
 
-            Mac sha256HMAC = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secretKey = new SecretKeySpec(credentials.secret(), "HmacSHA256");
             sha256HMAC.init(secretKey);
 
-            String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
+            final String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
             return String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s",
                     credentials.credential(),
                     signedHeadersValue,
@@ -145,8 +158,8 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                 pathAndQuery += '?' + request.url().getQuery();
             }
 
-            HttpHeaders httpHeaders = request.headers();
-            String signed = Arrays.stream(signedHeaders)
+            final HttpHeaders httpHeaders = request.headers();
+            final String signed = Arrays.stream(signedHeaders)
                     .map(httpHeaders::value)
                     .collect(Collectors.joining(";"));
 
