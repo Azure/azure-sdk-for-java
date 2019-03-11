@@ -31,11 +31,13 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Creates a policy that authenticates request with AzConfig service.
@@ -52,6 +54,8 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
     private static final String ACCEPT_HEADER = "Accept";
 
     private final AzConfigClient.AzConfigCredentials credentials;
+    private final AuthorizationHeaderProvider provider = new AuthorizationHeaderProvider();
+
     private final Logger logger = LoggerFactory.getLogger(AzConfigCredentialsPolicy.class);
 
     /**
@@ -77,9 +81,8 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
         mapped.put(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
 
         if (context.httpRequest().headers().value(DATE_HEADER) == null) {
-            OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
-            String utcNowString = now.format(DateTimeFormatter.RFC_1123_DATE_TIME);
-            mapped.put(DATE_HEADER, utcNowString);
+            String utcNow = OffsetDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.RFC_1123_DATE_TIME);
+            mapped.put(DATE_HEADER, utcNow);
         }
 
         Flux<ByteBuf> contents = context.httpRequest().body() == null
@@ -107,7 +110,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
 
                     mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
 
-                    final String stringToSign = buildStringToSign(context.httpRequest());
+                    final String stringToSign = provider.getStringToSign(context.httpRequest());
 
                     Mac sha256HMAC;
                     try {
@@ -132,27 +135,27 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                 });
     }
 
-    /**
-     * Constructs a string for signing a request.
-     *
-     * @param request The request to sign
-     * @return constructed string
-     */
-    private String buildStringToSign(final HttpRequest request) {
-        try {
-            HttpHeaders httpHeaders = request.headers();
-            String verb = request.httpMethod().toString().toUpperCase();
+    private class AuthorizationHeaderProvider {
+        private final String[] signedHeaders = new String[]{HOST_HEADER, DATE_HEADER, CONTENT_HASH_HEADER};
+        private final String signedHeadersValue = String.join(";", signedHeaders);
+
+        public String getStringToSign(final HttpRequest request) {
             String pathAndQuery = request.url().getPath();
             if (request.url().getQuery() != null) {
                 pathAndQuery += '?' + request.url().getQuery();
             }
-            String utcNowString = httpHeaders.value(DATE_HEADER);
-            String contentHash = httpHeaders.value(CONTENT_HASH_HEADER);
+
+            HttpHeaders httpHeaders = request.headers();
+            String signed = Arrays.stream(signedHeaders)
+                    .map(httpHeaders::value)
+                    .collect(Collectors.joining(";"));
+
             // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
             // Signed headers: "host;x-ms-date;x-ms-content-sha256"
-            return String.format("%s\n%s\n%s;%s;%s", verb, pathAndQuery, credentials.baseUri().getHost(), utcNowString, contentHash);
-        } catch (Exception ex) {
-            throw new IllegalArgumentException(ex);
+            return String.format("%s\n%s\n%s",
+                    request.httpMethod().toString().toUpperCase(),
+                    pathAndQuery,
+                    signed);
         }
     }
 }
