@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
 
+// package-private implementation class
+// Users will be passing in ConnectionDetails rather than this class.
 class ApplicationConfigCredentials {
     private URL baseUri;
     private String credential;
