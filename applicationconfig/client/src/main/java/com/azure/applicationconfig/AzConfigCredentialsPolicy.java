@@ -82,8 +82,6 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
             mapped.put(DATE_HEADER, utcNowString);
         }
 
-        mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
-
         Flux<ByteBuf> contents = context.httpRequest().body() == null
                 ? Flux.just(new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT))
                 : context.httpRequest().body();
@@ -105,7 +103,9 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                         : Mono.just(Base64.getEncoder().encodeToString(messageDigest.digest()))
                 )
                 .flatMap(contentHash -> {
-                    context.httpRequest().headers().set(CONTENT_HASH_HEADER, contentHash);
+                    mapped.put(CONTENT_HASH_HEADER, contentHash);
+
+                    mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
 
                     final String stringToSign = buildStringToSign(context.httpRequest());
 
