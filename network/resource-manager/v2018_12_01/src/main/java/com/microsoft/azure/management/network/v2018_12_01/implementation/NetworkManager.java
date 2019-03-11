@@ -85,6 +85,7 @@ import com.microsoft.azure.management.network.v2018_12_01.VpnGateways;
 import com.microsoft.azure.management.network.v2018_12_01.VpnConnections;
 import com.microsoft.azure.management.network.v2018_12_01.P2sVpnServerConfigurations;
 import com.microsoft.azure.management.network.v2018_12_01.P2sVpnGateways;
+import com.microsoft.azure.management.network.v2018_12_01.WebApplicationFirewallPolicies;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -161,6 +162,7 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
     private VpnConnections vpnConnections;
     private P2sVpnServerConfigurations p2sVpnServerConfigurations;
     private P2sVpnGateways p2sVpnGateways;
+    private WebApplicationFirewallPolicies webApplicationFirewallPolicies;
     /**
     * Get a Configurable instance that can be used to create NetworkManager with optional configuration.
     *
@@ -896,6 +898,16 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
             this.p2sVpnGateways = new P2sVpnGatewaysImpl(this);
         }
         return this.p2sVpnGateways;
+    }
+
+    /**
+     * @return Entry point to manage WebApplicationFirewallPolicies.
+     */
+    public WebApplicationFirewallPolicies webApplicationFirewallPolicies() {
+        if (this.webApplicationFirewallPolicies == null) {
+            this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesImpl(this);
+        }
+        return this.webApplicationFirewallPolicies;
     }
 
     /**
