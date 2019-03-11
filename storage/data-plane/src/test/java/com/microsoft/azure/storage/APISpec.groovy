@@ -31,6 +31,8 @@ import java.nio.ByteBuffer
 import java.time.OffsetDateTime
 
 class APISpec extends Specification {
+    static final String RECORD_MODE = "RECORD"
+
     @Shared
     Integer iterationNo = 0 // Used to generate stable container names for recording tests with multiple iterations.
 
@@ -563,6 +565,7 @@ class APISpec extends Specification {
     }
 
     def getTestMode(){
-        return System.getenv("AZURE_TEST_MODE")
+        //return System.getenv("AZURE_TEST_MODE")
+        return "PLAYBACK";
     }
 }

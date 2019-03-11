@@ -72,10 +72,10 @@
             <artifactId>client-runtime</artifactId>
         </dependency>
 
-        <dependency>
+        <!--dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-        </dependency>
+        </dependency-->
 
         <dependency>
             <groupId>junit</groupId>
@@ -89,24 +89,24 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
+        <!--dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>2.4.13</version>
             <scope>test</scope>
-        </dependency>
+        </dependency-->
 
-        <dependency>
+        <!--dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
             <scope>test</scope>
-        </dependency>
+        </dependency-->
 
-        <dependency>
+        <!--dependency>
             <groupId>org.objenesis</groupId>
             <artifactId>objenesis</artifactId>
             <scope>test</scope>
-        </dependency>
+        </dependency-->
 
         <dependency>
             <groupId>uk.org.lidalia</groupId>
@@ -124,14 +124,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
+                <!--configuration>
                     <compilerId>groovy-eclipse-compiler</compilerId>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
                     <source>1.8</source>
                     <target>1.8</target>
                     <showDeprecation>true</showDeprecation>
-                </configuration>
+                </configuration-->
                 <dependencies>
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>
@@ -145,7 +144,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
-            <plugin>
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.20.1</version>
@@ -158,22 +157,22 @@
                         <include>**/*Samples*.*</include>
                     </includes>
                 </configuration>
-            </plugin>
-            <plugin>
+            </plugin-->
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.10.1</version>
-                <configuration>
+                <configuration-->
                     <!-- force links to Java 8 documentation (should happen automatically
 						but doesn't) -->
-                    <javaApiLinks>
+                    <!--javaApiLinks>
                         <property>
                             <name>api_1.8</name>
                             <value>https://docs.oracle.com/javase/8/docs/api/</value>
                         </property>
-                    </javaApiLinks>
+                    </javaApiLinks-->
                     <!-- add license notice -->
-                    <bottom>
+                    <!--bottom>
                         <![CDATA[This documentation was released into the public domain.]]>
                     </bottom>
                     <tags>
@@ -184,17 +183,17 @@
                         </tag>
                     </tags>
                 </configuration>
-            </plugin>
-            <plugin>
+            </plugin-->
+            <!--plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.2</version>
-            </plugin>
-            <plugin>
+            </plugin-->
+            <!--plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
                 <version>3.0.0</version>
-            </plugin>
+            </plugin-->
         </plugins>
     </build>
 </project>

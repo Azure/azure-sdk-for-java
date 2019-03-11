@@ -38,7 +38,7 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload file"() {
         setup:
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase("RECORD"))
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:
