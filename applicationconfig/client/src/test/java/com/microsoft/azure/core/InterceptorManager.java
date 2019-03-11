@@ -9,9 +9,9 @@ import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpHeader;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
+import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.NextPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.io.IOUtils;
@@ -100,7 +100,7 @@ public class InterceptorManager {
     }
 
     public class RecordPolicy implements HttpPipelinePolicy {
-        public Mono<HttpResponse> process(HttpPipelineCallContext context, NextPolicy next) {
+        public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
             final NetworkCallRecord networkCallRecord = new NetworkCallRecord();
 
             networkCallRecord.Headers = new HashMap<>();
