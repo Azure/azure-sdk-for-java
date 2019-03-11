@@ -102,7 +102,6 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                         ? Mono.error(new NoSuchAlgorithmException("Unable to locate SHA-256 algorithm."))
                         : Mono.just(Base64.getEncoder().encodeToString(messageDigest.digest()))
                 )
-                .single()
                 .flatMap(contentHash -> {
                     context.httpRequest().headers().set(CONTENT_HASH_HEADER, contentHash);
 
