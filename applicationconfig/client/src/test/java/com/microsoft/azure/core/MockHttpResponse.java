@@ -14,6 +14,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class MockHttpResponse extends HttpResponse {
     private final static SerializerAdapter serializer = new JacksonAdapter();
@@ -100,10 +102,15 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> bodyAsString() {
+        return bodyAsString(StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public Mono<String> bodyAsString(Charset charset) {
         if (bodyBytes == null) {
             return Mono.empty();
         } else {
-            return Mono.just(new String(bodyBytes));
+            return Mono.just(new String(bodyBytes, charset));
         }
     }
 }
