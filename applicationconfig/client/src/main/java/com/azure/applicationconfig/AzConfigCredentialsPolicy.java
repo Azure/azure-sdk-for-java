@@ -158,16 +158,5 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
             throw new IllegalArgumentException(ex);
         }
     }
-
-    private static String getContentHash(byte[] content) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-            byte[] hash = digest.digest(content);
-            return Base64.getEncoder().encodeToString(hash);
-        } catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
 }
 
