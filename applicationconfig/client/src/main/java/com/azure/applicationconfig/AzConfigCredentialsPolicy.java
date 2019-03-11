@@ -29,7 +29,13 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Creates a policy that authenticates request with AzConfig service.
@@ -65,14 +71,18 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
      */
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        context.httpRequest().headers().set(HOST_HEADER, credentials.baseUri().getHost());
+        Map<String, String> mapped = new HashMap<>();
+        mapped.put(HOST_HEADER, credentials.baseUri().getHost());
+        mapped.put(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
+        mapped.put(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
+
         if (context.httpRequest().headers().value(DATE_HEADER) == null) {
             OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC);
             String utcNowString = now.format(DateTimeFormatter.RFC_1123_DATE_TIME);
-            context.httpRequest().headers().set(DATE_HEADER, utcNowString);
+            mapped.put(DATE_HEADER, utcNowString);
         }
-        context.httpRequest().headers().set(CONTENT_TYPE_HEADER, KEY_VALUE_APPLICATION_HEADER);
-        context.httpRequest().headers().set(ACCEPT_HEADER, KEY_VALUE_APPLICATION_HEADER);
+
+        mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
 
         Flux<ByteBuf> contents = context.httpRequest().body() == null
                 ? Flux.just(new EmptyByteBuf(UnpooledByteBufAllocator.DEFAULT))
