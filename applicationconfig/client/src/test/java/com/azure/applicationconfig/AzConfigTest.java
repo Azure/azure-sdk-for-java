@@ -71,7 +71,8 @@ public class AzConfigTest {
         if (isPlaybackMode()) {
             System.out.println("PLAYBACK MODE");
 
-            credentials = ApplicationConfigCredentials.parseConnectionString("endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw");
+            connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
+            credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
 
             pipeline = new HttpPipeline(
