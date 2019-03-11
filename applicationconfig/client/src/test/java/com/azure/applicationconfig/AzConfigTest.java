@@ -12,7 +12,6 @@ import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
 import com.microsoft.azure.v3.CloudException;
-import com.microsoft.rest.v3.http.HttpClientConfiguration;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpPipelineOptions;
 import com.microsoft.rest.v3.http.ProxyOptions;
@@ -37,10 +36,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Properties;
 
-import static com.azure.azconfig.AzConfigClient.SDK_NAME;
-import static com.azure.azconfig.AzConfigClient.SDK_VERSION;
+import static com.azure.applicationconfig.AzConfigClient.SDK_NAME;
+import static com.azure.applicationconfig.AzConfigClient.SDK_VERSION;
 
 public class AzConfigTest {
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
@@ -64,14 +64,15 @@ public class AzConfigTest {
     public void beforeTest() throws Exception {
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
 
-        AzConfigClient.AzConfigCredentials credentials;
+        ApplicationConfigCredentials credentials;
         HttpPipeline pipeline;
         String connectionString;
 
         if (isPlaybackMode()) {
             System.out.println("PLAYBACK MODE");
 
-            credentials = AzConfigClient.AzConfigCredentials.parseConnectionString("endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw");
+            connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
+            credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
 
             pipeline = new HttpPipeline(
@@ -83,9 +84,10 @@ public class AzConfigTest {
         } else {
             System.out.println("RECORD MODE");
 
-            connectionString =  System.getenv("AZCONFIG_CONNECTION_STRING");
-            HttpClientConfiguration configuration = new HttpClientConfiguration().withProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
-            credentials = AzConfigClient.AzConfigCredentials.parseConnectionString(connectionString);
+            connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
+            Objects.requireNonNull(connectionString, "ConnectionString must be set to record data.");
+
+            credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.initRecordPolicy());
 
@@ -103,11 +105,11 @@ public class AzConfigTest {
 //                               .withDecodingPolicy().build();
             interceptorManager.addTextReplacementRule(credentials.baseUri().toString(), playbackUri);
         }
-        client = AzConfigClient.create(credentials, pipeline);
+        client = AzConfigClient.create(connectionString, pipeline);
         keyPrefix = SdkContext.randomResourceName("key", 8);
     }
 
-    private static List<HttpPipelinePolicy> getDefaultPolicies(AzConfigClient.AzConfigCredentials credentials) {
+    private static List<HttpPipelinePolicy> getDefaultPolicies(ApplicationConfigCredentials credentials) {
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
         policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
         policies.add(new RequestIdPolicy());

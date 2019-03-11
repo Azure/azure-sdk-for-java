@@ -852,7 +852,7 @@
   </profiles>
 
   <modules>
-    <module>./azconfig/data-plane</module>
+    <module>./applicationconfig/client</module>
     <module>./batch/data-plane</module>
     <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>

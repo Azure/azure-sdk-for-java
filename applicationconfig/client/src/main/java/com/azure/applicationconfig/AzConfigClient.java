@@ -31,6 +31,7 @@ import com.microsoft.rest.v3.annotations.PathParam;
 import com.microsoft.rest.v3.annotations.QueryParam;
 import com.microsoft.rest.v3.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v3.http.HttpPipeline;
+import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.http.policy.RetryPolicy;
@@ -63,39 +64,36 @@ public final class AzConfigClient extends ServiceClient {
      * @return an instance of AzConfigClient
      */
     public static AzConfigClient create(String connectionString) {
-        return create(connectionString, new PipelineOptions());
+        return create(connectionString, HttpLogDetailLevel.BASIC);
     }
 
     /**
      * Create a new instance of AzConfigClient with pipeline options that uses connectionString for authentication.
      * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
-     * @param pipelineOptions pipeline options
+     * @param logLevel Amount of detail to log for requests sent and responses received
      * @return an instance of AzConfigClient
      */
-    public static AzConfigClient create(String connectionString, PipelineOptions pipelineOptions) {
-        AzConfigCredentials credentials = AzConfigCredentials.parseConnectionString(connectionString);
-        return new AzConfigClient(credentials, pipelineOptions);
+    public static AzConfigClient create(String connectionString, HttpLogDetailLevel logLevel) {
+        ApplicationConfigCredentials credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
+        return create(connectionString, createPipeline(credentials, logLevel));
     }
 
+    //TODO What is the likelihood someone will submit their own entire pipeline?
     /**
      * Create a new instance of AzConfigClient with pipeline  that uses credentials for authentication.
-     * @param credentials AzConfigCredentials to authenticate
+     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
      * @param pipeline pre-defined pipeline
      * @return an instance of AzConfigClient
      */
-
-    public static AzConfigClient create(AzConfigCredentials credentials, HttpPipeline pipeline) {
+    public static AzConfigClient create(String connectionString, HttpPipeline pipeline) {
+        ApplicationConfigCredentials credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
         return new AzConfigClient(credentials, pipeline);
     }
 
-    private AzConfigClient(AzConfigCredentials credentials, PipelineOptions pipelineOptions) {
-        this(credentials, createPipeline(credentials, pipelineOptions));
-    }
-
-    private AzConfigClient(AzConfigCredentials credentials, HttpPipeline pipeline) {
+    private AzConfigClient(ApplicationConfigCredentials credentials, HttpPipeline pipeline) {
         super(pipeline);
         this.service = RestProxy.create(AzConfigService.class, pipeline);
-        baseUri = credentials.baseUri;
+        baseUri = credentials.baseUri();
     }
 
     /**
@@ -533,74 +531,16 @@ public final class AzConfigClient extends ServiceClient {
      * @param credentials credentials the pipeline will use to authenticate the requests
      * @return the pipeline
      */
-    private static HttpPipeline createPipeline(AzConfigCredentials credentials, PipelineOptions pipelineOptions) {
-        if (pipelineOptions == null) {
-            throw new IllegalArgumentException("pipelineOptions cannot be null.");
-        }
+    private static HttpPipeline createPipeline(ApplicationConfigCredentials credentials, HttpLogDetailLevel logLevel) {
         // Closest to API goes first, closest to wire goes last.
-//        ArrayList<RequestPolicyFactory> factories = new ArrayList<>();
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
 
         policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
         policies.add(new RequestIdPolicy());
         policies.add(new AzConfigCredentialsPolicy(credentials));
         policies.add(new RetryPolicy());
-//        policies.add(new RequestRetryPolicyFactory()); // todo - do we really need custom retry policy here?
-        policies.add(new HttpLoggingPolicy(pipelineOptions.httpLogDetailLevel()));
+        policies.add(new HttpLoggingPolicy(logLevel));
 
-        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[policies.size()]));
-    }
-
-    static class AzConfigCredentials {
-        private URL baseUri;
-        private String credential;
-        private byte[] secret;
-
-        URL baseUri() {
-            return baseUri;
-        }
-
-        String credential() {
-            return credential;
-        }
-
-        byte[] secret() {
-            return secret;
-        }
-
-        static AzConfigCredentials parseConnectionString(String connectionString) {
-            if (connectionString == null || connectionString.isEmpty()) {
-                throw new IllegalArgumentException(connectionString);
-            }
-
-            // Parse connection string
-            String[] args = connectionString.split(";");
-            if (args.length < 3) {
-                throw new IllegalArgumentException("invalid connection string segment count");
-            }
-
-            String endpointString = "endpoint=";
-            String idString = "id=";
-            String secretString = "secret=";
-
-            AzConfigCredentials credentials = new AzConfigCredentials();
-
-            for (String arg : args) {
-                String segment = arg.trim();
-                try {
-                    if (segment.toLowerCase().startsWith(endpointString)) {
-                        credentials.baseUri = new URL(segment.substring(segment.indexOf('=') + 1));
-                    } else if (segment.toLowerCase().startsWith(idString)) {
-                        credentials.credential = segment.substring(segment.indexOf('=') + 1);
-                    } else if (segment.toLowerCase().startsWith(secretString)) {
-                        String secretBase64 = segment.substring(segment.indexOf('=') + 1);
-                        credentials.secret = Base64.getDecoder().decode(secretBase64);
-                    }
-                } catch (MalformedURLException ex) {
-                    throw new IllegalArgumentException(ex);
-                }
-            }
-            return credentials;
-        }
+        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[0]));
     }
 }
