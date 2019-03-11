@@ -47,7 +47,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
     private static final String ACCEPT_HEADER = "Accept";
 
     private final ApplicationConfigCredentials credentials;
-    private final AuthorizationHeaderProvider provider = new AuthorizationHeaderProvider();
+    private final AuthorizationHeaderProvider provider;
     private final Logger logger = LoggerFactory.getLogger(AzConfigCredentialsPolicy.class);
 
     /**
@@ -57,6 +57,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
      */
     AzConfigCredentialsPolicy(ApplicationConfigCredentials credentials) {
         this.credentials = credentials;
+        this.provider = new AuthorizationHeaderProvider(credentials);
     }
 
     /**
@@ -134,12 +135,17 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private class AuthorizationHeaderProvider {
+    private static class AuthorizationHeaderProvider {
         private final String[] signedHeaders = new String[]{HOST_HEADER, DATE_HEADER, CONTENT_HASH_HEADER};
         private final String signedHeadersValue = String.join(";", signedHeaders);
+        private final ApplicationConfigCredentials credentials;
+
+        AuthorizationHeaderProvider(ApplicationConfigCredentials credentials) {
+            this.credentials = credentials;
+        }
 
         private String getAuthenticationHeaderValue(final HttpRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
-            final String stringToSign = provider.getStringToSign(request);
+            final String stringToSign = getStringToSign(request);
             final Mac sha256HMAC = Mac.getInstance("HmacSHA256");
             final SecretKeySpec secretKey = new SecretKeySpec(credentials.secret(), "HmacSHA256");
 
