@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
@@ -106,15 +107,17 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                     context.httpRequest().headers().set(CONTENT_HASH_HEADER, contentHash);
 
                     final String stringToSign = buildStringToSign(context.httpRequest());
+
+                    Mac sha256HMAC;
                     try {
-                        Mac sha256HMAC = Mac.getInstance("HmacSHA256");
+                        sha256HMAC = Mac.getInstance("HmacSHA256");
                         SecretKeySpec secretKey = new SecretKeySpec(credentials.secret(), "HmacSHA256");
                         sha256HMAC.init(secretKey);
 
                         String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
                         String signedString = String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s", credentials.credential(), SIGNED_HEADERS, signature);
                         context.httpRequest().headers().set(AUTHORIZATION_HEADER, signedString);
-                    } catch (Exception e) {
+                    } catch (InvalidKeyException | NoSuchAlgorithmException e) {
                         return Mono.error(e);
                     }
 
