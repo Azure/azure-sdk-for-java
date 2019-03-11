@@ -64,14 +64,14 @@ public class AzConfigTest {
     public void beforeTest() throws Exception {
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
 
-        AzConfigClient.AzConfigCredentials credentials;
+        ApplicationConfigCredentials credentials;
         HttpPipeline pipeline;
         String connectionString;
 
         if (isPlaybackMode()) {
             System.out.println("PLAYBACK MODE");
 
-            credentials = AzConfigClient.AzConfigCredentials.parseConnectionString("endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw");
+            credentials = ApplicationConfigCredentials.parseConnectionString("endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw");
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
 
             pipeline = new HttpPipeline(
@@ -85,7 +85,7 @@ public class AzConfigTest {
 
             connectionString =  System.getenv("AZCONFIG_CONNECTION_STRING");
             HttpClientConfiguration configuration = new HttpClientConfiguration().withProxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888)));
-            credentials = AzConfigClient.AzConfigCredentials.parseConnectionString(connectionString);
+            credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.initRecordPolicy());
 
@@ -107,7 +107,7 @@ public class AzConfigTest {
         keyPrefix = SdkContext.randomResourceName("key", 8);
     }
 
-    private static List<HttpPipelinePolicy> getDefaultPolicies(AzConfigClient.AzConfigCredentials credentials) {
+    private static List<HttpPipelinePolicy> getDefaultPolicies(ApplicationConfigCredentials credentials) {
         List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
         policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
         policies.add(new RequestIdPolicy());
