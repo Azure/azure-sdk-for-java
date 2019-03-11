@@ -327,8 +327,8 @@
                <linkXRef>true</linkXRef>
 
                <!-- TODO soon - enable these failure modes -->
-               <failsOnError>true</failsOnError>
-               <failOnViolation>true</failOnViolation>
+               <failsOnError>false</failsOnError>
+               <failOnViolation>false</failOnViolation>
             </configuration>
             <executions>
                <execution>

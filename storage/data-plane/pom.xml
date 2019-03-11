@@ -124,13 +124,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <!--configuration>
+                <configuration>
                     <compilerId>groovy-eclipse-compiler</compilerId>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
                     <source>1.8</source>
                     <target>1.8</target>
                     <showDeprecation>true</showDeprecation>
-                </configuration-->
+                </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.codehaus.groovy</groupId>

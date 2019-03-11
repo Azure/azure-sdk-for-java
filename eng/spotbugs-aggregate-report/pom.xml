@@ -56,6 +56,11 @@
             <artifactId>azure-batch</artifactId>
             <version>${azure-batch.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-storage-blob</artifactId>
+            <version>10.5.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -78,6 +83,7 @@
                                 <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-extensions\src\main\java</source>
                                 <source>..\..\batch\data-plane\src\main\java</source>
+                                <source>..\..\storage\data-plane\src\main\java</source>
                             </sources>
                         </configuration>
                     </execution>
