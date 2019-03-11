@@ -27,6 +27,7 @@ import com.microsoft.azure.management.eventhub.v2017_04_01.CheckNameAvailability
 import com.microsoft.azure.management.eventhub.v2017_04_01.NamespaceAuthorizationRule;
 import com.microsoft.azure.management.eventhub.v2017_04_01.AccessKeys;
 import com.microsoft.azure.management.eventhub.v2017_04_01.RegenerateAccessKeyParameters;
+import com.microsoft.azure.management.eventhub.v2017_04_01.NetworkRuleSet;
 
 class NamespacesImpl extends GroupableResourcesCoreImpl<EHNamespace, EHNamespaceImpl, EHNamespaceInner, NamespacesInner, EventHubManager>  implements Namespaces {
     protected NamespacesImpl(EventHubManager manager) {
@@ -241,6 +242,30 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<EHNamespace, EHNamespace
             @Override
             public AccessKeys call(AccessKeysInner inner) {
                 return new AccessKeysImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<NetworkRuleSet> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters) {
+        NamespacesInner client = this.inner();
+        return client.createOrUpdateNetworkRuleSetAsync(resourceGroupName, namespaceName, parameters)
+        .map(new Func1<NetworkRuleSetInner, NetworkRuleSet>() {
+            @Override
+            public NetworkRuleSet call(NetworkRuleSetInner inner) {
+                return new NetworkRuleSetImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName) {
+        NamespacesInner client = this.inner();
+        return client.getNetworkRuleSetAsync(resourceGroupName, namespaceName)
+        .map(new Func1<NetworkRuleSetInner, NetworkRuleSet>() {
+            @Override
+            public NetworkRuleSet call(NetworkRuleSetInner inner) {
+                return new NetworkRuleSetImpl(inner, manager());
             }
         });
     }
