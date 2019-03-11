@@ -39,8 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static com.azure.azconfig.AzConfigClient.SDK_NAME;
-import static com.azure.azconfig.AzConfigClient.SDK_VERSION;
+import static com.azure.applicationconfig.AzConfigClient.SDK_NAME;
+import static com.azure.applicationconfig.AzConfigClient.SDK_VERSION;
 
 public class AzConfigTest {
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
