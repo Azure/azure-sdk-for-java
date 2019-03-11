@@ -58,21 +58,37 @@ public final class AzConfigClient extends ServiceClient {
     private URL baseUri;
     private AzConfigService service;
 
-    public static AzConfigClient create(ApplicationConfigCredentials credentials) {
-        return create(credentials, HttpLogDetailLevel.BASIC);
-    }
-
-    public static AzConfigClient create(ApplicationConfigCredentials credentials, HttpLogDetailLevel logLevel) {
-        return create(credentials, createPipeline(credentials, logLevel));
+    /**
+     * Create a new instance of AzConfigClient that uses connectionString for authentication.
+     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
+     * @return an instance of AzConfigClient
+     */
+    public static AzConfigClient create(String connectionString) {
+        return create(
+                connectionString,
+                HttpLogDetailLevel.BASIC);
     }
 
     /**
+     * Create a new instance of AzConfigClient with pipeline options that uses connectionString for authentication.
+     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
+     * @param logLevel Amount of detail to log for requests sent and responses received
+     * @return an instance of AzConfigClient
+     */
+    public static AzConfigClient create(String connectionString, HttpLogDetailLevel logLevel) {
+        ApplicationConfigCredentials credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
+        return create(connectionString, createPipeline(credentials, logLevel));
+    }
+
+    //TODO What is the likelihood someone will submit their own entire pipeline?
+    /**
      * Create a new instance of AzConfigClient with pipeline  that uses credentials for authentication.
-     * @param credentials AzConfigCredentials to authenticate
+     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
      * @param pipeline pre-defined pipeline
      * @return an instance of AzConfigClient
      */
-    public static AzConfigClient create(ApplicationConfigCredentials credentials, HttpPipeline pipeline) {
+    public static AzConfigClient create(String connectionString, HttpPipeline pipeline) {
+        ApplicationConfigCredentials credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
         return new AzConfigClient(credentials, pipeline);
     }
 
