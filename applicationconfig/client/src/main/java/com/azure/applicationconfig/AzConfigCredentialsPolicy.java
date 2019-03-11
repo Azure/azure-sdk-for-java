@@ -43,7 +43,6 @@ import java.util.stream.Collectors;
  * Creates a policy that authenticates request with AzConfig service.
  */
 public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
-    private static final String SIGNED_HEADERS = "host;x-ms-date;x-ms-content-sha256";
     private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";
 
     private static final String HOST_HEADER = "Host";
@@ -55,7 +54,6 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
 
     private final AzConfigClient.AzConfigCredentials credentials;
     private final AuthorizationHeaderProvider provider = new AuthorizationHeaderProvider();
-
     private final Logger logger = LoggerFactory.getLogger(AzConfigCredentialsPolicy.class);
 
     /**
@@ -141,7 +139,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
             String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
             return String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s",
                     credentials.credential(),
-                    SIGNED_HEADERS,
+                    signedHeadersValue,
                     signature);
         }
 
