@@ -565,7 +565,6 @@ class APISpec extends Specification {
     }
 
     def getTestMode(){
-        //return System.getenv("AZURE_TEST_MODE")
-        return "PLAYBACK";
+        return System.getenv("AZURE_TEST_MODE")
     }
 }
