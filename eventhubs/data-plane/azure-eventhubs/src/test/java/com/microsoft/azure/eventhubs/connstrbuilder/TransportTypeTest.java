@@ -9,10 +9,10 @@ import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.impl.ConnectionHandler;
 import com.microsoft.azure.eventhubs.impl.EventHubClientImpl;
 import com.microsoft.azure.eventhubs.impl.MessagingFactory;
+import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 
-import org.jutils.jproxy.ProxyServer;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -37,13 +37,6 @@
     <qpid-proton-j-extensions-version>1.1.0</qpid-proton-j-extensions-version>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>HTTP proxy server in java</id>
-      <url>https://github.com/SreeramGarlapati/jproxy/tree/master/releases/org/jutils/jproxy/jproxy/0.0.1 </url>
-    </repository>
-  </repositories>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.qpid</groupId>
@@ -60,12 +53,6 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jutils.jproxy</groupId>
-      <artifactId>jproxy</artifactId>
-      <version>0.0.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
