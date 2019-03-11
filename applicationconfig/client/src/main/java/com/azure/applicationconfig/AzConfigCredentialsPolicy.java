@@ -107,19 +107,10 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                 )
                 .flatMap(contentHash -> {
                     mapped.put(CONTENT_HASH_HEADER, contentHash);
-
                     mapped.forEach((key, value) -> context.httpRequest().headers().set(key, value));
 
-                    final String stringToSign = provider.getStringToSign(context.httpRequest());
-
-                    Mac sha256HMAC;
                     try {
-                        sha256HMAC = Mac.getInstance("HmacSHA256");
-                        SecretKeySpec secretKey = new SecretKeySpec(credentials.secret(), "HmacSHA256");
-                        sha256HMAC.init(secretKey);
-
-                        String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
-                        String signedString = String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s", credentials.credential(), SIGNED_HEADERS, signature);
+                        String signedString = provider.getAuthenticationHeaderValue(context.httpRequest());
                         context.httpRequest().headers().set(AUTHORIZATION_HEADER, signedString);
                     } catch (InvalidKeyException | NoSuchAlgorithmException e) {
                         return Mono.error(e);
@@ -129,7 +120,8 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                         Objects.requireNonNull(httpResponse, "HttpResponse is required.");
 
                         if (httpResponse.statusCode() == HttpResponseStatus.UNAUTHORIZED.code()) {
-                            logger.error("HTTP Unauthorized status, String-to-Sign:'{}'", stringToSign);
+                            logger.error("HTTP Unauthorized status, String-to-Sign:'{}'",
+                                    httpResponse.headers().value(AUTHORIZATION_HEADER));
                         }
                     });
                 });
@@ -139,7 +131,21 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
         private final String[] signedHeaders = new String[]{HOST_HEADER, DATE_HEADER, CONTENT_HASH_HEADER};
         private final String signedHeadersValue = String.join(";", signedHeaders);
 
-        public String getStringToSign(final HttpRequest request) {
+        private String getAuthenticationHeaderValue(final HttpRequest request) throws NoSuchAlgorithmException, InvalidKeyException {
+            final String stringToSign = provider.getStringToSign(request);
+
+            Mac sha256HMAC = Mac.getInstance("HmacSHA256");
+            SecretKeySpec secretKey = new SecretKeySpec(credentials.secret(), "HmacSHA256");
+            sha256HMAC.init(secretKey);
+
+            String signature = Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
+            return String.format("HMAC-SHA256 Credential=%s, SignedHeaders=%s, Signature=%s",
+                    credentials.credential(),
+                    SIGNED_HEADERS,
+                    signature);
+        }
+
+        private String getStringToSign(final HttpRequest request) {
             String pathAndQuery = request.url().getPath();
             if (request.url().getQuery() != null) {
                 pathAndQuery += '?' + request.url().getQuery();
