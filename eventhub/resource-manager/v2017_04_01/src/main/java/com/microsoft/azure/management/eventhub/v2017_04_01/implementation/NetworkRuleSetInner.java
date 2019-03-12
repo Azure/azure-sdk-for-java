@@ -17,7 +17,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * Description of topic resource.
+ * Description of NetworkRuleSet resource.
  */
 @JsonFlatten
 public class NetworkRuleSetInner extends ProxyResource {

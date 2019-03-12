@@ -15,6 +15,7 @@ import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGro
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
+import com.microsoft.azure.management.eventhub.v2017_04_01.implementation.NetworkRuleSetInner;
 import com.microsoft.azure.management.eventhub.v2017_04_01.implementation.NamespacesInner;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.eventhub.v2017_04_01.NamespaceAuthorizationRule;
@@ -40,6 +41,27 @@ public interface Namespaces extends SupportsCreating<EHNamespace.DefinitionStage
      * @return the observable for the request
      */
     Observable<MessagingPlan> getMessagingPlanAsync(String resourceGroupName, String namespaceName);
+
+    /**
+     * Create or update NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @param parameters The Namespace IpFilterRule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkRuleSet> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters);
+
+    /**
+     * Gets NetworkRuleSet for a Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName);
 
     /**
      * Check the give Namespace name availability.
