@@ -19,13 +19,13 @@ public class ImageCreateSummary {
      * True if all of the images in the batch were created successfully,
      * otherwise false.
      */
-    @JsonProperty(value = "isBatchSuccessful", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "isBatchSuccessful", access = JsonProperty.Access.WRITE_ONLY)
     private boolean isBatchSuccessful;
 
     /**
      * List of the image creation results.
      */
-    @JsonProperty(value = "images", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "images", access = JsonProperty.Access.WRITE_ONLY)
     private List<ImageCreateResult> images;
 
     /**

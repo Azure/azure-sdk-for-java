@@ -19,19 +19,19 @@ public class ImageTag {
     /**
      * The tagId property.
      */
-    @JsonProperty(value = "tagId", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tagId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID tagId;
 
     /**
      * The tagName property.
      */
-    @JsonProperty(value = "tagName", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tagName", access = JsonProperty.Access.WRITE_ONLY)
     private String tagName;
 
     /**
      * The created property.
      */
-    @JsonProperty(value = "created", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**

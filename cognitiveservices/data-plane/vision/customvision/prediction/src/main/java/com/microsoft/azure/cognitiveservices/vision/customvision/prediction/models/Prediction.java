@@ -19,7 +19,7 @@ public class Prediction {
      * Probability of the tag.
      */
     @JsonProperty(value = "probability", access = JsonProperty.Access.WRITE_ONLY)
-    private Double probability;
+    private double probability;
 
     /**
      * Id of the predicted tag.
@@ -44,7 +44,7 @@ public class Prediction {
      *
      * @return the probability value
      */
-    public Double probability() {
+    public double probability() {
         return this.probability;
     }
 

@@ -20,31 +20,31 @@ public class ImagePrediction {
     /**
      * Prediction Id.
      */
-    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
      * Project Id.
      */
-    @JsonProperty(value = "project", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "project", access = JsonProperty.Access.WRITE_ONLY)
     private UUID project;
 
     /**
      * Iteration Id.
      */
-    @JsonProperty(value = "iteration", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "iteration", access = JsonProperty.Access.WRITE_ONLY)
     private UUID iteration;
 
     /**
      * Date this prediction was created.
      */
-    @JsonProperty(value = "created", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
      * List of predictions.
      */
-    @JsonProperty(value = "predictions", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "predictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<Prediction> predictions;
 
     /**

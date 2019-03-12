@@ -20,43 +20,43 @@ public class Image {
     /**
      * Id of the image.
      */
-    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
      * Date the image was created.
      */
-    @JsonProperty(value = "created", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
      * Width of the image.
      */
-    @JsonProperty(value = "width", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "width", access = JsonProperty.Access.WRITE_ONLY)
     private int width;
 
     /**
      * Height of the image.
      */
-    @JsonProperty(value = "height", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "height", access = JsonProperty.Access.WRITE_ONLY)
     private int height;
 
     /**
      * The URI to the (resized) image used for training.
      */
-    @JsonProperty(value = "resizedImageUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resizedImageUri", access = JsonProperty.Access.WRITE_ONLY)
     private String resizedImageUri;
 
     /**
      * The URI to the thumbnail of the original image.
      */
-    @JsonProperty(value = "thumbnailUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
 
     /**
      * The URI to the original uploaded image.
      */
-    @JsonProperty(value = "originalImageUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "originalImageUri", access = JsonProperty.Access.WRITE_ONLY)
     private String originalImageUri;
 
     /**

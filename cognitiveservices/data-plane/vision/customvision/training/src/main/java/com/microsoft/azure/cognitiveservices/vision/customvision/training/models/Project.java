@@ -19,7 +19,7 @@ public class Project {
     /**
      * Gets the project id.
      */
-    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
@@ -43,19 +43,19 @@ public class Project {
     /**
      * Gets the date this project was created.
      */
-    @JsonProperty(value = "created", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
      * Gets the date this project was last modified.
      */
-    @JsonProperty(value = "lastModified", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastModified;
 
     /**
      * Gets the thumbnail url representing the image.
      */
-    @JsonProperty(value = "thumbnailUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
 
     /**

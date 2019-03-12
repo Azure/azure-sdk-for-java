@@ -46,7 +46,7 @@ public class Export {
      * should be re-exported for the latest changes.
      */
     @JsonProperty(value = "newerVersionAvailable", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean newerVersionAvailable;
+    private boolean newerVersionAvailable;
 
     /**
      * Get platform of the export. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'.
@@ -89,7 +89,7 @@ public class Export {
      *
      * @return the newerVersionAvailable value
      */
-    public Boolean newerVersionAvailable() {
+    public boolean newerVersionAvailable() {
         return this.newerVersionAvailable;
     }
 

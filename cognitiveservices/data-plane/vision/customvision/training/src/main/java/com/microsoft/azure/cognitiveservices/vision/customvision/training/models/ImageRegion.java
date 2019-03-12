@@ -19,19 +19,19 @@ public class ImageRegion {
     /**
      * The regionId property.
      */
-    @JsonProperty(value = "regionId", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "regionId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID regionId;
 
     /**
      * The tagName property.
      */
-    @JsonProperty(value = "tagName", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "tagName", access = JsonProperty.Access.WRITE_ONLY)
     private String tagName;
 
     /**
      * The created property.
      */
-    @JsonProperty(value = "created", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**

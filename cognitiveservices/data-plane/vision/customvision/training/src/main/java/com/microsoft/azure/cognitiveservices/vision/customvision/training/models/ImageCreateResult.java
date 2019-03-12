@@ -17,7 +17,7 @@ public class ImageCreateResult {
     /**
      * Source URL of the image.
      */
-    @JsonProperty(value = "sourceUrl", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "sourceUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceUrl;
 
     /**
@@ -27,13 +27,13 @@ public class ImageCreateResult {
      * 'ErrorRegionLimitExceed', 'ErrorUnknown',
      * 'ErrorNegativeAndRegularTagOnSameImage'.
      */
-    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ImageCreateStatus status;
 
     /**
      * The image.
      */
-    @JsonProperty(value = "image", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "image", access = JsonProperty.Access.WRITE_ONLY)
     private Image image;
 
     /**
