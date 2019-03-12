@@ -452,6 +452,7 @@
               <group>
                 <title>Azure Storage Blob</title>
                 <packages>com.microsoft.azure.storage*</packages>
+               </group>
             </groups>
           </configuration>
         </plugin>
