@@ -76,7 +76,7 @@ public final class AzConfigClient extends ServiceClient {
         return create(connectionString, createPipeline(credentials, logLevel));
     }
 
-    //TODO What is the likelihood someone will submit their own entire pipeline?
+    //TODO (conniey): What is the likelihood someone will submit their own entire pipeline?
     /**
      * Create a new instance of AzConfigClient with pipeline  that uses credentials for authentication.
      * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
