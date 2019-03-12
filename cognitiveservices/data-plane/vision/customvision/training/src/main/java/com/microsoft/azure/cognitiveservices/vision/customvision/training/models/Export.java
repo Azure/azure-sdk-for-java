@@ -18,20 +18,20 @@ public class Export {
      * Platform of the export. Possible values include: 'CoreML', 'TensorFlow',
      * 'DockerFile', 'ONNX', 'VAIDK'.
      */
-    @JsonProperty(value = "platform", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "platform", access = JsonProperty.Access.WRITE_ONLY)
     private ExportPlatform platform;
 
     /**
      * Status of the export. Possible values include: 'Exporting', 'Failed',
      * 'Done'.
      */
-    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ExportStatus status;
 
     /**
      * URI used to download the model.
      */
-    @JsonProperty(value = "downloadUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "downloadUri", access = JsonProperty.Access.WRITE_ONLY)
     private String downloadUri;
 
     /**
@@ -45,8 +45,8 @@ public class Export {
      * Indicates an updated version of the export package is available and
      * should be re-exported for the latest changes.
      */
-    @JsonProperty(value = "newerVersionAvailable", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private boolean newerVersionAvailable;
+    @JsonProperty(value = "newerVersionAvailable", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean newerVersionAvailable;
 
     /**
      * Get platform of the export. Possible values include: 'CoreML', 'TensorFlow', 'DockerFile', 'ONNX', 'VAIDK'.
@@ -89,7 +89,7 @@ public class Export {
      *
      * @return the newerVersionAvailable value
      */
-    public boolean newerVersionAvailable() {
+    public Boolean newerVersionAvailable() {
         return this.newerVersionAvailable;
     }
 
