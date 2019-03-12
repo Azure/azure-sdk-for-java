@@ -29,11 +29,11 @@ final class EventDataBatchImpl implements EventDataBatch {
         this.eventBytes = new byte[maxMessageSize];
     }
 
-    public final int getSize() {
+    public int getSize() {
         return events.size();
     }
 
-    public final boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException {
+    public boolean tryAdd(final EventData eventData) throws PayloadSizeExceededException {
 
         if (eventData == null) {
             throw new IllegalArgumentException("eventData cannot be null");
@@ -48,9 +48,9 @@ final class EventDataBatchImpl implements EventDataBatch {
             throw new PayloadSizeExceededException(String.format("Size of the payload exceeded Maximum message size: %s kb", this.maxMessageSize / 1024));
         }
 
-        if (this.currentSize + size > this.maxMessageSize)
+        if (this.currentSize + size > this.maxMessageSize) {
             return false;
-
+        }
         this.events.add(eventDataImpl);
         this.currentSize += size;
         return true;

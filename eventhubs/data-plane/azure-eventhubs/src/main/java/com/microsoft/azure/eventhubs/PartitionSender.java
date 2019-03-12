@@ -6,7 +6,6 @@ package com.microsoft.azure.eventhubs;
 import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * This sender class is a logical representation of sending events to a specific EventHub partition. Do not use this class
@@ -93,8 +92,8 @@ public interface PartitionSender {
      * <p>
      * Sending a batch of {@link EventData}'s is useful in the following cases:
      * <pre>
-     * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
-     * ii.	Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
+     * i.  Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
+     * ii. Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
      * </pre>
      * <p>
      * Sample code (sample uses sync version of the api but concept are identical):
@@ -143,8 +142,8 @@ public interface PartitionSender {
      * <p>
      * Sending a batch of {@link EventData}'s is useful in the following cases:
      * <pre>
-     * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
-     * ii.	Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
+     * i.  Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
+     * ii. Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
      * </pre>
      *
      * @param eventDatas EventDataBatch to send to EventHub

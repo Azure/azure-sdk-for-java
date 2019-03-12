@@ -15,9 +15,9 @@ import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.Required;
 import org.apache.logging.log4j.core.util.StringEncoder;
 
-import java.io.*;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -115,8 +115,6 @@ public final class EventHubsAppender extends AbstractAppender {
             throw appenderLoggingException;
         }
     }
-
-    ;
 
     @Override
     public void start() {

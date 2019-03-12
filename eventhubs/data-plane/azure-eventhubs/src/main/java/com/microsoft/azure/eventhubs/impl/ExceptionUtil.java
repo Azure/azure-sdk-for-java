@@ -26,33 +26,33 @@ public final class ExceptionUtil {
             return new EventHubException(ClientConstants.DEFAULT_IS_TRANSIENT, new TimeoutException(errorCondition.getDescription()));
         } else if (errorCondition.getCondition() == ClientConstants.SERVER_BUSY_ERROR) {
             return new ServerBusyException(errorCondition.getDescription());
-        } else if (errorCondition.getCondition() == AmqpErrorCode.NotFound) {
+        } else if (errorCondition.getCondition() == AmqpErrorCode.NOT_FOUND) {
         	return ExceptionUtil.distinguishNotFound(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == ClientConstants.ENTITY_DISABLED_ERROR) {
             return new IllegalEntityException(errorCondition.getDescription());
-        } else if (errorCondition.getCondition() == AmqpErrorCode.Stolen) {
+        } else if (errorCondition.getCondition() == AmqpErrorCode.STOLEN) {
             return new ReceiverDisconnectedException(errorCondition.getDescription());
-        } else if (errorCondition.getCondition() == AmqpErrorCode.UnauthorizedAccess) {
+        } else if (errorCondition.getCondition() == AmqpErrorCode.UNAUTHORIZED_ACCESS) {
             return new AuthorizationFailedException(errorCondition.getDescription());
-        } else if (errorCondition.getCondition() == AmqpErrorCode.PayloadSizeExceeded) {
+        } else if (errorCondition.getCondition() == AmqpErrorCode.PAYLOAD_SIZE_EXCEEDED) {
             return new PayloadSizeExceededException(errorCondition.getDescription());
-        } else if (errorCondition.getCondition() == AmqpErrorCode.InternalError) {
+        } else if (errorCondition.getCondition() == AmqpErrorCode.INTERNAL_ERROR) {
             return new EventHubException(true, new AmqpException(errorCondition));
         } else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_ERROR) {
             return new EventHubException(false, errorCondition.getDescription(), new AmqpException(errorCondition));
         } else if (errorCondition.getCondition() == ClientConstants.ARGUMENT_OUT_OF_RANGE_ERROR) {
             return new EventHubException(false, errorCondition.getDescription(), new AmqpException(errorCondition));
-        } else if (errorCondition.getCondition() == AmqpErrorCode.NotImplemented) {
+        } else if (errorCondition.getCondition() == AmqpErrorCode.NOT_IMPLEMENTED) {
             return new UnsupportedOperationException(errorCondition.getDescription());
-        } else if (errorCondition.getCondition() == AmqpErrorCode.NotAllowed) {
+        } else if (errorCondition.getCondition() == AmqpErrorCode.NOT_ALLOWED) {
             return new UnsupportedOperationException(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == ClientConstants.PARTITION_NOT_OWNED_ERROR) {
             return new EventHubException(false, errorCondition.getDescription());
         } else if (errorCondition.getCondition() == ClientConstants.STORE_LOCK_LOST_ERROR) {
             return new EventHubException(false, errorCondition.getDescription());
-        } else if (errorCondition.getCondition() == AmqpErrorCode.AmqpLinkDetachForced) {
+        } else if (errorCondition.getCondition() == AmqpErrorCode.AMQP_LINK_DETACH_FORCED) {
             return new EventHubException(true, new AmqpException(errorCondition));
-        } else if (errorCondition.getCondition() == AmqpErrorCode.ResourceLimitExceeded) {
+        } else if (errorCondition.getCondition() == AmqpErrorCode.RESOURCE_LIMIT_EXCEEDED) {
             return new QuotaExceededException(new AmqpException(errorCondition));
         }
 
@@ -101,7 +101,7 @@ public final class ExceptionUtil {
     static boolean isGeneralSendError(Symbol amqpError) {
         return (amqpError == ClientConstants.SERVER_BUSY_ERROR
                 || amqpError == ClientConstants.TIMEOUT_ERROR
-                || amqpError == AmqpErrorCode.ResourceLimitExceeded);
+                || amqpError == AmqpErrorCode.RESOURCE_LIMIT_EXCEEDED);
     }
 
     static String getTrackingIDAndTimeToLog() {
