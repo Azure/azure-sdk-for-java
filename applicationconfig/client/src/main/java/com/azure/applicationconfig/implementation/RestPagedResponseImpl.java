@@ -3,6 +3,7 @@
 package com.azure.applicationconfig.implementation;
 
 import com.microsoft.rest.v3.RestPagedResponse;
+import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpRequest;
 
 import java.util.List;
@@ -30,7 +31,8 @@ public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
 
     private final int statusCode;
 
-    public RestPagedResponseImpl(final List<T> items, final String nextPageLink, final HttpRequest request, final Map<String, String> headers, final int statusCode) {
+    public RestPagedResponseImpl(final List<T> items, final String nextPageLink, final HttpRequest request,
+                                 final Map<String, String> headers, final int statusCode) {
         this.nextPageLink = nextPageLink;
         this.items = items;
         this.request = request;
