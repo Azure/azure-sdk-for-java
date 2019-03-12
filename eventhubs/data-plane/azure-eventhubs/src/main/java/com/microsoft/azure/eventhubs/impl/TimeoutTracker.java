@@ -3,7 +3,8 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
-import java.time.*;
+import java.time.Duration;
+import java.time.Instant;
 
 public class TimeoutTracker {
     private final Duration originalTimeout;

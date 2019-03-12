@@ -3,8 +3,8 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
-import java.time.*;
-import java.util.concurrent.*;
+import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
 
 public class WorkItem<T> {
     private final TimeoutTracker tracker;

@@ -59,8 +59,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
             } else {
                 if (TRACE_LOGGER.isInfoEnabled()) {
                     TRACE_LOGGER.info(
-                            String.format(Locale.US, "onLinkRemoteOpen linkName[%s], remoteTarget[null], " +
-                                    "remoteSource[null], action[waitingForError]", receiver.getName()));
+                            String.format(Locale.US, "onLinkRemoteOpen linkName[%s], remoteTarget[null], "
+                                + "remoteSource[null], action[waitingForError]", receiver.getName()));
                 }
             }
         }
@@ -90,8 +90,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
                 if (TRACE_LOGGER.isWarnEnabled()) {
                     TRACE_LOGGER.warn(
                             receiveLink != null
-                                    ? String.format(Locale.US, "onDelivery linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], " +
-                                            "remoteCondition[%s], delivery.isSettled[%s]",
+                                    ? String.format(Locale.US, "onDelivery linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], "
+                                    + "remoteCondition[%s], delivery.isSettled[%s]",
                                     receiveLink.getName(), receiveLink.getCredit(), receiveLink.getRemoteCredit(), receiveLink.getRemoteCondition(), delivery.isSettled())
                                     : String.format(Locale.US, "delivery.isSettled[%s]", delivery.isSettled()));
                 }
@@ -102,8 +102,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler {
 
         if (TRACE_LOGGER.isTraceEnabled() && receiveLink != null) {
             TRACE_LOGGER.trace(
-                    String.format(Locale.US, "onDelivery linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], " +
-                                    "remoteCondition[%s], delivery.isPartial[%s]",
+                    String.format(Locale.US, "onDelivery linkName[%s], updatedLinkCredit[%s], remoteCredit[%s], "
+                            + "remoteCondition[%s], delivery.isPartial[%s]",
                             receiveLink.getName(), receiveLink.getCredit(), receiveLink.getRemoteCredit(), receiveLink.getRemoteCondition(), delivery.isPartial()));
         }
     }

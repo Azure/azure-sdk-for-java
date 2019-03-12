@@ -3,7 +3,15 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.AuthorizationFailedException;
+import com.microsoft.azure.eventhubs.ErrorContext;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.IllegalEntityException;
+import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
+import com.microsoft.azure.eventhubs.QuotaExceededException;
+import com.microsoft.azure.eventhubs.ReceiverDisconnectedException;
+import com.microsoft.azure.eventhubs.ServerBusyException;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
@@ -27,7 +35,7 @@ public final class ExceptionUtil {
         } else if (errorCondition.getCondition() == ClientConstants.SERVER_BUSY_ERROR) {
             return new ServerBusyException(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == AmqpErrorCode.NOT_FOUND) {
-        	return ExceptionUtil.distinguishNotFound(errorCondition.getDescription());
+            return ExceptionUtil.distinguishNotFound(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == ClientConstants.ENTITY_DISABLED_ERROR) {
             return new IllegalEntityException(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == AmqpErrorCode.STOLEN) {
@@ -61,9 +69,9 @@ public final class ExceptionUtil {
 
     static Exception amqpResponseCodeToException(final int statusCode, final String statusDescription) {
         final AmqpResponseCode amqpResponseCode = AmqpResponseCode.valueOf(statusCode);
-        if (amqpResponseCode == null)
+        if (amqpResponseCode == null) {
             return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
-
+        }
         switch (amqpResponseCode) {
             case BAD_REQUEST:
                 return new IllegalArgumentException(String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
@@ -81,10 +89,10 @@ public final class ExceptionUtil {
     static Exception distinguishNotFound(final String message) {
         Pattern p = Pattern.compile("The messaging entity .* could not be found");
         Matcher m = p.matcher(message);
-    	if (m.find()) {
-    		return new IllegalEntityException(message);
-    	} else {
-    		return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message));
+        if (m.find()) {
+            return new IllegalEntityException(message);
+        } else {
+            return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message));
     	}
     }
 
@@ -154,7 +162,7 @@ public final class ExceptionUtil {
         return null;
     }
 
-   static Exception stripOuterException(final Exception exception) {
+    static Exception stripOuterException(final Exception exception) {
         Throwable throwable = exception.getCause();
         if (throwable instanceof EventHubException) {
             return (EventHubException) throwable;

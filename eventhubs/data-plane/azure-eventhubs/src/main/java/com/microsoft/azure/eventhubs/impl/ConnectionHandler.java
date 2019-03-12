@@ -85,7 +85,7 @@ public class ConnectionHandler extends BaseHandler {
         connectionProperties.put(AmqpConstants.PLATFORM, ClientConstants.PLATFORM_INFO);
         connectionProperties.put(AmqpConstants.FRAMEWORK, ClientConstants.FRAMEWORK_INFO);
 
-        final String userAgent = EventHubClientImpl.USER_AGENT;
+        final String userAgent = EventHubClientImpl.getUserAgent();
         if (userAgent != null) {
             connectionProperties.put(AmqpConstants.USER_AGENT, userAgent.length() < AmqpConstants.MAX_USER_AGENT_LENGTH
                 ? userAgent

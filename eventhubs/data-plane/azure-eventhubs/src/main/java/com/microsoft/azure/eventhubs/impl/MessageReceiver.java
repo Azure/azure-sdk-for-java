@@ -14,7 +14,11 @@ import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Receiver;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +29,11 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -386,8 +394,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         this.prefetchedMessages.clear();
 
         if (this.getIsClosingOrClosed()) {
-            if (this.closeTimer != null)
+            if (this.closeTimer != null) {
                 this.closeTimer.cancel(false);
+            }
 
             this.drainPendingReceives(exception);
             this.linkClose.complete(null);
@@ -503,8 +512,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 source.setAddress(receivePath);
 
                 final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider.getFilter(MessageReceiver.this.lastReceivedMessage);
-                if (filterMap != null)
+                if (filterMap != null) {
                     source.setFilter(filterMap);
+                }
 
                 final Receiver receiver = session.receiver(TrackingUtil.getLinkName(session));
                 receiver.setSource(source);
@@ -518,12 +528,14 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 receiver.setReceiverSettleMode(ReceiverSettleMode.SECOND);
 
                 final Map<Symbol, Object> linkProperties = MessageReceiver.this.settingsProvider.getProperties();
-                if (linkProperties != null)
+                if (linkProperties != null) {
                     receiver.setProperties(linkProperties);
+                }
 
                 final Symbol[] desiredCapabilities = MessageReceiver.this.settingsProvider.getDesiredCapabilities();
-                if (desiredCapabilities != null)
+                if (desiredCapabilities != null) {
                     receiver.setDesiredCapabilities(desiredCapabilities);
+                }
 
                 final ReceiveLinkHandler handler = new ReceiveLinkHandler(MessageReceiver.this);
                 BaseHandler.setHandler(receiver, handler);
@@ -561,8 +573,9 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                     new OperationResult<Void, Exception>() {
                         @Override
                         public void onComplete(Void result) {
-                            if (MessageReceiver.this.getIsClosingOrClosed())
+                            if (MessageReceiver.this.getIsClosingOrClosed()) {
                                 return;
+                            }
 
                             underlyingFactory.getSession(
                                     receivePath,
@@ -647,19 +660,18 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             setClosed();
                         }
                     }
-                }
-                , timeout.remaining());
+                }, timeout.remaining());
 
         this.openTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null
-                            && exception instanceof Exception
-                            && !(exception instanceof CancellationException)) {
-                        ExceptionUtil.completeExceptionally(linkOpen.getWork(), (Exception) exception, MessageReceiver.this);
-                    }
+            (unUsed, exception) -> {
+                if (exception != null
+                        && exception instanceof Exception
+                        && !(exception instanceof CancellationException)) {
+                    ExceptionUtil.completeExceptionally(linkOpen.getWork(), (Exception) exception, MessageReceiver.this);
+                }
 
-                    return null;
-                }, this.executor);
+                return null;
+            }, this.executor);
     }
 
     private void scheduleLinkCloseTimeout(final TimeoutTracker timeout) {
@@ -687,17 +699,16 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             MessageReceiver.this.onError((Exception) null);
                         }
                     }
-                }
-                , timeout.remaining());
+                }, timeout.remaining());
 
         this.closeTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
-                        ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageReceiver.this);
-                    }
+            (unUsed, exception) -> {
+                if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
+                    ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageReceiver.this);
+                }
 
-                    return null;
-                }, this.executor);
+                return null;
+            }, this.executor);
     }
 
     private boolean shouldScheduleOperationTimeoutTimer() {
@@ -784,7 +795,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private static class ReceiveWorkItem extends WorkItem<Collection<Message>> {
         private final int maxMessageCount;
 
-        public ReceiveWorkItem(CompletableFuture<Collection<Message>> completableFuture, Duration timeout, final int maxMessageCount) {
+        ReceiveWorkItem(CompletableFuture<Collection<Message>> completableFuture, Duration timeout, final int maxMessageCount) {
             super(completableFuture, timeout);
             this.maxMessageCount = maxMessageCount;
         }

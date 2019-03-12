@@ -33,15 +33,17 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                 new BiConsumer<ErrorCondition, Exception>() {
                     @Override
                     public void accept(ErrorCondition error, Exception exception) {
-                        if (error != null)
+                        if (error != null) {
                             operationCallback.onError(ExceptionUtil.toException(error));
-                        else if (exception != null)
+                        } else if (exception != null) {
                             operationCallback.onError(exception);
+                        }
                     }
                 });
 
-        if (session == null)
+        if (session == null) {
             return;
+        }
 
         final RequestResponseChannel requestResponseChannel = new RequestResponseChannel(
                 this.linkName,

@@ -4,10 +4,21 @@
 package com.microsoft.azure.eventhubs.impl;
 
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.CommunicationException;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.OperationCancelledException;
+import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Handler;
+import org.apache.qpid.proton.engine.HandlerException;
+import org.apache.qpid.proton.engine.Link;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +30,11 @@ import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.*;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -28,7 +43,7 @@ import java.util.function.Consumer;
  * Manages connection life-cycle
  */
 public final class MessagingFactory extends ClientEntity implements AmqpConnection, SessionProvider, SchedulerProvider {
-    public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60);
+    public static final Duration DEFAULT_OPERATION_TIMEOUT = Duration.ofSeconds(60);
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessagingFactory.class);
     private final String hostName;
@@ -114,14 +129,14 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
         // if scheduling messagingfactory openTimer fails - notify user and stop
         messagingFactory.openTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null && !(exception instanceof CancellationException)) {
-                        messagingFactory.open.completeExceptionally(exception);
-                        messagingFactory.getReactor().stop();
-                    }
+            (unUsed, exception) -> {
+                if (exception != null && !(exception instanceof CancellationException)) {
+                    messagingFactory.open.completeExceptionally(exception);
+                    messagingFactory.getReactor().stop();
+                }
 
-                    return null;
-                }, messagingFactory.executor);
+                return null;
+            }, messagingFactory.executor);
 
         return messagingFactory.open;
     }
@@ -221,14 +236,16 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             this.open.complete(this);
 
             // if connection creation is in progress and then msgFactory.close call came thru
-            if (this.getIsClosingOrClosed())
+            if (this.getIsClosingOrClosed()) {
                 this.connection.close();
+            }
         } else {
             this.open.completeExceptionally(exception);
         }
 
-        if (this.openTimer != null)
+        if (this.openTimer != null) {
             this.openTimer.cancel(false);
+        }
     }
 
     @Override
@@ -324,7 +341,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                         this.getClientId(), this.getHostName(),
                         ExceptionUtil.toStackTraceString(e, "Re-starting reactor failed with error")));
 
-                // TODO - stop retrying on the error after multiple attempts.
+                // TODO(johndoe): Stop retrying on the error after multiple attempts.
                 this.onReactorError(cause);
             }
 
@@ -355,15 +372,14 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         if (!this.getIsClosed()) {
             final Timer timer = new Timer(this);
             this.closeTimer = timer.schedule(new Runnable() {
-                                                 @Override
-                                                 public void run() {
-                                                     if (!closeTask.isDone()) {
-                                                         closeTask.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
-                                                         getReactor().stop();
-                                                     }
-                                                 }
-                                             },
-                    operationTimeout);
+                @Override
+                public void run() {
+                    if (!closeTask.isDone()) {
+                        closeTask.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
+                        getReactor().stop();
+                    }
+                }
+            }, operationTimeout);
 
             if (this.closeTimer.isCompletedExceptionally()) {
                 this.closeTask.completeExceptionally(ExceptionUtil.getExceptionFromCompletedFuture(this.closeTimer));
@@ -468,12 +484,12 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     private class RunReactor implements Runnable {
-        final private Reactor rctr;
-        final private ScheduledExecutorService executor;
+        private final Reactor rctr;
+        private final ScheduledExecutorService executor;
 
         volatile boolean hasStarted;
 
-        public RunReactor(final Reactor reactor, final ScheduledExecutorService executor) {
+        RunReactor(final Reactor reactor, final ScheduledExecutorService executor) {
             this.rctr = reactor;
             this.executor = executor;
             this.hasStarted = false;
@@ -529,11 +545,11 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                                     "Unhandled exception while processing events in reactor, report this error.")));
                 }
 
-                final String message = !StringUtil.isNullOrEmpty(cause.getMessage()) ?
-                        cause.getMessage() :
-                        !StringUtil.isNullOrEmpty(handlerException.getMessage()) ?
-                                handlerException.getMessage() :
-                                "Reactor encountered unrecoverable error";
+                final String message = !StringUtil.isNullOrEmpty(cause.getMessage())
+                    ? cause.getMessage()
+                    : !StringUtil.isNullOrEmpty(handlerException.getMessage())
+                        ? handlerException.getMessage()
+                        : "Reactor encountered unrecoverable error";
 
                 final EventHubException sbException;
 

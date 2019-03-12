@@ -87,6 +87,7 @@ public final class ReactorDispatcher {
     private void signalWorkQueue() throws IOException {
         try {
             while (this.ioSignal.sink().write(ByteBuffer.allocate(1)) == 0) {
+                // nothing
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
             TRACE_LOGGER.info("signalWorkQueue failed with an error", ignorePipeClosedDuringReactorShutdown);
@@ -98,7 +99,7 @@ public final class ReactorDispatcher {
         final BaseHandler timerCallback;
         final Reactor reactor;
 
-        public DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback) {
+        DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback) {
             this.delay = delay;
             this.timerCallback = timerCallback;
             this.reactor = reactor;
@@ -135,8 +136,9 @@ public final class ReactorDispatcher {
         @Override
         public void run(Selectable selectable) {
             try {
-                if (ioSignal.sink().isOpen())
+                if (ioSignal.sink().isOpen()) {
                     ioSignal.sink().close();
+                }
             } catch (IOException ioException) {
                 TRACE_LOGGER.info("CloseHandler.run() sink().close() failed with an error", ioException);
             }
@@ -144,8 +146,9 @@ public final class ReactorDispatcher {
             workScheduler.run(null);
 
             try {
-                if (ioSignal.source().isOpen())
+                if (ioSignal.source().isOpen()) {
                     ioSignal.source().close();
+                }
             } catch (IOException ioException) {
                 TRACE_LOGGER.info("CloseHandler.run() source().close() failed with an error", ioException);
             }

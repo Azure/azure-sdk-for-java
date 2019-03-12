@@ -11,7 +11,12 @@ import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Receiver;
+import org.apache.qpid.proton.engine.Sender;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 
 import java.util.HashMap;
@@ -96,15 +101,15 @@ public class RequestResponseChannel implements IOObject {
             final Message message,
             final OperationResult<Message, Exception> onResponse) {
 
-        if (message == null)
+        if (message == null) {
             throw new IllegalArgumentException("message cannot be null");
-
-        if (message.getMessageId() != null)
+        }
+        if (message.getMessageId() != null) {
             throw new IllegalArgumentException("message.getMessageId() should be null");
-
-        if (message.getReplyTo() != null)
+        }
+        if (message.getReplyTo() != null) {
             throw new IllegalArgumentException("message.getReplyTo() should be null");
-
+        }
         message.setMessageId("request" + UnsignedLong.valueOf(this.requestId.incrementAndGet()).toString());
         message.setReplyTo(this.replyTo);
 
@@ -123,48 +128,55 @@ public class RequestResponseChannel implements IOObject {
 
     private void onLinkOpenComplete(final Exception exception) {
 
-        if (openRefCount.decrementAndGet() <= 0 && onOpen != null)
-            if (exception == null && this.sendLink.getRemoteState() == EndpointState.ACTIVE && this.receiveLink.getRemoteState() == EndpointState.ACTIVE)
+        if (openRefCount.decrementAndGet() <= 0 && onOpen != null) {
+            if (exception == null && this.sendLink.getRemoteState() == EndpointState.ACTIVE && this.receiveLink.getRemoteState() == EndpointState.ACTIVE) {
                 onOpen.onComplete(null);
-            else {
-                if (exception != null)
+            } else {
+                if (exception != null) {
                     onOpen.onError(exception);
-                else {
+                } else {
                     final ErrorCondition error = (this.sendLink.getRemoteCondition() != null && this.sendLink.getRemoteCondition().getCondition() != null)
-                            ? this.sendLink.getRemoteCondition()
-                            : this.receiveLink.getRemoteCondition();
+                        ? this.sendLink.getRemoteCondition()
+                        : this.receiveLink.getRemoteCondition();
                     onOpen.onError(ExceptionUtil.toException(error));
                 }
             }
+        }
     }
 
     private void onLinkCloseComplete(final Exception exception) {
 
-        if (closeRefCount.decrementAndGet() <= 0)
+        if (closeRefCount.decrementAndGet() <= 0) {
             if (exception == null) {
                 onClose.onComplete(null);
-                if (onGraceFullClose != null)
+                if (onGraceFullClose != null) {
                     onGraceFullClose.onComplete(null);
+                }
             } else {
                 onClose.onError(exception);
-                if (onGraceFullClose != null)
+                if (onGraceFullClose != null) {
                     onGraceFullClose.onError(exception);
+                }
             }
+        }
     }
 
     @Override
     public IOObjectState getState() {
 
         if (sendLink.getLocalState() == EndpointState.UNINITIALIZED || receiveLink.getLocalState() == EndpointState.UNINITIALIZED
-                || sendLink.getRemoteState() == EndpointState.UNINITIALIZED || receiveLink.getRemoteState() == EndpointState.UNINITIALIZED)
+                || sendLink.getRemoteState() == EndpointState.UNINITIALIZED || receiveLink.getRemoteState() == EndpointState.UNINITIALIZED) {
             return IOObjectState.OPENING;
+        }
 
         if (sendLink.getRemoteState() == EndpointState.ACTIVE && receiveLink.getRemoteState() == EndpointState.ACTIVE
-                && sendLink.getLocalState() == EndpointState.ACTIVE && receiveLink.getRemoteState() == EndpointState.ACTIVE)
+                && sendLink.getLocalState() == EndpointState.ACTIVE && receiveLink.getRemoteState() == EndpointState.ACTIVE) {
             return IOObjectState.OPENED;
+        }
 
-        if (sendLink.getRemoteState() == EndpointState.CLOSED && receiveLink.getRemoteState() == EndpointState.CLOSED)
+        if (sendLink.getRemoteState() == EndpointState.CLOSED && receiveLink.getRemoteState() == EndpointState.CLOSED) {
             return IOObjectState.CLOSED;
+        }
 
         return IOObjectState.CLOSING; // only left cases are if some are active and some are closed
     }
@@ -194,10 +206,11 @@ public class RequestResponseChannel implements IOObject {
         @Override
         public void onClose(ErrorCondition condition) {
 
-            if (condition == null || condition.getCondition() == null)
+            if (condition == null || condition.getCondition() == null) {
                 onLinkCloseComplete(null);
-            else
+            } else {
                 onError(ExceptionUtil.toException(condition));
+            }
         }
 
     }
@@ -217,8 +230,9 @@ public class RequestResponseChannel implements IOObject {
             delivery.settle();
 
             final OperationResult<Message, Exception> responseCallback = inflightRequests.remove(response.getCorrelationId());
-            if (responseCallback != null)
+            if (responseCallback != null) {
                 responseCallback.onComplete(response);
+            }
         }
 
         @Override
@@ -232,8 +246,9 @@ public class RequestResponseChannel implements IOObject {
 
             this.cancelPendingRequests(exception);
 
-            if (onClose != null)
+            if (onClose != null) {
                 onLinkCloseComplete(exception);
+            }
         }
 
         @Override
@@ -245,16 +260,18 @@ public class RequestResponseChannel implements IOObject {
                                 ClientConstants.DEFAULT_IS_TRANSIENT,
                                 "The underlying request-response channel closed, recreate the channel and retry the request."));
 
-                if (onClose != null)
+                if (onClose != null) {
                     onLinkCloseComplete(null);
+                }
             } else {
                 this.onError(ExceptionUtil.toException(condition));
             }
         }
 
         private void cancelPendingRequests(final Exception exception) {
-            for (OperationResult<Message, Exception> responseCallback : inflightRequests.values())
+            for (OperationResult<Message, Exception> responseCallback : inflightRequests.values()) {
                 responseCallback.onError(exception);
+            }
 
             inflightRequests.clear();
         }

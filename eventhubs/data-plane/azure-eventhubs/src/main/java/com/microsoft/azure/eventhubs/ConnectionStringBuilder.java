@@ -243,7 +243,7 @@ public final class ConnectionStringBuilder {
      * @return operationTimeout
      */
     public Duration getOperationTimeout() {
-        return (this.operationTimeout == null ? MessagingFactory.DefaultOperationTimeout : this.operationTimeout);
+        return (this.operationTimeout == null ? MessagingFactory.DEFAULT_OPERATION_TIMEOUT : this.operationTimeout);
     }
 
     /**
