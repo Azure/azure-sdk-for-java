@@ -807,10 +807,15 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         public void onEvent() {
 
             ReceiveWorkItem pendingReceive;
-            while (!prefetchedMessages.isEmpty() && (pendingReceive = pendingReceives.poll()) != null) {
-                if (pendingReceive.getWork() != null && !pendingReceive.getWork().isDone()) {
-                    Collection<Message> receivedMessages = receiveCore(pendingReceive.maxMessageCount);
-                    pendingReceive.getWork().complete(receivedMessages);
+            while (!prefetchedMessages.isEmpty()) {
+                pendingReceive = pendingReceives.poll();
+                if (pendingReceive != null) {
+                    if (pendingReceive.getWork() != null && !pendingReceive.getWork().isDone()) {
+                        Collection<Message> receivedMessages = receiveCore(pendingReceive.maxMessageCount);
+                        pendingReceive.getWork().complete(receivedMessages);
+                    }
+                } else {
+                    break;
                 }
             }
         }
