@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig;
 
-import com.azure.applicationconfig.implementation.ApplicationConfigService;
 import com.azure.applicationconfig.implementation.PageImpl;
 import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ETagFilter;
@@ -38,6 +37,7 @@ import java.util.function.Function;
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
  */
 public final class AzConfigClient extends ServiceClient {
+    private static final KeyValueListFilter EMPTY_FILTER = new KeyValueListFilter();
     static final String SDK_NAME = "Azure-Configuration";
     static final String SDK_VERSION = "1.0.0-SNAPSHOT";
 
@@ -110,7 +110,7 @@ public final class AzConfigClient extends ServiceClient {
 
     /**
      * Gets the KeyValue object for the specified key and KeyValueFilter2 parameters.
-     * @param key the key being retrievd
+     * @param key the key being retrieved
      * @param filter options for the request
      * @return KeyValue object
      */
@@ -184,7 +184,10 @@ public final class AzConfigClient extends ServiceClient {
         } else {
             result = service.listKeyValues(baseUri.toString(), null, null, null, null, null);
         }
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
+
+        return result.flatMapMany(p ->
+                Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(),
+                        p.rawHeaders(), p.statusCode())));
     }
 
     /**
@@ -210,9 +213,7 @@ public final class AzConfigClient extends ServiceClient {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         return service.listKeyValuesNext(baseUri.toString(), nextPageLink)
-                       .flatMapMany(p -> {
-
-                       } Flux.just(new RestPagedResponseImpl<KeyValue>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
+                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<KeyValue>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
     }
 
     /**
@@ -304,7 +305,7 @@ public final class AzConfigClient extends ServiceClient {
         } else {
             result = service.listKeyValueRevisions(baseUri.toString(), null, null, null, null, null);
         }
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
+        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
     }
 
     /**
@@ -359,7 +360,7 @@ public final class AzConfigClient extends ServiceClient {
         } else {
             result = service.listLabels(baseUri.toString(), null, null, null, null);
         }
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
+        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
     }
 
     private Flux<RestPagedResponse<Label>> listLabelsNextSinglePageAsync(@NonNull String nextPageLink) {
@@ -368,7 +369,7 @@ public final class AzConfigClient extends ServiceClient {
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listLabelsNext(baseUri.toString(), nextUrl)
-                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
+                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
     }
 
     /**
@@ -424,7 +425,7 @@ public final class AzConfigClient extends ServiceClient {
         } else {
             result = service.listKeys(baseUri.toString(), null, null, null, null);
         }
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
+        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
     }
 
     private Flux<RestPagedResponse<Key>> listKeysNextSinglePageAsync(String nextPageLink) {
@@ -432,7 +433,7 @@ public final class AzConfigClient extends ServiceClient {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         return service.listKeysNext(baseUri.toString(), nextPageLink)
-                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
+                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
     }
 
     /**
