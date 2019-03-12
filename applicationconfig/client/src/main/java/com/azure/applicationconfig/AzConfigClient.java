@@ -56,6 +56,12 @@ public final class AzConfigClient extends ServiceClient {
     private URL baseUri;
     private AzConfigService service;
 
+    public AzConfigClient(ApplicationConfigCredentials credentials, HttpPipeline pipeline) {
+        super(pipeline);
+        this.service = RestProxy.create(AzConfigService.class, pipeline);
+        baseUri = credentials.baseUri();
+    }
+
     /**
      * Create a new instance of AzConfigClient that uses connectionString for authentication.
      * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
@@ -88,12 +94,6 @@ public final class AzConfigClient extends ServiceClient {
         return new AzConfigClient(credentials, pipeline);
     }
 
-    private AzConfigClient(ApplicationConfigCredentials credentials, HttpPipeline pipeline) {
-        super(pipeline);
-        this.service = RestProxy.create(AzConfigService.class, pipeline);
-        baseUri = credentials.baseUri();
-    }
-
     /**
      * The interface defining all the services for GeneratedQueues to be used
      * by the proxy service to perform REST calls.
@@ -103,73 +103,73 @@ public final class AzConfigClient extends ServiceClient {
         @GET("kv/{key}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, KeyValue>> getKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                                      @QueryParam("fields") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime,
-                                                                      @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
+        Mono<RestResponse<KeyValue>> getKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
+                                                 @QueryParam("fields") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime,
+                                                 @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
         @PUT("kv/{key}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, KeyValue>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label, @BodyParam("application/json") KeyValueCreateUpdateParameters keyValueParameters,
+        Mono<RestResponse<KeyValue>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label, @BodyParam("application/json") KeyValueCreateUpdateParameters keyValueParameters,
                                 @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
         @GET("kv")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, PageImpl<KeyValue>>> listKeyValues(@HostParam("url") String url, @QueryParam("key") String key, @QueryParam("label") String label,
+        Mono<RestResponse<PageImpl<KeyValue>>> listKeyValues(@HostParam("url") String url, @QueryParam("key") String key, @QueryParam("label") String label,
                                                                @QueryParam("fields") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
 
         @GET("{nextUrl}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, PageImpl<KeyValue>>> listKeyValuesNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
+        Mono<RestResponse<PageImpl<KeyValue>>> listKeyValuesNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
 
         @DELETE("kv/{key}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, KeyValue>> delete(@HostParam("url") String url, @PathParam("key") String key,  @QueryParam("label") String label,
+        Mono<RestResponse<KeyValue>> delete(@HostParam("url") String url, @PathParam("key") String key,  @QueryParam("label") String label,
                                 @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
         @PUT("locks/{key}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, KeyValue>> lockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
+        Mono<RestResponse<KeyValue>> lockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
                                       @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
         @DELETE("locks/{key}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, KeyValue>> unlockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
+        Mono<RestResponse<KeyValue>> unlockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
                                         @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
         @GET("revisions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, PageImpl<KeyValue>>> listKeyValueRevisions(@HostParam("url") String url,
+        Mono<RestResponse<PageImpl<KeyValue>>> listKeyValueRevisions(@HostParam("url") String url,
                                                                      @QueryParam("key") String key, @QueryParam("label") String label, @QueryParam("fields") String fields,
                                                                      @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
 
         @GET("labels")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, PageImpl<Label>>> listLabels(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
+        Mono<RestResponse<PageImpl<Label>>> listLabels(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
                                                          @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
 
         @GET("{nextUrl}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, PageImpl<Label>>> listLabelsNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
+        Mono<RestResponse<PageImpl<Label>>> listLabelsNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
 
         @GET("keys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, PageImpl<Key>>> listKeys(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
+        Mono<RestResponse<PageImpl<Key>>> listKeys(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
                                                   @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
 
         @GET("{nextUrl}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<Map<String, String>, PageImpl<Key>>> listKeysNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
+        Mono<RestResponse<PageImpl<Key>>> listKeysNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
     }
 
     /**
@@ -177,7 +177,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param keyValue key and value to set
      * @return KeyValue that was created or updated
      */
-    public Mono<RestResponse<Map<String, String>, KeyValue>> setKeyValue(KeyValue keyValue) {
+    public Mono<RestResponse<KeyValue>> setKeyValue(KeyValue keyValue) {
         return setKeyValue(keyValue, null);
     }
 
@@ -186,7 +186,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param keyValue key and value to set
      * @return KeyValue that was created or updated
      */
-    public Mono<RestResponse<Map<String, String>, KeyValue>> setKeyValue(KeyValue keyValue, ETagFilter filter) {
+    public Mono<RestResponse<KeyValue>> setKeyValue(KeyValue keyValue, ETagFilter filter) {
         Validator.validate(keyValue);
         KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters().withValue(keyValue.value())
                 .withContentType(keyValue.contentType())
@@ -204,7 +204,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param filter options for the request
      * @return KeyValue object
      */
-    public Mono<RestResponse<Map<String, String>, KeyValue>> getKeyValue(String key, KeyValueFilter filter) {
+    public Mono<RestResponse<KeyValue>> getKeyValue(String key, KeyValueFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         }
@@ -220,7 +220,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param key keyValue to delete
      * @return the deleted KeyValue or none if didn't exist.
      */
-    public Mono<RestResponse<Map<String, String>, KeyValue>> deleteKeyValue(String key) {
+    public Mono<RestResponse<KeyValue>> deleteKeyValue(String key) {
         return deleteKeyValue(key, null, null);
     }
 
@@ -230,7 +230,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param filter eTag filter to add to If-Match or If-None-Match header
      * @return the deleted KeyValue or none if didn't exist.
      */
-    public Mono<RestResponse<Map<String, String>, KeyValue>> deleteKeyValue(String key, String label, ETagFilter filter) {
+    public Mono<RestResponse<KeyValue>> deleteKeyValue(String key, String label, ETagFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         }
@@ -268,7 +268,7 @@ public final class AzConfigClient extends ServiceClient {
      * @return the Flux&lt;RestPagedResponse&lt;KeyValue&gt;&gt; object if successful.
      */
     private Flux<RestPagedResponse<KeyValue>> listSinglePageAsync(KeyValueListFilter filter) {
-        Mono<RestResponse<Map<String, String>, PageImpl<KeyValue>>> result;
+        Mono<RestResponse<PageImpl<KeyValue>>> result;
         if (filter != null) {
             result = service.listKeyValues(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
         } else {
@@ -308,7 +308,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param key key name
      * @return KeyValue
      */
-    public Mono<RestResponse<Map<String, String>, KeyValue>> lockKeyValue(String key) {
+    public Mono<RestResponse<KeyValue>> lockKeyValue(String key) {
         return lockKeyValue(key, null, null);
     }
 
@@ -320,7 +320,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param filter eTagFilter
      * @return KeyValue
      */
-    public Mono<RestResponse<Map<String, String>, KeyValue>> lockKeyValue(String key, String label, ETagFilter filter) {
+    public Mono<RestResponse<KeyValue>> lockKeyValue(String key, String label, ETagFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         }
@@ -336,7 +336,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param key key name
      * @return KeyValue
      */
-    public Mono<RestResponse<Map<String, String>, KeyValue>> unlockKeyValue(String key) {
+    public Mono<RestResponse<KeyValue>> unlockKeyValue(String key) {
         return unlockKeyValue(key, null, null);
     }
 
@@ -346,7 +346,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param key key name
      * @return KeyValue
      */
-    public Mono<RestResponse<Map<String, String>, KeyValue>> unlockKeyValue(String key, String label, ETagFilter filter) {
+    public Mono<RestResponse<KeyValue>> unlockKeyValue(String key, String label, ETagFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         }
@@ -386,7 +386,7 @@ public final class AzConfigClient extends ServiceClient {
      * @return the Single&lt;Page&lt;KeyValue&gt;&gt; object if successful.
      */
     private Flux<RestPagedResponse<KeyValue>> listRevisionsSinglePageAsync(RevisionFilter filter) {
-        Mono<RestResponse<Map<String, String>, PageImpl<KeyValue>>> result;
+        Mono<RestResponse<PageImpl<KeyValue>>> result;
         if (filter != null) {
             result = service.listKeyValueRevisions(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
         } else {
@@ -441,7 +441,7 @@ public final class AzConfigClient extends ServiceClient {
      * @return the Flux&lt;RestPagedResponse&lt;Label&gt;&gt; object if successful.
      */
     private Flux<RestPagedResponse<Label>> listLabelsSinglePageAsync(KeyLabelFilter filter) {
-        Mono<RestResponse<Map<String, String>, PageImpl<Label>>> result;
+        Mono<RestResponse<PageImpl<Label>>> result;
         if (filter != null) {
             result = service.listLabels(baseUri.toString(), filter.name(), filter.fields(), filter.acceptDatetime(), filter.range());
         } else {
@@ -506,7 +506,7 @@ public final class AzConfigClient extends ServiceClient {
      * @return the Flux&lt;RestPagedResponse&lt;Key&gt;&gt; object if successful.
      */
     private Flux<RestPagedResponse<Key>> listKeysSinglePageAsync(KeyLabelFilter filter) {
-        Mono<RestResponse<Map<String, String>, PageImpl<Key>>> result;
+        Mono<RestResponse<PageImpl<Key>>> result;
         if (filter != null) {
             result = service.listKeys(baseUri.toString(), filter.name(), filter.fields(), filter.acceptDatetime(), filter.range());
         } else {
