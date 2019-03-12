@@ -20,6 +20,7 @@ import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Accounts;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ResourceSkus;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Operations;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CheckSkuAvailabilitys;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Locations;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -31,6 +32,7 @@ public final class CognitiveServicesManager extends ManagerCore<CognitiveService
     private ResourceSkus resourceSkus;
     private Operations operations;
     private CheckSkuAvailabilitys checkSkuAvailabilitys;
+    private Locations locations;
     /**
     * Get a Configurable instance that can be used to create CognitiveServicesManager with optional configuration.
     *
@@ -116,6 +118,16 @@ public final class CognitiveServicesManager extends ManagerCore<CognitiveService
             this.checkSkuAvailabilitys = new CheckSkuAvailabilitysImpl(this);
         }
         return this.checkSkuAvailabilitys;
+    }
+
+    /**
+     * @return Entry point to manage Locations.
+     */
+    public Locations locations() {
+        if (this.locations == null) {
+            this.locations = new LocationsImpl(this);
+        }
+        return this.locations;
     }
 
     /**
