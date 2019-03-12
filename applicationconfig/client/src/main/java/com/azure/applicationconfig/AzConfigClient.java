@@ -52,10 +52,10 @@ public final class AzConfigClient extends ServiceClient {
     }
 
     public AzConfigClient(String connectionString, Iterable<HttpPipelinePolicy> additionalPolicies) {
-        super(createPipeline(ApplicationConfigCredentials.parseConnectionString(connectionString), additionalPolicies));
+        super(createPipeline(new ApplicationConfigCredentials(connectionString), additionalPolicies));
 
         this.service = RestProxy.create(ApplicationConfigService.class, this.httpPipeline());
-        this.baseUri = ApplicationConfigCredentials.parseConnectionString(connectionString).baseUri();
+        this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
     }
 
     /**

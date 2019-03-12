@@ -25,7 +25,7 @@ class ApplicationConfigCredentials {
         return secret;
     }
 
-    static ApplicationConfigCredentials parseConnectionString(String connectionString) {
+    ApplicationConfigCredentials(String connectionString) {
         if (connectionString == null || connectionString.isEmpty()) {
             throw new IllegalArgumentException(connectionString);
         }
@@ -40,23 +40,20 @@ class ApplicationConfigCredentials {
         String idString = "id=";
         String secretString = "secret=";
 
-        ApplicationConfigCredentials credentials = new ApplicationConfigCredentials();
-
         for (String arg : args) {
             String segment = arg.trim();
             try {
                 if (segment.toLowerCase().startsWith(endpointString)) {
-                    credentials.baseUri = new URL(segment.substring(segment.indexOf('=') + 1));
+                    this.baseUri = new URL(segment.substring(segment.indexOf('=') + 1));
                 } else if (segment.toLowerCase().startsWith(idString)) {
-                    credentials.credential = segment.substring(segment.indexOf('=') + 1);
+                    this.credential = segment.substring(segment.indexOf('=') + 1);
                 } else if (segment.toLowerCase().startsWith(secretString)) {
                     String secretBase64 = segment.substring(segment.indexOf('=') + 1);
-                    credentials.secret = Base64.getDecoder().decode(secretBase64);
+                    this.secret = Base64.getDecoder().decode(secretBase64);
                 }
             } catch (MalformedURLException ex) {
                 throw new IllegalArgumentException(ex);
             }
         }
-        return credentials;
     }
 }
