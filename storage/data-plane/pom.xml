@@ -3,11 +3,6 @@
  Licensed under the MIT License. See License.txt in the project root for
  license information.
 -->
-<!--
- Copyright (c) Microsoft Corporation. All rights reserved.
- Licensed under the MIT License. See License.txt in the project root for
- license information.
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -33,23 +28,12 @@
         </site>
     </distributionManagement>
 
-
-    <licenses>
-        <license>
-            <name>The MIT License (MIT)</name>
-            <url>http://opensource.org/licenses/MIT</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
     <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <legal>
-            <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-        <groovy-eclipse-compiler.version>2.9.3-01</groovy-eclipse-compiler.version>
-        <groovy-eclipse-batch.version>2.4.15-01</groovy-eclipse-batch.version>
+      <groovy-eclipse-compiler.version>2.9.3-01</groovy-eclipse-compiler.version>
+      <groovy-eclipse-batch.version>2.5.5-01</groovy-eclipse-batch.version>
+      <netty-all.version>4.1.34.Final</netty-all.version>
     </properties>
 
 
@@ -78,6 +62,14 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Adding latest Netty as a temporary override of netty lib in v2 runtime.
+        The old version prevents tests from running in Java 11. Issue is raised to have netty updated in v2 runtime -->
+        <dependency>
+          <groupId>io.netty</groupId>
+          <artifactId>netty-all</artifactId>
+          <version>${netty-all.version}</version>
         </dependency>
 
         <dependency>

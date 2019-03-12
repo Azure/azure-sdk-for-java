@@ -672,7 +672,7 @@ class TransferManagerTest extends APISpec {
         where:
         file                                                     | blobURL
         null                                                     | new BlockBlobURL(new URL("http://account.com"), StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
-        AsynchronousFileChannel.open(getRandomFile(10).toPath()) | null
+        getRandomFile(10) | null
     }
 
     @Unroll
