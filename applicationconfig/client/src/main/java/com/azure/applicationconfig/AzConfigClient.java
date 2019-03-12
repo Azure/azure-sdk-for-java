@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig;
 
+import com.azure.applicationconfig.implementation.ApplicationConfigService;
 import com.azure.applicationconfig.implementation.PageImpl;
 import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ETagFilter;
@@ -13,23 +14,11 @@ import com.azure.applicationconfig.models.KeyValueFilter;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.Label;
 import com.azure.applicationconfig.models.RevisionFilter;
-import com.microsoft.azure.v3.CloudException;
 import com.microsoft.rest.v3.RestPagedResponse;
 import com.microsoft.rest.v3.RestProxy;
 import com.microsoft.rest.v3.RestResponse;
 import com.microsoft.rest.v3.ServiceClient;
 import com.microsoft.rest.v3.Validator;
-import com.microsoft.rest.v3.annotations.BodyParam;
-import com.microsoft.rest.v3.annotations.DELETE;
-import com.microsoft.rest.v3.annotations.ExpectedResponses;
-import com.microsoft.rest.v3.annotations.GET;
-import com.microsoft.rest.v3.annotations.HeaderParam;
-import com.microsoft.rest.v3.annotations.Host;
-import com.microsoft.rest.v3.annotations.HostParam;
-import com.microsoft.rest.v3.annotations.PUT;
-import com.microsoft.rest.v3.annotations.PathParam;
-import com.microsoft.rest.v3.annotations.QueryParam;
-import com.microsoft.rest.v3.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
@@ -43,7 +32,6 @@ import reactor.util.annotation.NonNull;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 /**
@@ -53,12 +41,12 @@ public final class AzConfigClient extends ServiceClient {
     static final String SDK_NAME = "Azure-Configuration";
     static final String SDK_VERSION = "1.0.0-SNAPSHOT";
 
-    private URL baseUri;
-    private AzConfigService service;
+    private final URL baseUri;
+    private final ApplicationConfigService service;
 
     public AzConfigClient(ApplicationConfigCredentials credentials, HttpPipeline pipeline) {
         super(pipeline);
-        this.service = RestProxy.create(AzConfigService.class, pipeline);
+        this.service = RestProxy.create(ApplicationConfigService.class, pipeline);
         baseUri = credentials.baseUri();
     }
 
@@ -92,84 +80,6 @@ public final class AzConfigClient extends ServiceClient {
     public static AzConfigClient create(String connectionString, HttpPipeline pipeline) {
         ApplicationConfigCredentials credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
         return new AzConfigClient(credentials, pipeline);
-    }
-
-    /**
-     * The interface defining all the services for GeneratedQueues to be used
-     * by the proxy service to perform REST calls.
-     */
-    @Host("{url}")
-    private interface AzConfigService {
-        @GET("kv/{key}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<KeyValue>> getKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                                 @QueryParam("fields") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime,
-                                                 @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
-
-        @PUT("kv/{key}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<KeyValue>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label, @BodyParam("application/json") KeyValueCreateUpdateParameters keyValueParameters,
-                                @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
-
-        @GET("kv")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<PageImpl<KeyValue>>> listKeyValues(@HostParam("url") String url, @QueryParam("key") String key, @QueryParam("label") String label,
-                                                               @QueryParam("fields") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
-
-        @GET("{nextUrl}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<PageImpl<KeyValue>>> listKeyValuesNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
-
-        @DELETE("kv/{key}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<KeyValue>> delete(@HostParam("url") String url, @PathParam("key") String key,  @QueryParam("label") String label,
-                                @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
-
-        @PUT("locks/{key}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<KeyValue>> lockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                      @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
-
-        @DELETE("locks/{key}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<KeyValue>> unlockKeyValue(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label,
-                                        @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
-
-        @GET("revisions")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<PageImpl<KeyValue>>> listKeyValueRevisions(@HostParam("url") String url,
-                                                                     @QueryParam("key") String key, @QueryParam("label") String label, @QueryParam("fields") String fields,
-                                                                     @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
-
-        @GET("labels")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<PageImpl<Label>>> listLabels(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
-                                                         @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
-
-        @GET("{nextUrl}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<PageImpl<Label>>> listLabelsNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
-
-        @GET("keys")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<PageImpl<Key>>> listKeys(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
-                                                  @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
-
-        @GET("{nextUrl}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<RestResponse<PageImpl<Key>>> listKeysNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
     }
 
     /**
@@ -300,7 +210,9 @@ public final class AzConfigClient extends ServiceClient {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         return service.listKeyValuesNext(baseUri.toString(), nextPageLink)
-                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
+                       .flatMapMany(p -> {
+
+                       } Flux.just(new RestPagedResponseImpl<KeyValue>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
     }
 
     /**
