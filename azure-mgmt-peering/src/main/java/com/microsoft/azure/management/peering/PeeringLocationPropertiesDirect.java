@@ -22,7 +22,7 @@ public class PeeringLocationPropertiesDirect {
     private List<DirectPeeringFacility> peeringFacilities;
 
     /**
-     * The list of bandwidth offers avaiable at the peering location.
+     * The list of bandwidth offers available at the peering location.
      */
     @JsonProperty(value = "bandwidthOffers")
     private List<PeeringBandwidthOffer> bandwidthOffers;
@@ -48,7 +48,7 @@ public class PeeringLocationPropertiesDirect {
     }
 
     /**
-     * Get the list of bandwidth offers avaiable at the peering location.
+     * Get the list of bandwidth offers available at the peering location.
      *
      * @return the bandwidthOffers value
      */
@@ -57,7 +57,7 @@ public class PeeringLocationPropertiesDirect {
     }
 
     /**
-     * Set the list of bandwidth offers avaiable at the peering location.
+     * Set the list of bandwidth offers available at the peering location.
      *
      * @param bandwidthOffers the bandwidthOffers value to set
      * @return the PeeringLocationPropertiesDirect object itself.
