@@ -1,5 +1,5 @@
 jobs:
-- job: 'LiveTest'
+  - job: 'LiveTest'
 
   strategy:
     matrix:
@@ -10,8 +10,8 @@ jobs:
       AzureStorage:
         pomFilePath: './storage/data-plane/pom.xml'
 
-  pool:
-    vmImage: 'vs2017-win2016'
+    pool:
+      vmImage: 'vs2017-win2016'
 
   steps:
   # Adding -Dmaven.wagon.http.pool=false to the mvn command as a workaround to prevent build failures at maven artifacts downloading stage.
@@ -44,10 +44,8 @@ jobs:
       BLOB_STORAGE_ACCOUNT_NAME: $(java-storage-test-blob-account-name)
       BLOB_STORAGE_ACCOUNT_KEY: $(java-storage-test-blob-account-key)
 
-
-
-  - task: PublishTestResults@2
-    condition: succeededOrFailed()
-    inputs:
-      mergeTestResults: true
-      testRunTitle: 'Live tests for $(pomFilePath)'
+      - task: PublishTestResults@2
+        condition: succeededOrFailed()
+        inputs:
+          mergeTestResults: true
+          testRunTitle: 'Live tests for $(pomFilePath)'
