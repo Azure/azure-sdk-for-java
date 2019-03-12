@@ -80,10 +80,10 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                         return null;
                     }
                 }, (messageDigest, byteBuffer) -> {
-                    if (messageDigest != null) {
-                        messageDigest.update(byteBuffer.nioBuffer());
-                    }
-                })
+                        if (messageDigest != null) {
+                            messageDigest.update(byteBuffer.nioBuffer());
+                        }
+                    })
                 .flatMap(messageDigest -> {
                     if (messageDigest == null) {
                         return Mono.error(new NoSuchAlgorithmException("Unable to locate SHA-256 algorithm."));
