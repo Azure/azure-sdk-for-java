@@ -16,6 +16,8 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.DatabaseSecurityAlertPolicies;
+import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedDatabaseSensitivityLabels;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ManagedInstanceVulnerabilityAssessments;
 import com.microsoft.azure.management.sql.v2018_06_01_preview.ServerVulnerabilityAssessments;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
@@ -25,6 +27,8 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Sql resource management.
  */
 public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClientImpl> {
+    private DatabaseSecurityAlertPolicies databaseSecurityAlertPolicies;
+    private ManagedDatabaseSensitivityLabels managedDatabaseSensitivityLabels;
     private ManagedInstanceVulnerabilityAssessments managedInstanceVulnerabilityAssessments;
     private ServerVulnerabilityAssessments serverVulnerabilityAssessments;
     /**
@@ -72,6 +76,26 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
         * @return the interface exposing Sql management API entry points that work across subscriptions
         */
         SqlManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+    }
+
+    /**
+     * @return Entry point to manage DatabaseSecurityAlertPolicies.
+     */
+    public DatabaseSecurityAlertPolicies databaseSecurityAlertPolicies() {
+        if (this.databaseSecurityAlertPolicies == null) {
+            this.databaseSecurityAlertPolicies = new DatabaseSecurityAlertPoliciesImpl(this);
+        }
+        return this.databaseSecurityAlertPolicies;
+    }
+
+    /**
+     * @return Entry point to manage ManagedDatabaseSensitivityLabels.
+     */
+    public ManagedDatabaseSensitivityLabels managedDatabaseSensitivityLabels() {
+        if (this.managedDatabaseSensitivityLabels == null) {
+            this.managedDatabaseSensitivityLabels = new ManagedDatabaseSensitivityLabelsImpl(this);
+        }
+        return this.managedDatabaseSensitivityLabels;
     }
 
     /**
