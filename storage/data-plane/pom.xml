@@ -33,7 +33,7 @@
     <properties>
       <groovy-eclipse-compiler.version>2.9.3-01</groovy-eclipse-compiler.version>
       <groovy-eclipse-batch.version>2.5.5-01</groovy-eclipse-batch.version>
-      <netty-all.version>4.1.34.Final</netty-all.version>
+      <netty-all.version>5.0.0.Alpha2</netty-all.version>
     </properties>
 
 
