@@ -18,7 +18,7 @@ public class Tag {
     /**
      * Gets the Tag ID.
      */
-    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
@@ -43,8 +43,8 @@ public class Tag {
     /**
      * Gets the number of images with this tag.
      */
-    @JsonProperty(value = "imageCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private int imageCount;
+    @JsonProperty(value = "imageCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer imageCount;
 
     /**
      * Get gets the Tag ID.
@@ -120,7 +120,7 @@ public class Tag {
      *
      * @return the imageCount value
      */
-    public int imageCount() {
+    public Integer imageCount() {
         return this.imageCount;
     }
 
