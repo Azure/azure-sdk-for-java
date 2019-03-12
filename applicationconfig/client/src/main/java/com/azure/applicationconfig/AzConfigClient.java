@@ -37,49 +37,25 @@ import java.util.function.Function;
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
  */
 public final class AzConfigClient extends ServiceClient {
-    private static final KeyValueListFilter EMPTY_FILTER = new KeyValueListFilter();
     static final String SDK_NAME = "Azure-Configuration";
     static final String SDK_VERSION = "1.0.0-SNAPSHOT";
 
     private final URL baseUri;
     private final ApplicationConfigService service;
 
-    public AzConfigClient(ApplicationConfigCredentials credentials, HttpPipeline pipeline) {
-        super(pipeline);
-        this.service = RestProxy.create(ApplicationConfigService.class, pipeline);
-        baseUri = credentials.baseUri();
-    }
-
     /**
      * Create a new instance of AzConfigClient that uses connectionString for authentication.
      * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
-     * @return an instance of AzConfigClient
      */
-    public static AzConfigClient create(String connectionString) {
-        return create(connectionString, HttpLogDetailLevel.BASIC);
+    public AzConfigClient(String connectionString) {
+        this(connectionString, null);
     }
 
-    /**
-     * Create a new instance of AzConfigClient with pipeline options that uses connectionString for authentication.
-     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
-     * @param logLevel Amount of detail to log for requests sent and responses received
-     * @return an instance of AzConfigClient
-     */
-    public static AzConfigClient create(String connectionString, HttpLogDetailLevel logLevel) {
-        ApplicationConfigCredentials credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
-        return create(connectionString, createPipeline(credentials, logLevel));
-    }
+    public AzConfigClient(String connectionString, Iterable<HttpPipelinePolicy> additionalPolicies) {
+        super(createPipeline(ApplicationConfigCredentials.parseConnectionString(connectionString), additionalPolicies));
 
-    //TODO (conniey): What is the likelihood someone will submit their own entire pipeline?
-    /**
-     * Create a new instance of AzConfigClient with pipeline  that uses credentials for authentication.
-     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
-     * @param pipeline pre-defined pipeline
-     * @return an instance of AzConfigClient
-     */
-    public static AzConfigClient create(String connectionString, HttpPipeline pipeline) {
-        ApplicationConfigCredentials credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
-        return new AzConfigClient(credentials, pipeline);
+        this.service = RestProxy.create(ApplicationConfigService.class, this.httpPipeline());
+        this.baseUri = ApplicationConfigCredentials.parseConnectionString(connectionString).baseUri();
     }
 
     /**
@@ -442,15 +418,22 @@ public final class AzConfigClient extends ServiceClient {
      * @param credentials credentials the pipeline will use to authenticate the requests
      * @return the pipeline
      */
-    private static HttpPipeline createPipeline(ApplicationConfigCredentials credentials, HttpLogDetailLevel logLevel) {
+    private static HttpPipeline createPipeline(ApplicationConfigCredentials credentials, Iterable<HttpPipelinePolicy> additionalPolicies) {
         // Closest to API goes first, closest to wire goes last.
-        List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
         policies.add(new RequestIdPolicy());
-        policies.add(new AzConfigCredentialsPolicy(credentials));
         policies.add(new RetryPolicy());
-        policies.add(new HttpLoggingPolicy(logLevel));
+        policies.add(new AzConfigCredentialsPolicy(credentials));
+
+        if (additionalPolicies != null) {
+            for (HttpPipelinePolicy policy : additionalPolicies) {
+                policies.add(policy);
+            }
+        }
+
+        // policies.add(new HttpLoggingPolicy(logLevel));
 
         return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[0]));
     }
