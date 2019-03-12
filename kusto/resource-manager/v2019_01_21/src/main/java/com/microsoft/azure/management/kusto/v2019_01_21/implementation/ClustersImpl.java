@@ -7,11 +7,11 @@
  * def
  */
 
-package com.microsoft.azure.management.kusto.v2018_09_07_preview.implementation;
+package com.microsoft.azure.management.kusto.v2019_01_21.implementation;
 
 import com.microsoft.azure.arm.resources.collection.implementation.GroupableResourcesCoreImpl;
-import com.microsoft.azure.management.kusto.v2018_09_07_preview.Clusters;
-import com.microsoft.azure.management.kusto.v2018_09_07_preview.Cluster;
+import com.microsoft.azure.management.kusto.v2019_01_21.Clusters;
+import com.microsoft.azure.management.kusto.v2019_01_21.Cluster;
 import rx.Observable;
 import rx.Completable;
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import java.util.List;
-import com.microsoft.azure.management.kusto.v2018_09_07_preview.CheckNameResult;
-import com.microsoft.azure.management.kusto.v2018_09_07_preview.AzureResourceSku;
-import com.microsoft.azure.management.kusto.v2018_09_07_preview.AzureSku;
+import com.microsoft.azure.management.kusto.v2019_01_21.CheckNameResult;
+import com.microsoft.azure.management.kusto.v2019_01_21.AzureResourceSku;
+import com.microsoft.azure.management.kusto.v2019_01_21.AzureSku;
 
 class ClustersImpl extends GroupableResourcesCoreImpl<Cluster, ClusterImpl, ClusterInner, ClustersInner, KustoManager>  implements Clusters {
     protected ClustersImpl(KustoManager manager) {
