@@ -568,7 +568,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                         if( CoreMessageReceiver.this.pendingReceives.remove(receiveWorkItem))
                         {
                             CoreMessageReceiver.this.reduceCreditForCompletedReceiveRequest(receiveWorkItem.getMaxMessageCount());
-                            TRACE_LOGGER.warn("No messages received from '{}'. Pending receive request timed out. Returning null to the client.", CoreMessageReceiver.this.receivePath);
+                            TRACE_LOGGER.info("No messages received from '{}'. Pending receive request timed out. Returning null to the client.", CoreMessageReceiver.this.receivePath);
                             AsyncUtil.completeFuture(receiveWorkItem.getWork(), null);
                         }
                     }
