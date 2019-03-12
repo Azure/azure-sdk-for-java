@@ -33,7 +33,7 @@ public class PredictionQueryToken {
      * The maxCount property.
      */
     @JsonProperty(value = "maxCount")
-    private int maxCount;
+    private Integer maxCount;
 
     /**
      * Possible values include: 'Newest', 'Oldest', 'Suggested'.
@@ -116,7 +116,7 @@ public class PredictionQueryToken {
      *
      * @return the maxCount value
      */
-    public int maxCount() {
+    public Integer maxCount() {
         return this.maxCount;
     }
 
@@ -126,7 +126,7 @@ public class PredictionQueryToken {
      * @param maxCount the maxCount value to set
      * @return the PredictionQueryToken object itself.
      */
-    public PredictionQueryToken withMaxCount(int maxCount) {
+    public PredictionQueryToken withMaxCount(Integer maxCount) {
         this.maxCount = maxCount;
         return this;
     }

@@ -18,37 +18,37 @@ public class ImageRegionCreateEntry {
     /**
      * Id of the image.
      */
-    @JsonProperty(value = "imageId")
+    @JsonProperty(value = "imageId", required = true)
     private UUID imageId;
 
     /**
      * Id of the tag associated with this region.
      */
-    @JsonProperty(value = "tagId")
+    @JsonProperty(value = "tagId", required = true)
     private UUID tagId;
 
     /**
      * Coordinate of the left boundary.
      */
-    @JsonProperty(value = "left")
+    @JsonProperty(value = "left", required = true)
     private double left;
 
     /**
      * Coordinate of the top boundary.
      */
-    @JsonProperty(value = "top")
+    @JsonProperty(value = "top", required = true)
     private double top;
 
     /**
      * Width.
      */
-    @JsonProperty(value = "width")
+    @JsonProperty(value = "width", required = true)
     private double width;
 
     /**
      * Height.
      */
-    @JsonProperty(value = "height")
+    @JsonProperty(value = "height", required = true)
     private double height;
 
     /**

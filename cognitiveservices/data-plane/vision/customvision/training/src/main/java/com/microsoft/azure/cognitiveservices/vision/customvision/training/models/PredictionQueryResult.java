@@ -18,13 +18,13 @@ public class PredictionQueryResult {
     /**
      * The token property.
      */
-    @JsonProperty(value = "token", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "token", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PredictionQueryToken token;
 
     /**
      * The results property.
      */
-    @JsonProperty(value = "results", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "results", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<StoredImagePrediction> results;
 
     /**

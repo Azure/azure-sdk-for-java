@@ -20,31 +20,31 @@ public class Iteration {
     /**
      * Gets the id of the iteration.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
      * Gets or sets the name of the iteration.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Gets the current iteration status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /**
      * Gets the time this iteration was completed.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "created", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
      * Gets the time this iteration was last modified.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastModified", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastModified;
 
     /**
@@ -56,19 +56,19 @@ public class Iteration {
     /**
      * Gets the project id of the iteration.
      */
-    @JsonProperty(value = "projectId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "projectId", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID projectId;
 
     /**
      * Whether the iteration can be exported to another format for download.
      */
-    @JsonProperty(value = "exportable", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "exportable", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private boolean exportable;
 
     /**
      * A set of platforms this iteration can export to.
      */
-    @JsonProperty(value = "exportableTo", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "exportableTo", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<String> exportableTo;
 
     /**
@@ -88,19 +88,19 @@ public class Iteration {
      * Gets the training type of the iteration. Possible values include:
      * 'Regular', 'Advanced'.
      */
-    @JsonProperty(value = "trainingType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "trainingType", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private TrainingType trainingType;
 
     /**
-     * Gets the reserved baking budget for the iteration.
+     * Gets the reserved advanced training budget for the iteration.
      */
-    @JsonProperty(value = "reservedBudgetInHours", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "reservedBudgetInHours", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int reservedBudgetInHours;
 
     /**
      * Name of the published model.
      */
-    @JsonProperty(value = "publishName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "publishName", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String publishName;
 
     /**
@@ -223,7 +223,7 @@ public class Iteration {
     }
 
     /**
-     * Get gets the reserved baking budget for the iteration.
+     * Get gets the reserved advanced training budget for the iteration.
      *
      * @return the reservedBudgetInHours value
      */

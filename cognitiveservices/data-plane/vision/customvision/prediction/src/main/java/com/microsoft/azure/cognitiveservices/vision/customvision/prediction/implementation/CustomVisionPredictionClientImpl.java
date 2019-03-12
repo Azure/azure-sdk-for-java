@@ -265,13 +265,14 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction classifyImageUrl(UUID projectId, String publishedName) {
-        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName).toBlocking().single().body();
+    public ImagePrediction classifyImageUrl(UUID projectId, String publishedName, String url) {
+        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url).toBlocking().single().body();
     }
 
     /**
@@ -279,12 +280,13 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(classifyImageUrlWithServiceResponseAsync(projectId, publishedName), serviceCallback);
+    public ServiceFuture<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String url, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url), serviceCallback);
     }
 
     /**
@@ -292,11 +294,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName) {
-        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String url) {
+        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -309,10 +312,11 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithServiceResponseAsync(UUID projectId, String publishedName) {
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String url) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -325,10 +329,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
         final String application = null;
-        final String url = null;
         ImageUrl imageUrl = new ImageUrl();
-        imageUrl.withUrl(null);
+        imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         return service.classifyImageUrl(projectId, publishedName, application, this.apiKey(), this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
@@ -349,15 +355,15 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction classifyImageUrl(UUID projectId, String publishedName, String application, String url) {
-        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, application, url).toBlocking().single().body();
+    public ImagePrediction classifyImageUrl(UUID projectId, String publishedName, String url, String application) {
+        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url, application).toBlocking().single().body();
     }
 
     /**
@@ -365,14 +371,14 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(classifyImageUrlWithServiceResponseAsync(projectId, publishedName, application, url), serviceCallback);
+    public ServiceFuture<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String url, String application, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url, application), serviceCallback);
     }
 
     /**
@@ -380,13 +386,13 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String application, String url) {
-        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, application, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> classifyImageUrlAsync(UUID projectId, String publishedName, String url, String application) {
+        return classifyImageUrlWithServiceResponseAsync(projectId, publishedName, url, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -399,12 +405,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String application, String url) {
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String url, String application) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -416,6 +422,9 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
         }
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
@@ -634,13 +643,14 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction classifyImageUrlWithNoStore(UUID projectId, String publishedName) {
-        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName).toBlocking().single().body();
+    public ImagePrediction classifyImageUrlWithNoStore(UUID projectId, String publishedName, String url) {
+        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url).toBlocking().single().body();
     }
 
     /**
@@ -648,12 +658,13 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName), serviceCallback);
+    public ServiceFuture<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url), serviceCallback);
     }
 
     /**
@@ -661,11 +672,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName) {
-        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url) {
+        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -678,10 +690,11 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName) {
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String url) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -694,10 +707,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
         final String application = null;
-        final String url = null;
         ImageUrl imageUrl = new ImageUrl();
-        imageUrl.withUrl(null);
+        imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         return service.classifyImageUrlWithNoStore(projectId, publishedName, application, this.apiKey(), this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
@@ -718,15 +733,15 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction classifyImageUrlWithNoStore(UUID projectId, String publishedName, String application, String url) {
-        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, application, url).toBlocking().single().body();
+    public ImagePrediction classifyImageUrlWithNoStore(UUID projectId, String publishedName, String url, String application) {
+        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application).toBlocking().single().body();
     }
 
     /**
@@ -734,14 +749,14 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, application, url), serviceCallback);
+    public ServiceFuture<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, String application, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application), serviceCallback);
     }
 
     /**
@@ -749,13 +764,13 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String application, String url) {
-        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, application, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> classifyImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, String application) {
+        return classifyImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -768,12 +783,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String application, String url) {
+    public Observable<ServiceResponse<ImagePrediction>> classifyImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String url, String application) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -785,6 +800,9 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
         }
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
@@ -1003,13 +1021,14 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction detectImageUrl(UUID projectId, String publishedName) {
-        return detectImageUrlWithServiceResponseAsync(projectId, publishedName).toBlocking().single().body();
+    public ImagePrediction detectImageUrl(UUID projectId, String publishedName, String url) {
+        return detectImageUrlWithServiceResponseAsync(projectId, publishedName, url).toBlocking().single().body();
     }
 
     /**
@@ -1017,12 +1036,13 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(detectImageUrlWithServiceResponseAsync(projectId, publishedName), serviceCallback);
+    public ServiceFuture<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String url, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(detectImageUrlWithServiceResponseAsync(projectId, publishedName, url), serviceCallback);
     }
 
     /**
@@ -1030,11 +1050,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName) {
-        return detectImageUrlWithServiceResponseAsync(projectId, publishedName).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String url) {
+        return detectImageUrlWithServiceResponseAsync(projectId, publishedName, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -1047,10 +1068,11 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithServiceResponseAsync(UUID projectId, String publishedName) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String url) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1063,10 +1085,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
         final String application = null;
-        final String url = null;
         ImageUrl imageUrl = new ImageUrl();
-        imageUrl.withUrl(null);
+        imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         return service.detectImageUrl(projectId, publishedName, application, this.apiKey(), this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
@@ -1087,15 +1111,15 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction detectImageUrl(UUID projectId, String publishedName, String application, String url) {
-        return detectImageUrlWithServiceResponseAsync(projectId, publishedName, application, url).toBlocking().single().body();
+    public ImagePrediction detectImageUrl(UUID projectId, String publishedName, String url, String application) {
+        return detectImageUrlWithServiceResponseAsync(projectId, publishedName, url, application).toBlocking().single().body();
     }
 
     /**
@@ -1103,14 +1127,14 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(detectImageUrlWithServiceResponseAsync(projectId, publishedName, application, url), serviceCallback);
+    public ServiceFuture<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String url, String application, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(detectImageUrlWithServiceResponseAsync(projectId, publishedName, url, application), serviceCallback);
     }
 
     /**
@@ -1118,13 +1142,13 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String application, String url) {
-        return detectImageUrlWithServiceResponseAsync(projectId, publishedName, application, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> detectImageUrlAsync(UUID projectId, String publishedName, String url, String application) {
+        return detectImageUrlWithServiceResponseAsync(projectId, publishedName, url, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -1137,12 +1161,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String application, String url) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithServiceResponseAsync(UUID projectId, String publishedName, String url, String application) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1154,6 +1178,9 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
         }
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
@@ -1372,13 +1399,14 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction detectImageUrlWithNoStore(UUID projectId, String publishedName) {
-        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName).toBlocking().single().body();
+    public ImagePrediction detectImageUrlWithNoStore(UUID projectId, String publishedName, String url) {
+        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url).toBlocking().single().body();
     }
 
     /**
@@ -1386,12 +1414,13 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName), serviceCallback);
+    public ServiceFuture<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url), serviceCallback);
     }
 
     /**
@@ -1399,11 +1428,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName) {
-        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url) {
+        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -1416,10 +1446,11 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String url) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1432,10 +1463,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
         final String application = null;
-        final String url = null;
         ImageUrl imageUrl = new ImageUrl();
-        imageUrl.withUrl(null);
+        imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         return service.detectImageUrlWithNoStore(projectId, publishedName, application, this.apiKey(), this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
@@ -1456,15 +1489,15 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction detectImageUrlWithNoStore(UUID projectId, String publishedName, String application, String url) {
-        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, application, url).toBlocking().single().body();
+    public ImagePrediction detectImageUrlWithNoStore(UUID projectId, String publishedName, String url, String application) {
+        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application).toBlocking().single().body();
     }
 
     /**
@@ -1472,14 +1505,14 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String application, String url, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, application, url), serviceCallback);
+    public ServiceFuture<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, String application, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application), serviceCallback);
     }
 
     /**
@@ -1487,13 +1520,13 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String application, String url) {
-        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, application, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> detectImageUrlWithNoStoreAsync(UUID projectId, String publishedName, String url, String application) {
+        return detectImageUrlWithNoStoreWithServiceResponseAsync(projectId, publishedName, url, application).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -1506,12 +1539,12 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
      *
      * @param projectId The project id.
      * @param publishedName Specifies the name of the model to evaluate against.
-     * @param application Optional. Specifies the name of application using the endpoint.
      * @param url Url of the image.
+     * @param application Optional. Specifies the name of application using the endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String application, String url) {
+    public Observable<ServiceResponse<ImagePrediction>> detectImageUrlWithNoStoreWithServiceResponseAsync(UUID projectId, String publishedName, String url, String application) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1523,6 +1556,9 @@ public class CustomVisionPredictionClientImpl extends AzureServiceClient impleme
         }
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);

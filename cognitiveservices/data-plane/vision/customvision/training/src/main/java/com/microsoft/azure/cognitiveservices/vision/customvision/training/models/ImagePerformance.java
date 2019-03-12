@@ -26,37 +26,37 @@ public class ImagePerformance {
     /**
      * The id property.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
      * The created property.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "created", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
      * The width property.
      */
-    @JsonProperty(value = "width", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "width", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int width;
 
     /**
      * The height property.
      */
-    @JsonProperty(value = "height", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "height", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int height;
 
     /**
      * The imageUri property.
      */
-    @JsonProperty(value = "imageUri", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "imageUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String imageUri;
 
     /**
      * The thumbnailUri property.
      */
-    @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "thumbnailUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
 
     /**

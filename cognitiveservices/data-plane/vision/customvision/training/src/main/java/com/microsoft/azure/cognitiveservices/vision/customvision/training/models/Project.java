@@ -19,50 +19,50 @@ public class Project {
     /**
      * Gets the project id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
      * Gets or sets the name of the project.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Gets or sets the description of the project.
      */
-    @JsonProperty(value = "description")
+    @JsonProperty(value = "description", required = true)
     private String description;
 
     /**
      * Gets or sets the project settings.
      */
-    @JsonProperty(value = "settings")
+    @JsonProperty(value = "settings", required = true)
     private ProjectSettings settings;
 
     /**
      * Gets the date this project was created.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "created", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
      * Gets the date this project was last modified.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "lastModified", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastModified;
 
     /**
      * Gets the thumbnail url representing the image.
      */
-    @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "thumbnailUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
 
     /**
      * Gets if the DR mode is on.
      */
     @JsonProperty(value = "drModeEnabled", access = JsonProperty.Access.WRITE_ONLY)
-    private boolean drModeEnabled;
+    private Boolean drModeEnabled;
 
     /**
      * Get gets the project id.
@@ -165,7 +165,7 @@ public class Project {
      *
      * @return the drModeEnabled value
      */
-    public boolean drModeEnabled() {
+    public Boolean drModeEnabled() {
         return this.drModeEnabled;
     }
 

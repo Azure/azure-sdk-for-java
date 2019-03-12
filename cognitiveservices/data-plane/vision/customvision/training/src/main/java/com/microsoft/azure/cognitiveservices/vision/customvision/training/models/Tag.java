@@ -18,32 +18,32 @@ public class Tag {
     /**
      * Gets the Tag ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
      * Gets or sets the name of the tag.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
      * Gets or sets the description of the tag.
      */
-    @JsonProperty(value = "description")
+    @JsonProperty(value = "description", required = true)
     private String description;
 
     /**
      * Gets or sets the type of the tag. Possible values include: 'Regular',
      * 'Negative'.
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "type", required = true)
     private TagType type;
 
     /**
      * Gets the number of images with this tag.
      */
-    @JsonProperty(value = "imageCount", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "imageCount", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int imageCount;
 
     /**

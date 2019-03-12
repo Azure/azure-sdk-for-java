@@ -18,31 +18,31 @@ public class IterationPerformance {
     /**
      * Gets the per-tag performance details for this iteration.
      */
-    @JsonProperty(value = "perTagPerformance", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "perTagPerformance", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<TagPerformance> perTagPerformance;
 
     /**
      * Gets the precision.
      */
-    @JsonProperty(value = "precision", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "precision", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double precision;
 
     /**
      * Gets the standard deviation for the precision.
      */
-    @JsonProperty(value = "precisionStdDeviation", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "precisionStdDeviation", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double precisionStdDeviation;
 
     /**
      * Gets the recall.
      */
-    @JsonProperty(value = "recall", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "recall", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double recall;
 
     /**
      * Gets the standard deviation for the recall.
      */
-    @JsonProperty(value = "recallStdDeviation", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "recallStdDeviation", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double recallStdDeviation;
 
     /**

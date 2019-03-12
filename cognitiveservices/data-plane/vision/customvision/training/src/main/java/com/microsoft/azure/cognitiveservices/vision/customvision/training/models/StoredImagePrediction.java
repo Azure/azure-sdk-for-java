@@ -20,55 +20,55 @@ public class StoredImagePrediction {
     /**
      * The URI to the (resized) prediction image.
      */
-    @JsonProperty(value = "resizedImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "resizedImageUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String resizedImageUri;
 
     /**
      * The URI to the thumbnail of the original prediction image.
      */
-    @JsonProperty(value = "thumbnailUri", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "thumbnailUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String thumbnailUri;
 
     /**
      * The URI to the original prediction image.
      */
-    @JsonProperty(value = "originalImageUri", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "originalImageUri", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String originalImageUri;
 
     /**
      * Domain used for the prediction.
      */
-    @JsonProperty(value = "domain", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "domain", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID domain;
 
     /**
      * Prediction Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
      * Project Id.
      */
-    @JsonProperty(value = "project", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "project", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID project;
 
     /**
      * Iteration Id.
      */
-    @JsonProperty(value = "iteration", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "iteration", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID iteration;
 
     /**
      * Date this prediction was created.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "created", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
      * List of predictions.
      */
-    @JsonProperty(value = "predictions", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "predictions", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<Prediction> predictions;
 
     /**

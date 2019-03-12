@@ -19,19 +19,19 @@ public class ImageRegionProposal {
     /**
      * The projectId property.
      */
-    @JsonProperty(value = "projectId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "projectId", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID projectId;
 
     /**
      * The imageId property.
      */
-    @JsonProperty(value = "imageId", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "imageId", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID imageId;
 
     /**
      * The proposals property.
      */
-    @JsonProperty(value = "proposals", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "proposals", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private List<RegionProposal> proposals;
 
     /**

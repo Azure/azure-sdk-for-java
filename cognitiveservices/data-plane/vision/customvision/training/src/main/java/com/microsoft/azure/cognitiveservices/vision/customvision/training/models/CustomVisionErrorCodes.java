@@ -94,6 +94,9 @@ public final class CustomVisionErrorCodes extends ExpandableStringEnum<CustomVis
     /** Static value BadRequestNegativeAndRegularTagOnSameImage for CustomVisionErrorCodes. */
     public static final CustomVisionErrorCodes BAD_REQUEST_NEGATIVE_AND_REGULAR_TAG_ON_SAME_IMAGE = fromString("BadRequestNegativeAndRegularTagOnSameImage");
 
+    /** Static value BadRequestRequiredParamIsNull for CustomVisionErrorCodes. */
+    public static final CustomVisionErrorCodes BAD_REQUEST_REQUIRED_PARAM_IS_NULL = fromString("BadRequestRequiredParamIsNull");
+
     /** Static value BadRequestIterationIsPublished for CustomVisionErrorCodes. */
     public static final CustomVisionErrorCodes BAD_REQUEST_ITERATION_IS_PUBLISHED = fromString("BadRequestIterationIsPublished");
 
@@ -178,8 +181,14 @@ public final class CustomVisionErrorCodes extends ExpandableStringEnum<CustomVis
     /** Static value BadRequestInvalidEmailAddress for CustomVisionErrorCodes. */
     public static final CustomVisionErrorCodes BAD_REQUEST_INVALID_EMAIL_ADDRESS = fromString("BadRequestInvalidEmailAddress");
 
-    /** Static value BadRequestBakingAlreadyInProgress for CustomVisionErrorCodes. */
-    public static final CustomVisionErrorCodes BAD_REQUEST_BAKING_ALREADY_IN_PROGRESS = fromString("BadRequestBakingAlreadyInProgress");
+    /** Static value BadRequestDomainNotSupportedForAdvancedTraining for CustomVisionErrorCodes. */
+    public static final CustomVisionErrorCodes BAD_REQUEST_DOMAIN_NOT_SUPPORTED_FOR_ADVANCED_TRAINING = fromString("BadRequestDomainNotSupportedForAdvancedTraining");
+
+    /** Static value BadRequestExportPlatformNotSupportedForAdvancedTraining for CustomVisionErrorCodes. */
+    public static final CustomVisionErrorCodes BAD_REQUEST_EXPORT_PLATFORM_NOT_SUPPORTED_FOR_ADVANCED_TRAINING = fromString("BadRequestExportPlatformNotSupportedForAdvancedTraining");
+
+    /** Static value BadRequestReservedBudgetInHoursNotEnoughForAdvancedTraining for CustomVisionErrorCodes. */
+    public static final CustomVisionErrorCodes BAD_REQUEST_RESERVED_BUDGET_IN_HOURS_NOT_ENOUGH_FOR_ADVANCED_TRAINING = fromString("BadRequestReservedBudgetInHoursNotEnoughForAdvancedTraining");
 
     /** Static value BadRequestExportValidationFailed for CustomVisionErrorCodes. */
     public static final CustomVisionErrorCodes BAD_REQUEST_EXPORT_VALIDATION_FAILED = fromString("BadRequestExportValidationFailed");

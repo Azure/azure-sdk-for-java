@@ -17,7 +17,7 @@ public class ImageUrl {
     /**
      * Url of the image.
      */
-    @JsonProperty(value = "url")
+    @JsonProperty(value = "url", required = true)
     private String url;
 
     /**

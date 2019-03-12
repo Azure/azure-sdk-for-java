@@ -271,7 +271,7 @@ public interface CustomVisionTrainingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the int object if successful.
      */
-    int getTaggedImageCount(UUID projectId, UUID iterationId, List<String> tagIds);
+    int getTaggedImageCount(UUID projectId, UUID iterationId, List<UUID> tagIds);
 
     /**
      * Gets the number of images tagged with the provided {tagIds}.
@@ -285,7 +285,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Integer> getTaggedImageCountAsync(UUID projectId, UUID iterationId, List<String> tagIds, final ServiceCallback<Integer> serviceCallback);
+    ServiceFuture<Integer> getTaggedImageCountAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, final ServiceCallback<Integer> serviceCallback);
 
     /**
      * Gets the number of images tagged with the provided {tagIds}.
@@ -298,7 +298,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the int object
      */
-    Observable<Integer> getTaggedImageCountAsync(UUID projectId, UUID iterationId, List<String> tagIds);
+    Observable<Integer> getTaggedImageCountAsync(UUID projectId, UUID iterationId, List<UUID> tagIds);
 
     /**
      * Gets the number of images tagged with the provided {tagIds}.
@@ -311,7 +311,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the int object
      */
-    Observable<ServiceResponse<Integer>> getTaggedImageCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds);
+    Observable<ServiceResponse<Integer>> getTaggedImageCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds);
 
     /**
      * Gets the number of untagged images.
@@ -501,7 +501,7 @@ public interface CustomVisionTrainingClient {
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deleteImageTags(UUID projectId, List<String> imageIds, List<String> tagIds);
+    void deleteImageTags(UUID projectId, List<UUID> imageIds, List<UUID> tagIds);
 
     /**
      * Remove a set of tags from a set of images.
@@ -513,7 +513,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> deleteImageTagsAsync(UUID projectId, List<String> imageIds, List<String> tagIds, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteImageTagsAsync(UUID projectId, List<UUID> imageIds, List<UUID> tagIds, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Remove a set of tags from a set of images.
@@ -524,7 +524,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteImageTagsAsync(UUID projectId, List<String> imageIds, List<String> tagIds);
+    Observable<Void> deleteImageTagsAsync(UUID projectId, List<UUID> imageIds, List<UUID> tagIds);
 
     /**
      * Remove a set of tags from a set of images.
@@ -535,7 +535,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteImageTagsWithServiceResponseAsync(UUID projectId, List<String> imageIds, List<String> tagIds);
+    Observable<ServiceResponse<Void>> deleteImageTagsWithServiceResponseAsync(UUID projectId, List<UUID> imageIds, List<UUID> tagIds);
 
     /**
      * Create a set of image regions.
@@ -643,7 +643,7 @@ public interface CustomVisionTrainingClient {
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deleteImageRegions(UUID projectId, List<String> regionIds);
+    void deleteImageRegions(UUID projectId, List<UUID> regionIds);
 
     /**
      * Delete a set of image regions.
@@ -654,7 +654,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> deleteImageRegionsAsync(UUID projectId, List<String> regionIds, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteImageRegionsAsync(UUID projectId, List<UUID> regionIds, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Delete a set of image regions.
@@ -664,7 +664,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteImageRegionsAsync(UUID projectId, List<String> regionIds);
+    Observable<Void> deleteImageRegionsAsync(UUID projectId, List<UUID> regionIds);
 
     /**
      * Delete a set of image regions.
@@ -674,7 +674,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteImageRegionsWithServiceResponseAsync(UUID projectId, List<String> regionIds);
+    Observable<ServiceResponse<Void>> deleteImageRegionsWithServiceResponseAsync(UUID projectId, List<UUID> regionIds);
 
     /**
      * Get tagged images for a given project iteration.
@@ -748,7 +748,7 @@ public interface CustomVisionTrainingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Image&gt; object if successful.
      */
-    List<Image> getTaggedImages(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip);
+    List<Image> getTaggedImages(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip);
 
     /**
      * Get tagged images for a given project iteration.
@@ -767,7 +767,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<Image>> getTaggedImagesAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip, final ServiceCallback<List<Image>> serviceCallback);
+    ServiceFuture<List<Image>> getTaggedImagesAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip, final ServiceCallback<List<Image>> serviceCallback);
 
     /**
      * Get tagged images for a given project iteration.
@@ -785,7 +785,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    Observable<List<Image>> getTaggedImagesAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip);
+    Observable<List<Image>> getTaggedImagesAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip);
 
     /**
      * Get tagged images for a given project iteration.
@@ -803,7 +803,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    Observable<ServiceResponse<List<Image>>> getTaggedImagesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip);
+    Observable<ServiceResponse<List<Image>>> getTaggedImagesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip);
 
     /**
      * Get untagged images for a given project iteration.
@@ -973,7 +973,7 @@ public interface CustomVisionTrainingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Image&gt; object if successful.
      */
-    List<Image> getImagesByIds(UUID projectId, List<String> imageIds, UUID iterationId);
+    List<Image> getImagesByIds(UUID projectId, List<UUID> imageIds, UUID iterationId);
 
     /**
      * Get images by id for a given project iteration.
@@ -987,7 +987,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<Image>> getImagesByIdsAsync(UUID projectId, List<String> imageIds, UUID iterationId, final ServiceCallback<List<Image>> serviceCallback);
+    ServiceFuture<List<Image>> getImagesByIdsAsync(UUID projectId, List<UUID> imageIds, UUID iterationId, final ServiceCallback<List<Image>> serviceCallback);
 
     /**
      * Get images by id for a given project iteration.
@@ -1000,7 +1000,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    Observable<List<Image>> getImagesByIdsAsync(UUID projectId, List<String> imageIds, UUID iterationId);
+    Observable<List<Image>> getImagesByIdsAsync(UUID projectId, List<UUID> imageIds, UUID iterationId);
 
     /**
      * Get images by id for a given project iteration.
@@ -1013,7 +1013,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    Observable<ServiceResponse<List<Image>>> getImagesByIdsWithServiceResponseAsync(UUID projectId, List<String> imageIds, UUID iterationId);
+    Observable<ServiceResponse<List<Image>>> getImagesByIdsWithServiceResponseAsync(UUID projectId, List<UUID> imageIds, UUID iterationId);
 
     /**
      * Add the provided images to the set of training images.
@@ -1078,7 +1078,7 @@ public interface CustomVisionTrainingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageCreateSummary object if successful.
      */
-    ImageCreateSummary createImagesFromData(UUID projectId, byte[] imageData, List<String> tagIds);
+    ImageCreateSummary createImagesFromData(UUID projectId, byte[] imageData, List<UUID> tagIds);
 
     /**
      * Add the provided images to the set of training images.
@@ -1092,7 +1092,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImageCreateSummary> createImagesFromDataAsync(UUID projectId, byte[] imageData, List<String> tagIds, final ServiceCallback<ImageCreateSummary> serviceCallback);
+    ServiceFuture<ImageCreateSummary> createImagesFromDataAsync(UUID projectId, byte[] imageData, List<UUID> tagIds, final ServiceCallback<ImageCreateSummary> serviceCallback);
 
     /**
      * Add the provided images to the set of training images.
@@ -1105,7 +1105,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
-    Observable<ImageCreateSummary> createImagesFromDataAsync(UUID projectId, byte[] imageData, List<String> tagIds);
+    Observable<ImageCreateSummary> createImagesFromDataAsync(UUID projectId, byte[] imageData, List<UUID> tagIds);
 
     /**
      * Add the provided images to the set of training images.
@@ -1118,7 +1118,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
-    Observable<ServiceResponse<ImageCreateSummary>> createImagesFromDataWithServiceResponseAsync(UUID projectId, byte[] imageData, List<String> tagIds);
+    Observable<ServiceResponse<ImageCreateSummary>> createImagesFromDataWithServiceResponseAsync(UUID projectId, byte[] imageData, List<UUID> tagIds);
 
     /**
      * Delete images from the set of training images.
@@ -1129,7 +1129,7 @@ public interface CustomVisionTrainingClient {
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deleteImages(UUID projectId, List<String> imageIds);
+    void deleteImages(UUID projectId, List<UUID> imageIds);
 
     /**
      * Delete images from the set of training images.
@@ -1140,7 +1140,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> deleteImagesAsync(UUID projectId, List<String> imageIds, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> deleteImagesAsync(UUID projectId, List<UUID> imageIds, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Delete images from the set of training images.
@@ -1150,7 +1150,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> deleteImagesAsync(UUID projectId, List<String> imageIds);
+    Observable<Void> deleteImagesAsync(UUID projectId, List<UUID> imageIds);
 
     /**
      * Delete images from the set of training images.
@@ -1160,7 +1160,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deleteImagesWithServiceResponseAsync(UUID projectId, List<String> imageIds);
+    Observable<ServiceResponse<Void>> deleteImagesWithServiceResponseAsync(UUID projectId, List<UUID> imageIds);
 
     /**
      * Add the provided batch of images to the set of training images.
@@ -1359,7 +1359,7 @@ public interface CustomVisionTrainingClient {
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void deletePrediction(UUID projectId, List<String> ids);
+    void deletePrediction(UUID projectId, List<UUID> ids);
 
     /**
      * Delete a set of predicted images and their associated prediction results.
@@ -1370,17 +1370,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> deletePredictionAsync(UUID projectId, List<String> ids, final ServiceCallback<Void> serviceCallback);
-
-    /**
-     * Delete a set of predicted images and their associated prediction results.
-     *
-     * @param projectId The project id.
-     * @param ids The prediction ids. Limited to 64.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<Void> deletePredictionAsync(UUID projectId, List<String> ids);
+    ServiceFuture<Void> deletePredictionAsync(UUID projectId, List<UUID> ids, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Delete a set of predicted images and their associated prediction results.
@@ -1390,96 +1380,110 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> deletePredictionWithServiceResponseAsync(UUID projectId, List<String> ids);
+    Observable<Void> deletePredictionAsync(UUID projectId, List<UUID> ids);
+
+    /**
+     * Delete a set of predicted images and their associated prediction results.
+     *
+     * @param projectId The project id.
+     * @param ids The prediction ids. Limited to 64.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> deletePredictionWithServiceResponseAsync(UUID projectId, List<UUID> ids);
 
     /**
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CustomVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImagePrediction object if successful.
-     */
-    ImagePrediction quickTestImageUrl(UUID projectId);
-
-    /**
-     * Quick test an image url.
-     *
-     * @param projectId The project to evaluate against.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<ImagePrediction> quickTestImageUrlAsync(UUID projectId, final ServiceCallback<ImagePrediction> serviceCallback);
-
-    /**
-     * Quick test an image url.
-     *
-     * @param projectId The project to evaluate against.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImagePrediction object
-     */
-    Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId);
-
-    /**
-     * Quick test an image url.
-     *
-     * @param projectId The project to evaluate against.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImagePrediction object
-     */
-    Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId);
-    /**
-     * Quick test an image url.
-     *
-     * @param projectId The project to evaluate against.
-     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
-                 The default iteration for the project will be used when not specified.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    ImagePrediction quickTestImageUrl(UUID projectId, UUID iterationId, String url);
+    ImagePrediction quickTestImageUrl(UUID projectId, String url);
 
     /**
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
-     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
-                 The default iteration for the project will be used when not specified.
      * @param url Url of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<ImagePrediction> quickTestImageUrlAsync(UUID projectId, UUID iterationId, String url, final ServiceCallback<ImagePrediction> serviceCallback);
+    ServiceFuture<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url, final ServiceCallback<ImagePrediction> serviceCallback);
 
     /**
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
-     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
-                 The default iteration for the project will be used when not specified.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId, UUID iterationId, String url);
+    Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url);
 
     /**
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
-     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
-                 The default iteration for the project will be used when not specified.
      * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId, UUID iterationId, String url);
+    Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId, String url);
+    /**
+     * Quick test an image url.
+     *
+     * @param projectId The project to evaluate against.
+     * @param url Url of the image.
+     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
+                 The default iteration for the project will be used when not specified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CustomVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ImagePrediction object if successful.
+     */
+    ImagePrediction quickTestImageUrl(UUID projectId, String url, UUID iterationId);
+
+    /**
+     * Quick test an image url.
+     *
+     * @param projectId The project to evaluate against.
+     * @param url Url of the image.
+     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
+                 The default iteration for the project will be used when not specified.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url, UUID iterationId, final ServiceCallback<ImagePrediction> serviceCallback);
+
+    /**
+     * Quick test an image url.
+     *
+     * @param projectId The project to evaluate against.
+     * @param url Url of the image.
+     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
+                 The default iteration for the project will be used when not specified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url, UUID iterationId);
+
+    /**
+     * Quick test an image url.
+     *
+     * @param projectId The project to evaluate against.
+     * @param url Url of the image.
+     * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
+                 The default iteration for the project will be used when not specified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ImagePrediction object
+     */
+    Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId, String url, UUID iterationId);
 
     /**
      * Quick test an image.
@@ -1786,7 +1790,7 @@ public interface CustomVisionTrainingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ImagePerformance&gt; object if successful.
      */
-    List<ImagePerformance> getImagePerformances(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip);
+    List<ImagePerformance> getImagePerformances(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip);
 
     /**
      * Get image with its prediction for a given project iteration.
@@ -1805,7 +1809,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<ImagePerformance>> getImagePerformancesAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip, final ServiceCallback<List<ImagePerformance>> serviceCallback);
+    ServiceFuture<List<ImagePerformance>> getImagePerformancesAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip, final ServiceCallback<List<ImagePerformance>> serviceCallback);
 
     /**
      * Get image with its prediction for a given project iteration.
@@ -1823,7 +1827,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ImagePerformance&gt; object
      */
-    Observable<List<ImagePerformance>> getImagePerformancesAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip);
+    Observable<List<ImagePerformance>> getImagePerformancesAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip);
 
     /**
      * Get image with its prediction for a given project iteration.
@@ -1841,7 +1845,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ImagePerformance&gt; object
      */
-    Observable<ServiceResponse<List<ImagePerformance>>> getImagePerformancesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip);
+    Observable<ServiceResponse<List<ImagePerformance>>> getImagePerformancesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip);
 
     /**
      * Gets the number of images tagged with the provided {tagIds} that have prediction results from
@@ -1911,7 +1915,7 @@ public interface CustomVisionTrainingClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the int object if successful.
      */
-    int getImagePerformanceCount(UUID projectId, UUID iterationId, List<String> tagIds);
+    int getImagePerformanceCount(UUID projectId, UUID iterationId, List<UUID> tagIds);
 
     /**
      * Gets the number of images tagged with the provided {tagIds} that have prediction results from
@@ -1926,7 +1930,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Integer> getImagePerformanceCountAsync(UUID projectId, UUID iterationId, List<String> tagIds, final ServiceCallback<Integer> serviceCallback);
+    ServiceFuture<Integer> getImagePerformanceCountAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, final ServiceCallback<Integer> serviceCallback);
 
     /**
      * Gets the number of images tagged with the provided {tagIds} that have prediction results from
@@ -1940,7 +1944,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the int object
      */
-    Observable<Integer> getImagePerformanceCountAsync(UUID projectId, UUID iterationId, List<String> tagIds);
+    Observable<Integer> getImagePerformanceCountAsync(UUID projectId, UUID iterationId, List<UUID> tagIds);
 
     /**
      * Gets the number of images tagged with the provided {tagIds} that have prediction results from
@@ -1954,7 +1958,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the int object
      */
-    Observable<ServiceResponse<Integer>> getImagePerformanceCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds);
+    Observable<ServiceResponse<Integer>> getImagePerformanceCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds);
 
     /**
      * Get your projects.
@@ -2421,48 +2425,6 @@ public interface CustomVisionTrainingClient {
      */
     Observable<ServiceResponse<Void>> deleteIterationWithServiceResponseAsync(UUID projectId, UUID iterationId);
 
-    /**
-     * Update a specific iteration.
-     *
-     * @param projectId Project id.
-     * @param iterationId Iteration id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CustomVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Iteration object if successful.
-     */
-    Iteration updateIteration(UUID projectId, UUID iterationId);
-
-    /**
-     * Update a specific iteration.
-     *
-     * @param projectId Project id.
-     * @param iterationId Iteration id.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Iteration> updateIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Iteration> serviceCallback);
-
-    /**
-     * Update a specific iteration.
-     *
-     * @param projectId Project id.
-     * @param iterationId Iteration id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    Observable<Iteration> updateIterationAsync(UUID projectId, UUID iterationId);
-
-    /**
-     * Update a specific iteration.
-     *
-     * @param projectId Project id.
-     * @param iterationId Iteration id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    Observable<ServiceResponse<Iteration>> updateIterationWithServiceResponseAsync(UUID projectId, UUID iterationId);
     /**
      * Update a specific iteration.
      *

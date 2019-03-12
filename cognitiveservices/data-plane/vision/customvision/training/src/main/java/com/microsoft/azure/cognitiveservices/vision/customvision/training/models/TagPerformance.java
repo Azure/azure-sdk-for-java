@@ -18,37 +18,37 @@ public class TagPerformance {
     /**
      * The id property.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
      * The name property.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * Gets the precision.
      */
-    @JsonProperty(value = "precision", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "precision", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double precision;
 
     /**
      * Gets the standard deviation for the precision.
      */
-    @JsonProperty(value = "precisionStdDeviation", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "precisionStdDeviation", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double precisionStdDeviation;
 
     /**
      * Gets the recall.
      */
-    @JsonProperty(value = "recall", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "recall", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double recall;
 
     /**
      * Gets the standard deviation for the recall.
      */
-    @JsonProperty(value = "recallStdDeviation", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "recallStdDeviation", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double recallStdDeviation;
 
     /**

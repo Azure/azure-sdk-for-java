@@ -647,7 +647,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
         final UUID iterationId = null;
-        final List<String> tagIds = null;
+        final List<UUID> tagIds = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         String tagIdsConverted = this.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);
         return service.getTaggedImageCount(projectId, iterationId, tagIdsConverted, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
@@ -677,7 +677,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the int object if successful.
      */
-    public int getTaggedImageCount(UUID projectId, UUID iterationId, List<String> tagIds) {
+    public int getTaggedImageCount(UUID projectId, UUID iterationId, List<UUID> tagIds) {
         return getTaggedImageCountWithServiceResponseAsync(projectId, iterationId, tagIds).toBlocking().single().body();
     }
 
@@ -693,7 +693,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Integer> getTaggedImageCountAsync(UUID projectId, UUID iterationId, List<String> tagIds, final ServiceCallback<Integer> serviceCallback) {
+    public ServiceFuture<Integer> getTaggedImageCountAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, final ServiceCallback<Integer> serviceCallback) {
         return ServiceFuture.fromResponse(getTaggedImageCountWithServiceResponseAsync(projectId, iterationId, tagIds), serviceCallback);
     }
 
@@ -708,7 +708,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Integer object
      */
-    public Observable<Integer> getTaggedImageCountAsync(UUID projectId, UUID iterationId, List<String> tagIds) {
+    public Observable<Integer> getTaggedImageCountAsync(UUID projectId, UUID iterationId, List<UUID> tagIds) {
         return getTaggedImageCountWithServiceResponseAsync(projectId, iterationId, tagIds).map(new Func1<ServiceResponse<Integer>, Integer>() {
             @Override
             public Integer call(ServiceResponse<Integer> response) {
@@ -728,7 +728,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Integer object
      */
-    public Observable<ServiceResponse<Integer>> getTaggedImageCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds) {
+    public Observable<ServiceResponse<Integer>> getTaggedImageCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1109,7 +1109,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteImageTags(UUID projectId, List<String> imageIds, List<String> tagIds) {
+    public void deleteImageTags(UUID projectId, List<UUID> imageIds, List<UUID> tagIds) {
         deleteImageTagsWithServiceResponseAsync(projectId, imageIds, tagIds).toBlocking().single().body();
     }
 
@@ -1123,7 +1123,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteImageTagsAsync(UUID projectId, List<String> imageIds, List<String> tagIds, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> deleteImageTagsAsync(UUID projectId, List<UUID> imageIds, List<UUID> tagIds, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteImageTagsWithServiceResponseAsync(projectId, imageIds, tagIds), serviceCallback);
     }
 
@@ -1136,7 +1136,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteImageTagsAsync(UUID projectId, List<String> imageIds, List<String> tagIds) {
+    public Observable<Void> deleteImageTagsAsync(UUID projectId, List<UUID> imageIds, List<UUID> tagIds) {
         return deleteImageTagsWithServiceResponseAsync(projectId, imageIds, tagIds).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -1154,7 +1154,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteImageTagsWithServiceResponseAsync(UUID projectId, List<String> imageIds, List<String> tagIds) {
+    public Observable<ServiceResponse<Void>> deleteImageTagsWithServiceResponseAsync(UUID projectId, List<UUID> imageIds, List<UUID> tagIds) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1383,7 +1383,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteImageRegions(UUID projectId, List<String> regionIds) {
+    public void deleteImageRegions(UUID projectId, List<UUID> regionIds) {
         deleteImageRegionsWithServiceResponseAsync(projectId, regionIds).toBlocking().single().body();
     }
 
@@ -1396,7 +1396,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteImageRegionsAsync(UUID projectId, List<String> regionIds, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> deleteImageRegionsAsync(UUID projectId, List<UUID> regionIds, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteImageRegionsWithServiceResponseAsync(projectId, regionIds), serviceCallback);
     }
 
@@ -1408,7 +1408,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteImageRegionsAsync(UUID projectId, List<String> regionIds) {
+    public Observable<Void> deleteImageRegionsAsync(UUID projectId, List<UUID> regionIds) {
         return deleteImageRegionsWithServiceResponseAsync(projectId, regionIds).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -1425,7 +1425,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteImageRegionsWithServiceResponseAsync(UUID projectId, List<String> regionIds) {
+    public Observable<ServiceResponse<Void>> deleteImageRegionsWithServiceResponseAsync(UUID projectId, List<UUID> regionIds) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1537,7 +1537,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
         final UUID iterationId = null;
-        final List<String> tagIds = null;
+        final List<UUID> tagIds = null;
         final String orderBy = null;
         final Integer take = null;
         final Integer skip = null;
@@ -1575,7 +1575,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Image&gt; object if successful.
      */
-    public List<Image> getTaggedImages(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip) {
+    public List<Image> getTaggedImages(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip) {
         return getTaggedImagesWithServiceResponseAsync(projectId, iterationId, tagIds, orderBy, take, skip).toBlocking().single().body();
     }
 
@@ -1596,7 +1596,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<Image>> getTaggedImagesAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip, final ServiceCallback<List<Image>> serviceCallback) {
+    public ServiceFuture<List<Image>> getTaggedImagesAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip, final ServiceCallback<List<Image>> serviceCallback) {
         return ServiceFuture.fromResponse(getTaggedImagesWithServiceResponseAsync(projectId, iterationId, tagIds, orderBy, take, skip), serviceCallback);
     }
 
@@ -1616,7 +1616,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    public Observable<List<Image>> getTaggedImagesAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip) {
+    public Observable<List<Image>> getTaggedImagesAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip) {
         return getTaggedImagesWithServiceResponseAsync(projectId, iterationId, tagIds, orderBy, take, skip).map(new Func1<ServiceResponse<List<Image>>, List<Image>>() {
             @Override
             public List<Image> call(ServiceResponse<List<Image>> response) {
@@ -1641,7 +1641,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    public Observable<ServiceResponse<List<Image>>> getTaggedImagesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip) {
+    public Observable<ServiceResponse<List<Image>>> getTaggedImagesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -1930,7 +1930,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
-        final List<String> imageIds = null;
+        final List<UUID> imageIds = null;
         final UUID iterationId = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         String imageIdsConverted = this.serializerAdapter().serializeList(imageIds, CollectionFormat.CSV);
@@ -1961,7 +1961,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Image&gt; object if successful.
      */
-    public List<Image> getImagesByIds(UUID projectId, List<String> imageIds, UUID iterationId) {
+    public List<Image> getImagesByIds(UUID projectId, List<UUID> imageIds, UUID iterationId) {
         return getImagesByIdsWithServiceResponseAsync(projectId, imageIds, iterationId).toBlocking().single().body();
     }
 
@@ -1977,7 +1977,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<Image>> getImagesByIdsAsync(UUID projectId, List<String> imageIds, UUID iterationId, final ServiceCallback<List<Image>> serviceCallback) {
+    public ServiceFuture<List<Image>> getImagesByIdsAsync(UUID projectId, List<UUID> imageIds, UUID iterationId, final ServiceCallback<List<Image>> serviceCallback) {
         return ServiceFuture.fromResponse(getImagesByIdsWithServiceResponseAsync(projectId, imageIds, iterationId), serviceCallback);
     }
 
@@ -1992,7 +1992,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    public Observable<List<Image>> getImagesByIdsAsync(UUID projectId, List<String> imageIds, UUID iterationId) {
+    public Observable<List<Image>> getImagesByIdsAsync(UUID projectId, List<UUID> imageIds, UUID iterationId) {
         return getImagesByIdsWithServiceResponseAsync(projectId, imageIds, iterationId).map(new Func1<ServiceResponse<List<Image>>, List<Image>>() {
             @Override
             public List<Image> call(ServiceResponse<List<Image>> response) {
@@ -2012,7 +2012,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Image&gt; object
      */
-    public Observable<ServiceResponse<List<Image>>> getImagesByIdsWithServiceResponseAsync(UUID projectId, List<String> imageIds, UUID iterationId) {
+    public Observable<ServiceResponse<List<Image>>> getImagesByIdsWithServiceResponseAsync(UUID projectId, List<UUID> imageIds, UUID iterationId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2119,7 +2119,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
-        final List<String> tagIds = null;
+        final List<UUID> tagIds = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         String tagIdsConverted = this.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);RequestBody imageDataConverted = RequestBody.create(MediaType.parse("multipart/form-data"), imageData);
         return service.createImagesFromData(projectId, tagIdsConverted, imageDataConverted, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
@@ -2149,7 +2149,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImageCreateSummary object if successful.
      */
-    public ImageCreateSummary createImagesFromData(UUID projectId, byte[] imageData, List<String> tagIds) {
+    public ImageCreateSummary createImagesFromData(UUID projectId, byte[] imageData, List<UUID> tagIds) {
         return createImagesFromDataWithServiceResponseAsync(projectId, imageData, tagIds).toBlocking().single().body();
     }
 
@@ -2165,7 +2165,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageCreateSummary> createImagesFromDataAsync(UUID projectId, byte[] imageData, List<String> tagIds, final ServiceCallback<ImageCreateSummary> serviceCallback) {
+    public ServiceFuture<ImageCreateSummary> createImagesFromDataAsync(UUID projectId, byte[] imageData, List<UUID> tagIds, final ServiceCallback<ImageCreateSummary> serviceCallback) {
         return ServiceFuture.fromResponse(createImagesFromDataWithServiceResponseAsync(projectId, imageData, tagIds), serviceCallback);
     }
 
@@ -2180,7 +2180,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
-    public Observable<ImageCreateSummary> createImagesFromDataAsync(UUID projectId, byte[] imageData, List<String> tagIds) {
+    public Observable<ImageCreateSummary> createImagesFromDataAsync(UUID projectId, byte[] imageData, List<UUID> tagIds) {
         return createImagesFromDataWithServiceResponseAsync(projectId, imageData, tagIds).map(new Func1<ServiceResponse<ImageCreateSummary>, ImageCreateSummary>() {
             @Override
             public ImageCreateSummary call(ServiceResponse<ImageCreateSummary> response) {
@@ -2200,7 +2200,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageCreateSummary object
      */
-    public Observable<ServiceResponse<ImageCreateSummary>> createImagesFromDataWithServiceResponseAsync(UUID projectId, byte[] imageData, List<String> tagIds) {
+    public Observable<ServiceResponse<ImageCreateSummary>> createImagesFromDataWithServiceResponseAsync(UUID projectId, byte[] imageData, List<UUID> tagIds) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2246,7 +2246,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteImages(UUID projectId, List<String> imageIds) {
+    public void deleteImages(UUID projectId, List<UUID> imageIds) {
         deleteImagesWithServiceResponseAsync(projectId, imageIds).toBlocking().single().body();
     }
 
@@ -2259,7 +2259,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteImagesAsync(UUID projectId, List<String> imageIds, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> deleteImagesAsync(UUID projectId, List<UUID> imageIds, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteImagesWithServiceResponseAsync(projectId, imageIds), serviceCallback);
     }
 
@@ -2271,7 +2271,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteImagesAsync(UUID projectId, List<String> imageIds) {
+    public Observable<Void> deleteImagesAsync(UUID projectId, List<UUID> imageIds) {
         return deleteImagesWithServiceResponseAsync(projectId, imageIds).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -2288,7 +2288,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteImagesWithServiceResponseAsync(UUID projectId, List<String> imageIds) {
+    public Observable<ServiceResponse<Void>> deleteImagesWithServiceResponseAsync(UUID projectId, List<UUID> imageIds) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2701,7 +2701,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deletePrediction(UUID projectId, List<String> ids) {
+    public void deletePrediction(UUID projectId, List<UUID> ids) {
         deletePredictionWithServiceResponseAsync(projectId, ids).toBlocking().single().body();
     }
 
@@ -2714,7 +2714,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deletePredictionAsync(UUID projectId, List<String> ids, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> deletePredictionAsync(UUID projectId, List<UUID> ids, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deletePredictionWithServiceResponseAsync(projectId, ids), serviceCallback);
     }
 
@@ -2726,7 +2726,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deletePredictionAsync(UUID projectId, List<String> ids) {
+    public Observable<Void> deletePredictionAsync(UUID projectId, List<UUID> ids) {
         return deletePredictionWithServiceResponseAsync(projectId, ids).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -2743,7 +2743,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deletePredictionWithServiceResponseAsync(UUID projectId, List<String> ids) {
+    public Observable<ServiceResponse<Void>> deletePredictionWithServiceResponseAsync(UUID projectId, List<UUID> ids) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2784,36 +2784,39 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction quickTestImageUrl(UUID projectId) {
-        return quickTestImageUrlWithServiceResponseAsync(projectId).toBlocking().single().body();
+    public ImagePrediction quickTestImageUrl(UUID projectId, String url) {
+        return quickTestImageUrlWithServiceResponseAsync(projectId, url).toBlocking().single().body();
     }
 
     /**
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> quickTestImageUrlAsync(UUID projectId, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(quickTestImageUrlWithServiceResponseAsync(projectId), serviceCallback);
+    public ServiceFuture<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(quickTestImageUrlWithServiceResponseAsync(projectId, url), serviceCallback);
     }
 
     /**
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId) {
-        return quickTestImageUrlWithServiceResponseAsync(projectId).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url) {
+        return quickTestImageUrlWithServiceResponseAsync(projectId, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -2825,10 +2828,11 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId) {
+    public Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId, String url) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2838,10 +2842,12 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
+        }
         final UUID iterationId = null;
-        final String url = null;
         ImageUrl imageUrl = new ImageUrl();
-        imageUrl.withUrl(null);
+        imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         return service.quickTestImageUrl(projectId, iterationId, this.apiKey(), this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImagePrediction>>>() {
@@ -2861,45 +2867,45 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
                  The default iteration for the project will be used when not specified.
-     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ImagePrediction object if successful.
      */
-    public ImagePrediction quickTestImageUrl(UUID projectId, UUID iterationId, String url) {
-        return quickTestImageUrlWithServiceResponseAsync(projectId, iterationId, url).toBlocking().single().body();
+    public ImagePrediction quickTestImageUrl(UUID projectId, String url, UUID iterationId) {
+        return quickTestImageUrlWithServiceResponseAsync(projectId, url, iterationId).toBlocking().single().body();
     }
 
     /**
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
                  The default iteration for the project will be used when not specified.
-     * @param url Url of the image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImagePrediction> quickTestImageUrlAsync(UUID projectId, UUID iterationId, String url, final ServiceCallback<ImagePrediction> serviceCallback) {
-        return ServiceFuture.fromResponse(quickTestImageUrlWithServiceResponseAsync(projectId, iterationId, url), serviceCallback);
+    public ServiceFuture<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url, UUID iterationId, final ServiceCallback<ImagePrediction> serviceCallback) {
+        return ServiceFuture.fromResponse(quickTestImageUrlWithServiceResponseAsync(projectId, url, iterationId), serviceCallback);
     }
 
     /**
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
                  The default iteration for the project will be used when not specified.
-     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId, UUID iterationId, String url) {
-        return quickTestImageUrlWithServiceResponseAsync(projectId, iterationId, url).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
+    public Observable<ImagePrediction> quickTestImageUrlAsync(UUID projectId, String url, UUID iterationId) {
+        return quickTestImageUrlWithServiceResponseAsync(projectId, url, iterationId).map(new Func1<ServiceResponse<ImagePrediction>, ImagePrediction>() {
             @Override
             public ImagePrediction call(ServiceResponse<ImagePrediction> response) {
                 return response.body();
@@ -2911,13 +2917,13 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * Quick test an image url.
      *
      * @param projectId The project to evaluate against.
+     * @param url Url of the image.
      * @param iterationId Optional. Specifies the id of a particular iteration to evaluate against.
                  The default iteration for the project will be used when not specified.
-     * @param url Url of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagePrediction object
      */
-    public Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId, UUID iterationId, String url) {
+    public Observable<ServiceResponse<ImagePrediction>> quickTestImageUrlWithServiceResponseAsync(UUID projectId, String url, UUID iterationId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -2926,6 +2932,9 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         }
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
+        }
+        if (url == null) {
+            throw new IllegalArgumentException("Parameter url is required and cannot be null.");
         }
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
@@ -3475,7 +3484,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
-        final List<String> tagIds = null;
+        final List<UUID> tagIds = null;
         final String orderBy = null;
         final Integer take = null;
         final Integer skip = null;
@@ -3513,7 +3522,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ImagePerformance&gt; object if successful.
      */
-    public List<ImagePerformance> getImagePerformances(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip) {
+    public List<ImagePerformance> getImagePerformances(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip) {
         return getImagePerformancesWithServiceResponseAsync(projectId, iterationId, tagIds, orderBy, take, skip).toBlocking().single().body();
     }
 
@@ -3534,7 +3543,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ImagePerformance>> getImagePerformancesAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip, final ServiceCallback<List<ImagePerformance>> serviceCallback) {
+    public ServiceFuture<List<ImagePerformance>> getImagePerformancesAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip, final ServiceCallback<List<ImagePerformance>> serviceCallback) {
         return ServiceFuture.fromResponse(getImagePerformancesWithServiceResponseAsync(projectId, iterationId, tagIds, orderBy, take, skip), serviceCallback);
     }
 
@@ -3554,7 +3563,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ImagePerformance&gt; object
      */
-    public Observable<List<ImagePerformance>> getImagePerformancesAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip) {
+    public Observable<List<ImagePerformance>> getImagePerformancesAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip) {
         return getImagePerformancesWithServiceResponseAsync(projectId, iterationId, tagIds, orderBy, take, skip).map(new Func1<ServiceResponse<List<ImagePerformance>>, List<ImagePerformance>>() {
             @Override
             public List<ImagePerformance> call(ServiceResponse<List<ImagePerformance>> response) {
@@ -3579,7 +3588,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ImagePerformance&gt; object
      */
-    public Observable<ServiceResponse<List<ImagePerformance>>> getImagePerformancesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds, String orderBy, Integer take, Integer skip) {
+    public Observable<ServiceResponse<List<ImagePerformance>>> getImagePerformancesWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, String orderBy, Integer take, Integer skip) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -3693,7 +3702,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
         }
-        final List<String> tagIds = null;
+        final List<UUID> tagIds = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         String tagIdsConverted = this.serializerAdapter().serializeList(tagIds, CollectionFormat.CSV);
         return service.getImagePerformanceCount(projectId, iterationId, tagIdsConverted, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
@@ -3724,7 +3733,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the int object if successful.
      */
-    public int getImagePerformanceCount(UUID projectId, UUID iterationId, List<String> tagIds) {
+    public int getImagePerformanceCount(UUID projectId, UUID iterationId, List<UUID> tagIds) {
         return getImagePerformanceCountWithServiceResponseAsync(projectId, iterationId, tagIds).toBlocking().single().body();
     }
 
@@ -3741,7 +3750,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Integer> getImagePerformanceCountAsync(UUID projectId, UUID iterationId, List<String> tagIds, final ServiceCallback<Integer> serviceCallback) {
+    public ServiceFuture<Integer> getImagePerformanceCountAsync(UUID projectId, UUID iterationId, List<UUID> tagIds, final ServiceCallback<Integer> serviceCallback) {
         return ServiceFuture.fromResponse(getImagePerformanceCountWithServiceResponseAsync(projectId, iterationId, tagIds), serviceCallback);
     }
 
@@ -3757,7 +3766,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Integer object
      */
-    public Observable<Integer> getImagePerformanceCountAsync(UUID projectId, UUID iterationId, List<String> tagIds) {
+    public Observable<Integer> getImagePerformanceCountAsync(UUID projectId, UUID iterationId, List<UUID> tagIds) {
         return getImagePerformanceCountWithServiceResponseAsync(projectId, iterationId, tagIds).map(new Func1<ServiceResponse<Integer>, Integer>() {
             @Override
             public Integer call(ServiceResponse<Integer> response) {
@@ -3778,7 +3787,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Integer object
      */
-    public Observable<ServiceResponse<Integer>> getImagePerformanceCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<String> tagIds) {
+    public Observable<ServiceResponse<Integer>> getImagePerformanceCountWithServiceResponseAsync(UUID projectId, UUID iterationId, List<UUID> tagIds) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -4742,89 +4751,6 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      *
      * @param projectId Project id.
      * @param iterationId Iteration id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CustomVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the Iteration object if successful.
-     */
-    public Iteration updateIteration(UUID projectId, UUID iterationId) {
-        return updateIterationWithServiceResponseAsync(projectId, iterationId).toBlocking().single().body();
-    }
-
-    /**
-     * Update a specific iteration.
-     *
-     * @param projectId Project id.
-     * @param iterationId Iteration id.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Iteration> updateIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Iteration> serviceCallback) {
-        return ServiceFuture.fromResponse(updateIterationWithServiceResponseAsync(projectId, iterationId), serviceCallback);
-    }
-
-    /**
-     * Update a specific iteration.
-     *
-     * @param projectId Project id.
-     * @param iterationId Iteration id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    public Observable<Iteration> updateIterationAsync(UUID projectId, UUID iterationId) {
-        return updateIterationWithServiceResponseAsync(projectId, iterationId).map(new Func1<ServiceResponse<Iteration>, Iteration>() {
-            @Override
-            public Iteration call(ServiceResponse<Iteration> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Update a specific iteration.
-     *
-     * @param projectId Project id.
-     * @param iterationId Iteration id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Iteration object
-     */
-    public Observable<ServiceResponse<Iteration>> updateIterationWithServiceResponseAsync(UUID projectId, UUID iterationId) {
-        if (this.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
-        }
-        if (projectId == null) {
-            throw new IllegalArgumentException("Parameter projectId is required and cannot be null.");
-        }
-        if (iterationId == null) {
-            throw new IllegalArgumentException("Parameter iterationId is required and cannot be null.");
-        }
-        if (this.apiKey() == null) {
-            throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
-        }
-        final String name = null;
-        Iteration updatedIteration = new Iteration();
-        updatedIteration.withName(null);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
-        return service.updateIteration(projectId, iterationId, this.apiKey(), this.acceptLanguage(), updatedIteration, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Iteration>>>() {
-                @Override
-                public Observable<ServiceResponse<Iteration>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Iteration> clientResponse = updateIterationDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Update a specific iteration.
-     *
-     * @param projectId Project id.
-     * @param iterationId Iteration id.
      * @param name Gets or sets the name of the iteration.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
@@ -4888,6 +4814,9 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         }
         if (this.apiKey() == null) {
             throw new IllegalArgumentException("Parameter this.apiKey() is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         Iteration updatedIteration = new Iteration();
         updatedIteration.withName(name);

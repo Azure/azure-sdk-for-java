@@ -18,31 +18,31 @@ public class Domain {
     /**
      * The id property.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
      * The name property.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * Possible values include: 'Classification', 'ObjectDetection'.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "type", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private DomainType type;
 
     /**
      * The exportable property.
      */
-    @JsonProperty(value = "exportable", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "exportable", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private boolean exportable;
 
     /**
      * The enabled property.
      */
-    @JsonProperty(value = "enabled", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "enabled", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private boolean enabled;
 
     /**

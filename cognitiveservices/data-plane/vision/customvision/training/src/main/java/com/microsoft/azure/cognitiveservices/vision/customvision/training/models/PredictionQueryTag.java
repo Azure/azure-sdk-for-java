@@ -18,19 +18,19 @@ public class PredictionQueryTag {
     /**
      * The id property.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private UUID id;
 
     /**
      * The minThreshold property.
      */
-    @JsonProperty(value = "minThreshold", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "minThreshold", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double minThreshold;
 
     /**
      * The maxThreshold property.
      */
-    @JsonProperty(value = "maxThreshold", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "maxThreshold", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double maxThreshold;
 
     /**

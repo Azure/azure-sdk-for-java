@@ -17,13 +17,13 @@ public class RegionProposal {
     /**
      * The confidence property.
      */
-    @JsonProperty(value = "confidence", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "confidence", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private double confidence;
 
     /**
      * The boundingBox property.
      */
-    @JsonProperty(value = "boundingBox", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "boundingBox", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private BoundingBox boundingBox;
 
     /**
