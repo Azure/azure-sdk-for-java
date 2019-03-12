@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -80,10 +81,10 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
                         return null;
                     }
                 }, (messageDigest, byteBuffer) -> {
-                    if (messageDigest != null) {
-                        messageDigest.update(byteBuffer.nioBuffer());
-                    }
-                })
+                        if (messageDigest != null) {
+                            messageDigest.update(byteBuffer.nioBuffer());
+                        }
+                    })
                 .flatMap(messageDigest -> {
                     if (messageDigest == null) {
                         return Mono.error(new NoSuchAlgorithmException("Unable to locate SHA-256 algorithm."));
@@ -171,10 +172,7 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
 
             // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
             // Signed headers: "host;x-ms-date;x-ms-content-sha256"
-            return String.format("%s\n%s\n%s",
-                    request.httpMethod().toString().toUpperCase(),
-                    pathAndQuery,
-                    signed);
+            return String.format("%s\n%s\n%s", request.httpMethod().toString().toUpperCase(Locale.US), pathAndQuery, signed);
         }
     }
 }

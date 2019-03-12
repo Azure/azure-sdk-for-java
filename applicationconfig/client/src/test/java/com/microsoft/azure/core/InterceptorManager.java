@@ -22,6 +22,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -33,37 +34,34 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 
-public class InterceptorManager {
-
-    private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
-
+public class InterceptorManager implements Closeable {
     private final static String RECORD_FOLDER = "session-records/";
 
-    private Map<String, String> textReplacementRules = new HashMap<>();
-    // Stores a map of all the HTTP properties in a session
-    // A state machine ensuring a test is always reset before another one is setup
-
-    protected RecordedData recordedData;
-
+    private final Logger logger = LoggerFactory.getLogger(InterceptorManager.class);
+    private final Map<String, String> textReplacementRules = new HashMap<>();
     private final String testName;
     private final TestMode testMode;
 
+    // Stores a map of all the HTTP properties in a session
+    // A state machine ensuring a test is always reset before another one is setup
+    private final RecordedData recordedData;
 
-    private InterceptorManager(String testName, TestMode testMode) {
+    private InterceptorManager(String testName, TestMode testMode) throws IOException {
         this.testName = testName;
         this.testMode = testMode;
-    }
 
-    public void addTextReplacementRule(String regex, String replacement) {
-        textReplacementRules.put(regex, replacement);
+        this.recordedData = testMode == TestMode.PLAYBACK
+                ? readDataFromFile()
+                : new RecordedData();
     }
 
     // factory method
-    public static InterceptorManager create(String testName, TestMode testMode) {
+    public static InterceptorManager create(String testName, TestMode testMode) throws IOException {
         InterceptorManager interceptorManager = new InterceptorManager(testName, testMode);
+
+        //TODO: Do we need this?
         SdkContext.setResourceNamerFactory(new TestResourceNamerFactory(interceptorManager));
         SdkContext.setDelayProvider(new TestDelayProvider(interceptorManager.isRecordMode()));
-//        SdkContext.setRxScheduler(Schedulers.trampoline());
 
         return interceptorManager;
     }
@@ -76,27 +74,34 @@ public class InterceptorManager {
         return testMode == TestMode.PLAYBACK;
     }
 
-    public RecordPolicy initRecordPolicy() {
-        recordedData = new RecordedData();
+    public RecordPolicy getRecordPolicy() {
         return new RecordPolicy();
     }
 
-    public HttpClient initPlaybackClient() throws IOException {
-        readDataFromFile();
+    public HttpClient getPlaybackClient() {
         return new PlaybackClient();
     }
 
-    public void finalizeInterceptor() throws IOException {
+    public void addTextReplacementRule(String regex, String replacement) {
+        textReplacementRules.put(regex, replacement);
+    }
+
+    @Override
+    public void close() {
         switch (testMode) {
             case RECORD:
-                writeDataToFile();
+                try {
+                    writeDataToFile();
+                } catch (IOException e) {
+                    logger.error("Unable to write data to playback file.", e);
+                }
                 break;
             case PLAYBACK:
                 // Do nothing
                 break;
             default:
                 System.out.println("==> Unknown AZURE_TEST_MODE: " + testMode);
-        };
+        }
     }
 
     public class RecordPolicy implements HttpPipelinePolicy {
@@ -123,10 +128,12 @@ public class InterceptorManager {
 
                 return extractResponseData(bufferedResponse).map(responseData -> {
                     networkCallRecord.Response = responseData;
-                    // remove pre-added header if this is a waiting or redirection
-                    if (networkCallRecord.Response.get("Body").contains("<Status>InProgress</Status>")
+                    String body = networkCallRecord.Response.get("Body");
+
+                    // Remove pre-added header if this is a waiting or redirection
+                    if (body != null && body.contains("<Status>InProgress</Status>")
                             || Integer.parseInt(networkCallRecord.Response.get("StatusCode")) == HttpResponseStatus.TEMPORARY_REDIRECT.code()) {
-                        // Do nothing
+                        logger.info("Waiting for a response or redirection.");
                     } else {
                         synchronized (recordedData.getNetworkCallRecords()) {
                             recordedData.getNetworkCallRecords().add(networkCallRecord);
@@ -141,6 +148,7 @@ public class InterceptorManager {
 
     final class PlaybackClient extends HttpClient {
         AtomicInteger count = new AtomicInteger(0);
+
         @Override
         public Mono<HttpResponse> send(final HttpRequest request) {
             return Mono.defer(() -> playbackHttpResponse(request));
@@ -228,15 +236,17 @@ public class InterceptorManager {
             responseData.put("retry-after", "0");
         }
 
-        Mono<Map<String, String>> result;
-        if (response.headerValue("content-encoding") == null) {
-            result = response.bodyAsString().map(content -> {
+        String contentType = response.headerValue("content-type");
+        if (contentType == null) {
+            return Mono.just(responseData);
+        } else if (contentType.contains("json") || response.headerValue("content-encoding") == null) {
+            return response.bodyAsString().map(content -> {
                 content = applyReplacementRule(content);
                 responseData.put("Body", content);
                 return responseData;
             });
         } else {
-            result = response.bodyAsByteArray().map(bytes -> {
+            return response.bodyAsByteArray().map(bytes -> {
                 try {
                     GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(bytes));
                     String content = IOUtils.toString(gis, StandardCharsets.UTF_8);
@@ -251,16 +261,16 @@ public class InterceptorManager {
                 }
             });
         }
-
-        return result;
     }
 
-    private void readDataFromFile() throws IOException {
+    private RecordedData readDataFromFile() throws IOException {
         File recordFile = getRecordFile(testName);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.enable(SerializationFeature.INDENT_OUTPUT);
-        recordedData = mapper.readValue(recordFile, RecordedData.class);
-        System.out.println("Total records " + recordedData.getNetworkCallRecords().size());
+        ObjectMapper mapper = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        RecordedData recordedData = mapper.readValue(recordFile, RecordedData.class);
+
+        logger.info("Total records: {}", recordedData.getNetworkCallRecords().size());
+
+        return recordedData;
     }
 
     private void writeDataToFile() throws IOException {
@@ -296,14 +306,16 @@ public class InterceptorManager {
         return String.format("%s?%s", uri.getPath(), uri.getQuery());
     }
 
+    //TODO: Do we really need this method?
     public void pushVariable(String variable) {
-        if (isRecordMode()) {
+        if (this.isRecordMode()) {
             synchronized (recordedData.getVariables()) {
                 recordedData.getVariables().add(variable);
             }
         }
     }
 
+    //TODO: Do we really need this method?
     public String popVariable() {
         synchronized (recordedData.getVariables()) {
             return recordedData.getVariables().remove();
