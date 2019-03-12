@@ -18,18 +18,18 @@ public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
     /**
      * The link to the next page.
      */
-    private String nextPageLink;
+    private final String nextPageLink;
 
     /**
      * The list of items.
      */
-    private List<T> items;
+    private final List<T> items;
 
-    private HttpRequest request;
+    private final HttpRequest request;
 
-    private Map<String, String> headers;
+    private final Map<String, String> headers;
 
-    private int statusCode;
+    private final int statusCode;
 
     public RestPagedResponseImpl(final List<T> items, final String nextPageLink, final HttpRequest request, final Map<String, String> headers, final int statusCode) {
         this.nextPageLink = nextPageLink;
