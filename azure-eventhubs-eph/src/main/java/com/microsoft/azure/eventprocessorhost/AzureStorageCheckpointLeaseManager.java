@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -317,10 +318,16 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 						(bp.getLeaseState() == LeaseState.LEASED)));
 			});
 			future = CompletableFuture.completedFuture(infos);
-		} catch (URISyntaxException | StorageException e) {
-            TRACE_LOGGER.warn(this.hostContext.withHost("Failure while getting lease state details"), e);
+		} catch (Exception e) {
+    		Throwable effective = e;
+    		if (e instanceof NoSuchElementException) {
+    			// If there is a StorageException in the forEach, it arrives wrapped in a NoSuchElementException.
+    			// Strip the misleading NoSuchElementException to provide a meaningful error for the user.
+    			effective = e.getCause();
+    		}
+            TRACE_LOGGER.warn(this.hostContext.withHost("Failure while getting lease state details"), effective);
             future = new CompletableFuture<List<BaseLease>>();
-            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_LEASE));
+            future.completeExceptionally(LoggingUtils.wrapException(effective, EventProcessorHostActionStrings.GETTING_LEASE));
 		}
     	
     	return future;
