@@ -65,6 +65,13 @@ public class ApplicationBase {
     private String errorUrl;
 
     /**
+     * Configures the groups claim issued in a user or OAuth 2.0 access token
+     * that the app expects.
+     */
+    @JsonProperty(value = "groupMembershipClaims")
+    private Object groupMembershipClaims;
+
+    /**
      * The home page of the application.
      */
     @JsonProperty(value = "homepage")
@@ -342,6 +349,26 @@ public class ApplicationBase {
      */
     public ApplicationBase withErrorUrl(String errorUrl) {
         this.errorUrl = errorUrl;
+        return this;
+    }
+
+    /**
+     * Get configures the groups claim issued in a user or OAuth 2.0 access token that the app expects.
+     *
+     * @return the groupMembershipClaims value
+     */
+    public Object groupMembershipClaims() {
+        return this.groupMembershipClaims;
+    }
+
+    /**
+     * Set configures the groups claim issued in a user or OAuth 2.0 access token that the app expects.
+     *
+     * @param groupMembershipClaims the groupMembershipClaims value to set
+     * @return the ApplicationBase object itself.
+     */
+    public ApplicationBase withGroupMembershipClaims(Object groupMembershipClaims) {
+        this.groupMembershipClaims = groupMembershipClaims;
         return this;
     }
 

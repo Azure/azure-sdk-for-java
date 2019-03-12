@@ -19,6 +19,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ServicePrincipalBase {
     /**
+     * whether or not the service principal account is enabled.
+     */
+    @JsonProperty(value = "accountEnabled")
+    private String accountEnabled;
+
+    /**
+     * Specifies whether an AppRoleAssignment to a user or group is required
+     * before Azure AD will issue a user or access token to the application.
+     */
+    @JsonProperty(value = "appRoleAssignmentRequired")
+    private Boolean appRoleAssignmentRequired;
+
+    /**
      * The collection of key credentials associated with the service principal.
      */
     @JsonProperty(value = "keyCredentials")
@@ -38,17 +51,51 @@ public class ServicePrincipalBase {
     private String servicePrincipalType;
 
     /**
-     * whether or not the service principal account is enabled.
-     */
-    @JsonProperty(value = "accountEnabled")
-    private String accountEnabled;
-
-    /**
      * Optional list of tags that you can apply to your service principals. Not
      * nullable.
      */
     @JsonProperty(value = "tags")
     private List<String> tags;
+
+    /**
+     * Get whether or not the service principal account is enabled.
+     *
+     * @return the accountEnabled value
+     */
+    public String accountEnabled() {
+        return this.accountEnabled;
+    }
+
+    /**
+     * Set whether or not the service principal account is enabled.
+     *
+     * @param accountEnabled the accountEnabled value to set
+     * @return the ServicePrincipalBase object itself.
+     */
+    public ServicePrincipalBase withAccountEnabled(String accountEnabled) {
+        this.accountEnabled = accountEnabled;
+        return this;
+    }
+
+    /**
+     * Get specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
+     *
+     * @return the appRoleAssignmentRequired value
+     */
+    public Boolean appRoleAssignmentRequired() {
+        return this.appRoleAssignmentRequired;
+    }
+
+    /**
+     * Set specifies whether an AppRoleAssignment to a user or group is required before Azure AD will issue a user or access token to the application.
+     *
+     * @param appRoleAssignmentRequired the appRoleAssignmentRequired value to set
+     * @return the ServicePrincipalBase object itself.
+     */
+    public ServicePrincipalBase withAppRoleAssignmentRequired(Boolean appRoleAssignmentRequired) {
+        this.appRoleAssignmentRequired = appRoleAssignmentRequired;
+        return this;
+    }
 
     /**
      * Get the collection of key credentials associated with the service principal.
@@ -107,26 +154,6 @@ public class ServicePrincipalBase {
      */
     public ServicePrincipalBase withServicePrincipalType(String servicePrincipalType) {
         this.servicePrincipalType = servicePrincipalType;
-        return this;
-    }
-
-    /**
-     * Get whether or not the service principal account is enabled.
-     *
-     * @return the accountEnabled value
-     */
-    public String accountEnabled() {
-        return this.accountEnabled;
-    }
-
-    /**
-     * Set whether or not the service principal account is enabled.
-     *
-     * @param accountEnabled the accountEnabled value to set
-     * @return the ServicePrincipalBase object itself.
-     */
-    public ServicePrincipalBase withAccountEnabled(String accountEnabled) {
-        this.accountEnabled = accountEnabled;
         return this;
     }
 
