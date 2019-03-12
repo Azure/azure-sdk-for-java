@@ -72,6 +72,17 @@
             <artifactId>azure-eventhubs-extensions</artifactId>
             <version>${azure-eventhubs.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.microsoft.azure.v3</groupId>
+            <artifactId>azure-client-runtime</artifactId>
+            <version>${azure-client-runtime-v3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.rest.v3</groupId>
+            <artifactId>client-runtime</artifactId>
+            <version>${client-runtime-v3.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -88,11 +99,12 @@
                         </goals>
                         <configuration>
                             <sources>
+                                <source>..\..\applicationconfig\client\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-cryptography\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-core\src\main\java</source>
-                                <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
                                 <source>..\..\keyvault\data-plane\azure-keyvault-extensions\src\main\java</source>
+                                <source>..\..\keyvault\data-plane\azure-keyvault-webkey\src\main\java</source>
                                 <source>..\..\batch\data-plane\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>

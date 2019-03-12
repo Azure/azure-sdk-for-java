@@ -7,9 +7,9 @@ import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ETagFilter;
 import com.azure.applicationconfig.models.Key;
 import com.azure.applicationconfig.models.KeyLabelFilter;
-import com.azure.applicationconfig.models.KeyValueFilter;
 import com.azure.applicationconfig.models.KeyValue;
 import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
+import com.azure.applicationconfig.models.KeyValueFilter;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.Label;
 import com.azure.applicationconfig.models.RevisionFilter;
@@ -40,10 +40,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -78,7 +76,7 @@ public final class AzConfigClient extends ServiceClient {
         return create(connectionString, createPipeline(credentials, logLevel));
     }
 
-    //TODO What is the likelihood someone will submit their own entire pipeline?
+    //TODO (conniey): What is the likelihood someone will submit their own entire pipeline?
     /**
      * Create a new instance of AzConfigClient with pipeline  that uses credentials for authentication.
      * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
@@ -481,7 +479,7 @@ public final class AzConfigClient extends ServiceClient {
                            }
                            return Flux.just(page).concatWith(listKeysNextAsync(nextPageLink));
                        });
-       return  receiver.apply(p);
+        return receiver.apply(p);
     }
 
     /**

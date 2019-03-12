@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class MockHttpResponse extends HttpResponse {
     private final static SerializerAdapter serializer = new JacksonAdapter();
@@ -107,10 +108,10 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> bodyAsString(Charset charset) {
-        if (bodyBytes == null) {
-            return Mono.empty();
-        } else {
-            return Mono.just(new String(bodyBytes, charset));
-        }
+        Objects.requireNonNull(charset);
+
+        return bodyBytes == null
+                ? Mono.empty()
+                : Mono.just(new String(bodyBytes, charset));
     }
 }
