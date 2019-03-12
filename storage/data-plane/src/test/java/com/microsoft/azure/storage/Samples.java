@@ -39,7 +39,11 @@ public class Samples {
 
     //Samples only run in Live/Record mode.
     void checkMode() {
-        Assume.assumeTrue("The test only runs in Live mode.", System.getenv("AZURE_TEST_MODE").equalsIgnoreCase("RECORD"));
+        String testMode = System.getenv("AZURE_TEST_MODE");
+        if(testMode == null){
+            testMode = "PlAYBACK";
+        }
+        Assume.assumeTrue("The test only runs in Live mode.", testMode.equalsIgnoreCase("RECORD"));
     }
 
     public static Single<Boolean> createContainerIfNotExists(ContainerURL containerURL) {

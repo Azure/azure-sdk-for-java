@@ -12,9 +12,6 @@ import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.locks.ReentrantLock;
 
 class ProgressReporterTest extends APISpec {
-    def setup(){
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
-    }
 
     def "Report progress sequential"() {
         setup:

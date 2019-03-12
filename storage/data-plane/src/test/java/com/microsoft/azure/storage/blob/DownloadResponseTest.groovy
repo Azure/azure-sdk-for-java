@@ -13,7 +13,6 @@ class DownloadResponseTest extends APISpec {
     BlockBlobURL bu
 
     def setup() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         bu = cu.createBlockBlobURL(generateBlobName())
         bu.upload(Flowable.just(defaultData), defaultText.length(), null, null, null, null).blockingGet()
     }

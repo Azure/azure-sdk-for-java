@@ -17,7 +17,6 @@ class PageBlobAPITest extends APISpec {
     PageBlobURL bu
 
     def setup() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         bu = cu.createPageBlobURL(generateBlobName())
         bu.create(PageBlobURL.PAGE_BYTES, null, null, null, null, null).blockingGet()
     }

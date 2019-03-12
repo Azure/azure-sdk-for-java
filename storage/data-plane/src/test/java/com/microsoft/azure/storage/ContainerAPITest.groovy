@@ -21,9 +21,6 @@ import java.time.ZoneId
 
 class ContainerAPITest extends APISpec {
 
-    def setup(){
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
-    }
 
     def "Create all null"() {
         setup:

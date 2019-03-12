@@ -33,16 +33,15 @@ class LoggingTest extends APISpec {
         }
     }
 
+
+    def setupSpec() {
+    }
+
     /*
     Clean out the logs directory so we can validate that it grows, which is how we test default logging. We only
     need to do this once per test past rather than per test, and we don't have to be entirely successful. This should
     just keep it from growing too large.
      */
-    def setupSpec() {
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
-    }
-
-
     def cleanupSpec() {
         File logsDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs")
         for (File file : logsDir.listFiles()) {

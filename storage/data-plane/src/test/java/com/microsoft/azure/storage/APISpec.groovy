@@ -11,6 +11,7 @@ import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyFactory
 import io.reactivex.Flowable
 import io.reactivex.Single
+import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
@@ -249,10 +250,12 @@ class APISpec extends Specification {
     }
 
     def cleanupSpec() {
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         cleanupContainers()
     }
 
     def setup() {
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         /*
         We'll let primary creds throw and crash if there are no credentials specified because everything else will fail.
          */
@@ -553,6 +556,10 @@ class APISpec extends Specification {
     }
 
     def getTestMode(){
-        return System.getenv("AZURE_TEST_MODE")
+        String testMode =  System.getenv("AZURE_TEST_MODE")
+        if(testMode == null){
+            testMode =  "PLAYBACK"
+        }
+        return testMode
     }
 }

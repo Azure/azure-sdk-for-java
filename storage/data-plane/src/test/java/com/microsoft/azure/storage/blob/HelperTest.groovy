@@ -15,10 +15,6 @@ import java.time.ZoneOffset
 
 class HelperTest extends APISpec {
 
-    def setup(){
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
-    }
-
     def "responseError"() {
         when:
         cu.listBlobsFlatSegment("garbage", null, null).blockingGet()
