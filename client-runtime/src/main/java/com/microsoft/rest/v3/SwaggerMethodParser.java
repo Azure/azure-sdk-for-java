@@ -28,8 +28,6 @@ import com.microsoft.rest.v3.http.HttpMethod;
 import com.microsoft.rest.v3.serializer.HttpResponseDecodeData;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import com.microsoft.rest.v3.util.TypeUtil;
-import com.microsoft.rest.v3.util.escapers.PercentEscaper;
-import com.microsoft.rest.v3.util.escapers.UrlEscapers;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

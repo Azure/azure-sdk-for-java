@@ -1,7 +1,5 @@
-package com.microsoft.rest.v3.util;
+package com.microsoft.rest.v3;
 
-import com.microsoft.rest.v3.util.escapers.PercentEscaper;
-import com.microsoft.rest.v3.util.escapers.UrlEscapers;
 import org.junit.Assert;
 import org.junit.Test;
 

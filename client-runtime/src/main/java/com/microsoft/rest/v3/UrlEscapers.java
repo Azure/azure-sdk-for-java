@@ -4,12 +4,12 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.util.escapers;
+package com.microsoft.rest.v3;
 
 /**
  * Collection of useful URL escapers.
  */
-public final class UrlEscapers {
+final class UrlEscapers {
 
     private static final String UNRESERVED_SYMBOLS = "-._~";
     private static final String SUB_DELIMS = "!$&'()*+,;=";

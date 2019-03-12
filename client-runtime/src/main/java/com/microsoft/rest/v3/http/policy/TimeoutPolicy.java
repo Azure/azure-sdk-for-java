@@ -12,7 +12,6 @@ import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 
 /**
  * The Pipeline policy that limits the time allowed between sending a request
@@ -20,22 +19,19 @@ import java.time.temporal.ChronoUnit;
  *
  */
 public class TimeoutPolicy implements HttpPipelinePolicy {
-    private final long timeout;
-    private final ChronoUnit unit;
+    private final Duration timoutDuration;
 
     /**
      * Creates a TimeoutPolicy.
      *
-     * @param timeout the length of the timeout
-     * @param unit the unit of the timeout
+     * @param timoutDuration the timeout duration
      */
-    public TimeoutPolicy(long timeout, ChronoUnit unit) {
-        this.timeout = timeout;
-        this.unit = unit;
+    public TimeoutPolicy(Duration timoutDuration) {
+        this.timoutDuration = timoutDuration;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return next.process().timeout(Duration.of(timeout, unit));
+        return next.process().timeout(this.timoutDuration);
     }
 }

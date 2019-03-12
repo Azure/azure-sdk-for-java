@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.rest.v3.util.escapers;
+package com.microsoft.rest.v3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * An escaper that escapes URL data through percent encoding.
  */
-public final class PercentEscaper {
+final class PercentEscaper {
 
     private static final String[] HEX = {
             "%00", "%01", "%02", "%03", "%04", "%05", "%06", "%07",
@@ -58,7 +58,7 @@ public final class PercentEscaper {
      * @param safeChars a collection of characters that will not be escaped
      * @param usePlusForSpace escape ' ' as '+' if true, "%20" otherwise
      */
-    public PercentEscaper(String safeChars, boolean usePlusForSpace) {
+    PercentEscaper(String safeChars, boolean usePlusForSpace) {
         for (int i = 0; i != safeChars.length(); i++) {
             this.safeChars.add(safeChars.charAt(i));
         }
@@ -68,7 +68,7 @@ public final class PercentEscaper {
     /**
      * Creates a percent escaper with default settings and encode ' ' as "%20".
      */
-    public PercentEscaper() {
+    PercentEscaper() {
         this("-._~", false);
     }
 
