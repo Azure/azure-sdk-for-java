@@ -31,7 +31,7 @@ public interface Orders extends HasInner<OrdersInner> {
     /**
      * Creates or updates an order.
      *
-     * @param deviceName The order details of a device.
+     * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation

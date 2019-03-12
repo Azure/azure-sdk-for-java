@@ -304,7 +304,7 @@ public class OrdersInner implements InnerSupportsDelete<Void> {
     /**
      * Creates or updates an order.
      *
-     * @param deviceName The order details of a device.
+     * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -319,7 +319,7 @@ public class OrdersInner implements InnerSupportsDelete<Void> {
     /**
      * Creates or updates an order.
      *
-     * @param deviceName The order details of a device.
+     * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -333,7 +333,7 @@ public class OrdersInner implements InnerSupportsDelete<Void> {
     /**
      * Creates or updates an order.
      *
-     * @param deviceName The order details of a device.
+     * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -351,7 +351,7 @@ public class OrdersInner implements InnerSupportsDelete<Void> {
     /**
      * Creates or updates an order.
      *
-     * @param deviceName The order details of a device.
+     * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -381,7 +381,7 @@ public class OrdersInner implements InnerSupportsDelete<Void> {
     /**
      * Creates or updates an order.
      *
-     * @param deviceName The order details of a device.
+     * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -396,7 +396,7 @@ public class OrdersInner implements InnerSupportsDelete<Void> {
     /**
      * Creates or updates an order.
      *
-     * @param deviceName The order details of a device.
+     * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -410,7 +410,7 @@ public class OrdersInner implements InnerSupportsDelete<Void> {
     /**
      * Creates or updates an order.
      *
-     * @param deviceName The order details of a device.
+     * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -428,7 +428,7 @@ public class OrdersInner implements InnerSupportsDelete<Void> {
     /**
      * Creates or updates an order.
      *
-     * @param deviceName The order details of a device.
+     * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param order The order to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
