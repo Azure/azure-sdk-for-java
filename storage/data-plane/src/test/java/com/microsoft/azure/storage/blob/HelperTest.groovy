@@ -19,12 +19,17 @@ import com.microsoft.azure.storage.APISpec
 import com.microsoft.azure.storage.blob.models.AccessPolicy
 import com.microsoft.azure.storage.blob.models.SignedIdentifier
 import com.microsoft.azure.storage.blob.models.StorageErrorCode
+import org.junit.Assume
 import spock.lang.Unroll
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class HelperTest extends APISpec {
+
+    def setup(){
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
+    }
 
     def "responseError"() {
         when:

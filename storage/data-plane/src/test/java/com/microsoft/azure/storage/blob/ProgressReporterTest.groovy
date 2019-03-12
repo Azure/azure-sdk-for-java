@@ -17,12 +17,17 @@ package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.APISpec
 import io.reactivex.Flowable
+import org.junit.Assume
 
 import java.nio.ByteBuffer
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.locks.ReentrantLock;
 
 class ProgressReporterTest extends APISpec {
+    def setup(){
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
+    }
+
     def "Report progress sequential"() {
         setup:
         def buf1 = getRandomData(10)

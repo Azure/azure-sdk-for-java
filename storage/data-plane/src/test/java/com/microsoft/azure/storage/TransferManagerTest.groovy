@@ -25,8 +25,8 @@ class TransferManagerTest extends APISpec {
     BlockBlobURL bu
 
     def setup() {
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         bu = cu.createBlockBlobURL(generateBlobName())
-
         /*
         We just print something out in between each test to keep Travis from being idle for too long. The tests seem
         to run slower on Travis, and without this keep-alive, it may exceed the 10 minutes of no output and error the
@@ -38,7 +38,6 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Upload file"() {
         setup:
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         def channel = AsynchronousFileChannel.open(file.toPath())
 
         when:

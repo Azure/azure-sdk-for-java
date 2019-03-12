@@ -18,12 +18,14 @@ import com.microsoft.azure.storage.APISpec
 import com.microsoft.azure.storage.blob.models.StorageErrorException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
+import org.junit.Assume
 import spock.lang.Unroll
 
 class DownloadResponseTest extends APISpec {
     BlockBlobURL bu
 
     def setup() {
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         bu = cu.createBlockBlobURL(generateBlobName())
         bu.upload(Flowable.just(defaultData), defaultText.length(), null, null, null, null).blockingGet()
     }

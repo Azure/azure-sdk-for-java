@@ -18,6 +18,7 @@ package com.microsoft.azure.storage.blob
 import com.microsoft.azure.storage.APISpec
 import com.microsoft.rest.v2.http.*
 import io.reactivex.Flowable
+import org.junit.Assume
 import spock.lang.Unroll
 
 // Tests for package-private functionality.
@@ -25,6 +26,11 @@ class RetryTest extends APISpec {
     static URL retryTestURL = new URL("http://" + RequestRetryTestFactory.RETRY_TEST_PRIMARY_HOST)
     static RequestRetryOptions retryTestOptions = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 6,
             2, 1000, 4000, RequestRetryTestFactory.RETRY_TEST_SECONDARY_HOST)
+
+
+    def setup(){
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
+    }
 
     def "Retries until success"() {
         setup:

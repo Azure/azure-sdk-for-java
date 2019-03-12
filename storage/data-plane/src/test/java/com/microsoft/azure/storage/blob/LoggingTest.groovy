@@ -24,6 +24,7 @@ import com.microsoft.rest.v2.http.HttpRequest
 import com.microsoft.rest.v2.policy.RequestPolicy
 import com.microsoft.rest.v2.policy.RequestPolicyOptions
 import io.reactivex.Single
+import org.junit.Assume
 import org.slf4j.LoggerFactory
 import spock.lang.Unroll
 import uk.org.lidalia.slf4jtest.TestLogger
@@ -50,10 +51,7 @@ class LoggingTest extends APISpec {
     just keep it from growing too large.
      */
     def setupSpec() {
-       /* File logsDir = new File(System.getProperty("java.io.tmpdir") + "AzureStorageJavaSDKLogs")
-        for (File file : logsDir.listFiles()) {
-            file.delete()
-        }*/
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
     }
 
 

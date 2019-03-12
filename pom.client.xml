@@ -190,11 +190,11 @@
             <version>${client-runtime.version}</version>
          </dependency>
 
-         <dependency>
+         <!--dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j-api.version}</version>
-         </dependency>
+         </dependency-->
 
          <dependency>
             <groupId>com.microsoft.rest.v2</groupId>
@@ -273,12 +273,12 @@
             <version>${spock-core.version}</version>
          </dependency>
 
-         <dependency>
+         <!--dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>${groovy-all.version}</version>
             <scope>test</scope>
-         </dependency>
+         </dependency-->
 
          <dependency>
             <groupId>cglib</groupId>
@@ -286,12 +286,13 @@
             <version>${cglib-nodep.version}</version>
             <scope>test</scope>
          </dependency>
-         <dependency>
+
+         <!--dependency>
             <groupId>org.objenesis</groupId>
             <artifactId>objenesis</artifactId>
             <version>${objenesis.version}</version>
             <scope>test</scope>
-         </dependency>
+         </dependency-->
 
          <dependency>
             <groupId>uk.org.lidalia</groupId>
@@ -447,6 +448,10 @@
                      <group>
                         <title>Azure Key Vault</title>
                         <packages>com.microsoft.azure.keyvault*</packages>
+                     </group>
+                     <group>
+                        <title>Azure Storage Blob</title>
+                        <packages>com.microsoft.azure.storage*</packages>
                      </group>
                   </groups>
                </configuration>
@@ -669,8 +674,8 @@
                <linkXRef>true</linkXRef>
 
                <!-- TODO soon - enable these failure modes -->
-               <failsOnError>true</failsOnError>
-               <failOnViolation>true</failOnViolation>
+               <failsOnError>false</failsOnError>
+               <failOnViolation>false</failOnViolation>
             </configuration>
             <reportSets>
                <reportSet>
@@ -863,8 +868,8 @@
    </profiles>
 
    <modules>
-      <!--module>./batch/data-plane</module-->
-      <!--module>./keyvault/data-plane</module-->
+      <module>./batch/data-plane</module>
+      <module>./keyvault/data-plane</module>
       <module>./storage/data-plane</module>
    </modules>
 

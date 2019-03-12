@@ -33,9 +33,12 @@ import java.time.ZoneId
 
 class ContainerAPITest extends APISpec {
 
+    def setup(){
+        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
+    }
+
     def "Create all null"() {
         setup:
-        Assume.assumeTrue("The test only runs in Live mode.", getTestMode().equalsIgnoreCase(RECORD_MODE))
         // Overwrite the existing cu, which has already been created
         cu = primaryServiceURL.createContainerURL(generateContainerName())
 
