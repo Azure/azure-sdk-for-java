@@ -1,7 +1,6 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.connstrbuilder;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
@@ -10,10 +9,10 @@ import com.microsoft.azure.eventhubs.TransportType;
 import com.microsoft.azure.eventhubs.impl.ConnectionHandler;
 import com.microsoft.azure.eventhubs.impl.EventHubClientImpl;
 import com.microsoft.azure.eventhubs.impl.MessagingFactory;
+import com.microsoft.azure.eventhubs.jproxy.ProxyServer;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 
-import org.jutils.jproxy.ProxyServer;
 import org.junit.Assert;
 import org.junit.Test;
 

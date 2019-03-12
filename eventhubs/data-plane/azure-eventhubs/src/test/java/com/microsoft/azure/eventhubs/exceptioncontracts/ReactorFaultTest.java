@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
 import com.microsoft.azure.eventhubs.*;

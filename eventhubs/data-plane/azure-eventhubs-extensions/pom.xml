@@ -1,38 +1,51 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.microsoft.azure</groupId>
+  <artifactId>azure-eventhubs-extensions</artifactId>
 
-    <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
+  <name>Microsoft Azure SDK for Event Hubs Extensions</name>
+  <description>Extensions built on Microsoft Azure Event Hubs</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
 
-    <parent>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-eventhubs-clients</artifactId>
-        <version>2.0.0</version>
-    </parent>
+  <parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-eventhubs-clients</artifactId>
+    <version>2.0.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
 
-    <modelVersion>4.0.0</modelVersion>
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
 
-    <artifactId>azure-eventhubs-extensions</artifactId>
-    <name>azure-eventhubs-extensions</name>
+  <scm>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-eventhubs</artifactId>
-            <version>${project.parent.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
-            <version>2.5</version>
-        </dependency>
-    </dependencies>
+  <dependencies>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-eventhubs</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>
 
