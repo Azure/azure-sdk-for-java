@@ -161,9 +161,17 @@ class APISpec extends Specification {
 
     }
 
+    static getEnvironmentVariable(String variable){
+        String envVariable = System.getenv().get(variable)
+        if(envVariable == null){
+            envVariable =  ""
+        }
+        return envVariable
+    }
+
     static getGenericCreds(String accountType) {
-        String accountName = System.getenv().get(accountType + "ACCOUNT_NAME")
-        String accountKey = System.getenv().get(accountType + "ACCOUNT_KEY")
+        String accountName = getEnvironmentVariable(accountType + "ACCOUNT_NAME")
+        String accountKey = getEnvironmentVariable(accountType + "ACCOUNT_KEY")
         if (accountName == null || accountKey == null) {
             System.out.println("Account name or key for the " + accountType + " account was null. Test's requiring " +
                     "these credentials will fail.")
