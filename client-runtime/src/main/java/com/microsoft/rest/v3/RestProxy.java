@@ -22,6 +22,8 @@ import com.microsoft.rest.v3.http.policy.CookiePolicy;
 import com.microsoft.rest.v3.http.policy.CredentialsPolicy;
 import com.microsoft.rest.v3.http.policy.RetryPolicy;
 import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
+import com.microsoft.rest.v3.http.rest.RestResponse;
+import com.microsoft.rest.v3.http.rest.RestResponseBase;
 import com.microsoft.rest.v3.serializer.HttpResponseDecoder;
 import com.microsoft.rest.v3.serializer.HttpResponseDecoder.HttpDecodedResponse;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
@@ -43,10 +45,12 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
@@ -184,53 +188,7 @@ public class RestProxy implements InvocationHandler {
         }
 
         final URL url = urlBuilder.toURL();
-        final HttpRequest request = new HttpRequest(methodParser.httpMethod(), url);
-
-        final Object bodyContentObject = methodParser.body(args);
-        if (bodyContentObject == null) {
-            request.headers().set("Content-Length", "0");
-        } else {
-            String contentType = methodParser.bodyContentType();
-            if (contentType == null || contentType.isEmpty()) {
-                if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
-                    contentType = ContentType.APPLICATION_OCTET_STREAM;
-                }
-                else {
-                    contentType = ContentType.APPLICATION_JSON;
-                }
-            }
-
-            request.headers().set("Content-Type", contentType);
-
-            boolean isJson = false;
-            final String[] contentTypeParts = contentType.split(";");
-            for (String contentTypePart : contentTypeParts) {
-                if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
-                    isJson = true;
-                    break;
-                }
-            }
-
-            if (isJson) {
-                final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.JSON);
-                request.withBody(bodyContentString);
-            } else if (FluxUtil.isFluxByteBuf(methodParser.bodyJavaType())) {
-                // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a Flowable<byte[]> is given for the body.
-                //noinspection ConstantConditions
-                request.withBody((Flux<ByteBuf>) bodyContentObject);
-            } else if (bodyContentObject instanceof byte[]) {
-                request.withBody((byte[]) bodyContentObject);
-            } else if (bodyContentObject instanceof String) {
-                final String bodyContentString = (String) bodyContentObject;
-                if (!bodyContentString.isEmpty()) {
-                    request.withBody(bodyContentString);
-                }
-            }
-            else {
-                final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.headers()));
-                request.withBody(bodyContentString);
-            }
-        }
+        final HttpRequest request = configRequest(new HttpRequest(methodParser.httpMethod(), url), methodParser, args);
 
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         for (final HttpHeader header : methodParser.headers(args)) {
@@ -250,10 +208,17 @@ public class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     private HttpRequest createHttpRequest(OperationDescription operationDescription, SwaggerMethodParser methodParser, Object[] args) throws IOException {
-        final HttpRequest request = new HttpRequest(
-                methodParser.httpMethod(),
-                operationDescription.url());
+        final HttpRequest request = configRequest(new HttpRequest(methodParser.httpMethod(), operationDescription.url()), methodParser, args);
 
+        // Headers from Swagger method arguments always take precedence over inferred headers from body types
+        for (final String headerName : operationDescription.headers().keySet()) {
+            request.withHeader(headerName, operationDescription.headers().get(headerName));
+        }
+
+        return request;
+    }
+
+    private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser, Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject == null) {
             request.headers().set("Content-Length", "0");
@@ -301,11 +266,6 @@ public class RestProxy implements InvocationHandler {
                 final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.headers()));
                 request.withBody(bodyContentString);
             }
-        }
-
-        // Headers from Swagger method arguments always take precedence over inferred headers from body types
-        for (final String headerName : operationDescription.headers().keySet()) {
-            request.withHeader(headerName, operationDescription.headers().get(headerName));
         }
 
         return request;
@@ -406,94 +366,82 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    /**
-     * @param entityType the RestResponseBase subtype to get a constructor for.
-     * @return a Constructor which produces an instance of a RestResponseBase subtype.
-     */
-    @SuppressWarnings("unchecked")
-    public Constructor<? extends RestResponseBase<?, ?>> getRestResponseConstructor(Type entityType) {
-        Class<? extends RestResponseBase<?, ?>> rawEntityType = (Class<? extends RestResponseBase<?, ?>>) TypeUtil.getRawClass(entityType);
-        try {
-            Constructor<? extends RestResponseBase<?, ?>> ctor = null;
-            for (Constructor<?> c : rawEntityType.getDeclaredConstructors()) {
-                // Generic constructor arguments turn into Object.
-                // Because some child class constructors have a more specific concrete type,
-                // there's not a single type we can check for the headers or body parameters.
-                if (c.getParameterTypes().length == 5
-                        && c.getParameterTypes()[0].equals(HttpRequest.class)
-                        && c.getParameterTypes()[1].equals(Integer.TYPE)
-                        && c.getParameterTypes()[3].equals(Map.class)) {
-                    ctor = (Constructor<? extends RestResponseBase<?, ?>>) c;
-                }
+    private Mono<?> handleRestResponseReturnType(HttpDecodedResponse response, SwaggerMethodParser methodParser, Type entityType) {
+        Mono<?> asyncResult;
+
+        if (TypeUtil.isTypeOrSubTypeOf(entityType, RestResponse.class)) {
+            Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
+
+            if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
+                asyncResult = response.sourceResponse().body().ignoreElements()
+                        .then(Mono.just(createResponse(response, entityType, null)));
+            } else {
+                asyncResult = handleBodyReturnType(response, methodParser, bodyType)
+                        .map((Function<Object, RestResponse<?>>) bodyAsObject -> createResponse(response, entityType, bodyAsObject))
+                        .switchIfEmpty(Mono.defer((Supplier<Mono<RestResponse<?>>>) () -> Mono.just(createResponse(response, entityType, null))));
             }
-            if (ctor == null) {
-                throw new NoSuchMethodException("No appropriate constructor found for type " + rawEntityType.getName());
-            }
-            return ctor;
-        } catch (ReflectiveOperationException e) {
-            throw new Error(e);
+        } else {
+            // For now we're just throwing if the Maybe didn't emit a value.
+            asyncResult = handleBodyReturnType(response, methodParser, entityType);
         }
+
+        return asyncResult;
     }
 
-    private Mono<?> handleRestResponseReturnType(HttpDecodedResponse response, SwaggerMethodParser methodParser, Type entityType) {
-        final int responseStatusCode = response.sourceResponse().statusCode();
-        //
-        try {
-            Mono<?> asyncResult;
-            if (TypeUtil.isTypeOrSubTypeOf(entityType, RestResponseBase.class)) {
-                // entityType = ? extends RestResponseBase<THeaders, TBody>
-                Constructor<? extends RestResponseBase<?, ?>> responseConstructor = getRestResponseConstructor(entityType);
+    private RestResponse<?> createResponse(HttpDecodedResponse response, Type entityType, Object bodyAsObject) {
+        final HttpResponse httpResponse = response.sourceResponse();
+        final HttpRequest httpRequest = httpResponse.request();
+        final int responseStatusCode = httpResponse.statusCode();
+        final HttpHeaders responseHeaders = httpResponse.headers();
 
-                Type[] deserializedTypes = TypeUtil.getTypeArguments(TypeUtil.getSuperType(entityType, RestResponseBase.class));
-
-                HttpHeaders responseHeaders = response.sourceResponse().headers();
-                Object deserializedHeaders = response.decodedHeaders().block();
-
-                Type bodyType = deserializedTypes[1];
-                if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                    // entityType = ? extends RestResponseBase<THeaders, Void>
-                    asyncResult = response.sourceResponse().body().ignoreElements()
-                            .then(Mono.just(responseConstructor.newInstance(response.sourceResponse().request(), responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
-                } else {
-                    final Map<String, String> rawHeaders = responseHeaders.toMap();
-                    // entityType = ? extends RestResponseBase<THeaders, byte[]>,
-                    // entityType = ? extends RestResponseBase<THeaders, Base64Url>
-                    // entityType = ? extends RestResponseBase<THeaders, Flux<ByteBuf>>
-                    // entityType = ? extends RestResponseBase<THeaders, Boolean>
-                    // entityType = ? extends RestResponseBase<THeaders, VirtualMachine>
-                    asyncResult = handleBodyReturnType(response, methodParser, bodyType)
-                            .map((Function<Object, RestResponseBase<?, ?>>) bodyAsObject -> {
-                                try {
-                                    return responseConstructor.newInstance(response.sourceResponse().request(), responseStatusCode, deserializedHeaders, rawHeaders, bodyAsObject);
-                                } catch (IllegalAccessException iae) {
-                                    throw reactor.core.Exceptions.propagate(iae);
-                                } catch (InvocationTargetException ite) {
-                                    throw reactor.core.Exceptions.propagate(ite);
-                                } catch (InstantiationException ie) {
-                                    throw reactor.core.Exceptions.propagate(ie);
-                                }
-                            })
-                            .switchIfEmpty(Mono.defer((Supplier<Mono<RestResponseBase<?, ?>>>) () -> {
-                                try {
-                                return Mono.just(responseConstructor.newInstance(response.sourceResponse().request(), responseStatusCode, deserializedHeaders, rawHeaders, null));
-                                } catch (IllegalAccessException iae) {
-                                    throw reactor.core.Exceptions.propagate(iae);
-                                } catch (InvocationTargetException ite) {
-                                    throw reactor.core.Exceptions.propagate(ite);
-                                } catch (InstantiationException ie) {
-                                    throw reactor.core.Exceptions.propagate(ie);
-                                }
-                            }));
-                }
-            } else {
-                // For now we're just throwing if the Maybe didn't emit a value.
-                asyncResult = handleBodyReturnType(response, methodParser, entityType);
-            }
-
-            return asyncResult;
-        } catch (ReflectiveOperationException e) {
-            throw new RuntimeException(e);
+        // determine the type of response class. If the type is the 'RestResponse' interface, we will use the
+        // 'RestResponseBase' class instead.
+        Class<? extends RestResponse<?>> cls = (Class<? extends RestResponse<?>>) TypeUtil.getRawClass(entityType);
+        if (cls.equals(RestResponse.class)) {
+            cls = (Class<? extends RestResponse<?>>) (Object) RestResponseBase.class;
         }
+
+        // we try to find the most specific constructor, which we do in the following order:
+        // 1) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body, Object deserializedHeaders)
+        // 2) (HttpRequest httpRequest, int statusCode, HttpHeaders headers, Object body)
+        // 3) (HttpRequest httpRequest, int statusCode, HttpHeaders headers)
+        List<Constructor<?>> ctors = Arrays.stream(cls.getDeclaredConstructors())
+                                             .filter(ctor -> {
+                                                 int paramCount = ctor.getParameterCount();
+                                                 return paramCount >= 3 && paramCount <= 5;
+                                             })
+                                             .sorted(Comparator.comparingInt(Constructor::getParameterCount))
+                                             .collect(Collectors.toList());
+
+        if (ctors.isEmpty()) {
+            throw new RuntimeException("Cannot find suitable constructor for class " + cls);
+        }
+
+        // try to create an instance using our list of potential candidates
+        for (int i = 0; i < ctors.size(); i++) {
+            Constructor<? extends RestResponse<?>> ctor = (Constructor<? extends RestResponse<?>>) ctors.get(i);
+
+            try {
+                final int paramCount = ctor.getParameterCount();
+
+                switch (paramCount) {
+                    case 3: {
+                        return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders);
+                    }
+                    case 4: {
+                        return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject);
+                    }
+                    case 5: {
+                        return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject, response.decodedHeaders().block());
+                    }
+                }
+            } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+                throw reactor.core.Exceptions.propagate(e);
+            }
+        }
+
+        // error
+        throw new RuntimeException("Cannot find suitable constructor for class " + cls);
     }
 
     protected final Mono<?> handleBodyReturnType(final HttpDecodedResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
@@ -556,9 +504,7 @@ public class RestProxy implements InvocationHandler {
             }
         } else if (FluxUtil.isFluxByteBuf(returnType)) {
             // ProxyMethod ReturnType: Flux<ByteBuf>
-            result = asyncExpectedResponse.flatMapMany(ar -> {
-               return ar.sourceResponse().body();
-            });
+            result = asyncExpectedResponse.flatMapMany(ar -> ar.sourceResponse().body());
         } else if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             // ProxyMethod ReturnType: Void
             asyncExpectedResponse.block();
@@ -608,7 +554,7 @@ public class RestProxy implements InvocationHandler {
      * @return the default HttpPipeline
      */
     public static HttpPipeline createDefaultPipeline(HttpPipelinePolicy credentialsPolicy) {
-        List<HttpPipelinePolicy> policies = new ArrayList<HttpPipelinePolicy>();
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy());
         policies.add(new RetryPolicy());
         policies.add(new CookiePolicy());

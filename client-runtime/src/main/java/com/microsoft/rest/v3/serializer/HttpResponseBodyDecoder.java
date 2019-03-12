@@ -9,11 +9,13 @@ package com.microsoft.rest.v3.serializer;
 import com.microsoft.rest.v3.Base64Url;
 import com.microsoft.rest.v3.DateTimeRfc1123;
 import com.microsoft.rest.v3.RestException;
-import com.microsoft.rest.v3.RestResponseBase;
+import com.microsoft.rest.v3.http.rest.RestResponse;
+import com.microsoft.rest.v3.http.rest.RestResponseBase;
 import com.microsoft.rest.v3.UnixTime;
 import com.microsoft.rest.v3.annotations.ReturnValueWireType;
 import com.microsoft.rest.v3.http.HttpMethod;
 import com.microsoft.rest.v3.http.HttpResponse;
+import com.microsoft.rest.v3.http.rest.SimpleRestResponse;
 import com.microsoft.rest.v3.util.FluxUtil;
 import com.microsoft.rest.v3.util.TypeUtil;
 import reactor.core.publisher.Flux;
@@ -205,7 +207,7 @@ final class HttpResponseBodyDecoder {
 
                 wireResponseType = TypeUtil.createParameterizedType(
                         (Class<?>) ((ParameterizedType) resultType).getRawType(), wireResponseElementType);
-            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType, RestResponseBase.class)) {
+            } else if (TypeUtil.isTypeOrSubTypeOf(resultType, Map.class) || TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
                 Type[] typeArguments = TypeUtil.getTypeArguments(resultType);
                 final Type resultValueType = typeArguments[1];
                 final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
@@ -278,9 +280,20 @@ final class HttpResponseBodyDecoder {
                     // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't seem right
                     Object resultBody = convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
-                        result = new RestResponseBase<>(restResponseBase.request(), restResponseBase.statusCode(), restResponseBase.headers(), restResponseBase.rawHeaders(), resultBody);
+                        result = new RestResponseBase<>(restResponseBase.request(), restResponseBase.statusCode(), restResponseBase.headers(), resultBody, restResponseBase.deserializedHeaders());
                     } else {
                         result = restResponseBase;
+                    }
+                } else if (TypeUtil.isTypeOrSubTypeOf(resultType, RestResponse.class)) {
+                    RestResponse<?> restResponse = (RestResponse<?>) wireResponse;
+                    Object wireResponseBody = restResponse.body();
+
+                    // TODO: anuchan - RestProxy is always in charge of creating RestResponseBase--so this doesn't seem right
+                    Object resultBody = convertToResultType(wireResponseBody, TypeUtil.getTypeArguments(resultType)[1], wireType);
+                    if (wireResponseBody != resultBody) {
+                        result = new SimpleRestResponse<>(restResponse.request(), restResponse.statusCode(), restResponse.headers(), resultBody);
+                    } else {
+                        result = restResponse;
                     }
                 }
             }
@@ -322,20 +335,17 @@ final class HttpResponseBodyDecoder {
                     }
                 } catch (ClassNotFoundException ignored) {
                 }
-            }
-
-            if (TypeUtil.isTypeOrSubTypeOf(token, RestResponseBase.class)) {
-                token = TypeUtil.getSuperType(token, RestResponseBase.class);
-                token = TypeUtil.getTypeArguments(token)[1];
-            }
-
-            try {
-                // TODO: anuchan - unwrap OperationStatus a different way
-                if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.microsoft.azure.v3.OperationStatus"))) {
-                    // Get Type of 'T' from OperationStatus<T>
-                    token = TypeUtil.getTypeArgument(token);
+            } else if (TypeUtil.isTypeOrSubTypeOf(token, RestResponse.class)) {
+                return TypeUtil.getRestResponseBodyType(token);
+            } else {
+                try {
+                    // TODO: anuchan - unwrap OperationStatus a different way
+                    if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.microsoft.azure.v3.OperationStatus"))) {
+                        // Get Type of 'T' from OperationStatus<T>
+                        token = TypeUtil.getTypeArgument(token);
+                    }
+                } catch (Exception ignored) {
                 }
-            } catch (Exception ignored) {
             }
         }
         return token;

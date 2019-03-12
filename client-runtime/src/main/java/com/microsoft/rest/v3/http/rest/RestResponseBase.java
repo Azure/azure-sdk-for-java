@@ -3,12 +3,10 @@
  * Licensed under the MIT License. See License.txt in the project root for
  * license information.
  */
+package com.microsoft.rest.v3.http.rest;
 
-package com.microsoft.rest.v3;
-
+import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpRequest;
-
-import java.util.Map;
 
 /**
  * The response of a REST request.
@@ -16,11 +14,11 @@ import java.util.Map;
  * @param <H> The deserialized type of the response headers.
  * @param <T> The deserialized type of the response body.
  */
-public class RestResponseBase<H, T> {
+public class RestResponseBase<H, T> implements RestResponse<T> {
     private final HttpRequest request;
     private final int statusCode;
-    private final H headers;
-    private final Map<String, String> rawHeaders;
+    private final H deserializedHeaders;
+    private final HttpHeaders headers;
     private final T body;
 
     /**
@@ -28,49 +26,55 @@ public class RestResponseBase<H, T> {
      *
      * @param request the request which resulted in this response
      * @param statusCode the status code of the HTTP response
-     * @param headers the deserialized headers of the HTTP response
-     * @param rawHeaders the raw headers of the HTTP response
+     * @param headers the headers of the HTTP response
+     * @param deserializedHeaders the deserialized headers of the HTTP response
      * @param body the deserialized body
      */
-    public RestResponseBase(HttpRequest request, int statusCode, H headers, Map<String, String> rawHeaders, T body) {
+    public RestResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, T body, H deserializedHeaders) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
-        this.rawHeaders = rawHeaders;
+        this.deserializedHeaders = deserializedHeaders;
         this.body = body;
     }
 
     /**
      * @return the request which resulted in this RestResponseBase.
      */
+    @Override
     public HttpRequest request() {
         return request;
     }
 
     /**
-     * @return the status code of the HTTP response.
+     * {@inheritDoc}
      */
+    @Override
     public int statusCode() {
         return statusCode;
     }
 
     /**
-     * @return the deserialized headers of the HTTP response.
+     * {@inheritDoc}
      */
-    public H headers() {
+    @Override
+    public HttpHeaders headers() {
         return headers;
     }
 
     /**
-     * @return a Map containing the raw HTTP response headers.
+     * Get the headers from the HTTP response, transformed into the header type H.
+     *
+     * @return an instance of header type H, containing the HTTP response headers.
      */
-    public Map<String, String> rawHeaders() {
-        return rawHeaders;
+    public H deserializedHeaders() {
+        return deserializedHeaders;
     }
 
     /**
-     * @return the deserialized body of the HTTP response.
+     * {@inheritDoc}
      */
+    @Override
     public T body() {
         return body;
     }

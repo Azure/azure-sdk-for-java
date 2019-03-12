@@ -3,7 +3,7 @@ package com.microsoft.azure.v3;
 import com.microsoft.rest.v3.InvalidReturnTypeException;
 import com.microsoft.rest.v3.http.ContentType;
 import com.microsoft.rest.v3.RestException;
-import com.microsoft.rest.v3.RestResponseBase;
+import com.microsoft.rest.v3.http.rest.RestResponseBase;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;

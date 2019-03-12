@@ -6,7 +6,7 @@
 
 package com.microsoft.rest.v3.serializer;
 
-import com.microsoft.rest.v3.RestResponseBase;
+import com.microsoft.rest.v3.http.rest.RestResponseBase;
 import com.microsoft.rest.v3.annotations.HeaderCollection;
 import com.microsoft.rest.v3.util.TypeUtil;
 import reactor.core.publisher.Mono;
@@ -38,13 +38,16 @@ public interface HttpResponseDecodeData {
      default Type headersType() {
         Type token = this.returnType();
         Type headersType = null;
-        //
+
         if (TypeUtil.isTypeOrSubTypeOf(token, Mono.class)) {
             token = TypeUtil.getTypeArgument(token);
         }
+
+        // Only the RestResponseBase class supports a custom header type. All other RestResponse subclasses do not.
         if (TypeUtil.isTypeOrSubTypeOf(token, RestResponseBase.class)) {
             headersType = TypeUtil.getTypeArguments(TypeUtil.getSuperType(token, RestResponseBase.class))[0];
         }
+
         return headersType;
     }
 

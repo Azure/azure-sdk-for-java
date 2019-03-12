@@ -25,6 +25,7 @@ import com.microsoft.rest.v3.http.ContextData;
 import com.microsoft.rest.v3.http.HttpHeader;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpMethod;
+import com.microsoft.rest.v3.http.rest.RestResponse;
 import com.microsoft.rest.v3.serializer.HttpResponseDecodeData;
 import com.microsoft.rest.v3.serializer.SerializerAdapter;
 import com.microsoft.rest.v3.util.TypeUtil;
@@ -474,23 +475,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             final Type syncReturnType = asyncReturnType.getActualTypeArguments()[0];
             if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, Void.class)) {
                 result = false;
-            } else if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, RestResponseBase.class)) {
-                result = restResponseBaseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType, RestResponseBase.class));
+            } else if (TypeUtil.isTypeOrSubTypeOf(syncReturnType, RestResponse.class)) {
+                result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(syncReturnType, RestResponse.class));
             }
-        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, RestResponseBase.class)) {
-            result = restResponseBaseTypeExpectsBody((ParameterizedType) TypeUtil.getSuperType(returnType, RestResponseBase.class));
-        }
-
-        return result;
-    }
-
-    private static boolean restResponseBaseTypeExpectsBody(ParameterizedType restResponseReturnType) {
-        boolean result = true;
-
-        final Type[] restResponseTypeArguments = restResponseReturnType.getActualTypeArguments();
-        final Type restResponseBodyType = restResponseTypeArguments[1];
-        if (restResponseBodyType == Void.class) {
-            result = false;
+        } else if (TypeUtil.isTypeOrSubTypeOf(returnType, RestResponse.class)) {
+            result = TypeUtil.restResponseTypeExpectsBody((ParameterizedType) returnType);
         }
 
         return result;

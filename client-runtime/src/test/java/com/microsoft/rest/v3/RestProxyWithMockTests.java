@@ -13,6 +13,8 @@ import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.MockHttpClient;
 import com.microsoft.rest.v3.http.MockHttpResponse;
+import com.microsoft.rest.v3.http.rest.RestResponse;
+import com.microsoft.rest.v3.http.rest.RestResponseBase;
 import com.microsoft.rest.v3.http.ProxyOptions;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
@@ -312,8 +314,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         return createService(ServiceHeaderCollections.class, headerCollectionHttpClient);
     }
 
-    private static void assertHeaderCollectionsRawHeaders(RestResponseBase<?,Void> response) {
-        final HttpHeaders responseRawHeaders = new HttpHeaders(response.rawHeaders());
+    private static void assertHeaderCollectionsRawHeaders(RestResponse<Void> response) {
+        final HttpHeaders responseRawHeaders = response.headers();
         assertEquals("Phillip", responseRawHeaders.value("name"));
         assertEquals("1", responseRawHeaders.value("header-collection-prefix-one"));
         assertEquals("2", responseRawHeaders.value("header-collection-prefix-two"));
@@ -340,7 +342,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
 
-        final HeaderCollectionTypePublicFields responseHeaders = response.headers();
+        final HeaderCollectionTypePublicFields responseHeaders = response.deserializedHeaders();
         assertNotNull(responseHeaders);
         assertEquals("Phillip", responseHeaders.name);
         assertHeaderCollections(responseHeaders.headerCollection);
@@ -353,7 +355,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
 
-        final HeaderCollectionTypeProtectedFields responseHeaders = response.headers();
+        final HeaderCollectionTypeProtectedFields responseHeaders = response.deserializedHeaders();
         assertNotNull(responseHeaders);
         assertEquals("Phillip", responseHeaders.name);
         assertHeaderCollections(responseHeaders.headerCollection);
@@ -366,7 +368,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
 
-        final HeaderCollectionTypePrivateFields responseHeaders = response.headers();
+        final HeaderCollectionTypePrivateFields responseHeaders = response.deserializedHeaders();
         assertNotNull(responseHeaders);
         assertEquals("Phillip", responseHeaders.name);
         assertHeaderCollections(responseHeaders.headerCollection);
@@ -379,7 +381,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertNotNull(response);
         assertHeaderCollectionsRawHeaders(response);
 
-        final HeaderCollectionTypePackagePrivateFields responseHeaders = response.headers();
+        final HeaderCollectionTypePackagePrivateFields responseHeaders = response.deserializedHeaders();
         assertNotNull(responseHeaders);
         assertEquals("Phillip", responseHeaders.name);
         assertHeaderCollections(responseHeaders.headerCollection);

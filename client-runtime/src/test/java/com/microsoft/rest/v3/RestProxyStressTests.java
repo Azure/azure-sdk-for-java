@@ -26,6 +26,8 @@ import com.microsoft.rest.v3.http.policy.AddDatePolicy;
 import com.microsoft.rest.v3.http.policy.AddHeadersPolicy;
 import com.microsoft.rest.v3.http.policy.HostPolicy;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
+import com.microsoft.rest.v3.http.rest.RestStreamResponse;
+import com.microsoft.rest.v3.http.rest.RestVoidResponse;
 import com.microsoft.rest.v3.util.FlowableUtils;
 import com.microsoft.rest.v3.util.FluxUtil;
 import io.netty.buffer.ByteBuf;
@@ -298,7 +300,7 @@ public class RestProxyStressTests {
                         Exceptions.propagate(ioe);
                     }
                     return service.upload100MB(String.valueOf(id), sas, "BlockBlob", FluxUtil.byteBufStreamFromFile(fileStream), FILE_SIZE).map(response -> {
-                        String base64MD5 = response.rawHeaders().get("Content-MD5");
+                        String base64MD5 = response.headers().value("Content-MD5");
                         byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
                         Assert.assertArrayEquals(md5, receivedMD5);
                         return response;
@@ -348,7 +350,7 @@ public class RestProxyStressTests {
                     }
                     //
                     return service.upload100MB(String.valueOf(id), sas, "BlockBlob", stream, FILE_SIZE).map(response -> {
-                        String base64MD5 = response.rawHeaders().get("Content-MD5");
+                        String base64MD5 = response.headers().value("Content-MD5");
                         byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
                         Assert.assertArrayEquals(md5, receivedMD5);
                         return response;
@@ -461,7 +463,7 @@ public class RestProxyStressTests {
                     //
                     return service.upload100MB("copy-" + integer, sas, "BlockBlob", downloadContent, FILE_SIZE)
                             .flatMap(uploadResponse -> {
-                                String base64MD5 = uploadResponse.rawHeaders().get("Content-MD5");
+                                String base64MD5 = uploadResponse.headers().value("Content-MD5");
                                 byte[] uploadMD5 = Base64.getDecoder().decode(base64MD5);
                                 assertArrayEquals(md5, uploadMD5);
                                 LoggerFactory.getLogger(getClass()).info("Finished upload and validation for id " + id);
