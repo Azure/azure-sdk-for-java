@@ -23,12 +23,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
  * HttpClient that is implemented using reactor-netty.
  */
-class ReactorNettyClient extends HttpClient {
+class ReactorNettyClient implements HttpClient {
     private reactor.netty.http.client.HttpClient httpClient;
 
     /**
@@ -45,6 +46,16 @@ class ReactorNettyClient extends HttpClient {
      */
     private ReactorNettyClient(reactor.netty.http.client.HttpClient httpClient) {
         this.httpClient = httpClient;
+    }
+
+    /**
+     *  Creates ReactorNettyClient with provided http client with configuration applied.
+     *
+     * @param httpClient the reactor http client
+     * @param config the configuration to apply on the http client
+     */
+    private ReactorNettyClient(reactor.netty.http.client.HttpClient httpClient, Function<reactor.netty.http.client.HttpClient, reactor.netty.http.client.HttpClient> config) {
+        this.httpClient = config.apply(httpClient);
     }
 
     @Override
@@ -169,38 +180,20 @@ class ReactorNettyClient extends HttpClient {
     }
 
     @Override
-    protected final HttpClient setProxy(Supplier<ProxyOptions> proxyOptionsSupplier) {
-        return new ClientProxyOptions(this.httpClient, proxyOptionsSupplier);
+    public final HttpClient proxy(Supplier<ProxyOptions> proxyOptionsSupplier) {
+        return new ReactorNettyClient(this.httpClient, client -> client.tcpConfiguration(c -> {
+            ProxyOptions options = proxyOptionsSupplier.get();
+            return c.proxy(ts -> ts.type(options.type().value()).address(options.address()));
+        }));
     }
 
     @Override
-    protected final HttpClient setWiretap(boolean enableWiretap) {
-        return new ClientWiretap(this.httpClient, enableWiretap);
+    public final HttpClient wiretap(boolean enableWiretap) {
+        return new ReactorNettyClient(this.httpClient, client -> client.wiretap(enableWiretap));
     }
 
     @Override
-    protected final HttpClient setPort(int port) {
-        return new ClientPort(this.httpClient, port);
-    }
-
-    private static class ClientProxyOptions extends ReactorNettyClient {
-        ClientProxyOptions(reactor.netty.http.client.HttpClient httpClient, Supplier<ProxyOptions> proxyOptions) {
-            super(httpClient.tcpConfiguration(tcpClient -> {
-                ProxyOptions options = proxyOptions.get();
-                return tcpClient.proxy(ts -> ts.type(options.type().value()).address(options.address()));
-            }));
-        }
-    }
-
-    private static class ClientWiretap extends ReactorNettyClient {
-        ClientWiretap(reactor.netty.http.client.HttpClient httpClient, boolean enableWiretap) {
-            super(httpClient.wiretap(enableWiretap));
-        }
-    }
-
-    private static class ClientPort extends ReactorNettyClient {
-        ClientPort(reactor.netty.http.client.HttpClient httpClient, int port) {
-            super(httpClient.port(port));
-        }
+    public final HttpClient port(int port) {
+        return new ReactorNettyClient(this.httpClient, client -> client.port(port));
     }
 }

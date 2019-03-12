@@ -18,6 +18,7 @@ import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpMethod;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
+import com.microsoft.rest.v3.http.ProxyOptions;
 import com.microsoft.rest.v3.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
@@ -26,11 +27,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
-public class MockAzureHttpClient extends HttpClient {
+public class MockAzureHttpClient implements HttpClient {
     private int pollsRemaining;
 
     private int getRequests;
@@ -274,6 +276,21 @@ public class MockAzureHttpClient extends HttpClient {
         }
 
         return Mono.<HttpResponse>just(response);
+    }
+
+    @Override
+    public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
+        throw new IllegalStateException("MockHttpClient.proxy");
+    }
+
+    @Override
+    public HttpClient wiretap(boolean enableWiretap) {
+        throw new IllegalStateException("MockHttpClient.wiretap");
+    }
+
+    @Override
+    public HttpClient port(int port) {
+        throw new IllegalStateException("MockHttpClient.port");
     }
 
     private static Map<String,String> queryToMap(String url) {

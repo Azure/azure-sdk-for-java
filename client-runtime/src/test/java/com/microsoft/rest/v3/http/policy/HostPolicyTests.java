@@ -5,11 +5,13 @@ import com.microsoft.rest.v3.http.HttpMethod;
 import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
+import com.microsoft.rest.v3.http.ProxyOptions;
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
 
@@ -27,7 +29,7 @@ public class HostPolicyTests {
     }
 
     private static HttpPipeline createPipeline(String host, String expectedUrl) {
-        return new HttpPipeline(new HttpClient() {
+        return new HttpPipeline(new MockHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
                 return Mono.empty(); // NOP
@@ -42,5 +44,26 @@ public class HostPolicyTests {
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
         return new HttpRequest(HttpMethod.GET, new URL(url));
+    }
+
+    private static abstract class MockHttpClient implements HttpClient {
+
+        @Override
+        public abstract Mono<HttpResponse> send(HttpRequest request);
+
+        @Override
+        public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
+            throw new IllegalStateException("MockHttpClient.proxy");
+        }
+
+        @Override
+        public HttpClient wiretap(boolean enableWiretap) {
+            throw new IllegalStateException("MockHttpClient.wiretap");
+        }
+
+        @Override
+        public HttpClient port(int port) {
+            throw new IllegalStateException("MockHttpClient.port");
+        }
     }
 }

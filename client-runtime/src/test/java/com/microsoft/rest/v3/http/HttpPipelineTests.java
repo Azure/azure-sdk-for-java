@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.function.Supplier;
 
 import static org.junit.Assert.*;
 
@@ -52,7 +53,7 @@ public class HttpPipelineTests {
     public void withNoRequestPolicies() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final URL expectedUrl = new URL("http://my.site.com");
-        final HttpPipeline httpPipeline = new HttpPipeline(new HttpClient() {
+        final HttpPipeline httpPipeline = new HttpPipeline(new MockHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
                 assertEquals(0, request.headers().size());
@@ -72,7 +73,7 @@ public class HttpPipelineTests {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final URL expectedUrl = new URL("http://my.site.com/1");
         final String expectedUserAgent = "my-user-agent";
-        final HttpClient httpClient = new HttpClient() {
+        final HttpClient httpClient = new MockHttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
                 assertEquals(1, request.headers().size());
@@ -95,7 +96,7 @@ public class HttpPipelineTests {
     public void withRequestIdRequestPolicy() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final URL expectedUrl = new URL("http://my.site.com/1");
-        final HttpPipeline httpPipeline = new HttpPipeline(new HttpClient() {
+        final HttpPipeline httpPipeline = new HttpPipeline(new MockHttpClient() {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     assertEquals(1, request.headers().size());
@@ -113,5 +114,26 @@ public class HttpPipelineTests {
         final HttpResponse response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUrl)).block();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
+    }
+
+    private static abstract class MockHttpClient implements HttpClient {
+
+        @Override
+        public abstract Mono<HttpResponse> send(HttpRequest request);
+
+        @Override
+        public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
+            throw new IllegalStateException("MockHttpClient.proxy");
+        }
+
+        @Override
+        public HttpClient wiretap(boolean enableWiretap) {
+            throw new IllegalStateException("MockHttpClient.wiretap");
+        }
+
+        @Override
+        public HttpClient port(int port) {
+            throw new IllegalStateException("MockHttpClient.port");
+        }
     }
 }

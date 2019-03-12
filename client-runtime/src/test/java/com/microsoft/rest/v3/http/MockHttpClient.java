@@ -22,11 +22,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
-public class MockHttpClient extends HttpClient {
+public class MockHttpClient implements HttpClient {
     private static final HttpHeaders responseHeaders = new HttpHeaders()
             .set("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
             .set("Via", "1.1 vegur")
@@ -178,6 +179,21 @@ public class MockHttpClient extends HttpClient {
         }
 
         return Mono.just(response);
+    }
+
+    @Override
+    public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
+        throw new IllegalStateException("MockHttpClient.proxy");
+    }
+
+    @Override
+    public HttpClient wiretap(boolean enableWiretap) {
+        throw new IllegalStateException("MockHttpClient.wiretap");
+    }
+
+    @Override
+    public HttpClient port(int port) {
+        throw new IllegalStateException("MockHttpClient.port");
     }
 
     private static String createHttpBinResponseDataForRequest(HttpRequest request) {

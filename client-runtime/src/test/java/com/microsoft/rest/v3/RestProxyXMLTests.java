@@ -22,6 +22,7 @@ import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.MockHttpResponse;
+import com.microsoft.rest.v3.http.ProxyOptions;
 import com.microsoft.rest.v3.serializer.SerializerEncoding;
 import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
 import com.microsoft.rest.v3.util.FluxUtil;
@@ -37,12 +38,13 @@ import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static org.junit.Assert.*;
 
 
 public class RestProxyXMLTests {
-    static class MockXMLHTTPClient extends HttpClient {
+    static class MockXMLHTTPClient implements HttpClient {
         private HttpResponse response(HttpRequest request, String resource) throws IOException, URISyntaxException {
             URL url = getClass().getClassLoader().getResource(resource);
             byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
@@ -64,6 +66,21 @@ public class RestProxyXMLTests {
             } catch (IOException | URISyntaxException e) {
                 return Mono.error(e);
             }
+        }
+
+        @Override
+        public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
+            throw new IllegalStateException("MockHttpClient.proxy");
+        }
+
+        @Override
+        public HttpClient wiretap(boolean enableWiretap) {
+            throw new IllegalStateException("MockHttpClient.wiretap");
+        }
+
+        @Override
+        public HttpClient port(int port) {
+            throw new IllegalStateException("MockHttpClient.port");
         }
     }
 
@@ -90,7 +107,7 @@ public class RestProxyXMLTests {
         assertNotEquals(0, identifiers.size());
     }
 
-    static class MockXMLReceiverClient extends HttpClient {
+    static class MockXMLReceiverClient implements HttpClient {
         byte[] receivedBytes = null;
 
         @Override
@@ -104,6 +121,21 @@ public class RestProxyXMLTests {
             } else {
                 return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
             }
+        }
+
+        @Override
+        public HttpClient proxy(Supplier<ProxyOptions> proxyOptions) {
+            throw new IllegalStateException("MockHttpClient.proxy");
+        }
+
+        @Override
+        public HttpClient wiretap(boolean enableWiretap) {
+            throw new IllegalStateException("MockHttpClient.wiretap");
+        }
+
+        @Override
+        public HttpClient port(int port) {
+            throw new IllegalStateException("MockHttpClient.port");
         }
     }
 
