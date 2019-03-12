@@ -69,8 +69,8 @@ public class AzConfigTest {
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
         ApplicationConfigCredentials credentials;
-        HttpPipelineOptions pipelineOptions = new HttpPipelineOptions(new Slf4jLogger(logger).withMinimumLogLevel(HttpPipelineLogLevel.INFO));
         HttpPipeline pipeline;
+        String connectionString;
 
         if (interceptorManager.isPlaybackMode()) {
             logger.info("PLAYBACK MODE");
@@ -88,10 +88,10 @@ public class AzConfigTest {
         } else {
             logger.info("RECORD MODE");
 
-            String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
+            connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-            credentials = AzConfigClient.AzConfigCredentials.parseConnectionString(connectionString);
+            credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.getRecordPolicy());
 
@@ -100,6 +100,7 @@ public class AzConfigTest {
 
             interceptorManager.addTextReplacementRule(credentials.baseUri().toString(), playbackUri);
         }
+
         client = AzConfigClient.create(connectionString, pipeline);
         keyPrefix = SdkContext.randomResourceName("key", 8);
     }
