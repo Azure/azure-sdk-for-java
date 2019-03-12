@@ -5,7 +5,6 @@ package com.azure.applicationconfig.implementation;
 import com.microsoft.rest.v3.RestPagedResponse;
 import com.microsoft.rest.v3.http.HttpRequest;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -85,6 +84,6 @@ public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
     }
 }
