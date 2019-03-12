@@ -104,6 +104,9 @@
     <client-runtime.version>1.6.1</client-runtime.version>
     <commons-codec.version>1.10</commons-codec.version>
     <spotbugs.version>3.1.11</spotbugs.version>
+    <proton-j-version>0.31.0</proton-j-version>
+    <qpid-proton-j-extensions-version>1.1.0</qpid-proton-j-extensions-version>
+    <log4j-api.version>2.11.1</log4j-api.version>
 
     <!-- Test Dependency Versions -->
     <adal4j.version>1.4.0</adal4j.version>
@@ -115,7 +118,6 @@
     <azure-mgmt-storage.version>1.3.0</azure-mgmt-storage.version>
     <azure-storage.version>8.0.0</azure-storage.version>
     <azure-client-authentication.version>1.6.3</azure-client-authentication.version>
-
 
     <!-- Maven Tool Versions -->
     <maven-build-tools.version>1.0.1-SNAPSHOT</maven-build-tools.version>
@@ -178,6 +180,19 @@
         <version>${jackson.version}</version>
       </dependency>
 
+      <!-- Proton J and Extension Dependencies -->
+      <dependency>
+        <groupId>org.apache.qpid</groupId>
+        <artifactId>proton-j</artifactId>
+        <version>${proton-j-version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>qpid-proton-j-extensions</artifactId>
+        <version>${qpid-proton-j-extensions-version}</version>
+      </dependency>
+
       <!-- Other Dependencies -->
 
       <dependency>
@@ -187,11 +202,17 @@
       </dependency>
 
       <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>${log4j-api.version}</version>
+      </dependency>
+      
+      <dependency>
         <groupId>com.microsoft.rest.v2</groupId>
         <artifactId>client-runtime</artifactId>
         <version>${client-runtime.version.v2}</version>
       </dependency>
-
+      
       <!-- Test dependencies -->
       <dependency>
         <groupId>com.microsoft.azure</groupId>
@@ -246,7 +267,6 @@
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-storage</artifactId>
         <version>${azure-storage.version}</version>
-        <scope>test</scope>
       </dependency>
 
       <dependency>
@@ -426,9 +446,12 @@
                 <packages>com.microsoft.azure.keyvault*</packages>
               </group>
               <group>
+                <title>Azure Event Hubs</title>
+                <packages>com.microsoft.azure.eventhubs*</packages>
+              </group>
+              <group>
                 <title>Azure Storage Blob</title>
                 <packages>com.microsoft.azure.storage*</packages>
-              </group>
             </groups>
           </configuration>
         </plugin>
@@ -845,6 +868,7 @@
 
   <modules>
     <module>./batch/data-plane</module>
+    <module>./eventhubs/data-plane</module>
     <module>./keyvault/data-plane</module>
     <module>./storage/data-plane</module>
   </modules>

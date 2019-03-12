@@ -1,12 +1,12 @@
-/*
- * Copyright (c) Microsoft. All rights reserved.
- * Licensed under the MIT license. See LICENSE file in the project root for full license information.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.microsoft.azure.eventhubs.extensions.appender;
 
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.AbstractManager;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public final class EventHubsManager extends AbstractManager {
     private EventHubClient eventHubSender;
 
     protected EventHubsManager(final String name, final String eventHubConnectionString) {
-        super(name);
+        super(LoggerContext.getContext(true), name);
         this.eventHubConnectionString = eventHubConnectionString;
     }
 

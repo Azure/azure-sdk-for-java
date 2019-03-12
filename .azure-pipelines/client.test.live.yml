@@ -7,6 +7,8 @@ jobs:
         pomFilePath: './batch/data-plane/pom.xml'
       AzureKeyVault:
         pomFilePath: './keyvault/data-plane/pom.xml'
+      AzureEventHubs:
+        pomFilePath: './eventhubs/data-plane/pom.xml'
       AzureStorage:
         pomFilePath: './storage/data-plane/pom.xml'
 
@@ -35,6 +37,7 @@ jobs:
       STORAGE_ACCOUNT_KEY: $(java-batch-test-storage-account-key)
       STORAGE_ACCOUNT_NAME: $(java-batch-test-storage-account-name)
       AZURE_BATCH_ENDPOINT: https://servbatch.centralus.batch.azure.com
+      AZURE_EVENTHUBS_CONNECTION_STRING: ${java-event-hubs-test-connection-string}
       PRIMARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-primary-account-name)
       PRIMARY_STORAGE_ACCOUNT_KEY: $(java-storage-test-primary-account-key)
       SECONDARY_STORAGE_ACCOUNT_NAME: $(java-storage-test-secondary-account-name)
