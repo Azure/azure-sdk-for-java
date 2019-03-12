@@ -93,7 +93,7 @@ public final class ExceptionUtil {
             return new IllegalEntityException(message);
         } else {
             return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message));
-    	}
+        }
     }
 
     static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, ErrorContextProvider contextProvider) {

@@ -24,8 +24,8 @@ public final class LoggingUtils {
     static Throwable unwrapException(Throwable wrapped, StringBuilder outAction) {
         Throwable unwrapped = wrapped;
 
-        while ((unwrapped instanceof ExecutionException) || (unwrapped instanceof CompletionException) ||
-                (unwrapped instanceof ExceptionWithAction)) {
+        while ((unwrapped instanceof ExecutionException) || (unwrapped instanceof CompletionException)
+            || (unwrapped instanceof ExceptionWithAction)) {
             if ((unwrapped instanceof ExceptionWithAction) && (outAction != null)) {
                 // Save the action string from an ExceptionWithAction, if desired.
                 outAction.append(((ExceptionWithAction) unwrapped).getAction());

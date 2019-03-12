@@ -11,10 +11,10 @@ class Closable {
 
     // null parent means top-level
     Closable(Closable parent) {
-    	this.syncClose = new Object();
-    	this.parent = parent;
-    	this.isClosing = false;
-    	this.isClosed = false;
+        this.syncClose = new Object();
+        this.parent = parent;
+        this.isClosing = false;
+        this.isClosed = false;
     }
     
     protected final boolean getIsClosed() {
@@ -33,29 +33,28 @@ class Closable {
     }
 
     protected final void setClosing() {
-    	synchronized (this.syncClose) {
-    		this.isClosing = true;
-    	}
+        synchronized (this.syncClose) {
+            this.isClosing = true;
+        }
     }
     
     protected final void setClosed() {
-    	synchronized (this.syncClose) {
-    		this.isClosing = false;
-    		this.isClosed = true;
-    	}
+        synchronized (this.syncClose) {
+            this.isClosing = false;
+            this.isClosed = true;
+        }
     }
     
     protected final void throwIfClosingOrClosed(String message) {
-    	if (getIsClosingOrClosed()) {
-    		throw new ClosingException(message);
-    	}
+        if (getIsClosingOrClosed()) {
+            throw new ClosingException(message);
+        }
     }
     
     class ClosingException extends RuntimeException {
-		private static final long serialVersionUID = 1138985585921317036L;
-
-		ClosingException(String message) {
-    		super(message);
-    	}
+        private static final long serialVersionUID = 1138985585921317036L;
+        ClosingException(String message) {
+            super(message);
+        }
     }
 }

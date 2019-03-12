@@ -13,29 +13,29 @@ public class PartitionManagerOptions {
     /**
      * The default duration after which a partition lease will expire unless renewed.
      */
-    public final static int DefaultLeaseDurationInSeconds = 30;
+    public static final int DEFAULT_LEASE_DURATION_IN_SECONDS = 30;
 
     /**
      * The default duration between lease renewals.
      */
-    public final static int DefaultLeaseRenewIntervalInSeconds = 10;
+    public static final int DEFAULT_LEASE_RENEW_INTERVAL_IN_SECONDS = 10;
 
     /**
      * The default timeout for checkpoint operations.
      */
-    public final static int DefaultCheckpointTimeoutInSeconds = 120;
+    public static final int DEFAULT_CHECKPOINT_TIMEOUT_IN_SECONDS = 120;
 
-    public final static int DefaultStartupScanDelayInSeconds = 30;
-    public final static int DefaultFastScanIntervalInSeconds = 3;
-    public final static int DefaultSlowScanIntervalInSeconds = 5;
+    public static final int DEFAULT_STARTUP_SCAN_DELAY_IN_SECONDS = 30;
+    public static final int DEFAULT_FAST_SCAN_INTERVAL_IN_SECONDS = 3;
+    public static final int DEFAULT_SLOW_SCAN_INTERVAL_IN_SECONDS = 5;
 
-    protected int leaseDurationInSeconds = PartitionManagerOptions.DefaultLeaseDurationInSeconds;
-    protected int leaseRenewIntervalInSeconds = PartitionManagerOptions.DefaultLeaseRenewIntervalInSeconds;
-    protected int checkpointTimeoutInSeconds = PartitionManagerOptions.DefaultCheckpointTimeoutInSeconds;
+    protected int leaseDurationInSeconds = PartitionManagerOptions.DEFAULT_LEASE_DURATION_IN_SECONDS;
+    protected int leaseRenewIntervalInSeconds = PartitionManagerOptions.DEFAULT_LEASE_RENEW_INTERVAL_IN_SECONDS;
+    protected int checkpointTimeoutInSeconds = PartitionManagerOptions.DEFAULT_CHECKPOINT_TIMEOUT_IN_SECONDS;
 
-    protected int startupScanDelayInSeconds = PartitionManagerOptions.DefaultStartupScanDelayInSeconds;
-    protected int fastScanIntervalInSeconds = PartitionManagerOptions.DefaultFastScanIntervalInSeconds;
-    protected int slowScanIntervalInSeconds = PartitionManagerOptions.DefaultSlowScanIntervalInSeconds;
+    protected int startupScanDelayInSeconds = PartitionManagerOptions.DEFAULT_STARTUP_SCAN_DELAY_IN_SECONDS;
+    protected int fastScanIntervalInSeconds = PartitionManagerOptions.DEFAULT_FAST_SCAN_INTERVAL_IN_SECONDS;
+    protected int slowScanIntervalInSeconds = PartitionManagerOptions.DEFAULT_SLOW_SCAN_INTERVAL_IN_SECONDS;
 
     /***
      * The base class automatically sets members to the static defaults.
@@ -45,7 +45,7 @@ public class PartitionManagerOptions {
 
     /**
      * Gets the duration after which a partition lease will expire unless renewed.
-     * Defaults to DefaultLeaseDurationInSeconds.
+     * Defaults to DEFAULT_LEASE_DURATION_IN_SECONDS.
      *
      * @return lease duration
      */
@@ -68,7 +68,7 @@ public class PartitionManagerOptions {
     }
 
     /**
-     * Gets the duration between lease renewals. Defaults to DefaultLeaseRenewIntervalInSeconds.
+     * Gets the duration between lease renewals. Defaults to DEFAULT_LEASE_RENEW_INTERVAL_IN_SECONDS.
      *
      * @return how often leases are renewed
      */
@@ -89,7 +89,7 @@ public class PartitionManagerOptions {
     }
 
     /**
-     * Gets the timeout for checkpoint operations. Defaults to DefaultCheckpointTimeoutInSeconds.
+     * Gets the timeout for checkpoint operations. Defaults to DEFAULT_CHECKPOINT_TIMEOUT_IN_SECONDS.
      *
      * @return timeout for checkpoint operations
      */
@@ -115,7 +115,7 @@ public class PartitionManagerOptions {
      * hosts, and thereby get a more accurate count of the number of hosts in the system, before
      * they try to estimate how many partitions they should own.
      * 
-     * Defaults to DefaultStartupScanDelayInSeconds.
+     * Defaults to DEFAULT_STARTUP_SCAN_DELAY_IN_SECONDS.
      * 
      * @return delay time in seconds
      */    
@@ -140,7 +140,7 @@ public class PartitionManagerOptions {
      * The fast (short) interval is used after a scan in which lease stealing has occurred, to
      * promote quicker rebalancing.
      * 
-     * Defaults to DefaultFastScanIntervalInSeconds.
+     * Defaults to DEFAULT_FAST_SCAN_INTERVAL_IN_SECONDS.
      * 
      * @return interval time in seconds
      */
@@ -164,7 +164,7 @@ public class PartitionManagerOptions {
      * The slow (long) interval is used after a scan in which lease stealing did not occur, to
      * reduce unnecessary scanning when the system is in steady state.
      * 
-     * Defaults to DefaultSlowScanIntervalInSeconds.
+     * Defaults to DEFAULT_SLOW_SCAN_INTERVAL_IN_SECONDS.
      * 
      * @return interval time in seconds
      */
