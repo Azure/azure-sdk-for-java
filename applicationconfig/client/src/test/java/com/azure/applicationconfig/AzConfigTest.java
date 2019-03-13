@@ -15,9 +15,6 @@ import com.microsoft.azure.v3.CloudException;
 import com.microsoft.rest.v3.RestResponse;
 import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.HttpPipelineLogLevel;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
-import com.microsoft.rest.v3.http.Slf4jLogger;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
@@ -65,7 +62,6 @@ public class AzConfigTest {
     public void beforeTest() throws Exception {
         final TestMode testMode = getTestMode();
         final String playbackUri = getPlaybackUri(testMode);
-        final HttpPipelineOptions pipelineOptions = new HttpPipelineOptions(new Slf4jLogger(logger).withMinimumLogLevel(HttpPipelineLogLevel.INFO));
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
         ApplicationConfigCredentials credentials;
@@ -76,12 +72,11 @@ public class AzConfigTest {
             logger.info("PLAYBACK MODE");
 
             connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
-            credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
-            List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
+            credentials = new ApplicationConfigCredentials(connectionString);
+            List<HttpPipelinePolicy> policies = getDefaultPolicies();
 
             pipeline = new HttpPipeline(
                     interceptorManager.getPlaybackClient(),
-                    pipelineOptions,
                     policies.toArray(new HttpPipelinePolicy[0]));
 
             System.out.println(playbackUri);
@@ -91,26 +86,22 @@ public class AzConfigTest {
             connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-            credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
+            credentials = new ApplicationConfigCredentials(connectionString);
             List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
             policies.add(interceptorManager.getRecordPolicy());
 
             HttpClient httpClient = HttpClient.createDefault().wiretap(true);
-            pipeline = new HttpPipeline(httpClient, pipelineOptions, policies.toArray(new HttpPipelinePolicy[0]));
+            pipeline = new HttpPipeline(httpClient, policies.toArray(new HttpPipelinePolicy[0]));
 
             interceptorManager.addTextReplacementRule(credentials.baseUri().toString(), playbackUri);
         }
 
-        client = AzConfigClient.create(connectionString, pipeline);
+        client = new AzConfigClient(connectionString, pipeline);
         keyPrefix = SdkContext.randomResourceName("key", 8);
     }
 
-    private static List<HttpPipelinePolicy> getDefaultPolicies(ApplicationConfigCredentials credentials) {
+    private static List<HttpPipelinePolicy> getDefaultPolicies() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AzConfigCredentialsPolicy(credentials));
-        policies.add(new RetryPolicy());
         policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         return policies;
