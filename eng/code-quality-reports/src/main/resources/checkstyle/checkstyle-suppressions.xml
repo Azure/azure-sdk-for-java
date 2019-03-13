@@ -22,6 +22,7 @@
   <!-- Public API already released with incorrect upper-case naming pattern -->
   <suppress checks="MethodName" files="AsymmetricEncryptionAlgorithm.java"/>
   <suppress checks="MethodName" files="KeyWrapAlgorithm.java"/>
+  <suppress checks="MethodName" files="PartitionSenderImpl.java"/>
   <suppress checks="MethodName" files="SignatureEncoding.java"/>
   <suppress checks="MethodName" files="SymmetricEncryptionAlgorithm.java"/>
   <suppress checks="MethodName" files="RsaSignature.java"/>
@@ -40,4 +41,7 @@
   <suppress checks="ConstantName" files="RsaKey.java"/>
   <suppress checks="ConstantName" files="SymmetricKey.java"/>
   <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
+
+  <!-- Public API already released with incorrect static variable naming -->
+  <suppress checks="StaticVariableName" files="EventHubClientImpl.java"/>
 </suppressions>
