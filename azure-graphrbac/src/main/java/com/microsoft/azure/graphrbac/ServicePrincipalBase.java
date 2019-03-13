@@ -14,7 +14,7 @@ import com.microsoft.azure.graphrbac.implementation.PasswordCredentialInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Active Directory service principal common perperties shared among GET, POST
+ * Active Directory service principal common properties shared among GET, POST
  * and PATCH.
  */
 public class ServicePrincipalBase {
@@ -45,7 +45,7 @@ public class ServicePrincipalBase {
     private List<PasswordCredentialInner> passwordCredentials;
 
     /**
-     * the type of the servie principal.
+     * the type of the service principal.
      */
     @JsonProperty(value = "servicePrincipalType")
     private String servicePrincipalType;
@@ -138,7 +138,7 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Get the type of the servie principal.
+     * Get the type of the service principal.
      *
      * @return the servicePrincipalType value
      */
@@ -147,7 +147,7 @@ public class ServicePrincipalBase {
     }
 
     /**
-     * Set the type of the servie principal.
+     * Set the type of the service principal.
      *
      * @param servicePrincipalType the servicePrincipalType value to set
      * @return the ServicePrincipalBase object itself.

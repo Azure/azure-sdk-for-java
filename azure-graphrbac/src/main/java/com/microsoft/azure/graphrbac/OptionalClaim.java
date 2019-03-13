@@ -27,7 +27,7 @@ public class OptionalClaim {
     private String source;
 
     /**
-     * Is this a requied claim.
+     * Is this a required claim.
      */
     @JsonProperty(value = "essential")
     private Boolean essential;
@@ -79,7 +79,7 @@ public class OptionalClaim {
     }
 
     /**
-     * Get is this a requied claim.
+     * Get is this a required claim.
      *
      * @return the essential value
      */
@@ -88,7 +88,7 @@ public class OptionalClaim {
     }
 
     /**
-     * Set is this a requied claim.
+     * Set is this a required claim.
      *
      * @param essential the essential value to set
      * @return the OptionalClaim object itself.

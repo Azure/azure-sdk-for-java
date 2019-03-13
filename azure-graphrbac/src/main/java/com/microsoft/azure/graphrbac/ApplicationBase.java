@@ -160,7 +160,7 @@ public class ApplicationBase {
     private List<PasswordCredentialInner> passwordCredentials;
 
     /**
-     * list of pre-authorizaed applications.
+     * list of pre-authorized applications.
      */
     @JsonProperty(value = "preAuthorizedApplications")
     private List<PreAuthorizedApplication> preAuthorizedApplications;
@@ -200,8 +200,8 @@ public class ApplicationBase {
     private String samlMetadataUrl;
 
     /**
-     * Audience for signing in to the application (AzureADMyOrganizatio,
-     * AzureADAllorganizations, AzureADAndMicrosofAccounts).
+     * Audience for signing in to the application (AzureADMyOrganization,
+     * AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
      */
     @JsonProperty(value = "signInAudience")
     private String signInAudience;
@@ -633,7 +633,7 @@ public class ApplicationBase {
     }
 
     /**
-     * Get list of pre-authorizaed applications.
+     * Get list of pre-authorized applications.
      *
      * @return the preAuthorizedApplications value
      */
@@ -642,7 +642,7 @@ public class ApplicationBase {
     }
 
     /**
-     * Set list of pre-authorizaed applications.
+     * Set list of pre-authorized applications.
      *
      * @param preAuthorizedApplications the preAuthorizedApplications value to set
      * @return the ApplicationBase object itself.
@@ -753,7 +753,7 @@ public class ApplicationBase {
     }
 
     /**
-     * Get audience for signing in to the application (AzureADMyOrganizatio, AzureADAllorganizations, AzureADAndMicrosofAccounts).
+     * Get audience for signing in to the application (AzureADMyOrganization, AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
      *
      * @return the signInAudience value
      */
@@ -762,7 +762,7 @@ public class ApplicationBase {
     }
 
     /**
-     * Set audience for signing in to the application (AzureADMyOrganizatio, AzureADAllorganizations, AzureADAndMicrosofAccounts).
+     * Set audience for signing in to the application (AzureADMyOrganization, AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
      *
      * @param signInAudience the signInAudience value to set
      * @return the ApplicationBase object itself.
