@@ -13,17 +13,15 @@ import com.azure.applicationconfig.models.KeyValueFilter;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.Label;
 import com.azure.applicationconfig.models.RevisionFilter;
-import com.microsoft.rest.v3.RestPagedResponse;
-import com.microsoft.rest.v3.RestProxy;
-import com.microsoft.rest.v3.RestResponse;
 import com.microsoft.rest.v3.ServiceClient;
-import com.microsoft.rest.v3.Validator;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
-import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.http.policy.RetryPolicy;
 import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
+import com.microsoft.rest.v3.http.rest.RestPagedResponse;
+import com.microsoft.rest.v3.http.rest.RestResponse;
+import com.microsoft.rest.v3.implementation.RestProxy;
+import com.microsoft.rest.v3.implementation.Validator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.annotation.NonNull;
@@ -51,8 +49,8 @@ public final class AzConfigClient extends ServiceClient {
         this(connectionString, null);
     }
 
-    public AzConfigClient(String connectionString, Iterable<HttpPipelinePolicy> additionalPolicies) {
-        super(createPipeline(new ApplicationConfigCredentials(connectionString), additionalPolicies));
+    public AzConfigClient(String connectionString, PipelineOptions pipelineOptions) {
+        super(createPipeline(new ApplicationConfigCredentials(connectionString), pipelineOptions));
 
         this.service = RestProxy.create(ApplicationConfigService.class, this.httpPipeline());
         this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
@@ -163,7 +161,7 @@ public final class AzConfigClient extends ServiceClient {
 
         return result.flatMapMany(p ->
                 Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(),
-                        p.rawHeaders(), p.statusCode())));
+                        p.headers(), p.statusCode())));
     }
 
     /**
@@ -184,12 +182,12 @@ public final class AzConfigClient extends ServiceClient {
                        });
     }
 
-    private Flux<RestPagedResponseImpl<KeyValue>> listNextSinglePageAsync(@NonNull String nextPageLink) {
+    private Flux<RestPagedResponse<KeyValue>> listNextSinglePageAsync(@NonNull String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         return service.listKeyValuesNext(baseUri.toString(), nextPageLink)
-                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<KeyValue>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
+                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
     }
 
     /**
@@ -281,7 +279,7 @@ public final class AzConfigClient extends ServiceClient {
         } else {
             result = service.listKeyValueRevisions(baseUri.toString(), null, null, null, null, null);
         }
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
+        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
     }
 
     /**
@@ -336,7 +334,7 @@ public final class AzConfigClient extends ServiceClient {
         } else {
             result = service.listLabels(baseUri.toString(), null, null, null, null);
         }
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
+        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
     }
 
     private Flux<RestPagedResponse<Label>> listLabelsNextSinglePageAsync(@NonNull String nextPageLink) {
@@ -345,7 +343,7 @@ public final class AzConfigClient extends ServiceClient {
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listLabelsNext(baseUri.toString(), nextUrl)
-                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
+                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
     }
 
     /**
@@ -401,7 +399,7 @@ public final class AzConfigClient extends ServiceClient {
         } else {
             result = service.listKeys(baseUri.toString(), null, null, null, null);
         }
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
+        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
     }
 
     private Flux<RestPagedResponse<Key>> listKeysNextSinglePageAsync(String nextPageLink) {
@@ -409,7 +407,7 @@ public final class AzConfigClient extends ServiceClient {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         return service.listKeysNext(baseUri.toString(), nextPageLink)
-                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.rawHeaders(), p.statusCode())));
+                       .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
     }
 
     /**
@@ -418,7 +416,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param credentials credentials the pipeline will use to authenticate the requests
      * @return the pipeline
      */
-    private static HttpPipeline createPipeline(ApplicationConfigCredentials credentials, Iterable<HttpPipelinePolicy> additionalPolicies) {
+    private static HttpPipeline createPipeline(ApplicationConfigCredentials credentials, PipelineOptions options) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
@@ -427,14 +425,13 @@ public final class AzConfigClient extends ServiceClient {
         policies.add(new RetryPolicy());
         policies.add(new AzConfigCredentialsPolicy(credentials));
 
-        if (additionalPolicies != null) {
-            for (HttpPipelinePolicy policy : additionalPolicies) {
-                policies.add(policy);
-            }
+        for (HttpPipelinePolicy policy : options.additionalPolicies()) {
+            policies.add(policy);
         }
 
         // policies.add(new HttpLoggingPolicy(logLevel));
-
-        return new HttpPipeline(policies.toArray(new HttpPipelinePolicy[0]));
+        return options.client() == null
+                ? new HttpPipeline(policies)
+                : new HttpPipeline(options.client(), policies);
     }
 }
