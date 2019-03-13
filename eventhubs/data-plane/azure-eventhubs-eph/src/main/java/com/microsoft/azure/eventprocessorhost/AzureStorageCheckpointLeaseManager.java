@@ -321,7 +321,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             EnumSet<BlobListingDetails> details = EnumSet.of(BlobListingDetails.METADATA);
             Iterable<ListBlobItem> leaseBlobs = this.consumerGroupDirectory.listBlobs("", true, details, this.leaseOperationOptions, null);
             leaseBlobs.forEach((lbi) -> {
-                CloudBlob blob = (CloudBlob)lbi;
+                CloudBlob blob = (CloudBlob) lbi;
                 BlobProperties bp = blob.getProperties();
                 HashMap<String, String> metadata = blob.getMetadata();
                 Path p = Paths.get(lbi.getUri().getPath());
