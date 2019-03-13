@@ -739,8 +739,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                             setClosed();
                         }
                     }
-                }
-                , timeout.remaining());
+                }, timeout.remaining());
 
         this.openTimer.handleAsync(
             (unUsed, exception) -> {
@@ -934,8 +933,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                             MessageSender.this.onError((Exception) null);
                         }
                     }
-                }
-                , timeout.remaining());
+                }, timeout.remaining());
 
         this.closeTimer.handleAsync(
             (unUsed, exception) -> {

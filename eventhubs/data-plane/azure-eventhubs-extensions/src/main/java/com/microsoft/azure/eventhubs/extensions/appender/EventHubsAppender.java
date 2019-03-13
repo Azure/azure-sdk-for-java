@@ -117,8 +117,6 @@ public final class EventHubsAppender extends AbstractAppender {
         }
     }
 
-    ;
-
     @Override
     public void start() {
         super.start();

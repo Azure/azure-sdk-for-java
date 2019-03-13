@@ -277,8 +277,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             this.eventHubContainer.deleteIfExists(null, options, null);
 
             future = CompletableFuture.completedFuture(null);
-        }
-        catch (StorageException | URISyntaxException e) {
+        } catch (StorageException | URISyntaxException e) {
             TRACE_LOGGER.error(this.hostContext.withHost("Failure while deleting lease store"), e);
             future = new CompletableFuture<Void>();
             future.completeExceptionally(new CompletionException(e));
@@ -520,7 +519,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Renewing lease"));
 
         boolean result = false;
-        AzureBlobLease azLease = (AzureBlobLease)lease;
+        AzureBlobLease azLease = (AzureBlobLease) lease;
         CloudBlockBlob leaseBlob = azLease.getBlob();
 
         try {
