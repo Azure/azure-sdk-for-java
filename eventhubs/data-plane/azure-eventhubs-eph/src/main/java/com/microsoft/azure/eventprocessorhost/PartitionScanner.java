@@ -306,7 +306,7 @@ class PartitionScanner extends Closable {
                 steals.add(oneSteal);
             }
 
-            CompletableFuture<?> dummy[] = new CompletableFuture<?>[steals.size()];
+            CompletableFuture<?>[] dummy = new CompletableFuture<?>[steals.size()];
             allSteals = CompletableFuture.allOf(steals.toArray(dummy)).thenApplyAsync((empty) -> true, this.hostContext.getExecutor());
         }
 

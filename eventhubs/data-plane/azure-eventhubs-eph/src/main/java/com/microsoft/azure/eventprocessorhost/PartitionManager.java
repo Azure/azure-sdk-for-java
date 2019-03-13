@@ -26,7 +26,7 @@ class PartitionManager extends Closable {
     final private Object scanFutureSynchronizer = new Object();
     private final int retryMax = 5;
     protected PumpManager pumpManager = null;
-    protected volatile String partitionIds[] = null;
+    protected volatile String[] partitionIds = null;
     private ScheduledFuture<?> scanFuture = null;
 
     PartitionManager(HostContext hostContext) {

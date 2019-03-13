@@ -138,7 +138,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
             createFutures.add(oneCreate);
         }
 
-        CompletableFuture<?> dummy[] = new CompletableFuture<?>[createFutures.size()];
+        CompletableFuture<?>[] dummy = new CompletableFuture<?>[createFutures.size()];
         return CompletableFuture.allOf(createFutures.toArray(dummy));
     }
 
