@@ -6,7 +6,6 @@ import com.azure.applicationconfig.models.KeyValue;
 import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
 import com.azure.applicationconfig.models.Label;
 import com.microsoft.azure.v3.CloudException;
-import com.microsoft.rest.v3.RestResponse;
 import com.microsoft.rest.v3.annotations.BodyParam;
 import com.microsoft.rest.v3.annotations.DELETE;
 import com.microsoft.rest.v3.annotations.ExpectedResponses;
@@ -18,6 +17,7 @@ import com.microsoft.rest.v3.annotations.PUT;
 import com.microsoft.rest.v3.annotations.PathParam;
 import com.microsoft.rest.v3.annotations.QueryParam;
 import com.microsoft.rest.v3.annotations.UnexpectedResponseExceptionType;
+import com.microsoft.rest.v3.http.rest.RestResponse;
 import reactor.core.publisher.Mono;
 
 /**
