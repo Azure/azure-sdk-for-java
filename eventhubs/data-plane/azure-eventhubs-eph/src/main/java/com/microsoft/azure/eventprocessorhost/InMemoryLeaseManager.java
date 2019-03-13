@@ -50,13 +50,13 @@ public class InMemoryLeaseManager implements ILeaseManager {
     
     private void latency(String caller) {
         if (this.millisecondsLatency > 0) {
-        	try {
-        		//TRACE_LOGGER.info("sleep " + caller);
-				Thread.sleep(this.millisecondsLatency);
-			} catch (InterruptedException e) {
-				// Don't care
-        		TRACE_LOGGER.info("sleepFAIL " + caller);
-			}
+            try {
+                //TRACE_LOGGER.info("sleep " + caller);
+                Thread.sleep(this.millisecondsLatency);
+            } catch (InterruptedException e) {
+                // Don't care
+                TRACE_LOGGER.info("sleepFAIL " + caller);
+            }
         }
     }
 
@@ -101,42 +101,42 @@ public class InMemoryLeaseManager implements ILeaseManager {
     public CompletableFuture<List<BaseLease>> getAllLeases() {
     	ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
     	for (String id : InMemoryLeaseStore.singleton.getPartitionIds()) {
-    		InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(id);
-    		infos.add(new BaseLease(id, leaseInStore.getOwner(), !leaseInStore.isExpiredSync()));
-    	}
+            InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(id);
+            infos.add(new BaseLease(id, leaseInStore.getOwner(), !leaseInStore.isExpiredSync()));
+        }
     	latency("getAllLeasesStateInfo");
     	return CompletableFuture.completedFuture(infos);
     }
     
     @Override
     public CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds) {
-    	ArrayList<CompletableFuture<BaseLease>> createFutures = new ArrayList<CompletableFuture<BaseLease>>();
-    	
-    	// Implemented like this to provide an experience more similar to lease creation in the Storage-based manager.
-    	for (String id : partitionIds) {
-    		final String workingId = id;
-    		CompletableFuture<BaseLease> oneCreate = CompletableFuture.supplyAsync(() -> {
-			        InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(workingId);
-			        InMemoryLease returnLease = null;
-			        if (leaseInStore != null) {
-			            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(workingId, 
-			                    "createLeaseIfNotExists() found existing lease, OK"));
-			            returnLease = new InMemoryLease(leaseInStore);
-			        } else {
-			            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(workingId,
-			                    "createLeaseIfNotExists() creating new lease"));
-			            InMemoryLease newStoreLease = new InMemoryLease(workingId);
-			            InMemoryLeaseStore.singleton.setOrReplaceLease(newStoreLease);
-			            returnLease = new InMemoryLease(newStoreLease);
-			        }
-			        latency("createLeaseIfNotExists " + workingId);
-			        return returnLease;
-	    		}, this.hostContext.getExecutor());
-    		createFutures.add(oneCreate);
-    	}
-    	
-    	CompletableFuture<?> dummy[] = new CompletableFuture<?>[createFutures.size()];
-    	return CompletableFuture.allOf(createFutures.toArray(dummy));
+        ArrayList<CompletableFuture<BaseLease>> createFutures = new ArrayList<CompletableFuture<BaseLease>>();
+
+        // Implemented like this to provide an experience more similar to lease creation in the Storage-based manager.
+        for (String id : partitionIds) {
+            final String workingId = id;
+            CompletableFuture<BaseLease> oneCreate = CompletableFuture.supplyAsync(() -> {
+                InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(workingId);
+                InMemoryLease returnLease = null;
+                if (leaseInStore != null) {
+                    TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(workingId,
+                            "createLeaseIfNotExists() found existing lease, OK"));
+                    returnLease = new InMemoryLease(leaseInStore);
+                } else {
+                    TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(workingId,
+                            "createLeaseIfNotExists() creating new lease"));
+                    InMemoryLease newStoreLease = new InMemoryLease(workingId);
+                    InMemoryLeaseStore.singleton.setOrReplaceLease(newStoreLease);
+                    returnLease = new InMemoryLease(newStoreLease);
+                }
+                latency("createLeaseIfNotExists " + workingId);
+                return returnLease;
+            }, this.hostContext.getExecutor());
+            createFutures.add(oneCreate);
+        }
+
+        CompletableFuture<?> dummy[] = new CompletableFuture<?>[createFutures.size()];
+        return CompletableFuture.allOf(createFutures.toArray(dummy));
     }
 
     @Override

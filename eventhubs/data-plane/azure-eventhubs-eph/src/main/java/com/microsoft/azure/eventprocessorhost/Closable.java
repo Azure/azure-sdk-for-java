@@ -34,27 +34,27 @@ class Closable {
 
     protected final void setClosing() {
     	synchronized (this.syncClose) {
-    		this.isClosing = true;
+            this.isClosing = true;
     	}
     }
     
     protected final void setClosed() {
     	synchronized (this.syncClose) {
-    		this.isClosing = false;
-    		this.isClosed = true;
+            this.isClosing = false;
+            this.isClosed = true;
     	}
     }
     
     protected final void throwIfClosingOrClosed(String message) {
     	if (getIsClosingOrClosed()) {
-    		throw new ClosingException(message);
+            throw new ClosingException(message);
     	}
     }
     
     class ClosingException extends RuntimeException {
-		private static final long serialVersionUID = 1138985585921317036L;
+        private static final long serialVersionUID = 1138985585921317036L;
 
-		ClosingException(String message) {
+        ClosingException(String message) {
     		super(message);
     	}
     }

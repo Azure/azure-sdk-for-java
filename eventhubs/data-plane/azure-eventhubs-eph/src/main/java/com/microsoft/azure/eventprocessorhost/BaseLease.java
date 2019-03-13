@@ -19,7 +19,7 @@ package com.microsoft.azure.eventprocessorhost;
 public class BaseLease implements Comparable<BaseLease> {
     private final String partitionId;
     private String owner = "";
-	private transient boolean isOwned = false; // do not serialize
+    private transient boolean isOwned = false; // do not serialize
 
     /**
      * Do not use; added only for GSon deserializer
@@ -93,9 +93,9 @@ public class BaseLease implements Comparable<BaseLease> {
 	 * 
 	 * @return true if the lease is owned, or false if it is not
 	 */
-	public boolean getIsOwned() {
-		return this.isOwned;
-	}
+    public boolean getIsOwned() {
+        return this.isOwned;
+    }
     
     /**
      * Convenience function for comparing possibleOwner against this.owner
@@ -121,10 +121,10 @@ public class BaseLease implements Comparable<BaseLease> {
     }
     
 	// Compares by partition id
-	@Override
-	public int compareTo(BaseLease other) {
-		return this.partitionId.compareTo(other.getPartitionId());
-	}
+    @Override
+    public int compareTo(BaseLease other) {
+        return this.partitionId.compareTo(other.getPartitionId());
+    }
 
     String getStateDebug() {
         return "N/A";

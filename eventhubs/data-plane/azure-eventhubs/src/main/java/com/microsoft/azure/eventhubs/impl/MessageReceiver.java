@@ -651,15 +651,15 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 , timeout.remaining());
 
         this.openTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null
-                            && exception instanceof Exception
-                            && !(exception instanceof CancellationException)) {
-                        ExceptionUtil.completeExceptionally(linkOpen.getWork(), (Exception) exception, MessageReceiver.this);
-                    }
+            (unUsed, exception) -> {
+                if (exception != null
+                        && exception instanceof Exception
+                        && !(exception instanceof CancellationException)) {
+                    ExceptionUtil.completeExceptionally(linkOpen.getWork(), (Exception) exception, MessageReceiver.this);
+                }
 
-                    return null;
-                }, this.executor);
+                return null;
+            }, this.executor);
     }
 
     private void scheduleLinkCloseTimeout(final TimeoutTracker timeout) {
@@ -691,13 +691,13 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 , timeout.remaining());
 
         this.closeTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
-                        ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageReceiver.this);
-                    }
+            (unUsed, exception) -> {
+                if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
+                    ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageReceiver.this);
+                }
 
-                    return null;
-                }, this.executor);
+                return null;
+            }, this.executor);
     }
 
     private boolean shouldScheduleOperationTimeoutTimer() {

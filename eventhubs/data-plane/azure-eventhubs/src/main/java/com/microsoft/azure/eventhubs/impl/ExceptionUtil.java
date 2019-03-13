@@ -27,7 +27,7 @@ public final class ExceptionUtil {
         } else if (errorCondition.getCondition() == ClientConstants.SERVER_BUSY_ERROR) {
             return new ServerBusyException(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == AmqpErrorCode.NotFound) {
-        	return ExceptionUtil.distinguishNotFound(errorCondition.getDescription());
+            return ExceptionUtil.distinguishNotFound(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == ClientConstants.ENTITY_DISABLED_ERROR) {
             return new IllegalEntityException(errorCondition.getDescription());
         } else if (errorCondition.getCondition() == AmqpErrorCode.Stolen) {
@@ -82,9 +82,9 @@ public final class ExceptionUtil {
         Pattern p = Pattern.compile("The messaging entity .* could not be found");
         Matcher m = p.matcher(message);
     	if (m.find()) {
-    		return new IllegalEntityException(message);
+            return new IllegalEntityException(message);
     	} else {
-    		return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message));
+            return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message));
     	}
     }
 
@@ -154,7 +154,7 @@ public final class ExceptionUtil {
         return null;
     }
 
-   static Exception stripOuterException(final Exception exception) {
+    static Exception stripOuterException(final Exception exception) {
         Throwable throwable = exception.getCause();
         if (throwable instanceof EventHubException) {
             return (EventHubException) throwable;

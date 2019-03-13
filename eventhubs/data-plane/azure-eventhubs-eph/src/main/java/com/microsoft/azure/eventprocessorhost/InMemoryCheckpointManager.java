@@ -87,20 +87,20 @@ public class InMemoryCheckpointManager implements ICheckpointManager {
     @Override
     public CompletableFuture<Void> createAllCheckpointsIfNotExists(List<String> partitionIds) {
     	for (String id : partitionIds) {
-	        Checkpoint checkpointInStore = InMemoryCheckpointStore.singleton.getCheckpoint(id);
-	        if (checkpointInStore != null) {
-	            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(id,
-	                    "createCheckpointIfNotExists() found existing checkpoint, OK"));
-	        } else {
-	            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(id,
-	                    "createCheckpointIfNotExists() creating new checkpoint"));
-	            Checkpoint newStoreCheckpoint = new Checkpoint(id);
-	            // This API actually creates the holder, not the checkpoint itself. In this implementation, we do create a Checkpoint object
-	            // and put it in the store, but the values are set to indicate that it is not initialized.
-	            newStoreCheckpoint.setOffset(null);
-	            newStoreCheckpoint.setSequenceNumber(-1);
-	            InMemoryCheckpointStore.singleton.setOrReplaceCheckpoint(newStoreCheckpoint);
-	        }
+            Checkpoint checkpointInStore = InMemoryCheckpointStore.singleton.getCheckpoint(id);
+            if (checkpointInStore != null) {
+                TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(id,
+                        "createCheckpointIfNotExists() found existing checkpoint, OK"));
+            } else {
+                TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(id,
+                        "createCheckpointIfNotExists() creating new checkpoint"));
+                Checkpoint newStoreCheckpoint = new Checkpoint(id);
+                // This API actually creates the holder, not the checkpoint itself. In this implementation, we do create a Checkpoint object
+                // and put it in the store, but the values are set to indicate that it is not initialized.
+                newStoreCheckpoint.setOffset(null);
+                newStoreCheckpoint.setSequenceNumber(-1);
+                InMemoryCheckpointStore.singleton.setOrReplaceCheckpoint(newStoreCheckpoint);
+            }
     	}
         return CompletableFuture.completedFuture(null);
     }

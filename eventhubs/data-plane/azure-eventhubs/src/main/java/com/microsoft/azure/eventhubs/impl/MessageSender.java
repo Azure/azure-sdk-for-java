@@ -199,15 +199,15 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         // if the timeoutTask completed with scheduling error - notify sender
         if (timeoutTimerTask.isCompletedExceptionally()) {
             timeoutTimerTask.handleAsync(
-                    (unUsed, exception) -> {
-                        if (exception != null && !(exception instanceof CancellationException))
-                            onSendFuture.completeExceptionally(
-                                    new OperationCancelledException(String.format(Locale.US,
-                                            "Entity(%s): send failed while dispatching to Reactor, see cause for more details.",
-                                            this.sendPath), exception));
+                (unUsed, exception) -> {
+                    if (exception != null && !(exception instanceof CancellationException))
+                        onSendFuture.completeExceptionally(
+                                new OperationCancelledException(String.format(Locale.US,
+                                        "Entity(%s): send failed while dispatching to Reactor, see cause for more details.",
+                                        this.sendPath), exception));
 
-                        return null;
-                    }, this.executor);
+                    return null;
+                }, this.executor);
 
             return onSendFuture;
         }
@@ -721,15 +721,15 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                 , timeout.remaining());
 
         this.openTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null
-                            && exception instanceof Exception
-                            && !(exception instanceof CancellationException)) {
-                        ExceptionUtil.completeExceptionally(linkFirstOpen, (Exception) exception, this);
-                    }
+            (unUsed, exception) -> {
+                if (exception != null
+                        && exception instanceof Exception
+                        && !(exception instanceof CancellationException)) {
+                    ExceptionUtil.completeExceptionally(linkFirstOpen, (Exception) exception, this);
+                }
 
-                    return null;
-                }, this.executor);
+                return null;
+            }, this.executor);
     }
 
     @Override
@@ -916,13 +916,13 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                 , timeout.remaining());
 
         this.closeTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
-                        ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageSender.this);
-                    }
+            (unUsed, exception) -> {
+                if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
+                    ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageSender.this);
+                }
 
-                    return null;
-                }, this.executor);
+                return null;
+            }, this.executor);
     }
 
     @Override

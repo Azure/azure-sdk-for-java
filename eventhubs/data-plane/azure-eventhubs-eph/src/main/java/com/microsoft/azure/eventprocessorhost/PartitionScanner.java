@@ -40,12 +40,12 @@ class PartitionScanner extends Closable {
     public CompletableFuture<Boolean> scan(boolean isFirst) {
         return getAllLeaseStates()
                 .thenComposeAsync((unused) -> {
-                	throwIfClosingOrClosed("PartitionScanner is shutting down");
+                    throwIfClosingOrClosed("PartitionScanner is shutting down");
                     int ourLeasesCount = sortLeasesAndCalculateDesiredCount(isFirst);
                     return acquireExpiredInChunksParallel(0, this.desiredCount - ourLeasesCount);
                 }, this.hostContext.getExecutor())
                 .thenApplyAsync((remainingNeeded) -> {
-                	throwIfClosingOrClosed("PartitionScanner is shutting down");
+                    throwIfClosingOrClosed("PartitionScanner is shutting down");
                     ArrayList<BaseLease> stealThese = new ArrayList<BaseLease>();
                     if (remainingNeeded > 0) {
                         TRACE_LOGGER.debug(this.hostContext.withHost("Looking to steal: " + remainingNeeded));
@@ -54,8 +54,8 @@ class PartitionScanner extends Closable {
                     return stealThese;
                 }, this.hostContext.getExecutor())
                 .thenComposeAsync((stealThese) -> {
-                	throwIfClosingOrClosed("PartitionScanner is shutting down");
-                	return stealLeases(stealThese);
+                    throwIfClosingOrClosed("PartitionScanner is shutting down");
+                    return stealLeases(stealThese);
                 }, this.hostContext.getExecutor())
                 .handleAsync((didSteal, e) -> {
                     if ((e != null) && !(e instanceof ClosingException)) {
@@ -74,7 +74,7 @@ class PartitionScanner extends Closable {
     	throwIfClosingOrClosed("PartitionScanner is shutting down");
         return this.hostContext.getLeaseManager().getAllLeases()
                 .thenAcceptAsync((states) -> {
-                	throwIfClosingOrClosed("PartitionScanner is shutting down");
+                    throwIfClosingOrClosed("PartitionScanner is shutting down");
                     this.allLeaseStates = states;
                     Collections.sort(this.allLeaseStates);
                 }, this.hostContext.getExecutor());
@@ -185,12 +185,12 @@ class PartitionScanner extends Closable {
                                 final AcquisitionHolder holder = new AcquisitionHolder();
                                 CompletableFuture<Void> getOneFuture = this.hostContext.getLeaseManager().getLease(info.getPartitionId())
                                         .thenComposeAsync((lease) -> {
-                                        	throwIfClosingOrClosed("PartitionScanner is shutting down");
-                                        	holder.setAcquiredLease(lease);
+                                            throwIfClosingOrClosed("PartitionScanner is shutting down");
+                                            holder.setAcquiredLease(lease);
                                             return this.hostContext.getLeaseManager().acquireLease(lease);
                                         }, this.hostContext.getExecutor())
                                         .thenAcceptAsync((acquired) -> {
-                                        	throwIfClosingOrClosed("PartitionScanner is shutting down");
+                                            throwIfClosingOrClosed("PartitionScanner is shutting down");
                                             if (acquired) {
                                                 runningNeeded.decrementAndGet();
                                                 TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(holder.getAcquiredLease().getPartitionId(), "Acquired unowned/expired"));
@@ -285,18 +285,18 @@ class PartitionScanner extends Closable {
 
             	final AcquisitionHolder holder = new AcquisitionHolder();
                 CompletableFuture<Void> oneSteal = this.hostContext.getLeaseManager().getLease(info.getPartitionId())
-                        .thenComposeAsync((lease) -> {
-                        	throwIfClosingOrClosed("PartitionScanner is shutting down");
-                        	holder.setAcquiredLease(lease);
-                            return this.hostContext.getLeaseManager().acquireLease(lease);
-                        }, this.hostContext.getExecutor())
-                        .thenAcceptAsync((acquired) -> {
-                        	throwIfClosingOrClosed("PartitionScanner is shutting down");
-                            if (acquired) {
-                                TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(holder.getAcquiredLease().getPartitionId(), "Stole lease"));
-                                this.addPump.accept(holder.getAcquiredLease());
-                            }
-                        }, this.hostContext.getExecutor());
+                    .thenComposeAsync((lease) -> {
+                        throwIfClosingOrClosed("PartitionScanner is shutting down");
+                        holder.setAcquiredLease(lease);
+                        return this.hostContext.getLeaseManager().acquireLease(lease);
+                    }, this.hostContext.getExecutor())
+                    .thenAcceptAsync((acquired) -> {
+                        throwIfClosingOrClosed("PartitionScanner is shutting down");
+                        if (acquired) {
+                            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(holder.getAcquiredLease().getPartitionId(), "Stole lease"));
+                            this.addPump.accept(holder.getAcquiredLease());
+                        }
+                    }, this.hostContext.getExecutor());
                 steals.add(oneSteal);
             }
 
@@ -308,14 +308,14 @@ class PartitionScanner extends Closable {
     }
     
     private class AcquisitionHolder {
-    	private CompleteLease acquiredLease;
-    	
-    	void setAcquiredLease(CompleteLease l) {
-    		this.acquiredLease = l;
-    	}
-    	
-    	CompleteLease getAcquiredLease() {
-    		return this.acquiredLease;
-    	}
+        private CompleteLease acquiredLease;
+
+        void setAcquiredLease(CompleteLease l) {
+            this.acquiredLease = l;
+        }
+
+        CompleteLease getAcquiredLease() {
+            return this.acquiredLease;
+        }
     }
 }

@@ -180,8 +180,8 @@ class PartitionManager extends Closable {
         // let R = this.retryMax
         // Stages 0 to R: create lease store if it doesn't exist
         CompletableFuture<?> initializeStoresFuture = buildRetries(CompletableFuture.completedFuture(null),
-                () -> leaseManager.createLeaseStoreIfNotExists(), "Failure creating lease store for this Event Hub, retrying",
-                "Out of retries creating lease store for this Event Hub", EventProcessorHostActionStrings.CREATING_LEASE_STORE, this.retryMax);
+            () -> leaseManager.createLeaseStoreIfNotExists(), "Failure creating lease store for this Event Hub, retrying",
+            "Out of retries creating lease store for this Event Hub", EventProcessorHostActionStrings.CREATING_LEASE_STORE, this.retryMax);
 
         // Stages R+1 to 2R: create checkpoint store if it doesn't exist
         initializeStoresFuture = buildRetries(initializeStoresFuture, () -> checkpointManager.createCheckpointStoreIfNotExists(),

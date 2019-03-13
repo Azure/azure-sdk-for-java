@@ -114,14 +114,14 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
         // if scheduling messagingfactory openTimer fails - notify user and stop
         messagingFactory.openTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null && !(exception instanceof CancellationException)) {
-                        messagingFactory.open.completeExceptionally(exception);
-                        messagingFactory.getReactor().stop();
-                    }
+            (unUsed, exception) -> {
+                if (exception != null && !(exception instanceof CancellationException)) {
+                    messagingFactory.open.completeExceptionally(exception);
+                    messagingFactory.getReactor().stop();
+                }
 
-                    return null;
-                }, messagingFactory.executor);
+                return null;
+            }, messagingFactory.executor);
 
         return messagingFactory.open;
     }
@@ -355,15 +355,14 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         if (!this.getIsClosed()) {
             final Timer timer = new Timer(this);
             this.closeTimer = timer.schedule(new Runnable() {
-                                                 @Override
-                                                 public void run() {
-                                                     if (!closeTask.isDone()) {
-                                                         closeTask.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
-                                                         getReactor().stop();
-                                                     }
-                                                 }
-                                             },
-                    operationTimeout);
+                    @Override
+                    public void run() {
+                        if (!closeTask.isDone()) {
+                            closeTask.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
+                            getReactor().stop();
+                        }
+                    }
+            }, operationTimeout);
 
             if (this.closeTimer.isCompletedExceptionally()) {
                 this.closeTask.completeExceptionally(ExceptionUtil.getExceptionFromCompletedFuture(this.closeTimer));

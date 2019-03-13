@@ -146,8 +146,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             }
             future = CompletableFuture.completedFuture(checkpoint);
         } catch (URISyntaxException | IOException | StorageException e) {
-        	future = new CompletableFuture<Checkpoint>();
-        	future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_CHECKPOINT));
+            future = new CompletableFuture<Checkpoint>();
+            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_CHECKPOINT));
         }
         
         return future;
@@ -171,14 +171,14 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	CompletableFuture<Void> future = null;
     	
     	try {
-    		if (updateLeaseInternal(updatedLease, this.checkpointOperationOptions)) {
-    			future = CompletableFuture.completedFuture(null);
-    		} else {
+            if (updateLeaseInternal(updatedLease, this.checkpointOperationOptions)) {
+                future = CompletableFuture.completedFuture(null);
+            } else {
                 TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Lease lost"));
                 future = new CompletableFuture<Void>();
                 future.completeExceptionally(LoggingUtils.wrapException(new RuntimeException("Lease lost while updating checkpoint"),
-                		EventProcessorHostActionStrings.UPDATING_CHECKPOINT));
-    		}
+                        EventProcessorHostActionStrings.UPDATING_CHECKPOINT));
+            }
     	} catch (StorageException | IOException e) {
             TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Failure updating checkpoint"), e);
             future = new CompletableFuture<Void>();
@@ -213,11 +213,11 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private CompletableFuture<Boolean> storeExistsInternal(BlobRequestOptions options, String action, String trace) {
     	CompletableFuture<Boolean> future = null;
         try {
-    		future = CompletableFuture.completedFuture(this.eventHubContainer.exists(null, options, null));
+            future = CompletableFuture.completedFuture(this.eventHubContainer.exists(null, options, null));
         } catch (StorageException e) {
             TRACE_LOGGER.error(this.hostContext.withHost(trace), e);
-    		future = new CompletableFuture<Boolean>();
-    		future.completeExceptionally(LoggingUtils.wrapException(e, action));
+            future = new CompletableFuture<Boolean>();
+            future.completeExceptionally(LoggingUtils.wrapException(e, action));
         }
         return future;
     }
@@ -232,8 +232,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             TRACE_LOGGER.info(this.hostContext.withHost("Created lease store OK or it already existed"));
             future = CompletableFuture.completedFuture(null);
         } catch (StorageException e) {
-        	future = new CompletableFuture<Void>();
-        	future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASE_STORE));
+            future = new CompletableFuture<Void>();
+            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASE_STORE));
             TRACE_LOGGER.error(this.hostContext.withHost("Failure while creating lease store"), e);
         }
         
@@ -249,15 +249,15 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	CompletableFuture<Void> future = null;
     	
     	try {
-	        for (ListBlobItem blob : this.eventHubContainer.listBlobs(null, false, EnumSet.noneOf(BlobListingDetails.class), options, null)) {
-	            if (blob instanceof CloudBlobDirectory) {
+            for (ListBlobItem blob : this.eventHubContainer.listBlobs(null, false, EnumSet.noneOf(BlobListingDetails.class), options, null)) {
+                if (blob instanceof CloudBlobDirectory) {
                     for (ListBlobItem subBlob : ((CloudBlobDirectory) blob).listBlobs(null, false, EnumSet.noneOf(BlobListingDetails.class), options, null)) {
                         ((CloudBlockBlob) subBlob).deleteIfExists(DeleteSnapshotsOption.NONE, null, options, null);
                     }
-	            } else if (blob instanceof CloudBlockBlob) {
+                } else if (blob instanceof CloudBlockBlob) {
                     ((CloudBlockBlob) blob).deleteIfExists(DeleteSnapshotsOption.NONE, null, options, null);
-	            }
-	        }
+                }
+            }
 	
             this.eventHubContainer.deleteIfExists(null, options, null);
             
@@ -265,8 +265,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	}
     	catch (StorageException | URISyntaxException e) {
             TRACE_LOGGER.error(this.hostContext.withHost("Failure while deleting lease store"), e);
-    		future = new CompletableFuture<Void>();
-    		future.completeExceptionally(new CompletionException(e));
+            future = new CompletableFuture<Void>();
+            future.completeExceptionally(new CompletionException(e));
     	}
     	
     	return future;
@@ -277,7 +277,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         CompletableFuture<CompleteLease> future = null;
 
         try {
-        	future = CompletableFuture.completedFuture(getLeaseInternal(partitionId, this.leaseOperationOptions));
+            future = CompletableFuture.completedFuture(getLeaseInternal(partitionId, this.leaseOperationOptions));
         } catch (URISyntaxException | IOException | StorageException e) {
             TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, "Failure while getting lease details"), e);
             future = new CompletableFuture<CompleteLease>();
@@ -302,25 +302,25 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     public CompletableFuture<List<BaseLease>> getAllLeases() {
     	CompletableFuture<List<BaseLease>> future = null;
     	
-    	try {
-        	ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
-	    	EnumSet<BlobListingDetails> details = EnumSet.of(BlobListingDetails.METADATA);
-			Iterable<ListBlobItem> leaseBlobs = this.consumerGroupDirectory.listBlobs("", true, details, this.leaseOperationOptions, null);
-			leaseBlobs.forEach((lbi) -> {
-				CloudBlob blob = (CloudBlob)lbi;
-				BlobProperties bp = blob.getProperties();
-				HashMap<String, String> metadata = blob.getMetadata();
-				Path p = Paths.get(lbi.getUri().getPath());
-				infos.add(new BaseLease(p.getFileName().toString(), metadata.get(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME),
-						(bp.getLeaseState() == LeaseState.LEASED)));
-			});
-			future = CompletableFuture.completedFuture(infos);
-		} catch (URISyntaxException | StorageException e) {
+        try {
+            ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
+            EnumSet<BlobListingDetails> details = EnumSet.of(BlobListingDetails.METADATA);
+            Iterable<ListBlobItem> leaseBlobs = this.consumerGroupDirectory.listBlobs("", true, details, this.leaseOperationOptions, null);
+            leaseBlobs.forEach((lbi) -> {
+                CloudBlob blob = (CloudBlob)lbi;
+                BlobProperties bp = blob.getProperties();
+                HashMap<String, String> metadata = blob.getMetadata();
+                Path p = Paths.get(lbi.getUri().getPath());
+                infos.add(new BaseLease(p.getFileName().toString(), metadata.get(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME),
+                        (bp.getLeaseState() == LeaseState.LEASED)));
+            });
+            future = CompletableFuture.completedFuture(infos);
+        } catch (URISyntaxException | StorageException e) {
             TRACE_LOGGER.warn(this.hostContext.withHost("Failure while getting lease state details"), e);
             future = new CompletableFuture<List<BaseLease>>();
             future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_LEASE));
-		}
-    	
+        }
+
     	return future;
     }
 
@@ -333,52 +333,52 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	
     	// Optimization: list the blobs currently existing in the directory. If there are the
     	// expected number of blobs, then we can skip doing the creates.
-		int blobCount = 0;
-    	try {
-			Iterable<ListBlobItem> leaseBlobs = this.consumerGroupDirectory.listBlobs("", true, null, this.leaseOperationOptions, null);
-			Iterator<ListBlobItem> blobIterator = leaseBlobs.iterator();
-			while (blobIterator.hasNext()) {
-				blobCount++;
-				blobIterator.next();
-			}
-		} catch (URISyntaxException | StorageException e) {
-			TRACE_LOGGER.error(this.hostContext.withHost("Exception checking lease existence - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " +
-					this.hostContext.getConsumerGroupName() + " storageBlobPrefix: " + this.storageBlobPrefix), e);
-			future = new CompletableFuture<Void>();
-			future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES));
-		}
+        int blobCount = 0;
+        try {
+            Iterable<ListBlobItem> leaseBlobs = this.consumerGroupDirectory.listBlobs("", true, null, this.leaseOperationOptions, null);
+            Iterator<ListBlobItem> blobIterator = leaseBlobs.iterator();
+            while (blobIterator.hasNext()) {
+                blobCount++;
+                blobIterator.next();
+            }
+        } catch (URISyntaxException | StorageException e) {
+            TRACE_LOGGER.error(this.hostContext.withHost("Exception checking lease existence - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " +
+                    this.hostContext.getConsumerGroupName() + " storageBlobPrefix: " + this.storageBlobPrefix), e);
+            future = new CompletableFuture<Void>();
+            future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES));
+        }
     	
-    	if (future == null) {
-    		// No error checking the list, so keep going
-			if (blobCount == partitionIds.size()) {
-				// All expected blobs found, so short-circuit
-				future = CompletableFuture.completedFuture(null);
-			} else {
-				// Create the blobs in parallel
-		    	ArrayList<CompletableFuture<CompleteLease>> createFutures = new ArrayList<CompletableFuture<CompleteLease>>();
-		    	
-		    	for (String id : partitionIds) {
-		            CompletableFuture<CompleteLease> oneCreate = CompletableFuture.supplyAsync(() -> {
-			                CompleteLease returnLease = null;
-			                try {
-			                    returnLease = createLeaseIfNotExistsInternal(id, this.leaseOperationOptions);
-			                } catch (URISyntaxException | IOException | StorageException e) {
-			                    TRACE_LOGGER.error(this.hostContext.withHostAndPartition(id,
-			                            "Exception creating lease - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.hostContext.getConsumerGroupName() +
-			                                    " storageBlobPrefix: " + this.storageBlobPrefix), e);
-			                    throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES);
-			                }
-			                return returnLease;
-			            }, this.hostContext.getExecutor());
-		            createFutures.add(oneCreate);
-		    	}
+        if (future == null) {
+            // No error checking the list, so keep going
+            if (blobCount == partitionIds.size()) {
+                // All expected blobs found, so short-circuit
+                future = CompletableFuture.completedFuture(null);
+            } else {
+                // Create the blobs in parallel
+                ArrayList<CompletableFuture<CompleteLease>> createFutures = new ArrayList<CompletableFuture<CompleteLease>>();
+
+                for (String id : partitionIds) {
+                    CompletableFuture<CompleteLease> oneCreate = CompletableFuture.supplyAsync(() -> {
+                        CompleteLease returnLease = null;
+                        try {
+                            returnLease = createLeaseIfNotExistsInternal(id, this.leaseOperationOptions);
+                        } catch (URISyntaxException | IOException | StorageException e) {
+                            TRACE_LOGGER.error(this.hostContext.withHostAndPartition(id,
+                                    "Exception creating lease - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.hostContext.getConsumerGroupName() +
+                                            " storageBlobPrefix: " + this.storageBlobPrefix), e);
+                            throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES);
+                        }
+                        return returnLease;
+                    }, this.hostContext.getExecutor());
+                    createFutures.add(oneCreate);
+                }
+
+                CompletableFuture<?> dummy[] = new CompletableFuture<?>[createFutures.size()];
+                future = CompletableFuture.allOf(createFutures.toArray(dummy));
+            }
+        }
 		
-		    	CompletableFuture<?> dummy[] = new CompletableFuture<?>[createFutures.size()];
-		    	future = CompletableFuture.allOf(createFutures.toArray(dummy));
-			}
-    	}
-		
-		return future;
+        return future;
     }
     
     private AzureBlobLease createLeaseIfNotExistsInternal(String partitionId, BlobRequestOptions options) throws URISyntaxException, IOException, StorageException {
@@ -494,8 +494,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         try {
             future = CompletableFuture.completedFuture(renewLeaseInternal(lease));
         } catch (StorageException se) {
-        	future = new CompletableFuture<Boolean>();
-        	future.completeExceptionally(LoggingUtils.wrapException(se, EventProcessorHostActionStrings.RENEWING_LEASE));
+            future = new CompletableFuture<Boolean>();
+            future.completeExceptionally(LoggingUtils.wrapException(se, EventProcessorHostActionStrings.RENEWING_LEASE));
         }
 
         return future;
@@ -548,8 +548,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             	future.completeExceptionally(LoggingUtils.wrapException(se, EventProcessorHostActionStrings.RELEASING_LEASE));
             }
         } catch (IOException ie) {
-        	future = new CompletableFuture<Void>();
-        	future.completeExceptionally(LoggingUtils.wrapException(ie, EventProcessorHostActionStrings.RELEASING_LEASE));
+            future = new CompletableFuture<Void>();
+            future.completeExceptionally(LoggingUtils.wrapException(ie, EventProcessorHostActionStrings.RELEASING_LEASE));
         }
         
         return future;
@@ -560,8 +560,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	CompletableFuture<Boolean> future = null;
     	
     	try {
-    		boolean result = updateLeaseInternal((AzureBlobLease) lease, this.leaseOperationOptions);
-    		future = CompletableFuture.completedFuture(result);
+            boolean result = updateLeaseInternal((AzureBlobLease) lease, this.leaseOperationOptions);
+            future = CompletableFuture.completedFuture(result);
     	} catch (StorageException | IOException e) {
             TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Failure updating lease"), e);
             future = new CompletableFuture<Boolean>();
@@ -587,21 +587,21 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         // Renewing the lease is always logically a lease operation, even if it is part of writing a checkpoint, so
         // don't pass options.
         boolean result = renewLeaseInternal(lease);
-		if (result) {
+        if (result) {
             CloudBlockBlob leaseBlob = lease.getBlob();
             try {
                 uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(token), UploadActivity.Update, options);
                 // Success! Result is already true, so pass it up unchanged
             } catch (StorageException se) {
                 if (wasLeaseLost(se, lease.getPartitionId())) {
-                	result = false;
+                    result = false;
                 } else {
-                	throw se;
+                    throw se;
                 }
             } catch (IOException ie) {
-            	throw ie;
+                throw ie;
             }
-		}
+        }
 		// else could not renew lease due to lease loss. Result is already false, so pass it up unchanged
         
         return result;
@@ -648,25 +648,25 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 "Raw JSON uploading for " + activity + ": " + jsonLease));
         
         if ((activity == UploadActivity.Acquire) || (activity == UploadActivity.Release)) {
-        	blob.downloadAttributes();
-        	HashMap<String, String> metadata = blob.getMetadata();
-        	switch (activity) {
-        	case Acquire:
-            	// Add owner in metadata
-            	metadata.put(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME, lease.getOwner());
-        		break;
-        		
-        	case Release:
-            	// Remove owner in metadata
-            	metadata.remove(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME);
-        		break;
-        		
-			default:
-				// Should never get here, but passing the metadata through unchanged is harmless.
-				break;
-        	}
-        	blob.setMetadata(metadata);
-        	blob.uploadMetadata(condition, options, null);
+            blob.downloadAttributes();
+            HashMap<String, String> metadata = blob.getMetadata();
+            switch (activity) {
+                case Acquire:
+                    // Add owner in metadata
+                    metadata.put(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME, lease.getOwner());
+                    break;
+
+                case Release:
+                    // Remove owner in metadata
+                    metadata.remove(AzureStorageCheckpointLeaseManager.METADATA_OWNER_NAME);
+                    break;
+
+                default:
+                    // Should never get here, but passing the metadata through unchanged is harmless.
+                    break;
+            }
+            blob.setMetadata(metadata);
+            blob.uploadMetadata(condition, options, null);
         }
         // else don't touch metadata
     }

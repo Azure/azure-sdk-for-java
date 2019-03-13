@@ -26,8 +26,8 @@ class PumpManager extends Closable implements Consumer<String> {
 
     public void addPump(CompleteLease lease) {
     	if (getIsClosingOrClosed()) {
-    		TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Shutting down, not creating new pump"));
-    		return;
+            TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Shutting down, not creating new pump"));
+            return;
     	}
     	
         PartitionPump capturedPump = this.pumpStates.get(lease.getPartitionId()); // CONCURRENTHASHTABLE
@@ -49,12 +49,12 @@ class PumpManager extends Closable implements Consumer<String> {
     }
 
     // Callback used by pumps during pump shutdown. 
-	@Override
-	public void accept(String partitionId) {
-		// These are fast, non-blocking actions.
-		this.pumpStates.remove(partitionId);
-		removingPumpTestHook(partitionId);
-	}
+    @Override
+    public void accept(String partitionId) {
+        // These are fast, non-blocking actions.
+        this.pumpStates.remove(partitionId);
+        removingPumpTestHook(partitionId);
+    }
 
     // Separated out so that tests can override and substitute their own pump class.
     protected PartitionPump createNewPump(CompleteLease lease) {

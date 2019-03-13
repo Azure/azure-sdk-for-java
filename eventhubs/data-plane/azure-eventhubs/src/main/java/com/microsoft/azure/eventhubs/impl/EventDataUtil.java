@@ -17,12 +17,12 @@ final class EventDataUtil {
 
     @SuppressWarnings("serial")
     static final Set<String> RESERVED_SYSTEM_PROPERTIES = Collections.unmodifiableSet(new HashSet<String>() {{
-        add(AmqpConstants.OFFSET_ANNOTATION_NAME);
-        add(AmqpConstants.PARTITION_KEY_ANNOTATION_NAME);
-        add(AmqpConstants.SEQUENCE_NUMBER_ANNOTATION_NAME);
-        add(AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME);
-        add(AmqpConstants.PUBLISHER_ANNOTATION_NAME);
-    }});
+            add(AmqpConstants.OFFSET_ANNOTATION_NAME);
+            add(AmqpConstants.PARTITION_KEY_ANNOTATION_NAME);
+            add(AmqpConstants.SEQUENCE_NUMBER_ANNOTATION_NAME);
+            add(AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME);
+            add(AmqpConstants.PUBLISHER_ANNOTATION_NAME);
+            }});
 
     private EventDataUtil() {
     }
