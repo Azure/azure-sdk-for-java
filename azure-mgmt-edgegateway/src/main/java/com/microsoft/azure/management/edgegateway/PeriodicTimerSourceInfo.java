@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PeriodicTimerSourceInfo {
     /**
      * The time of the day that results in a valid trigger. Schedule is
-     * computed with reference to the time specified upto seconds. If timezone
+     * computed with reference to the time specified up to seconds. If timezone
      * is not specified the time will considered to be in device timezone. The
      * value will always be returned as UTC time.
      */
@@ -38,7 +38,7 @@ public class PeriodicTimerSourceInfo {
     private String topic;
 
     /**
-     * Get the time of the day that results in a valid trigger. Schedule is computed with reference to the time specified upto seconds. If timezone is not specified the time will considered to be in device timezone. The value will always be returned as UTC time.
+     * Get the time of the day that results in a valid trigger. Schedule is computed with reference to the time specified up to seconds. If timezone is not specified the time will considered to be in device timezone. The value will always be returned as UTC time.
      *
      * @return the startTime value
      */
@@ -47,7 +47,7 @@ public class PeriodicTimerSourceInfo {
     }
 
     /**
-     * Set the time of the day that results in a valid trigger. Schedule is computed with reference to the time specified upto seconds. If timezone is not specified the time will considered to be in device timezone. The value will always be returned as UTC time.
+     * Set the time of the day that results in a valid trigger. Schedule is computed with reference to the time specified up to seconds. If timezone is not specified the time will considered to be in device timezone. The value will always be returned as UTC time.
      *
      * @param startTime the startTime value to set
      * @return the PeriodicTimerSourceInfo object itself.
