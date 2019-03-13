@@ -339,7 +339,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                         this.getClientId(), this.getHostName(),
                         ExceptionUtil.toStackTraceString(e, "Re-starting reactor failed with error")));
 
-                // TODO - stop retrying on the error after multiple attempts.
+                // TODO: stop retrying on the error after multiple attempts.
                 this.onReactorError(cause);
             }
 

@@ -114,7 +114,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                         if (e != null) {
                             Exception notifyWith = (Exception) LoggingUtils.unwrapException(e, null);
                             if (notifyWith instanceof ReceiverDisconnectedException) {
-                                // TODO Assuming this is due to a receiver with a higher epoch.
+                                // TODO: Assuming this is due to a receiver with a higher epoch.
                                 // Is there a way to be sure without checking the exception text?
                                 // DO NOT trace here because then we could get multiple traces for the same exception.
                                 // If it's a bad epoch, then retrying isn't going to help.
@@ -145,7 +145,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
             } else {
                 Exception notifyWith = (Exception) LoggingUtils.unwrapException(e, null);
                 if (notifyWith instanceof ReceiverDisconnectedException) {
-                    // TODO Assuming this is due to a receiver with a higher epoch.
+                    // TODO: Assuming this is due to a receiver with a higher epoch.
                     // Is there a way to be sure without checking the exception text?
                     TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(this.partitionContext,
                             "Receiver disconnected on create, bad epoch?"), notifyWith);
@@ -497,7 +497,7 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
                 this.processor.onEvents(this.partitionContext, effectiveEvents);
             }
         } catch (Exception e) {
-            // TODO -- do we pass errors from IEventProcessor.onEvents to IEventProcessor.onError?
+            // TODO: do we pass errors from IEventProcessor.onEvents to IEventProcessor.onError?
             // Depending on how you look at it, that's either pointless (if the user's code throws, the user's code should already know about it) or
             // a convenient way of centralizing error handling.
             // In the meantime, just trace it.
