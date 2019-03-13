@@ -3,7 +3,13 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.ReceiverDisconnectedException;
+import com.microsoft.azure.eventhubs.ReceiverOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

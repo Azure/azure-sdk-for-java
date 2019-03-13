@@ -3,7 +3,15 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.AuthorizationFailedException;
+import com.microsoft.azure.eventhubs.ErrorContext;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.IllegalEntityException;
+import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
+import com.microsoft.azure.eventhubs.QuotaExceededException;
+import com.microsoft.azure.eventhubs.ReceiverDisconnectedException;
+import com.microsoft.azure.eventhubs.ServerBusyException;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 

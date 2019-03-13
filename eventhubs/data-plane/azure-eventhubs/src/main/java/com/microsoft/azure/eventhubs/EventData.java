@@ -10,7 +10,10 @@ import org.apache.qpid.proton.amqp.Binary;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.time.Instant;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**

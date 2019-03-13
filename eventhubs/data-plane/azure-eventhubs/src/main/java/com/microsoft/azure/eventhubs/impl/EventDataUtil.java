@@ -7,7 +7,11 @@ import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventPosition;
 import org.apache.qpid.proton.message.Message;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 import java.util.function.Consumer;
 
 /*
