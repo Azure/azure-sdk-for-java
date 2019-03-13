@@ -2,7 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig;
 
-import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
+import com.microsoft.rest.v3.http.HttpClient;
+import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * This type encapsulates all the possible configuration for the default pipeline. It may be passed to the
@@ -10,23 +16,30 @@ import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
  * no logger will be used if it is not set.
  */
 public final class PipelineOptions {
-    private HttpLogDetailLevel detailLevel = HttpLogDetailLevel.BASIC;
+    private HttpClient client;
+    private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<HttpPipelinePolicy>();
+
+    public HttpClient client() { return this.client; }
+
+    public Iterable<HttpPipelinePolicy> additionalPolicies() { return this.additionalPolicies; }
 
     /**
-     * Configures the built-in request logging policy.
-     * @return log detail level
+     * Sets an HTTP client to use for communication to the service rather than the default one.
      */
-    public HttpLogDetailLevel httpLogDetailLevel() {
-        return detailLevel;
+    public PipelineOptions withHttpClient(HttpClient client) {
+        Objects.requireNonNull(client);
+
+        this.client = client;
+        return this;
     }
 
     /**
-     * Configures the built-in request logging policy.
-     * @param detailLevel log detail level
-     * @return PipelineOptions object itself
+     * Adds policies to the pipeline that will be executed after all the default ones have been processed.
      */
-    public PipelineOptions withHttpLogDetailLevel(HttpLogDetailLevel detailLevel) {
-        this.detailLevel = detailLevel;
+    public PipelineOptions withPolicies(HttpPipelinePolicy... policies) {
+        Objects.requireNonNull(policies);
+
+        additionalPolicies.addAll(Arrays.asList(policies));
         return this;
     }
 }
