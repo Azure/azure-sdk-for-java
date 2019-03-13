@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * or EventProcessorHost.registerEventProcessorFactory().
  */
 public class InMemoryLeaseManager implements ILeaseManager {
-    private final static Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryLeaseManager.class);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryLeaseManager.class);
     private HostContext hostContext;
     private long millisecondsLatency = 0;
 
@@ -299,7 +299,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
 
     private static class InMemoryLeaseStore {
-        final static InMemoryLeaseStore singleton = new InMemoryLeaseStore();
+        static final InMemoryLeaseStore singleton = new InMemoryLeaseStore();
         private static int leaseDurationInMilliseconds;
 
         private ConcurrentHashMap<String, InMemoryLease> inMemoryLeasesPrivate = null;
@@ -380,7 +380,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
 
     private static class InMemoryLease extends CompleteLease {
-        private final static Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryLease.class);
+        private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryLease.class);
         private long expirationTimeMillis = 0;
 
         InMemoryLease(String partitionId) {

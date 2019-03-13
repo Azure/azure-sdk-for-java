@@ -30,7 +30,7 @@ class PartitionScanner extends Closable {
     // Values populated by sortLeasesAndCalculateDesiredCount
     private int desiredCount;
     private int unownedCount; // updated by acquireExpiredInChunksParallel
-    final private ConcurrentHashMap<String, BaseLease> leasesOwnedByOthers; // updated by acquireExpiredInChunksParallel
+    private final ConcurrentHashMap<String, BaseLease> leasesOwnedByOthers; // updated by acquireExpiredInChunksParallel
 
     PartitionScanner(HostContext hostContext, Consumer<CompleteLease> addPump, Closable parent) {
         super(parent);

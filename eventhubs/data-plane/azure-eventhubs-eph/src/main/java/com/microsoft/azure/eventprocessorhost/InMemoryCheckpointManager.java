@@ -129,7 +129,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager {
 
 
     private static class InMemoryCheckpointStore {
-        final static InMemoryCheckpointStore singleton = new InMemoryCheckpointStore();
+        static final InMemoryCheckpointStore singleton = new InMemoryCheckpointStore();
 
         private ConcurrentHashMap<String, Checkpoint> inMemoryCheckpointsPrivate = null;
 

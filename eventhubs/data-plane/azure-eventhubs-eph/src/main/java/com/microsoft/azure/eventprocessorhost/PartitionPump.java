@@ -26,8 +26,8 @@ class PartitionPump extends Closable implements PartitionReceiveHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionPump.class);
     protected final HostContext hostContext;
     protected final CompleteLease lease; // protected for testability
-    final private CompletableFuture<Void> shutdownTriggerFuture;
-    final private CompletableFuture<Void> shutdownFinishedFuture;
+    private final CompletableFuture<Void> shutdownTriggerFuture;
+    private final CompletableFuture<Void> shutdownFinishedFuture;
     private final Object processingSynchronizer;
     private final Consumer<String> pumpManagerCallback;
     private EventHubClient eventHubClient = null;

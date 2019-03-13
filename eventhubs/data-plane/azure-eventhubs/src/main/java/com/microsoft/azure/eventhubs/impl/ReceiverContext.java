@@ -8,8 +8,8 @@ import com.microsoft.azure.eventhubs.ErrorContext;
 import java.util.Locale;
 
 public class ReceiverContext extends ErrorContext {
-    final static boolean EPOCH_RECEIVER_TYPE = true;
-    final static boolean NON_EPOCH_RECEIVER_TYPE = !ReceiverContext.EPOCH_RECEIVER_TYPE;
+    static final boolean EPOCH_RECEIVER_TYPE = true;
+    static final boolean NON_EPOCH_RECEIVER_TYPE = !ReceiverContext.EPOCH_RECEIVER_TYPE;
 
     final String receivePath;
     final String referenceId;

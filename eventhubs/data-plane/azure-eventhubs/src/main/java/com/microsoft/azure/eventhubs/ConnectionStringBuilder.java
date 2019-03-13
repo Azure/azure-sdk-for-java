@@ -47,20 +47,20 @@ import java.util.regex.Pattern;
  */
 public final class ConnectionStringBuilder {
 
-    final static String endpointFormat = "sb://%s.%s";
-    final static String hostnameFormat = "sb://%s";
-    final static String defaultDomainName = "servicebus.windows.net";
+    static final String endpointFormat = "sb://%s.%s";
+    static final String hostnameFormat = "sb://%s";
+    static final String defaultDomainName = "servicebus.windows.net";
 
-    final static String HostnameConfigName = "Hostname";    // Hostname is a key that is used in IoTHub.
-    final static String EndpointConfigName = "Endpoint";    // Endpoint key is used in EventHubs. It's identical to Hostname in IoTHub.
-    final static String EntityPathConfigName = "EntityPath";
-    final static String OperationTimeoutConfigName = "OperationTimeout";
-    final static String KeyValueSeparator = "=";
-    final static String KeyValuePairDelimiter = ";";
-    final static String SharedAccessKeyNameConfigName = "SharedAccessKeyName";  // We use a (KeyName, Key) pair OR the SAS token - never both.
-    final static String SharedAccessKeyConfigName = "SharedAccessKey";
-    final static String SharedAccessSignatureConfigName = "SharedAccessSignature";
-    final static String TransportTypeConfigName = "TransportType";
+    static final String HostnameConfigName = "Hostname";    // Hostname is a key that is used in IoTHub.
+    static final String EndpointConfigName = "Endpoint";    // Endpoint key is used in EventHubs. It's identical to Hostname in IoTHub.
+    static final String EntityPathConfigName = "EntityPath";
+    static final String OperationTimeoutConfigName = "OperationTimeout";
+    static final String KeyValueSeparator = "=";
+    static final String KeyValuePairDelimiter = ";";
+    static final String SharedAccessKeyNameConfigName = "SharedAccessKeyName";  // We use a (KeyName, Key) pair OR the SAS token - never both.
+    static final String SharedAccessKeyConfigName = "SharedAccessKey";
+    static final String SharedAccessSignatureConfigName = "SharedAccessSignature";
+    static final String TransportTypeConfigName = "TransportType";
 
     private static final String AllKeyEnumerateRegex = "(" + HostnameConfigName + "|" + EndpointConfigName + "|" + SharedAccessKeyNameConfigName
             + "|" + SharedAccessKeyConfigName + "|" + SharedAccessSignatureConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName

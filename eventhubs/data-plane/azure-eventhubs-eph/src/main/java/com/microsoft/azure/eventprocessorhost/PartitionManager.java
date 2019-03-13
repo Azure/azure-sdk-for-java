@@ -23,7 +23,7 @@ class PartitionManager extends Closable {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionManager.class);
     // Protected instead of private for testability
     protected final HostContext hostContext;
-    final private Object scanFutureSynchronizer = new Object();
+    private final Object scanFutureSynchronizer = new Object();
     private final int retryMax = 5;
     protected PumpManager pumpManager = null;
     protected volatile String[] partitionIds = null;

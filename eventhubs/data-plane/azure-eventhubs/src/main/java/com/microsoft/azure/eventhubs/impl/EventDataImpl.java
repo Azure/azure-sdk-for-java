@@ -27,8 +27,8 @@ public final class EventDataImpl implements EventData {
     private static final long serialVersionUID = -5631628195600014255L;
     private static final int BODY_DATA_NULL = -1;
 
-    transient private Binary bodyData;
-    transient private Object amqpBody;
+    private transient Binary bodyData;
+    private transient Object amqpBody;
 
     private Map<String, Object> properties;
     private SystemProperties systemProperties;
