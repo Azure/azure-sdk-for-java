@@ -22,12 +22,12 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.servicebus.v2017_04_01.NetworkRuleSet;
 import com.microsoft.azure.management.servicebus.v2017_04_01.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.servicebus.v2017_04_01.NameSpaceType;
 import com.microsoft.azure.management.servicebus.v2017_04_01.NamespaceSBAuthorizationRule;
 import com.microsoft.azure.management.servicebus.v2017_04_01.AccessKeys;
 import com.microsoft.azure.management.servicebus.v2017_04_01.RegenerateAccessKeyParameters;
+import com.microsoft.azure.management.servicebus.v2017_04_01.NetworkRuleSet;
 
 class NamespacesImpl extends GroupableResourcesCoreImpl<SBNamespace, SBNamespaceImpl, SBNamespaceInner, NamespacesInner, ServiceBusManager>  implements Namespaces {
     protected NamespacesImpl(ServiceBusManager manager) {
@@ -138,30 +138,6 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<SBNamespace, SBNamespace
     }
 
     @Override
-    public Observable<NetworkRuleSet> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters) {
-        NamespacesInner client = this.inner();
-        return client.createOrUpdateNetworkRuleSetAsync(resourceGroupName, namespaceName, parameters)
-        .map(new Func1<NetworkRuleSetInner, NetworkRuleSet>() {
-            @Override
-            public NetworkRuleSet call(NetworkRuleSetInner inner) {
-                return new NetworkRuleSetImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName) {
-        NamespacesInner client = this.inner();
-        return client.getNetworkRuleSetAsync(resourceGroupName, namespaceName)
-        .map(new Func1<NetworkRuleSetInner, NetworkRuleSet>() {
-            @Override
-            public NetworkRuleSet call(NetworkRuleSetInner inner) {
-                return new NetworkRuleSetImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
     public Observable<CheckNameAvailabilityResult> checkNameAvailabilityMethodAsync(String name) {
         NamespacesInner client = this.inner();
         return client.checkNameAvailabilityMethodAsync(name)
@@ -260,6 +236,30 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<SBNamespace, SBNamespace
             @Override
             public AccessKeys call(AccessKeysInner inner) {
                 return new AccessKeysImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<NetworkRuleSet> createOrUpdateNetworkRuleSetAsync(String resourceGroupName, String namespaceName, NetworkRuleSetInner parameters) {
+        NamespacesInner client = this.inner();
+        return client.createOrUpdateNetworkRuleSetAsync(resourceGroupName, namespaceName, parameters)
+        .map(new Func1<NetworkRuleSetInner, NetworkRuleSet>() {
+            @Override
+            public NetworkRuleSet call(NetworkRuleSetInner inner) {
+                return new NetworkRuleSetImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<NetworkRuleSet> getNetworkRuleSetAsync(String resourceGroupName, String namespaceName) {
+        NamespacesInner client = this.inner();
+        return client.getNetworkRuleSetAsync(resourceGroupName, namespaceName)
+        .map(new Func1<NetworkRuleSetInner, NetworkRuleSet>() {
+            @Override
+            public NetworkRuleSet call(NetworkRuleSetInner inner) {
+                return new NetworkRuleSetImpl(inner, manager());
             }
         });
     }
