@@ -44,4 +44,8 @@
 
   <!-- Public API already released with incorrect static variable naming -->
   <suppress checks="StaticVariableName" files="EventHubClientImpl.java"/>
+
+  <!-- Public API already released with visibility modifier -->
+  <suppress checks="VisibilityModifier" files="BatchOptions.java"/>
+  <suppress checks="VisibilityModifier" files="EventHubClientImpl.java"/>
 </suppressions>
