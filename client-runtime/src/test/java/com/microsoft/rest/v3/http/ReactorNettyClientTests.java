@@ -20,6 +20,7 @@ import io.netty.util.ReferenceCountUtil;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -121,6 +122,7 @@ public class ReactorNettyClientTests {
     }
 
     @Test
+    @Ignore("Not working accurately at present")
     public void testFlowableBackpressure() {
         HttpResponse response = getResponse("/long");
         //

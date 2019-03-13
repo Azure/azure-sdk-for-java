@@ -335,17 +335,19 @@ final class HttpResponseBodyDecoder {
                     }
                 } catch (ClassNotFoundException ignored) {
                 }
-            } else if (TypeUtil.isTypeOrSubTypeOf(token, RestResponse.class)) {
-                return TypeUtil.getRestResponseBodyType(token);
-            } else {
-                try {
-                    // TODO: anuchan - unwrap OperationStatus a different way
-                    if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.microsoft.azure.v3.OperationStatus"))) {
-                        // Get Type of 'T' from OperationStatus<T>
-                        token = TypeUtil.getTypeArgument(token);
-                    }
-                } catch (Exception ignored) {
+            }
+
+            if (TypeUtil.isTypeOrSubTypeOf(token, RestResponse.class)) {
+                token = TypeUtil.getRestResponseBodyType(token);
+            }
+
+            try {
+                // TODO: anuchan - unwrap OperationStatus a different way
+                if (TypeUtil.isTypeOrSubTypeOf(token, Class.forName("com.microsoft.azure.v3.OperationStatus"))) {
+                    // Get Type of 'T' from OperationStatus<T>
+                    token = TypeUtil.getTypeArgument(token);
                 }
+            } catch (Exception ignored) {
             }
         }
         return token;
