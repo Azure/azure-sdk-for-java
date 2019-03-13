@@ -9,6 +9,8 @@ package com.microsoft.rest.v3.http;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -23,12 +25,14 @@ public final class HttpPipeline {
      * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
      *
      * @param httpClient the http client to write request to wire and receive response from wire.
-     * @param pipelinePolicies pipeline policies in the order they need to applied
+     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this array will
+     *                                  be made hence changing the original array after the creation of pipeline
+     *                                  will not  mutate the pipeline
      */
     public HttpPipeline(HttpClient httpClient, HttpPipelinePolicy... pipelinePolicies) {
-        Objects.requireNonNull(pipelinePolicies);
         Objects.requireNonNull(httpClient);
-        this.pipelinePolicies = pipelinePolicies;
+        Objects.requireNonNull(pipelinePolicies);
+        this.pipelinePolicies = Arrays.copyOf(pipelinePolicies, pipelinePolicies.length);
         this.httpClient = httpClient;
     }
 
@@ -39,12 +43,43 @@ public final class HttpPipeline {
      * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
      * receive response from wire.
      *
-     * @param pipelinePolicies pipeline policies in the order they need to applied
+     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this array will
+     *                                  be made hence changing the original array after the creation of pipeline
+     *                                  will not  mutate the pipeline
      */
     public HttpPipeline(HttpPipelinePolicy... pipelinePolicies) {
+        this(HttpClient.createDefault(), pipelinePolicies);
+    }
+
+    /**
+     * Creates a HttpPipeline holding array of policies that gets applied to all request initiated through
+     * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
+     *
+     * @param httpClient the http client to write request to wire and receive response from wire.
+     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this list
+     *                         will be made so changing the original list after the creation of pipeline
+     *                         will not mutate the pipeline
+     */
+    public HttpPipeline(HttpClient httpClient, List<HttpPipelinePolicy> pipelinePolicies) {
+        Objects.requireNonNull(httpClient);
         Objects.requireNonNull(pipelinePolicies);
-        this.pipelinePolicies = pipelinePolicies;
-        this.httpClient = HttpClient.createDefault();
+        this.pipelinePolicies = pipelinePolicies.toArray(new HttpPipelinePolicy[0]);
+        this.httpClient = httpClient;
+    }
+
+    /**
+     * Creates a HttpPipeline holding array of policies that gets applied all request initiated through
+     * {@link HttpPipeline#send(HttpPipelineCallContext)} and it's response.
+     *
+     * The default HttpClient {@link HttpClient#createDefault()} will be used to write request to wire and
+     * receive response from wire.
+     *
+     * @param pipelinePolicies pipeline policies in the order they need to applied, a copy of this list
+     *                         will be made so changing the original list after the creation of pipeline
+     *                         will not mutate the pipeline
+     */
+    public HttpPipeline(List<HttpPipelinePolicy> pipelinePolicies) {
+        this(HttpClient.createDefault(), pipelinePolicies);
     }
 
     /**
@@ -53,7 +88,7 @@ public final class HttpPipeline {
      * @return policies in the pipeline
      */
     public HttpPipelinePolicy[] pipelinePolicies() {
-        return this.pipelinePolicies;
+        return Arrays.copyOf(this.pipelinePolicies, this.pipelinePolicies.length);
     }
 
     /**

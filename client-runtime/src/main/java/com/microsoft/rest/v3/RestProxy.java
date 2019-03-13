@@ -419,27 +419,25 @@ public class RestProxy implements InvocationHandler {
 
         // try to create an instance using our list of potential candidates
         for (int i = 0; i < ctors.size(); i++) {
-            Constructor<? extends RestResponse<?>> ctor = (Constructor<? extends RestResponse<?>>) ctors.get(i);
+            final Constructor<? extends RestResponse<?>> ctor = (Constructor<? extends RestResponse<?>>) ctors.get(i);
 
             try {
                 final int paramCount = ctor.getParameterCount();
 
                 switch (paramCount) {
-                    case 3: {
+                    case 3:
                         return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders);
-                    }
-                    case 4: {
+                    case 4:
                         return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject);
-                    }
-                    case 5: {
+                    case 5:
                         return ctor.newInstance(httpRequest, responseStatusCode, responseHeaders, bodyAsObject, response.decodedHeaders().block());
-                    }
+                    default:
+                        throw new IllegalStateException("Response constructor with expected parameters not found.");
                 }
             } catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
                 throw reactor.core.Exceptions.propagate(e);
             }
         }
-
         // error
         throw new RuntimeException("Cannot find suitable constructor for class " + cls);
     }
