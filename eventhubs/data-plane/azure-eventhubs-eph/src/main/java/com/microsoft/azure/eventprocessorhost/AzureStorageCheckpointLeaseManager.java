@@ -409,8 +409,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             StorageExtendedErrorInformation extendedErrorInfo = se.getExtendedErrorInformation();
             if ((extendedErrorInfo != null)
                     && ((extendedErrorInfo.getErrorCode().compareTo(StorageErrorCodeStrings.BLOB_ALREADY_EXISTS) == 0)
-                            || (extendedErrorInfo.getErrorCode().compareTo(StorageErrorCodeStrings.LEASE_ID_MISSING) == 0))) // occurs when somebody else already has leased the blob
-            {
+                            || (extendedErrorInfo.getErrorCode().compareTo(StorageErrorCodeStrings.LEASE_ID_MISSING) == 0))) { // occurs when somebody else already has leased the blob
                 // The blob already exists.
                 TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId, "Lease already exists"));
                 returnLease = getLeaseInternal(partitionId, options);
@@ -693,8 +692,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                     "Http " + se.getExtendedErrorInformation().getErrorCode() + " :: " + se.getExtendedErrorInformation().getErrorMessage()));
         }
         if ((se.getHttpStatusCode() == 409) || // conflict
-                (se.getHttpStatusCode() == 412)) // precondition failed
-        {
+                (se.getHttpStatusCode() == 412)) { // precondition failed
             StorageExtendedErrorInformation extendedErrorInfo = se.getExtendedErrorInformation();
             if (extendedErrorInfo != null) {
                 String errorCode = extendedErrorInfo.getErrorCode();

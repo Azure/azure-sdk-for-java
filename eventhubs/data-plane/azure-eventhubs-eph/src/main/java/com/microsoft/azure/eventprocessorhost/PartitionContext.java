@@ -108,8 +108,7 @@ public class PartitionContext {
     // Returns a String (offset) or Instant (timestamp).
     CompletableFuture<EventPosition> getInitialOffset() {
         return this.hostContext.getCheckpointManager().getCheckpoint(this.partitionId)
-                .thenApply((startingCheckpoint) ->
-                {
+                .thenApply((startingCheckpoint) -> {
                     return checkpointToOffset(startingCheckpoint);
                 });
     }

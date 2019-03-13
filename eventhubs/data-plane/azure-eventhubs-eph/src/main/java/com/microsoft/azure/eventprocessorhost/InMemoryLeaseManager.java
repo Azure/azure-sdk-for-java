@@ -272,8 +272,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(leaseToUpdate, "updateLease()"));
 
         // Renew lease first so it doesn't expire in the middle.
-        return renewLease(leaseToUpdate).thenApply((retval) ->
-        {
+        return renewLease(leaseToUpdate).thenApply((retval) -> {
             if (retval) {
                 InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(leaseToUpdate.getPartitionId());
                 if (leaseInStore != null) {
@@ -326,8 +325,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
 
         synchronized List<String> getPartitionIds() {
             ArrayList<String> ids = new ArrayList<String>();
-            this.inMemoryLeasesPrivate.keySet().forEach((key) ->
-            {
+            this.inMemoryLeasesPrivate.keySet().forEach((key) -> {
                 ids.add(key);
             });
             return ids;
