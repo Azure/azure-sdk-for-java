@@ -34,6 +34,12 @@ public class LogicAppReceiver {
     private String callbackUrl;
 
     /**
+     * Indicates whether to use common alert schema.
+     */
+    @JsonProperty(value = "useCommonAlertSchema", required = true)
+    private boolean useCommonAlertSchema;
+
+    /**
      * Get the name of the logic app receiver. Names must be unique across all receivers within an action group.
      *
      * @return the name value
@@ -90,6 +96,26 @@ public class LogicAppReceiver {
      */
     public LogicAppReceiver withCallbackUrl(String callbackUrl) {
         this.callbackUrl = callbackUrl;
+        return this;
+    }
+
+    /**
+     * Get indicates whether to use common alert schema.
+     *
+     * @return the useCommonAlertSchema value
+     */
+    public boolean useCommonAlertSchema() {
+        return this.useCommonAlertSchema;
+    }
+
+    /**
+     * Set indicates whether to use common alert schema.
+     *
+     * @param useCommonAlertSchema the useCommonAlertSchema value to set
+     * @return the LogicAppReceiver object itself.
+     */
+    public LogicAppReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
+        this.useCommonAlertSchema = useCommonAlertSchema;
         return this;
     }
 

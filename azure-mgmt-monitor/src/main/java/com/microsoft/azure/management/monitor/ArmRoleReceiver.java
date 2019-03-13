@@ -28,6 +28,12 @@ public class ArmRoleReceiver {
     private String roleId;
 
     /**
+     * Indicates whether to use common alert schema.
+     */
+    @JsonProperty(value = "useCommonAlertSchema", required = true)
+    private boolean useCommonAlertSchema;
+
+    /**
      * Get the name of the arm role receiver. Names must be unique across all receivers within an action group.
      *
      * @return the name value
@@ -64,6 +70,26 @@ public class ArmRoleReceiver {
      */
     public ArmRoleReceiver withRoleId(String roleId) {
         this.roleId = roleId;
+        return this;
+    }
+
+    /**
+     * Get indicates whether to use common alert schema.
+     *
+     * @return the useCommonAlertSchema value
+     */
+    public boolean useCommonAlertSchema() {
+        return this.useCommonAlertSchema;
+    }
+
+    /**
+     * Set indicates whether to use common alert schema.
+     *
+     * @param useCommonAlertSchema the useCommonAlertSchema value to set
+     * @return the ArmRoleReceiver object itself.
+     */
+    public ArmRoleReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
+        this.useCommonAlertSchema = useCommonAlertSchema;
         return this;
     }
 
