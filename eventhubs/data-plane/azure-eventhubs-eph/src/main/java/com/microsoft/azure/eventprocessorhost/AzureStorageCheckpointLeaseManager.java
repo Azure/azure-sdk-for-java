@@ -712,5 +712,5 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         return retval;
     }
 
-    private enum UploadActivity {Create, Acquire, Release, Update}
+    private enum UploadActivity { Create, Acquire, Release, Update }
 }
