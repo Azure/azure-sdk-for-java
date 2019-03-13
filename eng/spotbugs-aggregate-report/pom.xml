@@ -73,11 +73,13 @@
             <artifactId>azure-eventhubs-extensions</artifactId>
             <version>${azure-eventhubs.version}</version>
         </dependency>
-        <dependency>
+        <!-- Storage is excluded from Spotbugs report as it collides with the storage library
+             dependency in eventhubs code. This issue is under investigation. -->
+        <!--dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-storage-blob</artifactId>
             <version>${azure-storage-blob.version}</version>
-        </dependency>
+        </dependency-->
     </dependencies>
 
     <build>
