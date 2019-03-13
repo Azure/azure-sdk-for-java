@@ -45,9 +45,9 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param isOwned True if the lease is owned, false if not.
      */
     public BaseLease(String partitionId, String owner, boolean isOwned) {
-    	this.partitionId = partitionId;
-    	this.owner = owner;
-    	this.isOwned = isOwned;
+        this.partitionId = partitionId;
+        this.owner = owner;
+        this.isOwned = isOwned;
     }
 
     /**
@@ -85,14 +85,14 @@ public class BaseLease implements Comparable<BaseLease> {
      * @param newState true if the lease is owned, or false if it is not
      */
     public void setIsOwned(boolean newState) {
-    	this.isOwned = newState;
+        this.isOwned = newState;
     }
 
-	/**
-	 * Get the owned state of the lease.
-	 * 
-	 * @return true if the lease is owned, or false if it is not
-	 */
+    /**
+     * Get the owned state of the lease.
+     *
+     * @return true if the lease is owned, or false if it is not
+     */
     public boolean getIsOwned() {
         return this.isOwned;
     }
@@ -120,7 +120,7 @@ public class BaseLease implements Comparable<BaseLease> {
         return this.partitionId;
     }
     
-	// Compares by partition id
+    // Compares by partition id
     @Override
     public int compareTo(BaseLease other) {
         return this.partitionId.compareTo(other.getPartitionId());

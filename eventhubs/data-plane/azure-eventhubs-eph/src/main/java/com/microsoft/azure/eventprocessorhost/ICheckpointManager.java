@@ -54,8 +54,8 @@ public interface ICheckpointManager {
     public CompletableFuture<Checkpoint> getCheckpoint(String partitionId);
 
     /***
-	 * Creates the checkpoint HOLDERs for the given partitions. Does nothing for any checkpoint HOLDERs
-	 * that already exist.
+     * Creates the checkpoint HOLDERs for the given partitions. Does nothing for any checkpoint HOLDERs
+     * that already exist.
      *
      * The semantics of this are complicated because it is possible to use the same store for both
      * leases and checkpoints (the Azure Storage implementation does so) and it is required to

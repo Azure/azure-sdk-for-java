@@ -20,11 +20,11 @@ import java.util.regex.Pattern;
  * <p> Sample Code:
  * <pre>{@code
  *  // Construct a new connection string
- * 	ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder()
- * 	    .setNamespaceName("EventHubsNamespaceName")
- * 	    .setEventHubName("EventHubsEntityName")
- * 	    .setSasKeyName("SharedAccessSignatureKeyName")
- * 	    .setSasKey("SharedAccessSignatureKey")
+ *  ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder()
+ *      .setNamespaceName("EventHubsNamespaceName")
+ *      .setEventHubName("EventHubsEntityName")
+ *      .setSasKeyName("SharedAccessSignatureKeyName")
+ *      .setSasKey("SharedAccessSignatureKey")
  *
  *  string connString = connectionStringBuilder.build();
  *

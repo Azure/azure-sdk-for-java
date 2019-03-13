@@ -77,15 +77,15 @@ public final class ExceptionUtil {
                 return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, statusCode, statusDescription));
         }
     }
-    
+
     static Exception distinguishNotFound(final String message) {
         Pattern p = Pattern.compile("The messaging entity .* could not be found");
         Matcher m = p.matcher(message);
-    	if (m.find()) {
+        if (m.find()) {
             return new IllegalEntityException(message);
-    	} else {
+        } else {
             return new EventHubException(true, String.format(ClientConstants.AMQP_REQUEST_FAILED_ERROR, AmqpResponseCode.NOT_FOUND, message));
-    	}
+        }
     }
 
     static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, ErrorContextProvider contextProvider) {

@@ -35,8 +35,8 @@ public interface EventData extends Serializable, Comparable<EventData> {
      * Construct EventData to Send to EventHubs.
      * Typical pattern to create a Sending EventData is:
      * <pre>
-     * i.	Serialize the sending ApplicationEvent to be sent to EventHubs into bytes.
-     * ii.	If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
+     * i.   Serialize the sending ApplicationEvent to be sent to EventHubs into bytes.
+     * ii.  If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
      * </pre>
      * <p> Sample Code:
      * <pre>
@@ -57,8 +57,8 @@ public interface EventData extends Serializable, Comparable<EventData> {
      * Construct EventData to Send to EventHubs.
      * Typical pattern to create a Sending EventData is:
      * <pre>
-     * i.	Serialize the sending ApplicationEvent to be sent to EventHubs into bytes.
-     * ii.	If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
+     * i.   Serialize the sending ApplicationEvent to be sent to EventHubs into bytes.
+     * ii.  If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
      *  </pre>
      * <p> Illustration:
      * <pre> {@code
@@ -81,14 +81,14 @@ public interface EventData extends Serializable, Comparable<EventData> {
      * Construct EventData to Send to EventHubs.
      * Typical pattern to create a Sending EventData is:
      * <pre>
-     * i.	Serialize the sending ApplicationEvent to be sent to EventHubs into bytes.
-     * ii.	If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
+     * i.   Serialize the sending ApplicationEvent to be sent to EventHubs into bytes.
+     * ii.  If complex serialization logic is involved (for example: multiple types of data) - add a Hint using the {@link #getProperties()} for the Consumer.
      *  </pre>
      * <p> Illustration:
      * <pre> {@code
      *  EventData eventData = EventData.create(telemetryEventByteBuffer);
      *  eventData.getProperties().put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
-     * 	partitionSender.Send(eventData);
+     *  partitionSender.Send(eventData);
      *  }</pre>
      *
      * @param buffer ByteBuffer which references the payload of the Event to be sent to EventHubs

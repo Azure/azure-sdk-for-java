@@ -86,7 +86,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager {
 
     @Override
     public CompletableFuture<Void> createAllCheckpointsIfNotExists(List<String> partitionIds) {
-    	for (String id : partitionIds) {
+        for (String id : partitionIds) {
             Checkpoint checkpointInStore = InMemoryCheckpointStore.singleton.getCheckpoint(id);
             if (checkpointInStore != null) {
                 TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(id,
@@ -101,7 +101,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager {
                 newStoreCheckpoint.setSequenceNumber(-1);
                 InMemoryCheckpointStore.singleton.setOrReplaceCheckpoint(newStoreCheckpoint);
             }
-    	}
+        }
         return CompletableFuture.completedFuture(null);
     }
 

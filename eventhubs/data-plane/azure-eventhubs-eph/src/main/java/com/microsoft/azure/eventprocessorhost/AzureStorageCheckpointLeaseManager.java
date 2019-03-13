@@ -107,8 +107,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Boolean> checkpointStoreExists() {
-    	return storeExistsInternal(this.checkpointOperationOptions, EventProcessorHostActionStrings.CHECKING_CHECKPOINT_STORE,
-    			"Failure while checking checkpoint store existence");
+        return storeExistsInternal(this.checkpointOperationOptions, EventProcessorHostActionStrings.CHECKING_CHECKPOINT_STORE,
+            "Failure while checking checkpoint store existence");
     }
 
 
@@ -119,9 +119,9 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Void> createCheckpointStoreIfNotExists() {
-    	// Because we control the caller, we know that this method will only be called after createLeaseStoreIfNotExists.
-    	// In this implementation, it's the same store, so the store will always exist if execution reaches here.
-    	return CompletableFuture.completedFuture(null);
+        // Because we control the caller, we know that this method will only be called after createLeaseStoreIfNotExists.
+        // In this implementation, it's the same store, so the store will always exist if execution reaches here.
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -131,8 +131,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Checkpoint> getCheckpoint(String partitionId) {
-    	CompletableFuture<Checkpoint> future = null;
-    	
+        CompletableFuture<Checkpoint> future = null;
+
         try {
             AzureBlobLease lease = getLeaseInternal(partitionId, this.checkpointOperationOptions);
             Checkpoint checkpoint = null;
@@ -149,15 +149,15 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             future = new CompletableFuture<Checkpoint>();
             future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_CHECKPOINT));
         }
-        
+
         return future;
     }
 
     @Override
     public CompletableFuture<Void> createAllCheckpointsIfNotExists(List<String> partitionIds) {
-    	// Because we control the caller, we know that this method will only be called after createAllLeasesIfNotExists.
-    	// In this implementation checkpoints are in the same blobs as leases, so the blobs will already exist if execution reaches here.
-    	return CompletableFuture.completedFuture(null);
+        // Because we control the caller, we know that this method will only be called after createAllLeasesIfNotExists.
+        // In this implementation checkpoints are in the same blobs as leases, so the blobs will already exist if execution reaches here.
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override
@@ -168,9 +168,9 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         updatedLease.setOffset(checkpoint.getOffset());
         updatedLease.setSequenceNumber(checkpoint.getSequenceNumber());
 
-    	CompletableFuture<Void> future = null;
-    	
-    	try {
+        CompletableFuture<Void> future = null;
+
+        try {
             if (updateLeaseInternal(updatedLease, this.checkpointOperationOptions)) {
                 future = CompletableFuture.completedFuture(null);
             } else {
@@ -179,12 +179,12 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 future.completeExceptionally(LoggingUtils.wrapException(new RuntimeException("Lease lost while updating checkpoint"),
                         EventProcessorHostActionStrings.UPDATING_CHECKPOINT));
             }
-    	} catch (StorageException | IOException e) {
+        } catch (StorageException | IOException e) {
             TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Failure updating checkpoint"), e);
             future = new CompletableFuture<Void>();
             future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.UPDATING_CHECKPOINT));
-    	}
-    	
+        }
+
         return future;
     }
 
@@ -206,12 +206,12 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Boolean> leaseStoreExists() {
-    	return storeExistsInternal(this.leaseOperationOptions, EventProcessorHostActionStrings.CHECKING_LEASE_STORE,
-    			"Failure while checking lease store existence");
+        return storeExistsInternal(this.leaseOperationOptions, EventProcessorHostActionStrings.CHECKING_LEASE_STORE,
+                "Failure while checking lease store existence");
     }
 
     private CompletableFuture<Boolean> storeExistsInternal(BlobRequestOptions options, String action, String trace) {
-    	CompletableFuture<Boolean> future = null;
+        CompletableFuture<Boolean> future = null;
         try {
             future = CompletableFuture.completedFuture(this.eventHubContainer.exists(null, options, null));
         } catch (StorageException e) {
@@ -224,8 +224,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Void> createLeaseStoreIfNotExists() {
-    	CompletableFuture<Void> future = null;
-    	
+        CompletableFuture<Void> future = null;
+
         try {
             // returns true if the container was created, false if it already existed -- we don't care
             this.eventHubContainer.createIfNotExists(this.leaseOperationOptions, null);
@@ -236,7 +236,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASE_STORE));
             TRACE_LOGGER.error(this.hostContext.withHost("Failure while creating lease store"), e);
         }
-        
+
         return future;
     }
 
@@ -246,9 +246,9 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
 
     private CompletableFuture<Void> deleteStoreInternal(BlobRequestOptions options) {
-    	CompletableFuture<Void> future = null;
-    	
-    	try {
+        CompletableFuture<Void> future = null;
+
+        try {
             for (ListBlobItem blob : this.eventHubContainer.listBlobs(null, false, EnumSet.noneOf(BlobListingDetails.class), options, null)) {
                 if (blob instanceof CloudBlobDirectory) {
                     for (ListBlobItem subBlob : ((CloudBlobDirectory) blob).listBlobs(null, false, EnumSet.noneOf(BlobListingDetails.class), options, null)) {
@@ -258,18 +258,18 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                     ((CloudBlockBlob) blob).deleteIfExists(DeleteSnapshotsOption.NONE, null, options, null);
                 }
             }
-	
+
             this.eventHubContainer.deleteIfExists(null, options, null);
-            
+
             future = CompletableFuture.completedFuture(null);
-    	}
-    	catch (StorageException | URISyntaxException e) {
+        }
+        catch (StorageException | URISyntaxException e) {
             TRACE_LOGGER.error(this.hostContext.withHost("Failure while deleting lease store"), e);
             future = new CompletableFuture<Void>();
             future.completeExceptionally(new CompletionException(e));
-    	}
-    	
-    	return future;
+        }
+
+        return future;
     }
 
     @Override
@@ -297,11 +297,11 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
         return retval;
     }
-    
+
     @Override
     public CompletableFuture<List<BaseLease>> getAllLeases() {
-    	CompletableFuture<List<BaseLease>> future = null;
-    	
+        CompletableFuture<List<BaseLease>> future = null;
+
         try {
             ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
             EnumSet<BlobListingDetails> details = EnumSet.of(BlobListingDetails.METADATA);
@@ -321,7 +321,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.GETTING_LEASE));
         }
 
-    	return future;
+        return future;
     }
 
     // NOTE NOTE NOTE: this is the one place where this lease manager implementation returns an uncompleted future.
@@ -329,10 +329,10 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     // Because it happens during startup, when no user code is running, it cannot deadlock with checkpointing.
     @Override
     public CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds) {
-    	CompletableFuture<Void> future = null;
-    	
-    	// Optimization: list the blobs currently existing in the directory. If there are the
-    	// expected number of blobs, then we can skip doing the creates.
+        CompletableFuture<Void> future = null;
+
+        // Optimization: list the blobs currently existing in the directory. If there are the
+        // expected number of blobs, then we can skip doing the creates.
         int blobCount = 0;
         try {
             Iterable<ListBlobItem> leaseBlobs = this.consumerGroupDirectory.listBlobs("", true, null, this.leaseOperationOptions, null);
@@ -347,7 +347,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             future = new CompletableFuture<Void>();
             future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES));
         }
-    	
+
         if (future == null) {
             // No error checking the list, so keep going
             if (blobCount == partitionIds.size()) {
@@ -377,7 +377,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 future = CompletableFuture.allOf(createFutures.toArray(dummy));
             }
         }
-		
+
         return future;
     }
     
@@ -410,8 +410,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     @Override
     public CompletableFuture<Void> deleteLease(CompleteLease lease) {
-    	CompletableFuture<Void> future = null;
-    	
+        CompletableFuture<Void> future = null;
+
         TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Deleting lease"));
         try {
             ((AzureBlobLease) lease).getBlob().deleteIfExists();
@@ -421,14 +421,14 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             future = new CompletableFuture<Void>();
             future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.DELETING_LEASE));
         }
-        
+
         return future;
     }
 
     @Override
     public CompletableFuture<Boolean> acquireLease(CompleteLease lease) {
-    	CompletableFuture<Boolean> future = null;
-    	
+        CompletableFuture<Boolean> future = null;
+
         try {
             future = CompletableFuture.completedFuture(acquireLeaseInternal((AzureBlobLease) lease));
         } catch (IOException | StorageException e) {
@@ -436,7 +436,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             future = new CompletableFuture<Boolean>();
             future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.ACQUIRING_LEASE));
         }
-        
+
         return future;
     }
 
@@ -490,7 +490,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     @Override
     public CompletableFuture<Boolean> renewLease(CompleteLease lease) {
         CompletableFuture<Boolean> future = null;
-        
+
         try {
             future = CompletableFuture.completedFuture(renewLeaseInternal(lease));
         } catch (StorageException se) {
@@ -500,7 +500,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
         return future;
     }
-    
+
     private boolean renewLeaseInternal(CompleteLease lease) throws StorageException {
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Renewing lease"));
 
@@ -515,7 +515,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             if (wasLeaseLost(se, azLease.getPartitionId())) {
                 // leave result as false
             } else {
-            	throw se;
+                throw se;
             }
         }
 
@@ -527,10 +527,10 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Releasing lease"));
 
         CompletableFuture<Void> future = null;
-        
+
         AzureBlobLease inLease = (AzureBlobLease) lease;
         CloudBlockBlob leaseBlob = inLease.getBlob();
-        
+
         try {
             String leaseId = inLease.getToken();
             AzureBlobLease releasedCopy = new AzureBlobLease(inLease);
@@ -544,30 +544,30 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 // If the lease was already lost, then the intent of releasing it has been achieved.
                 future = CompletableFuture.completedFuture(null);
             } else {
-            	future = new CompletableFuture<Void>();
-            	future.completeExceptionally(LoggingUtils.wrapException(se, EventProcessorHostActionStrings.RELEASING_LEASE));
+                future = new CompletableFuture<Void>();
+                future.completeExceptionally(LoggingUtils.wrapException(se, EventProcessorHostActionStrings.RELEASING_LEASE));
             }
         } catch (IOException ie) {
             future = new CompletableFuture<Void>();
             future.completeExceptionally(LoggingUtils.wrapException(ie, EventProcessorHostActionStrings.RELEASING_LEASE));
         }
-        
+
         return future;
     }
 
     @Override
     public CompletableFuture<Boolean> updateLease(CompleteLease lease) {
-    	CompletableFuture<Boolean> future = null;
-    	
-    	try {
+        CompletableFuture<Boolean> future = null;
+
+        try {
             boolean result = updateLeaseInternal((AzureBlobLease) lease, this.leaseOperationOptions);
             future = CompletableFuture.completedFuture(result);
-    	} catch (StorageException | IOException e) {
+        } catch (StorageException | IOException e) {
             TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Failure updating lease"), e);
             future = new CompletableFuture<Boolean>();
             future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.UPDATING_LEASE));
-    	}
-    	
+        }
+
         return future;
     }
 
@@ -602,11 +602,11 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 throw ie;
             }
         }
-		// else could not renew lease due to lease loss. Result is already false, so pass it up unchanged
-        
+        // else could not renew lease due to lease loss. Result is already false, so pass it up unchanged
+
         return result;
     }
-    
+
     private AzureBlobLease downloadLease(CloudBlockBlob blob, BlobRequestOptions options) throws StorageException, IOException {
         String jsonLease = blob.downloadText(null, null, options, null);
         TRACE_LOGGER.debug(this.hostContext.withHost("Raw JSON downloaded: " + jsonLease));
@@ -646,7 +646,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         // avoids a spurious trace in that case.
         TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease,
                 "Raw JSON uploading for " + activity + ": " + jsonLease));
-        
+
         if ((activity == UploadActivity.Acquire) || (activity == UploadActivity.Release)) {
             blob.downloadAttributes();
             HashMap<String, String> metadata = blob.getMetadata();

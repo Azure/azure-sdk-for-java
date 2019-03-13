@@ -45,7 +45,7 @@ public class InMemoryLeaseManager implements ILeaseManager {
     }
     
     public void setLatency(long milliseconds) {
-    	this.millisecondsLatency = milliseconds;
+        this.millisecondsLatency = milliseconds;
     }
     
     private void latency(String caller) {
@@ -91,21 +91,21 @@ public class InMemoryLeaseManager implements ILeaseManager {
     
     @Override
     public CompletableFuture<CompleteLease> getLease(String partitionId) {
-    	TRACE_LOGGER.debug(this.hostContext.withHost("getLease()"));
-    	latency("getLease");
-    	InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(partitionId);
-    	return CompletableFuture.completedFuture(new InMemoryLease(leaseInStore));
+        TRACE_LOGGER.debug(this.hostContext.withHost("getLease()"));
+        latency("getLease");
+        InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(partitionId);
+        return CompletableFuture.completedFuture(new InMemoryLease(leaseInStore));
     }
 
     @Override
     public CompletableFuture<List<BaseLease>> getAllLeases() {
-    	ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
-    	for (String id : InMemoryLeaseStore.singleton.getPartitionIds()) {
+        ArrayList<BaseLease> infos = new ArrayList<BaseLease>();
+        for (String id : InMemoryLeaseStore.singleton.getPartitionIds()) {
             InMemoryLease leaseInStore = InMemoryLeaseStore.singleton.getLease(id);
             infos.add(new BaseLease(id, leaseInStore.getOwner(), !leaseInStore.isExpiredSync()));
         }
-    	latency("getAllLeasesStateInfo");
-    	return CompletableFuture.completedFuture(infos);
+        latency("getAllLeasesStateInfo");
+        return CompletableFuture.completedFuture(infos);
     }
     
     @Override
