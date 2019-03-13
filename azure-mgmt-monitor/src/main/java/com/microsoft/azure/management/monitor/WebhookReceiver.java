@@ -28,6 +28,12 @@ public class WebhookReceiver {
     private String serviceUri;
 
     /**
+     * Indicates whether to use common alert schema.
+     */
+    @JsonProperty(value = "useCommonAlertSchema", required = true)
+    private boolean useCommonAlertSchema;
+
+    /**
      * Get the name of the webhook receiver. Names must be unique across all receivers within an action group.
      *
      * @return the name value
@@ -64,6 +70,26 @@ public class WebhookReceiver {
      */
     public WebhookReceiver withServiceUri(String serviceUri) {
         this.serviceUri = serviceUri;
+        return this;
+    }
+
+    /**
+     * Get indicates whether to use common alert schema.
+     *
+     * @return the useCommonAlertSchema value
+     */
+    public boolean useCommonAlertSchema() {
+        return this.useCommonAlertSchema;
+    }
+
+    /**
+     * Set indicates whether to use common alert schema.
+     *
+     * @param useCommonAlertSchema the useCommonAlertSchema value to set
+     * @return the WebhookReceiver object itself.
+     */
+    public WebhookReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
+        this.useCommonAlertSchema = useCommonAlertSchema;
         return this;
     }
 

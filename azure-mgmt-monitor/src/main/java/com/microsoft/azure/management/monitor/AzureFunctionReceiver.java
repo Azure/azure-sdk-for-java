@@ -40,6 +40,12 @@ public class AzureFunctionReceiver {
     private String httpTriggerUrl;
 
     /**
+     * Indicates whether to use common alert schema.
+     */
+    @JsonProperty(value = "useCommonAlertSchema", required = true)
+    private boolean useCommonAlertSchema;
+
+    /**
      * Get the name of the azure function receiver. Names must be unique across all receivers within an action group.
      *
      * @return the name value
@@ -116,6 +122,26 @@ public class AzureFunctionReceiver {
      */
     public AzureFunctionReceiver withHttpTriggerUrl(String httpTriggerUrl) {
         this.httpTriggerUrl = httpTriggerUrl;
+        return this;
+    }
+
+    /**
+     * Get indicates whether to use common alert schema.
+     *
+     * @return the useCommonAlertSchema value
+     */
+    public boolean useCommonAlertSchema() {
+        return this.useCommonAlertSchema;
+    }
+
+    /**
+     * Set indicates whether to use common alert schema.
+     *
+     * @param useCommonAlertSchema the useCommonAlertSchema value to set
+     * @return the AzureFunctionReceiver object itself.
+     */
+    public AzureFunctionReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
+        this.useCommonAlertSchema = useCommonAlertSchema;
         return this;
     }
 

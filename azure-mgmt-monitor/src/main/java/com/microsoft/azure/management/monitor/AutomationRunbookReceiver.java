@@ -52,6 +52,12 @@ public class AutomationRunbookReceiver {
     private String serviceUri;
 
     /**
+     * Indicates whether to use common alert schema.
+     */
+    @JsonProperty(value = "useCommonAlertSchema", required = true)
+    private boolean useCommonAlertSchema;
+
+    /**
      * Get the Azure automation account Id which holds this runbook and authenticate to Azure resource.
      *
      * @return the automationAccountId value
@@ -168,6 +174,26 @@ public class AutomationRunbookReceiver {
      */
     public AutomationRunbookReceiver withServiceUri(String serviceUri) {
         this.serviceUri = serviceUri;
+        return this;
+    }
+
+    /**
+     * Get indicates whether to use common alert schema.
+     *
+     * @return the useCommonAlertSchema value
+     */
+    public boolean useCommonAlertSchema() {
+        return this.useCommonAlertSchema;
+    }
+
+    /**
+     * Set indicates whether to use common alert schema.
+     *
+     * @param useCommonAlertSchema the useCommonAlertSchema value to set
+     * @return the AutomationRunbookReceiver object itself.
+     */
+    public AutomationRunbookReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
+        this.useCommonAlertSchema = useCommonAlertSchema;
         return this;
     }
 
