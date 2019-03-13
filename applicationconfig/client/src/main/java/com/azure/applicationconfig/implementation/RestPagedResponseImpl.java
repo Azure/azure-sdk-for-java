@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.implementation;
 
-import com.microsoft.rest.v3.RestPagedResponse;
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpRequest;
+import com.microsoft.rest.v3.http.rest.RestPagedResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -27,12 +27,12 @@ public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
 
     private final HttpRequest request;
 
-    private final Map<String, String> headers;
+    private final HttpHeaders headers;
 
     private final int statusCode;
 
     public RestPagedResponseImpl(final List<T> items, final String nextPageLink, final HttpRequest request,
-                                 final Map<String, String> headers, final int statusCode) {
+                                 final HttpHeaders headers, final int statusCode) {
         this.nextPageLink = nextPageLink;
         this.items = items;
         this.request = request;
@@ -81,7 +81,7 @@ public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
      *
      * @return a Map containing the raw HTTP response headers.
      */
-    public Map<String, String> headers() {
+    public HttpHeaders headers() {
         return headers;
     }
 
