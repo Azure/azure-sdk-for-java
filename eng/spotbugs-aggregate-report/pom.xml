@@ -103,7 +103,9 @@
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-eph\src\main\java</source>
                                 <source>..\..\eventhubs\data-plane\azure-eventhubs-extensions\src\main\java</source>
-                                <source>..\..\storage\data-plane\src\main\java</source>
+                                <!-- Storage is excluded from Spotbugs report as it collides with the storage library
+                                dependency in eventhubs code. This issue is under investigation. -->
+                                <!--source>..\..\storage\data-plane\src\main\java</source-->
                             </sources>
                         </configuration>
                     </execution>
