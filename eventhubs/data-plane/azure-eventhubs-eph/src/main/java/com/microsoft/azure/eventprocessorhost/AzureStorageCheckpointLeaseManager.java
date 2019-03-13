@@ -79,11 +79,11 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         Pattern p = Pattern.compile("^(?-i)(?:[a-z0-9]|(?<=[0-9a-z])-(?=[0-9a-z])){3,63}$");
         Matcher m = p.matcher(this.storageContainerName);
         if (!m.find()) {
-            throw new IllegalArgumentException("EventHub names must conform to the following rules to be able to use it with EventProcessorHost: " +
-                    "Must start with a letter or number, and can contain only letters, numbers, and the dash (-) character. " +
-                    "Every dash (-) character must be immediately preceded and followed by a letter or number; consecutive dashes are not permitted in container names. " +
-                    "All letters in a container name must be lowercase. " +
-                    "Must be from 3 to 63 characters long.");
+            throw new IllegalArgumentException("EventHub names must conform to the following rules to be able to use it with EventProcessorHost: "
+                    + "Must start with a letter or number, and can contain only letters, numbers, and the dash (-) character. "
+                    + "Every dash (-) character must be immediately preceded and followed by a letter or number; consecutive dashes are not permitted in container names. "
+                    + "All letters in a container name must be lowercase. "
+                    + "Must be from 3 to 63 characters long.");
         }
 
         this.storageClient = CloudStorageAccount.parse(this.storageConnectionString).createCloudBlobClient();
@@ -342,8 +342,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 blobIterator.next();
             }
         } catch (URISyntaxException | StorageException e) {
-            TRACE_LOGGER.error(this.hostContext.withHost("Exception checking lease existence - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " +
-                    this.hostContext.getConsumerGroupName() + " storageBlobPrefix: " + this.storageBlobPrefix), e);
+            TRACE_LOGGER.error(this.hostContext.withHost("Exception checking lease existence - leaseContainerName: " + this.storageContainerName + " consumerGroupName: "
+                    + this.hostContext.getConsumerGroupName() + " storageBlobPrefix: " + this.storageBlobPrefix), e);
             future = new CompletableFuture<Void>();
             future.completeExceptionally(LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES));
         }
@@ -364,8 +364,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                             returnLease = createLeaseIfNotExistsInternal(id, this.leaseOperationOptions);
                         } catch (URISyntaxException | IOException | StorageException e) {
                             TRACE_LOGGER.error(this.hostContext.withHostAndPartition(id,
-                                    "Exception creating lease - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.hostContext.getConsumerGroupName() +
-                                            " storageBlobPrefix: " + this.storageBlobPrefix), e);
+                                    "Exception creating lease - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.hostContext.getConsumerGroupName()
+                                            + " storageBlobPrefix: " + this.storageBlobPrefix), e);
                             throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASES);
                         }
                         return returnLease;
@@ -389,13 +389,13 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             uploadLease(returnLease, leaseBlob, AccessCondition.generateIfNoneMatchCondition("*"), UploadActivity.Create, options);
             // Do not set metadata on creation. No metadata/no owner value indicates that the lease is unowned.
             TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId,
-                    "CreateLeaseIfNotExist OK - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.hostContext.getConsumerGroupName() +
-                            " storageBlobPrefix: " + this.storageBlobPrefix));
+                    "CreateLeaseIfNotExist OK - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.hostContext.getConsumerGroupName()
+                            + " storageBlobPrefix: " + this.storageBlobPrefix));
         } catch (StorageException se) {
             StorageExtendedErrorInformation extendedErrorInfo = se.getExtendedErrorInformation();
-            if ((extendedErrorInfo != null) &&
-                    ((extendedErrorInfo.getErrorCode().compareTo(StorageErrorCodeStrings.BLOB_ALREADY_EXISTS) == 0) ||
-                            (extendedErrorInfo.getErrorCode().compareTo(StorageErrorCodeStrings.LEASE_ID_MISSING) == 0))) // occurs when somebody else already has leased the blob
+            if ((extendedErrorInfo != null)
+                    && ((extendedErrorInfo.getErrorCode().compareTo(StorageErrorCodeStrings.BLOB_ALREADY_EXISTS) == 0)
+                            || (extendedErrorInfo.getErrorCode().compareTo(StorageErrorCodeStrings.LEASE_ID_MISSING) == 0))) // occurs when somebody else already has leased the blob
             {
                 // The blob already exists.
                 TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId, "Lease already exists"));
@@ -686,10 +686,10 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
                 String errorCode = extendedErrorInfo.getErrorCode();
                 TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId, "Error code: " + errorCode));
                 TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId, "Error message: " + extendedErrorInfo.getErrorMessage()));
-                if ((errorCode.compareTo(StorageErrorCodeStrings.LEASE_LOST) == 0) ||
-                        (errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_LEASE_OPERATION) == 0) ||
-                        (errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION) == 0) ||
-                        (errorCode.compareTo(StorageErrorCodeStrings.LEASE_ALREADY_PRESENT) == 0)) {
+                if ((errorCode.compareTo(StorageErrorCodeStrings.LEASE_LOST) == 0)
+                        || (errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_LEASE_OPERATION) == 0)
+                        || (errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION) == 0)
+                        || (errorCode.compareTo(StorageErrorCodeStrings.LEASE_ALREADY_PRESENT) == 0)) {
                     retval = true;
                 }
             }

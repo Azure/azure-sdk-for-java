@@ -297,8 +297,8 @@ class PartitionManager extends Closable {
 
                     // Schedule the next scan unless we are shutting down.
                     if (!this.getIsClosingOrClosed()) {
-                        int seconds = didSteal ? this.hostContext.getPartitionManagerOptions().getFastScanIntervalInSeconds() :
-                                this.hostContext.getPartitionManagerOptions().getSlowScanIntervalInSeconds();
+                        int seconds = didSteal ? this.hostContext.getPartitionManagerOptions().getFastScanIntervalInSeconds()
+                                : this.hostContext.getPartitionManagerOptions().getSlowScanIntervalInSeconds();
                         if (isFirst) {
                             seconds = this.hostContext.getPartitionManagerOptions().getStartupScanDelayInSeconds();
                         }

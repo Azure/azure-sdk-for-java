@@ -528,11 +528,11 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                                     "Unhandled exception while processing events in reactor, report this error.")));
                 }
 
-                final String message = !StringUtil.isNullOrEmpty(cause.getMessage()) ?
-                        cause.getMessage() :
-                        !StringUtil.isNullOrEmpty(handlerException.getMessage()) ?
-                                handlerException.getMessage() :
-                                "Reactor encountered unrecoverable error";
+                final String message = !StringUtil.isNullOrEmpty(cause.getMessage())
+                        ? cause.getMessage()
+                        : !StringUtil.isNullOrEmpty(handlerException.getMessage())
+                            ? handlerException.getMessage()
+                            : "Reactor encountered unrecoverable error";
 
                 final EventHubException sbException;
 

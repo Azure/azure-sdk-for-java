@@ -91,8 +91,8 @@ public class PartitionContext {
             this.sequenceNumber = event.getSystemProperties().getSequenceNumber();
         } else {
             TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionId,
-                    "setOffsetAndSequenceNumber(" + event.getSystemProperties().getOffset() + "//" +
-                            event.getSystemProperties().getSequenceNumber() + ") would move backwards, ignoring"));
+                    "setOffsetAndSequenceNumber(" + event.getSystemProperties().getOffset() + "//"
+                            + event.getSystemProperties().getSequenceNumber() + ") would move backwards, ignoring"));
         }
     }
 

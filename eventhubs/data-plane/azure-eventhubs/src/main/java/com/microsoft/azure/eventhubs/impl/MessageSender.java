@@ -178,9 +178,9 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
         final CompletableFuture<Void> onSendFuture = (onSend == null) ? new CompletableFuture<>() : onSend;
 
-        final ReplayableWorkItem<Void> sendWaiterData = (tracker == null) ?
-                new ReplayableWorkItem<>(bytes, arrayOffset, messageFormat, onSendFuture, this.operationTimeout) :
-                new ReplayableWorkItem<>(bytes, arrayOffset, messageFormat, onSendFuture, tracker);
+        final ReplayableWorkItem<Void> sendWaiterData = (tracker == null)
+                ? new ReplayableWorkItem<>(bytes, arrayOffset, messageFormat, onSendFuture, this.operationTimeout)
+                : new ReplayableWorkItem<>(bytes, arrayOffset, messageFormat, onSendFuture, tracker);
 
         final TimeoutTracker currentSendTracker = sendWaiterData.getTimeoutTracker();
         final String deliveryTag = UUID.randomUUID().toString().replace("-", StringUtil.EMPTY) + "_" + currentSendTracker.elapsed().getSeconds();

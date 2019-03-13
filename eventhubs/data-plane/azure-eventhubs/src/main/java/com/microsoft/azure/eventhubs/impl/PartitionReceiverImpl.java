@@ -247,8 +247,8 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
     @Override
     public Map<Symbol, Object> getProperties() {
 
-        if (!this.isEpochReceiver &&
-                (this.receiverOptions == null || this.receiverOptions.getIdentifier() == null)) {
+        if (!this.isEpochReceiver
+                &&  (this.receiverOptions == null || this.receiverOptions.getIdentifier() == null)) {
             return null;
         }
 

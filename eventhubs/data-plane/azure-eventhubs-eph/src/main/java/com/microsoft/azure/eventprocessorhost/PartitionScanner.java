@@ -147,8 +147,8 @@ class PartitionScanner extends Closable {
     // Returns a CompletableFuture as a convenience for the caller
     private CompletableFuture<List<BaseLease>> findExpiredLeases(int startAt, int endAt) {
         final ArrayList<BaseLease> expiredLeases = new ArrayList<BaseLease>();
-        TRACE_LOGGER.debug(this.hostContext.withHost("Finding expired leases from '" + this.allLeaseStates.get(startAt).getPartitionId() + "'[" + startAt + "] up to '" +
-                ((endAt < this.allLeaseStates.size()) ? this.allLeaseStates.get(endAt).getPartitionId() : "end") + "'[" + endAt + "]"));
+        TRACE_LOGGER.debug(this.hostContext.withHost("Finding expired leases from '" + this.allLeaseStates.get(startAt).getPartitionId() + "'[" + startAt + "] up to '"
+                + ((endAt < this.allLeaseStates.size()) ? this.allLeaseStates.get(endAt).getPartitionId() : "end") + "'[" + endAt + "]"));
 
         for (BaseLease info : this.allLeaseStates.subList(startAt, endAt)) {
             if (!info.getIsOwned()) {

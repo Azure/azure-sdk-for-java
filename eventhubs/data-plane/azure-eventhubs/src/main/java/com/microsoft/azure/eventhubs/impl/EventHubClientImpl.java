@@ -75,8 +75,8 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                 }
 
                 if (options.maxMessageSize > maxSize) {
-                    throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of " +
-                            options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
+                    throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of "
+                            + options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
                 }
 
                 return new EventDataBatchImpl(options.maxMessageSize, options.partitionKey);
@@ -119,9 +119,9 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         }
 
         final EventDataBatchImpl eventDataBatch = (EventDataBatchImpl) eventDatas;
-        return eventDataBatch.getPartitionKey() != null ?
-                this.send(eventDataBatch.getInternalIterable(), eventDataBatch.getPartitionKey()) :
-                this.send(eventDataBatch.getInternalIterable());
+        return eventDataBatch.getPartitionKey() != null
+                ? this.send(eventDataBatch.getInternalIterable(), eventDataBatch.getPartitionKey())
+                : this.send(eventDataBatch.getInternalIterable());
     }
 
     @Override

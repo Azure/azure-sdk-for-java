@@ -22,8 +22,8 @@ public final class ReceiverOptions {
 
     private static void validateReceiverIdentifier(final String receiverName) {
 
-        if (receiverName != null &&
-                receiverName.length() > ClientConstants.MAX_RECEIVER_NAME_LENGTH) {
+        if (receiverName != null
+                && receiverName.length() > ClientConstants.MAX_RECEIVER_NAME_LENGTH) {
             throw new IllegalArgumentException("receiverIdentifier length cannot exceed 64");
         }
     }
