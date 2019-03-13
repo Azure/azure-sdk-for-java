@@ -28,8 +28,16 @@
 
   <!-- Public API already released with incorrect constant variable naming -->
   <suppress checks="ConstantName" files="AlgorithmResolver.java"/>
+  <suppress checks="ConstantName" files="AmqpErrorCode.java"/>
+  <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
+  <suppress checks="ConstantName" files="ConnectionStringBuilder.java"/>
+  <suppress checks="ConstantName" files="EventProcessorHost.java"/>
+  <suppress checks="ConstantName" files="InMemoryCheckpointManager.java"/>
+  <suppress checks="ConstantName" files="InMemoryLeaseManager.java"/>
+  <suppress checks="ConstantName" files="MessagingFactory.java"/>
+  <suppress checks="ConstantName" files="PartitionManagerOptions.java"/>
+  <suppress checks="ConstantName" files="PartitionScanner.java"/>
   <suppress checks="ConstantName" files="RsaKey.java"/>
   <suppress checks="ConstantName" files="SymmetricKey.java"/>
-  <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
   <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
 </suppressions>
