@@ -133,6 +133,32 @@ public class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The DatabaseSecurityAlertPoliciesInner object to access its operations.
+     */
+    private DatabaseSecurityAlertPoliciesInner databaseSecurityAlertPolicies;
+
+    /**
+     * Gets the DatabaseSecurityAlertPoliciesInner object to access its operations.
+     * @return the DatabaseSecurityAlertPoliciesInner object.
+     */
+    public DatabaseSecurityAlertPoliciesInner databaseSecurityAlertPolicies() {
+        return this.databaseSecurityAlertPolicies;
+    }
+
+    /**
+     * The ManagedDatabaseSensitivityLabelsInner object to access its operations.
+     */
+    private ManagedDatabaseSensitivityLabelsInner managedDatabaseSensitivityLabels;
+
+    /**
+     * Gets the ManagedDatabaseSensitivityLabelsInner object to access its operations.
+     * @return the ManagedDatabaseSensitivityLabelsInner object.
+     */
+    public ManagedDatabaseSensitivityLabelsInner managedDatabaseSensitivityLabels() {
+        return this.managedDatabaseSensitivityLabels;
+    }
+
+    /**
      * The ManagedInstanceVulnerabilityAssessmentsInner object to access its operations.
      */
     private ManagedInstanceVulnerabilityAssessmentsInner managedInstanceVulnerabilityAssessments;
@@ -193,6 +219,8 @@ public class SqlManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.databaseSecurityAlertPolicies = new DatabaseSecurityAlertPoliciesInner(restClient().retrofit(), this);
+        this.managedDatabaseSensitivityLabels = new ManagedDatabaseSensitivityLabelsInner(restClient().retrofit(), this);
         this.managedInstanceVulnerabilityAssessments = new ManagedInstanceVulnerabilityAssessmentsInner(restClient().retrofit(), this);
         this.serverVulnerabilityAssessments = new ServerVulnerabilityAssessmentsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
