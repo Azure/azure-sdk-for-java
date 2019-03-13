@@ -6,14 +6,14 @@
 
 package com.microsoft.azure.v3;
 
-import com.microsoft.rest.v3.RestException;
-import com.microsoft.rest.v3.RestProxy;
-import com.microsoft.rest.v3.SwaggerMethodParser;
+import com.microsoft.rest.v3.http.rest.RestException;
+import com.microsoft.rest.v3.implementation.RestProxy;
+import com.microsoft.rest.v3.implementation.SwaggerMethodParser;
 import com.microsoft.rest.v3.http.ContextData;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.serializer.HttpResponseDecoder;
-import com.microsoft.rest.v3.serializer.SerializerEncoding;
+import com.microsoft.rest.v3.implementation.serializer.HttpResponseDecoder;
+import com.microsoft.rest.v3.implementation.serializer.SerializerEncoding;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

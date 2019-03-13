@@ -2,6 +2,7 @@ package com.microsoft.rest.v3;
 
 import com.microsoft.rest.v3.entities.HttpBinJSON;
 import com.microsoft.rest.v3.http.HttpResponse;
+import com.microsoft.rest.v3.http.rest.RestException;
 
 public class MyRestException extends RestException {
     public MyRestException(String message, HttpResponse response, HttpBinJSON body) {

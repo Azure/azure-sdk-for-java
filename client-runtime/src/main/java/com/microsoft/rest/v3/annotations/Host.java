@@ -13,36 +13,35 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 
 /**
- * Annotation for parametrized host name targeting a REST service.
+ * Annotation for parameterized host name targeting a REST service.
  *
- * This is the 'host' field or 'x-ms-parameterized-host.hostTemplate' field in
- * a Swagger document. parameters are enclosed in {}s, e.g. {accountName}. An
- * HTTP client must accept the parametrized host as the base URL for the request,
- * replacing the parameters during runtime with the actual values users provide.
+ * <p>This is the 'host' field or 'x-ms-parameterized-host.hostTemplate' field in a Swagger document. parameters are
+ * enclosed in {}s, e.g. {accountName}. An HTTP client must accept the parameterized host as the base URL for the request,
+ * replacing the parameters during runtime with the actual values users provide.</p>
  *
- * For parametrized hosts, parameters annotated with {@link HostParam} must be
- * provided. See Java docs in {@link HostParam} for directions for host
- * parameters.
+ * <p>For parameterized hosts, parameters annotated with {@link HostParam} must be provided. See Java docs in
+ * {@link HostParam} for directions for host parameters.</p>
  *
- * The host's value must contain the scheme/protocol and the host. The host's value may contain the
- * port number.
+ * <p>The host's value must contain the scheme/protocol and the host. The host's value may contain the
+ * port number.</p>
  *
- * Example 1: Static annotation.
+ * <p><strong>Example 1: Static annotation</strong></p>
  *
- *   {@literal @}Host("https://management.azure.com")
- *   interface VirtualMachinesService {
- *     {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
- *     VirtualMachine getByResourceGroup(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);
- *   }
+ * <pre>
+ * {@literal @}Host("https://management.azure.com")
+ *  interface VirtualMachinesService {
+ *   {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
+ *    VirtualMachine getByResourceGroup(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);
+ *  }</pre>
  *
- *  Example 2: Dynamic annotation.
+ * <p><strong>Example 2: Dynamic annotation</strong></p>
  *
- *    {@literal @}Host("https://{vaultName}.vault.azure.net:443")
- *    interface KeyVaultService {
- *       {@literal @}GET("secrets/{secretName}")
- *       Secret get(@HostParam("vaultName") String vaultName, @PathParam("secretName") String secretName);
- *    }
-
+ * <pre>
+ * {@literal @}Host("https://{vaultName}.vault.azure.net:443")
+ *  interface KeyVaultService {
+ *    {@literal @}GET("secrets/{secretName}")
+ *     Secret get(@HostParam("vaultName") String vaultName, @PathParam("secretName") String secretName);
+ *  }</pre>
  */
 @Target(value = {TYPE})
 @Retention(RetentionPolicy.RUNTIME)        // Record this annotation in the class file and make it available during runtime.

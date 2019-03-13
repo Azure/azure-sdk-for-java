@@ -14,7 +14,7 @@ import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
-import com.microsoft.rest.v3.util.FluxUtil;
+import com.microsoft.rest.v3.implementation.util.FluxUtil;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.v3.serializer;
 
-import com.microsoft.rest.v3.serializer.SerializerAdapter;
-import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
+import com.microsoft.rest.v3.implementation.serializer.SerializerAdapter;
+import com.microsoft.rest.v3.implementation.serializer.jackson.JacksonAdapter;
 
 /**
  * A serialization helper class overriding {@link JacksonAdapter} with extra

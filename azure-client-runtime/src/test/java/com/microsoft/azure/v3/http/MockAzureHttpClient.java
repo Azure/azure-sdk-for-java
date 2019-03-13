@@ -19,7 +19,7 @@ import com.microsoft.rest.v3.http.HttpMethod;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.ProxyOptions;
-import com.microsoft.rest.v3.util.FluxUtil;
+import com.microsoft.rest.v3.implementation.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;

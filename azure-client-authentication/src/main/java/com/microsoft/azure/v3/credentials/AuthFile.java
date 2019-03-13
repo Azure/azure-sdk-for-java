@@ -11,8 +11,8 @@ import com.google.gson.reflect.TypeToken;
 import com.microsoft.azure.v3.AzureEnvironment;
 import com.microsoft.azure.v3.AzureEnvironment.Endpoint;
 import com.microsoft.rest.v3.annotations.Beta;
-import com.microsoft.rest.v3.serializer.SerializerEncoding;
-import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
+import com.microsoft.rest.v3.implementation.serializer.SerializerEncoding;
+import com.microsoft.rest.v3.implementation.serializer.jackson.JacksonAdapter;
 
 import java.io.File;
 import java.io.IOException;

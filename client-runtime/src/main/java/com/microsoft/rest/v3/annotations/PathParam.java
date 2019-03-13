@@ -15,33 +15,38 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Annotation to annotate replacement for a named path segment in REST endpoint URL.
  *
- * A parameter that is annotated with PathParam will be ignored if the "uri template"
- * does not contain a path segment variable with name {@link PathParam#value()}.
+ * <p>A parameter that is annotated with PathParam will be ignored if the "uri template" does not contain a path
+ * segment variable with name {@link PathParam#value()}.</p>
  *
- * Example#1:
+ * <p><strong>Example 1:</strong></p>
  *
- *   {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/")
- *   VirtualMachine getByResourceGroup(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String rgName, @PathParam("foo") String bar);
+ * <pre>
+ * {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/")
+ *  VirtualMachine getByResourceGroup(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String rgName, @PathParam("foo") String bar);</pre>
  *
- *   The value of parameters subscriptionId, resourceGroupName will be encoded and encoded value will be used to replace the corresponding path segment {subscriptionId},
- *   {resourceGroupName} respectively.
+ * <p>The value of parameters subscriptionId, resourceGroupName will be encoded and encoded value will be used to
+ * replace the corresponding path segment <code>{subscriptionId}</code>, <code>{resourceGroupName}</code>
+ * respectively.</p>
  *
- * Example#2 (A use case where PathParam.encoded=true will be used)
+ * <p><strong>Example 2: (A use case where PathParam.encoded=true will be used)</strong></p>
  *
- *   It is possible that, a path segment variable can be used to represent sub path:
+ * <p>It is possible that, a path segment variable can be used to represent sub path:</p>
  *
- *   {@literal @}GET("http://wq.com/foo/{subpath}/values")
- *   String getValues(@PathParam("subpath") String param1);
+ * <pre>
+ * {@literal @}GET("http://wq.com/foo/{subpath}/values")
+ *  String getValues(@PathParam("subpath") String param1);</pre>
  *
- *   In this case, if consumer pass "a/b" as the value for param1 then the resolved url looks like: "http://wq.com/foo/a%2Fb/values"
+ * <p>In this case, if consumer pass "a/b" as the value for param1 then the resolved url looks like:
+ * "<code>http://wq.com/foo/a%2Fb/values</code>".</p>
  *
- *   For such cases the encoded attribute can be used:
+ * <p>For such cases the encoded attribute can be used:</p>
  *
- *   {@literal @}GET("http://wq.com/foo/{subpath}/values")
- *   String getValues(@PathParam(value = "subpath", encoded = true) String param1);
+ * <pre>
+ * {@literal @}GET("http://wq.com/foo/{subpath}/values")
+ *  String getValues(@PathParam(value = "subpath", encoded = true) String param1);</pre>
  *
- *   In this case, if consumer pass "a/b" as the value for param1 then the resolved url looks as expected: "http://wq.com/foo/a/b/values"
- *
+ * <p>In this case, if consumer pass "a/b" as the value for param1 then the resolved url looks as expected:
+ * "<code>http://wq.com/foo/a/b/values</code>".</p>
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)

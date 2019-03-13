@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.v3;
 
-import com.microsoft.rest.v3.OperationDescription;
-import com.microsoft.rest.v3.RestException;
+import com.microsoft.rest.v3.implementation.OperationDescription;
+import com.microsoft.rest.v3.http.rest.RestException;
 import com.microsoft.rest.v3.http.HttpRequest;
 
 /**

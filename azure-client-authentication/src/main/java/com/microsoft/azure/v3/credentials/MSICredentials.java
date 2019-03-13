@@ -8,7 +8,7 @@ package com.microsoft.azure.v3.credentials;
 
 import com.microsoft.azure.v3.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.v3.annotations.Beta;
-import com.microsoft.rest.v3.serializer.SerializerEncoding;
+import com.microsoft.rest.v3.implementation.serializer.SerializerEncoding;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedReader;

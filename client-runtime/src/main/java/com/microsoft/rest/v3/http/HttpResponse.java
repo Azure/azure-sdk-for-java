@@ -9,6 +9,7 @@ package com.microsoft.rest.v3.http;
 import java.io.Closeable;
 import java.nio.charset.Charset;
 
+import com.microsoft.rest.v3.implementation.http.BufferedHttpResponse;
 import io.netty.buffer.ByteBuf;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -120,7 +121,7 @@ public abstract class HttpResponse implements Closeable {
      *
      * @return the new Response object
      */
-    public BufferedHttpResponse buffer() {
+    public HttpResponse buffer() {
         return new BufferedHttpResponse(this);
     }
 

@@ -15,30 +15,34 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Annotation for query parameters to be appended to a REST API Request URI.
  *
- * Example#1:
+ * <p><strong>Example 1:</strong></p>
  *
- *   {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
- *   {@literal Single<RestResponseBase<Headers, Body>>} listByResourceGroup(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion);
+ * <pre>
+ * {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
+ * {@literal Single<RestResponseBase<Headers, Body>>} listByResourceGroup(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion);</pre>
  *
- *   The value of parameters filter, expand, top, apiVersion will be encoded and encoded value will be used to replace the corresponding path segment {$filter},
- *   {$expand}, {$top}, {api-version} respectively.
+ * <p>The value of parameters filter, expand, top, apiVersion will be encoded and encoded value will be used to replace the corresponding path segment {$filter},
+ * {$expand}, {$top}, {api-version} respectively.</p>
  *
- * Example#2 (A use case where PathParam.encoded=true will be used)
+ * <p><strong>Example 2:</strong> (A use case where PathParam.encoded=true will be used)</p>
  *
- *   It is possible that, a path segment variable can be used to represent sub path:
+ * <p>It is possible that, a path segment variable can be used to represent sub path:</p>
  *
- *   {@literal @}GET("http://wq.com/foo/{subpath}/values")
- *   String getValues(@PathParam("subpath") String param, @QueryParam("connectionString") String connectionString);
+ * <pre>
+ * {@literal @}GET("http://wq.com/foo/{subpath}/values")
+ *  String getValues(@PathParam("subpath") String param, @QueryParam("connectionString") String connectionString);</pre>
  *
- *   In this case, if consumer pass "a=b" as the value for query then the resolved url looks like: "http://wq.com/foo/paramblah/values?connectionString=a%3Db"
+ * <p>In this case, if consumer pass "a=b" as the value for query then the resolved url looks like:
+ * "<code>http://wq.com/foo/paramblah/values?connectionString=a%3Db</code>"</p>
  *
- *   For such cases the encoded attribute can be used:
+ * <p>For such cases the encoded attribute can be used:</p>
  *
- *   {@literal @}GET("http://wq.com/foo/{subpath}/values")
- *   String getValues(@PathParam("subpath") String param, @QueryParam("query", encoded = true) String query);
+ * <pre>
+ * {@literal @}GET("http://wq.com/foo/{subpath}/values")
+ *  String getValues(@PathParam("subpath") String param, @QueryParam("query", encoded = true) String query);</pre>
  *
- *   In this case, if consumer pass "a=b" as the value for param1 then the resolved url looks as expected: "http://wq.com/foo/paramblah/values?connectionString=a=b"
- *
+ * <p>In this case, if consumer pass "a=b" as the value for param1 then the resolved url looks as expected:
+ * "<code>http://wq.com/foo/paramblah/values?connectionString=a=b</code>"</p>
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)

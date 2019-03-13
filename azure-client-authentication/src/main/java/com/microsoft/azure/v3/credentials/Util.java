@@ -9,7 +9,7 @@ package com.microsoft.azure.v3.credentials;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationCallback;
 import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.microsoft.rest.v3.util.Base64Util;
+import com.microsoft.rest.v3.implementation.util.Base64Util;
 import reactor.core.Exceptions;
 import reactor.core.publisher.MonoSink;
 

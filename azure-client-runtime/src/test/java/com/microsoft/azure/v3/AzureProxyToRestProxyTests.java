@@ -1,12 +1,12 @@
 package com.microsoft.azure.v3;
 
-import com.microsoft.rest.v3.InvalidReturnTypeException;
-import com.microsoft.rest.v3.http.ContentType;
-import com.microsoft.rest.v3.RestException;
+import com.microsoft.rest.v3.implementation.exception.InvalidReturnTypeException;
+import com.microsoft.rest.v3.implementation.http.ContentType;
+import com.microsoft.rest.v3.http.rest.RestException;
 import com.microsoft.rest.v3.http.rest.RestResponseBase;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.serializer.SerializerAdapter;
-import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
+import com.microsoft.rest.v3.implementation.serializer.SerializerAdapter;
+import com.microsoft.rest.v3.implementation.serializer.jackson.JacksonAdapter;
 import com.microsoft.rest.v3.annotations.BodyParam;
 import com.microsoft.rest.v3.annotations.DELETE;
 import com.microsoft.rest.v3.annotations.ExpectedResponses;

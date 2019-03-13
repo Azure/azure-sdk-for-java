@@ -9,7 +9,7 @@ package com.microsoft.rest.v3.http.policy;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.UrlBuilder;
+import com.microsoft.rest.v3.implementation.http.UrlBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;

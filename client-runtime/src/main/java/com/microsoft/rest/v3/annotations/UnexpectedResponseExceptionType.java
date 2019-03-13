@@ -6,7 +6,7 @@
 
 package com.microsoft.rest.v3.annotations;
 
-import com.microsoft.rest.v3.RestException;
+import com.microsoft.rest.v3.http.rest.RestException;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -17,11 +17,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * The error type that will be thrown or returned when an unexpected status code is returned from an REST API.
  *
- * Example:
- *   {@literal @}UnexpectedResponseExceptionType(MyCustomException.class)
- *   {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
- *   void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName, @Path("subscriptionId") String subscriptionId, @Body GetImageUploadUrlInputInner parameters);
+ * <p><strong>Example:</strong></p>
  *
+ * <pre>
+ * {@literal @}UnexpectedResponseExceptionType(MyCustomException.class)
+ * {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
+ *  void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName, @Path("subscriptionId") String subscriptionId, @Body GetImageUploadUrlInputInner parameters);
+ * </pre>
  */
 @Retention(RUNTIME)
 @Target(METHOD)

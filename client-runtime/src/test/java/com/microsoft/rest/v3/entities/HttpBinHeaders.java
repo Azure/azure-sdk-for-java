@@ -9,7 +9,7 @@
 package com.microsoft.rest.v3.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.v3.DateTimeRfc1123;
+import com.microsoft.rest.v3.implementation.DateTimeRfc1123;
 
 /**
  * Defines headers for httpbin.org operations.

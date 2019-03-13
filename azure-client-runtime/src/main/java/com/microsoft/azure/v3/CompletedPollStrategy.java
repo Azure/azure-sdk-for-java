@@ -6,9 +6,8 @@
 
 package com.microsoft.azure.v3;
 
-import com.microsoft.rest.v3.RestProxy;
-import com.microsoft.rest.v3.SwaggerMethodParser;
-import com.microsoft.rest.v3.http.BufferedHttpResponse;
+import com.microsoft.rest.v3.implementation.RestProxy;
+import com.microsoft.rest.v3.implementation.SwaggerMethodParser;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
 import reactor.core.publisher.Flux;
@@ -22,7 +21,7 @@ import java.lang.reflect.Type;
  * further polling.
  */
 public class CompletedPollStrategy extends PollStrategy {
-    private final BufferedHttpResponse firstHttpResponse;
+    private final HttpResponse firstHttpResponse;
     private CompletedPollStrategyData data;
 
     /**

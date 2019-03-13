@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.v3;
 
-import com.microsoft.rest.v3.RestProxy;
-import com.microsoft.rest.v3.SwaggerMethodParser;
+import com.microsoft.rest.v3.implementation.RestProxy;
+import com.microsoft.rest.v3.implementation.SwaggerMethodParser;
 import com.microsoft.rest.v3.http.HttpMethod;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;

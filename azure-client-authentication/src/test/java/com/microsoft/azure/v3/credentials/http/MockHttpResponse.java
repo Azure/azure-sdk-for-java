@@ -8,9 +8,9 @@ package com.microsoft.azure.v3.credentials.http;
 
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.serializer.SerializerAdapter;
-import com.microsoft.rest.v3.serializer.SerializerEncoding;
-import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
+import com.microsoft.rest.v3.implementation.serializer.SerializerAdapter;
+import com.microsoft.rest.v3.implementation.serializer.SerializerEncoding;
+import com.microsoft.rest.v3.implementation.serializer.jackson.JacksonAdapter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;

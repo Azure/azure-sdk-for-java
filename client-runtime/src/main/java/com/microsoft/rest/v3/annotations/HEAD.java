@@ -12,21 +12,22 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * HTTP HEAD method annotation describing the parametrized relative path to a REST endpoint.
+ * HTTP HEAD method annotation describing the parameterized relative path to a REST endpoint.
  *
- * The required value can be either a relative path or an absolute path. When it's
- * an absolute path, it must start with a protocol or a parametrized segment.
- * (Otherwise the parse cannot tell if it's absolute or relative)
+ * <p>The required value can be either a relative path or an absolute path. When it's an absolute path, it must start
+ * with a protocol or a parameterized segment (otherwise the parse cannot tell if it's absolute or relative)</p>
  *
- * Example 1: relative path segments
+ * <p><strong>Example 1: Relative path segments</strong></p>
  *
- *  {@literal @}HEAD("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
- *  boolean checkNameAvailability(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);
+ * <pre>
+ * {@literal @}HEAD("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
+ *  boolean checkNameAvailability(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId);</pre>
  *
- * Example 2: absolute path segment
+ * <p><strong>Example 2: Absolute path segment</strong></p>
  *
- *  {@literal @}HEAD(https://management.azure.com/{storageAccountId})
- *  boolean checkNameAvailability(@PathParam("nextLink") String storageAccountId);
+ * <pre>
+ * {@literal @}HEAD(https://management.azure.com/{storageAccountId})
+ *  boolean checkNameAvailability(@PathParam("nextLink") String storageAccountId);</pre>
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

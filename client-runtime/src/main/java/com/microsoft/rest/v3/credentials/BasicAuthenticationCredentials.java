@@ -6,7 +6,7 @@
 
 package com.microsoft.rest.v3.credentials;
 
-import com.microsoft.rest.v3.util.Base64Util;
+import com.microsoft.rest.v3.implementation.util.Base64Util;
 
 import java.io.UnsupportedEncodingException;
 

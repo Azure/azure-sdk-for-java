@@ -9,7 +9,7 @@ package com.microsoft.rest.v3.http.policy;
 import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpResponse;
 import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
-import com.microsoft.rest.v3.util.Base64Util;
+import com.microsoft.rest.v3.implementation.util.Base64Util;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;

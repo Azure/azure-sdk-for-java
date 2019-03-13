@@ -13,29 +13,29 @@ import static java.lang.annotation.ElementType.PARAMETER;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Annotation to annotate replacement of parametrized segments in a dynamic {@link Host}.
+ * Annotation to annotate replacement of parameterized segments in a dynamic {@link Host}.
  *
- * You provide the value, which should be the same (case sensitive) with
- * the parametrized segments in '{}' in the host, unless there's only one
- * parametrized segment, then you can leave the value empty. This is extremely
- * useful when the designer of the API interface doesn't know about the named
- * parameters in the host.
+ * <p>You provide the value, which should be the same (case sensitive) with the parameterized segments in '{}' in the
+ * host, unless there's only one parameterized segment, then you can leave the value empty. This is extremely
+ * useful when the designer of the API interface doesn't know about the named parameters in the host.</p>
  *
- * Example 1: named parameters
+ * <p><strong>Example 1: Named parameters</strong></p>
  *
- *   {@literal @}Host("{accountName}.{suffix}")
- *   interface DatalakeService {
- *     {@literal @}GET("jobs/{jobIdentity}")
- *     Job getJob(@HostParam("accountName") String accountName, @HostParam("suffix") String suffix, @PathParam("jobIdentity") jobIdentity);
- *   }
+ * <pre>
+ * {@literal @}Host("{accountName}.{suffix}")
+ *  interface DatalakeService {
+ *   {@literal @}GET("jobs/{jobIdentity}")
+ *    Job getJob(@HostParam("accountName") String accountName, @HostParam("suffix") String suffix, @PathParam("jobIdentity") jobIdentity);
+ *  }</pre>
  *
- * Example 2: unnamed parameter
+ * <p><strong>Example 2: Unnamed parameter</strong></p>
  *
- *    {@literal @}Host(KEY_VAULT_ENDPOINT)
- *    interface KeyVaultService {
- *       {@literal @}GET("secrets/{secretName}")
- *       Secret get(@HostParam String vaultName, @PathParam("secretName") String secretName);
- *    }
+ * <pre>
+ * {@literal @}Host(KEY_VAULT_ENDPOINT)
+ *  interface KeyVaultService {
+ *   {@literal @}GET("secrets/{secretName}")
+ *    Secret get(@HostParam String vaultName, @PathParam("secretName") String secretName);
+ *  }</pre>
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)
