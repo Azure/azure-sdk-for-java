@@ -22,5 +22,5 @@ public interface IEventProcessorFactory<T extends IEventProcessor> {
      * @throws Exception to indicate failure.
      * @return The event processor object.
      */
-    public T createEventProcessor(PartitionContext context) throws Exception;
+    T createEventProcessor(PartitionContext context) throws Exception;
 }
