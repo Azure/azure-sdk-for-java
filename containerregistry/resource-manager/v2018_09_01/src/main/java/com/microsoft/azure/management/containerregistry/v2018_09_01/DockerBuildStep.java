@@ -46,6 +46,12 @@ public class DockerBuildStep extends TaskStepProperties {
     private String dockerFilePath;
 
     /**
+     * The name of the target build stage for the docker build.
+     */
+    @JsonProperty(value = "target")
+    private String target;
+
+    /**
      * The collection of override arguments to be used when executing this
      * build step.
      */
@@ -129,6 +135,26 @@ public class DockerBuildStep extends TaskStepProperties {
      */
     public DockerBuildStep withDockerFilePath(String dockerFilePath) {
         this.dockerFilePath = dockerFilePath;
+        return this;
+    }
+
+    /**
+     * Get the name of the target build stage for the docker build.
+     *
+     * @return the target value
+     */
+    public String target() {
+        return this.target;
+    }
+
+    /**
+     * Set the name of the target build stage for the docker build.
+     *
+     * @param target the target value to set
+     * @return the DockerBuildStep object itself.
+     */
+    public DockerBuildStep withTarget(String target) {
+        this.target = target;
         return this;
     }
 

@@ -99,12 +99,6 @@ public class RunInner extends ProxyResource {
     private SourceTriggerDescriptor sourceTrigger;
 
     /**
-     * The value that indicates whether archiving is enabled or not.
-     */
-    @JsonProperty(value = "properties.isArchiveEnabled")
-    private Boolean isArchiveEnabled;
-
-    /**
      * The platform properties against which the run will happen.
      */
     @JsonProperty(value = "properties.platform")
@@ -117,11 +111,30 @@ public class RunInner extends ProxyResource {
     private AgentProperties agentConfiguration;
 
     /**
+     * The scope of the credentials that were used to login to the source
+     * registry during this run.
+     */
+    @JsonProperty(value = "properties.sourceRegistryAuth")
+    private String sourceRegistryAuth;
+
+    /**
+     * The list of custom registries that were logged in during this run.
+     */
+    @JsonProperty(value = "properties.customRegistries")
+    private List<String> customRegistries;
+
+    /**
      * The provisioning state of a run. Possible values include: 'Creating',
      * 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private ProvisioningState provisioningState;
+
+    /**
+     * The value that indicates whether archiving is enabled or not.
+     */
+    @JsonProperty(value = "properties.isArchiveEnabled")
+    private Boolean isArchiveEnabled;
 
     /**
      * Get the unique identifier for the run.
@@ -344,26 +357,6 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the value that indicates whether archiving is enabled or not.
-     *
-     * @return the isArchiveEnabled value
-     */
-    public Boolean isArchiveEnabled() {
-        return this.isArchiveEnabled;
-    }
-
-    /**
-     * Set the value that indicates whether archiving is enabled or not.
-     *
-     * @param isArchiveEnabled the isArchiveEnabled value to set
-     * @return the RunInner object itself.
-     */
-    public RunInner withIsArchiveEnabled(Boolean isArchiveEnabled) {
-        this.isArchiveEnabled = isArchiveEnabled;
-        return this;
-    }
-
-    /**
      * Get the platform properties against which the run will happen.
      *
      * @return the platform value
@@ -404,6 +397,46 @@ public class RunInner extends ProxyResource {
     }
 
     /**
+     * Get the scope of the credentials that were used to login to the source registry during this run.
+     *
+     * @return the sourceRegistryAuth value
+     */
+    public String sourceRegistryAuth() {
+        return this.sourceRegistryAuth;
+    }
+
+    /**
+     * Set the scope of the credentials that were used to login to the source registry during this run.
+     *
+     * @param sourceRegistryAuth the sourceRegistryAuth value to set
+     * @return the RunInner object itself.
+     */
+    public RunInner withSourceRegistryAuth(String sourceRegistryAuth) {
+        this.sourceRegistryAuth = sourceRegistryAuth;
+        return this;
+    }
+
+    /**
+     * Get the list of custom registries that were logged in during this run.
+     *
+     * @return the customRegistries value
+     */
+    public List<String> customRegistries() {
+        return this.customRegistries;
+    }
+
+    /**
+     * Set the list of custom registries that were logged in during this run.
+     *
+     * @param customRegistries the customRegistries value to set
+     * @return the RunInner object itself.
+     */
+    public RunInner withCustomRegistries(List<String> customRegistries) {
+        this.customRegistries = customRegistries;
+        return this;
+    }
+
+    /**
      * Get the provisioning state of a run. Possible values include: 'Creating', 'Updating', 'Deleting', 'Succeeded', 'Failed', 'Canceled'.
      *
      * @return the provisioningState value
@@ -420,6 +453,26 @@ public class RunInner extends ProxyResource {
      */
     public RunInner withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the value that indicates whether archiving is enabled or not.
+     *
+     * @return the isArchiveEnabled value
+     */
+    public Boolean isArchiveEnabled() {
+        return this.isArchiveEnabled;
+    }
+
+    /**
+     * Set the value that indicates whether archiving is enabled or not.
+     *
+     * @param isArchiveEnabled the isArchiveEnabled value to set
+     * @return the RunInner object itself.
+     */
+    public RunInner withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        this.isArchiveEnabled = isArchiveEnabled;
         return this;
     }
 
