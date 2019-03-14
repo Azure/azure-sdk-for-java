@@ -86,8 +86,8 @@ class PumpManager extends Closable implements Consumer<String> {
         }
 
         return CompletableFuture.allOf(futures).whenCompleteAsync((empty, e) -> {
-                    setClosed();
-                }, this.hostContext.getExecutor());
+            setClosed();
+        }, this.hostContext.getExecutor());
     }
 
     protected void removingPumpTestHook(String partitionId) {

@@ -507,8 +507,8 @@ public final class EventProcessorHost {
             // If we own the executor, stop it also.
             // Owned executor is also created in constructor.
             if (this.weOwnExecutor) {
-                    this.unregistered = this.unregistered.thenRunAsync(() -> {
-                        // IMPORTANT: run this last stage in the default threadpool!
+                this.unregistered = this.unregistered.thenRunAsync(() -> {
+                    // IMPORTANT: run this last stage in the default threadpool!
                     // If a task running in a threadpool waits for that threadpool to terminate, it's going to wait a long time...
 
                     // It is OK to call shutdown() here even if threads are still running.
