@@ -28,7 +28,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     private String accountEnabled;
 
     /**
-     * alterative names.
+     * alternative names.
      */
     @JsonProperty(value = "alternativeNames")
     private List<String> alternativeNames;
@@ -175,7 +175,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get alterative names.
+     * Get alternative names.
      *
      * @return the alternativeNames value
      */
@@ -184,7 +184,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set alterative names.
+     * Set alternative names.
      *
      * @param alternativeNames the alternativeNames value to set
      * @return the ServicePrincipalInner object itself.
