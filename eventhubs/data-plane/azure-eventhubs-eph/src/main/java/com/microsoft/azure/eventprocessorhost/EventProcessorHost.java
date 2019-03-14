@@ -538,7 +538,7 @@ public final class EventProcessorHost {
         private final String entityName;
         private final String consumerGroupName;
 
-        public EventProcessorHostThreadPoolFactory(
+        EventProcessorHostThreadPoolFactory(
                 String hostName,
                 String entityName,
                 String consumerGroupName) {

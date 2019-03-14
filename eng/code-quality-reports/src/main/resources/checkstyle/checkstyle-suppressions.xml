@@ -57,27 +57,4 @@
   <suppress checks="EmptyBlock" files="InMemoryLeaseManager.java"/>
   <suppress checks="EmptyBlock" files="ReactorDispatcher.java"/>
   <suppress checks="EmptyBlock" files="AzureStorageCheckpointLeaseManager.java"/>
-
-  <!-- Public API already released with redundant modifier-->
-  <suppress checks="RedundantModifier" files="ActiveClientTokenManager.java"/>
-  <suppress checks="RedundantModifier" files="AmqpResponseCode.java"/>
-  <suppress checks="RedundantModifier" files="BatchOptions.java"/>
-  <suppress checks="RedundantModifier" files="CBSChannel.java"/>
-  <suppress checks="RedundantModifier" files="EventDataBatchImpl.java"/>
-  <suppress checks="RedundantModifier" files="EventHubClientImpl.java"/>
-  <suppress checks="RedundantModifier" files="EventProcessorHost.java"/>
-  <suppress checks="RedundantModifier" files="ICheckpointManager.java"/>
-  <suppress checks="RedundantModifier" files="IEventProcessor.java"/>
-  <suppress checks="RedundantModifier" files="IEventProcessorFactory.java"/>
-  <suppress checks="RedundantModifier" files="ILeaseManager.java"/>
-  <suppress checks="RedundantModifier" files="IOObject.java"/>
-  <suppress checks="RedundantModifier" files="ManagementChannel.java"/>
-  <suppress checks="RedundantModifier" files="MessageReceiver.java"/>
-  <suppress checks="RedundantModifier" files="MessageSender.java"/>
-  <suppress checks="RedundantModifier" files="MessagingFactory.java"/>
-  <suppress checks="RedundantModifier" files="PartitionReceiverImpl.java"/>
-  <suppress checks="RedundantModifier" files="PartitionSenderImpl.java"/>
-  <suppress checks="RedundantModifier" files="PumpManager.java"/>
-  <suppress checks="RedundantModifier" files="ReactorDispatcher.java"/>
-  <suppress checks="RedundantModifier" files="Timer.java"/>
 </suppressions>

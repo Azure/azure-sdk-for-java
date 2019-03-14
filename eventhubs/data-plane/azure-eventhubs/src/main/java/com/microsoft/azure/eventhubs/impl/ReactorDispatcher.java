@@ -98,7 +98,7 @@ public final class ReactorDispatcher {
         final BaseHandler timerCallback;
         final Reactor reactor;
 
-        public DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback) {
+        DelayHandler(final Reactor reactor, final int delay, final DispatchHandler timerCallback) {
             this.delay = delay;
             this.timerCallback = timerCallback;
             this.reactor = reactor;

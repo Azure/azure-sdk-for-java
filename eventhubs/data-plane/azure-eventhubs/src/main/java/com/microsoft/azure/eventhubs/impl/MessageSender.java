@@ -1012,7 +1012,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         private final String deliveryTag;
         private final ReplayableWorkItem<Void> sendWaiterData;
 
-        public SendTimeout(
+        SendTimeout(
                 final String deliveryTag,
                 final ReplayableWorkItem<Void> sendWaiterData) {
             this.sendWaiterData = sendWaiterData;
