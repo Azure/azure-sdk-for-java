@@ -19,12 +19,11 @@ import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class RequestResponseChannel implements IOObject {
 
@@ -117,7 +116,7 @@ public class RequestResponseChannel implements IOObject {
 
         this.inflightRequests.put(message.getMessageId(), onResponse);
 
-        sendLink.delivery(UUID.randomUUID().toString().replace("-", StringUtil.EMPTY).getBytes(UTF_8));
+        sendLink.delivery(UUID.randomUUID().toString().replace("-", StringUtil.EMPTY).getBytes(StandardCharsets.UTF_8));
         final int payloadSize = AmqpUtil.getDataSerializedSize(message) + 512; // need buffer for headers
 
         final byte[] bytes = new byte[payloadSize];

@@ -23,12 +23,11 @@ import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.ProxySelector;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketProxyConnectionHandler.class);
@@ -148,7 +147,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         final String usernamePasswordPair = proxyUserName + ":" + proxyPassword;
         proxyAuthorizationHeader.put(
                 "Proxy-Authorization",
-                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes(UTF_8)));
+                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes(StandardCharsets.UTF_8)));
         return proxyAuthorizationHeader;
     }
 
