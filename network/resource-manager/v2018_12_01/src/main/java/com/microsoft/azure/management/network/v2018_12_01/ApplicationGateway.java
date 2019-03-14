@@ -19,6 +19,7 @@ import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2018_12_01.implementation.NetworkManager;
 import java.util.List;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2018_12_01.implementation.ApplicationGatewayInner;
 
 /**
@@ -64,6 +65,11 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
      * @return the etag value.
      */
     String etag();
+
+    /**
+     * @return the firewallPolicy value.
+     */
+    SubResource firewallPolicy();
 
     /**
      * @return the frontendIPConfigurations value.
@@ -276,6 +282,18 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
              * @return the next definition stage
              */
             WithCreate withEtag(String etag);
+        }
+
+        /**
+         * The stage of the applicationgateway definition allowing to specify FirewallPolicy.
+         */
+        interface WithFirewallPolicy {
+            /**
+             * Specifies firewallPolicy.
+             * @param firewallPolicy Reference of the FirewallPolicy resource
+             * @return the next definition stage
+             */
+            WithCreate withFirewallPolicy(SubResource firewallPolicy);
         }
 
         /**
@@ -499,13 +517,13 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ApplicationGateway>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAuthenticationCertificates, DefinitionStages.WithAutoscaleConfiguration, DefinitionStages.WithBackendAddressPools, DefinitionStages.WithBackendHttpSettingsCollection, DefinitionStages.WithCustomErrorConfigurations, DefinitionStages.WithEnableFips, DefinitionStages.WithEnableHttp2, DefinitionStages.WithEtag, DefinitionStages.WithFrontendIPConfigurations, DefinitionStages.WithFrontendPorts, DefinitionStages.WithGatewayIPConfigurations, DefinitionStages.WithHttpListeners, DefinitionStages.WithIdentity, DefinitionStages.WithProbes, DefinitionStages.WithProvisioningState, DefinitionStages.WithRedirectConfigurations, DefinitionStages.WithRequestRoutingRules, DefinitionStages.WithResourceGuid, DefinitionStages.WithRewriteRuleSets, DefinitionStages.WithSku, DefinitionStages.WithSslCertificates, DefinitionStages.WithSslPolicy, DefinitionStages.WithTrustedRootCertificates, DefinitionStages.WithUrlPathMaps, DefinitionStages.WithWebApplicationFirewallConfiguration, DefinitionStages.WithZones {
+        interface WithCreate extends Creatable<ApplicationGateway>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAuthenticationCertificates, DefinitionStages.WithAutoscaleConfiguration, DefinitionStages.WithBackendAddressPools, DefinitionStages.WithBackendHttpSettingsCollection, DefinitionStages.WithCustomErrorConfigurations, DefinitionStages.WithEnableFips, DefinitionStages.WithEnableHttp2, DefinitionStages.WithEtag, DefinitionStages.WithFirewallPolicy, DefinitionStages.WithFrontendIPConfigurations, DefinitionStages.WithFrontendPorts, DefinitionStages.WithGatewayIPConfigurations, DefinitionStages.WithHttpListeners, DefinitionStages.WithIdentity, DefinitionStages.WithProbes, DefinitionStages.WithProvisioningState, DefinitionStages.WithRedirectConfigurations, DefinitionStages.WithRequestRoutingRules, DefinitionStages.WithResourceGuid, DefinitionStages.WithRewriteRuleSets, DefinitionStages.WithSku, DefinitionStages.WithSslCertificates, DefinitionStages.WithSslPolicy, DefinitionStages.WithTrustedRootCertificates, DefinitionStages.WithUrlPathMaps, DefinitionStages.WithWebApplicationFirewallConfiguration, DefinitionStages.WithZones {
         }
     }
     /**
      * The template for a ApplicationGateway update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ApplicationGateway>, Resource.UpdateWithTags<Update>, UpdateStages.WithAuthenticationCertificates, UpdateStages.WithAutoscaleConfiguration, UpdateStages.WithBackendAddressPools, UpdateStages.WithBackendHttpSettingsCollection, UpdateStages.WithCustomErrorConfigurations, UpdateStages.WithEnableFips, UpdateStages.WithEnableHttp2, UpdateStages.WithEtag, UpdateStages.WithFrontendIPConfigurations, UpdateStages.WithFrontendPorts, UpdateStages.WithGatewayIPConfigurations, UpdateStages.WithHttpListeners, UpdateStages.WithIdentity, UpdateStages.WithProbes, UpdateStages.WithProvisioningState, UpdateStages.WithRedirectConfigurations, UpdateStages.WithRequestRoutingRules, UpdateStages.WithResourceGuid, UpdateStages.WithRewriteRuleSets, UpdateStages.WithSku, UpdateStages.WithSslCertificates, UpdateStages.WithSslPolicy, UpdateStages.WithTrustedRootCertificates, UpdateStages.WithUrlPathMaps, UpdateStages.WithWebApplicationFirewallConfiguration, UpdateStages.WithZones {
+    interface Update extends Appliable<ApplicationGateway>, Resource.UpdateWithTags<Update>, UpdateStages.WithAuthenticationCertificates, UpdateStages.WithAutoscaleConfiguration, UpdateStages.WithBackendAddressPools, UpdateStages.WithBackendHttpSettingsCollection, UpdateStages.WithCustomErrorConfigurations, UpdateStages.WithEnableFips, UpdateStages.WithEnableHttp2, UpdateStages.WithEtag, UpdateStages.WithFirewallPolicy, UpdateStages.WithFrontendIPConfigurations, UpdateStages.WithFrontendPorts, UpdateStages.WithGatewayIPConfigurations, UpdateStages.WithHttpListeners, UpdateStages.WithIdentity, UpdateStages.WithProbes, UpdateStages.WithProvisioningState, UpdateStages.WithRedirectConfigurations, UpdateStages.WithRequestRoutingRules, UpdateStages.WithResourceGuid, UpdateStages.WithRewriteRuleSets, UpdateStages.WithSku, UpdateStages.WithSslCertificates, UpdateStages.WithSslPolicy, UpdateStages.WithTrustedRootCertificates, UpdateStages.WithUrlPathMaps, UpdateStages.WithWebApplicationFirewallConfiguration, UpdateStages.WithZones {
     }
 
     /**
@@ -606,6 +624,18 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
              * @return the next update stage
              */
             Update withEtag(String etag);
+        }
+
+        /**
+         * The stage of the applicationgateway update allowing to specify FirewallPolicy.
+         */
+        interface WithFirewallPolicy {
+            /**
+             * Specifies firewallPolicy.
+             * @param firewallPolicy Reference of the FirewallPolicy resource
+             * @return the next update stage
+             */
+            Update withFirewallPolicy(SubResource firewallPolicy);
         }
 
         /**
