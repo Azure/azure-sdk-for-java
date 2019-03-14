@@ -185,7 +185,7 @@ public class ApplicationInner extends DirectoryObjectInner {
     private List<PasswordCredentialInner> passwordCredentials;
 
     /**
-     * list of pre-authorizaed applications.
+     * list of pre-authorized applications.
      */
     @JsonProperty(value = "preAuthorizedApplications")
     private List<PreAuthorizedApplication> preAuthorizedApplications;
@@ -225,8 +225,8 @@ public class ApplicationInner extends DirectoryObjectInner {
     private String samlMetadataUrl;
 
     /**
-     * Audience for signing in to the application (AzureADMyOrganizatio,
-     * AzureADAllorganizations, AzureADAndMicrosofAccounts).
+     * Audience for signing in to the application (AzureADMyOrganization,
+     * AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
      */
     @JsonProperty(value = "signInAudience")
     private String signInAudience;
@@ -718,7 +718,7 @@ public class ApplicationInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get list of pre-authorizaed applications.
+     * Get list of pre-authorized applications.
      *
      * @return the preAuthorizedApplications value
      */
@@ -727,7 +727,7 @@ public class ApplicationInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set list of pre-authorizaed applications.
+     * Set list of pre-authorized applications.
      *
      * @param preAuthorizedApplications the preAuthorizedApplications value to set
      * @return the ApplicationInner object itself.
@@ -838,7 +838,7 @@ public class ApplicationInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get audience for signing in to the application (AzureADMyOrganizatio, AzureADAllorganizations, AzureADAndMicrosofAccounts).
+     * Get audience for signing in to the application (AzureADMyOrganization, AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
      *
      * @return the signInAudience value
      */
@@ -847,7 +847,7 @@ public class ApplicationInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set audience for signing in to the application (AzureADMyOrganizatio, AzureADAllorganizations, AzureADAndMicrosofAccounts).
+     * Set audience for signing in to the application (AzureADMyOrganization, AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
      *
      * @param signInAudience the signInAudience value to set
      * @return the ApplicationInner object itself.

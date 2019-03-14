@@ -28,7 +28,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     private String accountEnabled;
 
     /**
-     * altenative names.
+     * alternative names.
      */
     @JsonProperty(value = "alternativeNames")
     private List<String> alternativeNames;
@@ -110,7 +110,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     private List<PasswordCredentialInner> passwordCredentials;
 
     /**
-     * The thubmbprint of preferred certificate to sign the token.
+     * The thumbprint of preferred certificate to sign the token.
      */
     @JsonProperty(value = "preferredTokenSigningKeyThumbprint")
     private String preferredTokenSigningKeyThumbprint;
@@ -142,7 +142,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     private List<String> servicePrincipalNames;
 
     /**
-     * the type of the servie principal.
+     * the type of the service principal.
      */
     @JsonProperty(value = "servicePrincipalType")
     private String servicePrincipalType;
@@ -175,7 +175,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get altenative names.
+     * Get alternative names.
      *
      * @return the alternativeNames value
      */
@@ -184,7 +184,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set altenative names.
+     * Set alternative names.
      *
      * @param alternativeNames the alternativeNames value to set
      * @return the ServicePrincipalInner object itself.
@@ -402,7 +402,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the thubmbprint of preferred certificate to sign the token.
+     * Get the thumbprint of preferred certificate to sign the token.
      *
      * @return the preferredTokenSigningKeyThumbprint value
      */
@@ -411,7 +411,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the thubmbprint of preferred certificate to sign the token.
+     * Set the thumbprint of preferred certificate to sign the token.
      *
      * @param preferredTokenSigningKeyThumbprint the preferredTokenSigningKeyThumbprint value to set
      * @return the ServicePrincipalInner object itself.
@@ -502,7 +502,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the type of the servie principal.
+     * Get the type of the service principal.
      *
      * @return the servicePrincipalType value
      */
@@ -511,7 +511,7 @@ public class ServicePrincipalInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the type of the servie principal.
+     * Set the type of the service principal.
      *
      * @param servicePrincipalType the servicePrincipalType value to set
      * @return the ServicePrincipalInner object itself.
