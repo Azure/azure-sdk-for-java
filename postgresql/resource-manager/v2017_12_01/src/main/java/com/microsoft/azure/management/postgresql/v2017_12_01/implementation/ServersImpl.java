@@ -126,6 +126,12 @@ class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerI
     }
 
     @Override
+    public Completable restartAsync(String resourceGroupName, String serverName) {
+        ServersInner client = this.inner();
+        return client.restartAsync(resourceGroupName, serverName).toCompletable();
+    }
+
+    @Override
     protected ServerImpl wrapModel(ServerInner inner) {
         return  new ServerImpl(inner.name(), inner, manager());
     }
