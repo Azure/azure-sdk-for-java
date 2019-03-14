@@ -47,6 +47,8 @@
         <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
     </Match>
 
+    <!-- Protected field already exists in the public API surface area even
+    though it should be final. -->
     <Match>
       <Class name="com.microsoft.azure.eventhubs.impl.EventHubClientImpl"/>
       <Field name="USER_AGENT"/>
