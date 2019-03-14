@@ -523,7 +523,7 @@ public class DdosProtectionPlansInner implements InnerSupportsGet<DdosProtection
      * @return the DdosProtectionPlanInner object if successful.
      */
     public DdosProtectionPlanInner update(String resourceGroupName, String ddosProtectionPlanName) {
-        return updateWithServiceResponseAsync(resourceGroupName, ddosProtectionPlanName).toBlocking().single().body();
+        return updateWithServiceResponseAsync(resourceGroupName, ddosProtectionPlanName).toBlocking().last().body();
     }
 
     /**
@@ -545,7 +545,7 @@ public class DdosProtectionPlansInner implements InnerSupportsGet<DdosProtection
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DdosProtectionPlanInner object
+     * @return the observable for the request
      */
     public Observable<DdosProtectionPlanInner> updateAsync(String resourceGroupName, String ddosProtectionPlanName) {
         return updateWithServiceResponseAsync(resourceGroupName, ddosProtectionPlanName).map(new Func1<ServiceResponse<DdosProtectionPlanInner>, DdosProtectionPlanInner>() {
@@ -562,7 +562,7 @@ public class DdosProtectionPlansInner implements InnerSupportsGet<DdosProtection
      * @param resourceGroupName The name of the resource group.
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DdosProtectionPlanInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<DdosProtectionPlanInner>> updateWithServiceResponseAsync(String resourceGroupName, String ddosProtectionPlanName) {
         if (resourceGroupName == null) {
@@ -578,20 +578,9 @@ public class DdosProtectionPlansInner implements InnerSupportsGet<DdosProtection
         final Map<String, String> tags = null;
         TagsObject parameters = new TagsObject();
         parameters.withTags(null);
-        return service.update(resourceGroupName, ddosProtectionPlanName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DdosProtectionPlanInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DdosProtectionPlanInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DdosProtectionPlanInner> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, ddosProtectionPlanName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<DdosProtectionPlanInner>() { }.getType());
     }
-
     /**
      * Update a DDoS protection plan.
      *
@@ -604,7 +593,7 @@ public class DdosProtectionPlansInner implements InnerSupportsGet<DdosProtection
      * @return the DdosProtectionPlanInner object if successful.
      */
     public DdosProtectionPlanInner update(String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags) {
-        return updateWithServiceResponseAsync(resourceGroupName, ddosProtectionPlanName, tags).toBlocking().single().body();
+        return updateWithServiceResponseAsync(resourceGroupName, ddosProtectionPlanName, tags).toBlocking().last().body();
     }
 
     /**
@@ -628,7 +617,7 @@ public class DdosProtectionPlansInner implements InnerSupportsGet<DdosProtection
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DdosProtectionPlanInner object
+     * @return the observable for the request
      */
     public Observable<DdosProtectionPlanInner> updateAsync(String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags) {
         return updateWithServiceResponseAsync(resourceGroupName, ddosProtectionPlanName, tags).map(new Func1<ServiceResponse<DdosProtectionPlanInner>, DdosProtectionPlanInner>() {
@@ -646,7 +635,7 @@ public class DdosProtectionPlansInner implements InnerSupportsGet<DdosProtection
      * @param ddosProtectionPlanName The name of the DDoS protection plan.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DdosProtectionPlanInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<DdosProtectionPlanInner>> updateWithServiceResponseAsync(String resourceGroupName, String ddosProtectionPlanName, Map<String, String> tags) {
         if (resourceGroupName == null) {
@@ -662,25 +651,8 @@ public class DdosProtectionPlansInner implements InnerSupportsGet<DdosProtection
         final String apiVersion = "2018-12-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
-        return service.update(resourceGroupName, ddosProtectionPlanName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DdosProtectionPlanInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DdosProtectionPlanInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DdosProtectionPlanInner> clientResponse = updateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<DdosProtectionPlanInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<DdosProtectionPlanInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<DdosProtectionPlanInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
+        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, ddosProtectionPlanName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<DdosProtectionPlanInner>() { }.getType());
     }
 
     /**
