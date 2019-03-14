@@ -22,10 +22,10 @@ import com.microsoft.azure.management.postgresql.v2017_12_01.ServerVersion;
 import com.microsoft.azure.management.postgresql.v2017_12_01.ServerPropertiesForCreate;
 import rx.functions.Func1;
 
-class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, PostgreSQLManager> implements Server, Server.Definition, Server.Update {
+class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, DBforPostgreSQLManager> implements Server, Server.Definition, Server.Update {
     private ServerForCreate createParameter;
     private ServerUpdateParameters updateParameter;
-    ServerImpl(String name, ServerInner inner, PostgreSQLManager manager) {
+    ServerImpl(String name, ServerInner inner, DBforPostgreSQLManager manager) {
         super(name, inner, manager);
         this.createParameter = new ServerForCreate();
         this.updateParameter = new ServerUpdateParameters();
@@ -90,6 +90,21 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     @Override
     public String fullyQualifiedDomainName() {
         return this.inner().fullyQualifiedDomainName();
+    }
+
+    @Override
+    public String masterServerId() {
+        return this.inner().masterServerId();
+    }
+
+    @Override
+    public Integer replicaCapacity() {
+        return this.inner().replicaCapacity();
+    }
+
+    @Override
+    public String replicationRole() {
+        return this.inner().replicationRole();
     }
 
     @Override
