@@ -113,15 +113,15 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
                 }, this.executor);
     }
 
-    final EventPosition getStartingPosition() {
+    EventPosition getStartingPosition() {
         return this.eventPosition;
     }
 
-    public final String getPartitionId() {
+    public String getPartitionId() {
         return this.partitionId;
     }
 
-    public final Duration getReceiveTimeout() {
+    public Duration getReceiveTimeout() {
         return this.internalReceiver.getReceiveTimeout();
     }
 
@@ -129,15 +129,15 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
         this.internalReceiver.setReceiveTimeout(value);
     }
 
-    public final long getEpoch() {
+    public long getEpoch() {
         return this.epoch;
     }
 
-    public final ReceiverRuntimeInformation getRuntimeInformation() {
+    public ReceiverRuntimeInformation getRuntimeInformation() {
         return this.runtimeInformation;
     }
 
-    public final EventPosition getEventPosition() {
+    public EventPosition getEventPosition() {
         return this.currentEventPosition;
     }
 
