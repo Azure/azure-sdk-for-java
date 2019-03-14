@@ -39,7 +39,7 @@ public class QueueDescription {
     }
 
     /**
-     * @return Gets the path of the queue.
+     * @return The path of the queue.
      */
     public String getPath()
     {
@@ -47,9 +47,9 @@ public class QueueDescription {
     }
 
     /**
-     * @param path - Sets the path of queue.
-     * Max length is 260 chars. Cannot start or end with a slash.
-     * Cannot have restricted characters: '@','?','#','*'
+     * @param path - The path of queue. Max length is 260 chars.
+     *             Cannot start or end with a slash.
+     *             Cannot have restricted characters: '@','?','#','*'
      */
     private void setPath(String path)
     {
@@ -60,8 +60,7 @@ public class QueueDescription {
     /**
      * The amount of time that the message is locked by a given receiver
      * so that no other receiver receives the same message.
-     * Default value is 60 seconds.
-     * @return Gets the duration of a peek lock receive
+     * @return The duration of a peek lock. Default value is 60 seconds.
      */
     public Duration getLockDuration()
     {
@@ -69,8 +68,9 @@ public class QueueDescription {
     }
 
     /**
-     * Sets the duration for which a message will be locked while receiving through a PeekLock receiver.
-     * Max value is 5 minutes.
+     * Sets The amount of time that the message is locked by a given receiver
+     * so that no other receiver receives the same message.
+     * @param lockDuration - The duration of a peek lock. Max value is 5 minutes.
      */
     public void setLockDuration(Duration lockDuration)
     {
@@ -81,7 +81,7 @@ public class QueueDescription {
     }
 
     /**
-     * Gets the maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
+     * @return the maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
      * Default value is 1024.
      */
     public long getMaxSizeInMB() {
@@ -89,7 +89,7 @@ public class QueueDescription {
     }
 
     /**
-     * Sets the maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
+     * @param maxSize - Maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
      */
     public void setMaxSizeInMB(long maxSize)
     {
@@ -97,16 +97,16 @@ public class QueueDescription {
     }
 
     /**
-     * This value indicates if the queue requires guard against duplicate messages. If true, duplicate messages
-     * having same {@link IMessage#getMessageId()} and sent to queue within duration of {@link #getDuplicationDetectionHistoryTimeWindow}
-     * will be discarded.
+     * If enabled, duplicate messages having same {@link IMessage#getMessageId()} and sent to queue
+     * within duration of {@link #getDuplicationDetectionHistoryTimeWindow} will be discarded.
+     * @return value indicating if the queue requires guard against duplicate messages.
     */
     public boolean isRequiresDuplicateDetection() {
         return requiresDuplicateDetection;
     }
 
     /**
-     * Set to true if duplicate detection needs to be enabled.
+     * @param requiresDuplicateDetection - True if duplicate detection needs to be enabled.
      * See also - {@link #isRequiresDuplicateDetection()}
      */
     public void setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
@@ -114,34 +114,33 @@ public class QueueDescription {
     }
 
     /**
-     * This indicates whether the queue supports the concept of session. Sessionful-messages follow FIFO ordering.
+     * @return boolean that indicates whether the queue supports the concept of session. Sessionful-messages follow FIFO ordering.
      */
     public boolean isRequiresSession() {
         return requiresSession;
     }
 
     /**
-     * Set to true if queue should support sessions.
+     * @param requiresSession - True if queue should support sessions.
      */
     public void setRequiresSession(boolean requiresSession) {
         this.requiresSession = requiresSession;
     }
 
     /**
-     * The default time to live value for the messages. This is the duration after which the message expires, starting from when
+     * Time-To-Live is the duration after which the message expires, starting from when
      * the message is sent to Service Bus.
      * This is the default value used when {@link IMessage#getTimeToLive()} is not set on a message itself.
      * Messages older than their TimeToLive value will expire and no longer be retained in the message store.
      * Subscribers will be unable to receive expired messages.
-     * Default value is {@link ManagementClientConstants#MAX_DURATION}
-     * @return
+     * @return The default time to live value for the messages. Default value is {@link ManagementClientConstants#MAX_DURATION}
      */
     public Duration getDefaultMessageTimeToLive() {
         return defaultMessageTimeToLive;
     }
 
     /**
-     * Sets the default message time to live value.
+     * @param defaultMessageTimeToLive - The default message time to live value.
      * Value cannot be lower than 1 second.
      * See {@link #getDefaultMessageTimeToLive()}
      */
@@ -163,7 +162,7 @@ public class QueueDescription {
     }
 
     /**
-     * The idle interval after which the queue is automatically deleted.
+     * @return The idle interval after which the queue is automatically deleted.
      * Default value is {@link ManagementClientConstants#MAX_DURATION}
      */
     public Duration getAutoDeleteOnIdle() {
@@ -171,7 +170,7 @@ public class QueueDescription {
     }
 
     /**
-     * The idle interval after which the queue is automatically deleted.
+     * @param autoDeleteOnIdle - The idle interval after which the queue is automatically deleted.
      * The minimum duration is 5 minutes.
      */
     public void setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
@@ -191,7 +190,7 @@ public class QueueDescription {
 
     /**
      * Indicates whether this queue has dead letter support when a message expires.
-     * If true, the expired messages are moved to dead-letter sub-queue.
+     * @return If true, the expired messages are moved to dead-letter sub-queue.
      * Default value is false.
      */
     public boolean isEnableDeadLetteringOnMessageExpiration() {
@@ -199,6 +198,7 @@ public class QueueDescription {
     }
 
     /**
+     * @param enableDeadLetteringOnMessageExpiration - True if messages should be dead-lettered on expiration.
      * See {@link #isEnableDeadLetteringOnMessageExpiration()}
      */
     public void setEnableDeadLetteringOnMessageExpiration(boolean enableDeadLetteringOnMessageExpiration) {
@@ -206,7 +206,7 @@ public class QueueDescription {
     }
 
     /**
-     * The duration of duplicate detection history that is maintained by the service.
+     * @return The duration of duplicate detection history that is maintained by the service.
      * The default value is 1 minute.
      */
     public Duration getDuplicationDetectionHistoryTimeWindow() {
@@ -214,7 +214,7 @@ public class QueueDescription {
     }
 
     /**
-     * The duration of duplicate detection history that is maintained by the service.
+     * @param duplicationDetectionHistoryTimeWindow - The duration of duplicate detection history that is maintained by the service.
      * Max value is 1 day and minimum is 20 seconds.
      */
     public void setDuplicationDetectionHistoryTimeWindow(Duration duplicationDetectionHistoryTimeWindow) {
@@ -238,7 +238,7 @@ public class QueueDescription {
      * The maximum delivery count of a message before it is dead-lettered.
      * The delivery count is increased when a message is received in {@link com.microsoft.azure.servicebus.ReceiveMode#PEEKLOCK} mode
      * and didn't complete the message before the message lock expired.
-     * Default value is 10.
+     * @return Default value is 10.
      */
     public int getMaxDeliveryCount() {
         return maxDeliveryCount;
@@ -248,7 +248,7 @@ public class QueueDescription {
      * The maximum delivery count of a message before it is dead-lettered.
      * The delivery count is increased when a message is received in {@link com.microsoft.azure.servicebus.ReceiveMode#PEEKLOCK} mode
      * and didn't complete the message before the message lock expired.
-     * Minimum value is 1.
+     * @param maxDeliveryCount - Minimum value is 1.
      */
     public void setMaxDeliveryCount(int maxDeliveryCount) {
         if (maxDeliveryCount < ManagementClientConstants.MIN_ALLOWED_MAX_DELIVERYCOUNT)
@@ -262,7 +262,7 @@ public class QueueDescription {
     }
 
     /**
-     * Indicates whether server-side batched operations are enabled.
+     * @return Indicates whether server-side batched operations are enabled.
      * Defaults to true.
      */
     public boolean isEnableBatchedOperations() {
@@ -270,45 +270,45 @@ public class QueueDescription {
     }
 
     /**
-     * Indicates whether server-side batched operations are enabled.
+     * @param enableBatchedOperations - Indicates whether server-side batched operations are enabled.
      */
     public void setEnableBatchedOperations(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
     }
 
     /**
-     * The {@link AuthorizationRule} on the queue to control user access at entity level.
+     * @return The {@link AuthorizationRule} on the queue to control user access at entity level.
      */
     public List<AuthorizationRule> getAuthorizationRules() {
         return authorizationRules;
     }
 
     /**
-     * The {@link AuthorizationRule} on the queue to control user access at entity level.
+     * @param  authorizationRules - The {@link AuthorizationRule} on the queue to control user access at entity level.
      */
     public void setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
         this.authorizationRules = authorizationRules;
     }
 
     /**
-     * The current status of the queue (Enabled / Disabled).
+     * Gets the status of the entity. When an entity is disabled, that entity cannot send or receive messages.
+     * @return The current status of the queue (Enabled / Disabled).
      * The default value is Enabled.
-     * When an entity is disabled, that entity cannot send or receive messages.
      */
     public EntityStatus getEntityStatus() {
         return this.status;
     }
 
     /**
-     * Sets the status of the queue (Enabled / Disabled).
+     * @param status - the status of the queue (Enabled / Disabled).
      * When an entity is disabled, that entity cannot send or receive messages.
      */
-    public void setEntityStatus(EntityStatus stats) {
+    public void setEntityStatus(EntityStatus status) {
         this.status = status;
     }
 
     /**
-     * The path of the recipient entity to which all the messages sent to the queue are forwarded to.
+     * @return The path of the recipient entity to which all the messages sent to the queue are forwarded to.
      * If set, user cannot manually receive messages from this queue. The destination entity
      * must be an already existing entity.
      */
@@ -317,7 +317,7 @@ public class QueueDescription {
     }
 
     /**
-     * The path of the recipient entity to which all the messages sent to the queue are forwarded to.
+     * @param forwardTo - The path of the recipient entity to which all the messages sent to the queue are forwarded to.
      * If set, user cannot manually receive messages from this queue. The destination entity
      * must be an already existing entity.
      */
@@ -336,7 +336,7 @@ public class QueueDescription {
     }
 
     /**
-     * The path of the recipient entity to which all the dead-lettered messages of this queue are forwarded to.
+     * @return The path of the recipient entity to which all the dead-lettered messages of this queue are forwarded to.
      * If set, user cannot manually receive dead-lettered messages from this queue. The destination
      * entity must already exist.
      */
@@ -345,7 +345,7 @@ public class QueueDescription {
     }
 
     /**
-     * The path of the recipient entity to which all the dead-lettered messages of this queue are forwarded to.
+     * @param forwardDeadLetteredMessagesTo - The path of the recipient entity to which all the dead-lettered messages of this queue are forwarded to.
      * If set, user cannot manually receive dead-lettered messages from this queue. The destination
      * entity must already exist.
      */
@@ -364,7 +364,7 @@ public class QueueDescription {
     }
 
     /**
-     * Indicates whether the queue is to be partitioned across multiple message brokers.
+     * @return boolean indicating whether the queue is to be partitioned across multiple message brokers.
      * Defaults to false
      */
     public boolean isEnablePartitioning() {
@@ -372,21 +372,21 @@ public class QueueDescription {
     }
 
     /**
-     * Indicates whether the queue is to be partitioned across multiple message brokers.
+     * @param enablePartitioning - true if queue is to be partitioned across multiple message brokers.
      */
     public void setEnablePartitioning(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
     }
 
     /**
-     * Custom metdata that user can associate with the description.
+     * @return Custom metdata that user can associate with the description.
      */
     public String getUserMetadata() {
         return userMetadata;
     }
 
     /**
-     * Custom metdata that user can associate with the description.
+     * @param userMetadata - Custom metdata that user can associate with the description.
      * Cannot be null. Max length is 1024 chars
      */
     public void setUserMetadata(String userMetadata) {

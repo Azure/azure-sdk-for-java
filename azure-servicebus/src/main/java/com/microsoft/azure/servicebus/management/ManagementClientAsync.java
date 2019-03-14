@@ -381,6 +381,7 @@ public class ManagementClientAsync {
 
     /**
      * Retrieves the list of subscriptions for a given topic in the namespace.
+     * @param topicName - The name of the topic.
      * @return the first 100 subscriptions.
      */
     public CompletableFuture<List<SubscriptionDescription>> getSubscriptionsAsync(String topicName) {
@@ -392,6 +393,7 @@ public class ManagementClientAsync {
      * You can simulate pages of list of entities by manipulating count and skip parameters.
      * skip(0)+count(100) gives first 100 entities. skip(100)+count(100) gives the next 100 entities.
      * @return the list of subscriptions.
+     * @param topicName - The name of the topic.
      * @param count - The number of subscriptions to fetch. Defaults to 100. Maximum value allowed is 100.
      * @param skip - The number of subscriptions to skip. Defaults to 0. Cannot be negative.
      */
@@ -422,6 +424,8 @@ public class ManagementClientAsync {
 
     /**
      * Retrieves the list of rules for a given topic-subscription in the namespace.
+     * @param topicName - The name of the topic.
+     * @param subscriptionName - The name of the subscription.
      * @return the first 100 rules.
      */
     public CompletableFuture<List<RuleDescription>> getRulesAsync(String topicName, String subscriptionName) {
@@ -433,6 +437,8 @@ public class ManagementClientAsync {
      * You can simulate pages of list of entities by manipulating count and skip parameters.
      * skip(0)+count(100) gives first 100 entities. skip(100)+count(100) gives the next 100 entities.
      * @return the list of rules.
+     * @param topicName - The name of the topic.
+     * @param subscriptionName - The name of the subscription.
      * @param count - The number of rules to fetch. Defaults to 100. Maximum value allowed is 100.
      * @param skip - The number of rules to skip. Defaults to 0. Cannot be negative.
      */
@@ -912,6 +918,7 @@ public class ManagementClientAsync {
     /**
      * Deletes the queue described by the path relative to the service namespace base address.
      * @param path - The name of the entity relative to the service namespace base address.
+     * @return A completable future that completes when the queue is deleted.
      * @throws IllegalArgumentException - path is not null / empty / too long / invalid.
      */
     public CompletableFuture<Void> deleteQueueAsync(String path) {
@@ -922,6 +929,7 @@ public class ManagementClientAsync {
     /**
      * Deletes the topic described by the path relative to the service namespace base address.
      * @param path - The name of the entity relative to the service namespace base address.
+     * @return A completable future that completes when the topic is deleted.
      * @throws IllegalArgumentException - path is not null / empty / too long / invalid.
      */
     public CompletableFuture<Void> deleteTopicAsync(String path) {
@@ -933,6 +941,7 @@ public class ManagementClientAsync {
      * Deletes the subscription described by the topicPath and the subscriptionName.
      * @param topicPath - The name of the topic.
      * @param subscriptionName - The name of the subscription.
+     * @return A completable future that completes when the subscription is deleted.
      * @throws IllegalArgumentException - path is not null / empty / too long / invalid.
      */
     public CompletableFuture<Void> deleteSubscriptionAsync(String topicPath, String subscriptionName) {
@@ -947,6 +956,7 @@ public class ManagementClientAsync {
      * @param topicPath - The name of the topic.
      * @param subscriptionName - The name of the subscription.
      * @param ruleName - The name of the rule.
+     * @return A completable future that completes when the rule is deleted.
      * @throws IllegalArgumentException - path is not null / empty / too long / invalid.
      */
     public CompletableFuture<Void> deleteRuleAsync(String topicPath, String subscriptionName, String ruleName) {
@@ -972,7 +982,7 @@ public class ManagementClientAsync {
 
     /**
      * Disposes and closes the managementClient.
-     * @throws IOException
+     * @throws IOException if an I/O error occurs
      */
     public void close() throws IOException {
         this.asyncHttpClient.close();

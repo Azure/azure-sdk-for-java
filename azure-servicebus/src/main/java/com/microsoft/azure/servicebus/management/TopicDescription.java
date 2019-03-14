@@ -34,7 +34,7 @@ public class TopicDescription {
     }
 
     /**
-     * Gets the path of the topic.
+     * @return the path of the topic.
      */
     public String getPath()
     {
@@ -42,7 +42,7 @@ public class TopicDescription {
     }
 
     /**
-     * Sets the path of topic.
+     * @param path - the path of topic.
      * Max length is 260 chars. Cannot start or end with a slash.
      * Cannot have restricted characters: '@','?','#','*'
      */
@@ -53,7 +53,7 @@ public class TopicDescription {
     }
 
     /**
-     * Gets the maximum size of the topic in megabytes, which is the size of memory allocated for the topic.
+     * @return the maximum size of the topic in megabytes, which is the size of memory allocated for the topic.
      * Default value is 1024.
      */
     public long getMaxSizeInMB() {
@@ -61,7 +61,7 @@ public class TopicDescription {
     }
 
     /**
-     * Sets the maximum size of the topic in megabytes, which is the size of memory allocated for the topic.
+     * @param maxSize - Sets the maximum size of the topic in megabytes, which is the size of memory allocated for the topic.
      */
     public void setMaxSizeInMB(long maxSize)
     {
@@ -69,16 +69,16 @@ public class TopicDescription {
     }
 
     /**
-     * This value indicates if the topic requires guard against duplicate messages. If true, duplicate messages
-     * having same {@link IMessage#getMessageId()} and sent to topic within duration of {@link #getDuplicationDetectionHistoryTimeWindow}
-     * will be discarded.
+     * If enabled, duplicate messages having same {@link IMessage#getMessageId()} and sent to queue
+     * within duration of {@link #getDuplicationDetectionHistoryTimeWindow} will be discarded.
+     * @return value indicating if the queue requires guard against duplicate messages.
      */
     public boolean isRequiresDuplicateDetection() {
         return requiresDuplicateDetection;
     }
 
     /**
-     * Set to true if duplicate detection needs to be enabled.
+     * @param requiresDuplicateDetection - Set to true if duplicate detection needs to be enabled.
      * See also - {@link #isRequiresDuplicateDetection()}
      */
     public void setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
@@ -86,19 +86,19 @@ public class TopicDescription {
     }
 
     /**
-     * The default time to live value for the messages. This is the duration after which the message expires, starting from when
+     * Time-To-live is the duration after which the message expires, starting from when
      * the message is sent to Service Bus.
      * This is the default value used when {@link IMessage#getTimeToLive()} is not set on a message itself.
      * Messages older than their TimeToLive value will expire and no longer be retained in the message store.
      * Subscribers will be unable to receive expired messages.
-     * Default value is {@link ManagementClientConstants#MAX_DURATION}
+     * @return The default time to live value for the messages. Default value is {@link ManagementClientConstants#MAX_DURATION}
      */
     public Duration getDefaultMessageTimeToLive() {
         return defaultMessageTimeToLive;
     }
 
     /**
-     * Sets the default message time to live value.
+     * @param defaultMessageTimeToLive - Sets the default message time to live value.
      * Value cannot be lower than 1 second.
      * See {@link #getDefaultMessageTimeToLive()}
      */
@@ -117,7 +117,7 @@ public class TopicDescription {
     }
 
     /**
-     * The idle interval after which the topic is automatically deleted.
+     * @return The idle interval after which the topic is automatically deleted.
      * Default value is {@link ManagementClientConstants#MAX_DURATION}
      */
     public Duration getAutoDeleteOnIdle() {
@@ -125,7 +125,7 @@ public class TopicDescription {
     }
 
     /**
-     * The idle interval after which the topic is automatically deleted.
+     * @param autoDeleteOnIdle - The idle interval after which the topic is automatically deleted.
      * The minimum duration is 5 minutes.
      */
     public void setAutoDeleteOnIdle(Duration autoDeleteOnIdle) {
@@ -144,7 +144,7 @@ public class TopicDescription {
     }
 
     /**
-     * The duration of duplicate detection history that is maintained by the service.
+     * @return The duration of duplicate detection history that is maintained by the service.
      * The default value is 1 minute.
      */
     public Duration getDuplicationDetectionHistoryTimeWindow() {
@@ -152,7 +152,7 @@ public class TopicDescription {
     }
 
     /**
-     * The duration of duplicate detection history that is maintained by the service.
+     * @param duplicationDetectionHistoryTimeWindow - The duration of duplicate detection history that is maintained by the service.
      * Max value is 1 day and minimum is 20 seconds.
      */
     public void setDuplicationDetectionHistoryTimeWindow(Duration duplicationDetectionHistoryTimeWindow) {
@@ -173,7 +173,7 @@ public class TopicDescription {
     }
 
     /**
-     * Indicates whether server-side batched operations are enabled.
+     * @return Indicates whether server-side batched operations are enabled.
      * Defaults to true.
      */
     public boolean isEnableBatchedOperations() {
@@ -181,45 +181,45 @@ public class TopicDescription {
     }
 
     /**
-     * Indicates whether server-side batched operations are enabled.
+     * @param enableBatchedOperations - Indicates whether server-side batched operations are enabled.
      */
     public void setEnableBatchedOperations(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
     }
 
     /**
-     * The {@link AuthorizationRule} on the topic to control user access at entity level.
+     * @return The {@link AuthorizationRule} on the topic to control user access at entity level.
      */
     public List<AuthorizationRule> getAuthorizationRules() {
         return authorizationRules;
     }
 
     /**
-     * The {@link AuthorizationRule} on the topic to control user access at entity level.
+     * @param authorizationRules - The {@link AuthorizationRule} on the topic to control user access at entity level.
      */
     public void setAuthorizationRules(List<AuthorizationRule> authorizationRules) {
         this.authorizationRules = authorizationRules;
     }
 
     /**
-     * The current status of the topic (Enabled / Disabled).
+     * Gets the status of the entity. When an entity is disabled, that entity cannot send or receive messages.
+     * @return The current status of the topic (Enabled / Disabled).
      * The default value is Enabled.
-     * When an entity is disabled, that entity cannot send or receive messages.
      */
     public EntityStatus getEntityStatus() {
         return this.status;
     }
 
     /**
-     * Sets the status of the topic (Enabled / Disabled).
+     * @param status - the status of the topic (Enabled / Disabled).
      * When an entity is disabled, that entity cannot send or receive messages.
      */
-    public void setEntityStatus(EntityStatus stats) {
+    public void setEntityStatus(EntityStatus status) {
         this.status = status;
     }
 
     /**
-     * Indicates whether the topic is to be partitioned across multiple message brokers.
+     * @return boolean indicating whether the topic is to be partitioned across multiple message brokers.
      * Defaults to false
      */
     public boolean isEnablePartitioning() {
@@ -227,14 +227,14 @@ public class TopicDescription {
     }
 
     /**
-     * Indicates whether the topic is to be partitioned across multiple message brokers.
+     * @param enablePartitioning - true if topic is to be partitioned across multiple message brokers.
      */
     public void setEnablePartitioning(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
     }
 
     /**
-     * Defines whether ordering needs to be maintained. If true, messages sent to topic will be
+     * @return Defines whether ordering needs to be maintained. If true, messages sent to topic will be
      * forwarded to the subscription in order.
      * Defaults to false
      */
@@ -243,7 +243,7 @@ public class TopicDescription {
     }
 
     /**
-     * Defines whether ordering needs to be maintained. If true, messages sent to topic will be
+     * @param supportOrdering - Defines whether ordering needs to be maintained. If true, messages sent to topic will be
      * forwarded to the subscription in order.
      */
     public void setSupportOrdering(boolean supportOrdering) {
@@ -251,14 +251,14 @@ public class TopicDescription {
     }
 
     /**
-     * Custom metdata that user can associate with the description.
+     * @return - Custom metdata that user can associate with the description.
      */
     public String getUserMetadata() {
         return userMetadata;
     }
 
     /**
-     * Custom metdata that user can associate with the description.
+     * @param userMetadata - Custom metdata that user can associate with the description.
      * Cannot be null. Max length is 1024 chars
      */
     public void setUserMetadata(String userMetadata) {

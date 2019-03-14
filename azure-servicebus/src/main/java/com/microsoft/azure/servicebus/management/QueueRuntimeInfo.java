@@ -14,7 +14,7 @@ public class QueueRuntimeInfo extends EntityRuntimeInfo {
     }
 
     /**
-     * The total number of messages in the entity.
+     * @return The total number of messages in the entity.
      */
     public long getMessageCount() {
         return messageCount;
@@ -25,7 +25,7 @@ public class QueueRuntimeInfo extends EntityRuntimeInfo {
     }
 
     /**
-     * Current size of the entity in bytes.
+     * @return Current size of the entity in bytes.
      */
     public long getSizeInBytes() {
         return sizeInBytes;

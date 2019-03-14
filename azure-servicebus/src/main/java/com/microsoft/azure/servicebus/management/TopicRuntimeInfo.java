@@ -13,7 +13,7 @@ public class TopicRuntimeInfo extends EntityRuntimeInfo {
     }
 
     /**
-     * Current size of the entity in bytes.
+     * @return Current size of the entity in bytes.
      */
     public long getSizeInBytes() {
         return sizeInBytes;
@@ -24,7 +24,7 @@ public class TopicRuntimeInfo extends EntityRuntimeInfo {
     }
 
     /**
-     * Number of subscriptions on the topic.
+     * @return Number of subscriptions on the topic.
      */
     public int getSubscriptionCount() {
         return subscriptionCount;

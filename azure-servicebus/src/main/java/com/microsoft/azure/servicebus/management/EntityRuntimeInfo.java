@@ -13,14 +13,14 @@ public abstract class EntityRuntimeInfo {
     String path;
 
     /**
-     * The path of the entity.
+     * @return The path of the entity.
      */
     public String getPath() {
         return path;
     }
 
     /**
-     * Message count details of the sub-queues of the entity.
+     * @return Message count details of the sub-queues of the entity.
      */
     public MessageCountDetails getMessageCountDetails() {
         return messageCountDetails;
@@ -31,7 +31,7 @@ public abstract class EntityRuntimeInfo {
     }
 
     /**
-     * The date-time when entity was created.
+     * @return The date-time when entity was created.
      */
     public Instant getCreatedAt() {
         return createdAt;
@@ -42,7 +42,7 @@ public abstract class EntityRuntimeInfo {
     }
 
     /**
-     * The date-time when the entity was updated
+     * @return The date-time when the entity was updated
      */
     public Instant getUpdatedAt() {
         return updatedAt;
@@ -53,7 +53,7 @@ public abstract class EntityRuntimeInfo {
     }
 
     /**
-     * The date-time when the entity was last accessed.
+     * @return The date-time when the entity was last accessed.
      */
     public Instant getAccessedAt() {
         return accessedAt;

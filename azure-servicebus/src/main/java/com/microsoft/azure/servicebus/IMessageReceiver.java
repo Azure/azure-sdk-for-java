@@ -512,9 +512,9 @@ public interface IMessageReceiver extends IMessageEntityClient, IMessageBrowser 
      * If processing of the message requires longer than this duration, the lock needs to be renewed. For each renewal, the lock is reset to
      * the entity's LockDuration value.
      *
+     * Note - calling this will not update {@link Message#getLockedUntilUtc()} and updated lockedUntilUtc must be tracked by the application.
      * @param lockToken Message lock token {@link Message#getLockToken()}
      * @return a CompletableFuture representing the pending renew.
-     * @apiNote calling this will not update {@link Message#getLockedUntilUtc()} and updated lockedUntilUtc must be tracked by the application.
      */
     CompletableFuture<Instant> renewMessageLockAsync(UUID lockToken);
 
@@ -539,11 +539,11 @@ public interface IMessageReceiver extends IMessageEntityClient, IMessageBrowser 
      * If processing of the message requires longer than this duration, the lock needs to be renewed. For each renewal, the lock is reset to
      * the entity's LockDuration value.
      *
+     * Note - calling this will not update {@link Message#getLockedUntilUtc()} and updated lockedUntilUtc must be tracked by the application.
      * @param lockToken Message lock token {@link Message#getLockToken()}
      * @return The new locked until UTC time.
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ServiceBusException  if renew failed
-     * @apiNote calling this will not update {@link Message#getLockedUntilUtc()} and updated lockedUntilUtc must be tracked by the application.
      */
     Instant renewMessageLock(UUID lockToken) throws InterruptedException, ServiceBusException;
 

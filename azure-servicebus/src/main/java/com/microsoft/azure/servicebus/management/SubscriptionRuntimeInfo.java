@@ -16,21 +16,21 @@ public class SubscriptionRuntimeInfo extends EntityRuntimeInfo {
     }
 
     /**
-     * The path of the topic.
+     * @return The path of the topic.
      */
     public String getTopicPath() {
         return topicPath;
     }
 
     /**
-     * The name of the subscription
+     * @return The name of the subscription
      */
     public String getSubscriptionName() {
         return subscriptionName;
     }
 
     /**
-     * The total number of messages in the entity.
+     * @return The total number of messages in the entity.
      */
     public long getMessageCount() {
         return messageCount;

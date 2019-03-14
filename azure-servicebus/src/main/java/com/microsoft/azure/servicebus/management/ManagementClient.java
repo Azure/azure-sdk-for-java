@@ -28,6 +28,8 @@ public class ManagementClient {
      * Retrieves information related to the namespace.
      * Works with any claim (Send/Listen/Manage).
      * @return - {@link NamespaceInfo} containing namespace information.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public NamespaceInfo getNamespaceInfo() throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getNamespaceInfoAsync());
@@ -42,7 +44,8 @@ public class ManagementClient {
      * @throws MessagingEntityNotFoundException - Entity with this name doesn't exist.
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public QueueDescription getQueue(String path) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getQueueAsync(path));
@@ -57,7 +60,8 @@ public class ManagementClient {
      * @throws MessagingEntityNotFoundException - Entity with this name doesn't exist.
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public QueueRuntimeInfo getQueueRuntimeInfo(String path) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getQueueRuntimeInfoAsync(path));
@@ -72,7 +76,8 @@ public class ManagementClient {
      * @throws MessagingEntityNotFoundException - Entity with this name doesn't exist.
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public TopicDescription getTopic(String path) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getTopicAsync(path));
@@ -87,7 +92,8 @@ public class ManagementClient {
      * @throws MessagingEntityNotFoundException - Entity with this name doesn't exist.
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public TopicRuntimeInfo getTopicRuntimeInfo(String path) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getTopicRuntimeInfoAsync(path));
@@ -103,7 +109,8 @@ public class ManagementClient {
      * @throws MessagingEntityNotFoundException - Entity with this name doesn't exist.
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public SubscriptionDescription getSubscription(String topicPath, String subscriptionName) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getSubscriptionAsync(topicPath, subscriptionName));
@@ -119,7 +126,8 @@ public class ManagementClient {
      * @throws MessagingEntityNotFoundException - Entity with this name doesn't exist.
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public SubscriptionRuntimeInfo getSubscriptionRuntimeInfo(String topicPath, String subscriptionName) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getSubscriptionRuntimeInfoAsync(topicPath, subscriptionName));
@@ -136,7 +144,8 @@ public class ManagementClient {
      * @throws MessagingEntityNotFoundException - Entity with this name doesn't exist.
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public RuleDescription getRule(String topicPath, String subscriptionName, String ruleName) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getRuleAsync(topicPath, subscriptionName, ruleName));
@@ -148,7 +157,8 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public List<QueueDescription> getQueues() throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getQueuesAsync());
@@ -164,7 +174,8 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public List<QueueDescription> getQueues(int count, int skip) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getQueuesAsync(count, skip));
@@ -176,7 +187,8 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public List<TopicDescription> getTopics() throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getTopicsAsync());
@@ -192,7 +204,8 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public List<TopicDescription> getTopics(int count, int skip) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getTopicsAsync(count, skip));
@@ -200,11 +213,13 @@ public class ManagementClient {
 
     /**
      * Retrieves the list of subscriptions for a given topic in the namespace.
+     * @param topicName - The name of the topic.
      * @return the first 100 subscriptions.
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public List<SubscriptionDescription> getSubscriptions(String topicName) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getSubscriptionsAsync(topicName));
@@ -215,12 +230,14 @@ public class ManagementClient {
      * You can simulate pages of list of entities by manipulating count and skip parameters.
      * skip(0)+count(100) gives first 100 entities. skip(100)+count(100) gives the next 100 entities.
      * @return the list of subscriptions.
+     * @param topicName - The name of the topic.
      * @param count - The number of subscriptions to fetch. Defaults to 100. Maximum value allowed is 100.
      * @param skip - The number of subscriptions to skip. Defaults to 0. Cannot be negative.
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public List<SubscriptionDescription> getSubscriptions(String topicName, int count, int skip) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getSubscriptionsAsync(topicName, count, skip));
@@ -228,11 +245,14 @@ public class ManagementClient {
 
     /**
      * Retrieves the list of rules for a given topic-subscription in the namespace.
+     * @param topicName - The name of the topic.
+     * @param subscriptionName - The name of the subscription.
      * @return the first 100 rules.
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public List<RuleDescription> getRules(String topicName, String subscriptionName) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getRulesAsync(topicName, subscriptionName));
@@ -243,12 +263,15 @@ public class ManagementClient {
      * You can simulate pages of list of entities by manipulating count and skip parameters.
      * skip(0)+count(100) gives first 100 entities. skip(100)+count(100) gives the next 100 entities.
      * @return the list of rules.
+     * @param topicName - The name of the topic.
+     * @param subscriptionName - The name of the subscription.
      * @param count - The number of rules to fetch. Defaults to 100. Maximum value allowed is 100.
      * @param skip - The number of rules to skip. Defaults to 0. Cannot be negative.
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public List<RuleDescription> getRules(String topicName, String subscriptionName, int count, int skip) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.getRulesAsync(topicName, subscriptionName, count, skip));
@@ -264,8 +287,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public QueueDescription createQueue(String queuePath) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.createQueueAsync(queuePath));
@@ -280,8 +304,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public QueueDescription createQueue(QueueDescription queueDescription) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.createQueueAsync(queueDescription));
@@ -296,8 +321,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public QueueDescription updateQueue(QueueDescription queueDescription) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.updateQueueAsync(queueDescription));
@@ -313,8 +339,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public TopicDescription createTopic(String topicPath) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.createTopicAsync(topicPath));
@@ -329,8 +356,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public TopicDescription createTopic(TopicDescription topicDescription) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.createTopicAsync(topicDescription));
@@ -345,8 +373,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public TopicDescription updateTopic(TopicDescription topicDescription) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.updateTopicAsync(topicDescription));
@@ -363,8 +392,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public SubscriptionDescription createSubscription(String topicPath, String subscriptionName) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.createSubscriptionAsync(topicPath, subscriptionName));
@@ -379,8 +409,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public SubscriptionDescription createSubscription(SubscriptionDescription subscriptionDescription) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.createSubscriptionAsync(subscriptionDescription));
@@ -396,8 +427,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public SubscriptionDescription createSubscription(SubscriptionDescription subscriptionDescription, RuleDescription defaultRule) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.createSubscriptionAsync(subscriptionDescription, defaultRule));
@@ -412,8 +444,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public SubscriptionDescription updateSubscription(SubscriptionDescription subscriptionDescription) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.updateSubscriptionAsync(subscriptionDescription));
@@ -430,8 +463,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public RuleDescription createRule(String topicName, String subscriptionName, RuleDescription ruleDescription) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.createRuleAsync(topicName, subscriptionName, ruleDescription));
@@ -448,8 +482,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws QuotaExceededException - Either the specified size in the description is not supported or the maximum allowed quota has been reached.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public RuleDescription updateRule(String topicName, String subscriptionName, RuleDescription ruleDescription) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.updateRuleAsync(topicName, subscriptionName, ruleDescription));
@@ -463,7 +498,8 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public Boolean queueExists(String path) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.queueExistsAsync(path));
@@ -477,7 +513,8 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public Boolean topicExists(String path) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.topicExistsAsync(path));
@@ -492,7 +529,8 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public Boolean subscriptionExists(String topicPath, String subscriptionName) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.subscriptionExistsAsync(topicPath, subscriptionName));
@@ -508,7 +546,8 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public Boolean ruleExists(String topicPath, String subscriptionName, String ruleName) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.ruleExistsAsync(topicPath, subscriptionName, ruleName));
@@ -521,8 +560,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws MessagingEntityNotFoundException - An entity with this name does not exist.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public Void deleteQueue(String path) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.deleteQueueAsync(path));
@@ -535,8 +575,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws MessagingEntityNotFoundException - An entity with this name does not exist.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public Void deleteTopic(String path) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.deleteTopicAsync(path));
@@ -550,8 +591,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws MessagingEntityNotFoundException - An entity with this name does not exist.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public Void deleteSubscription(String topicPath, String subscriptionName) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.deleteSubscriptionAsync(topicPath, subscriptionName));
@@ -566,8 +608,9 @@ public class ManagementClient {
      * @throws TimeoutException - The operation times out. The timeout period is initiated through ClientSettings.operationTimeout
      * @throws AuthorizationFailedException - No sufficient permission to perform this operation. Please check ClientSettings.tokenProvider has correct details.
      * @throws ServerBusyException - The server is busy. You should wait before you retry the operation.
-     * @throws ServiceBusException - An internal error or an unexpected exception occured.
+     * @throws ServiceBusException - An internal error or an unexpected exception occurred.
      * @throws MessagingEntityNotFoundException - An entity with this name does not exist.
+     * @throws InterruptedException if the current thread was interrupted
      */
     public Void deleteRule(String topicPath, String subscriptionName, String ruleName) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.asyncClient.deleteRuleAsync(topicPath, subscriptionName, ruleName));
@@ -575,7 +618,7 @@ public class ManagementClient {
 
     /**
      * Disposes and closes the managementClient.
-     * @throws IOException
+     * @throws IOException if an I/O error occurs
      */
     public void close() throws IOException {
         this.asyncClient.close();

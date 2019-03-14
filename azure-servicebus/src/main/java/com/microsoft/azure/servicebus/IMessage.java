@@ -270,7 +270,7 @@ public interface IMessage {
      * for example reflecting the MessageId of a message that is being replied to.
      *
      * @return correlation Id of this message
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message Routing and Correlation</a>.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message Routing and Correlation</a>
      */
     public String getCorrelationId();
 
@@ -309,7 +309,7 @@ public interface IMessage {
      * absolute or relative path of the queue or topic it expects the reply to be sent to.
      *
      * @return ReplyTo property value of this message
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message Routing and Correlation</a>.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message Routing and Correlation</a>
      */
     public String getReplyTo();
 
@@ -386,7 +386,7 @@ public interface IMessage {
      * messages are kept together and in order as they are transferred.
      *
      * @return partition key on the via queue.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers and Send Via</a>.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers and Send Via</a>
      */
     public String getViaPartitionKey();
 
