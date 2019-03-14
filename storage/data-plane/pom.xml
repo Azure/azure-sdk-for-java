@@ -30,14 +30,6 @@
 
     <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
 
-    <properties>
-      <groovy-eclipse-compiler.version>2.9.3-01</groovy-eclipse-compiler.version>
-      <groovy-eclipse-batch.version>2.5.5-01</groovy-eclipse-batch.version>
-      <netty-all.version>4.1.33.Final</netty-all.version>
-      <netty-socketio.version>1.7.13</netty-socketio.version>
-    </properties>
-
-
     <pluginRepositories>
         <pluginRepository>
             <id>bintray</id>
@@ -66,7 +58,8 @@
         </dependency>
 
         <!-- Adding latest Netty as a temporary override of netty lib in v2 runtime.
-        The old version prevents tests from running in Java 11. Issue is raised to have netty updated in v2 runtime -->
+        The old version prevents tests from running in Java 11. Issue is raised to have netty updated in v2 runtime
+         Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3107 -->
         <dependency>
           <groupId>io.netty</groupId>
           <artifactId>netty-all</artifactId>

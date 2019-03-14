@@ -561,22 +561,6 @@ class BlockBlobAPITest extends APISpec {
         bu.upload(defaultFlowable, defaultDataSize).blockingGet().statusCode() == 201
     }
 
-   /* @Unroll
-    def "Upload illegal argument"() {
-        when:
-        bu.upload(data, dataSize, null, null, null, null).blockingGet()
-
-        then:
-        def e = thrown(Exception)
-        exceptionType.isInstance(e)
-
-        where:
-        data            | dataSize            | exceptionType
-        null            | defaultDataSize     | IllegalArgumentException
-        defaultFlowable | defaultDataSize + 1 | UnexpectedLengthException
-        defaultFlowable | defaultDataSize - 1 | UnexpectedLengthException
-    }*/
-
     def "Upload empty body"() {
         expect:
         bu.upload(Flowable.just(ByteBuffer.wrap(new byte[0])), 0, null, null,

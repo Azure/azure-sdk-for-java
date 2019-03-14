@@ -114,82 +114,6 @@ class TransferManagerTest extends APISpec {
         10                                     | BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 // Too many blocks.
     }
 
-    @Unroll
-    def "Upload file headers"() {
-        setup:
-        // We have to use the defaultData here so we can calculate the MD5 on the uploadBlob case.
-        File file = File.createTempFile("testUpload", ".txt")
-        file.deleteOnExit()
-        if (fileSize == "small") {
-            FileOutputStream fos = new FileOutputStream(file)
-            fos.write(defaultData.array())
-            fos.close()
-        } else {
-            file = getRandomFile(BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10)
-        }
-
-        def channel = AsynchronousFileChannel.open(file.toPath())
-
-        when:
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                new TransferManagerUploadToBlockBlobOptions(null, new BlobHTTPHeaders()
-                        .withBlobCacheControl(cacheControl).withBlobContentDisposition(contentDisposition)
-                        .withBlobContentEncoding(contentEncoding).withBlobContentLanguage(contentLanguage)
-                        .withBlobContentMD5(contentMD5).withBlobContentType(contentType), null, null, null))
-                .blockingGet()
-
-        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
-
-        then:
-        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
-                fileSize == "small" ? MessageDigest.getInstance("MD5").digest(defaultData.array()) : contentMD5,
-                contentType == null ? "application/octet-stream" : contentType)
-        // For uploading a block blob single-shot, the service will auto calculate an MD5 hash if not present.
-        // HTTP default content type is application/octet-stream.
-
-        cleanup:
-        channel.close()
-
-        where:
-        // The MD5 is simply set on the blob for commitBlockList, not validated.
-        fileSize | cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
-        "small"  | null         | null               | null            | null            | null                                                         | null
-        "small"  | "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
-        "large"  | null         | null               | null            | null            | null                                                         | null
-        "large"  | "control"    | "disposition"      | "encoding"      | "language"      | MessageDigest.getInstance("MD5").digest(defaultData.array()) | "type"
-    }
-
-    @Unroll
-    def "Upload file metadata"() {
-        setup:
-        Metadata metadata = new Metadata()
-        if (key1 != null) {
-            metadata.put(key1, value1)
-        }
-        if (key2 != null) {
-            metadata.put(key2, value2)
-        }
-        def channel = AsynchronousFileChannel.open(getRandomFile(dataSize).toPath())
-
-        when:
-        TransferManager.uploadFileToBlockBlob(channel, bu, BlockBlobURL.MAX_STAGE_BLOCK_BYTES,
-                new TransferManagerUploadToBlockBlobOptions(null, null, metadata, null, null)).blockingGet()
-        BlobGetPropertiesResponse response = bu.getProperties(null, null).blockingGet()
-
-        then:
-        response.statusCode() == 200
-        response.headers().metadata() == metadata
-
-        cleanup:
-        channel.close()
-
-        where:
-        dataSize                                | key1  | value1 | key2   | value2
-        10                                      | null  | null   | null   | null
-        10                                      | "foo" | "bar"  | "fizz" | "buzz"
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | null  | null   | null   | null
-        BlockBlobURL.MAX_UPLOAD_BLOB_BYTES + 10 | "foo" | "bar"  | "fizz" | "buzz"
-    }
 
     @Unroll
     def "Upload file AC"() {
@@ -659,8 +583,11 @@ class TransferManagerTest extends APISpec {
     @Unroll
     def "Download file IA null"() {
         when:
-        TransferManager.downloadBlobToFile(file, blobURL, null, null).blockingGet()
-
+        if(file != null) {
+            TransferManager.downloadBlobToFile(AsynchronousFileChannel.open(file.toPath()), blobURL, null, null).blockingGet()
+        } else {
+            TransferManager.downloadBlobToFile(file, blobURL, null, null).blockingGet()
+        }
         then:
         thrown(IllegalArgumentException)
 
@@ -761,6 +688,7 @@ class TransferManagerTest extends APISpec {
         // 500 * 1024 * 1024   | 100 * 1024 * 1024 | 4        || 5
         // Disabling this test, as it causes Java Out of Memory error on Dev Ops VM.
         // Will enable it later, when a decision on virtual machines upgrade is made.
+        // Issue Link : https://github.com/Azure/azure-sdk-for-java/issues/3106
     }
 
     def compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {

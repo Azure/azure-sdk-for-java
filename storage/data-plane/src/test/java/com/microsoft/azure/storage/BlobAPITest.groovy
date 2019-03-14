@@ -1905,24 +1905,6 @@ class BlobAPITest extends APISpec {
         notThrown(RuntimeException)
     }
 
-    def "Undelete"() {
-        setup:
-        enableSoftDelete()
-        bu.delete(null, null, null).blockingGet()
-
-        when:
-        def response = bu.undelete(null).blockingGet()
-        bu.getProperties(null, null).blockingGet()
-
-        then:
-        notThrown(StorageException)
-        response.headers().requestId() != null
-        response.headers().version() != null
-        response.headers().date() != null
-
-        disableSoftDelete() == null
-    }
-
     def "Undelete min"() {
         setup:
         enableSoftDelete()
