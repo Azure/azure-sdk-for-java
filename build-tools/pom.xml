@@ -6,18 +6,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.microsoft.azure.v3</groupId>
-    <artifactId>autorest-clientruntime-for-java</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-common-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>autorest-build-tools</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <artifactId>azure-common-build-tools</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Build tools for AutoRest client runtime for Java</name>
-  <description>This package contains the build tools for AutoRest generated Java clients.</description>
+  <name>Build tools for Azure common Java libraries</name>
+  <description>This package contains the build tools for Azure Java client common libraries.</description>
   <url>https://github.com/Azure/autorest-clientruntime-for-java</url>
 
   <licenses>

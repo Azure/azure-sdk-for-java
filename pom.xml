@@ -6,13 +6,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.microsoft.azure.v3</groupId>
-  <artifactId>autorest-clientruntime-for-java</artifactId>
-  <version>3.0.0-SNAPSHOT</version>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-common-parent</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>AutoRest Client Runtimes for Java</name>
-  <description>This package contains the runtimes for AutoRest generated Java clients.</description>
+  <name>Azure Common Libraries for Java</name>
+  <description>This package contains the common libraries Java clients.</description>
   <url>https://github.com/Azure/autorest-clientruntime-for-java</url>
 
   <licenses>
@@ -124,9 +124,9 @@
         <version>2.17</version>
         <dependencies>
           <dependency>
-            <groupId>com.microsoft.azure.v3</groupId>
-            <artifactId>autorest-build-tools</artifactId>
-            <version>3.0.0-SNAPSHOT</version>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-common-build-tools</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
           </dependency>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
@@ -199,8 +199,8 @@
   </build>
   <modules>
     <module>build-tools</module>
-    <module>client-runtime</module>
-    <module>azure-client-runtime</module>
-    <module>azure-client-authentication</module>
+    <module>azure-common</module>
+    <module>azure-common-mgmt</module>
+    <module>azure-common-auth</module>
   </modules>
 </project>
