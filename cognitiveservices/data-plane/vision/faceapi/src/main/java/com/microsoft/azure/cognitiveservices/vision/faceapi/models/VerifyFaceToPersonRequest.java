@@ -12,31 +12,43 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Request body for verify operation.
+ * Request body for face to person verification.
  */
 public class VerifyFaceToPersonRequest {
     /**
-     * FaceId the face, comes from Face - Detect.
+     * FaceId of the face, comes from Face - Detect.
      */
     @JsonProperty(value = "faceId", required = true)
     private UUID faceId;
 
     /**
      * Using existing personGroupId and personId for fast loading a specified
-     * person. personGroupId is created in Person Groups.Create.
+     * person. personGroupId is created in PersonGroup - Create. Parameter
+     * personGroupId and largePersonGroupId should not be provided at the same
+     * time.
      */
-    @JsonProperty(value = "personGroupId", required = true)
+    @JsonProperty(value = "personGroupId")
     private String personGroupId;
 
     /**
-     * Specify a certain person in a person group. personId is created in
-     * Persons.Create.
+     * Using existing largePersonGroupId and personId for fast loading a
+     * specified person. largePersonGroupId is created in LargePersonGroup -
+     * Create. Parameter personGroupId and largePersonGroupId should not be
+     * provided at the same time.
+     */
+    @JsonProperty(value = "largePersonGroupId")
+    private String largePersonGroupId;
+
+    /**
+     * Specify a certain person in a person group or a large person group.
+     * personId is created in PersonGroup Person - Create or LargePersonGroup
+     * Person - Create.
      */
     @JsonProperty(value = "personId", required = true)
     private UUID personId;
 
     /**
-     * Get the faceId value.
+     * Get faceId of the face, comes from Face - Detect.
      *
      * @return the faceId value
      */
@@ -45,7 +57,7 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
-     * Set the faceId value.
+     * Set faceId of the face, comes from Face - Detect.
      *
      * @param faceId the faceId value to set
      * @return the VerifyFaceToPersonRequest object itself.
@@ -56,7 +68,7 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
-     * Get the personGroupId value.
+     * Get using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
      *
      * @return the personGroupId value
      */
@@ -65,7 +77,7 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
-     * Set the personGroupId value.
+     * Set using existing personGroupId and personId for fast loading a specified person. personGroupId is created in PersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
      *
      * @param personGroupId the personGroupId value to set
      * @return the VerifyFaceToPersonRequest object itself.
@@ -76,7 +88,27 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
-     * Get the personId value.
+     * Get using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     *
+     * @return the largePersonGroupId value
+     */
+    public String largePersonGroupId() {
+        return this.largePersonGroupId;
+    }
+
+    /**
+     * Set using existing largePersonGroupId and personId for fast loading a specified person. largePersonGroupId is created in LargePersonGroup - Create. Parameter personGroupId and largePersonGroupId should not be provided at the same time.
+     *
+     * @param largePersonGroupId the largePersonGroupId value to set
+     * @return the VerifyFaceToPersonRequest object itself.
+     */
+    public VerifyFaceToPersonRequest withLargePersonGroupId(String largePersonGroupId) {
+        this.largePersonGroupId = largePersonGroupId;
+        return this;
+    }
+
+    /**
+     * Get specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
      *
      * @return the personId value
      */
@@ -85,7 +117,7 @@ public class VerifyFaceToPersonRequest {
     }
 
     /**
-     * Set the personId value.
+     * Set specify a certain person in a person group or a large person group. personId is created in PersonGroup Person - Create or LargePersonGroup Person - Create.
      *
      * @param personId the personId value to set
      * @return the VerifyFaceToPersonRequest object itself.

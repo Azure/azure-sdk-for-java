@@ -35,7 +35,7 @@ public class Hair {
     private List<HairColor> hairColor;
 
     /**
-     * Get the bald value.
+     * Get a number describing confidence level of whether the person is bald.
      *
      * @return the bald value
      */
@@ -44,7 +44,7 @@ public class Hair {
     }
 
     /**
-     * Set the bald value.
+     * Set a number describing confidence level of whether the person is bald.
      *
      * @param bald the bald value to set
      * @return the Hair object itself.
@@ -55,7 +55,7 @@ public class Hair {
     }
 
     /**
-     * Get the invisible value.
+     * Get a boolean value describing whether the hair is visible in the image.
      *
      * @return the invisible value
      */
@@ -64,7 +64,7 @@ public class Hair {
     }
 
     /**
-     * Set the invisible value.
+     * Set a boolean value describing whether the hair is visible in the image.
      *
      * @param invisible the invisible value to set
      * @return the Hair object itself.
@@ -75,7 +75,7 @@ public class Hair {
     }
 
     /**
-     * Get the hairColor value.
+     * Get an array of candidate colors and confidence level in the presence of each.
      *
      * @return the hairColor value
      */
@@ -84,7 +84,7 @@ public class Hair {
     }
 
     /**
-     * Set the hairColor value.
+     * Set an array of candidate colors and confidence level in the presence of each.
      *
      * @param hairColor the hairColor value to set
      * @return the Hair object itself.

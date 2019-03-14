@@ -33,7 +33,7 @@ public class Occlusion {
     private boolean mouthOccluded;
 
     /**
-     * Get the foreheadOccluded value.
+     * Get a boolean value indicating whether forehead is occluded.
      *
      * @return the foreheadOccluded value
      */
@@ -42,7 +42,7 @@ public class Occlusion {
     }
 
     /**
-     * Set the foreheadOccluded value.
+     * Set a boolean value indicating whether forehead is occluded.
      *
      * @param foreheadOccluded the foreheadOccluded value to set
      * @return the Occlusion object itself.
@@ -53,7 +53,7 @@ public class Occlusion {
     }
 
     /**
-     * Get the eyeOccluded value.
+     * Get a boolean value indicating whether eyes are occluded.
      *
      * @return the eyeOccluded value
      */
@@ -62,7 +62,7 @@ public class Occlusion {
     }
 
     /**
-     * Set the eyeOccluded value.
+     * Set a boolean value indicating whether eyes are occluded.
      *
      * @param eyeOccluded the eyeOccluded value to set
      * @return the Occlusion object itself.
@@ -73,7 +73,7 @@ public class Occlusion {
     }
 
     /**
-     * Get the mouthOccluded value.
+     * Get a boolean value indicating whether the mouth is occluded.
      *
      * @return the mouthOccluded value
      */
@@ -82,7 +82,7 @@ public class Occlusion {
     }
 
     /**
-     * Set the mouthOccluded value.
+     * Set a boolean value indicating whether the mouth is occluded.
      *
      * @param mouthOccluded the mouthOccluded value to set
      * @return the Occlusion object itself.
