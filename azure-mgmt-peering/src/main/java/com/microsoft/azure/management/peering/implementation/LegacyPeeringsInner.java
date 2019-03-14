@@ -10,10 +10,11 @@ package com.microsoft.azure.management.peering.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.peering.ErrorResponseException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -58,6 +60,10 @@ public class LegacyPeeringsInner {
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("peeringLocation") String peeringLocation, @Query("kind") String kind, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.peering.LegacyPeerings listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -65,16 +71,17 @@ public class LegacyPeeringsInner {
      *
      * @param peeringLocation The location of the peering.
      * @param kind The kind of the peering. Possible values include: 'Direct', 'Exchange'
-     * @return the PagedList<PeeringInner> object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PeeringInner&gt; object if successful.
      */
-    public PagedList<PeeringInner> list(String peeringLocation, String kind) {
-        PageImpl<PeeringInner> page = new PageImpl<>();
-        page.setItems(listWithServiceResponseAsync(peeringLocation, kind).toBlocking().single().body());
-        page.setNextPageLink(null);
-        return new PagedList<PeeringInner>(page) {
+    public PagedList<PeeringInner> list(final String peeringLocation, final String kind) {
+        ServiceResponse<Page<PeeringInner>> response = listSinglePageAsync(peeringLocation, kind).toBlocking().single();
+        return new PagedList<PeeringInner>(response.body()) {
             @Override
             public Page<PeeringInner> nextPage(String nextPageLink) {
-                return null;
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -85,10 +92,19 @@ public class LegacyPeeringsInner {
      * @param peeringLocation The location of the peering.
      * @param kind The kind of the peering. Possible values include: 'Direct', 'Exchange'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PeeringInner>> listAsync(String peeringLocation, String kind, final ServiceCallback<List<PeeringInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(peeringLocation, kind), serviceCallback);
+    public ServiceFuture<List<PeeringInner>> listAsync(final String peeringLocation, final String kind, final ListOperationCallback<PeeringInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(peeringLocation, kind),
+            new Func1<String, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
@@ -96,17 +112,17 @@ public class LegacyPeeringsInner {
      *
      * @param peeringLocation The location of the peering.
      * @param kind The kind of the peering. Possible values include: 'Direct', 'Exchange'
-     * @return the observable to the List&lt;PeeringInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
      */
-    public Observable<Page<PeeringInner>> listAsync(String peeringLocation, String kind) {
-        return listWithServiceResponseAsync(peeringLocation, kind).map(new Func1<ServiceResponse<List<PeeringInner>>, Page<PeeringInner>>() {
-            @Override
-            public Page<PeeringInner> call(ServiceResponse<List<PeeringInner>> response) {
-                PageImpl<PeeringInner> page = new PageImpl<>();
-                page.setItems(response.body());
-                return page;
-            }
-        });
+    public Observable<Page<PeeringInner>> listAsync(final String peeringLocation, final String kind) {
+        return listWithServiceResponseAsync(peeringLocation, kind)
+            .map(new Func1<ServiceResponse<Page<PeeringInner>>, Page<PeeringInner>>() {
+                @Override
+                public Page<PeeringInner> call(ServiceResponse<Page<PeeringInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
@@ -114,9 +130,32 @@ public class LegacyPeeringsInner {
      *
      * @param peeringLocation The location of the peering.
      * @param kind The kind of the peering. Possible values include: 'Direct', 'Exchange'
-     * @return the observable to the List&lt;PeeringInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
      */
-    public Observable<ServiceResponse<List<PeeringInner>>> listWithServiceResponseAsync(String peeringLocation, String kind) {
+    public Observable<ServiceResponse<Page<PeeringInner>>> listWithServiceResponseAsync(final String peeringLocation, final String kind) {
+        return listSinglePageAsync(peeringLocation, kind)
+            .concatMap(new Func1<ServiceResponse<Page<PeeringInner>>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(ServiceResponse<Page<PeeringInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the legacy peerings under the given subscription matching the specified kind and location.
+     *
+    ServiceResponse<PageImpl<PeeringInner>> * @param peeringLocation The location of the peering.
+    ServiceResponse<PageImpl<PeeringInner>> * @param kind The kind of the peering. Possible values include: 'Direct', 'Exchange'
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PeeringInner>>> listSinglePageAsync(final String peeringLocation, final String kind) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -130,17 +169,12 @@ public class LegacyPeeringsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), peeringLocation, kind, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PeeringInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<PeeringInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PeeringInner>> result = listDelegate(response);
-                        List<PeeringInner> items = null;
-                        if (result.body() != null) {
-                            items = result.body().items();
-                        }
-                        ServiceResponse<List<PeeringInner>> clientResponse = new ServiceResponse<List<PeeringInner>>(items, result.response());
-                        return Observable.just(clientResponse);
+                        return Observable.just(new ServiceResponse<Page<PeeringInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -149,6 +183,117 @@ public class LegacyPeeringsInner {
     }
 
     private ServiceResponse<PageImpl<PeeringInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PeeringInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PeeringInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all of the legacy peerings under the given subscription matching the specified kind and location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PeeringInner&gt; object if successful.
+     */
+    public PagedList<PeeringInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<PeeringInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PeeringInner>(response.body()) {
+            @Override
+            public Page<PeeringInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the legacy peerings under the given subscription matching the specified kind and location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PeeringInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<PeeringInner>> serviceFuture, final ListOperationCallback<PeeringInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the legacy peerings under the given subscription matching the specified kind and location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
+     */
+    public Observable<Page<PeeringInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PeeringInner>>, Page<PeeringInner>>() {
+                @Override
+                public Page<PeeringInner> call(ServiceResponse<Page<PeeringInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the legacy peerings under the given subscription matching the specified kind and location.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PeeringInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PeeringInner>>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(ServiceResponse<Page<PeeringInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the legacy peerings under the given subscription matching the specified kind and location.
+     *
+    ServiceResponse<PageImpl<PeeringInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PeeringInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PeeringInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PeeringInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PeeringInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<PeeringInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PeeringInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)

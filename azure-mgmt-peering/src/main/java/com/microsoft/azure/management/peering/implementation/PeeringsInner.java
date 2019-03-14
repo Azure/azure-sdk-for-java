@@ -13,6 +13,8 @@ import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.peering.ErrorResponseException;
 import com.microsoft.azure.management.peering.ResourceTags;
 import com.microsoft.azure.Page;
@@ -34,6 +36,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -87,6 +90,14 @@ public class PeeringsInner implements InnerSupportsGet<PeeringInner>, InnerSuppo
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.peering.Peerings list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerings")
         Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.peering.Peerings listByResourceGroupNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.peering.Peerings listNext" })
+        @GET
+        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -536,16 +547,17 @@ public class PeeringsInner implements InnerSupportsGet<PeeringInner>, InnerSuppo
      * Lists all of the peerings under the given subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the PagedList<PeeringInner> object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PeeringInner&gt; object if successful.
      */
-    public PagedList<PeeringInner> listByResourceGroup(String resourceGroupName) {
-        PageImpl<PeeringInner> page = new PageImpl<>();
-        page.setItems(listByResourceGroupWithServiceResponseAsync(resourceGroupName).toBlocking().single().body());
-        page.setNextPageLink(null);
-        return new PagedList<PeeringInner>(page) {
+    public PagedList<PeeringInner> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<PeeringInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+        return new PagedList<PeeringInner>(response.body()) {
             @Override
             public Page<PeeringInner> nextPage(String nextPageLink) {
-                return null;
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -555,36 +567,67 @@ public class PeeringsInner implements InnerSupportsGet<PeeringInner>, InnerSuppo
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PeeringInner>> listByResourceGroupAsync(String resourceGroupName, final ServiceCallback<List<PeeringInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listByResourceGroupWithServiceResponseAsync(resourceGroupName), serviceCallback);
+    public ServiceFuture<List<PeeringInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<PeeringInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupSinglePageAsync(resourceGroupName),
+            new Func1<String, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(String nextPageLink) {
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
      * Lists all of the peerings under the given subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;PeeringInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
      */
-    public Observable<Page<PeeringInner>> listByResourceGroupAsync(String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName).map(new Func1<ServiceResponse<List<PeeringInner>>, Page<PeeringInner>>() {
-            @Override
-            public Page<PeeringInner> call(ServiceResponse<List<PeeringInner>> response) {
-                PageImpl<PeeringInner> page = new PageImpl<>();
-                page.setItems(response.body());
-                return page;
-            }
-        });
+    public Observable<Page<PeeringInner>> listByResourceGroupAsync(final String resourceGroupName) {
+        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<PeeringInner>>, Page<PeeringInner>>() {
+                @Override
+                public Page<PeeringInner> call(ServiceResponse<Page<PeeringInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
      * Lists all of the peerings under the given subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @return the observable to the List&lt;PeeringInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
      */
-    public Observable<ServiceResponse<List<PeeringInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
+    public Observable<ServiceResponse<Page<PeeringInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+        return listByResourceGroupSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<PeeringInner>>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(ServiceResponse<Page<PeeringInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription and resource group.
+     *
+    ServiceResponse<PageImpl<PeeringInner>> * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PeeringInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -595,17 +638,12 @@ public class PeeringsInner implements InnerSupportsGet<PeeringInner>, InnerSuppo
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PeeringInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<PeeringInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PeeringInner>> result = listByResourceGroupDelegate(response);
-                        List<PeeringInner> items = null;
-                        if (result.body() != null) {
-                            items = result.body().items();
-                        }
-                        ServiceResponse<List<PeeringInner>> clientResponse = new ServiceResponse<List<PeeringInner>>(items, result.response());
-                        return Observable.just(clientResponse);
+                        return Observable.just(new ServiceResponse<Page<PeeringInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -623,16 +661,17 @@ public class PeeringsInner implements InnerSupportsGet<PeeringInner>, InnerSuppo
     /**
      * Lists all of the peerings under the given subscription.
      *
-     * @return the PagedList<PeeringInner> object if successful.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PeeringInner&gt; object if successful.
      */
     public PagedList<PeeringInner> list() {
-        PageImpl<PeeringInner> page = new PageImpl<>();
-        page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
-        page.setNextPageLink(null);
-        return new PagedList<PeeringInner>(page) {
+        ServiceResponse<Page<PeeringInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<PeeringInner>(response.body()) {
             @Override
             public Page<PeeringInner> nextPage(String nextPageLink) {
-                return null;
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
     }
@@ -641,34 +680,64 @@ public class PeeringsInner implements InnerSupportsGet<PeeringInner>, InnerSuppo
      * Lists all of the peerings under the given subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PeeringInner>> listAsync(final ServiceCallback<List<PeeringInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
+    public ServiceFuture<List<PeeringInner>> listAsync(final ListOperationCallback<PeeringInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
      * Lists all of the peerings under the given subscription.
      *
-     * @return the observable to the List&lt;PeeringInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
      */
     public Observable<Page<PeeringInner>> listAsync() {
-        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<PeeringInner>>, Page<PeeringInner>>() {
-            @Override
-            public Page<PeeringInner> call(ServiceResponse<List<PeeringInner>> response) {
-                PageImpl<PeeringInner> page = new PageImpl<>();
-                page.setItems(response.body());
-                return page;
-            }
-        });
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<PeeringInner>>, Page<PeeringInner>>() {
+                @Override
+                public Page<PeeringInner> call(ServiceResponse<Page<PeeringInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
      * Lists all of the peerings under the given subscription.
      *
-     * @return the observable to the List&lt;PeeringInner&gt; object
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
      */
-    public Observable<ServiceResponse<List<PeeringInner>>> listWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Page<PeeringInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<PeeringInner>>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(ServiceResponse<Page<PeeringInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription.
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PeeringInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -676,17 +745,12 @@ public class PeeringsInner implements InnerSupportsGet<PeeringInner>, InnerSuppo
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PeeringInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<PeeringInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(Response<ResponseBody> response) {
                     try {
                         ServiceResponse<PageImpl<PeeringInner>> result = listDelegate(response);
-                        List<PeeringInner> items = null;
-                        if (result.body() != null) {
-                            items = result.body().items();
-                        }
-                        ServiceResponse<List<PeeringInner>> clientResponse = new ServiceResponse<List<PeeringInner>>(items, result.response());
-                        return Observable.just(clientResponse);
+                        return Observable.just(new ServiceResponse<Page<PeeringInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -695,6 +759,228 @@ public class PeeringsInner implements InnerSupportsGet<PeeringInner>, InnerSuppo
     }
 
     private ServiceResponse<PageImpl<PeeringInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PeeringInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PeeringInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription and resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PeeringInner&gt; object if successful.
+     */
+    public PagedList<PeeringInner> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<PeeringInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PeeringInner>(response.body()) {
+            @Override
+            public Page<PeeringInner> nextPage(String nextPageLink) {
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription and resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PeeringInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<PeeringInner>> serviceFuture, final ListOperationCallback<PeeringInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByResourceGroupNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(String nextPageLink) {
+                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription and resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
+     */
+    public Observable<Page<PeeringInner>> listByResourceGroupNextAsync(final String nextPageLink) {
+        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PeeringInner>>, Page<PeeringInner>>() {
+                @Override
+                public Page<PeeringInner> call(ServiceResponse<Page<PeeringInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription and resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PeeringInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByResourceGroupNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PeeringInner>>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(ServiceResponse<Page<PeeringInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription and resource group.
+     *
+    ServiceResponse<PageImpl<PeeringInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PeeringInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PeeringInner>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PeeringInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PeeringInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PeeringInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PeeringInner>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PeeringInner&gt; object if successful.
+     */
+    public PagedList<PeeringInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<PeeringInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PeeringInner>(response.body()) {
+            @Override
+            public Page<PeeringInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PeeringInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<PeeringInner>> serviceFuture, final ListOperationCallback<PeeringInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
+     */
+    public Observable<Page<PeeringInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PeeringInner>>, Page<PeeringInner>>() {
+                @Override
+                public Page<PeeringInner> call(ServiceResponse<Page<PeeringInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PeeringInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PeeringInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PeeringInner>>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(ServiceResponse<Page<PeeringInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all of the peerings under the given subscription.
+     *
+    ServiceResponse<PageImpl<PeeringInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PeeringInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PeeringInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PeeringInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PeeringInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PeeringInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PeeringInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<PeeringInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PeeringInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
