@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.BufferOverflowException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
@@ -53,6 +54,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Abstracts all amqp related details
@@ -520,7 +523,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
     @Override
     public void onSendComplete(final Delivery delivery) {
         final DeliveryState outcome = delivery.getRemoteState();
-        final String deliveryTag = new String(delivery.getTag());
+        final String deliveryTag = new String(delivery.getTag(), UTF_8);
 
         if (TRACE_LOGGER.isTraceEnabled())
             TRACE_LOGGER.trace(
@@ -836,7 +839,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                 Exception sendException = null;
 
                 try {
-                    delivery = this.sendLink.delivery(deliveryTag.getBytes());
+                    delivery = this.sendLink.delivery(deliveryTag.getBytes(UTF_8));
                     delivery.setMessageFormat(sendData.getMessageFormat());
 
                     sentMsgSize = this.sendLink.send(sendData.getMessage(), 0, sendData.getEncodedMessageSize());

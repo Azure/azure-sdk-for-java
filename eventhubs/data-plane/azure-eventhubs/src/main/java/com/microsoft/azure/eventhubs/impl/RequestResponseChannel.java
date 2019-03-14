@@ -24,6 +24,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class RequestResponseChannel implements IOObject {
 
     private final Sender sendLink;
@@ -115,7 +117,7 @@ public class RequestResponseChannel implements IOObject {
 
         this.inflightRequests.put(message.getMessageId(), onResponse);
 
-        sendLink.delivery(UUID.randomUUID().toString().replace("-", StringUtil.EMPTY).getBytes());
+        sendLink.delivery(UUID.randomUUID().toString().replace("-", StringUtil.EMPTY).getBytes(UTF_8));
         final int payloadSize = AmqpUtil.getDataSerializedSize(message) + 512; // need buffer for headers
 
         final byte[] bytes = new byte[payloadSize];
