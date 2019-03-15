@@ -46,7 +46,7 @@ public final class AzConfigClient extends ServiceClient {
      * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
      */
     public AzConfigClient(String connectionString) {
-        super(createPipeline(new ApplicationConfigCredentials(connectionString)));
+        super(new HttpPipeline(getDefaultPolicies(connectionString)));
 
         this.service = RestProxy.create(ApplicationConfigService.class, this);
         this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
@@ -147,6 +147,19 @@ public final class AzConfigClient extends ServiceClient {
                            return Flux.just(page).concatWith(listNextAsync(nextPageLink));
                        });
         return receiver.apply(p);
+    }
+
+    public static List<HttpPipelinePolicy> getDefaultPolicies(String connectionString) {
+        final ApplicationConfigCredentials credentials = new ApplicationConfigCredentials(connectionString);
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
+        policies.add(new RequestIdPolicy());
+        policies.add(new RetryPolicy());
+        policies.add(new AzConfigCredentialsPolicy(credentials));
+
+        return policies;
     }
 
     /**
@@ -359,7 +372,6 @@ public final class AzConfigClient extends ServiceClient {
                                                             .flatMapIterable(i -> i));
     }
 
-
     public <T> Flux<T> listKeys(KeyLabelFilter filter, Function<Flux<RestPagedResponse<Key>>, ? extends Flux<T>> receiver) {
         Flux<RestPagedResponse<Key>> p = listKeysSinglePageAsync(filter)
                        .concatMap(page -> {
@@ -411,25 +423,5 @@ public final class AzConfigClient extends ServiceClient {
         }
         return service.listKeysNext(baseUri.toString(), nextPageLink)
                        .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())));
-    }
-
-    /**
-     * Creates an pipeline to process the HTTP requests and Responses.
-     *
-     * @param credentials credentials the pipeline will use to authenticate the requests
-     * @return the pipeline
-     */
-    private static HttpPipeline createPipeline(ApplicationConfigCredentials credentials) {
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
-        policies.add(new RequestIdPolicy());
-        policies.add(new RetryPolicy());
-        policies.add(new AzConfigCredentialsPolicy(credentials));
-
-
-        // policies.add(new HttpLoggingPolicy(logLevel));
-        return new HttpPipeline(policies);
     }
 }
