@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /**
- * Parameters passed to create or update KeyValue; passed in the body of the request.
+ * Parameters passed to create or update ConfigurationSetting; passed in the body of the request.
  */
 public class KeyValueCreateUpdateParameters {
     @JsonProperty(value = "value")

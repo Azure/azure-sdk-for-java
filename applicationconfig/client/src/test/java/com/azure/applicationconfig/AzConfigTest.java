@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig;
 
+import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.Key;
 import com.azure.applicationconfig.models.KeyLabelFilter;
-import com.azure.applicationconfig.models.KeyValue;
 import com.azure.applicationconfig.models.KeyValueFilter;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
@@ -133,16 +133,16 @@ public class AzConfigTest {
     private void cleanUpResources() {
         logger.info("Cleaning up created key values.");
         client.listKeyValues(new KeyValueListFilter().withKey(keyPrefix + "*"))
-                .flatMap(keyValue -> {
-                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", keyValue.key(), keyValue.label(), keyValue.isLocked());
+                .flatMap(configurationSetting -> {
+                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
-                    if (keyValue.isLocked()) {
-                        return client.unlockKeyValue(keyValue.key(), keyValue.label(), null).flatMap(response -> {
-                            KeyValue kv = response.body();
+                    if (configurationSetting.isLocked()) {
+                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label(), null).flatMap(response -> {
+                            ConfigurationSetting kv = response.body();
                             return client.deleteKeyValue(kv.key(), kv.label(), null);
                         });
                     } else {
-                        return client.deleteKeyValue(keyValue.key(), keyValue.label(), null);
+                        return client.deleteKeyValue(configurationSetting.key(), configurationSetting.label(), null);
                     }
                 }).blockLast();
 
@@ -150,7 +150,7 @@ public class AzConfigTest {
     }
 
     /**
-     * Verifies that a KeyValue can be added with a label, and that we can fetch that KeyValue from the service when
+     * Verifies that a ConfigurationSetting can be added with a label, and that we can fetch that ConfigurationSetting from the service when
      * filtering by either its label or just its key.
      */
     @Test
@@ -158,7 +158,7 @@ public class AzConfigTest {
         final String value = "myValue";
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final String label = SdkContext.randomResourceName("lbl", 8);
-        final KeyValue expected = new KeyValue().withKey(key).withValue(value).withLabel(label);
+        final ConfigurationSetting expected = new ConfigurationSetting().withKey(key).withValue(value).withLabel(label);
 
         StepVerifier.create(client.setKeyValue(expected))
                 .assertNext(response -> assertEquals(expected, response))
@@ -166,12 +166,12 @@ public class AzConfigTest {
                 .verify();
 
         StepVerifier.create(client.listKeyValues(new KeyValueListFilter().withKey(key).withLabel(label)))
-                .assertNext(keyValue -> assertEquals(expected, keyValue))
+                .assertNext(configurationSetting -> assertEquals(expected, configurationSetting))
                 .expectComplete()
                 .verify();
 
         StepVerifier.create(client.listKeyValues(new KeyValueListFilter().withKey(key)))
-                .assertNext(keyValue -> assertEquals(expected, keyValue))
+                .assertNext(configurationSetting -> assertEquals(expected, configurationSetting))
                 .expectComplete()
                 .verify();
     }
@@ -179,15 +179,15 @@ public class AzConfigTest {
     @Test
     public void crudKeyValue() {
         final String key = SdkContext.randomResourceName(keyPrefix, 8);
-        final KeyValue newKeyValue = new KeyValue().withKey(key).withValue("myNewValue5");
+        final ConfigurationSetting newConfigurationSetting = new ConfigurationSetting().withKey(key).withValue("myNewValue5");
 
-        StepVerifier.create(client.setKeyValue(newKeyValue))
-                .assertNext(response -> assertEquals(newKeyValue, response))
+        StepVerifier.create(client.setKeyValue(newConfigurationSetting))
+                .assertNext(response -> assertEquals(newConfigurationSetting, response))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.deleteKeyValue(newKeyValue.key()))
-                .assertNext(response -> assertEquals(newKeyValue, response))
+        StepVerifier.create(client.deleteKeyValue(newConfigurationSetting.key()))
+                .assertNext(response -> assertEquals(newConfigurationSetting, response))
                 .expectComplete()
                 .verify();
     }
@@ -196,7 +196,7 @@ public class AzConfigTest {
     public void getWithLabel() {
         final String label = "myLabel";
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final KeyValue kv = new KeyValue().withKey(key).withValue("myValue").withLabel(label);
+        final ConfigurationSetting kv = new ConfigurationSetting().withKey(key).withValue("myValue").withLabel(label);
 
         StepVerifier.create(client.setKeyValue(kv))
                 .assertNext(response -> assertEquals(kv, response))
@@ -219,9 +219,9 @@ public class AzConfigTest {
     @Test
     public void getWithEtag() {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
-        final KeyValue expected = new KeyValue().withKey(key).withValue("myValue");
-        final KeyValue newExpected = new KeyValue().withKey(key).withValue("myNewValue");
-        final RestResponse<KeyValue> block = client.setKeyValue(expected).single().block();
+        final ConfigurationSetting expected = new ConfigurationSetting().withKey(key).withValue("myValue");
+        final ConfigurationSetting newExpected = new ConfigurationSetting().withKey(key).withValue("myNewValue");
+        final RestResponse<ConfigurationSetting> block = client.setKeyValue(expected).single().block();
 
         Assert.assertNotNull(block);
         assertEquals(expected, block);
@@ -244,9 +244,9 @@ public class AzConfigTest {
     @Test
     public void lockUnlockKeyValue() {
         final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        final KeyValue expected = new KeyValue().withKey(keyName).withValue("myKeyValue");
-        final KeyValue updated = new KeyValue().withKey(keyName).withValue("Some new value");
-        final KeyValue updated2 = new KeyValue().withKey(keyName).withValue("Some new value, again.");
+        final ConfigurationSetting expected = new ConfigurationSetting().withKey(keyName).withValue("myKeyValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("Some new value");
+        final ConfigurationSetting updated2 = new ConfigurationSetting().withKey(keyName).withValue("Some new value, again.");
 
         StepVerifier.create(client.setKeyValue(expected))
                 .assertNext(response -> assertEquals(expected, response))
@@ -273,8 +273,8 @@ public class AzConfigTest {
     @Test
     public void listRevisions() {
         final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        final KeyValue original = new KeyValue().withKey(keyName).withValue("myValue");
-        final KeyValue updated = new KeyValue().withKey(keyName).withValue("anotherValue");
+        final ConfigurationSetting original = new ConfigurationSetting().withKey(keyName).withValue("myValue");
+        final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("anotherValue");
         final HashSet<String> expected = new HashSet<>();
         expected.add(original.value());
         expected.add(updated.value());
@@ -308,15 +308,15 @@ public class AzConfigTest {
     @Test
     public void listLabels() {
         final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        final KeyValue value1 = new KeyValue().withKey(keyName).withValue("value1").withLabel(keyPrefix + "-lbl1");
-        final KeyValue value2 = new KeyValue().withKey(keyName).withValue("value2").withLabel(keyPrefix + "-lbl2");
-        final KeyValue value3 = new KeyValue().withKey(keyName).withValue("value3").withLabel(keyPrefix + "-lbl3");
+        final ConfigurationSetting value1 = new ConfigurationSetting().withKey(keyName).withValue("value1").withLabel(keyPrefix + "-lbl1");
+        final ConfigurationSetting value2 = new ConfigurationSetting().withKey(keyName).withValue("value2").withLabel(keyPrefix + "-lbl2");
+        final ConfigurationSetting value3 = new ConfigurationSetting().withKey(keyName).withValue("value3").withLabel(keyPrefix + "-lbl3");
         final KeyLabelFilter filter = new KeyLabelFilter()
                 .withName(keyPrefix + "-lbl*")
                 .withFields("name")
                 .withFields("kv_count")
                 .withFields("last_modifier");
-        final HashMap<String, KeyValue> expected = new HashMap<>();
+        final HashMap<String, ConfigurationSetting> expected = new HashMap<>();
         expected.put(value1.label(), value1);
         expected.put(value2.label(), value2);
         expected.put(value3.label(), value3);
@@ -334,19 +334,19 @@ public class AzConfigTest {
         StepVerifier.create(client.listLabels(filter))
                 .assertNext(label -> {
                     Assert.assertNotNull(label);
-                    KeyValue value = expected.remove(label.name());
+                    ConfigurationSetting value = expected.remove(label.name());
                     Assert.assertNotNull(value);
                     Assert.assertEquals(1, label.kvCount());
                 })
                 .assertNext(label -> {
                     Assert.assertNotNull(label);
-                    KeyValue value = expected.remove(label.name());
+                    ConfigurationSetting value = expected.remove(label.name());
                     Assert.assertNotNull(value);
                     Assert.assertEquals(1, label.kvCount());
                 })
                 .assertNext(label -> {
                     Assert.assertNotNull(label);
-                    KeyValue value = expected.remove(label.name());
+                    ConfigurationSetting value = expected.remove(label.name());
                     Assert.assertNotNull(value);
                     Assert.assertEquals(1, label.kvCount());
                 })
@@ -359,11 +359,11 @@ public class AzConfigTest {
     @Test
     public void listKeys() {
         final Map<String, String> tags = new HashMap<>();
-        final KeyValue key1 = new KeyValue().withKey(keyPrefix + "-1").withValue("value1").withLabel("label1").withContentType("testContentType").withTags(tags);
-        final KeyValue key2 = new KeyValue().withKey(keyPrefix + "-2").withValue("value2").withLabel("label2");
-        final KeyValue key3 = new KeyValue().withKey(keyPrefix + "-3").withValue("value3").withLabel("label3");
+        final ConfigurationSetting key1 = new ConfigurationSetting().withKey(keyPrefix + "-1").withValue("value1").withLabel("label1").withContentType("testContentType").withTags(tags);
+        final ConfigurationSetting key2 = new ConfigurationSetting().withKey(keyPrefix + "-2").withValue("value2").withLabel("label2");
+        final ConfigurationSetting key3 = new ConfigurationSetting().withKey(keyPrefix + "-3").withValue("value3").withLabel("label3");
         final KeyLabelFilter filter = new KeyLabelFilter().withName(keyPrefix + "*");
-        final HashMap<String, KeyValue> expected = new HashMap<>();
+        final HashMap<String, ConfigurationSetting> expected = new HashMap<>();
 
         StepVerifier.create(Flux.merge(
                 client.setKeyValue(key1),
@@ -378,17 +378,17 @@ public class AzConfigTest {
         Assert.assertEquals(3, keys.size());
     }
 
-    private static void assertMapContainsLabel(HashMap<String, KeyValue> map,
-                                               RestResponse<KeyValue> response) {
+    private static void assertMapContainsLabel(HashMap<String, ConfigurationSetting> map,
+                                               RestResponse<ConfigurationSetting> response) {
         Assert.assertNotNull(response);
         Assert.assertNotNull(response.body());
 
-        KeyValue fetched = map.getOrDefault(response.body().label(), null);
+        ConfigurationSetting fetched = map.getOrDefault(response.body().label(), null);
         Assert.assertNotNull(fetched);
         assertEquals(fetched, response);
     }
 
-    private static void assertEquals(KeyValue expected, RestResponse<KeyValue> response) {
+    private static void assertEquals(ConfigurationSetting expected, RestResponse<ConfigurationSetting> response) {
         Assert.assertNotNull(response);
         Assert.assertEquals(200, response.statusCode());
 
@@ -400,7 +400,7 @@ public class AzConfigTest {
         assertEquals(expected, response.body());
     }
 
-    private static void assertEquals(KeyValue expected, KeyValue actual) {
+    private static void assertEquals(ConfigurationSetting expected, ConfigurationSetting actual) {
         if (expected == null) {
             Assert.assertNull(actual);
             return;
