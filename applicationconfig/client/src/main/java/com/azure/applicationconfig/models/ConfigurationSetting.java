@@ -16,7 +16,7 @@ public class ConfigurationSetting {
      * The default label for configuration settings is the null label, "\0".
      * This gets the URL encoded value.
      */
-    public static final String NULL_LABEL = "%00";
+    public static final String NULL_LABEL = "\0";
 
     @JsonProperty(value = "key", required = true)
     private String key;
