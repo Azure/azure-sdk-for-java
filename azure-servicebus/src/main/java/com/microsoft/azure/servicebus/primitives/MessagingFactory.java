@@ -725,9 +725,17 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	
 	private static ScheduledFuture<?> scheduleRenewTimer(Instant currentTokenValidUntil, Runnable validityRenewer)
 	{
-	    // It will eventually expire. Renew it
-        int renewInterval = Util.getTokenRenewIntervalInSeconds((int)Duration.between(Instant.now(), currentTokenValidUntil).getSeconds());
-        return Timer.schedule(validityRenewer, Duration.ofSeconds(renewInterval), TimerType.OneTimeRun);
+		if(currentTokenValidUntil == Instant.MAX)
+		{
+			// User provided token or will never expire
+			return null;
+		}
+		else
+		{
+			// It will eventually expire. Renew it
+	        int renewInterval = Util.getTokenRenewIntervalInSeconds((int)Duration.between(Instant.now(), currentTokenValidUntil).getSeconds());
+	        return Timer.schedule(validityRenewer, Duration.ofSeconds(renewInterval), TimerType.OneTimeRun);
+		}
 	}
 
 	CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, MessagingEntityType entityType)

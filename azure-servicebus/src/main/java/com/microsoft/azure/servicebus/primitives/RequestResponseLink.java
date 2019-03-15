@@ -377,6 +377,7 @@ class RequestResponseLink extends ClientEntity{
 				Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sasTokenEx);
 				TRACE_LOGGER.error("Sending SAS Token failed. RequestResponseLink path:{}", this.linkPath, cause);
 				recreateInternalLinksFuture.completeExceptionally(cause);
+                this.completeAllPendingRequestsWithException(cause);
 			}
 			else
 			{
@@ -439,7 +440,7 @@ class RequestResponseLink extends ClientEntity{
 		return recreateInternalLinksFuture;
 	}
 
-	private void completeAllPendingRequestsWithException(Exception exception)
+	private void completeAllPendingRequestsWithException(Throwable exception)
 	{
 		TRACE_LOGGER.warn("Completing all pending requests with exception in request response link to {}", this.linkPath);
 		for(RequestResponseWorkItem workItem : this.pendingRequests.values())

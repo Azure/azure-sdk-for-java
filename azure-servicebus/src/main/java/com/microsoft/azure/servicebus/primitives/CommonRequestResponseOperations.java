@@ -81,7 +81,6 @@ final class CommonRequestResponseOperations {
         Message requestMessage = RequestResponseUtils.createRequestMessageFromValueBody(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_OPERATION, securityToken.getTokenValue(), Util.adjustServerTimeout(operationTimeout));
         requestMessage.getApplicationProperties().getValue().put(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_TYPE, securityToken.getTokenType().toString());
         requestMessage.getApplicationProperties().getValue().put(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_AUDIENCE, securityToken.getTokenAudience());
-        requestMessage.getApplicationProperties().getValue().put(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_EXPIRATION, securityToken.getValidUntil().toEpochMilli());
         CompletableFuture<Message> responseFuture = requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, operationTimeout);
         return responseFuture.thenComposeAsync((responseMessage) -> {
             CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();

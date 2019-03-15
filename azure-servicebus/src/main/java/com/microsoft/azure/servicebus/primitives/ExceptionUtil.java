@@ -125,7 +125,7 @@ public final class ExceptionUtil
 		return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.toString());
 	}	
 
-	static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, IErrorContextProvider contextProvider, boolean completeAsynchronously)
+	static <T> void completeExceptionally(CompletableFuture<T> future, Throwable exception, IErrorContextProvider contextProvider, boolean completeAsynchronously)
 	{
 		if (exception != null && exception instanceof ServiceBusException)
 		{

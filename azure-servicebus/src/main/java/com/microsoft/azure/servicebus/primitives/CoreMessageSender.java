@@ -609,7 +609,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		}
 	}
 
-	private void clearAllPendingSendsWithException(Exception failureException)
+	private void clearAllPendingSendsWithException(Throwable failureException)
 	{
 		synchronized (this.pendingSendLock)
 		{
@@ -623,7 +623,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		}
 	}
 
-	private void cleanupFailedSend(final SendWorkItem<DeliveryState> failedSend, final Exception exception)
+	private void cleanupFailedSend(final SendWorkItem<DeliveryState> failedSend, final Throwable exception)
 	{
 		failedSend.cancelTimeoutTask(false);
 		ExceptionUtil.completeExceptionally(failedSend.getWork(), exception, this, true);
@@ -812,6 +812,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 						Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sendTokenEx);
 						TRACE_LOGGER.error("Sending SAS Token to '{}' failed.", this.sendPath, cause);
 						this.sendLinkReopenFuture.completeExceptionally(sendTokenEx);
+                        this.clearAllPendingSendsWithException(sendTokenEx);
 					}
 					else
 					{
