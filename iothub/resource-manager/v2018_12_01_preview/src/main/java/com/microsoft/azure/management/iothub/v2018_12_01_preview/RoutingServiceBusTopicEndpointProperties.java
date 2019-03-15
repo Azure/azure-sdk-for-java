@@ -24,9 +24,8 @@ public class RoutingServiceBusTopicEndpointProperties {
      * The name that identifies this endpoint. The name can only include
      * alphanumeric characters, periods, underscores, hyphens and has a maximum
      * length of 64 characters. The following names are reserved:  events,
-     * operationsMonitoringEvents, fileNotifications, $default. Endpoint names
-     * must be unique across endpoint types.  The name need not be the same as
-     * the actual topic name.
+     * fileNotifications, $default. Endpoint names must be unique across
+     * endpoint types.  The name need not be the same as the actual topic name.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -64,7 +63,7 @@ public class RoutingServiceBusTopicEndpointProperties {
     }
 
     /**
-     * Get the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types.  The name need not be the same as the actual topic name.
+     * Get the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, fileNotifications, $default. Endpoint names must be unique across endpoint types.  The name need not be the same as the actual topic name.
      *
      * @return the name value
      */
@@ -73,7 +72,7 @@ public class RoutingServiceBusTopicEndpointProperties {
     }
 
     /**
-     * Set the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types.  The name need not be the same as the actual topic name.
+     * Set the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, fileNotifications, $default. Endpoint names must be unique across endpoint types.  The name need not be the same as the actual topic name.
      *
      * @param name the name value to set
      * @return the RoutingServiceBusTopicEndpointProperties object itself.
