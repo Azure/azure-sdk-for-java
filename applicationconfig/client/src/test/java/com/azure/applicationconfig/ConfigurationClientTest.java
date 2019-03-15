@@ -11,6 +11,7 @@ import com.azure.applicationconfig.models.RevisionFilter;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
+import com.microsoft.azure.v3.CloudError;
 import com.microsoft.azure.v3.CloudException;
 import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpPipeline;
@@ -28,10 +29,14 @@ import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ResponseCache;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +44,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ConfigurationClientTest {
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
@@ -139,12 +146,15 @@ public class ConfigurationClientTest {
                     if (configurationSetting.isLocked()) {
                         return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label(), null).flatMap(response -> {
                             ConfigurationSetting kv = response.body();
-                            return client.deleteKeyValue(kv.key(), kv.label(), null);
+                            return client.deleteKeyValue(kv.key(), kv.label(), null)
+                                    .retryBackoff(3, Duration.ofSeconds(10));
                         });
                     } else {
-                        return client.deleteKeyValue(configurationSetting.key(), configurationSetting.label(), null);
+                        return client.deleteKeyValue(configurationSetting.key(), configurationSetting.label(), null)
+                                .retryBackoff(3, Duration.ofSeconds(10));
                     }
-                }).blockLast();
+                })
+                .blockLast();
 
         logger.info("Finished cleaning up values.");
     }
@@ -376,6 +386,48 @@ public class ConfigurationClientTest {
 
         List<Key> keys = client.listKeys(filter).collectList().block();
         Assert.assertEquals(3, keys.size());
+    }
+
+    @Test
+    public void listKeysWithPage() {
+        final String label = "listed-label";
+        final int numberExpected = 75;
+        List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
+                .mapToObj(value -> new ConfigurationSetting()
+                        .withKey(keyPrefix + "-" + value)
+                        .withValue("myValue")
+                        .withLabel(label))
+                .collect(Collectors.toList());
+
+        List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
+        for (ConfigurationSetting setting : settings) {
+            results.add(client.setKeyValue(setting));
+        }
+
+        KeyValueListFilter filter = new KeyValueListFilter().withLabel(label);
+
+        Flux.merge(results).blockLast();
+        StepVerifier.create(client.listKeyValues(filter))
+                .expectNextCount(numberExpected)
+                .expectComplete()
+                .verify();
+    }
+
+    @Test
+    public void Delete() {
+        client.listKeyValues(new KeyValueListFilter().withKey("key*"))
+                .flatMap(configurationSetting -> {
+                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
+
+                    if (configurationSetting.isLocked()) {
+                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label(), null).flatMap(response -> {
+                            ConfigurationSetting kv = response.body();
+                            return client.deleteKeyValue(kv.key(), kv.label(), null);
+                        });
+                    } else {
+                        return client.deleteKeyValue(configurationSetting.key(), configurationSetting.label(), null);
+                    }
+                }).blockLast();
     }
 
     private static void assertMapContainsLabel(HashMap<String, ConfigurationSetting> map,
