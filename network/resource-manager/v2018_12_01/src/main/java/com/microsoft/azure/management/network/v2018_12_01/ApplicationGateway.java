@@ -194,7 +194,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithAuthenticationCertificates {
             /**
              * Specifies authenticationCertificates.
-             * @param authenticationCertificates Authentication certificates of the application gateway resource
+             * @param authenticationCertificates Authentication certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withAuthenticationCertificates(List<ApplicationGatewayAuthenticationCertificate> authenticationCertificates);
@@ -218,7 +218,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithBackendAddressPools {
             /**
              * Specifies backendAddressPools.
-             * @param backendAddressPools Backend address pool of the application gateway resource
+             * @param backendAddressPools Backend address pool of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withBackendAddressPools(List<ApplicationGatewayBackendAddressPool> backendAddressPools);
@@ -230,7 +230,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithBackendHttpSettingsCollection {
             /**
              * Specifies backendHttpSettingsCollection.
-             * @param backendHttpSettingsCollection Backend http settings of the application gateway resource
+             * @param backendHttpSettingsCollection Backend http settings of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withBackendHttpSettingsCollection(List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection);
@@ -302,7 +302,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithFrontendIPConfigurations {
             /**
              * Specifies frontendIPConfigurations.
-             * @param frontendIPConfigurations Frontend IP addresses of the application gateway resource
+             * @param frontendIPConfigurations Frontend IP addresses of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withFrontendIPConfigurations(List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations);
@@ -314,7 +314,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithFrontendPorts {
             /**
              * Specifies frontendPorts.
-             * @param frontendPorts Frontend ports of the application gateway resource
+             * @param frontendPorts Frontend ports of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withFrontendPorts(List<ApplicationGatewayFrontendPort> frontendPorts);
@@ -326,7 +326,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithGatewayIPConfigurations {
             /**
              * Specifies gatewayIPConfigurations.
-             * @param gatewayIPConfigurations Subnets of application the gateway resource
+             * @param gatewayIPConfigurations Subnets of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withGatewayIPConfigurations(List<ApplicationGatewayIPConfiguration> gatewayIPConfigurations);
@@ -338,7 +338,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithHttpListeners {
             /**
              * Specifies httpListeners.
-             * @param httpListeners Http listeners of the application gateway resource
+             * @param httpListeners Http listeners of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withHttpListeners(List<ApplicationGatewayHttpListener> httpListeners);
@@ -386,7 +386,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithRedirectConfigurations {
             /**
              * Specifies redirectConfigurations.
-             * @param redirectConfigurations Redirect configurations of the application gateway resource
+             * @param redirectConfigurations Redirect configurations of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withRedirectConfigurations(List<ApplicationGatewayRedirectConfiguration> redirectConfigurations);
@@ -446,7 +446,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithSslCertificates {
             /**
              * Specifies sslCertificates.
-             * @param sslCertificates SSL certificates of the application gateway resource
+             * @param sslCertificates SSL certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withSslCertificates(List<ApplicationGatewaySslCertificate> sslCertificates);
@@ -470,7 +470,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithTrustedRootCertificates {
             /**
              * Specifies trustedRootCertificates.
-             * @param trustedRootCertificates Trusted Root certificates of the application gateway resource
+             * @param trustedRootCertificates Trusted Root certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withTrustedRootCertificates(List<ApplicationGatewayTrustedRootCertificate> trustedRootCertificates);
@@ -482,7 +482,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithUrlPathMaps {
             /**
              * Specifies urlPathMaps.
-             * @param urlPathMaps URL path map of the application gateway resource
+             * @param urlPathMaps URL path map of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next definition stage
              */
             WithCreate withUrlPathMaps(List<ApplicationGatewayUrlPathMap> urlPathMaps);
@@ -536,7 +536,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithAuthenticationCertificates {
             /**
              * Specifies authenticationCertificates.
-             * @param authenticationCertificates Authentication certificates of the application gateway resource
+             * @param authenticationCertificates Authentication certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withAuthenticationCertificates(List<ApplicationGatewayAuthenticationCertificate> authenticationCertificates);
@@ -560,7 +560,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithBackendAddressPools {
             /**
              * Specifies backendAddressPools.
-             * @param backendAddressPools Backend address pool of the application gateway resource
+             * @param backendAddressPools Backend address pool of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withBackendAddressPools(List<ApplicationGatewayBackendAddressPool> backendAddressPools);
@@ -572,7 +572,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithBackendHttpSettingsCollection {
             /**
              * Specifies backendHttpSettingsCollection.
-             * @param backendHttpSettingsCollection Backend http settings of the application gateway resource
+             * @param backendHttpSettingsCollection Backend http settings of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withBackendHttpSettingsCollection(List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection);
@@ -644,7 +644,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithFrontendIPConfigurations {
             /**
              * Specifies frontendIPConfigurations.
-             * @param frontendIPConfigurations Frontend IP addresses of the application gateway resource
+             * @param frontendIPConfigurations Frontend IP addresses of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withFrontendIPConfigurations(List<ApplicationGatewayFrontendIPConfiguration> frontendIPConfigurations);
@@ -656,7 +656,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithFrontendPorts {
             /**
              * Specifies frontendPorts.
-             * @param frontendPorts Frontend ports of the application gateway resource
+             * @param frontendPorts Frontend ports of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withFrontendPorts(List<ApplicationGatewayFrontendPort> frontendPorts);
@@ -668,7 +668,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithGatewayIPConfigurations {
             /**
              * Specifies gatewayIPConfigurations.
-             * @param gatewayIPConfigurations Subnets of application the gateway resource
+             * @param gatewayIPConfigurations Subnets of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withGatewayIPConfigurations(List<ApplicationGatewayIPConfiguration> gatewayIPConfigurations);
@@ -680,7 +680,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithHttpListeners {
             /**
              * Specifies httpListeners.
-             * @param httpListeners Http listeners of the application gateway resource
+             * @param httpListeners Http listeners of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withHttpListeners(List<ApplicationGatewayHttpListener> httpListeners);
@@ -728,7 +728,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithRedirectConfigurations {
             /**
              * Specifies redirectConfigurations.
-             * @param redirectConfigurations Redirect configurations of the application gateway resource
+             * @param redirectConfigurations Redirect configurations of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withRedirectConfigurations(List<ApplicationGatewayRedirectConfiguration> redirectConfigurations);
@@ -788,7 +788,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithSslCertificates {
             /**
              * Specifies sslCertificates.
-             * @param sslCertificates SSL certificates of the application gateway resource
+             * @param sslCertificates SSL certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withSslCertificates(List<ApplicationGatewaySslCertificate> sslCertificates);
@@ -812,7 +812,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithTrustedRootCertificates {
             /**
              * Specifies trustedRootCertificates.
-             * @param trustedRootCertificates Trusted Root certificates of the application gateway resource
+             * @param trustedRootCertificates Trusted Root certificates of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withTrustedRootCertificates(List<ApplicationGatewayTrustedRootCertificate> trustedRootCertificates);
@@ -824,7 +824,7 @@ public interface ApplicationGateway extends HasInner<ApplicationGatewayInner>, R
         interface WithUrlPathMaps {
             /**
              * Specifies urlPathMaps.
-             * @param urlPathMaps URL path map of the application gateway resource
+             * @param urlPathMaps URL path map of the application gateway resource. For default limits, see [Application Gateway limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits)
              * @return the next update stage
              */
             Update withUrlPathMaps(List<ApplicationGatewayUrlPathMap> urlPathMaps);
