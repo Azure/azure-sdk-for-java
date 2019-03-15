@@ -145,7 +145,7 @@ public class ConfigurationClientTest {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
                     if (configurationSetting.isLocked()) {
-                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label(), null).flatMap(response -> {
+                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label()).flatMap(response -> {
                             ConfigurationSetting kv = response.body();
                             return client.deleteKeyValue(kv.key(), kv.label(), null)
                                     .retryBackoff(3, Duration.ofSeconds(10));
@@ -214,12 +214,12 @@ public class ConfigurationClientTest {
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myLabel")))
+        StepVerifier.create(client.getKeyValue(key, "myLabel", null))
                 .assertNext(response -> assertEquals(kv, response))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myNonExistingLabel")))
+        StepVerifier.create(client.getKeyValue(key, "myNonExistingLabel", null))
                 .expectErrorSatisfies(error -> {
                     Assert.assertTrue(error instanceof CloudException);
                     Assert.assertEquals(404, ((CloudException) error).response().statusCode());
@@ -238,7 +238,7 @@ public class ConfigurationClientTest {
         assertEquals(expected, block);
 
         String etag = block.body().etag();
-        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withIfNoneMatch(etag)))
+        StepVerifier.create(client.getKeyValue(key, null, etag))
                 .expectErrorSatisfies(ex -> {
                     Assert.assertTrue(ex instanceof CloudException);
                     // etag has not changed, so getting 304 NotModified code according to service spec
@@ -422,7 +422,7 @@ public class ConfigurationClientTest {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
                     if (configurationSetting.isLocked()) {
-                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label(), null).flatMap(response -> {
+                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label()).flatMap(response -> {
                             ConfigurationSetting kv = response.body();
                             return client.deleteKeyValue(kv.key(), kv.label(), null);
                         });
