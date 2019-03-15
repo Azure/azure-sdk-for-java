@@ -46,11 +46,14 @@ public final class AzConfigClient extends ServiceClient {
      * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
      */
     public AzConfigClient(String connectionString) {
-        this(connectionString, null);
+        super(createPipeline(new ApplicationConfigCredentials(connectionString)));
+
+        this.service = RestProxy.create(ApplicationConfigService.class, this);
+        this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
     }
 
-    public AzConfigClient(String connectionString, PipelineOptions pipelineOptions) {
-        super(createPipeline(new ApplicationConfigCredentials(connectionString), pipelineOptions));
+    public AzConfigClient(String connectionString, HttpPipeline pipeline) {
+        super(pipeline);
 
         this.service = RestProxy.create(ApplicationConfigService.class, this);
         this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
@@ -416,22 +419,17 @@ public final class AzConfigClient extends ServiceClient {
      * @param credentials credentials the pipeline will use to authenticate the requests
      * @return the pipeline
      */
-    private static HttpPipeline createPipeline(ApplicationConfigCredentials credentials, PipelineOptions options) {
+    private static HttpPipeline createPipeline(ApplicationConfigCredentials credentials) {
         // Closest to API goes first, closest to wire goes last.
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
         policies.add(new RequestIdPolicy());
         policies.add(new RetryPolicy());
         policies.add(new AzConfigCredentialsPolicy(credentials));
 
-        for (HttpPipelinePolicy policy : options.additionalPolicies()) {
-            policies.add(policy);
-        }
 
         // policies.add(new HttpLoggingPolicy(logLevel));
-        return options.client() == null
-                ? new HttpPipeline(policies)
-                : new HttpPipeline(options.client(), policies);
+        return new HttpPipeline(policies);
     }
 }
