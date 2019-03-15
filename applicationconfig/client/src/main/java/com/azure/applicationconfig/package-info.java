@@ -2,6 +2,6 @@
 // Licensed under the MIT License. See License.txt in the project root for
 // license information.
 /**
- * This package contains the classes for AzConfigClient.
+ * This package contains the classes for ConfigurationClient.
  */
 package com.azure.applicationconfig;
