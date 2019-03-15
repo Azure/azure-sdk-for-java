@@ -32,7 +32,6 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -58,9 +57,8 @@ public class AzConfigTest {
         final TestMode testMode = getTestMode();
         final String playbackUri = getPlaybackUri(testMode);
         final HttpPipelinePolicy loggingPolicy = new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS);
-        final ApplicationConfigCredentials credentials;
         final String connectionString;
-        final PipelineOptions options;
+        final HttpPipeline pipeline;
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
 
@@ -68,24 +66,25 @@ public class AzConfigTest {
             logger.info("PLAYBACK MODE");
 
             connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
-            options = new PipelineOptions()
-                    .withHttpClient(interceptorManager.getPlaybackClient())
-                    .withPolicies(loggingPolicy);
+
+            List<HttpPipelinePolicy> policies = AzConfigClient.getDefaultPolicies(connectionString);
+            policies.add(loggingPolicy);
+
+            pipeline = new HttpPipeline(interceptorManager.getPlaybackClient(), policies);
         } else {
             logger.info("RECORD MODE");
 
             connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-            credentials = new ApplicationConfigCredentials(connectionString);
-            options = new PipelineOptions()
-                    .withHttpClient(HttpClient.createDefault().wiretap(true))
-                    .withPolicies(interceptorManager.getRecordPolicy(), loggingPolicy);
+            List<HttpPipelinePolicy> policies = AzConfigClient.getDefaultPolicies(connectionString);
+            policies.add(interceptorManager.getRecordPolicy());
+            policies.add(loggingPolicy);
 
-            interceptorManager.addTextReplacementRule(credentials.baseUri().toString(), playbackUri);
+            pipeline = new HttpPipeline(HttpClient.createDefault().wiretap(true), policies);
         }
 
-        client = new AzConfigClient(connectionString, options);
+        client = new AzConfigClient(connectionString, pipeline);
         keyPrefix = SdkContext.randomResourceName("key", 8);
     }
 
