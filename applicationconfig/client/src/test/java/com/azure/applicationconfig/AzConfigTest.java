@@ -12,17 +12,12 @@ import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
 import com.microsoft.azure.v3.CloudException;
-import com.microsoft.rest.v3.RestResponse;
 import com.microsoft.rest.v3.http.HttpClient;
 import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.HttpPipelineLogLevel;
-import com.microsoft.rest.v3.http.HttpPipelineOptions;
-import com.microsoft.rest.v3.http.Slf4jLogger;
 import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
-import com.microsoft.rest.v3.http.policy.RetryPolicy;
-import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
+import com.microsoft.rest.v3.http.rest.RestResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.After;
 import org.junit.Assert;
@@ -37,7 +32,6 @@ import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -45,9 +39,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
-
-import static com.azure.applicationconfig.AzConfigClient.SDK_NAME;
-import static com.azure.applicationconfig.AzConfigClient.SDK_VERSION;
 
 public class AzConfigTest {
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
@@ -65,55 +56,36 @@ public class AzConfigTest {
     public void beforeTest() throws Exception {
         final TestMode testMode = getTestMode();
         final String playbackUri = getPlaybackUri(testMode);
-        final HttpPipelineOptions pipelineOptions = new HttpPipelineOptions(new Slf4jLogger(logger).withMinimumLogLevel(HttpPipelineLogLevel.INFO));
+        final HttpPipelinePolicy loggingPolicy = new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS);
+        final String connectionString;
+        final HttpPipeline pipeline;
 
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
-        ApplicationConfigCredentials credentials;
-        HttpPipeline pipeline;
-        String connectionString;
 
         if (interceptorManager.isPlaybackMode()) {
             logger.info("PLAYBACK MODE");
 
             connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
-            credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
-            List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
 
-            pipeline = new HttpPipeline(
-                    interceptorManager.getPlaybackClient(),
-                    pipelineOptions,
-                    policies.toArray(new HttpPipelinePolicy[0]));
+            List<HttpPipelinePolicy> policies = AzConfigClient.getDefaultPolicies(connectionString);
+            policies.add(loggingPolicy);
 
-            System.out.println(playbackUri);
+            pipeline = new HttpPipeline(interceptorManager.getPlaybackClient(), policies);
         } else {
             logger.info("RECORD MODE");
 
             connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-            credentials = ApplicationConfigCredentials.parseConnectionString(connectionString);
-            List<HttpPipelinePolicy> policies = getDefaultPolicies(credentials);
+            List<HttpPipelinePolicy> policies = AzConfigClient.getDefaultPolicies(connectionString);
             policies.add(interceptorManager.getRecordPolicy());
+            policies.add(loggingPolicy);
 
-            HttpClient httpClient = HttpClient.createDefault().wiretap(true);
-            pipeline = new HttpPipeline(httpClient, pipelineOptions, policies.toArray(new HttpPipelinePolicy[0]));
-
-            interceptorManager.addTextReplacementRule(credentials.baseUri().toString(), playbackUri);
+            pipeline = new HttpPipeline(HttpClient.createDefault().wiretap(true), policies);
         }
 
-        client = AzConfigClient.create(connectionString, pipeline);
+        client = new AzConfigClient(connectionString, pipeline);
         keyPrefix = SdkContext.randomResourceName("key", 8);
-    }
-
-    private static List<HttpPipelinePolicy> getDefaultPolicies(ApplicationConfigCredentials credentials) {
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AzConfigCredentialsPolicy(credentials));
-        policies.add(new RetryPolicy());
-        policies.add(new HttpLoggingPolicy(HttpLogDetailLevel.BODY_AND_HEADERS));
-
-        return policies;
     }
 
     private static String getPlaybackUri(TestMode testMode) throws IOException {
@@ -249,7 +221,7 @@ public class AzConfigTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final KeyValue expected = new KeyValue().withKey(key).withValue("myValue");
         final KeyValue newExpected = new KeyValue().withKey(key).withValue("myNewValue");
-        final RestResponse<Map<String, String>, KeyValue> block = client.setKeyValue(expected).single().block();
+        final RestResponse<KeyValue> block = client.setKeyValue(expected).single().block();
 
         Assert.assertNotNull(block);
         assertEquals(expected, block);
@@ -407,7 +379,7 @@ public class AzConfigTest {
     }
 
     private static void assertMapContainsLabel(HashMap<String, KeyValue> map,
-                                               RestResponse<Map<String, String>, KeyValue> response) {
+                                               RestResponse<KeyValue> response) {
         Assert.assertNotNull(response);
         Assert.assertNotNull(response.body());
 
@@ -416,7 +388,7 @@ public class AzConfigTest {
         assertEquals(fetched, response);
     }
 
-    private static void assertEquals(KeyValue expected, RestResponse<Map<String, String>, KeyValue> response) {
+    private static void assertEquals(KeyValue expected, RestResponse<KeyValue> response) {
         Assert.assertNotNull(response);
         Assert.assertEquals(200, response.statusCode());
 

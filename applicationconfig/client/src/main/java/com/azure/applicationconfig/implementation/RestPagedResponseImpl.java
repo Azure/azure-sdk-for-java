@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.implementation;
 
-import com.microsoft.rest.v3.RestPagedResponse;
+import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpRequest;
+import com.microsoft.rest.v3.http.rest.RestPagedResponse;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,20 +18,21 @@ public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
     /**
      * The link to the next page.
      */
-    private String nextPageLink;
+    private final String nextPageLink;
 
     /**
      * The list of items.
      */
-    private List<T> items;
+    private final List<T> items;
 
-    private HttpRequest request;
+    private final HttpRequest request;
 
-    private Map<String, String> headers;
+    private final HttpHeaders headers;
 
-    private int statusCode;
+    private final int statusCode;
 
-    public RestPagedResponseImpl(final List<T> items, final String nextPageLink, final HttpRequest request, final Map<String, String> headers, final int statusCode) {
+    public RestPagedResponseImpl(final List<T> items, final String nextPageLink, final HttpRequest request,
+                                 final HttpHeaders headers, final int statusCode) {
         this.nextPageLink = nextPageLink;
         this.items = items;
         this.request = request;
@@ -80,11 +81,11 @@ public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
      *
      * @return a Map containing the raw HTTP response headers.
      */
-    public Map<String, String> headers() {
+    public HttpHeaders headers() {
         return headers;
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
     }
 }

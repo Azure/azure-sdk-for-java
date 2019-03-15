@@ -5,9 +5,9 @@ package com.microsoft.azure.core;
 
 import com.microsoft.rest.v3.http.HttpHeaders;
 import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.serializer.SerializerAdapter;
-import com.microsoft.rest.v3.serializer.SerializerEncoding;
-import com.microsoft.rest.v3.serializer.jackson.JacksonAdapter;
+import com.microsoft.rest.v3.implementation.serializer.SerializerAdapter;
+import com.microsoft.rest.v3.implementation.serializer.SerializerEncoding;
+import com.microsoft.rest.v3.implementation.serializer.jackson.JacksonAdapter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
@@ -18,7 +18,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
-public class MockHttpResponse extends HttpResponse {
+class MockHttpResponse extends HttpResponse {
     private final static SerializerAdapter serializer = new JacksonAdapter();
 
     private final int statusCode;
@@ -27,34 +27,22 @@ public class MockHttpResponse extends HttpResponse {
 
     private final byte[] bodyBytes;
 
-    public MockHttpResponse(int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+    MockHttpResponse(int statusCode, HttpHeaders headers, byte[] bodyBytes) {
         this.statusCode = statusCode;
         this.headers = headers;
         this.bodyBytes = bodyBytes;
     }
 
-    public MockHttpResponse(int statusCode, byte[] bodyBytes) {
+    MockHttpResponse(int statusCode, byte[] bodyBytes) {
         this(statusCode, new HttpHeaders(), bodyBytes);
     }
 
-    public MockHttpResponse(int statusCode) {
+    MockHttpResponse(int statusCode) {
         this(statusCode, new byte[0]);
     }
 
-    public MockHttpResponse(int statusCode, String string) {
-        this(statusCode, new HttpHeaders(), string == null ? new byte[0] : string.getBytes());
-    }
-
-    public MockHttpResponse(int statusCode, HttpHeaders headers) {
-        this(statusCode, headers, new byte[0]);
-    }
-
-    public MockHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {
+    MockHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {
         this(statusCode, headers, serialize(serializable));
-    }
-
-    public MockHttpResponse(int statusCode, Object serializable) {
-        this(statusCode, new HttpHeaders(), serialize(serializable));
     }
 
     private static byte[] serialize(Object serializable) {
