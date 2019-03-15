@@ -34,7 +34,7 @@ import java.util.function.Function;
 /**
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
  */
-public final class AzConfigClient extends ServiceClient {
+public final class ConfigurationClient extends ServiceClient {
     static final String SDK_NAME = "Azure-Configuration";
     static final String SDK_VERSION = "1.0.0-SNAPSHOT";
 
@@ -42,17 +42,17 @@ public final class AzConfigClient extends ServiceClient {
     private final ApplicationConfigService service;
 
     /**
-     * Create a new instance of AzConfigClient that uses connectionString for authentication.
+     * Create a new instance of ConfigurationClient that uses connectionString for authentication.
      * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
      */
-    public AzConfigClient(String connectionString) {
+    public ConfigurationClient(String connectionString) {
         super(new HttpPipeline(getDefaultPolicies(connectionString)));
 
         this.service = RestProxy.create(ApplicationConfigService.class, this);
         this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
     }
 
-    public AzConfigClient(String connectionString, HttpPipeline pipeline) {
+    public ConfigurationClient(String connectionString, HttpPipeline pipeline) {
         super(pipeline);
 
         this.service = RestProxy.create(ApplicationConfigService.class, this);

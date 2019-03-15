@@ -46,7 +46,7 @@ public class AzConfigTest {
     private final Logger logger = LoggerFactory.getLogger(AzConfigTest.class);
 
     private InterceptorManager interceptorManager;
-    private AzConfigClient client;
+    private ConfigurationClient client;
     private String keyPrefix;
 
     @Rule
@@ -67,7 +67,7 @@ public class AzConfigTest {
 
             connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
 
-            List<HttpPipelinePolicy> policies = AzConfigClient.getDefaultPolicies(connectionString);
+            List<HttpPipelinePolicy> policies = ConfigurationClient.getDefaultPolicies(connectionString);
             policies.add(loggingPolicy);
 
             pipeline = new HttpPipeline(interceptorManager.getPlaybackClient(), policies);
@@ -77,14 +77,14 @@ public class AzConfigTest {
             connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-            List<HttpPipelinePolicy> policies = AzConfigClient.getDefaultPolicies(connectionString);
+            List<HttpPipelinePolicy> policies = ConfigurationClient.getDefaultPolicies(connectionString);
             policies.add(interceptorManager.getRecordPolicy());
             policies.add(loggingPolicy);
 
             pipeline = new HttpPipeline(HttpClient.createDefault().wiretap(true), policies);
         }
 
-        client = new AzConfigClient(connectionString, pipeline);
+        client = new ConfigurationClient(connectionString, pipeline);
         keyPrefix = SdkContext.randomResourceName("key", 8);
     }
 
