@@ -232,7 +232,7 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().withKey(key).withValue("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().withKey(key).withValue("myNewValue");
-        final RestResponse<ConfigurationSetting> block = client.setKeyValue(expected).single().block();
+        final RestResponse<ConfigurationSetting> block = client.addKeyValue(expected).single().block();
 
         Assert.assertNotNull(block);
         assertEquals(expected, block);
@@ -462,7 +462,14 @@ public class ConfigurationClientTest {
 
         Assert.assertNotNull(actual);
         Assert.assertEquals(expected.key(), actual.key());
-        Assert.assertEquals(expected.label(), actual.label());
+
+        // This is because we have the "null" label which is deciphered in the service as "\0".
+        if (ConfigurationSetting.NULL_LABEL.equals(expected.label())) {
+            Assert.assertNull(actual.label());
+        } else {
+            Assert.assertEquals(expected.label(), actual.label());
+        }
+
         Assert.assertEquals(expected.value(), actual.value());
         Assert.assertEquals(expected.contentType(), actual.contentType());
     }
