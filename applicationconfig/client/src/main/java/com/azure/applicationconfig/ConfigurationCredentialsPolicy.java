@@ -35,9 +35,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Creates a policy that authenticates request with AzConfig service.
+ * Creates a policy that authenticates requests with Azure Application Configuration service.
  */
-public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
+public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
     private static final String KEY_VALUE_APPLICATION_HEADER = "application/vnd.microsoft.azconfig.kv+json";
 
     private static final String HOST_HEADER = "Host";
@@ -49,14 +49,14 @@ public final class AzConfigCredentialsPolicy implements HttpPipelinePolicy {
 
     private final ApplicationConfigCredentials credentials;
     private final AuthorizationHeaderProvider provider;
-    private final Logger logger = LoggerFactory.getLogger(AzConfigCredentialsPolicy.class);
+    private final Logger logger = LoggerFactory.getLogger(ConfigurationCredentialsPolicy.class);
 
     /**
-     * Initializes a new instance of AzConfigCredentialsPolicy based on credentials.
+     * Initializes a new instance of ConfigurationCredentialsPolicy based on credentials.
      *
      * @param credentials for the Configuration Store in Azure
      */
-    AzConfigCredentialsPolicy(ApplicationConfigCredentials credentials) {
+    ConfigurationCredentialsPolicy(ApplicationConfigCredentials credentials) {
         this.credentials = credentials;
         this.provider = new AuthorizationHeaderProvider(credentials);
     }

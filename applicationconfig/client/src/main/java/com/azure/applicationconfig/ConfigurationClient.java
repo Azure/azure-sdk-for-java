@@ -157,7 +157,7 @@ public final class ConfigurationClient extends ServiceClient {
         policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
         policies.add(new RequestIdPolicy());
         policies.add(new RetryPolicy());
-        policies.add(new AzConfigCredentialsPolicy(credentials));
+        policies.add(new ConfigurationCredentialsPolicy(credentials));
 
         return policies;
     }
