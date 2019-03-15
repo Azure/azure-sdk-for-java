@@ -140,7 +140,7 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCorrelationData {
             /**
              * Specifies correlationData.
-             * @param correlationData Customer provided correlation data that will be returned in Job and JobOutput state events
+             * @param correlationData Customer provided key, value pairs that will be returned in Job and JobOutput state events
              * @return the next definition stage
              */
             WithCreate withCorrelationData(Map<String, String> correlationData);
@@ -194,7 +194,7 @@ public interface Job extends HasInner<JobInner>, Indexable, Refreshable<Job>, Up
         interface WithCorrelationData {
             /**
              * Specifies correlationData.
-             * @param correlationData Customer provided correlation data that will be returned in Job and JobOutput state events
+             * @param correlationData Customer provided key, value pairs that will be returned in Job and JobOutput state events
              * @return the next update stage
              */
             Update withCorrelationData(Map<String, String> correlationData);
