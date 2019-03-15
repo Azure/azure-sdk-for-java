@@ -117,10 +117,36 @@ public final class ConfigurationClient extends ServiceClient {
         return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, configurationSetting.etag(), null);
     }
 
+
+    /**
+     * Updates an existing configuration value in the service. The setting must already exist.
+     * <p>
+     * The label value for the ConfigurationSetting is optional. If not specified, the
+     * {@link ConfigurationSetting#NULL_LABEL} is used.
+     *
+     * If the {@link ConfigurationSetting#etag()} is specified, the configuration value is only updated if it matches.
+     *
+     * @param configurationSetting The key, value, and label to set.
+     * @return ConfigurationSetting that was created or updated
+     * @throws com.microsoft.azure.v3.CloudException when a ConfigurationSetting with the same key and label exists.
+     */
+    public Mono<RestResponse<ConfigurationSetting>> update(ConfigurationSetting configurationSetting) {
+        Validator.validate(configurationSetting);
+        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
+                .withValue(configurationSetting.value())
+                .withContentType(configurationSetting.contentType())
+                .withTags(configurationSetting.tags());
+
+        String etag = configurationSetting.etag() == null ? ETAG_ANY : configurationSetting.etag();
+
+        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, etag, null);
+    }
+
+
     /**
      * Gets a ConfigurationSetting that matches the {@param key} and {@param label}.
      *
-     * @param key   The key being retrieved
+     * @param key The key being retrieved
      * @return The configuration value in the service.
      * @throws com.microsoft.azure.v3.CloudException with status code of 404 if the {@param key} and {@param label} does
      *                                               not exist.
@@ -170,21 +196,20 @@ public final class ConfigurationClient extends ServiceClient {
     /**
      * Deletes the ConfigurationSetting.
      *
-     * @param key    key of the keyValue to delete
-     * @param label  Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
-     * @param filter eTag filter to add to If-Match or If-None-Match header
+     * @param key   key of the keyValue to delete
+     * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
+     * @param etag  Optional. If specified, will only delete the key if its current etag matches. (ie. No one has
+     *              changed the value yet.)
      * @return the deleted ConfigurationSetting or none if didn't exist.
      */
-    public Mono<RestResponse<ConfigurationSetting>> deleteKeyValue(String key, String label, ETagFilter filter) {
+    public Mono<RestResponse<ConfigurationSetting>> deleteKeyValue(String key, String label, String etag) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         } else if (label == null) {
             label = ConfigurationSetting.NULL_LABEL;
         }
-        if (filter != null) {
-            return service.delete(baseUri.toString(), key, label, filter.ifMatch(), filter.ifNoneMatch());
-        }
-        return service.delete(baseUri.toString(), key, label, null, null);
+
+        return service.delete(baseUri.toString(), key, label, etag, null);
     }
 
     /**
@@ -199,7 +224,7 @@ public final class ConfigurationClient extends ServiceClient {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         }
 
-        return lockKeyValue(key, null, null);
+        return lockKeyValue(key, null);
     }
 
     /**
@@ -211,49 +236,41 @@ public final class ConfigurationClient extends ServiceClient {
      * @param filter eTagFilter
      * @return ConfigurationSetting
      */
-    public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key, String label, ETagFilter filter) {
+    public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key, String label) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         } else if (label == null) {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        if (filter != null) {
-            return service.lockKeyValue(baseUri.toString(), key, label, filter.ifMatch(), filter.ifNoneMatch());
-        }
         return service.lockKeyValue(baseUri.toString(), key, label, null, null);
     }
 
     /**
-     * Unlocks ConfigurationSetting. If present, label must be explicit label value (not a wildcard).
-     * For all operations it's an optional parameter. If omitted it implies null label.
-     *
+     * Unlocks ConfigurationSetting.
      * @param key key name
      * @return ConfigurationSetting
      */
     public Mono<RestResponse<ConfigurationSetting>> unlockKeyValue(String key) {
-        return unlockKeyValue(key, null, null);
+        return unlockKeyValue(key, null);
     }
 
     /**
-     * Unlocks a ConfigurationSetting with a matching {@param key}, optional {@param label}, and if the {@param filter}
-     * is given, whether the current setting's etag matches or does not match the value.
+     * Unlocks a ConfigurationSetting with a matching {@param key}, optional {@param label}. If present, {@param label}
+     * must be explicit label value (not a wildcard).
      *
      * @param key   key name
      * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used. If specified, it must
      *              be an explicit value and cannot contain wildcard characters.
-     * @return ConfigurationSetting
+     * @return ConfigurationSetting that was unlocked.
      */
-    public Mono<RestResponse<ConfigurationSetting>> unlockKeyValue(String key, String label, ETagFilter filter) {
+    public Mono<RestResponse<ConfigurationSetting>> unlockKeyValue(String key, String label) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         } else if (label == null) {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        if (filter != null) {
-            return service.unlockKeyValue(baseUri.toString(), key, label, filter.ifMatch(), filter.ifNoneMatch());
-        }
         return service.unlockKeyValue(baseUri.toString(), key, label, null, null);
     }
 
