@@ -92,7 +92,7 @@ public final class ConfigurationClient extends ServiceClient {
                 .withContentType(configurationSetting.contentType())
                 .withTags(configurationSetting.tags());
 
-        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, null, ETAG_ANY);
+        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, null, getETagValue(ETAG_ANY));
     }
 
     /**
@@ -114,7 +114,7 @@ public final class ConfigurationClient extends ServiceClient {
                 .withContentType(configurationSetting.contentType())
                 .withTags(configurationSetting.tags());
 
-        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, configurationSetting.etag(), null);
+        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(configurationSetting.etag()), null);
     }
 
 
@@ -139,7 +139,7 @@ public final class ConfigurationClient extends ServiceClient {
 
         String etag = configurationSetting.etag() == null ? ETAG_ANY : configurationSetting.etag();
 
-        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, etag, null);
+        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(etag), null);
     }
 
 
@@ -176,7 +176,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.getKeyValue(baseUri.toString(), key, label, null, null, null, etag);
+        return service.getKeyValue(baseUri.toString(), key, label, null, null, null, getETagValue(etag));
     }
 
     /**
@@ -209,7 +209,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.delete(baseUri.toString(), key, label, etag, null);
+        return service.delete(baseUri.toString(), key, label, getETagValue(etag), null);
     }
 
     /**
@@ -403,5 +403,14 @@ public final class ConfigurationClient extends ServiceClient {
             return Flux.fromIterable(page.items());
         }
         return Flux.fromIterable(page.items()).concatWith(listLabels(page.nextLink()));
+    }
+
+    /**
+     * Azure Configuration service requires that the etag value is surrounded in quotation marks.
+     * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
+     * @return The etag surrounded by quotations. (ex. "etag")
+     */
+    private static String getETagValue(String etag) {
+        return etag == null ? "" : "\"" + etag + "\"";
     }
 }
