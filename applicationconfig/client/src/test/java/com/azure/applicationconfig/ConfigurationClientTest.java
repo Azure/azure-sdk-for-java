@@ -391,7 +391,7 @@ public class ConfigurationClientTest {
     @Test
     public void listKeysWithPage() {
         final String label = "listed-label";
-        final int numberExpected = 75;
+        final int numberExpected = 50;
         List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
                 .mapToObj(value -> new ConfigurationSetting()
                         .withKey(keyPrefix + "-" + value)
@@ -401,7 +401,7 @@ public class ConfigurationClientTest {
 
         List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setKeyValue(setting));
+            results.add(client.setKeyValue(setting).retryBackoff(2, Duration.ofSeconds(30)));
         }
 
         KeyValueListFilter filter = new KeyValueListFilter().withLabel(label);
