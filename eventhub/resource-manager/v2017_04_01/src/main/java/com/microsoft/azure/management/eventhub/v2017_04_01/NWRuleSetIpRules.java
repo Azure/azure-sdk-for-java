@@ -11,7 +11,7 @@ package com.microsoft.azure.management.eventhub.v2017_04_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The response from the List namespace operation.
+ * Description of NetWorkRuleSet - IpRules resource.
  */
 public class NWRuleSetIpRules {
     /**
