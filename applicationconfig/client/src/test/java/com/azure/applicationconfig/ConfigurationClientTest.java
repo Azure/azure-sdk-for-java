@@ -23,6 +23,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
@@ -413,8 +414,9 @@ public class ConfigurationClientTest {
                 .verify();
     }
 
+    @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
-    public void Delete() {
+    public void deleteAllKeys() {
         client.listKeyValues(new KeyValueListFilter().withKey("key*"))
                 .flatMap(configurationSetting -> {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
