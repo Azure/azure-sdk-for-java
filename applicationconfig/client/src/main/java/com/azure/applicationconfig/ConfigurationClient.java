@@ -130,7 +130,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return ConfigurationSetting that was created or updated
      * @throws com.microsoft.azure.v3.CloudException when a ConfigurationSetting with the same key and label exists.
      */
-    public Mono<RestResponse<ConfigurationSetting>> update(ConfigurationSetting configurationSetting) {
+    public Mono<RestResponse<ConfigurationSetting>> updateKeyValue(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
         KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
                 .withValue(configurationSetting.value())
