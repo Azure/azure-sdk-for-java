@@ -1,3 +1,4 @@
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 package com.azure.applicationconfig;
@@ -18,7 +19,6 @@ import com.microsoft.rest.v3.http.HttpPipeline;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import com.microsoft.rest.v3.http.policy.RetryPolicy;
 import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
-import com.microsoft.rest.v3.http.rest.RestPagedResponse;
 import com.microsoft.rest.v3.http.rest.RestResponse;
 import com.microsoft.rest.v3.implementation.RestProxy;
 import com.microsoft.rest.v3.implementation.Validator;
@@ -35,6 +35,8 @@ import java.util.List;
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
  */
 public final class ConfigurationClient extends ServiceClient {
+    public static final String ETAG_ANY = "*";
+
     static final String SDK_NAME = "Azure-Configuration";
     static final String SDK_VERSION = "1.0.0-SNAPSHOT";
 
@@ -74,58 +76,94 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Sets key value. Label value for the configurationSetting is optional, if not specified or label=%00 it implies null label.
+     * Adds a configuration value in the service if that key and label does not exist.
+     * <p>
+     * The label value for the ConfigurationSetting is optional. If not specified, the
+     * {@link ConfigurationSetting#NULL_LABEL} is used.
      *
-     * @param configurationSetting key and value to set
+     * @param configurationSetting The key, value, and label to set.
      * @return ConfigurationSetting that was created or updated
+     * @throws com.microsoft.azure.v3.CloudException when a ConfigurationSetting with the same key and label exists.
      */
-    public Mono<RestResponse<ConfigurationSetting>> setKeyValue(ConfigurationSetting configurationSetting) {
-        return setKeyValue(configurationSetting, null);
-    }
-
-    /**
-     * Sets key value. Label value for the configurationSetting is optional, if not specified or label=%00 it implies null label.
-     *
-     * @param configurationSetting key and value to set
-     * @return ConfigurationSetting that was created or updated
-     */
-    public Mono<RestResponse<ConfigurationSetting>> setKeyValue(ConfigurationSetting configurationSetting, ETagFilter filter) {
+    public Mono<RestResponse<ConfigurationSetting>> addKeyValue(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
-        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters().withValue(configurationSetting.value())
+        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
+                .withValue(configurationSetting.value())
                 .withContentType(configurationSetting.contentType())
                 .withTags(configurationSetting.tags());
 
-        if (filter != null) {
-            return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, filter.ifMatch(), filter.ifNoneMatch());
-        }
-        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, null, null);
+        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, null, ETAG_ANY);
     }
 
     /**
-     * Gets the ConfigurationSetting object for the specified key and KeyValueFilter2 parameters.
+     * Creates or updates a configuration value in the service.
+     * <p>
+     * If {@link ConfigurationSetting#etag()} is specified, the configuration value is added or updated if the current
+     * value's etag matches. If the etag's value is equal to {@link ConfigurationClient#ETAG_ANY}, the setting will
+     * always be updated.
      *
-     * @param key    the key being retrieved
-     * @param filter options for the request
-     * @return ConfigurationSetting object
+     * @param configurationSetting key and value to set
+     * @return ConfigurationSetting that was created or updated
+     * @throws com.microsoft.azure.v3.CloudException If the {@link ConfigurationSetting#etag()} was specified, is not
+     *                                               {@link ConfigurationClient#ETAG_ANY}, and the current configuration value's etag does not match.
      */
-    public Mono<RestResponse<ConfigurationSetting>> getKeyValue(String key, KeyValueFilter filter) {
+    public Mono<RestResponse<ConfigurationSetting>> setKeyValue(ConfigurationSetting configurationSetting) {
+        Validator.validate(configurationSetting);
+        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters()
+                .withValue(configurationSetting.value())
+                .withContentType(configurationSetting.contentType())
+                .withTags(configurationSetting.tags());
+
+        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, configurationSetting.etag(), null);
+    }
+
+    /**
+     * Gets a ConfigurationSetting that matches the {@param key} and {@param label}.
+     *
+     * @param key   The key being retrieved
+     * @return The configuration value in the service.
+     * @throws com.microsoft.azure.v3.CloudException with status code of 404 if the {@param key} and {@param label} does
+     *                                               not exist.
+     */
+    public Mono<RestResponse<ConfigurationSetting>> getKeyValue(String key) {
+        return getKeyValue(key, null, null);
+    }
+
+    /**
+     * Gets the ConfigurationSetting given the {@param key}, optional {@param label} and optional {@param etag}.
+     * <p>
+     * Supplying {@param etag} will result in a ConfigurationSetting only being returned if the current etag is not the
+     * same value. This is to improve the client caching scenario, where they only want the configuration value if it
+     * has changed.
+     *
+     * @param key   The key being retrieved
+     * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
+     * @param etag  Optional. If specified, will only get the ConfigurationSetting if the current etag does not match.
+     * @return The configuration value in the service.
+     * @throws com.microsoft.azure.v3.CloudException with status code of 404 if the {@param key} and {@param label} does
+     *                                               not exist. If {@param etag} was specified, returns status code of 304 if the key has not been modified.
+     */
+    public Mono<RestResponse<ConfigurationSetting>> getKeyValue(String key, String label, String etag) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+        } else if (label == null) {
+            label = ConfigurationSetting.NULL_LABEL;
         }
-        if (filter != null) {
-            return service.getKeyValue(baseUri.toString(), key, filter.label(), filter.fields(),
-                    filter.acceptDateTime(), filter.ifMatch(), filter.ifNoneMatch());
-        }
-        return service.getKeyValue(baseUri.toString(), key, null, null, null, null, null);
+
+        return service.getKeyValue(baseUri.toString(), key, label, null, null, null, etag);
     }
 
     /**
      * Deletes the ConfigurationSetting.
      *
-     * @param key keyValue to delete
+     * @param key The key to delete.
      * @return the deleted ConfigurationSetting or none if didn't exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> deleteKeyValue(String key) {
+        if (key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+        }
+
         return deleteKeyValue(key, null, null);
     }
 
@@ -133,12 +171,15 @@ public final class ConfigurationClient extends ServiceClient {
      * Deletes the ConfigurationSetting.
      *
      * @param key    key of the keyValue to delete
+     * @param label  Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
      * @param filter eTag filter to add to If-Match or If-None-Match header
      * @return the deleted ConfigurationSetting or none if didn't exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> deleteKeyValue(String key, String label, ETagFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+        } else if (label == null) {
+            label = ConfigurationSetting.NULL_LABEL;
         }
         if (filter != null) {
             return service.delete(baseUri.toString(), key, label, filter.ifMatch(), filter.ifNoneMatch());
@@ -149,10 +190,15 @@ public final class ConfigurationClient extends ServiceClient {
     /**
      * Places a lock on ConfigurationSetting.
      *
-     * @param key key name
-     * @return ConfigurationSetting
+     * @param key The key to lock.
+     * @return ConfigurationSetting that was locked
+     * @throws com.microsoft.azure.v3.CloudException with status code 404 if the {@param key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key) {
+        if (key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+        }
+
         return lockKeyValue(key, null, null);
     }
 
@@ -161,14 +207,17 @@ public final class ConfigurationClient extends ServiceClient {
      * For all operations it's an optional parameter. If omitted it implies null label.
      *
      * @param key    key name
-     * @param label  label
+     * @param label  Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
      * @param filter eTagFilter
      * @return ConfigurationSetting
      */
     public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key, String label, ETagFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+        } else if (label == null) {
+            label = ConfigurationSetting.NULL_LABEL;
         }
+
         if (filter != null) {
             return service.lockKeyValue(baseUri.toString(), key, label, filter.ifMatch(), filter.ifNoneMatch());
         }
@@ -187,16 +236,21 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Unlocks ConfigurationSetting. If present, label must be explicit label value (not a wildcard).
-     * For all operations it's an optional parameter. If omitted it implies null label.
+     * Unlocks a ConfigurationSetting with a matching {@param key}, optional {@param label}, and if the {@param filter}
+     * is given, whether the current setting's etag matches or does not match the value.
      *
-     * @param key key name
+     * @param key   key name
+     * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used. If specified, it must
+     *              be an explicit value and cannot contain wildcard characters.
      * @return ConfigurationSetting
      */
     public Mono<RestResponse<ConfigurationSetting>> unlockKeyValue(String key, String label, ETagFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+        } else if (label == null) {
+            label = ConfigurationSetting.NULL_LABEL;
         }
+
         if (filter != null) {
             return service.unlockKeyValue(baseUri.toString(), key, label, filter.ifMatch(), filter.ifNoneMatch());
         }

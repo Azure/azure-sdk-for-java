@@ -9,9 +9,15 @@ import java.util.Map;
 
 /**
  * ConfigurationSetting is a resource identified by unique combination of key + label. Label can be null.
- * To explicitly reference null label use "\0" (url encoded as %00).
+ * To explicitly reference null label use "\0" (url encoded as %00). The default label is "%00".
  */
 public class ConfigurationSetting {
+    /**
+     * The default label for configuration settings is the null label, "\0".
+     * This gets the URL encoded value.
+     */
+    public static final String NULL_LABEL = "%00";
+
     @JsonProperty(value = "key", required = true)
     private String key;
 
@@ -35,6 +41,13 @@ public class ConfigurationSetting {
 
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /**
+     * Creates an empty ConfigurationSetting with the label equal to {@link NULL_LABEL}.
+     */
+    public ConfigurationSetting() {
+        label = NULL_LABEL;
+    }
 
     /**
      * @return key name
