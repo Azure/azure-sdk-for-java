@@ -59,6 +59,10 @@ public final class ConfigurationClient extends ServiceClient {
         this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
     }
 
+    /**
+     * Gets the default pipeline policies.
+     * TODO (conniey): This is going to change when we move to a builder pattern.
+     */
     public static List<HttpPipelinePolicy> getDefaultPolicies(String connectionString) {
         final ApplicationConfigCredentials credentials = new ApplicationConfigCredentials(connectionString);
         // Closest to API goes first, closest to wire goes last.
@@ -95,14 +99,15 @@ public final class ConfigurationClient extends ServiceClient {
     /**
      * Creates or updates a configuration value in the service.
      * <p>
-     * If {@link ConfigurationSetting#etag()} is specified, the configuration value is added or updated if the current
-     * value's etag matches. If the etag's value is equal to {@link ConfigurationClient#ETAG_ANY}, the setting will
-     * always be updated.
+     * If {@link ConfigurationSetting#etag()} is specified, the configuration value is updated if the current setting's
+     * etag matches. If the etag's value is equal to {@link ConfigurationClient#ETAG_ANY}, the setting will always be
+     * updated.
      *
-     * @param configurationSetting key and value to set
-     * @return ConfigurationSetting that was created or updated
+     * @param configurationSetting The configuration setting to create or update.
+     * @return ConfigurationSetting that was created or updated.
      * @throws com.microsoft.azure.v3.CloudException If the {@link ConfigurationSetting#etag()} was specified, is not
-     *                                               {@link ConfigurationClient#ETAG_ANY}, and the current configuration value's etag does not match.
+     *                                               {@link ConfigurationClient#ETAG_ANY}, and the current configuration
+     *                                               value's etag does not match.
      */
     public Mono<RestResponse<ConfigurationSetting>> setKeyValue(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
@@ -120,12 +125,13 @@ public final class ConfigurationClient extends ServiceClient {
      * <p>
      * The label value for the ConfigurationSetting is optional. If not specified, the
      * {@link ConfigurationSetting#NULL_LABEL} is used.
-     *
+     * <p>
      * If the {@link ConfigurationSetting#etag()} is specified, the configuration value is only updated if it matches.
      *
-     * @param configurationSetting The key, value, and label to set.
-     * @return ConfigurationSetting that was created or updated
-     * @throws com.microsoft.azure.v3.CloudException when a ConfigurationSetting with the same key and label exists.
+     * @param configurationSetting The key, value, and optional label to set.
+     * @return ConfigurationSetting that was updated.
+     * @throws com.microsoft.azure.v3.CloudException When a ConfigurationSetting with the same key and label exists. Or
+     *                                               the configuration value is locked.
      */
     public Mono<RestResponse<ConfigurationSetting>> updateKeyValue(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
@@ -164,7 +170,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @param etag  Optional. If specified, will only get the ConfigurationSetting if the current etag does not match.
      * @return The configuration value in the service.
      * @throws com.microsoft.azure.v3.CloudException with status code of 404 if the {@param key} and {@param label} does
-     *                                               not exist. If {@param etag} was specified, returns status code of 304 if the key has not been modified.
+     *                                               not exist. If {@param etag} was specified, returns status code of
+     *                                               304 if the key has not been modified.
      */
     public Mono<RestResponse<ConfigurationSetting>> getKeyValue(String key, String label, String etag) {
         if (key == null || key.isEmpty()) {
@@ -230,7 +237,6 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param key    key name
      * @param label  Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
-     * @param filter eTagFilter
      * @return ConfigurationSetting
      */
     public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key, String label) {
@@ -245,6 +251,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Unlocks ConfigurationSetting.
+     *
      * @param key key name
      * @return ConfigurationSetting
      */
@@ -272,7 +279,7 @@ public final class ConfigurationClient extends ServiceClient {
     }
 
     /**
-     * Lists the KeyValues.
+     * Lists the ConfigurationSettings.
      *
      * @param filter query options
      * @return KeyValues
@@ -404,6 +411,7 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Azure Configuration service requires that the etag value is surrounded in quotation marks.
+     *
      * @param etag The etag to get the value for. If null is pass in, an empty string is returned.
      * @return The etag surrounded by quotations. (ex. "etag")
      */
