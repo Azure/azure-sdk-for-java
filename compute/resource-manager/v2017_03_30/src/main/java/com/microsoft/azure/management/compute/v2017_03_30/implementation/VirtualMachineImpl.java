@@ -8,9 +8,10 @@
 
 package com.microsoft.azure.management.compute.v2017_03_30.implementation;
 
-import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachine;
+import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import java.util.Map;
 import com.microsoft.azure.management.compute.v2017_03_30.Plan;
 import com.microsoft.azure.management.compute.v2017_03_30.HardwareProfile;
 import com.microsoft.azure.management.compute.v2017_03_30.StorageProfile;
@@ -24,29 +25,53 @@ import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineInstance
 import java.util.ArrayList;
 import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineExtension;
 
-class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl, ComputeManager> implements VirtualMachine, VirtualMachine.Definition, VirtualMachine.Update {
-    VirtualMachineImpl(String name, VirtualMachineInner inner, ComputeManager manager) {
-        super(name, inner, manager);
+class VirtualMachineImpl extends CreatableUpdatableImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl> implements VirtualMachine, VirtualMachine.Definition, VirtualMachine.Update {
+    private final ComputeManager manager;
+    private String resourceGroupName;
+    private String vmName;
+
+    VirtualMachineImpl(String name, ComputeManager manager) {
+        super(name, new VirtualMachineInner());
+        this.manager = manager;
+        // Set resource name
+        this.vmName = name;
+        //
+    }
+
+    VirtualMachineImpl(VirtualMachineInner inner, ComputeManager manager) {
+        super(inner.name(), inner);
+        this.manager = manager;
+        // Set resource name
+        this.vmName = inner.name();
+        // set resource ancestor and positional variables
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.vmName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualMachines");
+        //
+    }
+
+    @Override
+    public ComputeManager manager() {
+        return this.manager;
     }
 
     @Override
     public Observable<VirtualMachine> createResourceAsync() {
         VirtualMachinesInner client = this.manager().inner().virtualMachines();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.vmName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<VirtualMachine> updateResourceAsync() {
         VirtualMachinesInner client = this.manager().inner().virtualMachines();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.vmName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Observable<VirtualMachineInner> getInnerAsync() {
         VirtualMachinesInner client = this.manager().inner().virtualMachines();
-        return client.getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return null; // NOP getInnerAsync implementation as get is not supported
     }
 
     @Override
@@ -71,6 +96,11 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     }
 
     @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
     public VirtualMachineIdentity identity() {
         return this.inner().identity();
     }
@@ -88,6 +118,16 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     @Override
     public String licenseType() {
         return this.inner().licenseType();
+    }
+
+    @Override
+    public String location() {
+        return this.inner().location();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
@@ -127,6 +167,16 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     }
 
     @Override
+    public Map<String, String> tags() {
+        return this.inner().getTags();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
+    }
+
+    @Override
     public String vmId() {
         return this.inner().vmId();
     }
@@ -134,6 +184,18 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     @Override
     public List<String> zones() {
         return this.inner().zones();
+    }
+
+    @Override
+    public VirtualMachineImpl withExistingLocation(String resourceGroupName) {
+        this.resourceGroupName = resourceGroupName;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withLocation(String location) {
+        this.inner().withLocation(location);
+        return this;
     }
 
     @Override
@@ -187,6 +249,12 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     @Override
     public VirtualMachineImpl withStorageProfile(StorageProfile storageProfile) {
         this.inner().withStorageProfile(storageProfile);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withTags(Map<String, String> tags) {
+        this.inner().withTags(tags);
         return this;
     }
 

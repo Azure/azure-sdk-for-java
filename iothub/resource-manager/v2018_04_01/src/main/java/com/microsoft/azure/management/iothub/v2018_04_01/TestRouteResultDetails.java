@@ -22,7 +22,7 @@ public class TestRouteResultDetails {
     private List<RouteCompilationError> compilationErrors;
 
     /**
-     * Get the compilationErrors value.
+     * Get jSON-serialized list of route compilation errors.
      *
      * @return the compilationErrors value
      */
@@ -31,7 +31,7 @@ public class TestRouteResultDetails {
     }
 
     /**
-     * Set the compilationErrors value.
+     * Set jSON-serialized list of route compilation errors.
      *
      * @param compilationErrors the compilationErrors value to set
      * @return the TestRouteResultDetails object itself.

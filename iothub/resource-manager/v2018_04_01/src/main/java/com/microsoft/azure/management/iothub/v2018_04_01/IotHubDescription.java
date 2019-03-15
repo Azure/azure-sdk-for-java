@@ -10,20 +10,20 @@ package com.microsoft.azure.management.iothub.v2018_04_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_04_01.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_04_01.implementation.DevicesManager;
 import com.microsoft.azure.management.iothub.v2018_04_01.implementation.IotHubDescriptionInner;
 
 /**
  * Type representing IotHubDescription.
  */
-public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Resource, GroupableResourceCore<IoTHubManager, IotHubDescriptionInner>, HasResourceGroup, Refreshable<IotHubDescription>, Updatable<IotHubDescription.Update>, HasManager<IoTHubManager> {
+public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Resource, GroupableResourceCore<DevicesManager, IotHubDescriptionInner>, HasResourceGroup, Refreshable<IotHubDescription>, Updatable<IotHubDescription.Update>, HasManager<DevicesManager> {
     /**
      * @return the etag value.
      */
@@ -42,7 +42,7 @@ public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Res
     /**
      * The entirety of the IotHubDescription definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithSku, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithIfMatch, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
 
     /**
@@ -58,7 +58,19 @@ public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Res
         /**
          * The stage of the IotHubDescription definition allowing to specify the resource group.
          */
-        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithSku> {
+        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithIfMatch> {
+        }
+
+        /**
+         * The stage of the iothubdescription definition allowing to specify IfMatch.
+         */
+        interface WithIfMatch {
+           /**
+            * Specifies ifMatch.
+            * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub
+            * @return the next definition stage
+*/
+            WithSku withIfMatch(String ifMatch);
         }
 
         /**
@@ -67,26 +79,32 @@ public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Res
         interface WithSku {
            /**
             * Specifies sku.
-            */
+            * @param sku IotHub SKU info
+            * @return the next definition stage
+*/
             WithCreate withSku(IotHubSkuInfo sku);
         }
 
         /**
-         * The stage of the iothubdescription update allowing to specify Etag.
+         * The stage of the iothubdescription definition allowing to specify Etag.
          */
         interface WithEtag {
             /**
              * Specifies etag.
+             * @param etag The Etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention
+             * @return the next definition stage
              */
             WithCreate withEtag(String etag);
         }
 
         /**
-         * The stage of the iothubdescription update allowing to specify Properties.
+         * The stage of the iothubdescription definition allowing to specify Properties.
          */
         interface WithProperties {
             /**
              * Specifies properties.
+             * @param properties IotHub properties
+             * @return the next definition stage
              */
             WithCreate withProperties(IotHubProperties properties);
         }
@@ -102,12 +120,48 @@ public interface IotHubDescription extends HasInner<IotHubDescriptionInner>, Res
     /**
      * The template for a IotHubDescription update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<IotHubDescription>, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<IotHubDescription>, Resource.UpdateWithTags<Update>, UpdateStages.WithIfMatch, UpdateStages.WithEtag, UpdateStages.WithProperties {
     }
 
     /**
      * Grouping of IotHubDescription update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the iothubdescription update allowing to specify IfMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies ifMatch.
+             * @param ifMatch ETag of the IoT Hub. Do not specify for creating a brand new IoT Hub. Required to update an existing IoT Hub
+             * @return the next update stage
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the iothubdescription update allowing to specify Etag.
+         */
+        interface WithEtag {
+            /**
+             * Specifies etag.
+             * @param etag The Etag field is *not* required. If it is provided in the response body, it must also be provided as a header per the normal ETag convention
+             * @return the next update stage
+             */
+            Update withEtag(String etag);
+        }
+
+        /**
+         * The stage of the iothubdescription update allowing to specify Properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies properties.
+             * @param properties IotHub properties
+             * @return the next update stage
+             */
+            Update withProperties(IotHubProperties properties);
+        }
+
     }
 }

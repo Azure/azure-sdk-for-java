@@ -14,12 +14,16 @@ import rx.Observable;
 import com.microsoft.azure.management.iothub.v2018_04_01.CertificateProperties;
 
 class CertificateDescriptionImpl extends CreatableUpdatableImpl<CertificateDescription, CertificateDescriptionInner, CertificateDescriptionImpl> implements CertificateDescription, CertificateDescription.Definition, CertificateDescription.Update {
-    private final IoTHubManager manager;
+    private final DevicesManager manager;
     private String resourceGroupName;
     private String resourceName;
     private String certificateName;
+    private String cifMatch;
+    private String ccertificate;
+    private String uifMatch;
+    private String ucertificate;
 
-    CertificateDescriptionImpl(String name, IoTHubManager manager) {
+    CertificateDescriptionImpl(String name, DevicesManager manager) {
         super(name, new CertificateDescriptionInner());
         this.manager = manager;
         // Set resource name
@@ -27,12 +31,12 @@ class CertificateDescriptionImpl extends CreatableUpdatableImpl<CertificateDescr
         //
     }
 
-    CertificateDescriptionImpl(CertificateDescriptionInner inner, IoTHubManager manager) {
+    CertificateDescriptionImpl(CertificateDescriptionInner inner, DevicesManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
         this.certificateName = inner.name();
-        // resource ancestor names
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.resourceName = IdParsingUtils.getValueFromIdByName(inner.id(), "IotHubs");
         this.certificateName = IdParsingUtils.getValueFromIdByName(inner.id(), "certificates");
@@ -40,21 +44,21 @@ class CertificateDescriptionImpl extends CreatableUpdatableImpl<CertificateDescr
     }
 
     @Override
-    public IoTHubManager manager() {
+    public DevicesManager manager() {
         return this.manager;
     }
 
     @Override
     public Observable<CertificateDescription> createResourceAsync() {
         CertificatesInner client = this.manager().inner().certificates();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.resourceName, this.certificateName)
+        return client.createOrUpdateAsync(this.resourceGroupName, this.resourceName, this.certificateName, this.cifMatch, this.ccertificate)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<CertificateDescription> updateResourceAsync() {
         CertificatesInner client = this.manager().inner().certificates();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.resourceName, this.certificateName)
+        return client.createOrUpdateAsync(this.resourceGroupName, this.resourceName, this.certificateName, this.uifMatch, this.ucertificate)
             .map(innerToFluentMap(this));
     }
 
@@ -99,6 +103,26 @@ class CertificateDescriptionImpl extends CreatableUpdatableImpl<CertificateDescr
     public CertificateDescriptionImpl withExistingIotHub(String resourceGroupName, String resourceName) {
         this.resourceGroupName = resourceGroupName;
         this.resourceName = resourceName;
+        return this;
+    }
+
+    @Override
+    public CertificateDescriptionImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.cifMatch = ifMatch;
+        } else {
+            this.uifMatch = ifMatch;
+        }
+        return this;
+    }
+
+    @Override
+    public CertificateDescriptionImpl withCertificate(String certificate) {
+        if (isInCreateMode()) {
+            this.ccertificate = certificate;
+        } else {
+            this.ucertificate = certificate;
+        }
         return this;
     }
 

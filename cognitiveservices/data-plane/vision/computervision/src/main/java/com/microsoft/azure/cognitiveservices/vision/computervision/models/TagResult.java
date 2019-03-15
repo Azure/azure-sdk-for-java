@@ -34,7 +34,7 @@ public class TagResult {
     private ImageMetadata metadata;
 
     /**
-     * Get the tags value.
+     * Get a list of tags with confidence level.
      *
      * @return the tags value
      */
@@ -43,7 +43,7 @@ public class TagResult {
     }
 
     /**
-     * Set the tags value.
+     * Set a list of tags with confidence level.
      *
      * @param tags the tags value to set
      * @return the TagResult object itself.
@@ -54,7 +54,7 @@ public class TagResult {
     }
 
     /**
-     * Get the requestId value.
+     * Get id of the REST API request.
      *
      * @return the requestId value
      */
@@ -63,7 +63,7 @@ public class TagResult {
     }
 
     /**
-     * Set the requestId value.
+     * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
      * @return the TagResult object itself.

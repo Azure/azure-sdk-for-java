@@ -22,7 +22,7 @@ public class CertificateVerificationDescription {
     private String certificate;
 
     /**
-     * Get the certificate value.
+     * Get base-64 representation of X509 certificate .cer file or just .pem file content.
      *
      * @return the certificate value
      */
@@ -31,7 +31,7 @@ public class CertificateVerificationDescription {
     }
 
     /**
-     * Set the certificate value.
+     * Set base-64 representation of X509 certificate .cer file or just .pem file content.
      *
      * @param certificate the certificate value to set
      * @return the CertificateVerificationDescription object itself.

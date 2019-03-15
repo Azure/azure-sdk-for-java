@@ -21,8 +21,8 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
     /**
-     * The Azure Resource ID of the storage blob container that is the
-     * destination of the deadletter events. For example:
+     * The Azure Resource ID of the storage account that is the destination of
+     * the deadletter events. For example:
      * /subscriptions/{AzureSubscriptionId}/resourceGroups/{ResourceGroupName}/providers/microsoft.Storage/storageAccounts/{StorageAccountName}.
      */
     @JsonProperty(value = "properties.resourceId")
@@ -36,7 +36,7 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
     private String blobContainerName;
 
     /**
-     * Get the Azure Resource ID of the storage blob container that is the destination of the deadletter events. For example: /subscriptions/{AzureSubscriptionId}/resourceGroups/{ResourceGroupName}/providers/microsoft.Storage/storageAccounts/{StorageAccountName}.
+     * Get the Azure Resource ID of the storage account that is the destination of the deadletter events. For example: /subscriptions/{AzureSubscriptionId}/resourceGroups/{ResourceGroupName}/providers/microsoft.Storage/storageAccounts/{StorageAccountName}.
      *
      * @return the resourceId value
      */
@@ -45,7 +45,7 @@ public class StorageBlobDeadLetterDestination extends DeadLetterDestination {
     }
 
     /**
-     * Set the Azure Resource ID of the storage blob container that is the destination of the deadletter events. For example: /subscriptions/{AzureSubscriptionId}/resourceGroups/{ResourceGroupName}/providers/microsoft.Storage/storageAccounts/{StorageAccountName}.
+     * Set the Azure Resource ID of the storage account that is the destination of the deadletter events. For example: /subscriptions/{AzureSubscriptionId}/resourceGroups/{ResourceGroupName}/providers/microsoft.Storage/storageAccounts/{StorageAccountName}.
      *
      * @param resourceId the resourceId value to set
      * @return the StorageBlobDeadLetterDestination object itself.

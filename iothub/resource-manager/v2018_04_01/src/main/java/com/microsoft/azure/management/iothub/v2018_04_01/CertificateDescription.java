@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_04_01.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_04_01.implementation.DevicesManager;
 
 /**
  * Type representing CertificateDescription.
  */
-public interface CertificateDescription extends HasInner<CertificateDescriptionInner>, Indexable, Refreshable<CertificateDescription>, Updatable<CertificateDescription.Update>, HasManager<IoTHubManager> {
+public interface CertificateDescription extends HasInner<CertificateDescriptionInner>, Indexable, Refreshable<CertificateDescription>, Updatable<CertificateDescription.Update>, HasManager<DevicesManager> {
     /**
      * @return the etag value.
      */
@@ -50,7 +50,7 @@ public interface CertificateDescription extends HasInner<CertificateDescriptionI
     /**
      * The entirety of the CertificateDescription definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithIotHub, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithIotHub, DefinitionStages.WithIfMatch, DefinitionStages.WithCertificate, DefinitionStages.WithCreate {
     }
 
     /**
@@ -69,8 +69,35 @@ public interface CertificateDescription extends HasInner<CertificateDescriptionI
         interface WithIotHub {
            /**
             * Specifies resourceGroupName, resourceName.
+            * @param resourceGroupName The name of the resource group that contains the IoT hub
+            * @param resourceName The name of the IoT hub
+            * @return the next definition stage
             */
-            WithCreate withExistingIotHub(String resourceGroupName, String resourceName);
+            WithIfMatch withExistingIotHub(String resourceGroupName, String resourceName);
+        }
+
+        /**
+         * The stage of the certificatedescription definition allowing to specify IfMatch.
+         */
+        interface WithIfMatch {
+           /**
+            * Specifies ifMatch.
+            * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update an existing certificate
+            * @return the next definition stage
+            */
+            WithCertificate withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the certificatedescription definition allowing to specify Certificate.
+         */
+        interface WithCertificate {
+           /**
+            * Specifies certificate.
+            * @param certificate base-64 representation of the X509 leaf certificate .cer file or just .pem file content
+            * @return the next definition stage
+            */
+            WithCreate withCertificate(String certificate);
         }
 
         /**
@@ -84,12 +111,36 @@ public interface CertificateDescription extends HasInner<CertificateDescriptionI
     /**
      * The template for a CertificateDescription update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<CertificateDescription> {
+    interface Update extends Appliable<CertificateDescription>, UpdateStages.WithIfMatch, UpdateStages.WithCertificate {
     }
 
     /**
      * Grouping of CertificateDescription update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the certificatedescription update allowing to specify IfMatch.
+         */
+        interface WithIfMatch {
+            /**
+             * Specifies ifMatch.
+             * @param ifMatch ETag of the Certificate. Do not specify for creating a brand new certificate. Required to update an existing certificate
+             * @return the next update stage
+             */
+            Update withIfMatch(String ifMatch);
+        }
+
+        /**
+         * The stage of the certificatedescription update allowing to specify Certificate.
+         */
+        interface WithCertificate {
+            /**
+             * Specifies certificate.
+             * @param certificate base-64 representation of the X509 leaf certificate .cer file or just .pem file content
+             * @return the next update stage
+             */
+            Update withCertificate(String certificate);
+        }
+
     }
 }

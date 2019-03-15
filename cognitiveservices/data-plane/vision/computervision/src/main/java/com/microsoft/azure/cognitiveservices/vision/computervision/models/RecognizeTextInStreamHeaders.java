@@ -22,7 +22,7 @@ public class RecognizeTextInStreamHeaders {
     private String operationLocation;
 
     /**
-     * Get the operationLocation value.
+     * Get uRL to query for status of the operation. The operation ID will expire in 48 hours.
      *
      * @return the operationLocation value
      */
@@ -31,7 +31,7 @@ public class RecognizeTextInStreamHeaders {
     }
 
     /**
-     * Set the operationLocation value.
+     * Set uRL to query for status of the operation. The operation ID will expire in 48 hours.
      *
      * @param operationLocation the operationLocation value to set
      * @return the RecognizeTextInStreamHeaders object itself.

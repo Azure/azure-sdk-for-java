@@ -34,7 +34,7 @@ public class DomainModelResults {
     private ImageMetadata metadata;
 
     /**
-     * Get the result value.
+     * Get model-specific response.
      *
      * @return the result value
      */
@@ -43,7 +43,7 @@ public class DomainModelResults {
     }
 
     /**
-     * Set the result value.
+     * Set model-specific response.
      *
      * @param result the result value to set
      * @return the DomainModelResults object itself.
@@ -54,7 +54,7 @@ public class DomainModelResults {
     }
 
     /**
-     * Get the requestId value.
+     * Get id of the REST API request.
      *
      * @return the requestId value
      */
@@ -63,7 +63,7 @@ public class DomainModelResults {
     }
 
     /**
-     * Set the requestId value.
+     * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
      * @return the DomainModelResults object itself.

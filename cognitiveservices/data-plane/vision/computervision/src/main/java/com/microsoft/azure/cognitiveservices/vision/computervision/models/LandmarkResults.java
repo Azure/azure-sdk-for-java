@@ -12,11 +12,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * List of landmarks recognized in the image.
+ * Result of domain-specific classifications for the domain of landmarks.
  */
 public class LandmarkResults {
     /**
-     * The landmarks property.
+     * List of landmarks recognized in the image.
      */
     @JsonProperty(value = "landmarks")
     private List<LandmarksModel> landmarks;
@@ -34,7 +34,7 @@ public class LandmarkResults {
     private ImageMetadata metadata;
 
     /**
-     * Get the landmarks value.
+     * Get list of landmarks recognized in the image.
      *
      * @return the landmarks value
      */
@@ -43,7 +43,7 @@ public class LandmarkResults {
     }
 
     /**
-     * Set the landmarks value.
+     * Set list of landmarks recognized in the image.
      *
      * @param landmarks the landmarks value to set
      * @return the LandmarkResults object itself.
@@ -54,7 +54,7 @@ public class LandmarkResults {
     }
 
     /**
-     * Get the requestId value.
+     * Get id of the REST API request.
      *
      * @return the requestId value
      */
@@ -63,7 +63,7 @@ public class LandmarkResults {
     }
 
     /**
-     * Set the requestId value.
+     * Set id of the REST API request.
      *
      * @param requestId the requestId value to set
      * @return the LandmarkResults object itself.

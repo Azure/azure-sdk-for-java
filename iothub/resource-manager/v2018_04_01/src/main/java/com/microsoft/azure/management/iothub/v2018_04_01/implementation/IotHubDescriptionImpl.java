@@ -14,22 +14,24 @@ import rx.Observable;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubProperties;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubSkuInfo;
 
-class IotHubDescriptionImpl extends GroupableResourceCoreImpl<IotHubDescription, IotHubDescriptionInner, IotHubDescriptionImpl, IoTHubManager> implements IotHubDescription, IotHubDescription.Definition, IotHubDescription.Update {
-    IotHubDescriptionImpl(String name, IotHubDescriptionInner inner, IoTHubManager manager) {
+class IotHubDescriptionImpl extends GroupableResourceCoreImpl<IotHubDescription, IotHubDescriptionInner, IotHubDescriptionImpl, DevicesManager> implements IotHubDescription, IotHubDescription.Definition, IotHubDescription.Update {
+    private String cifMatch;
+    private String uifMatch;
+    IotHubDescriptionImpl(String name, IotHubDescriptionInner inner, DevicesManager manager) {
         super(name, inner, manager);
     }
 
     @Override
     public Observable<IotHubDescription> createResourceAsync() {
         IotHubResourcesInner client = this.manager().inner().iotHubResources();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), this.cifMatch)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<IotHubDescription> updateResourceAsync() {
         IotHubResourcesInner client = this.manager().inner().iotHubResources();
-        return client.updateAsync(this.resourceGroupName(), this.name())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(), this.uifMatch)
             .map(innerToFluentMap(this));
     }
 
@@ -63,6 +65,16 @@ class IotHubDescriptionImpl extends GroupableResourceCoreImpl<IotHubDescription,
     @Override
     public IotHubDescriptionImpl withSku(IotHubSkuInfo sku) {
         this.inner().withSku(sku);
+        return this;
+    }
+
+    @Override
+    public IotHubDescriptionImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.cifMatch = ifMatch;
+        } else {
+            this.uifMatch = ifMatch;
+        }
         return this;
     }
 

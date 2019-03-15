@@ -71,7 +71,7 @@ public class JobResponseInner {
     private String parentJobId;
 
     /**
-     * Get the jobId value.
+     * Get the job identifier.
      *
      * @return the jobId value
      */
@@ -80,7 +80,7 @@ public class JobResponseInner {
     }
 
     /**
-     * Get the startTimeUtc value.
+     * Get the start time of the job.
      *
      * @return the startTimeUtc value
      */
@@ -92,7 +92,7 @@ public class JobResponseInner {
     }
 
     /**
-     * Get the endTimeUtc value.
+     * Get the time the job stopped processing.
      *
      * @return the endTimeUtc value
      */
@@ -104,7 +104,7 @@ public class JobResponseInner {
     }
 
     /**
-     * Get the type value.
+     * Get the type of the job. Possible values include: 'unknown', 'export', 'import', 'backup', 'readDeviceProperties', 'writeDeviceProperties', 'updateDeviceConfiguration', 'rebootDevice', 'factoryResetDevice', 'firmwareUpdate'.
      *
      * @return the type value
      */
@@ -113,7 +113,7 @@ public class JobResponseInner {
     }
 
     /**
-     * Get the status value.
+     * Get the status of the job. Possible values include: 'unknown', 'enqueued', 'running', 'completed', 'failed', 'cancelled'.
      *
      * @return the status value
      */
@@ -122,7 +122,7 @@ public class JobResponseInner {
     }
 
     /**
-     * Get the failureReason value.
+     * Get if status == failed, this string containing the reason for the failure.
      *
      * @return the failureReason value
      */
@@ -131,7 +131,7 @@ public class JobResponseInner {
     }
 
     /**
-     * Get the statusMessage value.
+     * Get the status message for the job.
      *
      * @return the statusMessage value
      */
@@ -140,7 +140,7 @@ public class JobResponseInner {
     }
 
     /**
-     * Get the parentJobId value.
+     * Get the job identifier of the parent job, if any.
      *
      * @return the parentJobId value
      */

@@ -28,13 +28,13 @@ public class OcrRegion {
     private String boundingBox;
 
     /**
-     * The lines property.
+     * An array of recognized lines of text.
      */
     @JsonProperty(value = "lines")
     private List<OcrLine> lines;
 
     /**
-     * Get the boundingBox value.
+     * Get bounding box of a recognized region. The four integers represent the x-coordinate of the left edge, the y-coordinate of the top edge, width, and height of the bounding box, in the coordinate system of the input image, after it has been rotated around its center according to the detected text angle (see textAngle property), with the origin at the top-left corner, and the y-axis pointing down.
      *
      * @return the boundingBox value
      */
@@ -43,7 +43,7 @@ public class OcrRegion {
     }
 
     /**
-     * Set the boundingBox value.
+     * Set bounding box of a recognized region. The four integers represent the x-coordinate of the left edge, the y-coordinate of the top edge, width, and height of the bounding box, in the coordinate system of the input image, after it has been rotated around its center according to the detected text angle (see textAngle property), with the origin at the top-left corner, and the y-axis pointing down.
      *
      * @param boundingBox the boundingBox value to set
      * @return the OcrRegion object itself.
@@ -54,7 +54,7 @@ public class OcrRegion {
     }
 
     /**
-     * Get the lines value.
+     * Get an array of recognized lines of text.
      *
      * @return the lines value
      */
@@ -63,7 +63,7 @@ public class OcrRegion {
     }
 
     /**
-     * Set the lines value.
+     * Set an array of recognized lines of text.
      *
      * @param lines the lines value to set
      * @return the OcrRegion object itself.

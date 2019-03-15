@@ -29,7 +29,7 @@ public class ImageDescriptionDetails {
     private List<ImageCaption> captions;
 
     /**
-     * Get the tags value.
+     * Get a collection of image tags.
      *
      * @return the tags value
      */
@@ -38,7 +38,7 @@ public class ImageDescriptionDetails {
     }
 
     /**
-     * Set the tags value.
+     * Set a collection of image tags.
      *
      * @param tags the tags value to set
      * @return the ImageDescriptionDetails object itself.
@@ -49,7 +49,7 @@ public class ImageDescriptionDetails {
     }
 
     /**
-     * Get the captions value.
+     * Get a list of captions, sorted by confidence level.
      *
      * @return the captions value
      */
@@ -58,7 +58,7 @@ public class ImageDescriptionDetails {
     }
 
     /**
-     * Set the captions value.
+     * Set a list of captions, sorted by confidence level.
      *
      * @param captions the captions value to set
      * @return the ImageDescriptionDetails object itself.

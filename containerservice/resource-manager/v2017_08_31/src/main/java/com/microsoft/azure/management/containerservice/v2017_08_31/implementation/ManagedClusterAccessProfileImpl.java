@@ -22,6 +22,7 @@ class ManagedClusterAccessProfileImpl extends IndexableRefreshableWrapperImpl<Ma
     ManagedClusterAccessProfileImpl(ManagedClusterAccessProfileInner inner,  ContainerServiceManager manager) {
         super(null, inner);
         this.manager = manager;
+        // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
         this.resourceName = IdParsingUtils.getValueFromIdByName(inner.id(), "managedClusters");
         this.roleName = IdParsingUtils.getValueFromIdByName(inner.id(), "accessProfiles");

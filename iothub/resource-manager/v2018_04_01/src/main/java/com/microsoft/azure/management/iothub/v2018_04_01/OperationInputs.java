@@ -21,7 +21,7 @@ public class OperationInputs {
     private String name;
 
     /**
-     * Get the name value.
+     * Get the name of the IoT hub to check.
      *
      * @return the name value
      */
@@ -30,7 +30,7 @@ public class OperationInputs {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the IoT hub to check.
      *
      * @param name the name value to set
      * @return the OperationInputs object itself.

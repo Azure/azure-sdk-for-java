@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.iothub.v2018_04_01.implementation.IoTHubManager;
+import com.microsoft.azure.management.iothub.v2018_04_01.implementation.DevicesManager;
 import java.util.Map;
 
 /**
  * Type representing EventHubConsumerGroupInfo.
  */
-public interface EventHubConsumerGroupInfo extends HasInner<EventHubConsumerGroupInfoInner>, Indexable, Refreshable<EventHubConsumerGroupInfo>, Updatable<EventHubConsumerGroupInfo.Update>, HasManager<IoTHubManager> {
+public interface EventHubConsumerGroupInfo extends HasInner<EventHubConsumerGroupInfoInner>, Indexable, Refreshable<EventHubConsumerGroupInfo>, Updatable<EventHubConsumerGroupInfo.Update>, HasManager<DevicesManager> {
     /**
      * @return the etag value.
      */
@@ -70,6 +70,10 @@ public interface EventHubConsumerGroupInfo extends HasInner<EventHubConsumerGrou
         interface WithEventHubEndpoint {
            /**
             * Specifies resourceGroupName, resourceName, eventHubEndpointName.
+            * @param resourceGroupName The name of the resource group that contains the IoT hub
+            * @param resourceName The name of the IoT hub
+            * @param eventHubEndpointName The name of the Event Hub-compatible endpoint in the IoT hub
+            * @return the next definition stage
             */
             WithCreate withExistingEventHubEndpoint(String resourceGroupName, String resourceName, String eventHubEndpointName);
         }
