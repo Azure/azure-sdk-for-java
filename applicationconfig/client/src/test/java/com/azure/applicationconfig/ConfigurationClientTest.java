@@ -40,10 +40,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 
-public class AzConfigTest {
+public class ConfigurationClientTest {
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
 
-    private final Logger logger = LoggerFactory.getLogger(AzConfigTest.class);
+    private final Logger logger = LoggerFactory.getLogger(ConfigurationClientTest.class);
 
     private InterceptorManager interceptorManager;
     private ConfigurationClient client;
@@ -92,7 +92,7 @@ public class AzConfigTest {
         if (testMode == TestMode.RECORD) {
             Properties mavenProps = new Properties();
 
-            try (InputStream in = AzConfigTest.class.getResourceAsStream("/maven.properties")) {
+            try (InputStream in = ConfigurationClientTest.class.getResourceAsStream("/maven.properties")) {
                 if (in == null) {
                     throw new IOException(
                             "The file \"maven.properties\" has not been generated yet. Please execute \"mvn compile\" to generate the file.");
