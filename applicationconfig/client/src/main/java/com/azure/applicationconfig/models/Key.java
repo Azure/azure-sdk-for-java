@@ -40,15 +40,15 @@ public class Key {
     }
 
     /**
-     * @return number of KeyValue's associated with this key
+     * @return number of ConfigurationSetting's associated with this key
      */
     public int kvCount() {
         return kvCount;
     }
 
     /**
-     * Sets the number of KeyValue's associated with this key
-     * @param kvCount number of KeyValue's
+     * Sets the number of ConfigurationSetting's associated with this key
+     * @param kvCount number of ConfigurationSetting's
      * @return Key object itself
      */
     public Key withKvCount(int kvCount) {

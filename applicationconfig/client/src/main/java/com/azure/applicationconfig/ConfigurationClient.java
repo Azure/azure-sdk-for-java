@@ -4,10 +4,10 @@ package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.implementation.PageImpl;
 import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
+import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.ETagFilter;
 import com.azure.applicationconfig.models.Key;
 import com.azure.applicationconfig.models.KeyLabelFilter;
-import com.azure.applicationconfig.models.KeyValue;
 import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
 import com.azure.applicationconfig.models.KeyValueFilter;
 import com.azure.applicationconfig.models.KeyValueListFilter;
@@ -34,7 +34,7 @@ import java.util.function.Function;
 /**
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
  */
-public final class AzConfigClient extends ServiceClient {
+public final class ConfigurationClient extends ServiceClient {
     static final String SDK_NAME = "Azure-Configuration";
     static final String SDK_VERSION = "1.0.0-SNAPSHOT";
 
@@ -42,17 +42,17 @@ public final class AzConfigClient extends ServiceClient {
     private final ApplicationConfigService service;
 
     /**
-     * Create a new instance of AzConfigClient that uses connectionString for authentication.
+     * Create a new instance of ConfigurationClient that uses connectionString for authentication.
      * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
      */
-    public AzConfigClient(String connectionString) {
+    public ConfigurationClient(String connectionString) {
         super(new HttpPipeline(getDefaultPolicies(connectionString)));
 
         this.service = RestProxy.create(ApplicationConfigService.class, this);
         this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
     }
 
-    public AzConfigClient(String connectionString, HttpPipeline pipeline) {
+    public ConfigurationClient(String connectionString, HttpPipeline pipeline) {
         super(pipeline);
 
         this.service = RestProxy.create(ApplicationConfigService.class, this);
@@ -60,38 +60,38 @@ public final class AzConfigClient extends ServiceClient {
     }
 
     /**
-     * Sets key value. Label value for the keyValue is optional, if not specified or label=%00 it implies null label.
-     * @param keyValue key and value to set
-     * @return KeyValue that was created or updated
+     * Sets key value. Label value for the configurationSetting is optional, if not specified or label=%00 it implies null label.
+     * @param configurationSetting key and value to set
+     * @return ConfigurationSetting that was created or updated
      */
-    public Mono<RestResponse<KeyValue>> setKeyValue(KeyValue keyValue) {
-        return setKeyValue(keyValue, null);
+    public Mono<RestResponse<ConfigurationSetting>> setKeyValue(ConfigurationSetting configurationSetting) {
+        return setKeyValue(configurationSetting, null);
     }
 
     /**
-     * Sets key value. Label value for the keyValue is optional, if not specified or label=%00 it implies null label.
-     * @param keyValue key and value to set
-     * @return KeyValue that was created or updated
+     * Sets key value. Label value for the configurationSetting is optional, if not specified or label=%00 it implies null label.
+     * @param configurationSetting key and value to set
+     * @return ConfigurationSetting that was created or updated
      */
-    public Mono<RestResponse<KeyValue>> setKeyValue(KeyValue keyValue, ETagFilter filter) {
-        Validator.validate(keyValue);
-        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters().withValue(keyValue.value())
-                .withContentType(keyValue.contentType())
-                .withTags(keyValue.tags());
+    public Mono<RestResponse<ConfigurationSetting>> setKeyValue(ConfigurationSetting configurationSetting, ETagFilter filter) {
+        Validator.validate(configurationSetting);
+        KeyValueCreateUpdateParameters parameters = new KeyValueCreateUpdateParameters().withValue(configurationSetting.value())
+                .withContentType(configurationSetting.contentType())
+                .withTags(configurationSetting.tags());
 
         if (filter != null) {
-            return service.setKey(baseUri.toString(), keyValue.key(), keyValue.label(), parameters, filter.ifMatch(), filter.ifNoneMatch());
+            return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, filter.ifMatch(), filter.ifNoneMatch());
         }
-        return service.setKey(baseUri.toString(), keyValue.key(), keyValue.label(), parameters, null, null);
+        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, null, null);
     }
 
     /**
-     * Gets the KeyValue object for the specified key and KeyValueFilter2 parameters.
+     * Gets the ConfigurationSetting object for the specified key and KeyValueFilter2 parameters.
      * @param key the key being retrieved
      * @param filter options for the request
-     * @return KeyValue object
+     * @return ConfigurationSetting object
      */
-    public Mono<RestResponse<KeyValue>> getKeyValue(String key, KeyValueFilter filter) {
+    public Mono<RestResponse<ConfigurationSetting>> getKeyValue(String key, KeyValueFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         }
@@ -103,21 +103,21 @@ public final class AzConfigClient extends ServiceClient {
     }
 
     /**
-     * Deletes the KeyValue.
+     * Deletes the ConfigurationSetting.
      * @param key keyValue to delete
-     * @return the deleted KeyValue or none if didn't exist.
+     * @return the deleted ConfigurationSetting or none if didn't exist.
      */
-    public Mono<RestResponse<KeyValue>> deleteKeyValue(String key) {
+    public Mono<RestResponse<ConfigurationSetting>> deleteKeyValue(String key) {
         return deleteKeyValue(key, null, null);
     }
 
     /**
-     * Deletes the KeyValue.
+     * Deletes the ConfigurationSetting.
      * @param key key of the keyValue to delete
      * @param filter eTag filter to add to If-Match or If-None-Match header
-     * @return the deleted KeyValue or none if didn't exist.
+     * @return the deleted ConfigurationSetting or none if didn't exist.
      */
-    public Mono<RestResponse<KeyValue>> deleteKeyValue(String key, String label, ETagFilter filter) {
+    public Mono<RestResponse<ConfigurationSetting>> deleteKeyValue(String key, String label, ETagFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         }
@@ -132,13 +132,13 @@ public final class AzConfigClient extends ServiceClient {
      * @param filter query options
      * @return KeyValues
      */
-    public Flux<KeyValue> listKeyValues(KeyValueListFilter filter) {
+    public Flux<ConfigurationSetting> listKeyValues(KeyValueListFilter filter) {
         return listKeyValues(filter, pageResponseFlux -> pageResponseFlux.map(r -> r.items())
                                                             .flatMapIterable(i -> i));
     }
 
-    public <T> Flux<T> listKeyValues(KeyValueListFilter filter, Function<Flux<RestPagedResponse<KeyValue>>, ? extends Flux<T>> receiver) {
-        Flux<RestPagedResponse<KeyValue>> p = listSinglePageAsync(filter)
+    public <T> Flux<T> listKeyValues(KeyValueListFilter filter, Function<Flux<RestPagedResponse<ConfigurationSetting>>, ? extends Flux<T>> receiver) {
+        Flux<RestPagedResponse<ConfigurationSetting>> p = listSinglePageAsync(filter)
                        .concatMap(page -> {
                            String nextPageLink = page.nextLink();
                            if (nextPageLink == null) {
@@ -157,18 +157,18 @@ public final class AzConfigClient extends ServiceClient {
         policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
         policies.add(new RequestIdPolicy());
         policies.add(new RetryPolicy());
-        policies.add(new AzConfigCredentialsPolicy(credentials));
+        policies.add(new ConfigurationCredentialsPolicy(credentials));
 
         return policies;
     }
 
     /**
-     * Gets all KeyValue settings.
+     * Gets all ConfigurationSetting settings.
      *
-     * @return the Flux&lt;RestPagedResponse&lt;KeyValue&gt;&gt; object if successful.
+     * @return the Flux&lt;RestPagedResponse&lt;ConfigurationSetting&gt;&gt; object if successful.
      */
-    private Flux<RestPagedResponse<KeyValue>> listSinglePageAsync(KeyValueListFilter filter) {
-        Mono<RestResponse<PageImpl<KeyValue>>> result;
+    private Flux<RestPagedResponse<ConfigurationSetting>> listSinglePageAsync(KeyValueListFilter filter) {
+        Mono<RestResponse<PageImpl<ConfigurationSetting>>> result;
         if (filter != null) {
             result = service.listKeyValues(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
         } else {
@@ -181,13 +181,13 @@ public final class AzConfigClient extends ServiceClient {
     }
 
     /**
-     * Gets all KeyValue settings.
+     * Gets all ConfigurationSetting settings.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the Page&lt;KeyValue&gt; object.
+     * @return the observable to the Page&lt;ConfigurationSetting&gt; object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
-    private Flux<RestPagedResponse<KeyValue>> listNextAsync(@NonNull String nextPageLink) {
+    private Flux<RestPagedResponse<ConfigurationSetting>> listNextAsync(@NonNull String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
                        .concatMap(page -> {
                            String nextPageLink1 = page.nextLink();
@@ -198,7 +198,7 @@ public final class AzConfigClient extends ServiceClient {
                        });
     }
 
-    private Flux<RestPagedResponse<KeyValue>> listNextSinglePageAsync(@NonNull String nextPageLink) {
+    private Flux<RestPagedResponse<ConfigurationSetting>> listNextSinglePageAsync(@NonNull String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -207,23 +207,23 @@ public final class AzConfigClient extends ServiceClient {
     }
 
     /**
-     * Places a lock on KeyValue.
+     * Places a lock on ConfigurationSetting.
      * @param key key name
-     * @return KeyValue
+     * @return ConfigurationSetting
      */
-    public Mono<RestResponse<KeyValue>> lockKeyValue(String key) {
+    public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key) {
         return lockKeyValue(key, null, null);
     }
 
     /**
-     * Places a lock on KeyValue. If present, label must be explicit label value (not a wildcard).
+     * Places a lock on ConfigurationSetting. If present, label must be explicit label value (not a wildcard).
      * For all operations it's an optional parameter. If omitted it implies null label.
      * @param key key name
      * @param label label
      * @param filter eTagFilter
-     * @return KeyValue
+     * @return ConfigurationSetting
      */
-    public Mono<RestResponse<KeyValue>> lockKeyValue(String key, String label, ETagFilter filter) {
+    public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key, String label, ETagFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         }
@@ -234,22 +234,22 @@ public final class AzConfigClient extends ServiceClient {
     }
 
     /**
-     * Unlocks KeyValue. If present, label must be explicit label value (not a wildcard).
+     * Unlocks ConfigurationSetting. If present, label must be explicit label value (not a wildcard).
      * For all operations it's an optional parameter. If omitted it implies null label.
      * @param key key name
-     * @return KeyValue
+     * @return ConfigurationSetting
      */
-    public Mono<RestResponse<KeyValue>> unlockKeyValue(String key) {
+    public Mono<RestResponse<ConfigurationSetting>> unlockKeyValue(String key) {
         return unlockKeyValue(key, null, null);
     }
 
     /**
-     * Unlocks KeyValue. If present, label must be explicit label value (not a wildcard).
+     * Unlocks ConfigurationSetting. If present, label must be explicit label value (not a wildcard).
      * For all operations it's an optional parameter. If omitted it implies null label.
      * @param key key name
-     * @return KeyValue
+     * @return ConfigurationSetting
      */
-    public Mono<RestResponse<KeyValue>> unlockKeyValue(String key, String label, ETagFilter filter) {
+    public Mono<RestResponse<ConfigurationSetting>> unlockKeyValue(String key, String label, ETagFilter filter) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
         }
@@ -260,19 +260,19 @@ public final class AzConfigClient extends ServiceClient {
     }
 
     /**
-     * Lists chronological/historical representation of KeyValue resource(s). Revisions eventually expire (default 30 days).
+     * Lists chronological/historical representation of ConfigurationSetting resource(s). Revisions eventually expire (default 30 days).
      * For all operations key is optional parameter. If ommited it implies any key.
      * For all operations label is optional parameter. If ommited it implies any label.
      * @param filter query options
-     * @return Revisions of the KeyValue
+     * @return Revisions of the ConfigurationSetting
      */
-    public Flux<KeyValue> listKeyValueRevisions(RevisionFilter filter) {
+    public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionFilter filter) {
         return listKeyValueRevisions(filter, pageResponseFlux -> pageResponseFlux.map(r -> r.items())
                                                               .flatMapIterable(i -> i));
     }
 
-    public <T> Flux<T> listKeyValueRevisions(RevisionFilter filter, Function<Flux<RestPagedResponse<KeyValue>>, ? extends Flux<T>> receiver) {
-        Flux<RestPagedResponse<KeyValue>> p = listRevisionsSinglePageAsync(filter)
+    public <T> Flux<T> listKeyValueRevisions(RevisionFilter filter, Function<Flux<RestPagedResponse<ConfigurationSetting>>, ? extends Flux<T>> receiver) {
+        Flux<RestPagedResponse<ConfigurationSetting>> p = listRevisionsSinglePageAsync(filter)
                        .concatMap(page -> {
                            String nextPageLink = page.nextLink();
                            if (nextPageLink == null) {
@@ -284,12 +284,12 @@ public final class AzConfigClient extends ServiceClient {
     }
 
     /**
-     * Gets all Revisions for KeyValue(s).
+     * Gets all Revisions for ConfigurationSetting(s).
      *
-     * @return the Single&lt;Page&lt;KeyValue&gt;&gt; object if successful.
+     * @return the Single&lt;Page&lt;ConfigurationSetting&gt;&gt; object if successful.
      */
-    private Flux<RestPagedResponse<KeyValue>> listRevisionsSinglePageAsync(RevisionFilter filter) {
-        Mono<RestResponse<PageImpl<KeyValue>>> result;
+    private Flux<RestPagedResponse<ConfigurationSetting>> listRevisionsSinglePageAsync(RevisionFilter filter) {
+        Mono<RestResponse<PageImpl<ConfigurationSetting>>> result;
         if (filter != null) {
             result = service.listKeyValueRevisions(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
         } else {

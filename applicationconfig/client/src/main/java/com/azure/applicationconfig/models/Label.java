@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /**
- * Labels may be assigned to a KeyValue.
+ * Labels may be assigned to a ConfigurationSetting.
  */
 public class Label {
     @JsonProperty(value = "name")
@@ -40,15 +40,15 @@ public class Label {
     }
 
     /**
-     * @return number of KeyValue's associated with this label
+     * @return number of ConfigurationSetting's associated with this label
      */
     public int kvCount() {
         return kvCount;
     }
 
     /**
-     * Sets the number of KeyValue's associated with this label
-     * @param kvCount number of KeyValue's
+     * Sets the number of ConfigurationSetting's associated with this label
+     * @param kvCount number of ConfigurationSetting's
      * @return Label object itself
      */
     public Label withKvCount(int kvCount) {

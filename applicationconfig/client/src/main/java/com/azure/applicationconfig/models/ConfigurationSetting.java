@@ -8,10 +8,10 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 
 /**
- * KeyValue is a resource identified by unique combination of key + label. Label can be null.
+ * ConfigurationSetting is a resource identified by unique combination of key + label. Label can be null.
  * To explicitly reference null label use "\0" (url encoded as %00).
  */
-public class KeyValue {
+public class ConfigurationSetting {
     @JsonProperty(value = "key", required = true)
     private String key;
 
@@ -46,9 +46,9 @@ public class KeyValue {
     /**
      * Sets the key.
      * @param key key name
-     * @return KeyValue object itself
+     * @return ConfigurationSetting object itself
      */
-    public KeyValue withKey(String key) {
+    public ConfigurationSetting withKey(String key) {
         this.key = key;
         return this;
     }
@@ -63,9 +63,9 @@ public class KeyValue {
     /**
      * Sets the label.
      * @param label label
-     * @return KeyValue object itself
+     * @return ConfigurationSetting object itself
      */
-    public KeyValue withLabel(String label) {
+    public ConfigurationSetting withLabel(String label) {
         this.label = label;
         return this;
     }
@@ -80,9 +80,9 @@ public class KeyValue {
     /**
      * Sets the value.
      * @param value value
-     * @return KeyValue object itself
+     * @return ConfigurationSetting object itself
      */
-    public KeyValue withValue(String value) {
+    public ConfigurationSetting withValue(String value) {
         this.value = value;
         return this;
     }
@@ -97,9 +97,9 @@ public class KeyValue {
     /**
      * Sets the content type.
      * @param contentType content type
-     * @return KeyValue object itself
+     * @return ConfigurationSetting object itself
      */
-    public KeyValue withContentType(String contentType) {
+    public ConfigurationSetting withContentType(String contentType) {
         this.contentType = contentType;
         return this;
     }
@@ -114,9 +114,9 @@ public class KeyValue {
     /**
      * Sets the etag.
      * @param etag etag
-     * @return KeyValue object itself
+     * @return ConfigurationSetting object itself
      */
-    public KeyValue withEtag(String etag) {
+    public ConfigurationSetting withEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -129,11 +129,11 @@ public class KeyValue {
     }
 
     /**
-     * Sets when KeyValue was last modified.
+     * Sets when ConfigurationSetting was last modified.
      * @param lastModified lastModified
-     * @return KeyValue object itself
+     * @return ConfigurationSetting object itself
      */
-    public KeyValue withLastModified(OffsetDateTime lastModified) {
+    public ConfigurationSetting withLastModified(OffsetDateTime lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -146,11 +146,11 @@ public class KeyValue {
     }
 
     /**
-     * Sets if KeyValue is locked.
+     * Sets if ConfigurationSetting is locked.
      * @param locked locked flag
-     * @return KeyValue object itself
+     * @return ConfigurationSetting object itself
      */
-    public KeyValue withLocked(boolean locked) {
+    public ConfigurationSetting withLocked(boolean locked) {
         this.locked = locked;
         return this;
     }
@@ -165,9 +165,9 @@ public class KeyValue {
     /**
      * Sets the tags.
      * @param tags tags
-     * @return KeyValue object itself
+     * @return ConfigurationSetting object itself
      */
-    public KeyValue withTags(Map<String, String> tags) {
+    public ConfigurationSetting withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
     }
