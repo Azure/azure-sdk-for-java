@@ -12,6 +12,7 @@ import com.microsoft.rest.v3.http.HttpPipelineCallContext;
 import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
 import com.microsoft.rest.v3.http.HttpRequest;
 import com.microsoft.rest.v3.http.HttpResponse;
+import com.microsoft.rest.v3.http.ProxyOptions;
 import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.apache.commons.io.IOUtils;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 import java.util.zip.GZIPInputStream;
 
 public class InterceptorManager implements Closeable {
@@ -146,12 +148,27 @@ public class InterceptorManager implements Closeable {
         }
     }
 
-    final class PlaybackClient extends HttpClient {
+    final class PlaybackClient implements HttpClient {
         AtomicInteger count = new AtomicInteger(0);
 
         @Override
         public Mono<HttpResponse> send(final HttpRequest request) {
             return Mono.defer(() -> playbackHttpResponse(request));
+        }
+
+        @Override
+        public HttpClient proxy(Supplier<ProxyOptions> supplier) {
+            return this;
+        }
+
+        @Override
+        public HttpClient wiretap(boolean b) {
+            return this;
+        }
+
+        @Override
+        public HttpClient port(int i) {
+            return this;
         }
 
         private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) {
