@@ -17,7 +17,7 @@ public class Subnet {
     /**
      * Resource ID of Virtual Network Subnet.
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /**

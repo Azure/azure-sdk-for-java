@@ -11,7 +11,7 @@ package com.microsoft.azure.management.servicebus.v2017_04_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The response from the List namespace operation.
+ * Description of VirtualNetworkRules - NetworkRules resource.
  */
 public class NWRuleSetVirtualNetworkRules {
     /**
