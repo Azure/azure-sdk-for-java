@@ -36,13 +36,13 @@ public class ExpressionEvaluationDetails {
      * Value of the expression.
      */
     @JsonProperty(value = "expressionValue")
-    private String expressionValue;
+    private Object expressionValue;
 
     /**
      * Target value to be compared with the expression value.
      */
     @JsonProperty(value = "targetValue")
-    private String targetValue;
+    private Object targetValue;
 
     /**
      * Operator to compare the expression value and the target value.
@@ -115,7 +115,7 @@ public class ExpressionEvaluationDetails {
      *
      * @return the expressionValue value
      */
-    public String expressionValue() {
+    public Object expressionValue() {
         return this.expressionValue;
     }
 
@@ -125,7 +125,7 @@ public class ExpressionEvaluationDetails {
      * @param expressionValue the expressionValue value to set
      * @return the ExpressionEvaluationDetails object itself.
      */
-    public ExpressionEvaluationDetails withExpressionValue(String expressionValue) {
+    public ExpressionEvaluationDetails withExpressionValue(Object expressionValue) {
         this.expressionValue = expressionValue;
         return this;
     }
@@ -135,7 +135,7 @@ public class ExpressionEvaluationDetails {
      *
      * @return the targetValue value
      */
-    public String targetValue() {
+    public Object targetValue() {
         return this.targetValue;
     }
 
@@ -145,7 +145,7 @@ public class ExpressionEvaluationDetails {
      * @param targetValue the targetValue value to set
      * @return the ExpressionEvaluationDetails object itself.
      */
-    public ExpressionEvaluationDetails withTargetValue(String targetValue) {
+    public ExpressionEvaluationDetails withTargetValue(Object targetValue) {
         this.targetValue = targetValue;
         return this;
     }
