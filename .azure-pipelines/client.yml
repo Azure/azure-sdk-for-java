@@ -108,7 +108,7 @@ jobs:
         displayName: 'Analyze dependencies'
         inputs:
           mavenPomFile: 'DependencyChecker/pom.xml'
-          options: '-Dexec.args="-showall"'
+          options: '-Dexec.args="-showall -dependencymanagement"'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: '1.11'
