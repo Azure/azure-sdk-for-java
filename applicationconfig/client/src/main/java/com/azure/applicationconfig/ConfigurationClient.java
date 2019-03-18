@@ -337,84 +337,12 @@ public final class ConfigurationClient extends ServiceClient {
                 .concatMap(this::extractAndFetchConfigurationSettings);
     }
 
-    /**
-     * List all Labels.
-     *
-     * @return labels
-     */
-    public Flux<Label> listLabels(KeyLabelFilter filter) {
-        Mono<RestResponse<Page<Label>>> result;
-        if (filter != null) {
-            result = service.listLabels(baseUri.toString(), filter.name(), filter.fields(), filter.acceptDatetime(), filter.range());
-        } else {
-            result = service.listLabels(baseUri.toString(), null, null, null, null);
-        }
-
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-                .concatMap(this::extractAndFetchLabels);
-    }
-
-    /**
-     * Gets all Labels.
-     *
-     * @param nextPageLink The nextPageLink from the previous successful call to List operation.
-     * @return the observable to the Page&lt;Label&gt; object.
-     */
-    private Flux<Label> listLabels(@NonNull String nextPageLink) {
-        return service.listLabelsNext(baseUri.toString(), nextPageLink)
-                .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-                .concatMap(this::extractAndFetchLabels);
-    }
-
-    /**
-     * List all Keys.
-     *
-     * @return keys
-     */
-    public Flux<Key> listKeys(KeyLabelFilter filter) {
-        Mono<RestResponse<Page<Key>>> result;
-        if (filter != null) {
-            result = service.listKeys(baseUri.toString(), filter.name(), filter.fields(), filter.acceptDatetime(), filter.range());
-        } else {
-            result = service.listKeys(baseUri.toString(), null, null, null, null);
-        }
-
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-                .concatMap(this::extractAndFetchKeys);
-    }
-
-    /**
-     * Gets all Keys.
-     *
-     * @param nextPageLink The nextPageLink from the previous successful call to List operation.
-     * @return A stream of Keys from the nextPageLink
-     */
-    private Flux<Key> listKeys(@NonNull String nextPageLink) {
-        return service.listKeysNext(baseUri.toString(), nextPageLink)
-                .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-                .concatMap(this::extractAndFetchKeys);
-    }
-
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(RestPagedResponseImpl<ConfigurationSetting> page) {
         String nextPageLink = page.nextLink();
         if (nextPageLink == null) {
             return Flux.fromIterable(page.items());
         }
         return Flux.fromIterable(page.items()).concatWith(listKeyValues(nextPageLink));
-    }
-
-    private Publisher<Key> extractAndFetchKeys(RestPagedResponseImpl<Key> page) {
-        if (page.nextLink() == null) {
-            return Flux.fromIterable(page.items());
-        }
-        return Flux.fromIterable(page.items()).concatWith(listKeys(page.nextLink()));
-    }
-
-    private Publisher<Label> extractAndFetchLabels(RestPagedResponseImpl<Label> page) {
-        if (page.nextLink() == null) {
-            return Flux.fromIterable(page.items());
-        }
-        return Flux.fromIterable(page.items()).concatWith(listLabels(page.nextLink()));
     }
 
     /**
