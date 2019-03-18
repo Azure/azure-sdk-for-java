@@ -63,6 +63,29 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
+    /** The application ID. */
+    private String applicationID;
+
+    /**
+     * Gets The application ID.
+     *
+     * @return the applicationID value.
+     */
+    public String applicationID() {
+        return this.applicationID;
+    }
+
+    /**
+     * Sets The application ID.
+     *
+     * @param applicationID the applicationID value.
+     * @return the service client itself
+     */
+    public GraphRbacManagementClientImpl withApplicationID(String applicationID) {
+        this.applicationID = applicationID;
+        return this;
+    }
+
     /** The preferred language for the response. */
     private String acceptLanguage;
 
@@ -198,6 +221,19 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ServicePrincipalsByAppIdsInner object to access its operations.
+     */
+    private ServicePrincipalsByAppIdsInner servicePrincipalsByAppIds;
+
+    /**
+     * Gets the ServicePrincipalsByAppIdsInner object to access its operations.
+     * @return the ServicePrincipalsByAppIdsInner object.
+     */
+    public ServicePrincipalsByAppIdsInner servicePrincipalsByAppIds() {
+        return this.servicePrincipalsByAppIds;
+    }
+
+    /**
      * The UsersInner object to access its operations.
      */
     private UsersInner users;
@@ -289,6 +325,7 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
         this.deletedApplications = new DeletedApplicationsInner(restClient().retrofit(), this);
         this.groups = new GroupsInner(restClient().retrofit(), this);
         this.servicePrincipals = new ServicePrincipalsInner(restClient().retrofit(), this);
+        this.servicePrincipalsByAppIds = new ServicePrincipalsByAppIdsInner(restClient().retrofit(), this);
         this.users = new UsersInner(restClient().retrofit(), this);
         this.objects = new ObjectsInner(restClient().retrofit(), this);
         this.domains = new DomainsInner(restClient().retrofit(), this);
