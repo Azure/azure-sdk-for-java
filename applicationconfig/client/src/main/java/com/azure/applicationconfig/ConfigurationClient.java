@@ -297,8 +297,7 @@ public final class ConfigurationClient extends ServiceClient {
             result = service.listKeyValues(baseUri.toString(), null, null, null, null, null);
         }
 
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-                .concatMap(this::extractAndFetchConfigurationSettings);
+        return getPagedConfigurationSettings(result);
     }
 
     /**
@@ -309,9 +308,8 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     private Flux<ConfigurationSetting> listKeyValues(@NonNull String nextPageLink) {
-        return service.listKeyValuesNext(baseUri.toString(), nextPageLink)
-                .flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-                .concatMap(this::extractAndFetchConfigurationSettings);
+        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValuesNext(baseUri.toString(), nextPageLink);
+        return getPagedConfigurationSettings(result);
     }
 
     /**
@@ -330,8 +328,12 @@ public final class ConfigurationClient extends ServiceClient {
             result = service.listKeyValueRevisions(baseUri.toString(), null, null, null, null, null);
         }
 
-        return result.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
-                .concatMap(this::extractAndFetchConfigurationSettings);
+        return getPagedConfigurationSettings(result);
+    }
+
+    private Flux<ConfigurationSetting> getPagedConfigurationSettings(Mono<RestResponse<Page<ConfigurationSetting>>> response) {
+        return response.flatMapMany(p -> Flux.just(new RestPagedResponseImpl<>(p.body().items(), p.body().nextPageLink(), p.request(), p.headers(), p.statusCode())))
+            .concatMap(this::extractAndFetchConfigurationSettings);
     }
 
     private Publisher<ConfigurationSetting> extractAndFetchConfigurationSettings(RestPagedResponseImpl<ConfigurationSetting> page) {
