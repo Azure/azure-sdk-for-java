@@ -77,26 +77,4 @@ interface ApplicationConfigService {
     Mono<RestResponse<Page<ConfigurationSetting>>> listKeyValueRevisions(@HostParam("url") String url,
                                                                          @QueryParam("key") String key, @QueryParam("label") String label, @QueryParam("fields") String fields,
                                                                          @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
-
-    @GET("labels")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<Page<Label>>> listLabels(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
-                                               @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
-
-    @GET("{nextUrl}")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<Page<Label>>> listLabelsNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
-
-    @GET("keys")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<Page<Key>>> listKeys(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
-                                           @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
-
-    @GET("{nextUrl}")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<Page<Key>>> listKeysNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
 }
