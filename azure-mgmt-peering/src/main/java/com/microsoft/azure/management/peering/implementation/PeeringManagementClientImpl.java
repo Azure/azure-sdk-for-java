@@ -8,36 +8,15 @@
 
 package com.microsoft.azure.management.peering.implementation;
 
-import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.management.peering.ErrorResponseException;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.Validator;
-import java.io.IOException;
-import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
 
 /**
  * Initializes a new instance of the PeeringManagementClientImpl class.
  */
 public class PeeringManagementClientImpl extends AzureServiceClient {
-    /** The Retrofit service to perform REST calls. */
-    private PeeringManagementClientService service;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -180,6 +159,19 @@ public class PeeringManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PeerAsnsInner object to access its operations.
+     */
+    private PeerAsnsInner peerAsns;
+
+    /**
+     * Gets the PeerAsnsInner object to access its operations.
+     * @return the PeerAsnsInner object.
+     */
+    public PeerAsnsInner peerAsns() {
+        return this.peerAsns;
+    }
+
+    /**
      * The PeeringLocationsInner object to access its operations.
      */
     private PeeringLocationsInner peeringLocations;
@@ -242,10 +234,10 @@ public class PeeringManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.legacyPeerings = new LegacyPeeringsInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.peerAsns = new PeerAsnsInner(restClient().retrofit(), this);
         this.peeringLocations = new PeeringLocationsInner(restClient().retrofit(), this);
         this.peerings = new PeeringsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
-        initializeService();
     }
 
     /**
@@ -257,176 +249,4 @@ public class PeeringManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "PeeringManagementClient", "2019-03-01-preview");
     }
-
-    private void initializeService() {
-        service = restClient().retrofit().create(PeeringManagementClientService.class);
-    }
-
-    /**
-     * The interface defining all the services for PeeringManagementClient to be
-     * used by Retrofit to perform actually REST calls.
-     */
-    interface PeeringManagementClientService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.peering.PeeringManagementClient getPeerInfo" })
-        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Peering/getPeerInfo")
-        Observable<Response<ResponseBody>> getPeerInfo(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.peering.PeeringManagementClient updatePeerInfo" })
-        @POST("subscriptions/{subscriptionId}/providers/Microsoft.Peering/updatePeerInfo")
-        Observable<Response<ResponseBody>> updatePeerInfo(@Path("subscriptionId") String subscriptionId, @Body List<PeerInfoInner> peerInfo, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-    }
-
-    /**
-     * Gets the peer info associated with the specified subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;PeerInfoInner&gt; object if successful.
-     */
-    public List<PeerInfoInner> getPeerInfo() {
-        return getPeerInfoWithServiceResponseAsync().toBlocking().single().body();
-    }
-
-    /**
-     * Gets the peer info associated with the specified subscription.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PeerInfoInner>> getPeerInfoAsync(final ServiceCallback<List<PeerInfoInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(getPeerInfoWithServiceResponseAsync(), serviceCallback);
-    }
-
-    /**
-     * Gets the peer info associated with the specified subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PeerInfoInner&gt; object
-     */
-    public Observable<List<PeerInfoInner>> getPeerInfoAsync() {
-        return getPeerInfoWithServiceResponseAsync().map(new Func1<ServiceResponse<List<PeerInfoInner>>, List<PeerInfoInner>>() {
-            @Override
-            public List<PeerInfoInner> call(ServiceResponse<List<PeerInfoInner>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the peer info associated with the specified subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PeerInfoInner&gt; object
-     */
-    public Observable<ServiceResponse<List<PeerInfoInner>>> getPeerInfoWithServiceResponseAsync() {
-        if (this.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        return service.getPeerInfo(this.subscriptionId(), this.apiVersion(), this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PeerInfoInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<PeerInfoInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<PeerInfoInner>> clientResponse = getPeerInfoDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<PeerInfoInner>> getPeerInfoDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<List<PeerInfoInner>, ErrorResponseException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<List<PeerInfoInner>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Updates the peer info associated with the specified subscription.
-     *
-     * @param peerInfo The peer info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;PeerInfoInner&gt; object if successful.
-     */
-    public List<PeerInfoInner> updatePeerInfo(List<PeerInfoInner> peerInfo) {
-        return updatePeerInfoWithServiceResponseAsync(peerInfo).toBlocking().single().body();
-    }
-
-    /**
-     * Updates the peer info associated with the specified subscription.
-     *
-     * @param peerInfo The peer info.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PeerInfoInner>> updatePeerInfoAsync(List<PeerInfoInner> peerInfo, final ServiceCallback<List<PeerInfoInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(updatePeerInfoWithServiceResponseAsync(peerInfo), serviceCallback);
-    }
-
-    /**
-     * Updates the peer info associated with the specified subscription.
-     *
-     * @param peerInfo The peer info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PeerInfoInner&gt; object
-     */
-    public Observable<List<PeerInfoInner>> updatePeerInfoAsync(List<PeerInfoInner> peerInfo) {
-        return updatePeerInfoWithServiceResponseAsync(peerInfo).map(new Func1<ServiceResponse<List<PeerInfoInner>>, List<PeerInfoInner>>() {
-            @Override
-            public List<PeerInfoInner> call(ServiceResponse<List<PeerInfoInner>> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates the peer info associated with the specified subscription.
-     *
-     * @param peerInfo The peer info.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;PeerInfoInner&gt; object
-     */
-    public Observable<ServiceResponse<List<PeerInfoInner>>> updatePeerInfoWithServiceResponseAsync(List<PeerInfoInner> peerInfo) {
-        if (this.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
-        }
-        if (peerInfo == null) {
-            throw new IllegalArgumentException("Parameter peerInfo is required and cannot be null.");
-        }
-        if (this.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(peerInfo);
-        return service.updatePeerInfo(this.subscriptionId(), peerInfo, this.apiVersion(), this.acceptLanguage(), this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PeerInfoInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<PeerInfoInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<List<PeerInfoInner>> clientResponse = updatePeerInfoDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<List<PeerInfoInner>> updatePeerInfoDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<List<PeerInfoInner>, ErrorResponseException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<List<PeerInfoInner>>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
 }
