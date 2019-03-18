@@ -18,6 +18,7 @@ import com.azure.common.annotations.QueryParam;
 import com.azure.common.annotations.UnexpectedResponseExceptionType;
 import com.azure.common.http.rest.RestException;
 import com.azure.common.http.rest.RestResponse;
+import com.azure.common.implementation.http.ContentType;
 import reactor.core.publisher.Mono;
 
 /**
@@ -38,7 +39,7 @@ interface ApplicationConfigService {
     @PUT("kv/{key}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<ConfigurationSetting>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label, @BodyParam("application/json") KeyValueCreateUpdateParameters keyValueParameters,
+    Mono<RestResponse<ConfigurationSetting>> setKey(@HostParam("url") String url, @PathParam("key") String key, @QueryParam("label") String label, @BodyParam(ContentType.APPLICATION_JSON) KeyValueCreateUpdateParameters keyValueParameters,
                                                     @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch);
 
     @GET("kv")
