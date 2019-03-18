@@ -29,7 +29,7 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
         this.factory = factory;
     }
 
-    static CompletableFuture<PartitionSender> Create(final MessagingFactory factory,
+    static CompletableFuture<PartitionSender> create(final MessagingFactory factory,
                                                      final String eventHubName,
                                                      final String partitionId,
                                                      final ScheduledExecutorService executor) throws EventHubException {

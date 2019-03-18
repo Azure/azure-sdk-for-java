@@ -181,7 +181,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     @Override
     public CompletableFuture<PartitionSender> createPartitionSender(final String partitionId)
             throws EventHubException {
-        return PartitionSenderImpl.Create(this.underlyingFactory, this.eventHubName, partitionId, this.executor);
+        return PartitionSenderImpl.create(this.underlyingFactory, this.eventHubName, partitionId, this.executor);
     }
 
     @Override
