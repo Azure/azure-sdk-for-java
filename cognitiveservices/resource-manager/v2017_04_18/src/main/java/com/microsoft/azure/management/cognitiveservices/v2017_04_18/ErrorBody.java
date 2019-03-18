@@ -27,7 +27,7 @@ public class ErrorBody {
     private String message;
 
     /**
-     * Get the code value.
+     * Get error code.
      *
      * @return the code value
      */
@@ -36,7 +36,7 @@ public class ErrorBody {
     }
 
     /**
-     * Set the code value.
+     * Set error code.
      *
      * @param code the code value to set
      * @return the ErrorBody object itself.
@@ -47,7 +47,7 @@ public class ErrorBody {
     }
 
     /**
-     * Get the message value.
+     * Get error message.
      *
      * @return the message value
      */
@@ -56,7 +56,7 @@ public class ErrorBody {
     }
 
     /**
-     * Set the message value.
+     * Set error message.
      *
      * @param message the message value to set
      * @return the ErrorBody object itself.

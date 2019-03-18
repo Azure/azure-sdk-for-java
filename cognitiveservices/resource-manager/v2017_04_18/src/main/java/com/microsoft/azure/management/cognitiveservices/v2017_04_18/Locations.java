@@ -9,24 +9,22 @@
 package com.microsoft.azure.management.cognitiveservices.v2017_04_18;
 
 import rx.Observable;
-import java.util.List;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation.CheckSkuAvailabilitysInner;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation.LocationsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing CheckSkuAvailabilitys.
+ * Type representing Locations.
  */
-public interface CheckSkuAvailabilitys extends HasInner<CheckSkuAvailabilitysInner> {
+public interface Locations extends HasInner<LocationsInner> {
     /**
      * Check available SKUs.
      *
      * @param location Resource location.
-     * @param skus The SKU of the resource.
-     * @param kind The Kind of the resource.
+     * @param subdomainName The subdomain name to use.
      * @param type The Type of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<CheckSkuAvailabilityResultList> listAsync(String location, List<String> skus, String kind, String type);
+    Observable<CheckDomainAvailabilityResult> checkDomainAvailabilityPostAsync(String location, String subdomainName, String type);
 
 }
