@@ -5,7 +5,6 @@ package com.azure.applicationconfig.implementation;
 import com.azure.common.http.rest.RestPagedResponse;
 import com.azure.common.http.HttpHeaders;
 import com.azure.common.http.HttpRequest;
-import com.azure.common.http.rest.SimpleRestResponse;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  *
  * @param <T> the type items in the page
  */
-public class RestPagedResponseImpl<T> implements SimpleRestResponse<T> {
+public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
     /**
      * The link to the next page.
      */
@@ -45,6 +44,7 @@ public class RestPagedResponseImpl<T> implements SimpleRestResponse<T> {
      *
      * @return the items
      */
+    @Override
     public List<T> items() {
         return items;
     }
@@ -54,6 +54,7 @@ public class RestPagedResponseImpl<T> implements SimpleRestResponse<T> {
      *
      * @return the next page link
      */
+    @Override
     public String nextLink() {
         return nextPageLink;
     }
