@@ -78,9 +78,11 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Adds a configuration value in the service if that key and label does not exist.
+     *
      * <p>
      * The label value for the ConfigurationSetting is optional. If not specified, the
      * {@link ConfigurationSetting#NULL_LABEL} is used.
+     * </p>
      *
      * @param configurationSetting The key, value, and label to set.
      * @return ConfigurationSetting that was created or updated
@@ -98,10 +100,12 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Creates or updates a configuration value in the service.
+     *
      * <p>
      * If {@link ConfigurationSetting#etag()} is specified, the configuration value is updated if the current setting's
      * etag matches. If the etag's value is equal to {@link ConfigurationClient#ETAG_ANY}, the setting will always be
      * updated.
+     * </p>
      *
      * @param configurationSetting The configuration setting to create or update.
      * @return ConfigurationSetting that was created or updated.
@@ -122,10 +126,12 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Updates an existing configuration value in the service. The setting must already exist.
+     *
      * <p>
      * The label value for the ConfigurationSetting is optional. If not specified, the
      * {@link ConfigurationSetting#NULL_LABEL} is used.
-     * <p>
+     * </p>
+     *
      * If the {@link ConfigurationSetting#etag()} is specified, the configuration value is only updated if it matches.
      *
      * @param configurationSetting The key, value, and optional label to set.
@@ -160,10 +166,12 @@ public final class ConfigurationClient extends ServiceClient {
 
     /**
      * Gets the ConfigurationSetting given the {@param key}, optional {@param label} and optional {@param etag}.
+     *
      * <p>
      * Supplying {@param etag} will result in a ConfigurationSetting only being returned if the current etag is not the
      * same value. This is to improve the client caching scenario, where they only want the configuration value if it
      * has changed.
+     * </p>
      *
      * @param key   The key being retrieved
      * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
