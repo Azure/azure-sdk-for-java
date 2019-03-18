@@ -136,8 +136,8 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param configurationSetting The key, value, and optional label to set.
      * @return ConfigurationSetting that was updated.
-     * @throws com.microsoft.azure.v3.CloudException When a ConfigurationSetting with the same key and label exists. Or
-     *                                               the configuration value is locked.
+     * @throws com.microsoft.azure.v3.CloudException When a ConfigurationSetting with the same key and label does not
+     *                                               exists or the configuration value is locked.
      */
     public Mono<RestResponse<ConfigurationSetting>> updateKeyValue(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
@@ -183,7 +183,7 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> getKeyValue(String key, String label, String etag) {
         if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
             label = ConfigurationSetting.NULL_LABEL;
         }
@@ -195,11 +195,11 @@ public final class ConfigurationClient extends ServiceClient {
      * Deletes the ConfigurationSetting.
      *
      * @param key The key to delete.
-     * @return the deleted ConfigurationSetting or none if didn't exist.
+     * @return the deleted ConfigurationSetting or null if didn't exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> deleteKeyValue(String key) {
         if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         }
 
         return deleteKeyValue(key, null, null);
@@ -216,7 +216,7 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> deleteKeyValue(String key, String label, String etag) {
         if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
             label = ConfigurationSetting.NULL_LABEL;
         }
@@ -233,7 +233,7 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key) {
         if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         }
 
         return lockKeyValue(key, null);
@@ -249,7 +249,7 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key, String label) {
         if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
             label = ConfigurationSetting.NULL_LABEL;
         }
@@ -278,7 +278,7 @@ public final class ConfigurationClient extends ServiceClient {
      */
     public Mono<RestResponse<ConfigurationSetting>> unlockKeyValue(String key, String label) {
         if (key == null || key.isEmpty()) {
-            throw new IllegalArgumentException("Parameter key is required and cannot be null or empty");
+            throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
             label = ConfigurationSetting.NULL_LABEL;
         }
