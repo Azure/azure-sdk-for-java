@@ -375,7 +375,7 @@ public interface LargePersonGroups {
     Observable<ServiceResponse<TrainingStatus>> getTrainingStatusWithServiceResponseAsync(String largePersonGroupId);
 
     /**
-     * List all existing large person groups’s largePesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Large person groups are stored in alphabetical order of largePersonGroupId.
      * "start" parameter (string, optional) is a user-provided largePersonGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -393,7 +393,7 @@ public interface LargePersonGroups {
     List<LargePersonGroup> list();
 
     /**
-     * List all existing large person groups’s largePesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Large person groups are stored in alphabetical order of largePersonGroupId.
      * "start" parameter (string, optional) is a user-provided largePersonGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -410,7 +410,7 @@ public interface LargePersonGroups {
     ServiceFuture<List<LargePersonGroup>> listAsync(final ServiceCallback<List<LargePersonGroup>> serviceCallback);
 
     /**
-     * List all existing large person groups’s largePesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Large person groups are stored in alphabetical order of largePersonGroupId.
      * "start" parameter (string, optional) is a user-provided largePersonGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -426,7 +426,7 @@ public interface LargePersonGroups {
     Observable<List<LargePersonGroup>> listAsync();
 
     /**
-     * List all existing large person groups’s largePesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Large person groups are stored in alphabetical order of largePersonGroupId.
      * "start" parameter (string, optional) is a user-provided largePersonGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -441,7 +441,7 @@ public interface LargePersonGroups {
      */
     Observable<ServiceResponse<List<LargePersonGroup>>> listWithServiceResponseAsync();
     /**
-     * List all existing large person groups’s largePesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Large person groups are stored in alphabetical order of largePersonGroupId.
      * "start" parameter (string, optional) is a user-provided largePersonGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -461,7 +461,7 @@ public interface LargePersonGroups {
     List<LargePersonGroup> list(String start, Integer top);
 
     /**
-     * List all existing large person groups’s largePesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Large person groups are stored in alphabetical order of largePersonGroupId.
      * "start" parameter (string, optional) is a user-provided largePersonGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -480,7 +480,7 @@ public interface LargePersonGroups {
     ServiceFuture<List<LargePersonGroup>> listAsync(String start, Integer top, final ServiceCallback<List<LargePersonGroup>> serviceCallback);
 
     /**
-     * List all existing large person groups’s largePesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Large person groups are stored in alphabetical order of largePersonGroupId.
      * "start" parameter (string, optional) is a user-provided largePersonGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -498,7 +498,7 @@ public interface LargePersonGroups {
     Observable<List<LargePersonGroup>> listAsync(String start, Integer top);
 
     /**
-     * List all existing large person groups’s largePesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Large person groups are stored in alphabetical order of largePersonGroupId.
      * "start" parameter (string, optional) is a user-provided largePersonGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.

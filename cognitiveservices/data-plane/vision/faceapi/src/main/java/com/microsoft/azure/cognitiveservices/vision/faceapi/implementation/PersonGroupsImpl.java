@@ -726,7 +726,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups’s pesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -746,7 +746,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups’s pesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -765,7 +765,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups’s pesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -788,7 +788,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups’s pesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -823,7 +823,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups’s pesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -845,7 +845,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups’s pesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -866,7 +866,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups’s pesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
@@ -891,7 +891,7 @@ public class PersonGroupsImpl implements PersonGroups {
     }
 
     /**
-     * List person groups’s pesonGroupId, name, userData and recognitionModel.&lt;br /&gt;
+     * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
      * Person groups are stored in alphabetical order of personGroupId.
      * "start" parameter (string, optional) is a user-provided personGroupId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
      * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
