@@ -8,49 +8,37 @@
 
 package com.microsoft.azure.management.mediaservices.v2018_07_01;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for ContentKeyPolicyPlayReadyLicenseType.
  */
-public enum ContentKeyPolicyPlayReadyLicenseType {
-    /** Represents a ContentKeyPolicyPlayReadyLicenseType that is unavailable in current API version. */
-    UNKNOWN("Unknown"),
+public final class ContentKeyPolicyPlayReadyLicenseType extends ExpandableStringEnum<ContentKeyPolicyPlayReadyLicenseType> {
+    /** Static value Unknown for ContentKeyPolicyPlayReadyLicenseType. */
+    public static final ContentKeyPolicyPlayReadyLicenseType UNKNOWN = fromString("Unknown");
 
-    /** Non persistent license. */
-    NON_PERSISTENT("NonPersistent"),
+    /** Static value NonPersistent for ContentKeyPolicyPlayReadyLicenseType. */
+    public static final ContentKeyPolicyPlayReadyLicenseType NON_PERSISTENT = fromString("NonPersistent");
 
-    /** Persistent license. Allows offline playback. */
-    PERSISTENT("Persistent");
+    /** Static value Persistent for ContentKeyPolicyPlayReadyLicenseType. */
+    public static final ContentKeyPolicyPlayReadyLicenseType PERSISTENT = fromString("Persistent");
 
-    /** The actual serialized value for a ContentKeyPolicyPlayReadyLicenseType instance. */
-    private String value;
-
-    ContentKeyPolicyPlayReadyLicenseType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ContentKeyPolicyPlayReadyLicenseType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding ContentKeyPolicyPlayReadyLicenseType
+     */
+    @JsonCreator
+    public static ContentKeyPolicyPlayReadyLicenseType fromString(String name) {
+        return fromString(name, ContentKeyPolicyPlayReadyLicenseType.class);
     }
 
     /**
-     * Parses a serialized value to a ContentKeyPolicyPlayReadyLicenseType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ContentKeyPolicyPlayReadyLicenseType object, or null if unable to parse.
+     * @return known ContentKeyPolicyPlayReadyLicenseType values
      */
-    @JsonCreator
-    public static ContentKeyPolicyPlayReadyLicenseType fromString(String value) {
-        ContentKeyPolicyPlayReadyLicenseType[] items = ContentKeyPolicyPlayReadyLicenseType.values();
-        for (ContentKeyPolicyPlayReadyLicenseType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ContentKeyPolicyPlayReadyLicenseType> values() {
+        return values(ContentKeyPolicyPlayReadyLicenseType.class);
     }
 }

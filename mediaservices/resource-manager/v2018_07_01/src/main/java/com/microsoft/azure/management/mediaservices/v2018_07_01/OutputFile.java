@@ -23,7 +23,7 @@ public class OutputFile {
      * file with the video track represented by v1 and the audio track
      * represented by a1.
      */
-    @JsonProperty(value = "labels")
+    @JsonProperty(value = "labels", required = true)
     private List<String> labels;
 
     /**
