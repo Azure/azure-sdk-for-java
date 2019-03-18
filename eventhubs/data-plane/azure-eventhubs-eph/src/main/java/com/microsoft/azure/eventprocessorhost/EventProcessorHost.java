@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public final class EventProcessorHost {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(EventProcessorHost.class);
-    private static final Object uuidSynchronizer = new Object();
+    private static final Object UUID_SYNCHRONIZER = new Object();
     // weOwnExecutor exists to support user-supplied thread pools.
     private final boolean weOwnExecutor;
     private final ScheduledExecutorService executorService;
@@ -330,7 +330,7 @@ public final class EventProcessorHost {
      * @return A string UUID with dashes but no curly brackets.
      */
     public static String safeCreateUUID() {
-        synchronized (EventProcessorHost.uuidSynchronizer) {
+        synchronized (EventProcessorHost.UUID_SYNCHRONIZER) {
             final UUID newUuid = UUID.randomUUID();
             return newUuid.toString();
         }
@@ -530,7 +530,7 @@ public final class EventProcessorHost {
     }
 
     static class EventProcessorHostThreadPoolFactory implements ThreadFactory {
-        private static final AtomicInteger poolNumber = new AtomicInteger(1);
+        private static final AtomicInteger POOL_NUMBER = new AtomicInteger(1);
         private final AtomicInteger threadNumber = new AtomicInteger(1);
         private final ThreadGroup group;
         private final String namePrefix;
@@ -561,7 +561,7 @@ public final class EventProcessorHost {
 
         private String getNamePrefix() {
             return String.format("[%s|%s|%s]-%s-",
-                    this.entityName, this.consumerGroupName, this.hostName, poolNumber.getAndIncrement());
+                    this.entityName, this.consumerGroupName, this.hostName, POOL_NUMBER.getAndIncrement());
         }
 
         static class ThreadUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
