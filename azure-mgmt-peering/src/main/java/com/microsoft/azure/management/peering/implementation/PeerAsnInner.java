@@ -12,12 +12,13 @@ import com.microsoft.azure.management.peering.ContactInfo;
 import com.microsoft.azure.management.peering.ValidationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * The essential information related to the pee's ASN.
  */
 @JsonFlatten
-public class PeerAsnInner {
+public class PeerAsnInner extends ProxyResource {
     /**
      * The Autonomous System Number (ASN) of the peer.
      */
@@ -42,24 +43,6 @@ public class PeerAsnInner {
      */
     @JsonProperty(value = "properties.validationState")
     private ValidationState validationState;
-
-    /**
-     * The name of the resource.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /**
-     * The ID of the resource.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /**
-     * The type of the resource.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * Get the Autonomous System Number (ASN) of the peer.
@@ -139,33 +122,6 @@ public class PeerAsnInner {
     public PeerAsnInner withValidationState(ValidationState validationState) {
         this.validationState = validationState;
         return this;
-    }
-
-    /**
-     * Get the name of the resource.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the ID of the resource.
-     *
-     * @return the id value
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the type of the resource.
-     *
-     * @return the type value
-     */
-    public String type() {
-        return this.type;
     }
 
 }

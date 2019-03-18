@@ -13,7 +13,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.peering.ErrorResponseException;
-import com.microsoft.azure.management.peering.PeerAsnProperties;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -68,7 +67,7 @@ public class PeerAsnsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.peering.PeerAsns createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("peerAsnName") String peerAsnName, @Path("subscriptionId") String subscriptionId, @Body PeerAsnProperties peerInfo, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("peerAsnName") String peerAsnName, @Path("subscriptionId") String subscriptionId, @Body PeerAsnInner peerAsn, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.peering.PeerAsns delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns/{peerAsnName}", method = "DELETE", hasBody = true)
@@ -167,39 +166,39 @@ public class PeerAsnsInner {
      * Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
      *
      * @param peerAsnName The peer ASN name.
-     * @param peerInfo The peer info.
+     * @param peerAsn The peer ASN.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PeerAsnInner object if successful.
      */
-    public PeerAsnInner createOrUpdate(String peerAsnName, PeerAsnProperties peerInfo) {
-        return createOrUpdateWithServiceResponseAsync(peerAsnName, peerInfo).toBlocking().single().body();
+    public PeerAsnInner createOrUpdate(String peerAsnName, PeerAsnInner peerAsn) {
+        return createOrUpdateWithServiceResponseAsync(peerAsnName, peerAsn).toBlocking().single().body();
     }
 
     /**
      * Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
      *
      * @param peerAsnName The peer ASN name.
-     * @param peerInfo The peer info.
+     * @param peerAsn The peer ASN.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PeerAsnInner> createOrUpdateAsync(String peerAsnName, PeerAsnProperties peerInfo, final ServiceCallback<PeerAsnInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(peerAsnName, peerInfo), serviceCallback);
+    public ServiceFuture<PeerAsnInner> createOrUpdateAsync(String peerAsnName, PeerAsnInner peerAsn, final ServiceCallback<PeerAsnInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(peerAsnName, peerAsn), serviceCallback);
     }
 
     /**
      * Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
      *
      * @param peerAsnName The peer ASN name.
-     * @param peerInfo The peer info.
+     * @param peerAsn The peer ASN.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PeerAsnInner object
      */
-    public Observable<PeerAsnInner> createOrUpdateAsync(String peerAsnName, PeerAsnProperties peerInfo) {
-        return createOrUpdateWithServiceResponseAsync(peerAsnName, peerInfo).map(new Func1<ServiceResponse<PeerAsnInner>, PeerAsnInner>() {
+    public Observable<PeerAsnInner> createOrUpdateAsync(String peerAsnName, PeerAsnInner peerAsn) {
+        return createOrUpdateWithServiceResponseAsync(peerAsnName, peerAsn).map(new Func1<ServiceResponse<PeerAsnInner>, PeerAsnInner>() {
             @Override
             public PeerAsnInner call(ServiceResponse<PeerAsnInner> response) {
                 return response.body();
@@ -211,25 +210,25 @@ public class PeerAsnsInner {
      * Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
      *
      * @param peerAsnName The peer ASN name.
-     * @param peerInfo The peer info.
+     * @param peerAsn The peer ASN.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PeerAsnInner object
      */
-    public Observable<ServiceResponse<PeerAsnInner>> createOrUpdateWithServiceResponseAsync(String peerAsnName, PeerAsnProperties peerInfo) {
+    public Observable<ServiceResponse<PeerAsnInner>> createOrUpdateWithServiceResponseAsync(String peerAsnName, PeerAsnInner peerAsn) {
         if (peerAsnName == null) {
             throw new IllegalArgumentException("Parameter peerAsnName is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (peerInfo == null) {
-            throw new IllegalArgumentException("Parameter peerInfo is required and cannot be null.");
+        if (peerAsn == null) {
+            throw new IllegalArgumentException("Parameter peerAsn is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(peerInfo);
-        return service.createOrUpdate(peerAsnName, this.client.subscriptionId(), peerInfo, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Validator.validate(peerAsn);
+        return service.createOrUpdate(peerAsnName, this.client.subscriptionId(), peerAsn, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PeerAsnInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PeerAsnInner>> call(Response<ResponseBody> response) {
