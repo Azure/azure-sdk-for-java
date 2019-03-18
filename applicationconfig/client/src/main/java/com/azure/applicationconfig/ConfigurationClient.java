@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig;
 
-import com.azure.applicationconfig.implementation.PageImpl;
+import com.azure.applicationconfig.implementation.Page;
 import com.azure.applicationconfig.implementation.RestPagedResponseImpl;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.Key;
@@ -11,14 +11,14 @@ import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.Label;
 import com.azure.applicationconfig.models.RevisionFilter;
-import com.microsoft.rest.v3.ServiceClient;
-import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
-import com.microsoft.rest.v3.http.policy.RetryPolicy;
-import com.microsoft.rest.v3.http.policy.UserAgentPolicy;
-import com.microsoft.rest.v3.http.rest.RestResponse;
-import com.microsoft.rest.v3.implementation.RestProxy;
-import com.microsoft.rest.v3.implementation.Validator;
+import com.azure.common.ServiceClient;
+import com.azure.common.http.HttpPipeline;
+import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.common.http.policy.RetryPolicy;
+import com.azure.common.http.policy.UserAgentPolicy;
+import com.azure.common.http.rest.RestResponse;
+import com.azure.common.implementation.RestProxy;
+import com.azure.common.implementation.Validator;
 import org.reactivestreams.Publisher;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -293,7 +293,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return KeyValues
      */
     public Flux<ConfigurationSetting> listKeyValues(KeyValueListFilter filter) {
-        Mono<RestResponse<PageImpl<ConfigurationSetting>>> result;
+        Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (filter != null) {
             result = service.listKeyValues(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
         } else {
@@ -326,7 +326,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return Revisions of the ConfigurationSetting
      */
     public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionFilter filter) {
-        Mono<RestResponse<PageImpl<ConfigurationSetting>>> result;
+        Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (filter != null) {
             result = service.listKeyValueRevisions(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
         } else {
@@ -343,7 +343,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return labels
      */
     public Flux<Label> listLabels(KeyLabelFilter filter) {
-        Mono<RestResponse<PageImpl<Label>>> result;
+        Mono<RestResponse<Page<Label>>> result;
         if (filter != null) {
             result = service.listLabels(baseUri.toString(), filter.name(), filter.fields(), filter.acceptDatetime(), filter.range());
         } else {
@@ -372,7 +372,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @return keys
      */
     public Flux<Key> listKeys(KeyLabelFilter filter) {
-        Mono<RestResponse<PageImpl<Key>>> result;
+        Mono<RestResponse<Page<Key>>> result;
         if (filter != null) {
             result = service.listKeys(baseUri.toString(), filter.name(), filter.fields(), filter.acceptDatetime(), filter.range());
         } else {

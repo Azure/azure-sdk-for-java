@@ -2,19 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.implementation;
 
-import com.microsoft.rest.v3.http.HttpHeaders;
-import com.microsoft.rest.v3.http.HttpRequest;
-import com.microsoft.rest.v3.http.rest.RestPagedResponse;
+import com.azure.common.http.rest.RestPagedResponse;
+import com.azure.common.http.HttpHeaders;
+import com.azure.common.http.HttpRequest;
+import com.azure.common.http.rest.SimpleRestResponse;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Response of a REST API that returns page.
  *
  * @param <T> the type items in the page
  */
-public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
+public class RestPagedResponseImpl<T> implements SimpleRestResponse<T> {
     /**
      * The link to the next page.
      */

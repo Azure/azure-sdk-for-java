@@ -1,6 +1,6 @@
 package com.azure.applicationconfig;
 
-import com.azure.applicationconfig.implementation.PageImpl;
+import com.azure.applicationconfig.implementation.Page;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.Key;
 import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
@@ -44,13 +44,13 @@ interface ApplicationConfigService {
     @GET("kv")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<PageImpl<ConfigurationSetting>>> listKeyValues(@HostParam("url") String url, @QueryParam("key") String key, @QueryParam("label") String label,
-                                                                     @QueryParam("fields") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
+    Mono<RestResponse<Page<ConfigurationSetting>>> listKeyValues(@HostParam("url") String url, @QueryParam("key") String key, @QueryParam("label") String label,
+                                                                 @QueryParam("fields") String fields, @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
 
     @GET("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<PageImpl<ConfigurationSetting>>> listKeyValuesNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
+    Mono<RestResponse<Page<ConfigurationSetting>>> listKeyValuesNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
 
     @DELETE("kv/{key}")
     @ExpectedResponses({200, 204})
@@ -73,29 +73,29 @@ interface ApplicationConfigService {
     @GET("revisions")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<PageImpl<ConfigurationSetting>>> listKeyValueRevisions(@HostParam("url") String url,
-                                                                             @QueryParam("key") String key, @QueryParam("label") String label, @QueryParam("fields") String fields,
-                                                                             @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
+    Mono<RestResponse<Page<ConfigurationSetting>>> listKeyValueRevisions(@HostParam("url") String url,
+                                                                         @QueryParam("key") String key, @QueryParam("label") String label, @QueryParam("fields") String fields,
+                                                                         @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
 
     @GET("labels")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<PageImpl<Label>>> listLabels(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
-                                                   @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
-
-    @GET("{nextUrl}")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<PageImpl<Label>>> listLabelsNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
-
-    @GET("keys")
-    @ExpectedResponses({200})
-    @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<PageImpl<Key>>> listKeys(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
+    Mono<RestResponse<Page<Label>>> listLabels(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
                                                @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
 
     @GET("{nextUrl}")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(RestException.class)
-    Mono<RestResponse<PageImpl<Key>>> listKeysNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
+    Mono<RestResponse<Page<Label>>> listLabelsNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
+
+    @GET("keys")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(RestException.class)
+    Mono<RestResponse<Page<Key>>> listKeys(@HostParam("url") String url, @QueryParam("name") String name, @QueryParam("fields") String fields,
+                                           @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Range") String range);
+
+    @GET("{nextUrl}")
+    @ExpectedResponses({200})
+    @UnexpectedResponseExceptionType(RestException.class)
+    Mono<RestResponse<Page<Key>>> listKeysNext(@HostParam("url") String url, @PathParam(value = "nextUrl", encoded = true) String nextUrl);
 }
