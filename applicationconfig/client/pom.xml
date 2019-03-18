@@ -59,12 +59,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.microsoft.azure.v3</groupId>
-            <artifactId>azure-client-runtime</artifactId>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-common</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>com.microsoft.rest.v3</groupId>
-            <artifactId>client-runtime</artifactId>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-common-auth</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
