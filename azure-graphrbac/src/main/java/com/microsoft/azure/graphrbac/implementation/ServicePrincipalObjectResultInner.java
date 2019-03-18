@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.graphrbac.implementation;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,10 +16,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ServicePrincipalObjectResultInner {
     /**
-     * Service Principal Application Object Id.
+     * A collection of Application Objects.
      */
     @JsonProperty(value = "value")
-    private String value;
+    private List<String> value;
 
     /**
      * The URL representing edm equivalent.
@@ -27,21 +28,21 @@ public class ServicePrincipalObjectResultInner {
     private String odatametadata;
 
     /**
-     * Get service Principal Application Object Id.
+     * Get a collection of Application Objects.
      *
      * @return the value value
      */
-    public String value() {
+    public List<String> value() {
         return this.value;
     }
 
     /**
-     * Set service Principal Application Object Id.
+     * Set a collection of Application Objects.
      *
      * @param value the value value to set
      * @return the ServicePrincipalObjectResultInner object itself.
      */
-    public ServicePrincipalObjectResultInner withValue(String value) {
+    public ServicePrincipalObjectResultInner withValue(List<String> value) {
         this.value = value;
         return this;
     }
