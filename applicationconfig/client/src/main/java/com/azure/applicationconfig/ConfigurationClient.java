@@ -29,7 +29,7 @@ import java.util.List;
  * Client that contains all the operations for KeyValues in Azure Configuration Store.
  */
 public final class ConfigurationClient extends ServiceClient {
-    public static final String ETAG_ANY = "*";
+    private static final String ETAG_ANY = "*";
 
     static final String SDK_NAME = "Azure-Configuration";
     static final String SDK_VERSION = "1.0.0-SNAPSHOT";
