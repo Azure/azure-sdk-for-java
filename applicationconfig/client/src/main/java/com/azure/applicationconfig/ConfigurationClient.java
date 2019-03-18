@@ -86,7 +86,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param configurationSetting The key, value, and label to set.
      * @return ConfigurationSetting that was created or updated
-     * @throws com.microsoft.azure.v3.CloudException when a ConfigurationSetting with the same key and label exists.
+     * @throws com.azure.common.http.rest.RestException when a ConfigurationSetting with the same key and label exists.
      */
     public Mono<RestResponse<ConfigurationSetting>> addKeyValue(ConfigurationSetting configurationSetting) {
         Validator.validate(configurationSetting);
@@ -109,7 +109,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param configurationSetting The configuration setting to create or update.
      * @return ConfigurationSetting that was created or updated.
-     * @throws com.microsoft.azure.v3.CloudException If the {@link ConfigurationSetting#etag()} was specified, is not
+     * @throws com.azure.common.http.rest.RestException If the {@link ConfigurationSetting#etag()} was specified, is not
      *                                               {@link ConfigurationClient#ETAG_ANY}, and the current configuration
      *                                               value's etag does not match.
      */
@@ -136,7 +136,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param configurationSetting The key, value, and optional label to set.
      * @return ConfigurationSetting that was updated.
-     * @throws com.microsoft.azure.v3.CloudException When a ConfigurationSetting with the same key and label does not
+     * @throws com.azure.common.http.rest.RestException When a ConfigurationSetting with the same key and label does not
      *                                               exists or the configuration value is locked.
      */
     public Mono<RestResponse<ConfigurationSetting>> updateKeyValue(ConfigurationSetting configurationSetting) {
@@ -157,7 +157,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param key The key being retrieved
      * @return The configuration value in the service.
-     * @throws com.microsoft.azure.v3.CloudException with status code of 404 if the {@param key} and {@param label} does
+     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@param key} and {@param label} does
      *                                               not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> getKeyValue(String key) {
@@ -177,7 +177,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
      * @param etag  Optional. If specified, will only get the ConfigurationSetting if the current etag does not match.
      * @return The configuration value in the service.
-     * @throws com.microsoft.azure.v3.CloudException with status code of 404 if the {@param key} and {@param label} does
+     * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@param key} and {@param label} does
      *                                               not exist. If {@param etag} was specified, returns status code of
      *                                               304 if the key has not been modified.
      */
@@ -229,7 +229,7 @@ public final class ConfigurationClient extends ServiceClient {
      *
      * @param key The key to lock.
      * @return ConfigurationSetting that was locked
-     * @throws com.microsoft.azure.v3.CloudException with status code 404 if the {@param key} does not exist.
+     * @throws com.azure.common.http.rest.RestException with status code 404 if the {@param key} does not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> lockKeyValue(String key) {
         if (key == null || key.isEmpty()) {
