@@ -72,11 +72,6 @@ public interface ServerfarmSite extends HasInner<SiteInner>, HasManager<Certific
     List<String> enabledHostNames();
 
     /**
-     * @return the geoDistributions value.
-     */
-    List<GeoDistribution> geoDistributions();
-
-    /**
      * @return the hostingEnvironmentProfile value.
      */
     HostingEnvironmentProfile hostingEnvironmentProfile();

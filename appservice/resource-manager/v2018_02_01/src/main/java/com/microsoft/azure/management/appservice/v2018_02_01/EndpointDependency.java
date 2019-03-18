@@ -12,12 +12,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A domain name that a service is reached at, including details of the current
- * connection status.
+ * The EndpointDependency model.
  */
 public class EndpointDependency {
     /**
-     * The domain name of the dependency.
+     * The Domain Name of the dependency.
      */
     @JsonProperty(value = "domainName")
     private String domainName;
@@ -29,7 +28,7 @@ public class EndpointDependency {
     private List<EndpointDetail> endpointDetails;
 
     /**
-     * Get the domain name of the dependency.
+     * Get the Domain Name of the dependency.
      *
      * @return the domainName value
      */
@@ -38,7 +37,7 @@ public class EndpointDependency {
     }
 
     /**
-     * Set the domain name of the dependency.
+     * Set the Domain Name of the dependency.
      *
      * @param domainName the domainName value to set
      * @return the EndpointDependency object itself.

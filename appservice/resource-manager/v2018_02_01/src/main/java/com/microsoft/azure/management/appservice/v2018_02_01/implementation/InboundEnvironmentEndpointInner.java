@@ -12,32 +12,29 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The IP Addresses and Ports that require inbound network access to and within
- * the subnet of the App Service Environment.
+ * Endpoints for a particular type.
  */
 public class InboundEnvironmentEndpointInner {
     /**
-     * Short text describing the purpose of the network traffic.
+     * Text describing the endpoints.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /**
-     * The IP addresses that network traffic will originate from in cidr
-     * notation.
+     * The endpoint ip addresses in cidr notation.
      */
     @JsonProperty(value = "endpoints")
     private List<String> endpoints;
 
     /**
-     * The ports that network traffic will arrive to the App Service
-     * Environment at.
+     * The ports.
      */
     @JsonProperty(value = "ports")
     private List<String> ports;
 
     /**
-     * Get short text describing the purpose of the network traffic.
+     * Get text describing the endpoints.
      *
      * @return the description value
      */
@@ -46,7 +43,7 @@ public class InboundEnvironmentEndpointInner {
     }
 
     /**
-     * Set short text describing the purpose of the network traffic.
+     * Set text describing the endpoints.
      *
      * @param description the description value to set
      * @return the InboundEnvironmentEndpointInner object itself.
@@ -57,7 +54,7 @@ public class InboundEnvironmentEndpointInner {
     }
 
     /**
-     * Get the IP addresses that network traffic will originate from in cidr notation.
+     * Get the endpoint ip addresses in cidr notation.
      *
      * @return the endpoints value
      */
@@ -66,7 +63,7 @@ public class InboundEnvironmentEndpointInner {
     }
 
     /**
-     * Set the IP addresses that network traffic will originate from in cidr notation.
+     * Set the endpoint ip addresses in cidr notation.
      *
      * @param endpoints the endpoints value to set
      * @return the InboundEnvironmentEndpointInner object itself.
@@ -77,7 +74,7 @@ public class InboundEnvironmentEndpointInner {
     }
 
     /**
-     * Get the ports that network traffic will arrive to the App Service Environment at.
+     * Get the ports.
      *
      * @return the ports value
      */
@@ -86,7 +83,7 @@ public class InboundEnvironmentEndpointInner {
     }
 
     /**
-     * Set the ports that network traffic will arrive to the App Service Environment at.
+     * Set the ports.
      *
      * @param ports the ports value to set
      * @return the InboundEnvironmentEndpointInner object itself.

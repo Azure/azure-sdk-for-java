@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.appservice.v2018_02_01;
 
-import java.util.Map;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -35,13 +35,10 @@ public class ManagedServiceIdentity {
     private String principalId;
 
     /**
-     * The list of user assigned identities associated with the resource. The
-     * user identity dictionary key references will be ARM resource ids in the
-     * form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * Array of UserAssigned managed service identities.
      */
-    @JsonProperty(value = "userAssignedIdentities")
-    private Map<String, ManagedServiceIdentityUserAssignedIdentitiesValue> userAssignedIdentities;
+    @JsonProperty(value = "identityIds")
+    private List<String> identityIds;
 
     /**
      * Get type of managed service identity. Possible values include: 'SystemAssigned', 'UserAssigned'.
@@ -82,22 +79,22 @@ public class ManagedServiceIdentity {
     }
 
     /**
-     * Get the list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * Get array of UserAssigned managed service identities.
      *
-     * @return the userAssignedIdentities value
+     * @return the identityIds value
      */
-    public Map<String, ManagedServiceIdentityUserAssignedIdentitiesValue> userAssignedIdentities() {
-        return this.userAssignedIdentities;
+    public List<String> identityIds() {
+        return this.identityIds;
     }
 
     /**
-     * Set the list of user assigned identities associated with the resource. The user identity dictionary key references will be ARM resource ids in the form: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+     * Set array of UserAssigned managed service identities.
      *
-     * @param userAssignedIdentities the userAssignedIdentities value to set
+     * @param identityIds the identityIds value to set
      * @return the ManagedServiceIdentity object itself.
      */
-    public ManagedServiceIdentity withUserAssignedIdentities(Map<String, ManagedServiceIdentityUserAssignedIdentitiesValue> userAssignedIdentities) {
-        this.userAssignedIdentities = userAssignedIdentities;
+    public ManagedServiceIdentity withIdentityIds(List<String> identityIds) {
+        this.identityIds = identityIds;
         return this;
     }
 

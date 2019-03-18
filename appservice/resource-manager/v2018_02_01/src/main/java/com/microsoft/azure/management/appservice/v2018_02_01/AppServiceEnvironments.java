@@ -172,15 +172,15 @@ public interface AppServiceEnvironments {
     Observable<HostingEnvironmentDiagnostics> listDiagnosticsAsync(String resourceGroupName, String name);
 
     /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an ase.
+     * Get the network endpoints of all inbound dependencies of an ase.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InboundEnvironmentEndpoint> getInboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name);
+    Observable<InboundEnvironmentEndpoint> getInboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name);
 
     /**
      * Get global metric definitions of an App Service Environment.
@@ -415,15 +415,15 @@ public interface AppServiceEnvironments {
     Observable<Operation> listOperationsAsync(String resourceGroupName, String name);
 
     /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an ase.
+     * Get the network endpoints of all outbound dependencies of an ase.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<OutboundEnvironmentEndpoint> getOutboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name);
+    Observable<OutboundEnvironmentEndpoint> getOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name);
 
     /**
      * Get all App Service plans in an App Service Environment.

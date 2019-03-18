@@ -19,7 +19,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.CloningInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
 import com.microsoft.azure.management.appservice.v2018_02_01.RedundancyMode;
 import java.util.UUID;
-import com.microsoft.azure.management.appservice.v2018_02_01.GeoDistribution;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -274,12 +273,6 @@ public class SiteInner extends Resource {
      */
     @JsonProperty(value = "properties.inProgressOperationId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID inProgressOperationId;
-
-    /**
-     * GeoDistributions for this site.
-     */
-    @JsonProperty(value = "properties.geoDistributions")
-    private List<GeoDistribution> geoDistributions;
 
     /**
      * The identity property.
@@ -819,26 +812,6 @@ public class SiteInner extends Resource {
      */
     public UUID inProgressOperationId() {
         return this.inProgressOperationId;
-    }
-
-    /**
-     * Get geoDistributions for this site.
-     *
-     * @return the geoDistributions value
-     */
-    public List<GeoDistribution> geoDistributions() {
-        return this.geoDistributions;
-    }
-
-    /**
-     * Set geoDistributions for this site.
-     *
-     * @param geoDistributions the geoDistributions value to set
-     * @return the SiteInner object itself.
-     */
-    public SiteInner withGeoDistributions(List<GeoDistribution> geoDistributions) {
-        this.geoDistributions = geoDistributions;
-        return this;
     }
 
     /**

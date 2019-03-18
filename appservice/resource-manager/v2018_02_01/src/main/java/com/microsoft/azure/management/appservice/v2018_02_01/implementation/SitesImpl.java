@@ -23,7 +23,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentP
 import com.microsoft.azure.management.appservice.v2018_02_01.CloningInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
 import com.microsoft.azure.management.appservice.v2018_02_01.RedundancyMode;
-import com.microsoft.azure.management.appservice.v2018_02_01.GeoDistribution;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
 import rx.functions.Func1;
 
@@ -125,11 +124,6 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
     @Override
     public List<String> enabledHostNames() {
         return this.inner().enabledHostNames();
-    }
-
-    @Override
-    public List<GeoDistribution> geoDistributions() {
-        return this.inner().geoDistributions();
     }
 
     @Override
@@ -344,16 +338,6 @@ class SitesImpl extends GroupableResourceCoreImpl<Sites, SiteInner, SitesImpl, C
             this.inner().withEnabled(enabled);
         } else {
             this.updateParameter.withEnabled(enabled);
-        }
-        return this;
-    }
-
-    @Override
-    public SitesImpl withGeoDistributions(List<GeoDistribution> geoDistributions) {
-        if (isInCreateMode()) {
-            this.inner().withGeoDistributions(geoDistributions);
-        } else {
-            this.updateParameter.withGeoDistributions(geoDistributions);
         }
         return this;
     }

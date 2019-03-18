@@ -11,8 +11,7 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Current TCP connectivity information from the App Service Environment to a
- * single endpoint.
+ * The EndpointDetail model.
  */
 public class EndpointDetail {
     /**
@@ -28,15 +27,14 @@ public class EndpointDetail {
     private Integer port;
 
     /**
-     * The time in milliseconds it takes for a TCP connection to be created
-     * from the App Service Environment to this IpAddress at this Port.
+     * The time in milliseconds it takes to connect to this IpAddress at this
+     * Port.
      */
     @JsonProperty(value = "latency")
     private Double latency;
 
     /**
-     * Whether it is possible to create a TCP connection from the App Service
-     * Environment to this IpAddress at this Port.
+     * Whether it is possible to connect to IpAddress.
      */
     @JsonProperty(value = "isAccessable")
     private Boolean isAccessable;
@@ -82,7 +80,7 @@ public class EndpointDetail {
     }
 
     /**
-     * Get the time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress at this Port.
+     * Get the time in milliseconds it takes to connect to this IpAddress at this Port.
      *
      * @return the latency value
      */
@@ -91,7 +89,7 @@ public class EndpointDetail {
     }
 
     /**
-     * Set the time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress at this Port.
+     * Set the time in milliseconds it takes to connect to this IpAddress at this Port.
      *
      * @param latency the latency value to set
      * @return the EndpointDetail object itself.
@@ -102,7 +100,7 @@ public class EndpointDetail {
     }
 
     /**
-     * Get whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this Port.
+     * Get whether it is possible to connect to IpAddress.
      *
      * @return the isAccessable value
      */
@@ -111,7 +109,7 @@ public class EndpointDetail {
     }
 
     /**
-     * Set whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this Port.
+     * Set whether it is possible to connect to IpAddress.
      *
      * @param isAccessable the isAccessable value to set
      * @return the EndpointDetail object itself.

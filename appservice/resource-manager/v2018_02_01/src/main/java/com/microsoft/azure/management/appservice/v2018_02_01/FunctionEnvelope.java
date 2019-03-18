@@ -54,9 +54,19 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
     String id();
 
     /**
+     * @return the invokeUrlTemplate value.
+     */
+    String invokeUrlTemplate();
+
+    /**
      * @return the kind value.
      */
     String kind();
+
+    /**
+     * @return the language value.
+     */
+    String language();
 
     /**
      * @return the name value.
@@ -82,6 +92,11 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
      * @return the testData value.
      */
     String testData();
+
+    /**
+     * @return the testDataHref value.
+     */
+    String testDataHref();
 
     /**
      * @return the type value.
@@ -178,6 +193,18 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         }
 
         /**
+         * The stage of the functionenvelope definition allowing to specify InvokeUrlTemplate.
+         */
+        interface WithInvokeUrlTemplate {
+            /**
+             * Specifies invokeUrlTemplate.
+             * @param invokeUrlTemplate The invocation URL
+             * @return the next definition stage
+             */
+            WithCreate withInvokeUrlTemplate(String invokeUrlTemplate);
+        }
+
+        /**
          * The stage of the functionenvelope definition allowing to specify Kind.
          */
         interface WithKind {
@@ -187,6 +214,18 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
              * @return the next definition stage
              */
             WithCreate withKind(String kind);
+        }
+
+        /**
+         * The stage of the functionenvelope definition allowing to specify Language.
+         */
+        interface WithLanguage {
+            /**
+             * Specifies language.
+             * @param language The function language
+             * @return the next definition stage
+             */
+            WithCreate withLanguage(String language);
         }
 
         /**
@@ -238,17 +277,29 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         }
 
         /**
+         * The stage of the functionenvelope definition allowing to specify TestDataHref.
+         */
+        interface WithTestDataHref {
+            /**
+             * Specifies testDataHref.
+             * @param testDataHref Test data URI
+             * @return the next definition stage
+             */
+            WithCreate withTestDataHref(String testDataHref);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<FunctionEnvelope>, DefinitionStages.WithConfig, DefinitionStages.WithConfigHref, DefinitionStages.WithFiles, DefinitionStages.WithFunctionAppId, DefinitionStages.WithHref, DefinitionStages.WithKind, DefinitionStages.WithScriptHref, DefinitionStages.WithScriptRootPathHref, DefinitionStages.WithSecretsFileHref, DefinitionStages.WithTestData {
+        interface WithCreate extends Creatable<FunctionEnvelope>, DefinitionStages.WithConfig, DefinitionStages.WithConfigHref, DefinitionStages.WithFiles, DefinitionStages.WithFunctionAppId, DefinitionStages.WithHref, DefinitionStages.WithInvokeUrlTemplate, DefinitionStages.WithKind, DefinitionStages.WithLanguage, DefinitionStages.WithScriptHref, DefinitionStages.WithScriptRootPathHref, DefinitionStages.WithSecretsFileHref, DefinitionStages.WithTestData, DefinitionStages.WithTestDataHref {
         }
     }
     /**
      * The template for a FunctionEnvelope update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<FunctionEnvelope>, UpdateStages.WithConfig, UpdateStages.WithConfigHref, UpdateStages.WithFiles, UpdateStages.WithFunctionAppId, UpdateStages.WithHref, UpdateStages.WithKind, UpdateStages.WithScriptHref, UpdateStages.WithScriptRootPathHref, UpdateStages.WithSecretsFileHref, UpdateStages.WithTestData {
+    interface Update extends Appliable<FunctionEnvelope>, UpdateStages.WithConfig, UpdateStages.WithConfigHref, UpdateStages.WithFiles, UpdateStages.WithFunctionAppId, UpdateStages.WithHref, UpdateStages.WithInvokeUrlTemplate, UpdateStages.WithKind, UpdateStages.WithLanguage, UpdateStages.WithScriptHref, UpdateStages.WithScriptRootPathHref, UpdateStages.WithSecretsFileHref, UpdateStages.WithTestData, UpdateStages.WithTestDataHref {
     }
 
     /**
@@ -316,6 +367,18 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
         }
 
         /**
+         * The stage of the functionenvelope update allowing to specify InvokeUrlTemplate.
+         */
+        interface WithInvokeUrlTemplate {
+            /**
+             * Specifies invokeUrlTemplate.
+             * @param invokeUrlTemplate The invocation URL
+             * @return the next update stage
+             */
+            Update withInvokeUrlTemplate(String invokeUrlTemplate);
+        }
+
+        /**
          * The stage of the functionenvelope update allowing to specify Kind.
          */
         interface WithKind {
@@ -325,6 +388,18 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
              * @return the next update stage
              */
             Update withKind(String kind);
+        }
+
+        /**
+         * The stage of the functionenvelope update allowing to specify Language.
+         */
+        interface WithLanguage {
+            /**
+             * Specifies language.
+             * @param language The function language
+             * @return the next update stage
+             */
+            Update withLanguage(String language);
         }
 
         /**
@@ -373,6 +448,18 @@ public interface FunctionEnvelope extends HasInner<FunctionEnvelopeInner>, Index
              * @return the next update stage
              */
             Update withTestData(String testData);
+        }
+
+        /**
+         * The stage of the functionenvelope update allowing to specify TestDataHref.
+         */
+        interface WithTestDataHref {
+            /**
+             * Specifies testDataHref.
+             * @param testDataHref Test data URI
+             * @return the next update stage
+             */
+            Update withTestDataHref(String testDataHref);
         }
 
     }

@@ -24,7 +24,6 @@ import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentP
 import com.microsoft.azure.management.appservice.v2018_02_01.CloningInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.SlotSwapStatus;
 import com.microsoft.azure.management.appservice.v2018_02_01.RedundancyMode;
-import com.microsoft.azure.management.appservice.v2018_02_01.GeoDistribution;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
 import rx.functions.Func1;
 
@@ -153,11 +152,6 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
     @Override
     public List<String> enabledHostNames() {
         return this.inner().enabledHostNames();
-    }
-
-    @Override
-    public List<GeoDistribution> geoDistributions() {
-        return this.inner().geoDistributions();
     }
 
     @Override
@@ -416,16 +410,6 @@ class SlotsImpl extends CreatableUpdatableImpl<Slots, SiteInner, SlotsImpl> impl
             this.inner().withEnabled(enabled);
         } else {
             this.updateParameter.withEnabled(enabled);
-        }
-        return this;
-    }
-
-    @Override
-    public SlotsImpl withGeoDistributions(List<GeoDistribution> geoDistributions) {
-        if (isInCreateMode()) {
-            this.inner().withGeoDistributions(geoDistributions);
-        } else {
-            this.updateParameter.withGeoDistributions(geoDistributions);
         }
         return this;
     }

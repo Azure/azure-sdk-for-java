@@ -15,6 +15,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.implementation.Back
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.StringDictionaryInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteConfigResourceInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.RestoreRequestInner;
+import com.microsoft.azure.management.appservice.v2018_02_01.implementation.KeyInfoInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.RelayServiceConnectionEntityInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SwiftVirtualNetworkInner;
 import com.microsoft.azure.management.appservice.v2018_02_01.BackupItem;
@@ -87,6 +88,13 @@ public interface WebApps {
      * @return the first stage of the new Function definition.
      */
     FunctionEnvelope.DefinitionStages.Blank defineFunction(String name);
+
+    /**
+     * Begins definition for a new Key resource.
+     * @param name resource name.
+     * @return the first stage of the new Key definition.
+     */
+    KeyInfo.DefinitionStages.Blank defineKey(String name);
 
     /**
      * Begins definition for a new HostNameBinding resource.
@@ -358,6 +366,66 @@ public interface WebApps {
     Observable<String> getFunctionsAdminTokenAsync(String resourceGroupName, String name);
 
     /**
+     * Get host secrets for a function app.
+     * Get host secrets for a function app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<HostKeys> listHostKeysAsync(String resourceGroupName, String name);
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable listSyncStatusAsync(String resourceGroupName, String name);
+
+    /**
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable syncFunctionsAsync(String resourceGroupName, String name);
+
+    /**
+     * Add or update a host level secret.
+     * Add or update a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<KeyInfo> createOrUpdateHostSecretAsync(String resourceGroupName, String name, String keyType, String keyName, KeyInfoInner key);
+
+    /**
+     * Delete a host level secret.
+     * Delete a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteHostSecretAsync(String resourceGroupName, String name, String keyType, String keyName);
+
+    /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
      *
@@ -430,6 +498,17 @@ public interface WebApps {
     Observable<SiteCloneability> isCloneableAsync(String resourceGroupName, String name);
 
     /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BackupItem> listSiteBackupsAsync(final String resourceGroupName, final String name);
+
+    /**
      * This is to allow calling via powershell and ARM template.
      * This is to allow calling via powershell and ARM template.
      *
@@ -438,7 +517,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<FunctionSecrets> listSyncFunctionTriggersAsync(String resourceGroupName, String name);
+    Completable listSyncFunctionTriggersStatusAsync(String resourceGroupName, String name);
 
     /**
      * Restores a web app.
@@ -665,6 +744,18 @@ public interface WebApps {
     Completable restoreSnapshotAsync(String resourceGroupName, String name, SnapshotRestoreRequest restoreRequest);
 
     /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable copyProductionSlotAsync(String resourceGroupName, String name, CsmCopySlotEntity copySlotEntity);
+
+    /**
      * Get the difference in configuration settings between two web app slots.
      * Get the difference in configuration settings between two web app slots.
      *
@@ -755,8 +846,8 @@ public interface WebApps {
     Completable syncRepositoryAsync(String resourceGroupName, String name);
 
     /**
-     * Syncs function trigger metadata to the scale controller.
-     * Syncs function trigger metadata to the scale controller.
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -1865,6 +1956,18 @@ public interface WebApps {
     Completable deleteFunctionAsync(String resourceGroupName, String name, String functionName);
 
     /**
+     * Get function keys for a function in a web site, or a deployment slot.
+     * Get function keys for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<StringDictionary> listFunctionKeysAsync(String resourceGroupName, String name, String functionName);
+
+    /**
      * Get function secrets for a function in a web site, or a deployment slot.
      * Get function secrets for a function in a web site, or a deployment slot.
      *
@@ -1874,7 +1977,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<FunctionSecrets> listFunctionSecretsAsync(String resourceGroupName, String name, String functionName);
+    Observable<FunctionKeys> listFunctionSecretsAsync(String resourceGroupName, String name, String functionName);
 
     /**
      * List the functions for a web site, or a deployment slot.
@@ -1929,8 +2032,110 @@ public interface WebApps {
     Completable deleteInstanceFunctionSlotAsync(String resourceGroupName, String name, String functionName, String slot);
 
     /**
+     * Get function keys for a function in a web site, or a deployment slot.
+     * Get function keys for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<StringDictionary> listFunctionKeysSlotAsync(String resourceGroupName, String name, String functionName, String slot);
+
+    /**
      * Get function secrets for a function in a web site, or a deployment slot.
      * Get function secrets for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<FunctionKeys> listFunctionSecretsSlotAsync(String resourceGroupName, String name, String functionName, String slot);
+
+    /**
+     * Delete a function secret.
+     * Delete a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteFunctionSecretAsync(String resourceGroupName, String name, String functionName, String keyName);
+
+    /**
+     * Add or update a function secret.
+     * Add or update a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<KeyInfo> createOrUpdateFunctionSecretSlotAsync(String resourceGroupName, String name, String functionName, String keyName, String slot, KeyInfoInner key);
+
+    /**
+     * Delete a function secret.
+     * Delete a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteFunctionSecretSlotAsync(String resourceGroupName, String name, String functionName, String keyName, String slot);
+
+    /**
+     * Get the status of a function (e.g. errors, etc.).
+     * Get the status of a function (e.g. errors, etc.).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<FunctionStatus> getFunctionStatusAsync(String resourceGroupName, String name, String functionName);
+
+    /**
+     * Gets the current Function host status.
+     * Gets the current Function host status.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<HostStatus> getHostStatusAsync(String resourceGroupName, String name);
+
+    /**
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<MigrateMySqlStatus> getMigrateMySqlStatusAsync(String resourceGroupName, String name);
+
+    /**
+     * Get the status of a function (e.g. errors, etc.).
+     * Get the status of a function (e.g. errors, etc.).
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
@@ -1939,7 +2144,31 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<FunctionSecrets> listFunctionSecretsSlotAsync(String resourceGroupName, String name, String functionName, String slot);
+    Observable<FunctionStatus> getFunctionStatusSlotAsync(String resourceGroupName, String name, String functionName, String slot);
+
+    /**
+     * Gets the current Function host status.
+     * Gets the current Function host status.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<HostStatus> getHostStatusSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of web app.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<MigrateMySqlStatus> getMigrateMySqlStatusSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Get the named hostname binding for an app (or deployment slot, if specified).
@@ -2627,29 +2856,6 @@ public interface WebApps {
     Observable<SiteResourceMetric> listMetricsSlotAsync(final String resourceGroupName, final String name, final String slot);
 
     /**
-     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
-     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<MigrateMySqlStatus> getMigrateMySqlStatusAsync(String resourceGroupName, String name);
-
-    /**
-     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
-     * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of web app.
-     * @param slot Name of the deployment slot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<MigrateMySqlStatus> getMigrateMySqlStatusSlotAsync(String resourceGroupName, String name, String slot);
-
-    /**
      * Gets all network features used by the app (or deployment slot, if specified).
      * Gets all network features used by the app (or deployment slot, if specified).
      *
@@ -3317,6 +3523,71 @@ public interface WebApps {
     Observable<String> getFunctionsAdminTokenSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
+     * Get host secrets for a function app.
+     * Get host secrets for a function app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<HostKeys> listHostKeysSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable listSyncStatusSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable syncFunctionsSlotAsync(String resourceGroupName, String name, String slot);
+
+    /**
+     * Add or update a host level secret.
+     * Add or update a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<KeyInfo> createOrUpdateHostSecretSlotAsync(String resourceGroupName, String name, String keyType, String keyName, String slot, KeyInfoInner key);
+
+    /**
+     * Delete a host level secret.
+     * Delete a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteHostSecretSlotAsync(String resourceGroupName, String name, String keyType, String keyName, String slot);
+
+    /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
      *
@@ -3395,6 +3666,18 @@ public interface WebApps {
     Observable<SiteCloneability> isCloneableSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<BackupItem> listSiteBackupsSlotAsync(final String resourceGroupName, final String name, final String slot);
+
+    /**
      * This is to allow calling via powershell and ARM template.
      * This is to allow calling via powershell and ARM template.
      *
@@ -3404,7 +3687,7 @@ public interface WebApps {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<FunctionSecrets> listSyncFunctionTriggersSlotAsync(String resourceGroupName, String name, String slot);
+    Completable listSyncFunctionTriggersStatusSlotAsync(String resourceGroupName, String name, String slot);
 
     /**
      * Gets a Swift Virtual Network connection.
@@ -3623,6 +3906,19 @@ public interface WebApps {
     Completable restoreSnapshotSlotAsync(String resourceGroupName, String name, String slot, SnapshotRestoreRequest restoreRequest);
 
     /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable copySlotSlotAsync(String resourceGroupName, String name, String slot, CsmCopySlotEntity copySlotEntity);
+
+    /**
      * Get the difference in configuration settings between two web app slots.
      * Get the difference in configuration settings between two web app slots.
      *
@@ -3721,8 +4017,8 @@ public interface WebApps {
     Completable syncRepositorySlotAsync(String resourceGroupName, String name, String slot);
 
     /**
-     * Syncs function trigger metadata to the scale controller.
-     * Syncs function trigger metadata to the scale controller.
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.

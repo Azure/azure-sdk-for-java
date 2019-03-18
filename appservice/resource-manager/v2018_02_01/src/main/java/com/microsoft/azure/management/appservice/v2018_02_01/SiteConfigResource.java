@@ -13,7 +13,6 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.CertificateRegistrationManager;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.SiteConfigResourceInner;
 import java.util.List;
-import java.util.Map;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PushSettingsInner;
 import org.joda.time.DateTime;
 
@@ -30,6 +29,11 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
      * @return the apiDefinition value.
      */
     ApiDefinitionInfo apiDefinition();
+
+    /**
+     * @return the apiManagementConfig value.
+     */
+    ApiManagementConfig apiManagementConfig();
 
     /**
      * @return the appCommandLine value.
@@ -55,11 +59,6 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
      * @return the autoSwapSlotName value.
      */
     String autoSwapSlotName();
-
-    /**
-     * @return the azureStorageAccounts value.
-     */
-    Map<String, AzureStorageInfoValue> azureStorageAccounts();
 
     /**
      * @return the connectionStrings value.
@@ -100,6 +99,11 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
      * @return the handlerMappings value.
      */
     List<HandlerMapping> handlerMappings();
+
+    /**
+     * @return the healthCheckPath value.
+     */
+    String healthCheckPath();
 
     /**
      * @return the http20Enabled value.
@@ -212,6 +216,11 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
     String phpVersion();
 
     /**
+     * @return the preWarmedInstanceCount value.
+     */
+    Integer preWarmedInstanceCount();
+
+    /**
      * @return the publishingUsername value.
      */
     String publishingUsername();
@@ -245,11 +254,6 @@ public interface SiteConfigResource extends HasInner<SiteConfigResourceInner>, H
      * @return the requestTracingExpirationTime value.
      */
     DateTime requestTracingExpirationTime();
-
-    /**
-     * @return the reservedInstanceCount value.
-     */
-    Integer reservedInstanceCount();
 
     /**
      * @return the scmIpSecurityRestrictions value.

@@ -13,25 +13,24 @@ import com.microsoft.azure.management.appservice.v2018_02_01.EndpointDependency;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Endpoints accessed for a common purpose that the App Service Environment
- * requires outbound network access to.
+ * Endpoints of a common type.
  */
 public class OutboundEnvironmentEndpointInner {
     /**
-     * The type of service accessed by the App Service Environment, e.g., Azure
-     * Storage, Azure SQL Database, and Azure Active Directory.
+     * Short description of the endpoints.
      */
     @JsonProperty(value = "category")
     private String category;
 
     /**
-     * The endpoints that the App Service Environment reaches the service at.
+     * The endpoint's domain name and the IP Addresses it currently resolves
+     * to.
      */
     @JsonProperty(value = "endpoints")
     private List<EndpointDependency> endpoints;
 
     /**
-     * Get the type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
+     * Get short description of the endpoints.
      *
      * @return the category value
      */
@@ -40,7 +39,7 @@ public class OutboundEnvironmentEndpointInner {
     }
 
     /**
-     * Set the type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
+     * Set short description of the endpoints.
      *
      * @param category the category value to set
      * @return the OutboundEnvironmentEndpointInner object itself.
@@ -51,7 +50,7 @@ public class OutboundEnvironmentEndpointInner {
     }
 
     /**
-     * Get the endpoints that the App Service Environment reaches the service at.
+     * Get the endpoint's domain name and the IP Addresses it currently resolves to.
      *
      * @return the endpoints value
      */
@@ -60,7 +59,7 @@ public class OutboundEnvironmentEndpointInner {
     }
 
     /**
-     * Set the endpoints that the App Service Environment reaches the service at.
+     * Set the endpoint's domain name and the IP Addresses it currently resolves to.
      *
      * @param endpoints the endpoints value to set
      * @return the OutboundEnvironmentEndpointInner object itself.

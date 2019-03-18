@@ -78,11 +78,6 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
     List<String> enabledHostNames();
 
     /**
-     * @return the geoDistributions value.
-     */
-    List<GeoDistribution> geoDistributions();
-
-    /**
      * @return the hostingEnvironmentProfile value.
      */
     HostingEnvironmentProfile hostingEnvironmentProfile();
@@ -329,18 +324,6 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
         }
 
         /**
-         * The stage of the sites definition allowing to specify GeoDistributions.
-         */
-        interface WithGeoDistributions {
-            /**
-             * Specifies geoDistributions.
-             * @param geoDistributions GeoDistributions for this site
-             * @return the next definition stage
-             */
-            WithCreate withGeoDistributions(List<GeoDistribution> geoDistributions);
-        }
-
-        /**
          * The stage of the sites definition allowing to specify HostingEnvironmentProfile.
          */
         interface WithHostingEnvironmentProfile {
@@ -503,13 +486,13 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Sites>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithClientCertExclusionPaths, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithGeoDistributions, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithHyperV, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithRedundancyMode, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig {
+        interface WithCreate extends Creatable<Sites>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithClientAffinityEnabled, DefinitionStages.WithClientCertEnabled, DefinitionStages.WithClientCertExclusionPaths, DefinitionStages.WithCloningInfo, DefinitionStages.WithContainerSize, DefinitionStages.WithDailyMemoryTimeQuota, DefinitionStages.WithEnabled, DefinitionStages.WithHostingEnvironmentProfile, DefinitionStages.WithHostNamesDisabled, DefinitionStages.WithHostNameSslStates, DefinitionStages.WithHttpsOnly, DefinitionStages.WithHyperV, DefinitionStages.WithIdentity, DefinitionStages.WithIsXenon, DefinitionStages.WithKind, DefinitionStages.WithRedundancyMode, DefinitionStages.WithReserved, DefinitionStages.WithScmSiteAlsoStopped, DefinitionStages.WithServerFarmId, DefinitionStages.WithSiteConfig {
         }
     }
     /**
      * The template for a Sites update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Sites>, Resource.UpdateWithTags<Update>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithClientCertExclusionPaths, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithGeoDistributions, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithHyperV, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithRedundancyMode, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
+    interface Update extends Appliable<Sites>, Resource.UpdateWithTags<Update>, UpdateStages.WithClientAffinityEnabled, UpdateStages.WithClientCertEnabled, UpdateStages.WithClientCertExclusionPaths, UpdateStages.WithCloningInfo, UpdateStages.WithContainerSize, UpdateStages.WithDailyMemoryTimeQuota, UpdateStages.WithEnabled, UpdateStages.WithHostingEnvironmentProfile, UpdateStages.WithHostNamesDisabled, UpdateStages.WithHostNameSslStates, UpdateStages.WithHttpsOnly, UpdateStages.WithHyperV, UpdateStages.WithIsXenon, UpdateStages.WithKind, UpdateStages.WithRedundancyMode, UpdateStages.WithReserved, UpdateStages.WithScmSiteAlsoStopped, UpdateStages.WithServerFarmId, UpdateStages.WithSiteConfig {
     }
 
     /**
@@ -598,18 +581,6 @@ public interface Sites extends HasInner<SiteInner>, Resource, GroupableResourceC
              * @return the next update stage
              */
             Update withEnabled(Boolean enabled);
-        }
-
-        /**
-         * The stage of the sites update allowing to specify GeoDistributions.
-         */
-        interface WithGeoDistributions {
-            /**
-             * Specifies geoDistributions.
-             * @param geoDistributions GeoDistributions for this site
-             * @return the next update stage
-             */
-            Update withGeoDistributions(List<GeoDistribution> geoDistributions);
         }
 
         /**

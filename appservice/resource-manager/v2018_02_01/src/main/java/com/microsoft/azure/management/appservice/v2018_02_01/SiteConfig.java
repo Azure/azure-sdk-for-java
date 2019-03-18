@@ -10,7 +10,6 @@ package com.microsoft.azure.management.appservice.v2018_02_01;
 
 import java.util.List;
 import org.joda.time.DateTime;
-import java.util.Map;
 import com.microsoft.azure.management.appservice.v2018_02_01.implementation.PushSettingsInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -123,12 +122,6 @@ public class SiteConfig {
      */
     @JsonProperty(value = "appSettings")
     private List<NameValuePair> appSettings;
-
-    /**
-     * User-provided Azure storage accounts.
-     */
-    @JsonProperty(value = "azureStorageAccounts")
-    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /**
      * Connection strings.
@@ -283,6 +276,12 @@ public class SiteConfig {
     private ApiDefinitionInfo apiDefinition;
 
     /**
+     * Azure API management settings linked to the app.
+     */
+    @JsonProperty(value = "apiManagementConfig")
+    private ApiManagementConfig apiManagementConfig;
+
+    /**
      * Auto-swap slot name.
      */
     @JsonProperty(value = "autoSwapSlotName")
@@ -347,11 +346,17 @@ public class SiteConfig {
     private FtpsState ftpsState;
 
     /**
-     * Number of reserved instances.
-     * This setting only applies to the Consumption Plan.
+     * Number of preWarmed instances.
+     * This setting only applies to the Consumption and Elastic Plans.
      */
-    @JsonProperty(value = "reservedInstanceCount")
-    private Integer reservedInstanceCount;
+    @JsonProperty(value = "preWarmedInstanceCount")
+    private Integer preWarmedInstanceCount;
+
+    /**
+     * Health check path.
+     */
+    @JsonProperty(value = "healthCheckPath")
+    private String healthCheckPath;
 
     /**
      * Get number of workers.
@@ -690,26 +695,6 @@ public class SiteConfig {
      */
     public SiteConfig withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
-        return this;
-    }
-
-    /**
-     * Get user-provided Azure storage accounts.
-     *
-     * @return the azureStorageAccounts value
-     */
-    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
-        return this.azureStorageAccounts;
-    }
-
-    /**
-     * Set user-provided Azure storage accounts.
-     *
-     * @param azureStorageAccounts the azureStorageAccounts value to set
-     * @return the SiteConfig object itself.
-     */
-    public SiteConfig withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
-        this.azureStorageAccounts = azureStorageAccounts;
         return this;
     }
 
@@ -1183,6 +1168,26 @@ public class SiteConfig {
     }
 
     /**
+     * Get azure API management settings linked to the app.
+     *
+     * @return the apiManagementConfig value
+     */
+    public ApiManagementConfig apiManagementConfig() {
+        return this.apiManagementConfig;
+    }
+
+    /**
+     * Set azure API management settings linked to the app.
+     *
+     * @param apiManagementConfig the apiManagementConfig value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withApiManagementConfig(ApiManagementConfig apiManagementConfig) {
+        this.apiManagementConfig = apiManagementConfig;
+        return this;
+    }
+
+    /**
      * Get auto-swap slot name.
      *
      * @return the autoSwapSlotName value
@@ -1383,24 +1388,44 @@ public class SiteConfig {
     }
 
     /**
-     * Get number of reserved instances.
-     This setting only applies to the Consumption Plan.
+     * Get number of preWarmed instances.
+     This setting only applies to the Consumption and Elastic Plans.
      *
-     * @return the reservedInstanceCount value
+     * @return the preWarmedInstanceCount value
      */
-    public Integer reservedInstanceCount() {
-        return this.reservedInstanceCount;
+    public Integer preWarmedInstanceCount() {
+        return this.preWarmedInstanceCount;
     }
 
     /**
-     * Set number of reserved instances.
-     This setting only applies to the Consumption Plan.
+     * Set number of preWarmed instances.
+     This setting only applies to the Consumption and Elastic Plans.
      *
-     * @param reservedInstanceCount the reservedInstanceCount value to set
+     * @param preWarmedInstanceCount the preWarmedInstanceCount value to set
      * @return the SiteConfig object itself.
      */
-    public SiteConfig withReservedInstanceCount(Integer reservedInstanceCount) {
-        this.reservedInstanceCount = reservedInstanceCount;
+    public SiteConfig withPreWarmedInstanceCount(Integer preWarmedInstanceCount) {
+        this.preWarmedInstanceCount = preWarmedInstanceCount;
+        return this;
+    }
+
+    /**
+     * Get health check path.
+     *
+     * @return the healthCheckPath value
+     */
+    public String healthCheckPath() {
+        return this.healthCheckPath;
+    }
+
+    /**
+     * Set health check path.
+     *
+     * @param healthCheckPath the healthCheckPath value to set
+     * @return the SiteConfig object itself.
+     */
+    public SiteConfig withHealthCheckPath(String healthCheckPath) {
+        this.healthCheckPath = healthCheckPath;
         return this;
     }
 

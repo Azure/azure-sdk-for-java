@@ -34,7 +34,7 @@ public class RampUpRule {
      * &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
      * &lt;code&gt;MinReroutePercentage&lt;/code&gt; or
      * &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked
-     * every N minutes specified in
+     * every N minutes specificed in
      * &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
      * Custom decision algorithm can be provided in TiPCallback site extension
      * which URL can be specified in
@@ -119,7 +119,7 @@ public class RampUpRule {
 
     /**
      * Get in auto ramp up scenario this is the step to add/remove from &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
-     &lt;code&gt;MinReroutePercentage&lt;/code&gt; or &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specified in &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
+     &lt;code&gt;MinReroutePercentage&lt;/code&gt; or &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specificed in &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
      Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified in &lt;code&gt;ChangeDecisionCallbackUrl&lt;/code&gt;.
      *
      * @return the changeStep value
@@ -130,7 +130,7 @@ public class RampUpRule {
 
     /**
      * Set in auto ramp up scenario this is the step to add/remove from &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
-     &lt;code&gt;MinReroutePercentage&lt;/code&gt; or &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specified in &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
+     &lt;code&gt;MinReroutePercentage&lt;/code&gt; or &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are checked every N minutes specificed in &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
      Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified in &lt;code&gt;ChangeDecisionCallbackUrl&lt;/code&gt;.
      *
      * @param changeStep the changeStep value to set

@@ -14,7 +14,6 @@ import rx.Observable;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteAvailabilityState;
 import com.microsoft.azure.management.appservice.v2018_02_01.CloningInfo;
 import java.util.List;
-import com.microsoft.azure.management.appservice.v2018_02_01.GeoDistribution;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostingEnvironmentProfile;
 import com.microsoft.azure.management.appservice.v2018_02_01.HostNameSslState;
 import com.microsoft.azure.management.appservice.v2018_02_01.ManagedServiceIdentity;
@@ -89,11 +88,6 @@ class ServerfarmSiteImpl extends WrapperImpl<SiteInner> implements ServerfarmSit
     @Override
     public List<String> enabledHostNames() {
         return this.inner().enabledHostNames();
-    }
-
-    @Override
-    public List<GeoDistribution> geoDistributions() {
-        return this.inner().geoDistributions();
     }
 
     @Override

@@ -72,11 +72,6 @@ public interface HostingEnvironmentSite extends HasInner<SiteInner>, HasManager<
     List<String> enabledHostNames();
 
     /**
-     * @return the geoDistributions value.
-     */
-    List<GeoDistribution> geoDistributions();
-
-    /**
      * @return the hostingEnvironmentProfile value.
      */
     HostingEnvironmentProfile hostingEnvironmentProfile();

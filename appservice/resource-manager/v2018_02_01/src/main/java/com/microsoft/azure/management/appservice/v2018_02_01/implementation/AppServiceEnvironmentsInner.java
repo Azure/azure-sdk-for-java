@@ -126,7 +126,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         Observable<Response<ResponseBody>> getDiagnosticsItem(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("diagnosticsName") String diagnosticsName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments getInboundNetworkDependenciesEndpoints" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/inboundNetworkDependenciesEndpoints")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/inboundnetworkdependenciesendpoints")
         Observable<Response<ResponseBody>> getInboundNetworkDependenciesEndpoints(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments listMetricDefinitions" })
@@ -186,7 +186,7 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         Observable<Response<ResponseBody>> listOperations(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments getOutboundNetworkDependenciesEndpoints" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/outboundNetworkDependenciesEndpoints")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/outboundnetworkdependenciesendpoints")
         Observable<Response<ResponseBody>> getOutboundNetworkDependenciesEndpoints(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments reboot" })
@@ -285,10 +285,6 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         @GET
         Observable<Response<ResponseBody>> beginChangeVnetNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments getInboundNetworkDependenciesEndpointsNext" })
-        @GET
-        Observable<Response<ResponseBody>> getInboundNetworkDependenciesEndpointsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments listMetricsNext" })
         @GET
         Observable<Response<ResponseBody>> listMetricsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -320,10 +316,6 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments listMultiRoleUsagesNext" })
         @GET
         Observable<Response<ResponseBody>> listMultiRoleUsagesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments getOutboundNetworkDependenciesEndpointsNext" })
-        @GET
-        Observable<Response<ResponseBody>> getOutboundNetworkDependenciesEndpointsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.AppServiceEnvironments resumeNext" })
         @GET
@@ -2000,29 +1992,23 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
     }
 
     /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an ase.
+     * Get the network endpoints of all inbound dependencies of an ase.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;InboundEnvironmentEndpointInner&gt; object if successful.
+     * @return the List&lt;InboundEnvironmentEndpointInner&gt; object if successful.
      */
-    public PagedList<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpoints(final String resourceGroupName, final String name) {
-        ServiceResponse<Page<InboundEnvironmentEndpointInner>> response = getInboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<InboundEnvironmentEndpointInner>(response.body()) {
-            @Override
-            public Page<InboundEnvironmentEndpointInner> nextPage(String nextPageLink) {
-                return getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
+    public List<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpoints(String resourceGroupName, String name) {
+        return getInboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an ase.
+     * Get the network endpoints of all inbound dependencies of an ase.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2030,70 +2016,38 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name, final ListOperationCallback<InboundEnvironmentEndpointInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            getInboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name),
-            new Func1<String, Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>> call(String nextPageLink) {
-                    return getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
+    public ServiceFuture<List<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name, final ServiceCallback<List<InboundEnvironmentEndpointInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(getInboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an ase.
+     * Get the network endpoints of all inbound dependencies of an ase.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;InboundEnvironmentEndpointInner&gt; object
+     * @return the observable to the List&lt;InboundEnvironmentEndpointInner&gt; object
      */
-    public Observable<Page<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name) {
-        return getInboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name)
-            .map(new Func1<ServiceResponse<Page<InboundEnvironmentEndpointInner>>, Page<InboundEnvironmentEndpointInner>>() {
-                @Override
-                public Page<InboundEnvironmentEndpointInner> call(ServiceResponse<Page<InboundEnvironmentEndpointInner>> response) {
-                    return response.body();
-                }
-            });
+    public Observable<List<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name) {
+        return getInboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<InboundEnvironmentEndpointInner>>, List<InboundEnvironmentEndpointInner>>() {
+            @Override
+            public List<InboundEnvironmentEndpointInner> call(ServiceResponse<List<InboundEnvironmentEndpointInner>> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an ase.
+     * Get the network endpoints of all inbound dependencies of an ase.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;InboundEnvironmentEndpointInner&gt; object
+     * @return the observable to the List&lt;InboundEnvironmentEndpointInner&gt; object
      */
-    public Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>> getInboundNetworkDependenciesEndpointsWithServiceResponseAsync(final String resourceGroupName, final String name) {
-        return getInboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<InboundEnvironmentEndpointInner>>, Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>> call(ServiceResponse<Page<InboundEnvironmentEndpointInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(getInboundNetworkDependenciesEndpointsNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     *
-    ServiceResponse<PageImpl<InboundEnvironmentEndpointInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
-    ServiceResponse<PageImpl<InboundEnvironmentEndpointInner>> * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;InboundEnvironmentEndpointInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>> getInboundNetworkDependenciesEndpointsSinglePageAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<List<InboundEnvironmentEndpointInner>>> getInboundNetworkDependenciesEndpointsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2107,12 +2061,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getInboundNetworkDependenciesEndpoints(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<InboundEnvironmentEndpointInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<InboundEnvironmentEndpointInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<InboundEnvironmentEndpointInner>> result = getInboundNetworkDependenciesEndpointsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<InboundEnvironmentEndpointInner>>(result.body(), result.response()));
+                        ServiceResponse<List<InboundEnvironmentEndpointInner>> clientResponse = getInboundNetworkDependenciesEndpointsDelegate(response);
+                        return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -2120,9 +2074,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<PageImpl<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<InboundEnvironmentEndpointInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<InboundEnvironmentEndpointInner>>() { }.getType())
+    private ServiceResponse<List<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<InboundEnvironmentEndpointInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<InboundEnvironmentEndpointInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -4142,29 +4096,23 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
     }
 
     /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an ase.
+     * Get the network endpoints of all outbound dependencies of an ase.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;OutboundEnvironmentEndpointInner&gt; object if successful.
+     * @return the List&lt;OutboundEnvironmentEndpointInner&gt; object if successful.
      */
-    public PagedList<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpoints(final String resourceGroupName, final String name) {
-        ServiceResponse<Page<OutboundEnvironmentEndpointInner>> response = getOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<OutboundEnvironmentEndpointInner>(response.body()) {
-            @Override
-            public Page<OutboundEnvironmentEndpointInner> nextPage(String nextPageLink) {
-                return getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
+    public List<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpoints(String resourceGroupName, String name) {
+        return getOutboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
     }
 
     /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an ase.
+     * Get the network endpoints of all outbound dependencies of an ase.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -4172,70 +4120,38 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name, final ListOperationCallback<OutboundEnvironmentEndpointInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            getOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name),
-            new Func1<String, Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>> call(String nextPageLink) {
-                    return getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
+    public ServiceFuture<List<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name, final ServiceCallback<List<OutboundEnvironmentEndpointInner>> serviceCallback) {
+        return ServiceFuture.fromResponse(getOutboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an ase.
+     * Get the network endpoints of all outbound dependencies of an ase.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;OutboundEnvironmentEndpointInner&gt; object
+     * @return the observable to the List&lt;OutboundEnvironmentEndpointInner&gt; object
      */
-    public Observable<Page<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name) {
-        return getOutboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name)
-            .map(new Func1<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>, Page<OutboundEnvironmentEndpointInner>>() {
-                @Override
-                public Page<OutboundEnvironmentEndpointInner> call(ServiceResponse<Page<OutboundEnvironmentEndpointInner>> response) {
-                    return response.body();
-                }
-            });
+    public Observable<List<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name) {
+        return getOutboundNetworkDependenciesEndpointsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<OutboundEnvironmentEndpointInner>>, List<OutboundEnvironmentEndpointInner>>() {
+            @Override
+            public List<OutboundEnvironmentEndpointInner> call(ServiceResponse<List<OutboundEnvironmentEndpointInner>> response) {
+                return response.body();
+            }
+        });
     }
 
     /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an ase.
+     * Get the network endpoints of all outbound dependencies of an ase.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;OutboundEnvironmentEndpointInner&gt; object
+     * @return the observable to the List&lt;OutboundEnvironmentEndpointInner&gt; object
      */
-    public Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>> getOutboundNetworkDependenciesEndpointsWithServiceResponseAsync(final String resourceGroupName, final String name) {
-        return getOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>, Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>> call(ServiceResponse<Page<OutboundEnvironmentEndpointInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(getOutboundNetworkDependenciesEndpointsNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     *
-    ServiceResponse<PageImpl<OutboundEnvironmentEndpointInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
-    ServiceResponse<PageImpl<OutboundEnvironmentEndpointInner>> * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;OutboundEnvironmentEndpointInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>> getOutboundNetworkDependenciesEndpointsSinglePageAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<List<OutboundEnvironmentEndpointInner>>> getOutboundNetworkDependenciesEndpointsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -4249,12 +4165,12 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getOutboundNetworkDependenciesEndpoints(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<OutboundEnvironmentEndpointInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<OutboundEnvironmentEndpointInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<OutboundEnvironmentEndpointInner>> result = getOutboundNetworkDependenciesEndpointsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<OutboundEnvironmentEndpointInner>>(result.body(), result.response()));
+                        ServiceResponse<List<OutboundEnvironmentEndpointInner>> clientResponse = getOutboundNetworkDependenciesEndpointsDelegate(response);
+                        return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -4262,9 +4178,9 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
             });
     }
 
-    private ServiceResponse<PageImpl<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<OutboundEnvironmentEndpointInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<OutboundEnvironmentEndpointInner>>() { }.getType())
+    private ServiceResponse<List<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<OutboundEnvironmentEndpointInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<OutboundEnvironmentEndpointInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
@@ -7751,122 +7667,6 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
     }
 
     /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;InboundEnvironmentEndpointInner&gt; object if successful.
-     */
-    public PagedList<InboundEnvironmentEndpointInner> getInboundNetworkDependenciesEndpointsNext(final String nextPageLink) {
-        ServiceResponse<Page<InboundEnvironmentEndpointInner>> response = getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<InboundEnvironmentEndpointInner>(response.body()) {
-            @Override
-            public Page<InboundEnvironmentEndpointInner> nextPage(String nextPageLink) {
-                return getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsNextAsync(final String nextPageLink, final ServiceFuture<List<InboundEnvironmentEndpointInner>> serviceFuture, final ListOperationCallback<InboundEnvironmentEndpointInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>> call(String nextPageLink) {
-                    return getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;InboundEnvironmentEndpointInner&gt; object
-     */
-    public Observable<Page<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsNextAsync(final String nextPageLink) {
-        return getInboundNetworkDependenciesEndpointsNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<InboundEnvironmentEndpointInner>>, Page<InboundEnvironmentEndpointInner>>() {
-                @Override
-                public Page<InboundEnvironmentEndpointInner> call(ServiceResponse<Page<InboundEnvironmentEndpointInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;InboundEnvironmentEndpointInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>> getInboundNetworkDependenciesEndpointsNextWithServiceResponseAsync(final String nextPageLink) {
-        return getInboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<InboundEnvironmentEndpointInner>>, Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>> call(ServiceResponse<Page<InboundEnvironmentEndpointInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(getInboundNetworkDependenciesEndpointsNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     * Get the network endpoints of all inbound dependencies of an App Service Environment.
-     *
-    ServiceResponse<PageImpl<InboundEnvironmentEndpointInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;InboundEnvironmentEndpointInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>> getInboundNetworkDependenciesEndpointsNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.getInboundNetworkDependenciesEndpointsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<InboundEnvironmentEndpointInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<InboundEnvironmentEndpointInner>> result = getInboundNetworkDependenciesEndpointsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<InboundEnvironmentEndpointInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<InboundEnvironmentEndpointInner>> getInboundNetworkDependenciesEndpointsNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<InboundEnvironmentEndpointInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<InboundEnvironmentEndpointInner>>() { }.getType())
-                .registerError(DefaultErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
      * Get global metrics of an App Service Environment.
      * Get global metrics of an App Service Environment.
      *
@@ -8790,122 +8590,6 @@ public class AppServiceEnvironmentsInner implements InnerSupportsGet<AppServiceE
     private ServiceResponse<PageImpl<UsageInner>> listMultiRoleUsagesNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<UsageInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
-                .registerError(DefaultErrorResponseException.class)
-                .build(response);
-    }
-
-    /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;OutboundEnvironmentEndpointInner&gt; object if successful.
-     */
-    public PagedList<OutboundEnvironmentEndpointInner> getOutboundNetworkDependenciesEndpointsNext(final String nextPageLink) {
-        ServiceResponse<Page<OutboundEnvironmentEndpointInner>> response = getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<OutboundEnvironmentEndpointInner>(response.body()) {
-            @Override
-            public Page<OutboundEnvironmentEndpointInner> nextPage(String nextPageLink) {
-                return getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
-            }
-        };
-    }
-
-    /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsNextAsync(final String nextPageLink, final ServiceFuture<List<OutboundEnvironmentEndpointInner>> serviceFuture, final ListOperationCallback<OutboundEnvironmentEndpointInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>> call(String nextPageLink) {
-                    return getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;OutboundEnvironmentEndpointInner&gt; object
-     */
-    public Observable<Page<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsNextAsync(final String nextPageLink) {
-        return getOutboundNetworkDependenciesEndpointsNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>, Page<OutboundEnvironmentEndpointInner>>() {
-                @Override
-                public Page<OutboundEnvironmentEndpointInner> call(ServiceResponse<Page<OutboundEnvironmentEndpointInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;OutboundEnvironmentEndpointInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>> getOutboundNetworkDependenciesEndpointsNextWithServiceResponseAsync(final String nextPageLink) {
-        return getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>, Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>> call(ServiceResponse<Page<OutboundEnvironmentEndpointInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(getOutboundNetworkDependenciesEndpointsNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     * Get the network endpoints of all outbound dependencies of an App Service Environment.
-     *
-    ServiceResponse<PageImpl<OutboundEnvironmentEndpointInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;OutboundEnvironmentEndpointInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>> getOutboundNetworkDependenciesEndpointsNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        String nextUrl = String.format("%s", nextPageLink);
-        return service.getOutboundNetworkDependenciesEndpointsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<OutboundEnvironmentEndpointInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<OutboundEnvironmentEndpointInner>> result = getOutboundNetworkDependenciesEndpointsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<OutboundEnvironmentEndpointInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<OutboundEnvironmentEndpointInner>> getOutboundNetworkDependenciesEndpointsNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<OutboundEnvironmentEndpointInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<OutboundEnvironmentEndpointInner>>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }

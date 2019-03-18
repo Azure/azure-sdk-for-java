@@ -300,13 +300,13 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
     }
 
     @Override
-    public Observable<InboundEnvironmentEndpoint> getInboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name) {
+    public Observable<InboundEnvironmentEndpoint> getInboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name) {
         AppServiceEnvironmentsInner client = this.inner();
         return client.getInboundNetworkDependenciesEndpointsAsync(resourceGroupName, name)
-        .flatMapIterable(new Func1<Page<InboundEnvironmentEndpointInner>, Iterable<InboundEnvironmentEndpointInner>>() {
+        .flatMap(new Func1<List<InboundEnvironmentEndpointInner>, Observable<InboundEnvironmentEndpointInner>>() {
             @Override
-            public Iterable<InboundEnvironmentEndpointInner> call(Page<InboundEnvironmentEndpointInner> page) {
-                return page.items();
+            public Observable<InboundEnvironmentEndpointInner> call(List<InboundEnvironmentEndpointInner> innerList) {
+                return Observable.from(innerList);
             }
         })
         .map(new Func1<InboundEnvironmentEndpointInner, InboundEnvironmentEndpoint>() {
@@ -654,13 +654,13 @@ class AppServiceEnvironmentsImpl extends WrapperImpl<AppServiceEnvironmentsInner
     }
 
     @Override
-    public Observable<OutboundEnvironmentEndpoint> getOutboundNetworkDependenciesEndpointsAsync(final String resourceGroupName, final String name) {
+    public Observable<OutboundEnvironmentEndpoint> getOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name) {
         AppServiceEnvironmentsInner client = this.inner();
         return client.getOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, name)
-        .flatMapIterable(new Func1<Page<OutboundEnvironmentEndpointInner>, Iterable<OutboundEnvironmentEndpointInner>>() {
+        .flatMap(new Func1<List<OutboundEnvironmentEndpointInner>, Observable<OutboundEnvironmentEndpointInner>>() {
             @Override
-            public Iterable<OutboundEnvironmentEndpointInner> call(Page<OutboundEnvironmentEndpointInner> page) {
-                return page.items();
+            public Observable<OutboundEnvironmentEndpointInner> call(List<OutboundEnvironmentEndpointInner> innerList) {
+                return Observable.from(innerList);
             }
         })
         .map(new Func1<OutboundEnvironmentEndpointInner, OutboundEnvironmentEndpoint>() {

@@ -265,12 +265,6 @@ public class SitePatchResource extends ProxyOnlyResource {
     private UUID inProgressOperationId;
 
     /**
-     * GeoDistributions for this site.
-     */
-    @JsonProperty(value = "properties.geoDistributions")
-    private List<GeoDistribution> geoDistributions;
-
-    /**
      * Get current state of the app.
      *
      * @return the state value
@@ -796,26 +790,6 @@ public class SitePatchResource extends ProxyOnlyResource {
      */
     public UUID inProgressOperationId() {
         return this.inProgressOperationId;
-    }
-
-    /**
-     * Get geoDistributions for this site.
-     *
-     * @return the geoDistributions value
-     */
-    public List<GeoDistribution> geoDistributions() {
-        return this.geoDistributions;
-    }
-
-    /**
-     * Set geoDistributions for this site.
-     *
-     * @param geoDistributions the geoDistributions value to set
-     * @return the SitePatchResource object itself.
-     */
-    public SitePatchResource withGeoDistributions(List<GeoDistribution> geoDistributions) {
-        this.geoDistributions = geoDistributions;
-        return this;
     }
 
 }

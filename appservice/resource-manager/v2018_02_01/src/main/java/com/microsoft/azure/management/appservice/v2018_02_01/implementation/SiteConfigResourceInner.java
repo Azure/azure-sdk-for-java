@@ -11,8 +11,6 @@ package com.microsoft.azure.management.appservice.v2018_02_01.implementation;
 import java.util.List;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.appservice.v2018_02_01.NameValuePair;
-import java.util.Map;
-import com.microsoft.azure.management.appservice.v2018_02_01.AzureStorageInfoValue;
 import com.microsoft.azure.management.appservice.v2018_02_01.ConnStringInfo;
 import com.microsoft.azure.management.appservice.v2018_02_01.SiteMachineKey;
 import com.microsoft.azure.management.appservice.v2018_02_01.HandlerMapping;
@@ -25,6 +23,7 @@ import com.microsoft.azure.management.appservice.v2018_02_01.SiteLimits;
 import com.microsoft.azure.management.appservice.v2018_02_01.AutoHealRules;
 import com.microsoft.azure.management.appservice.v2018_02_01.CorsSettings;
 import com.microsoft.azure.management.appservice.v2018_02_01.ApiDefinitionInfo;
+import com.microsoft.azure.management.appservice.v2018_02_01.ApiManagementConfig;
 import com.microsoft.azure.management.appservice.v2018_02_01.IpSecurityRestriction;
 import com.microsoft.azure.management.appservice.v2018_02_01.SupportedTlsVersions;
 import com.microsoft.azure.management.appservice.v2018_02_01.FtpsState;
@@ -142,12 +141,6 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     @JsonProperty(value = "properties.appSettings")
     private List<NameValuePair> appSettings;
-
-    /**
-     * User-provided Azure storage accounts.
-     */
-    @JsonProperty(value = "properties.azureStorageAccounts")
-    private Map<String, AzureStorageInfoValue> azureStorageAccounts;
 
     /**
      * Connection strings.
@@ -302,6 +295,12 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     private ApiDefinitionInfo apiDefinition;
 
     /**
+     * Azure API management settings linked to the app.
+     */
+    @JsonProperty(value = "properties.apiManagementConfig")
+    private ApiManagementConfig apiManagementConfig;
+
+    /**
      * Auto-swap slot name.
      */
     @JsonProperty(value = "properties.autoSwapSlotName")
@@ -366,11 +365,17 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     private FtpsState ftpsState;
 
     /**
-     * Number of reserved instances.
-     * This setting only applies to the Consumption Plan.
+     * Number of preWarmed instances.
+     * This setting only applies to the Consumption and Elastic Plans.
      */
-    @JsonProperty(value = "properties.reservedInstanceCount")
-    private Integer reservedInstanceCount;
+    @JsonProperty(value = "properties.preWarmedInstanceCount")
+    private Integer preWarmedInstanceCount;
+
+    /**
+     * Health check path.
+     */
+    @JsonProperty(value = "properties.healthCheckPath")
+    private String healthCheckPath;
 
     /**
      * Get number of workers.
@@ -709,26 +714,6 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
      */
     public SiteConfigResourceInner withAppSettings(List<NameValuePair> appSettings) {
         this.appSettings = appSettings;
-        return this;
-    }
-
-    /**
-     * Get user-provided Azure storage accounts.
-     *
-     * @return the azureStorageAccounts value
-     */
-    public Map<String, AzureStorageInfoValue> azureStorageAccounts() {
-        return this.azureStorageAccounts;
-    }
-
-    /**
-     * Set user-provided Azure storage accounts.
-     *
-     * @param azureStorageAccounts the azureStorageAccounts value to set
-     * @return the SiteConfigResourceInner object itself.
-     */
-    public SiteConfigResourceInner withAzureStorageAccounts(Map<String, AzureStorageInfoValue> azureStorageAccounts) {
-        this.azureStorageAccounts = azureStorageAccounts;
         return this;
     }
 
@@ -1202,6 +1187,26 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
+     * Get azure API management settings linked to the app.
+     *
+     * @return the apiManagementConfig value
+     */
+    public ApiManagementConfig apiManagementConfig() {
+        return this.apiManagementConfig;
+    }
+
+    /**
+     * Set azure API management settings linked to the app.
+     *
+     * @param apiManagementConfig the apiManagementConfig value to set
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withApiManagementConfig(ApiManagementConfig apiManagementConfig) {
+        this.apiManagementConfig = apiManagementConfig;
+        return this;
+    }
+
+    /**
      * Get auto-swap slot name.
      *
      * @return the autoSwapSlotName value
@@ -1402,24 +1407,44 @@ public class SiteConfigResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get number of reserved instances.
-     This setting only applies to the Consumption Plan.
+     * Get number of preWarmed instances.
+     This setting only applies to the Consumption and Elastic Plans.
      *
-     * @return the reservedInstanceCount value
+     * @return the preWarmedInstanceCount value
      */
-    public Integer reservedInstanceCount() {
-        return this.reservedInstanceCount;
+    public Integer preWarmedInstanceCount() {
+        return this.preWarmedInstanceCount;
     }
 
     /**
-     * Set number of reserved instances.
-     This setting only applies to the Consumption Plan.
+     * Set number of preWarmed instances.
+     This setting only applies to the Consumption and Elastic Plans.
      *
-     * @param reservedInstanceCount the reservedInstanceCount value to set
+     * @param preWarmedInstanceCount the preWarmedInstanceCount value to set
      * @return the SiteConfigResourceInner object itself.
      */
-    public SiteConfigResourceInner withReservedInstanceCount(Integer reservedInstanceCount) {
-        this.reservedInstanceCount = reservedInstanceCount;
+    public SiteConfigResourceInner withPreWarmedInstanceCount(Integer preWarmedInstanceCount) {
+        this.preWarmedInstanceCount = preWarmedInstanceCount;
+        return this;
+    }
+
+    /**
+     * Get health check path.
+     *
+     * @return the healthCheckPath value
+     */
+    public String healthCheckPath() {
+        return this.healthCheckPath;
+    }
+
+    /**
+     * Set health check path.
+     *
+     * @param healthCheckPath the healthCheckPath value to set
+     * @return the SiteConfigResourceInner object itself.
+     */
+    public SiteConfigResourceInner withHealthCheckPath(String healthCheckPath) {
+        this.healthCheckPath = healthCheckPath;
         return this;
     }
 

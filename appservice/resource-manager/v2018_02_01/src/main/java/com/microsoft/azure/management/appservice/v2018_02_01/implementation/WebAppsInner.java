@@ -16,6 +16,7 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.appservice.v2018_02_01.CsmCopySlotEntity;
 import com.microsoft.azure.management.appservice.v2018_02_01.CsmPublishingProfileOptions;
 import com.microsoft.azure.management.appservice.v2018_02_01.CsmSlotEntity;
 import com.microsoft.azure.management.appservice.v2018_02_01.DefaultErrorResponseException;
@@ -368,9 +369,49 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteFunction(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps createOrUpdateFunctionSecret" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}")
+        Observable<Response<ResponseBody>> createOrUpdateFunctionSecret(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("keyName") String keyName, @Path("subscriptionId") String subscriptionId, @Body KeyInfoInner key, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteFunctionSecret" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteFunctionSecret(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("keyName") String keyName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listFunctionKeys" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/listkeys")
+        Observable<Response<ResponseBody>> listFunctionKeys(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listFunctionSecrets" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/listsecrets")
         Observable<Response<ResponseBody>> listFunctionSecrets(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getFunctionStatus" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/status")
+        Observable<Response<ResponseBody>> getFunctionStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listHostKeys" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listkeys")
+        Observable<Response<ResponseBody>> listHostKeys(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSyncStatus" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listsyncstatus")
+        Observable<Response<ResponseBody>> listSyncStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getHostStatus" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/status")
+        Observable<Response<ResponseBody>> getHostStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps syncFunctions" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/sync")
+        Observable<Response<ResponseBody>> syncFunctions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps createOrUpdateHostSecret" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}")
+        Observable<Response<ResponseBody>> createOrUpdateHostSecret(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("keyType") String keyType, @Path("keyName") String keyName, @Path("subscriptionId") String subscriptionId, @Body KeyInfoInner key, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteHostSecret" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteHostSecret(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("keyType") String keyType, @Path("keyName") String keyName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listHostNameBindings" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings")
@@ -489,9 +530,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/iscloneable")
         Observable<Response<ResponseBody>> isCloneable(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSyncFunctionTriggers" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSiteBackups" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listbackups")
+        Observable<Response<ResponseBody>> listSiteBackups(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSyncFunctionTriggersStatus" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listsyncfunctiontriggerstatus")
-        Observable<Response<ResponseBody>> listSyncFunctionTriggers(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listSyncFunctionTriggersStatus(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listMetricDefinitions" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/metricdefinitions")
@@ -718,6 +763,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteSiteExtension" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{siteExtensionId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteSiteExtension(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("siteExtensionId") String siteExtensionId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps copyProductionSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotcopy")
+        Observable<Response<ResponseBody>> copyProductionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmCopySlotEntity copySlotEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps beginCopyProductionSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotcopy")
+        Observable<Response<ResponseBody>> beginCopyProductionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body CsmCopySlotEntity copySlotEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSlots" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots")
@@ -997,9 +1050,49 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteInstanceFunctionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps createOrUpdateFunctionSecretSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/keys/{keyName}")
+        Observable<Response<ResponseBody>> createOrUpdateFunctionSecretSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("keyName") String keyName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body KeyInfoInner key, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteFunctionSecretSlot" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/keys/{keyName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteFunctionSecretSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("keyName") String keyName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listFunctionKeysSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/listkeys")
+        Observable<Response<ResponseBody>> listFunctionKeysSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listFunctionSecretsSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/listsecrets")
         Observable<Response<ResponseBody>> listFunctionSecretsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getFunctionStatusSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/status")
+        Observable<Response<ResponseBody>> getFunctionStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("functionName") String functionName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listHostKeysSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/listkeys")
+        Observable<Response<ResponseBody>> listHostKeysSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSyncStatusSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/listsyncstatus")
+        Observable<Response<ResponseBody>> listSyncStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps getHostStatusSlot" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/status")
+        Observable<Response<ResponseBody>> getHostStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps syncFunctionsSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/sync")
+        Observable<Response<ResponseBody>> syncFunctionsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps createOrUpdateHostSecretSlot" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/{keyType}/{keyName}")
+        Observable<Response<ResponseBody>> createOrUpdateHostSecretSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("keyType") String keyType, @Path("keyName") String keyName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body KeyInfoInner key, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteHostSecretSlot" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/{keyType}/{keyName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteHostSecretSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("keyType") String keyType, @Path("keyName") String keyName, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listHostNameBindingsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings")
@@ -1118,9 +1211,13 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/iscloneable")
         Observable<Response<ResponseBody>> isCloneableSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSyncFunctionTriggersSlot" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSiteBackupsSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/listbackups")
+        Observable<Response<ResponseBody>> listSiteBackupsSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSyncFunctionTriggersStatusSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/listsyncfunctiontriggerstatus")
-        Observable<Response<ResponseBody>> listSyncFunctionTriggersSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listSyncFunctionTriggersStatusSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listMetricDefinitionsSlot" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/metricdefinitions")
@@ -1331,6 +1428,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps deleteSiteExtensionSlot" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions/{siteExtensionId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteSiteExtensionSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("siteExtensionId") String siteExtensionId, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps copySlotSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotcopy")
+        Observable<Response<ResponseBody>> copySlotSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmCopySlotEntity copySlotEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps beginCopySlotSlot" })
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotcopy")
+        Observable<Response<ResponseBody>> beginCopySlotSlot(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("slot") String slot, @Path("subscriptionId") String subscriptionId, @Body CsmCopySlotEntity copySlotEntity, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSlotDifferencesSlot" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsdiffs")
@@ -1660,6 +1765,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @GET
         Observable<Response<ResponseBody>> listInstanceProcessThreadsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSiteBackupsNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSiteBackupsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listMetricDefinitionsNext" })
         @GET
         Observable<Response<ResponseBody>> listMetricDefinitionsNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1743,6 +1852,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listInstanceProcessThreadsSlotNext" })
         @GET
         Observable<Response<ResponseBody>> listInstanceProcessThreadsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listSiteBackupsSlotNext" })
+        @GET
+        Observable<Response<ResponseBody>> listSiteBackupsSlotNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.appservice.v2018_02_01.WebApps listMetricDefinitionsSlotNext" })
         @GET
@@ -9231,6 +9344,320 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Add or update a function secret.
+     * Add or update a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the KeyInfoInner object if successful.
+     */
+    public KeyInfoInner createOrUpdateFunctionSecret(String resourceGroupName, String name, String functionName, String keyName, KeyInfoInner key) {
+        return createOrUpdateFunctionSecretWithServiceResponseAsync(resourceGroupName, name, functionName, keyName, key).toBlocking().single().body();
+    }
+
+    /**
+     * Add or update a function secret.
+     * Add or update a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param key The key to create or update
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<KeyInfoInner> createOrUpdateFunctionSecretAsync(String resourceGroupName, String name, String functionName, String keyName, KeyInfoInner key, final ServiceCallback<KeyInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateFunctionSecretWithServiceResponseAsync(resourceGroupName, name, functionName, keyName, key), serviceCallback);
+    }
+
+    /**
+     * Add or update a function secret.
+     * Add or update a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyInfoInner object
+     */
+    public Observable<KeyInfoInner> createOrUpdateFunctionSecretAsync(String resourceGroupName, String name, String functionName, String keyName, KeyInfoInner key) {
+        return createOrUpdateFunctionSecretWithServiceResponseAsync(resourceGroupName, name, functionName, keyName, key).map(new Func1<ServiceResponse<KeyInfoInner>, KeyInfoInner>() {
+            @Override
+            public KeyInfoInner call(ServiceResponse<KeyInfoInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Add or update a function secret.
+     * Add or update a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyInfoInner object
+     */
+    public Observable<ServiceResponse<KeyInfoInner>> createOrUpdateFunctionSecretWithServiceResponseAsync(String resourceGroupName, String name, String functionName, String keyName, KeyInfoInner key) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (functionName == null) {
+            throw new IllegalArgumentException("Parameter functionName is required and cannot be null.");
+        }
+        if (keyName == null) {
+            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (key == null) {
+            throw new IllegalArgumentException("Parameter key is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(key);
+        return service.createOrUpdateFunctionSecret(resourceGroupName, name, functionName, keyName, this.client.subscriptionId(), key, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyInfoInner>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyInfoInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyInfoInner> clientResponse = createOrUpdateFunctionSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<KeyInfoInner> createOrUpdateFunctionSecretDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<KeyInfoInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<KeyInfoInner>() { }.getType())
+                .register(202, new TypeToken<KeyInfoInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete a function secret.
+     * Delete a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteFunctionSecret(String resourceGroupName, String name, String functionName, String keyName) {
+        deleteFunctionSecretWithServiceResponseAsync(resourceGroupName, name, functionName, keyName).toBlocking().single().body();
+    }
+
+    /**
+     * Delete a function secret.
+     * Delete a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteFunctionSecretAsync(String resourceGroupName, String name, String functionName, String keyName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteFunctionSecretWithServiceResponseAsync(resourceGroupName, name, functionName, keyName), serviceCallback);
+    }
+
+    /**
+     * Delete a function secret.
+     * Delete a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteFunctionSecretAsync(String resourceGroupName, String name, String functionName, String keyName) {
+        return deleteFunctionSecretWithServiceResponseAsync(resourceGroupName, name, functionName, keyName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete a function secret.
+     * Delete a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteFunctionSecretWithServiceResponseAsync(String resourceGroupName, String name, String functionName, String keyName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (functionName == null) {
+            throw new IllegalArgumentException("Parameter functionName is required and cannot be null.");
+        }
+        if (keyName == null) {
+            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteFunctionSecret(resourceGroupName, name, functionName, keyName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteFunctionSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteFunctionSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get function keys for a function in a web site, or a deployment slot.
+     * Get function keys for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the StringDictionaryInner object if successful.
+     */
+    public StringDictionaryInner listFunctionKeys(String resourceGroupName, String name, String functionName) {
+        return listFunctionKeysWithServiceResponseAsync(resourceGroupName, name, functionName).toBlocking().single().body();
+    }
+
+    /**
+     * Get function keys for a function in a web site, or a deployment slot.
+     * Get function keys for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<StringDictionaryInner> listFunctionKeysAsync(String resourceGroupName, String name, String functionName, final ServiceCallback<StringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listFunctionKeysWithServiceResponseAsync(resourceGroupName, name, functionName), serviceCallback);
+    }
+
+    /**
+     * Get function keys for a function in a web site, or a deployment slot.
+     * Get function keys for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<StringDictionaryInner> listFunctionKeysAsync(String resourceGroupName, String name, String functionName) {
+        return listFunctionKeysWithServiceResponseAsync(resourceGroupName, name, functionName).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
+            @Override
+            public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get function keys for a function in a web site, or a deployment slot.
+     * Get function keys for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<ServiceResponse<StringDictionaryInner>> listFunctionKeysWithServiceResponseAsync(String resourceGroupName, String name, String functionName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (functionName == null) {
+            throw new IllegalArgumentException("Parameter functionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listFunctionKeys(resourceGroupName, name, functionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StringDictionaryInner>>>() {
+                @Override
+                public Observable<ServiceResponse<StringDictionaryInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<StringDictionaryInner> clientResponse = listFunctionKeysDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<StringDictionaryInner> listFunctionKeysDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<StringDictionaryInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<StringDictionaryInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Get function secrets for a function in a web site, or a deployment slot.
      * Get function secrets for a function in a web site, or a deployment slot.
      *
@@ -9240,9 +9667,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the FunctionSecretsInner object if successful.
+     * @return the FunctionKeysInner object if successful.
      */
-    public FunctionSecretsInner listFunctionSecrets(String resourceGroupName, String name, String functionName) {
+    public FunctionKeysInner listFunctionSecrets(String resourceGroupName, String name, String functionName) {
         return listFunctionSecretsWithServiceResponseAsync(resourceGroupName, name, functionName).toBlocking().single().body();
     }
 
@@ -9257,7 +9684,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<FunctionSecretsInner> listFunctionSecretsAsync(String resourceGroupName, String name, String functionName, final ServiceCallback<FunctionSecretsInner> serviceCallback) {
+    public ServiceFuture<FunctionKeysInner> listFunctionSecretsAsync(String resourceGroupName, String name, String functionName, final ServiceCallback<FunctionKeysInner> serviceCallback) {
         return ServiceFuture.fromResponse(listFunctionSecretsWithServiceResponseAsync(resourceGroupName, name, functionName), serviceCallback);
     }
 
@@ -9269,12 +9696,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Site name.
      * @param functionName Function name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FunctionSecretsInner object
+     * @return the observable to the FunctionKeysInner object
      */
-    public Observable<FunctionSecretsInner> listFunctionSecretsAsync(String resourceGroupName, String name, String functionName) {
-        return listFunctionSecretsWithServiceResponseAsync(resourceGroupName, name, functionName).map(new Func1<ServiceResponse<FunctionSecretsInner>, FunctionSecretsInner>() {
+    public Observable<FunctionKeysInner> listFunctionSecretsAsync(String resourceGroupName, String name, String functionName) {
+        return listFunctionSecretsWithServiceResponseAsync(resourceGroupName, name, functionName).map(new Func1<ServiceResponse<FunctionKeysInner>, FunctionKeysInner>() {
             @Override
-            public FunctionSecretsInner call(ServiceResponse<FunctionSecretsInner> response) {
+            public FunctionKeysInner call(ServiceResponse<FunctionKeysInner> response) {
                 return response.body();
             }
         });
@@ -9288,9 +9715,9 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param name Site name.
      * @param functionName Function name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FunctionSecretsInner object
+     * @return the observable to the FunctionKeysInner object
      */
-    public Observable<ServiceResponse<FunctionSecretsInner>> listFunctionSecretsWithServiceResponseAsync(String resourceGroupName, String name, String functionName) {
+    public Observable<ServiceResponse<FunctionKeysInner>> listFunctionSecretsWithServiceResponseAsync(String resourceGroupName, String name, String functionName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -9307,11 +9734,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listFunctionSecrets(resourceGroupName, name, functionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FunctionSecretsInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FunctionKeysInner>>>() {
                 @Override
-                public Observable<ServiceResponse<FunctionSecretsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<FunctionKeysInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<FunctionSecretsInner> clientResponse = listFunctionSecretsDelegate(response);
+                        ServiceResponse<FunctionKeysInner> clientResponse = listFunctionSecretsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -9320,10 +9747,683 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<FunctionSecretsInner> listFunctionSecretsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<FunctionSecretsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<FunctionSecretsInner>() { }.getType())
+    private ServiceResponse<FunctionKeysInner> listFunctionSecretsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FunctionKeysInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<FunctionKeysInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the status of a function (e.g. errors, etc.).
+     * Get the status of a function (e.g. errors, etc.).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the FunctionStatusInner object if successful.
+     */
+    public FunctionStatusInner getFunctionStatus(String resourceGroupName, String name, String functionName) {
+        return getFunctionStatusWithServiceResponseAsync(resourceGroupName, name, functionName).toBlocking().single().body();
+    }
+
+    /**
+     * Get the status of a function (e.g. errors, etc.).
+     * Get the status of a function (e.g. errors, etc.).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<FunctionStatusInner> getFunctionStatusAsync(String resourceGroupName, String name, String functionName, final ServiceCallback<FunctionStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getFunctionStatusWithServiceResponseAsync(resourceGroupName, name, functionName), serviceCallback);
+    }
+
+    /**
+     * Get the status of a function (e.g. errors, etc.).
+     * Get the status of a function (e.g. errors, etc.).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FunctionStatusInner object
+     */
+    public Observable<FunctionStatusInner> getFunctionStatusAsync(String resourceGroupName, String name, String functionName) {
+        return getFunctionStatusWithServiceResponseAsync(resourceGroupName, name, functionName).map(new Func1<ServiceResponse<FunctionStatusInner>, FunctionStatusInner>() {
+            @Override
+            public FunctionStatusInner call(ServiceResponse<FunctionStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get the status of a function (e.g. errors, etc.).
+     * Get the status of a function (e.g. errors, etc.).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FunctionStatusInner object
+     */
+    public Observable<ServiceResponse<FunctionStatusInner>> getFunctionStatusWithServiceResponseAsync(String resourceGroupName, String name, String functionName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (functionName == null) {
+            throw new IllegalArgumentException("Parameter functionName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getFunctionStatus(resourceGroupName, name, functionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FunctionStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<FunctionStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<FunctionStatusInner> clientResponse = getFunctionStatusDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<FunctionStatusInner> getFunctionStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FunctionStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<FunctionStatusInner>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get host secrets for a function app.
+     * Get host secrets for a function app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the HostKeysInner object if successful.
+     */
+    public HostKeysInner listHostKeys(String resourceGroupName, String name) {
+        return listHostKeysWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Get host secrets for a function app.
+     * Get host secrets for a function app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<HostKeysInner> listHostKeysAsync(String resourceGroupName, String name, final ServiceCallback<HostKeysInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listHostKeysWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Get host secrets for a function app.
+     * Get host secrets for a function app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HostKeysInner object
+     */
+    public Observable<HostKeysInner> listHostKeysAsync(String resourceGroupName, String name) {
+        return listHostKeysWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<HostKeysInner>, HostKeysInner>() {
+            @Override
+            public HostKeysInner call(ServiceResponse<HostKeysInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get host secrets for a function app.
+     * Get host secrets for a function app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HostKeysInner object
+     */
+    public Observable<ServiceResponse<HostKeysInner>> listHostKeysWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listHostKeys(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HostKeysInner>>>() {
+                @Override
+                public Observable<ServiceResponse<HostKeysInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<HostKeysInner> clientResponse = listHostKeysDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<HostKeysInner> listHostKeysDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<HostKeysInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<HostKeysInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void listSyncStatus(String resourceGroupName, String name) {
+        listSyncStatusWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> listSyncStatusAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(listSyncStatusWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> listSyncStatusAsync(String resourceGroupName, String name) {
+        return listSyncStatusWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> listSyncStatusWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSyncStatus(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = listSyncStatusDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> listSyncStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the current Function host status.
+     * Gets the current Function host status.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the HostStatusInner object if successful.
+     */
+    public HostStatusInner getHostStatus(String resourceGroupName, String name) {
+        return getHostStatusWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the current Function host status.
+     * Gets the current Function host status.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<HostStatusInner> getHostStatusAsync(String resourceGroupName, String name, final ServiceCallback<HostStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getHostStatusWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Gets the current Function host status.
+     * Gets the current Function host status.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HostStatusInner object
+     */
+    public Observable<HostStatusInner> getHostStatusAsync(String resourceGroupName, String name) {
+        return getHostStatusWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<HostStatusInner>, HostStatusInner>() {
+            @Override
+            public HostStatusInner call(ServiceResponse<HostStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the current Function host status.
+     * Gets the current Function host status.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HostStatusInner object
+     */
+    public Observable<ServiceResponse<HostStatusInner>> getHostStatusWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getHostStatus(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HostStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<HostStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<HostStatusInner> clientResponse = getHostStatusDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<HostStatusInner> getHostStatusDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<HostStatusInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<HostStatusInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void syncFunctions(String resourceGroupName, String name) {
+        syncFunctionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> syncFunctionsAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(syncFunctionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> syncFunctionsAsync(String resourceGroupName, String name) {
+        return syncFunctionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> syncFunctionsWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.syncFunctions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = syncFunctionsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> syncFunctionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Add or update a host level secret.
+     * Add or update a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the KeyInfoInner object if successful.
+     */
+    public KeyInfoInner createOrUpdateHostSecret(String resourceGroupName, String name, String keyType, String keyName, KeyInfoInner key) {
+        return createOrUpdateHostSecretWithServiceResponseAsync(resourceGroupName, name, keyType, keyName, key).toBlocking().single().body();
+    }
+
+    /**
+     * Add or update a host level secret.
+     * Add or update a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param key The key to create or update
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<KeyInfoInner> createOrUpdateHostSecretAsync(String resourceGroupName, String name, String keyType, String keyName, KeyInfoInner key, final ServiceCallback<KeyInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateHostSecretWithServiceResponseAsync(resourceGroupName, name, keyType, keyName, key), serviceCallback);
+    }
+
+    /**
+     * Add or update a host level secret.
+     * Add or update a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyInfoInner object
+     */
+    public Observable<KeyInfoInner> createOrUpdateHostSecretAsync(String resourceGroupName, String name, String keyType, String keyName, KeyInfoInner key) {
+        return createOrUpdateHostSecretWithServiceResponseAsync(resourceGroupName, name, keyType, keyName, key).map(new Func1<ServiceResponse<KeyInfoInner>, KeyInfoInner>() {
+            @Override
+            public KeyInfoInner call(ServiceResponse<KeyInfoInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Add or update a host level secret.
+     * Add or update a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyInfoInner object
+     */
+    public Observable<ServiceResponse<KeyInfoInner>> createOrUpdateHostSecretWithServiceResponseAsync(String resourceGroupName, String name, String keyType, String keyName, KeyInfoInner key) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (keyType == null) {
+            throw new IllegalArgumentException("Parameter keyType is required and cannot be null.");
+        }
+        if (keyName == null) {
+            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (key == null) {
+            throw new IllegalArgumentException("Parameter key is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(key);
+        return service.createOrUpdateHostSecret(resourceGroupName, name, keyType, keyName, this.client.subscriptionId(), key, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyInfoInner>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyInfoInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyInfoInner> clientResponse = createOrUpdateHostSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<KeyInfoInner> createOrUpdateHostSecretDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<KeyInfoInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<KeyInfoInner>() { }.getType())
+                .register(202, new TypeToken<KeyInfoInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete a host level secret.
+     * Delete a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteHostSecret(String resourceGroupName, String name, String keyType, String keyName) {
+        deleteHostSecretWithServiceResponseAsync(resourceGroupName, name, keyType, keyName).toBlocking().single().body();
+    }
+
+    /**
+     * Delete a host level secret.
+     * Delete a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteHostSecretAsync(String resourceGroupName, String name, String keyType, String keyName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteHostSecretWithServiceResponseAsync(resourceGroupName, name, keyType, keyName), serviceCallback);
+    }
+
+    /**
+     * Delete a host level secret.
+     * Delete a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteHostSecretAsync(String resourceGroupName, String name, String keyType, String keyName) {
+        return deleteHostSecretWithServiceResponseAsync(resourceGroupName, name, keyType, keyName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete a host level secret.
+     * Delete a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteHostSecretWithServiceResponseAsync(String resourceGroupName, String name, String keyType, String keyName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (keyType == null) {
+            throw new IllegalArgumentException("Parameter keyType is required and cannot be null.");
+        }
+        if (keyName == null) {
+            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteHostSecret(resourceGroupName, name, keyType, keyName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteHostSecretDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteHostSecretDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -12447,23 +13547,29 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * This is to allow calling via powershell and ARM template.
-     * This is to allow calling via powershell and ARM template.
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the FunctionSecretsInner object if successful.
+     * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
-    public FunctionSecretsInner listSyncFunctionTriggers(String resourceGroupName, String name) {
-        return listSyncFunctionTriggersWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    public PagedList<BackupItemInner> listSiteBackups(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<BackupItemInner>(response.body()) {
+            @Override
+            public Page<BackupItemInner> nextPage(String nextPageLink) {
+                return listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
-     * This is to allow calling via powershell and ARM template.
-     * This is to allow calling via powershell and ARM template.
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -12471,38 +13577,70 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<FunctionSecretsInner> listSyncFunctionTriggersAsync(String resourceGroupName, String name, final ServiceCallback<FunctionSecretsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listSyncFunctionTriggersWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceFuture<List<BackupItemInner>> listSiteBackupsAsync(final String resourceGroupName, final String name, final ListOperationCallback<BackupItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSiteBackupsSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(String nextPageLink) {
+                    return listSiteBackupsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
-     * This is to allow calling via powershell and ARM template.
-     * This is to allow calling via powershell and ARM template.
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FunctionSecretsInner object
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
-    public Observable<FunctionSecretsInner> listSyncFunctionTriggersAsync(String resourceGroupName, String name) {
-        return listSyncFunctionTriggersWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<FunctionSecretsInner>, FunctionSecretsInner>() {
-            @Override
-            public FunctionSecretsInner call(ServiceResponse<FunctionSecretsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<BackupItemInner>> listSiteBackupsAsync(final String resourceGroupName, final String name) {
+        return listSiteBackupsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
+                @Override
+                public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
-     * This is to allow calling via powershell and ARM template.
-     * This is to allow calling via powershell and ARM template.
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FunctionSecretsInner object
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
-    public Observable<ServiceResponse<FunctionSecretsInner>> listSyncFunctionTriggersWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return listSiteBackupsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSiteBackupsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+    ServiceResponse<PageImpl<BackupItemInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<BackupItemInner>> * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -12515,12 +13653,101 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listSyncFunctionTriggers(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FunctionSecretsInner>>>() {
+        return service.listSiteBackups(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<FunctionSecretsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<FunctionSecretsInner> clientResponse = listSyncFunctionTriggersDelegate(response);
+                        ServiceResponse<PageImpl<BackupItemInner>> result = listSiteBackupsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BackupItemInner>> listSiteBackupsDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BackupItemInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BackupItemInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void listSyncFunctionTriggersStatus(String resourceGroupName, String name) {
+        listSyncFunctionTriggersStatusWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().body();
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> listSyncFunctionTriggersStatusAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(listSyncFunctionTriggersStatusWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> listSyncFunctionTriggersStatusAsync(String resourceGroupName, String name) {
+        return listSyncFunctionTriggersStatusWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> listSyncFunctionTriggersStatusWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSyncFunctionTriggersStatus(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = listSyncFunctionTriggersStatusDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -12529,10 +13756,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<FunctionSecretsInner> listSyncFunctionTriggersDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<FunctionSecretsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<FunctionSecretsInner>() { }.getType())
-                .registerError(DefaultErrorResponseException.class)
+    private ServiceResponse<Void> listSyncFunctionTriggersStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -18744,6 +19971,184 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void copyProductionSlot(String resourceGroupName, String name, CsmCopySlotEntity copySlotEntity) {
+        copyProductionSlotWithServiceResponseAsync(resourceGroupName, name, copySlotEntity).toBlocking().last().body();
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> copyProductionSlotAsync(String resourceGroupName, String name, CsmCopySlotEntity copySlotEntity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(copyProductionSlotWithServiceResponseAsync(resourceGroupName, name, copySlotEntity), serviceCallback);
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> copyProductionSlotAsync(String resourceGroupName, String name, CsmCopySlotEntity copySlotEntity) {
+        return copyProductionSlotWithServiceResponseAsync(resourceGroupName, name, copySlotEntity).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> copyProductionSlotWithServiceResponseAsync(String resourceGroupName, String name, CsmCopySlotEntity copySlotEntity) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (copySlotEntity == null) {
+            throw new IllegalArgumentException("Parameter copySlotEntity is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(copySlotEntity);
+        Observable<Response<ResponseBody>> observable = service.copyProductionSlot(resourceGroupName, name, this.client.subscriptionId(), copySlotEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginCopyProductionSlot(String resourceGroupName, String name, CsmCopySlotEntity copySlotEntity) {
+        beginCopyProductionSlotWithServiceResponseAsync(resourceGroupName, name, copySlotEntity).toBlocking().single().body();
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginCopyProductionSlotAsync(String resourceGroupName, String name, CsmCopySlotEntity copySlotEntity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCopyProductionSlotWithServiceResponseAsync(resourceGroupName, name, copySlotEntity), serviceCallback);
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginCopyProductionSlotAsync(String resourceGroupName, String name, CsmCopySlotEntity copySlotEntity) {
+        return beginCopyProductionSlotWithServiceResponseAsync(resourceGroupName, name, copySlotEntity).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginCopyProductionSlotWithServiceResponseAsync(String resourceGroupName, String name, CsmCopySlotEntity copySlotEntity) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (copySlotEntity == null) {
+            throw new IllegalArgumentException("Parameter copySlotEntity is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(copySlotEntity);
+        return service.beginCopyProductionSlot(resourceGroupName, name, this.client.subscriptionId(), copySlotEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginCopyProductionSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginCopyProductionSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -26231,19 +27636,354 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Add or update a function secret.
+     * Add or update a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the KeyInfoInner object if successful.
+     */
+    public KeyInfoInner createOrUpdateFunctionSecretSlot(String resourceGroupName, String name, String functionName, String keyName, String slot, KeyInfoInner key) {
+        return createOrUpdateFunctionSecretSlotWithServiceResponseAsync(resourceGroupName, name, functionName, keyName, slot, key).toBlocking().single().body();
+    }
+
+    /**
+     * Add or update a function secret.
+     * Add or update a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param key The key to create or update
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<KeyInfoInner> createOrUpdateFunctionSecretSlotAsync(String resourceGroupName, String name, String functionName, String keyName, String slot, KeyInfoInner key, final ServiceCallback<KeyInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateFunctionSecretSlotWithServiceResponseAsync(resourceGroupName, name, functionName, keyName, slot, key), serviceCallback);
+    }
+
+    /**
+     * Add or update a function secret.
+     * Add or update a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyInfoInner object
+     */
+    public Observable<KeyInfoInner> createOrUpdateFunctionSecretSlotAsync(String resourceGroupName, String name, String functionName, String keyName, String slot, KeyInfoInner key) {
+        return createOrUpdateFunctionSecretSlotWithServiceResponseAsync(resourceGroupName, name, functionName, keyName, slot, key).map(new Func1<ServiceResponse<KeyInfoInner>, KeyInfoInner>() {
+            @Override
+            public KeyInfoInner call(ServiceResponse<KeyInfoInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Add or update a function secret.
+     * Add or update a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyInfoInner object
+     */
+    public Observable<ServiceResponse<KeyInfoInner>> createOrUpdateFunctionSecretSlotWithServiceResponseAsync(String resourceGroupName, String name, String functionName, String keyName, String slot, KeyInfoInner key) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (functionName == null) {
+            throw new IllegalArgumentException("Parameter functionName is required and cannot be null.");
+        }
+        if (keyName == null) {
+            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (key == null) {
+            throw new IllegalArgumentException("Parameter key is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(key);
+        return service.createOrUpdateFunctionSecretSlot(resourceGroupName, name, functionName, keyName, slot, this.client.subscriptionId(), key, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyInfoInner>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyInfoInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyInfoInner> clientResponse = createOrUpdateFunctionSecretSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<KeyInfoInner> createOrUpdateFunctionSecretSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<KeyInfoInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<KeyInfoInner>() { }.getType())
+                .register(202, new TypeToken<KeyInfoInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete a function secret.
+     * Delete a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteFunctionSecretSlot(String resourceGroupName, String name, String functionName, String keyName, String slot) {
+        deleteFunctionSecretSlotWithServiceResponseAsync(resourceGroupName, name, functionName, keyName, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Delete a function secret.
+     * Delete a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteFunctionSecretSlotAsync(String resourceGroupName, String name, String functionName, String keyName, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteFunctionSecretSlotWithServiceResponseAsync(resourceGroupName, name, functionName, keyName, slot), serviceCallback);
+    }
+
+    /**
+     * Delete a function secret.
+     * Delete a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteFunctionSecretSlotAsync(String resourceGroupName, String name, String functionName, String keyName, String slot) {
+        return deleteFunctionSecretSlotWithServiceResponseAsync(resourceGroupName, name, functionName, keyName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete a function secret.
+     * Delete a function secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName The name of the function.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteFunctionSecretSlotWithServiceResponseAsync(String resourceGroupName, String name, String functionName, String keyName, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (functionName == null) {
+            throw new IllegalArgumentException("Parameter functionName is required and cannot be null.");
+        }
+        if (keyName == null) {
+            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteFunctionSecretSlot(resourceGroupName, name, functionName, keyName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteFunctionSecretSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteFunctionSecretSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get function keys for a function in a web site, or a deployment slot.
+     * Get function keys for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the StringDictionaryInner object if successful.
+     */
+    public StringDictionaryInner listFunctionKeysSlot(String resourceGroupName, String name, String functionName, String slot) {
+        return listFunctionKeysSlotWithServiceResponseAsync(resourceGroupName, name, functionName, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Get function keys for a function in a web site, or a deployment slot.
+     * Get function keys for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param slot Name of the deployment slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<StringDictionaryInner> listFunctionKeysSlotAsync(String resourceGroupName, String name, String functionName, String slot, final ServiceCallback<StringDictionaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listFunctionKeysSlotWithServiceResponseAsync(resourceGroupName, name, functionName, slot), serviceCallback);
+    }
+
+    /**
+     * Get function keys for a function in a web site, or a deployment slot.
+     * Get function keys for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<StringDictionaryInner> listFunctionKeysSlotAsync(String resourceGroupName, String name, String functionName, String slot) {
+        return listFunctionKeysSlotWithServiceResponseAsync(resourceGroupName, name, functionName, slot).map(new Func1<ServiceResponse<StringDictionaryInner>, StringDictionaryInner>() {
+            @Override
+            public StringDictionaryInner call(ServiceResponse<StringDictionaryInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get function keys for a function in a web site, or a deployment slot.
+     * Get function keys for a function in a web site, or a deployment slot.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StringDictionaryInner object
+     */
+    public Observable<ServiceResponse<StringDictionaryInner>> listFunctionKeysSlotWithServiceResponseAsync(String resourceGroupName, String name, String functionName, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (functionName == null) {
+            throw new IllegalArgumentException("Parameter functionName is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listFunctionKeysSlot(resourceGroupName, name, functionName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StringDictionaryInner>>>() {
+                @Override
+                public Observable<ServiceResponse<StringDictionaryInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<StringDictionaryInner> clientResponse = listFunctionKeysSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<StringDictionaryInner> listFunctionKeysSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<StringDictionaryInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<StringDictionaryInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Get function secrets for a function in a web site, or a deployment slot.
      * Get function secrets for a function in a web site, or a deployment slot.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the FunctionSecretsInner object if successful.
+     * @return the FunctionKeysInner object if successful.
      */
-    public FunctionSecretsInner listFunctionSecretsSlot(String resourceGroupName, String name, String functionName, String slot) {
+    public FunctionKeysInner listFunctionSecretsSlot(String resourceGroupName, String name, String functionName, String slot) {
         return listFunctionSecretsSlotWithServiceResponseAsync(resourceGroupName, name, functionName, slot).toBlocking().single().body();
     }
 
@@ -26254,12 +27994,12 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @param slot Name of the deployment slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<FunctionSecretsInner> listFunctionSecretsSlotAsync(String resourceGroupName, String name, String functionName, String slot, final ServiceCallback<FunctionSecretsInner> serviceCallback) {
+    public ServiceFuture<FunctionKeysInner> listFunctionSecretsSlotAsync(String resourceGroupName, String name, String functionName, String slot, final ServiceCallback<FunctionKeysInner> serviceCallback) {
         return ServiceFuture.fromResponse(listFunctionSecretsSlotWithServiceResponseAsync(resourceGroupName, name, functionName, slot), serviceCallback);
     }
 
@@ -26270,14 +28010,14 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FunctionSecretsInner object
+     * @return the observable to the FunctionKeysInner object
      */
-    public Observable<FunctionSecretsInner> listFunctionSecretsSlotAsync(String resourceGroupName, String name, String functionName, String slot) {
-        return listFunctionSecretsSlotWithServiceResponseAsync(resourceGroupName, name, functionName, slot).map(new Func1<ServiceResponse<FunctionSecretsInner>, FunctionSecretsInner>() {
+    public Observable<FunctionKeysInner> listFunctionSecretsSlotAsync(String resourceGroupName, String name, String functionName, String slot) {
+        return listFunctionSecretsSlotWithServiceResponseAsync(resourceGroupName, name, functionName, slot).map(new Func1<ServiceResponse<FunctionKeysInner>, FunctionKeysInner>() {
             @Override
-            public FunctionSecretsInner call(ServiceResponse<FunctionSecretsInner> response) {
+            public FunctionKeysInner call(ServiceResponse<FunctionKeysInner> response) {
                 return response.body();
             }
         });
@@ -26290,11 +28030,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @param slot Name of the deployment slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FunctionSecretsInner object
+     * @return the observable to the FunctionKeysInner object
      */
-    public Observable<ServiceResponse<FunctionSecretsInner>> listFunctionSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String functionName, String slot) {
+    public Observable<ServiceResponse<FunctionKeysInner>> listFunctionSecretsSlotWithServiceResponseAsync(String resourceGroupName, String name, String functionName, String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -26314,11 +28054,11 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listFunctionSecretsSlot(resourceGroupName, name, functionName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FunctionSecretsInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FunctionKeysInner>>>() {
                 @Override
-                public Observable<ServiceResponse<FunctionSecretsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<FunctionKeysInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<FunctionSecretsInner> clientResponse = listFunctionSecretsSlotDelegate(response);
+                        ServiceResponse<FunctionKeysInner> clientResponse = listFunctionSecretsSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -26327,10 +28067,732 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<FunctionSecretsInner> listFunctionSecretsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<FunctionSecretsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<FunctionSecretsInner>() { }.getType())
+    private ServiceResponse<FunctionKeysInner> listFunctionSecretsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FunctionKeysInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<FunctionKeysInner>() { }.getType())
                 .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the status of a function (e.g. errors, etc.).
+     * Get the status of a function (e.g. errors, etc.).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the FunctionStatusInner object if successful.
+     */
+    public FunctionStatusInner getFunctionStatusSlot(String resourceGroupName, String name, String functionName, String slot) {
+        return getFunctionStatusSlotWithServiceResponseAsync(resourceGroupName, name, functionName, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Get the status of a function (e.g. errors, etc.).
+     * Get the status of a function (e.g. errors, etc.).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<FunctionStatusInner> getFunctionStatusSlotAsync(String resourceGroupName, String name, String functionName, String slot, final ServiceCallback<FunctionStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getFunctionStatusSlotWithServiceResponseAsync(resourceGroupName, name, functionName, slot), serviceCallback);
+    }
+
+    /**
+     * Get the status of a function (e.g. errors, etc.).
+     * Get the status of a function (e.g. errors, etc.).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FunctionStatusInner object
+     */
+    public Observable<FunctionStatusInner> getFunctionStatusSlotAsync(String resourceGroupName, String name, String functionName, String slot) {
+        return getFunctionStatusSlotWithServiceResponseAsync(resourceGroupName, name, functionName, slot).map(new Func1<ServiceResponse<FunctionStatusInner>, FunctionStatusInner>() {
+            @Override
+            public FunctionStatusInner call(ServiceResponse<FunctionStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get the status of a function (e.g. errors, etc.).
+     * Get the status of a function (e.g. errors, etc.).
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param functionName Function name.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FunctionStatusInner object
+     */
+    public Observable<ServiceResponse<FunctionStatusInner>> getFunctionStatusSlotWithServiceResponseAsync(String resourceGroupName, String name, String functionName, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (functionName == null) {
+            throw new IllegalArgumentException("Parameter functionName is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getFunctionStatusSlot(resourceGroupName, name, functionName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FunctionStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<FunctionStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<FunctionStatusInner> clientResponse = getFunctionStatusSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<FunctionStatusInner> getFunctionStatusSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<FunctionStatusInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<FunctionStatusInner>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get host secrets for a function app.
+     * Get host secrets for a function app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the HostKeysInner object if successful.
+     */
+    public HostKeysInner listHostKeysSlot(String resourceGroupName, String name, String slot) {
+        return listHostKeysSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Get host secrets for a function app.
+     * Get host secrets for a function app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param slot Name of the deployment slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<HostKeysInner> listHostKeysSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<HostKeysInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listHostKeysSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Get host secrets for a function app.
+     * Get host secrets for a function app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HostKeysInner object
+     */
+    public Observable<HostKeysInner> listHostKeysSlotAsync(String resourceGroupName, String name, String slot) {
+        return listHostKeysSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<HostKeysInner>, HostKeysInner>() {
+            @Override
+            public HostKeysInner call(ServiceResponse<HostKeysInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get host secrets for a function app.
+     * Get host secrets for a function app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HostKeysInner object
+     */
+    public Observable<ServiceResponse<HostKeysInner>> listHostKeysSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listHostKeysSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HostKeysInner>>>() {
+                @Override
+                public Observable<ServiceResponse<HostKeysInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<HostKeysInner> clientResponse = listHostKeysSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<HostKeysInner> listHostKeysSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<HostKeysInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<HostKeysInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void listSyncStatusSlot(String resourceGroupName, String name, String slot) {
+        listSyncStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> listSyncStatusSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(listSyncStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> listSyncStatusSlotAsync(String resourceGroupName, String name, String slot) {
+        return listSyncStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> listSyncStatusSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSyncStatusSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = listSyncStatusSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> listSyncStatusSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the current Function host status.
+     * Gets the current Function host status.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the HostStatusInner object if successful.
+     */
+    public HostStatusInner getHostStatusSlot(String resourceGroupName, String name, String slot) {
+        return getHostStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the current Function host status.
+     * Gets the current Function host status.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param slot Name of the deployment slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<HostStatusInner> getHostStatusSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<HostStatusInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getHostStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Gets the current Function host status.
+     * Gets the current Function host status.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HostStatusInner object
+     */
+    public Observable<HostStatusInner> getHostStatusSlotAsync(String resourceGroupName, String name, String slot) {
+        return getHostStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<HostStatusInner>, HostStatusInner>() {
+            @Override
+            public HostStatusInner call(ServiceResponse<HostStatusInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the current Function host status.
+     * Gets the current Function host status.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HostStatusInner object
+     */
+    public Observable<ServiceResponse<HostStatusInner>> getHostStatusSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getHostStatusSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HostStatusInner>>>() {
+                @Override
+                public Observable<ServiceResponse<HostStatusInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<HostStatusInner> clientResponse = getHostStatusSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<HostStatusInner> getHostStatusSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<HostStatusInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<HostStatusInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void syncFunctionsSlot(String resourceGroupName, String name, String slot) {
+        syncFunctionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> syncFunctionsSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(syncFunctionsSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> syncFunctionsSlotAsync(String resourceGroupName, String name, String slot) {
+        return syncFunctionsSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> syncFunctionsSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.syncFunctionsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = syncFunctionsSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> syncFunctionsSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Add or update a host level secret.
+     * Add or update a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the KeyInfoInner object if successful.
+     */
+    public KeyInfoInner createOrUpdateHostSecretSlot(String resourceGroupName, String name, String keyType, String keyName, String slot, KeyInfoInner key) {
+        return createOrUpdateHostSecretSlotWithServiceResponseAsync(resourceGroupName, name, keyType, keyName, slot, key).toBlocking().single().body();
+    }
+
+    /**
+     * Add or update a host level secret.
+     * Add or update a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param key The key to create or update
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<KeyInfoInner> createOrUpdateHostSecretSlotAsync(String resourceGroupName, String name, String keyType, String keyName, String slot, KeyInfoInner key, final ServiceCallback<KeyInfoInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createOrUpdateHostSecretSlotWithServiceResponseAsync(resourceGroupName, name, keyType, keyName, slot, key), serviceCallback);
+    }
+
+    /**
+     * Add or update a host level secret.
+     * Add or update a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyInfoInner object
+     */
+    public Observable<KeyInfoInner> createOrUpdateHostSecretSlotAsync(String resourceGroupName, String name, String keyType, String keyName, String slot, KeyInfoInner key) {
+        return createOrUpdateHostSecretSlotWithServiceResponseAsync(resourceGroupName, name, keyType, keyName, slot, key).map(new Func1<ServiceResponse<KeyInfoInner>, KeyInfoInner>() {
+            @Override
+            public KeyInfoInner call(ServiceResponse<KeyInfoInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Add or update a host level secret.
+     * Add or update a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param key The key to create or update
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyInfoInner object
+     */
+    public Observable<ServiceResponse<KeyInfoInner>> createOrUpdateHostSecretSlotWithServiceResponseAsync(String resourceGroupName, String name, String keyType, String keyName, String slot, KeyInfoInner key) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (keyType == null) {
+            throw new IllegalArgumentException("Parameter keyType is required and cannot be null.");
+        }
+        if (keyName == null) {
+            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (key == null) {
+            throw new IllegalArgumentException("Parameter key is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(key);
+        return service.createOrUpdateHostSecretSlot(resourceGroupName, name, keyType, keyName, slot, this.client.subscriptionId(), key, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyInfoInner>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyInfoInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyInfoInner> clientResponse = createOrUpdateHostSecretSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<KeyInfoInner> createOrUpdateHostSecretSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<KeyInfoInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<KeyInfoInner>() { }.getType())
+                .register(202, new TypeToken<KeyInfoInner>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Delete a host level secret.
+     * Delete a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteHostSecretSlot(String resourceGroupName, String name, String keyType, String keyName, String slot) {
+        deleteHostSecretSlotWithServiceResponseAsync(resourceGroupName, name, keyType, keyName, slot).toBlocking().single().body();
+    }
+
+    /**
+     * Delete a host level secret.
+     * Delete a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteHostSecretSlotAsync(String resourceGroupName, String name, String keyType, String keyName, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteHostSecretSlotWithServiceResponseAsync(resourceGroupName, name, keyType, keyName, slot), serviceCallback);
+    }
+
+    /**
+     * Delete a host level secret.
+     * Delete a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteHostSecretSlotAsync(String resourceGroupName, String name, String keyType, String keyName, String slot) {
+        return deleteHostSecretSlotWithServiceResponseAsync(resourceGroupName, name, keyType, keyName, slot).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Delete a host level secret.
+     * Delete a host level secret.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param keyType The type of host key.
+     * @param keyName The name of the key.
+     * @param slot Name of the deployment slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteHostSecretSlotWithServiceResponseAsync(String resourceGroupName, String name, String keyType, String keyName, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (keyType == null) {
+            throw new IllegalArgumentException("Parameter keyType is required and cannot be null.");
+        }
+        if (keyName == null) {
+            throw new IllegalArgumentException("Parameter keyName is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteHostSecretSlot(resourceGroupName, name, keyType, keyName, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteHostSecretSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteHostSecretSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -29662,66 +32124,105 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * This is to allow calling via powershell and ARM template.
-     * This is to allow calling via powershell and ARM template.
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the FunctionSecretsInner object if successful.
+     * @return the PagedList&lt;BackupItemInner&gt; object if successful.
      */
-    public FunctionSecretsInner listSyncFunctionTriggersSlot(String resourceGroupName, String name, String slot) {
-        return listSyncFunctionTriggersSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    public PagedList<BackupItemInner> listSiteBackupsSlot(final String resourceGroupName, final String name, final String slot) {
+        ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsSlotSinglePageAsync(resourceGroupName, name, slot).toBlocking().single();
+        return new PagedList<BackupItemInner>(response.body()) {
+            @Override
+            public Page<BackupItemInner> nextPage(String nextPageLink) {
+                return listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
     }
 
     /**
-     * This is to allow calling via powershell and ARM template.
-     * This is to allow calling via powershell and ARM template.
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<FunctionSecretsInner> listSyncFunctionTriggersSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<FunctionSecretsInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listSyncFunctionTriggersSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    public ServiceFuture<List<BackupItemInner>> listSiteBackupsSlotAsync(final String resourceGroupName, final String name, final String slot, final ListOperationCallback<BackupItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSiteBackupsSlotSinglePageAsync(resourceGroupName, name, slot),
+            new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(String nextPageLink) {
+                    return listSiteBackupsSlotNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
-     * This is to allow calling via powershell and ARM template.
-     * This is to allow calling via powershell and ARM template.
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FunctionSecretsInner object
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
-    public Observable<FunctionSecretsInner> listSyncFunctionTriggersSlotAsync(String resourceGroupName, String name, String slot) {
-        return listSyncFunctionTriggersSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<FunctionSecretsInner>, FunctionSecretsInner>() {
-            @Override
-            public FunctionSecretsInner call(ServiceResponse<FunctionSecretsInner> response) {
-                return response.body();
-            }
-        });
+    public Observable<Page<BackupItemInner>> listSiteBackupsSlotAsync(final String resourceGroupName, final String name, final String slot) {
+        return listSiteBackupsSlotWithServiceResponseAsync(resourceGroupName, name, slot)
+            .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
+                @Override
+                public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
+                    return response.body();
+                }
+            });
     }
 
     /**
-     * This is to allow calling via powershell and ARM template.
-     * This is to allow calling via powershell and ARM template.
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FunctionSecretsInner object
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
      */
-    public Observable<ServiceResponse<FunctionSecretsInner>> listSyncFunctionTriggersSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotWithServiceResponseAsync(final String resourceGroupName, final String name, final String slot) {
+        return listSiteBackupsSlotSinglePageAsync(resourceGroupName, name, slot)
+            .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSiteBackupsSlotNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+    ServiceResponse<PageImpl<BackupItemInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<BackupItemInner>> * @param name Name of the app.
+    ServiceResponse<PageImpl<BackupItemInner>> * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotSinglePageAsync(final String resourceGroupName, final String name, final String slot) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -29737,12 +32238,108 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listSyncFunctionTriggersSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FunctionSecretsInner>>>() {
+        return service.listSiteBackupsSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<FunctionSecretsInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<FunctionSecretsInner> clientResponse = listSyncFunctionTriggersSlotDelegate(response);
+                        ServiceResponse<PageImpl<BackupItemInner>> result = listSiteBackupsSlotDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BackupItemInner>> listSiteBackupsSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BackupItemInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BackupItemInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void listSyncFunctionTriggersStatusSlot(String resourceGroupName, String name, String slot) {
+        listSyncFunctionTriggersStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot).toBlocking().single().body();
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> listSyncFunctionTriggersStatusSlotAsync(String resourceGroupName, String name, String slot, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(listSyncFunctionTriggersStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot), serviceCallback);
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> listSyncFunctionTriggersStatusSlotAsync(String resourceGroupName, String name, String slot) {
+        return listSyncFunctionTriggersStatusSlotWithServiceResponseAsync(resourceGroupName, name, slot).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * This is to allow calling via powershell and ARM template.
+     * This is to allow calling via powershell and ARM template.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the production slot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> listSyncFunctionTriggersStatusSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listSyncFunctionTriggersStatusSlot(resourceGroupName, name, slot, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = listSyncFunctionTriggersStatusSlotDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -29751,10 +32348,10 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
             });
     }
 
-    private ServiceResponse<FunctionSecretsInner> listSyncFunctionTriggersSlotDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<FunctionSecretsInner, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<FunctionSecretsInner>() { }.getType())
-                .registerError(DefaultErrorResponseException.class)
+    private ServiceResponse<Void> listSyncFunctionTriggersStatusSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -36015,6 +38612,198 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void copySlotSlot(String resourceGroupName, String name, String slot, CsmCopySlotEntity copySlotEntity) {
+        copySlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, copySlotEntity).toBlocking().last().body();
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> copySlotSlotAsync(String resourceGroupName, String name, String slot, CsmCopySlotEntity copySlotEntity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(copySlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, copySlotEntity), serviceCallback);
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<Void> copySlotSlotAsync(String resourceGroupName, String name, String slot, CsmCopySlotEntity copySlotEntity) {
+        return copySlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, copySlotEntity).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> copySlotSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmCopySlotEntity copySlotEntity) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (copySlotEntity == null) {
+            throw new IllegalArgumentException("Parameter copySlotEntity is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(copySlotEntity);
+        Observable<Response<ResponseBody>> observable = service.copySlotSlot(resourceGroupName, name, slot, this.client.subscriptionId(), copySlotEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginCopySlotSlot(String resourceGroupName, String name, String slot, CsmCopySlotEntity copySlotEntity) {
+        beginCopySlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, copySlotEntity).toBlocking().single().body();
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginCopySlotSlotAsync(String resourceGroupName, String name, String slot, CsmCopySlotEntity copySlotEntity, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCopySlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, copySlotEntity), serviceCallback);
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginCopySlotSlotAsync(String resourceGroupName, String name, String slot, CsmCopySlotEntity copySlotEntity) {
+        return beginCopySlotSlotWithServiceResponseAsync(resourceGroupName, name, slot, copySlotEntity).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Copies a deployment slot to another deployment slot of an app.
+     * Copies a deployment slot to another deployment slot of an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
+     * @param copySlotEntity JSON object that contains the target slot name and site config properties to override the source slot config. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginCopySlotSlotWithServiceResponseAsync(String resourceGroupName, String name, String slot, CsmCopySlotEntity copySlotEntity) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (slot == null) {
+            throw new IllegalArgumentException("Parameter slot is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (copySlotEntity == null) {
+            throw new IllegalArgumentException("Parameter copySlotEntity is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(copySlotEntity);
+        return service.beginCopySlotSlot(resourceGroupName, name, slot, this.client.subscriptionId(), copySlotEntity, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginCopySlotSlotDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginCopySlotSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Get the difference in configuration settings between two web app slots.
      * Get the difference in configuration settings between two web app slots.
      *
@@ -37885,8 +40674,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Syncs function trigger metadata to the scale controller.
-     * Syncs function trigger metadata to the scale controller.
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -37900,8 +40689,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Syncs function trigger metadata to the scale controller.
-     * Syncs function trigger metadata to the scale controller.
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -37915,8 +40704,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Syncs function trigger metadata to the scale controller.
-     * Syncs function trigger metadata to the scale controller.
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -37934,8 +40723,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Syncs function trigger metadata to the scale controller.
-     * Syncs function trigger metadata to the scale controller.
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -41818,8 +44607,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Syncs function trigger metadata to the scale controller.
-     * Syncs function trigger metadata to the scale controller.
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -41832,8 +44621,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Syncs function trigger metadata to the scale controller.
-     * Syncs function trigger metadata to the scale controller.
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -41846,8 +44635,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Syncs function trigger metadata to the scale controller.
-     * Syncs function trigger metadata to the scale controller.
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -41864,8 +44653,8 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
-     * Syncs function trigger metadata to the scale controller.
-     * Syncs function trigger metadata to the scale controller.
+     * Syncs function trigger metadata to the management database.
+     * Syncs function trigger metadata to the management database.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
@@ -45500,6 +48289,122 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
     }
 
     /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BackupItemInner&gt; object if successful.
+     */
+    public PagedList<BackupItemInner> listSiteBackupsNext(final String nextPageLink) {
+        ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<BackupItemInner>(response.body()) {
+            @Override
+            public Page<BackupItemInner> nextPage(String nextPageLink) {
+                return listSiteBackupsNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BackupItemInner>> listSiteBackupsNextAsync(final String nextPageLink, final ServiceFuture<List<BackupItemInner>> serviceFuture, final ListOperationCallback<BackupItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSiteBackupsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(String nextPageLink) {
+                    return listSiteBackupsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
+     */
+    public Observable<Page<BackupItemInner>> listSiteBackupsNextAsync(final String nextPageLink) {
+        return listSiteBackupsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
+                @Override
+                public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsNextWithServiceResponseAsync(final String nextPageLink) {
+        return listSiteBackupsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSiteBackupsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+    ServiceResponse<PageImpl<BackupItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSiteBackupsNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BackupItemInner>> result = listSiteBackupsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BackupItemInner>> listSiteBackupsNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BackupItemInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BackupItemInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
      * Gets all metric definitions of an app (or deployment slot, if specified).
      * Gets all metric definitions of an app (or deployment slot, if specified).
      *
@@ -47940,6 +50845,122 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
                 .register(200, new TypeToken<PageImpl<ProcessThreadInfoInner>>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws DefaultErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;BackupItemInner&gt; object if successful.
+     */
+    public PagedList<BackupItemInner> listSiteBackupsSlotNext(final String nextPageLink) {
+        ServiceResponse<Page<BackupItemInner>> response = listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<BackupItemInner>(response.body()) {
+            @Override
+            public Page<BackupItemInner> nextPage(String nextPageLink) {
+                return listSiteBackupsSlotNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<BackupItemInner>> listSiteBackupsSlotNextAsync(final String nextPageLink, final ServiceFuture<List<BackupItemInner>> serviceFuture, final ListOperationCallback<BackupItemInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listSiteBackupsSlotNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(String nextPageLink) {
+                    return listSiteBackupsSlotNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
+     */
+    public Observable<Page<BackupItemInner>> listSiteBackupsSlotNextAsync(final String nextPageLink) {
+        return listSiteBackupsSlotNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<BackupItemInner>>, Page<BackupItemInner>>() {
+                @Override
+                public Page<BackupItemInner> call(ServiceResponse<Page<BackupItemInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;BackupItemInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotNextWithServiceResponseAsync(final String nextPageLink) {
+        return listSiteBackupsSlotNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<BackupItemInner>>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(ServiceResponse<Page<BackupItemInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listSiteBackupsSlotNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets existing backups of an app.
+     * Gets existing backups of an app.
+     *
+    ServiceResponse<PageImpl<BackupItemInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;BackupItemInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<BackupItemInner>>> listSiteBackupsSlotNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listSiteBackupsSlotNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BackupItemInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<BackupItemInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<BackupItemInner>> result = listSiteBackupsSlotNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<BackupItemInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<BackupItemInner>> listSiteBackupsSlotNextDelegate(Response<ResponseBody> response) throws DefaultErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<BackupItemInner>, DefaultErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<BackupItemInner>>() { }.getType())
+                .registerError(DefaultErrorResponseException.class)
                 .build(response);
     }
 
