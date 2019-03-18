@@ -8,6 +8,7 @@ import com.azure.applicationconfig.models.KeyLabelFilter;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
 import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.common.http.rest.RestException;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
@@ -217,8 +218,8 @@ public class ConfigurationClientTest {
 
         StepVerifier.create(client.getKeyValue(key, "myNonExistingLabel", null))
                 .expectErrorSatisfies(error -> {
-                    Assert.assertTrue(error instanceof CloudException);
-                    Assert.assertEquals(404, ((CloudException) error).response().statusCode());
+                    Assert.assertTrue(error instanceof RestException);
+                    Assert.assertEquals(404, ((RestException) error).response().statusCode());
                 })
                 .verify();
     }
@@ -236,7 +237,7 @@ public class ConfigurationClientTest {
         String etag = block.body().etag();
         StepVerifier.create(client.getKeyValue(key, null, etag))
                 .expectErrorSatisfies(ex -> {
-                    Assert.assertTrue(ex instanceof CloudException);
+                    Assert.assertTrue(ex instanceof RestException);
                     // etag has not changed, so getting 304 NotModified code according to service spec
                     Assert.assertTrue(ex.getMessage().contains("304"));
                 })
@@ -267,8 +268,8 @@ public class ConfigurationClientTest {
 
         StepVerifier.create(client.setKeyValue(updated))
                 .expectErrorSatisfies(ex -> {
-                    Assert.assertTrue(ex instanceof CloudException);
-                    Assert.assertEquals(HttpResponseStatus.CONFLICT.code(), ((CloudException) ex).response().statusCode());
+                    Assert.assertTrue(ex instanceof RestException);
+                    Assert.assertEquals(HttpResponseStatus.CONFLICT.code(), ((RestException) ex).response().statusCode());
                 }).verify();
 
         StepVerifier.create(client.unlockKeyValue(keyName).flatMap(response -> client.setKeyValue(updated2)))
