@@ -28,7 +28,13 @@ public enum SkuName {
     STANDARD2("standard2"),
 
     /** Enum value standard3. */
-    STANDARD3("standard3");
+    STANDARD3("standard3"),
+
+    /** Enum value storage_optimized_l1. */
+    STORAGE_OPTIMIZED_L1("storage_optimized_l1"),
+
+    /** Enum value storage_optimized_l2. */
+    STORAGE_OPTIMIZED_L2("storage_optimized_l2");
 
     /** The actual serialized value for a SkuName instance. */
     private String value;
