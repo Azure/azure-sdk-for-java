@@ -24,8 +24,8 @@ public class RoutingEventHubProperties {
      * The name that identifies this endpoint. The name can only include
      * alphanumeric characters, periods, underscores, hyphens and has a maximum
      * length of 64 characters. The following names are reserved:  events,
-     * operationsMonitoringEvents, fileNotifications, $default. Endpoint names
-     * must be unique across endpoint types.
+     * fileNotifications, $default. Endpoint names must be unique across
+     * endpoint types.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -63,7 +63,7 @@ public class RoutingEventHubProperties {
     }
 
     /**
-     * Get the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types.
+     * Get the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
      *
      * @return the name value
      */
@@ -72,7 +72,7 @@ public class RoutingEventHubProperties {
     }
 
     /**
-     * Set the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, operationsMonitoringEvents, fileNotifications, $default. Endpoint names must be unique across endpoint types.
+     * Set the name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:  events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
      *
      * @param name the name value to set
      * @return the RoutingEventHubProperties object itself.

@@ -49,10 +49,9 @@ public class IotHubProperties {
     private String hostName;
 
     /**
-     * The Event Hub-compatible endpoint properties. The possible keys to this
-     * dictionary are events and operationsMonitoringEvents. Both of these keys
-     * have to be present in the dictionary while making create or update calls
-     * for the IoT hub.
+     * The Event Hub-compatible endpoint properties. The only possible keys to
+     * this dictionary is events. This key has to be present in the dictionary
+     * while making create or update calls for the IoT hub.
      */
     @JsonProperty(value = "eventHubEndpoints")
     private Map<String, EventHubProperties> eventHubEndpoints;
@@ -98,12 +97,6 @@ public class IotHubProperties {
      */
     @JsonProperty(value = "comments")
     private String comments;
-
-    /**
-     * The operationsMonitoringProperties property.
-     */
-    @JsonProperty(value = "operationsMonitoringProperties")
-    private OperationsMonitoringProperties operationsMonitoringProperties;
 
     /**
      * The device streams properties of iothub.
@@ -186,7 +179,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Get the Event Hub-compatible endpoint properties. The possible keys to this dictionary are events and operationsMonitoringEvents. Both of these keys have to be present in the dictionary while making create or update calls for the IoT hub.
+     * Get the Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has to be present in the dictionary while making create or update calls for the IoT hub.
      *
      * @return the eventHubEndpoints value
      */
@@ -195,7 +188,7 @@ public class IotHubProperties {
     }
 
     /**
-     * Set the Event Hub-compatible endpoint properties. The possible keys to this dictionary are events and operationsMonitoringEvents. Both of these keys have to be present in the dictionary while making create or update calls for the IoT hub.
+     * Set the Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has to be present in the dictionary while making create or update calls for the IoT hub.
      *
      * @param eventHubEndpoints the eventHubEndpoints value to set
      * @return the IotHubProperties object itself.
@@ -322,26 +315,6 @@ public class IotHubProperties {
      */
     public IotHubProperties withComments(String comments) {
         this.comments = comments;
-        return this;
-    }
-
-    /**
-     * Get the operationsMonitoringProperties value.
-     *
-     * @return the operationsMonitoringProperties value
-     */
-    public OperationsMonitoringProperties operationsMonitoringProperties() {
-        return this.operationsMonitoringProperties;
-    }
-
-    /**
-     * Set the operationsMonitoringProperties value.
-     *
-     * @param operationsMonitoringProperties the operationsMonitoringProperties value to set
-     * @return the IotHubProperties object itself.
-     */
-    public IotHubProperties withOperationsMonitoringProperties(OperationsMonitoringProperties operationsMonitoringProperties) {
-        this.operationsMonitoringProperties = operationsMonitoringProperties;
         return this;
     }
 
