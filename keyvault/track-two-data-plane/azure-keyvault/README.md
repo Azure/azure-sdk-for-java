@@ -17,7 +17,7 @@ package com.azure.keyvault
 
 ### Usage:
 ~~~ java
-KeyVaultClient client = new KeyVaultClient(vaultUri, new MsalCredentialProvider());
+KeyVaultClient client = new KeyVaultClient(vaultUri, new KeyVaultCredentials());
 
 ~~~
 
@@ -25,11 +25,14 @@ KeyVaultClient client = new KeyVaultClient(vaultUri, new MsalCredentialProvider(
 ~~~ java
 public class SecretClient : ServiceClient
 {
+
     // constructors
     public SecretClient(String vaultUrl, ServiceClientCredentials credentials);
     public SecretClient(String vaultUrl, ServiceClientCredentials credentials, HttpPipeline pipeline);
     public SecretClient(String vaultUrl, TokenCredentials credentials);
     public SecretClient(String vaultUrl, TokenCredentials credentials, HttpPipeline pipeline);
+
+--- TODO: OVERLOAD FOR CALLBACK FUNCTION PARAMETER NEEDS TO BE CONSIDERED/ADDED FOR BELOW SECRET OPERATIONS
 
     // methods
     public Mono<RestResponse<Secret>> getAsync(String secretName);
@@ -57,8 +60,8 @@ public class SecretClient : ServiceClient
 }
 
 ~~~
-## get / set Operations
-### SecretClient set secret operations
+## Get / Set Operations
+### SecretClient Set Secret operations
 
 ~~~ java
 public Mono<RestResponse<Secret>> setAsync(String name, String value);
@@ -98,7 +101,7 @@ Observable<ServiceResponse<SecretBundle>> setSecretWithServiceResponseAsync(Stri
 ~~~
 
 
-### SecretClient get Secret operations
+### SecretClient Get Secret Operations
 ~~~ java
 public Mono<RestResponse<Secret>> getAsync(String secretName);
 public Mono<RestResponse<Secret>> getAsync(String secretName, String version);
