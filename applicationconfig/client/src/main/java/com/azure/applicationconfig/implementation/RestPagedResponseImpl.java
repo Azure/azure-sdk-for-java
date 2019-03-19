@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.applicationconfig.implementation;
 
-import com.microsoft.rest.v3.http.HttpHeaders;
-import com.microsoft.rest.v3.http.HttpRequest;
-import com.microsoft.rest.v3.http.rest.RestPagedResponse;
+import com.azure.common.http.rest.RestPagedResponse;
+import com.azure.common.http.HttpHeaders;
+import com.azure.common.http.HttpRequest;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Response of a REST API that returns page.
@@ -45,6 +44,7 @@ public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
      *
      * @return the items
      */
+    @Override
     public List<T> items() {
         return items;
     }
@@ -54,6 +54,7 @@ public class RestPagedResponseImpl<T> implements RestPagedResponse<T> {
      *
      * @return the next page link
      */
+    @Override
     public String nextLink() {
         return nextPageLink;
     }

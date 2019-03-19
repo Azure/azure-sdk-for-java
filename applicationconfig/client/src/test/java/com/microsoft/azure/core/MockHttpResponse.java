@@ -3,11 +3,11 @@
 
 package com.microsoft.azure.core;
 
-import com.microsoft.rest.v3.http.HttpHeaders;
-import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.implementation.serializer.SerializerAdapter;
-import com.microsoft.rest.v3.implementation.serializer.SerializerEncoding;
-import com.microsoft.rest.v3.implementation.serializer.jackson.JacksonAdapter;
+import com.azure.common.http.HttpHeaders;
+import com.azure.common.http.HttpResponse;
+import com.azure.common.implementation.serializer.SerializerAdapter;
+import com.azure.common.implementation.serializer.SerializerEncoding;
+import com.azure.common.implementation.serializer.jackson.JacksonAdapter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
