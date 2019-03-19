@@ -3,10 +3,10 @@
 
 package com.azure.applicationconfig;
 
-import com.microsoft.rest.v3.http.HttpPipelineCallContext;
-import com.microsoft.rest.v3.http.HttpPipelineNextPolicy;
-import com.microsoft.rest.v3.http.HttpResponse;
-import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
+import com.azure.common.http.HttpPipelineCallContext;
+import com.azure.common.http.HttpPipelineNextPolicy;
+import com.azure.common.http.HttpResponse;
+import com.azure.common.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;

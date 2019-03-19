@@ -5,33 +5,36 @@ package com.azure.applicationconfig;
 import com.azure.applicationconfig.models.ConfigurationSetting;
 import com.azure.applicationconfig.models.Key;
 import com.azure.applicationconfig.models.KeyLabelFilter;
-import com.azure.applicationconfig.models.KeyValueFilter;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
+import com.azure.common.http.policy.HttpPipelinePolicy;
+import com.azure.common.http.rest.RestException;
 import com.microsoft.azure.core.InterceptorManager;
 import com.microsoft.azure.core.TestMode;
 import com.microsoft.azure.utils.SdkContext;
-import com.microsoft.azure.v3.CloudException;
-import com.microsoft.rest.v3.http.HttpClient;
-import com.microsoft.rest.v3.http.HttpPipeline;
-import com.microsoft.rest.v3.http.policy.HttpLogDetailLevel;
-import com.microsoft.rest.v3.http.policy.HttpLoggingPolicy;
-import com.microsoft.rest.v3.http.policy.HttpPipelinePolicy;
-import com.microsoft.rest.v3.http.rest.RestResponse;
+import com.azure.common.http.HttpClient;
+import com.azure.common.http.HttpPipeline;
+import com.azure.common.http.policy.HttpLogDetailLevel;
+import com.azure.common.http.policy.HttpLoggingPolicy;
+import com.azure.common.http.rest.RestResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +42,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ConfigurationClientTest {
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
@@ -137,14 +142,17 @@ public class ConfigurationClientTest {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
                     if (configurationSetting.isLocked()) {
-                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label(), null).flatMap(response -> {
+                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label()).flatMap(response -> {
                             ConfigurationSetting kv = response.body();
-                            return client.deleteKeyValue(kv.key(), kv.label(), null);
+                            return client.deleteKeyValue(kv.key(), kv.label(), null)
+                                    .retryBackoff(3, Duration.ofSeconds(10));
                         });
                     } else {
-                        return client.deleteKeyValue(configurationSetting.key(), configurationSetting.label(), null);
+                        return client.deleteKeyValue(configurationSetting.key(), configurationSetting.label(), null)
+                                .retryBackoff(3, Duration.ofSeconds(10));
                     }
-                }).blockLast();
+                })
+                .blockLast();
 
         logger.info("Finished cleaning up values.");
     }
@@ -203,15 +211,15 @@ public class ConfigurationClientTest {
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myLabel")))
+        StepVerifier.create(client.getKeyValue(key, "myLabel", null))
                 .assertNext(response -> assertEquals(kv, response))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withLabel("myNonExistingLabel")))
+        StepVerifier.create(client.getKeyValue(key, "myNonExistingLabel", null))
                 .expectErrorSatisfies(error -> {
-                    Assert.assertTrue(error instanceof CloudException);
-                    Assert.assertEquals(404, ((CloudException) error).response().statusCode());
+                    Assert.assertTrue(error instanceof RestException);
+                    Assert.assertEquals(404, ((RestException) error).response().statusCode());
                 })
                 .verify();
     }
@@ -221,15 +229,15 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().withKey(key).withValue("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().withKey(key).withValue("myNewValue");
-        final RestResponse<ConfigurationSetting> block = client.setKeyValue(expected).single().block();
+        final RestResponse<ConfigurationSetting> block = client.addKeyValue(expected).single().block();
 
         Assert.assertNotNull(block);
         assertEquals(expected, block);
 
         String etag = block.body().etag();
-        StepVerifier.create(client.getKeyValue(key, new KeyValueFilter().withIfNoneMatch(etag)))
+        StepVerifier.create(client.getKeyValue(key, null, etag))
                 .expectErrorSatisfies(ex -> {
-                    Assert.assertTrue(ex instanceof CloudException);
+                    Assert.assertTrue(ex instanceof RestException);
                     // etag has not changed, so getting 304 NotModified code according to service spec
                     Assert.assertTrue(ex.getMessage().contains("304"));
                 })
@@ -260,8 +268,8 @@ public class ConfigurationClientTest {
 
         StepVerifier.create(client.setKeyValue(updated))
                 .expectErrorSatisfies(ex -> {
-                    Assert.assertTrue(ex instanceof CloudException);
-                    Assert.assertEquals(HttpResponseStatus.CONFLICT.code(), ((CloudException) ex).response().statusCode());
+                    Assert.assertTrue(ex instanceof RestException);
+                    Assert.assertEquals(HttpResponseStatus.CONFLICT.code(), ((RestException) ex).response().statusCode());
                 }).verify();
 
         StepVerifier.create(client.unlockKeyValue(keyName).flatMap(response -> client.setKeyValue(updated2)))
@@ -306,76 +314,46 @@ public class ConfigurationClientTest {
     }
 
     @Test
-    public void listLabels() {
-        final String keyName = SdkContext.randomResourceName(keyPrefix, 16);
-        final ConfigurationSetting value1 = new ConfigurationSetting().withKey(keyName).withValue("value1").withLabel(keyPrefix + "-lbl1");
-        final ConfigurationSetting value2 = new ConfigurationSetting().withKey(keyName).withValue("value2").withLabel(keyPrefix + "-lbl2");
-        final ConfigurationSetting value3 = new ConfigurationSetting().withKey(keyName).withValue("value3").withLabel(keyPrefix + "-lbl3");
-        final KeyLabelFilter filter = new KeyLabelFilter()
-                .withName(keyPrefix + "-lbl*")
-                .withFields("name")
-                .withFields("kv_count")
-                .withFields("last_modifier");
-        final HashMap<String, ConfigurationSetting> expected = new HashMap<>();
-        expected.put(value1.label(), value1);
-        expected.put(value2.label(), value2);
-        expected.put(value3.label(), value3);
+    public void listKeysWithPage() {
+        final String label = "listed-label";
+        final int numberExpected = 50;
+        List<ConfigurationSetting> settings = IntStream.range(0, numberExpected)
+                .mapToObj(value -> new ConfigurationSetting()
+                        .withKey(keyPrefix + "-" + value)
+                        .withValue("myValue")
+                        .withLabel(label))
+                .collect(Collectors.toList());
 
-        StepVerifier.create(Flux.merge(
-                client.setKeyValue(value1),
-                client.setKeyValue(value2),
-                client.setKeyValue(value3)))
-                .assertNext(response -> assertMapContainsLabel(expected, response))
-                .assertNext(response -> assertMapContainsLabel(expected, response))
-                .assertNext(response -> assertMapContainsLabel(expected, response))
+        List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
+        for (ConfigurationSetting setting : settings) {
+            results.add(client.setKeyValue(setting).retryBackoff(2, Duration.ofSeconds(30)));
+        }
+
+        KeyValueListFilter filter = new KeyValueListFilter().withLabel(label);
+
+        Flux.merge(results).blockLast();
+        StepVerifier.create(client.listKeyValues(filter))
+                .expectNextCount(numberExpected)
                 .expectComplete()
                 .verify();
-
-        StepVerifier.create(client.listLabels(filter))
-                .assertNext(label -> {
-                    Assert.assertNotNull(label);
-                    ConfigurationSetting value = expected.remove(label.name());
-                    Assert.assertNotNull(value);
-                    Assert.assertEquals(1, label.kvCount());
-                })
-                .assertNext(label -> {
-                    Assert.assertNotNull(label);
-                    ConfigurationSetting value = expected.remove(label.name());
-                    Assert.assertNotNull(value);
-                    Assert.assertEquals(1, label.kvCount());
-                })
-                .assertNext(label -> {
-                    Assert.assertNotNull(label);
-                    ConfigurationSetting value = expected.remove(label.name());
-                    Assert.assertNotNull(value);
-                    Assert.assertEquals(1, label.kvCount());
-                })
-                .expectComplete()
-                .verify();
-
-        Assert.assertTrue(expected.isEmpty());
     }
 
+    @Ignore("This test exists to clean up resources missed due to 429s.")
     @Test
-    public void listKeys() {
-        final Map<String, String> tags = new HashMap<>();
-        final ConfigurationSetting key1 = new ConfigurationSetting().withKey(keyPrefix + "-1").withValue("value1").withLabel("label1").withContentType("testContentType").withTags(tags);
-        final ConfigurationSetting key2 = new ConfigurationSetting().withKey(keyPrefix + "-2").withValue("value2").withLabel("label2");
-        final ConfigurationSetting key3 = new ConfigurationSetting().withKey(keyPrefix + "-3").withValue("value3").withLabel("label3");
-        final KeyLabelFilter filter = new KeyLabelFilter().withName(keyPrefix + "*");
-        final HashMap<String, ConfigurationSetting> expected = new HashMap<>();
+    public void deleteAllKeys() {
+        client.listKeyValues(new KeyValueListFilter().withKey("key*"))
+                .flatMap(configurationSetting -> {
+                    logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
-        StepVerifier.create(Flux.merge(
-                client.setKeyValue(key1),
-                client.setKeyValue(key2),
-                client.setKeyValue(key3)
-        ))
-                .expectNextCount(3)
-                .expectComplete()
-                .verify();
-
-        List<Key> keys = client.listKeys(filter).collectList().block();
-        Assert.assertEquals(3, keys.size());
+                    if (configurationSetting.isLocked()) {
+                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label()).flatMap(response -> {
+                            ConfigurationSetting kv = response.body();
+                            return client.deleteKeyValue(kv.key(), kv.label(), null);
+                        });
+                    } else {
+                        return client.deleteKeyValue(configurationSetting.key(), configurationSetting.label(), null);
+                    }
+                }).blockLast();
     }
 
     private static void assertMapContainsLabel(HashMap<String, ConfigurationSetting> map,
@@ -408,7 +386,14 @@ public class ConfigurationClientTest {
 
         Assert.assertNotNull(actual);
         Assert.assertEquals(expected.key(), actual.key());
-        Assert.assertEquals(expected.label(), actual.label());
+
+        // This is because we have the "null" label which is deciphered in the service as "\0".
+        if (ConfigurationSetting.NULL_LABEL.equals(expected.label())) {
+            Assert.assertNull(actual.label());
+        } else {
+            Assert.assertEquals(expected.label(), actual.label());
+        }
+
         Assert.assertEquals(expected.value(), actual.value());
         Assert.assertEquals(expected.contentType(), actual.contentType());
     }

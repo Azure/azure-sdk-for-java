@@ -12,6 +12,12 @@ import java.util.Map;
  * To explicitly reference null label use "\0" (url encoded as %00).
  */
 public class ConfigurationSetting {
+    /**
+     * The default label for configuration settings is the null label, "\0".
+     * This gets URL encoded as "%00".
+     */
+    public static final String NULL_LABEL = "\0";
+
     @JsonProperty(value = "key", required = true)
     private String key;
 

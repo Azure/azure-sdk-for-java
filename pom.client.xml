@@ -111,8 +111,8 @@
     <log4j-api.version>2.11.1</log4j-api.version>
     <slf4j-api.version>1.7.5</slf4j-api.version>
 
-    <azure-client-runtime-v3.version>3.0.0-SNAPSHOT</azure-client-runtime-v3.version>
-    <client-runtime-v3.version>3.0.0-SNAPSHOT</client-runtime-v3.version>
+    <azure-common.version>1.0.0-SNAPSHOT</azure-common.version>
+    <azure-common-auth.version>1.0.0-SNAPSHOT</azure-common-auth.version>
 
     <!-- Test Dependency Versions -->
     <adal4j.version>1.4.0</adal4j.version>
@@ -159,9 +159,15 @@
       </dependency>
 
       <dependency>
-        <groupId>com.microsoft.azure.v3</groupId>
-        <artifactId>azure-client-runtime</artifactId>
-        <version>${azure-client-runtime-v3.version}</version>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-common</artifactId>
+        <version>${azure-common.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-common-auth</artifactId>
+        <version>${azure-common-auth.version}</version>
       </dependency>
 
       <dependency>
@@ -175,12 +181,6 @@
         <groupId>com.microsoft.rest</groupId>
         <artifactId>client-runtime</artifactId>
         <version>${client-runtime.version}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>com.microsoft.rest.v3</groupId>
-        <artifactId>client-runtime</artifactId>
-        <version>${client-runtime-v3.version}</version>
       </dependency>
 
       <!-- Jackson Dependencies -->
