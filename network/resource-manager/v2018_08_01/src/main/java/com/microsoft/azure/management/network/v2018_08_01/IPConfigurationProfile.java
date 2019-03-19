@@ -19,8 +19,8 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class IPConfigurationProfile extends SubResource {
     /**
-     * The reference of the subnet resource to create a contatainer network
-     * interface ip configruation.
+     * The reference of the subnet resource to create a container network
+     * interface ip configuration.
      */
     @JsonProperty(value = "properties.subnet")
     private SubnetInner subnet;
@@ -50,7 +50,7 @@ public class IPConfigurationProfile extends SubResource {
     private String etag;
 
     /**
-     * Get the reference of the subnet resource to create a contatainer network interface ip configruation.
+     * Get the reference of the subnet resource to create a container network interface ip configuration.
      *
      * @return the subnet value
      */
@@ -59,7 +59,7 @@ public class IPConfigurationProfile extends SubResource {
     }
 
     /**
-     * Set the reference of the subnet resource to create a contatainer network interface ip configruation.
+     * Set the reference of the subnet resource to create a container network interface ip configuration.
      *
      * @param subnet the subnet value to set
      * @return the IPConfigurationProfile object itself.
