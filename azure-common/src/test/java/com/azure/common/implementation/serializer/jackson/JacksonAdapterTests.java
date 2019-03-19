@@ -1,6 +1,6 @@
 package com.azure.common.implementation.serializer.jackson;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.azure.common.implementation.serializer.SerializerEncoding;
 import org.junit.Test;
 
@@ -19,34 +19,30 @@ public class JacksonAdapterTests {
     }
 
     @Test
-    public void mapWithNullKey() {
+    public void mapWithNullKey() throws IOException {
         final Map<String,String> map = new HashMap<>();
         map.put(null, null);
         final JacksonAdapter serializer = new JacksonAdapter();
-        try {
-            serializer.serialize(map, SerializerEncoding.JSON);
-            fail();
-        }
-        catch (Exception e) {
-            assertEquals(JsonMappingException.class, e.getClass());
-            assertTrue(e.getMessage().contains("Null key for a Map not allowed in JSON"));
-        }
+        assertEquals("{}", serializer.serialize(map, SerializerEncoding.JSON));
     }
 
     @Test
     public void mapWithEmptyKeyAndNullValue() throws IOException {
-        final Map<String,String> map = new HashMap<>();
-        map.put("", null);
+        final MapHolder mapHolder = new MapHolder();
+        mapHolder.map = new HashMap<>();
+        mapHolder.map.put("", null);
+
         final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{\"\":null}", serializer.serialize(map, SerializerEncoding.JSON));
+        assertEquals("{\"map\":{\"\":null}}", serializer.serialize(mapHolder, SerializerEncoding.JSON));
     }
 
     @Test
     public void mapWithEmptyKeyAndEmptyValue() throws IOException {
-        final Map<String,String> map = new HashMap<>();
-        map.put("", "");
+        final MapHolder mapHolder = new MapHolder();
+        mapHolder.map = new HashMap<>();
+        mapHolder.map.put("", "");
         final JacksonAdapter serializer = new JacksonAdapter();
-        assertEquals("{\"\":\"\"}", serializer.serialize(map, SerializerEncoding.JSON));
+        assertEquals("{\"map\":{\"\":\"\"}}", serializer.serialize(mapHolder, SerializerEncoding.JSON));
     }
 
     @Test
@@ -55,5 +51,10 @@ public class JacksonAdapterTests {
         map.put("", "test");
         final JacksonAdapter serializer = new JacksonAdapter();
         assertEquals("{\"\":\"test\"}", serializer.serialize(map, SerializerEncoding.JSON));
+    }
+
+    private static class MapHolder {
+        @JsonInclude(content = JsonInclude.Include.ALWAYS)
+        public Map<String,String> map = new HashMap<>();
     }
 }
