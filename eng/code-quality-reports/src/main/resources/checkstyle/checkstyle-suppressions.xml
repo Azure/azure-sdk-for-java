@@ -4,6 +4,11 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+  <!-- AutoRest generates 'final' on interfaces. Remove this suppression when:
+  https://github.com/Azure/autorest-clientruntime-for-java/issues/589 is fixed. -->
+  <suppress checks="RedundantModifier" files="batch/data-plane/.*/batch/protocol/.*\.java"/>
+  <suppress checks="RedundantModifier" files="keyvault/data-plane/.*/(IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
+
   <suppress checks="Javadoc" files="Test[s]?.*\.java"/>
   <suppress checks="Javadoc" files=".*Test[s]?\.java"/>
   <suppress checks="Javadoc" files=".*Test[s]?Base\.java"/>
@@ -42,4 +47,7 @@
   <!-- Public API already released with visibility modifier -->
   <suppress checks="VisibilityModifier" files="BatchOptions.java"/>
   <suppress checks="VisibilityModifier" files="EventHubClientImpl.java"/>
+
+  <!-- Public API already released without final modifier -->
+  <suppress checks="FinalClass" files="BatchClient.java"/>
 </suppressions>
