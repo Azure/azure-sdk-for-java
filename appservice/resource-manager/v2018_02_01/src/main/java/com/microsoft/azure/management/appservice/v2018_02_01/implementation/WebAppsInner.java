@@ -2281,7 +2281,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+     * @param name Unique name of the APP to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
@@ -2297,7 +2297,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+     * @param name Unique name of the APP to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2312,7 +2312,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+     * @param name Unique name of the APP to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -2331,7 +2331,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+     * @param name Unique name of the APP to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -2362,7 +2362,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+     * @param name Unique name of the APP to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws DefaultErrorResponseException thrown if the request is rejected by server
@@ -2378,7 +2378,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+     * @param name Unique name of the APP to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2393,7 +2393,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+     * @param name Unique name of the APP to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
@@ -2412,7 +2412,7 @@ public class WebAppsInner implements InnerSupportsGet<SiteInner>, InnerSupportsD
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot} parameter.
+     * @param name Unique name of the APP to create or update. To create or update a deployment slot, use the {slot} parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SiteInner object
