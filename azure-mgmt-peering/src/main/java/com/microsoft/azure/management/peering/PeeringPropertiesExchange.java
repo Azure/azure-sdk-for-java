@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.peering;
 
 import java.util.List;
+import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -22,10 +23,10 @@ public class PeeringPropertiesExchange {
     private List<ExchangeConnection> connections;
 
     /**
-     * The Autonomous System Number (ASN) associated with the peering.
+     * The reference of the peer ASN.
      */
     @JsonProperty(value = "peerAsn")
-    private Integer peerAsn;
+    private SubResource peerAsn;
 
     /**
      * Get the set of connections that constitute an exchange peering.
@@ -48,21 +49,21 @@ public class PeeringPropertiesExchange {
     }
 
     /**
-     * Get the Autonomous System Number (ASN) associated with the peering.
+     * Get the reference of the peer ASN.
      *
      * @return the peerAsn value
      */
-    public Integer peerAsn() {
+    public SubResource peerAsn() {
         return this.peerAsn;
     }
 
     /**
-     * Set the Autonomous System Number (ASN) associated with the peering.
+     * Set the reference of the peer ASN.
      *
      * @param peerAsn the peerAsn value to set
      * @return the PeeringPropertiesExchange object itself.
      */
-    public PeeringPropertiesExchange withPeerAsn(Integer peerAsn) {
+    public PeeringPropertiesExchange withPeerAsn(SubResource peerAsn) {
         this.peerAsn = peerAsn;
         return this;
     }

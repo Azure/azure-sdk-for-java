@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.peering;
 
 import java.util.List;
+import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -22,17 +23,17 @@ public class PeeringPropertiesDirect {
     private List<DirectConnection> connections;
 
     /**
-     * The Autonomous System Number (ASN) associated with the peering.
-     */
-    @JsonProperty(value = "peerAsn")
-    private Integer peerAsn;
-
-    /**
      * The flag that indicates whether or not the peering is used for peering
      * service.
      */
     @JsonProperty(value = "useForPeeringService")
     private Boolean useForPeeringService;
+
+    /**
+     * The reference of the peer ASN.
+     */
+    @JsonProperty(value = "peerAsn")
+    private SubResource peerAsn;
 
     /**
      * Get the set of connections that constitute a direct peering.
@@ -55,26 +56,6 @@ public class PeeringPropertiesDirect {
     }
 
     /**
-     * Get the Autonomous System Number (ASN) associated with the peering.
-     *
-     * @return the peerAsn value
-     */
-    public Integer peerAsn() {
-        return this.peerAsn;
-    }
-
-    /**
-     * Set the Autonomous System Number (ASN) associated with the peering.
-     *
-     * @param peerAsn the peerAsn value to set
-     * @return the PeeringPropertiesDirect object itself.
-     */
-    public PeeringPropertiesDirect withPeerAsn(Integer peerAsn) {
-        this.peerAsn = peerAsn;
-        return this;
-    }
-
-    /**
      * Get the flag that indicates whether or not the peering is used for peering service.
      *
      * @return the useForPeeringService value
@@ -91,6 +72,26 @@ public class PeeringPropertiesDirect {
      */
     public PeeringPropertiesDirect withUseForPeeringService(Boolean useForPeeringService) {
         this.useForPeeringService = useForPeeringService;
+        return this;
+    }
+
+    /**
+     * Get the reference of the peer ASN.
+     *
+     * @return the peerAsn value
+     */
+    public SubResource peerAsn() {
+        return this.peerAsn;
+    }
+
+    /**
+     * Set the reference of the peer ASN.
+     *
+     * @param peerAsn the peerAsn value to set
+     * @return the PeeringPropertiesDirect object itself.
+     */
+    public PeeringPropertiesDirect withPeerAsn(SubResource peerAsn) {
+        this.peerAsn = peerAsn;
         return this;
     }
 
