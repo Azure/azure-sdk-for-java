@@ -146,7 +146,7 @@ public interface EventHubClient {
      * @see #send(EventData, String)
      * @see PartitionSender#send(EventData)
      */
-    CompletableFuture<Void> send(final EventData data);
+    CompletableFuture<Void> send(EventData data);
 
     /**
      * Synchronous version of {@link #send(Iterable)}.
@@ -199,7 +199,7 @@ public interface EventHubClient {
      * @see #send(EventData, String)
      * @see PartitionSender#send(EventData)
      */
-    CompletableFuture<Void> send(final Iterable<EventData> eventDatas);
+    CompletableFuture<Void> send(Iterable<EventData> eventDatas);
 
     /**
      * Synchronous version of {@link #send(EventDataBatch)}.
@@ -221,7 +221,7 @@ public interface EventHubClient {
      * @see #send(Iterable)
      * @see EventDataBatch
      */
-    CompletableFuture<Void> send(final EventDataBatch eventDatas);
+    CompletableFuture<Void> send(EventDataBatch eventDatas);
 
     /**
      * Synchronous version of {@link #send(EventData, String)}.
@@ -261,7 +261,7 @@ public interface EventHubClient {
      * @see #send(EventData)
      * @see PartitionSender#send(EventData)
      */
-    CompletableFuture<Void> send(final EventData eventData, final String partitionKey);
+    CompletableFuture<Void> send(EventData eventData, String partitionKey);
 
     /**
      * Synchronous version of {@link #send(Iterable, String)}.
@@ -292,7 +292,7 @@ public interface EventHubClient {
      * @see #send(EventData)
      * @see PartitionSender#send(EventData)
      */
-    CompletableFuture<Void> send(final Iterable<EventData> eventDatas, final String partitionKey);
+    CompletableFuture<Void> send(Iterable<EventData> eventDatas, String partitionKey);
 
     /**
      * Synchronous version of {@link #createPartitionSender(String)}.
@@ -320,7 +320,7 @@ public interface EventHubClient {
      * @throws EventHubException if Service Bus service encountered problems during connection creation.
      * @see PartitionSender
      */
-    CompletableFuture<PartitionSender> createPartitionSender(final String partitionId) throws EventHubException;
+    CompletableFuture<PartitionSender> createPartitionSender(String partitionId) throws EventHubException;
 
     /**
      * Synchronous version of {@link #createReceiver(String, String, EventPosition)}.
@@ -346,7 +346,7 @@ public interface EventHubClient {
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      * @see PartitionReceiver
      */
-    CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition) throws EventHubException;
+    CompletableFuture<PartitionReceiver> createReceiver(String consumerGroupName, String partitionId, EventPosition eventPosition) throws EventHubException;
 
     /**
      * Synchronous version of {@link #createReceiver(String, String, EventPosition)}.
@@ -374,7 +374,7 @@ public interface EventHubClient {
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      * @see PartitionReceiver
      */
-    CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions) throws EventHubException;
+    CompletableFuture<PartitionReceiver> createReceiver(String consumerGroupName, String partitionId, EventPosition eventPosition, ReceiverOptions receiverOptions) throws EventHubException;
 
     /**
      * Synchronous version of {@link #createEpochReceiver(String, String, EventPosition, long)}.
@@ -410,7 +410,7 @@ public interface EventHubClient {
      * @see PartitionReceiver
      * @see ReceiverDisconnectedException
      */
-    CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch) throws EventHubException;
+    CompletableFuture<PartitionReceiver> createEpochReceiver(String consumerGroupName, String partitionId, EventPosition eventPosition, long epoch) throws EventHubException;
 
     /**
      * Synchronous version of {@link #createEpochReceiver(String, String, EventPosition, long)}.
@@ -448,7 +448,7 @@ public interface EventHubClient {
      * @see PartitionReceiver
      * @see ReceiverDisconnectedException
      */
-    CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions) throws EventHubException;
+    CompletableFuture<PartitionReceiver> createEpochReceiver(String consumerGroupName, String partitionId, EventPosition eventPosition, long epoch, ReceiverOptions receiverOptions) throws EventHubException;
 
     /**
      * Retrieves general information about an event hub (see {@link EventHubRuntimeInformation} for details).
