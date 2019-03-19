@@ -86,7 +86,9 @@ public final class ReactorDispatcher {
 
     private void signalWorkQueue() throws IOException {
         try {
-            while (this.ioSignal.sink().write(ByteBuffer.allocate(1)) == 0) {
+            ByteBuffer oneByteBuffer = ByteBuffer.allocate(1);
+            while (this.ioSignal.sink().write(oneByteBuffer) == 0) {
+                oneByteBuffer = ByteBuffer.allocate(1);
             }
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
             TRACE_LOGGER.info("signalWorkQueue failed with an error", ignorePipeClosedDuringReactorShutdown);
@@ -114,8 +116,10 @@ public final class ReactorDispatcher {
         @Override
         public void run(Selectable selectable) {
             try {
-                while (ioSignal.source().read(ByteBuffer.allocate(1024)) > 0) {
+                ByteBuffer oneKbByteBuffer = ByteBuffer.allocate(1024);
+                while (ioSignal.source().read(oneKbByteBuffer) > 0) {
                     // read until the end of the stream
+                    oneKbByteBuffer = ByteBuffer.allocate(1024);
                 }
             } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
                 TRACE_LOGGER.info("ScheduleHandler.run() failed with an error", ignorePipeClosedDuringReactorShutdown);
