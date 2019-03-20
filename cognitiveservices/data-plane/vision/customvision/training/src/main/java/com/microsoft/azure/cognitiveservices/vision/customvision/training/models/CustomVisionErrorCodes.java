@@ -109,6 +109,9 @@ public final class CustomVisionErrorCodes extends ExpandableStringEnum<CustomVis
     /** Static value BadRequestUnpublishFailed for CustomVisionErrorCodes. */
     public static final CustomVisionErrorCodes BAD_REQUEST_UNPUBLISH_FAILED = fromString("BadRequestUnpublishFailed");
 
+    /** Static value BadRequestIterationNotPublished for CustomVisionErrorCodes. */
+    public static final CustomVisionErrorCodes BAD_REQUEST_ITERATION_NOT_PUBLISHED = fromString("BadRequestIterationNotPublished");
+
     /** Static value BadRequestSubscriptionApi for CustomVisionErrorCodes. */
     public static final CustomVisionErrorCodes BAD_REQUEST_SUBSCRIPTION_API = fromString("BadRequestSubscriptionApi");
 
