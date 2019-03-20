@@ -8,21 +8,25 @@
 
 package com.microsoft.azure.management.peering.implementation;
 
+import com.microsoft.azure.management.peering.Kind;
 import com.microsoft.azure.management.peering.PeeringLocationPropertiesDirect;
 import com.microsoft.azure.management.peering.PeeringLocationPropertiesExchange;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Peering location is where connectivity could be established to the Microsoft
  * Cloud Edge.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("PeeringLocation")
 @JsonFlatten
 public class PeeringLocationInner {
+    /**
+     * The kind of peering that the peering location supports. Possible values
+     * include: 'Direct', 'Exchange'.
+     */
+    @JsonProperty(value = "kind")
+    private Kind kind;
+
     /**
      * The properties that define a direct peering location.
      */
@@ -70,6 +74,26 @@ public class PeeringLocationInner {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /**
+     * Get the kind of peering that the peering location supports. Possible values include: 'Direct', 'Exchange'.
+     *
+     * @return the kind value
+     */
+    public Kind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind of peering that the peering location supports. Possible values include: 'Direct', 'Exchange'.
+     *
+     * @param kind the kind value to set
+     * @return the PeeringLocationInner object itself.
+     */
+    public PeeringLocationInner withKind(Kind kind) {
+        this.kind = kind;
+        return this;
+    }
 
     /**
      * Get the properties that define a direct peering location.

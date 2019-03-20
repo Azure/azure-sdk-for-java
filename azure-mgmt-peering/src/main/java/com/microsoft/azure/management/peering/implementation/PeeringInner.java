@@ -9,12 +9,11 @@
 package com.microsoft.azure.management.peering.implementation;
 
 import com.microsoft.azure.management.peering.PeeringSku;
+import com.microsoft.azure.management.peering.Kind;
 import com.microsoft.azure.management.peering.PeeringPropertiesDirect;
 import com.microsoft.azure.management.peering.PeeringPropertiesExchange;
 import com.microsoft.azure.management.peering.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
@@ -22,8 +21,6 @@ import com.microsoft.azure.Resource;
  * Peering is a logical representation of a set of connections to the Microsoft
  * Cloud Edge at a location.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Peering")
 @JsonFlatten
 public class PeeringInner extends Resource {
     /**
@@ -31,6 +28,12 @@ public class PeeringInner extends Resource {
      */
     @JsonProperty(value = "sku", required = true)
     private PeeringSku sku;
+
+    /**
+     * The kind of the peering. Possible values include: 'Direct', 'Exchange'.
+     */
+    @JsonProperty(value = "kind", required = true)
+    private Kind kind;
 
     /**
      * The properties that define a direct peering.
@@ -74,6 +77,26 @@ public class PeeringInner extends Resource {
      */
     public PeeringInner withSku(PeeringSku sku) {
         this.sku = sku;
+        return this;
+    }
+
+    /**
+     * Get the kind of the peering. Possible values include: 'Direct', 'Exchange'.
+     *
+     * @return the kind value
+     */
+    public Kind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind of the peering. Possible values include: 'Direct', 'Exchange'.
+     *
+     * @param kind the kind value to set
+     * @return the PeeringInner object itself.
+     */
+    public PeeringInner withKind(Kind kind) {
+        this.kind = kind;
         return this;
     }
 
