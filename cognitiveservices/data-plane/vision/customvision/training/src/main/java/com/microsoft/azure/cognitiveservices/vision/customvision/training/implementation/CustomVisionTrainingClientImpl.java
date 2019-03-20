@@ -4951,10 +4951,9 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the boolean object if successful.
      */
-    public boolean unpublishIteration(UUID projectId, UUID iterationId) {
-        return unpublishIterationWithServiceResponseAsync(projectId, iterationId).toBlocking().single().body();
+    public void unpublishIteration(UUID projectId, UUID iterationId) {
+        unpublishIterationWithServiceResponseAsync(projectId, iterationId).toBlocking().single().body();
     }
 
     /**
@@ -4966,7 +4965,7 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Boolean> unpublishIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Boolean> serviceCallback) {
+    public ServiceFuture<Void> unpublishIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(unpublishIterationWithServiceResponseAsync(projectId, iterationId), serviceCallback);
     }
 
@@ -4976,12 +4975,12 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @param projectId The project id.
      * @param iterationId The iteration id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Boolean object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Boolean> unpublishIterationAsync(UUID projectId, UUID iterationId) {
-        return unpublishIterationWithServiceResponseAsync(projectId, iterationId).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
+    public Observable<Void> unpublishIterationAsync(UUID projectId, UUID iterationId) {
+        return unpublishIterationWithServiceResponseAsync(projectId, iterationId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Boolean call(ServiceResponse<Boolean> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.body();
             }
         });
@@ -4993,9 +4992,9 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
      * @param projectId The project id.
      * @param iterationId The iteration id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Boolean object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Boolean>> unpublishIterationWithServiceResponseAsync(UUID projectId, UUID iterationId) {
+    public Observable<ServiceResponse<Void>> unpublishIterationWithServiceResponseAsync(UUID projectId, UUID iterationId) {
         if (this.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.endpoint() is required and cannot be null.");
         }
@@ -5010,11 +5009,11 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.endpoint());
         return service.unpublishIteration(projectId, iterationId, this.apiKey(), this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Boolean>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Boolean>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Boolean> clientResponse = unpublishIterationDelegate(response);
+                        ServiceResponse<Void> clientResponse = unpublishIterationDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -5023,9 +5022,9 @@ public class CustomVisionTrainingClientImpl extends AzureServiceClient implement
             });
     }
 
-    private ServiceResponse<Boolean> unpublishIterationDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<Boolean, CustomVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<Boolean>() { }.getType())
+    private ServiceResponse<Void> unpublishIterationDelegate(Response<ResponseBody> response) throws CustomVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<Void, CustomVisionErrorException>newInstance(this.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CustomVisionErrorException.class)
                 .build(response);
     }

@@ -2531,9 +2531,8 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CustomVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the boolean object if successful.
      */
-    boolean unpublishIteration(UUID projectId, UUID iterationId);
+    void unpublishIteration(UUID projectId, UUID iterationId);
 
     /**
      * Unpublish a specific iteration.
@@ -2544,7 +2543,7 @@ public interface CustomVisionTrainingClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Boolean> unpublishIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Boolean> serviceCallback);
+    ServiceFuture<Void> unpublishIterationAsync(UUID projectId, UUID iterationId, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Unpublish a specific iteration.
@@ -2552,9 +2551,9 @@ public interface CustomVisionTrainingClient {
      * @param projectId The project id.
      * @param iterationId The iteration id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the boolean object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Boolean> unpublishIterationAsync(UUID projectId, UUID iterationId);
+    Observable<Void> unpublishIterationAsync(UUID projectId, UUID iterationId);
 
     /**
      * Unpublish a specific iteration.
@@ -2562,9 +2561,9 @@ public interface CustomVisionTrainingClient {
      * @param projectId The project id.
      * @param iterationId The iteration id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the boolean object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Boolean>> unpublishIterationWithServiceResponseAsync(UUID projectId, UUID iterationId);
+    Observable<ServiceResponse<Void>> unpublishIterationWithServiceResponseAsync(UUID projectId, UUID iterationId);
 
     /**
      * Get the list of exports for a specific iteration.
