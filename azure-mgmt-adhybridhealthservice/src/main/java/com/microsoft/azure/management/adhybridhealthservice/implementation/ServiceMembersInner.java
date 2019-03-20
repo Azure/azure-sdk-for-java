@@ -117,8 +117,8 @@ public class ServiceMembersInner implements InnerSupportsDelete<Void> {
         Observable<Response<ResponseBody>> getServiceConfiguration(@Path("serviceName") String serviceName, @Path("serviceMemberId") String serviceMemberId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.adhybridhealthservice.ServiceMembers getConnectorMetadata" })
-        @GET("providers/Microsoft.ADHybridHealthService/services/{serviceName}/servicemembers/{serviceMemberId}/metrics/connectormetadata")
-        Observable<Response<ResponseBody>> getConnectorMetadata(@Path("serviceName") String serviceName, @Path("serviceMemberId") UUID serviceMemberId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.ADHybridHealthService/services/{serviceName}/servicemembers/{serviceMemberId}/metrics/{metricName}")
+        Observable<Response<ResponseBody>> getConnectorMetadata(@Path("serviceName") String serviceName, @Path("serviceMemberId") UUID serviceMemberId, @Path("metricName") String metricName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.adhybridhealthservice.ServiceMembers listNext" })
         @GET
@@ -1884,39 +1884,42 @@ public class ServiceMembersInner implements InnerSupportsDelete<Void> {
      * Gets the list of connectors and run profile names.
      *
      * @param serviceName The name of the service.
-     * @param serviceMemberId The server id.
+     * @param serviceMemberId The servic member id.
+     * @param metricName The name of the metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ConnectorMetadataInner object if successful.
      */
-    public ConnectorMetadataInner getConnectorMetadata(String serviceName, UUID serviceMemberId) {
-        return getConnectorMetadataWithServiceResponseAsync(serviceName, serviceMemberId).toBlocking().single().body();
+    public ConnectorMetadataInner getConnectorMetadata(String serviceName, UUID serviceMemberId, String metricName) {
+        return getConnectorMetadataWithServiceResponseAsync(serviceName, serviceMemberId, metricName).toBlocking().single().body();
     }
 
     /**
      * Gets the list of connectors and run profile names.
      *
      * @param serviceName The name of the service.
-     * @param serviceMemberId The server id.
+     * @param serviceMemberId The servic member id.
+     * @param metricName The name of the metric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ConnectorMetadataInner> getConnectorMetadataAsync(String serviceName, UUID serviceMemberId, final ServiceCallback<ConnectorMetadataInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getConnectorMetadataWithServiceResponseAsync(serviceName, serviceMemberId), serviceCallback);
+    public ServiceFuture<ConnectorMetadataInner> getConnectorMetadataAsync(String serviceName, UUID serviceMemberId, String metricName, final ServiceCallback<ConnectorMetadataInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getConnectorMetadataWithServiceResponseAsync(serviceName, serviceMemberId, metricName), serviceCallback);
     }
 
     /**
      * Gets the list of connectors and run profile names.
      *
      * @param serviceName The name of the service.
-     * @param serviceMemberId The server id.
+     * @param serviceMemberId The servic member id.
+     * @param metricName The name of the metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectorMetadataInner object
      */
-    public Observable<ConnectorMetadataInner> getConnectorMetadataAsync(String serviceName, UUID serviceMemberId) {
-        return getConnectorMetadataWithServiceResponseAsync(serviceName, serviceMemberId).map(new Func1<ServiceResponse<ConnectorMetadataInner>, ConnectorMetadataInner>() {
+    public Observable<ConnectorMetadataInner> getConnectorMetadataAsync(String serviceName, UUID serviceMemberId, String metricName) {
+        return getConnectorMetadataWithServiceResponseAsync(serviceName, serviceMemberId, metricName).map(new Func1<ServiceResponse<ConnectorMetadataInner>, ConnectorMetadataInner>() {
             @Override
             public ConnectorMetadataInner call(ServiceResponse<ConnectorMetadataInner> response) {
                 return response.body();
@@ -1928,21 +1931,25 @@ public class ServiceMembersInner implements InnerSupportsDelete<Void> {
      * Gets the list of connectors and run profile names.
      *
      * @param serviceName The name of the service.
-     * @param serviceMemberId The server id.
+     * @param serviceMemberId The servic member id.
+     * @param metricName The name of the metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectorMetadataInner object
      */
-    public Observable<ServiceResponse<ConnectorMetadataInner>> getConnectorMetadataWithServiceResponseAsync(String serviceName, UUID serviceMemberId) {
+    public Observable<ServiceResponse<ConnectorMetadataInner>> getConnectorMetadataWithServiceResponseAsync(String serviceName, UUID serviceMemberId, String metricName) {
         if (serviceName == null) {
             throw new IllegalArgumentException("Parameter serviceName is required and cannot be null.");
         }
         if (serviceMemberId == null) {
             throw new IllegalArgumentException("Parameter serviceMemberId is required and cannot be null.");
         }
+        if (metricName == null) {
+            throw new IllegalArgumentException("Parameter metricName is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getConnectorMetadata(serviceName, serviceMemberId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getConnectorMetadata(serviceName, serviceMemberId, metricName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ConnectorMetadataInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ConnectorMetadataInner>> call(Response<ResponseBody> response) {

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.adhybridhealthservice;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Details of the connector. Only has ConnectorId &amp; Display Name.
+ * Details of the connector.
  */
 public class ConnectorMetadataDetails {
     /**
