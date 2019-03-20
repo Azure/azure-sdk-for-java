@@ -287,7 +287,7 @@ public Mono<RestResponse<Secret>> restoreSecretAsync(byte[] backup);
 // TODO: Write Backed up secret to a file -- TO
 
 // restore the secret from backup
-Secret restored = await secretClient.restoreSecretAsync(backupBytes).block().body();
+Secret restored = secretClient.restoreSecretAsync(backupBytes).block().body();
 ~~~
 ### Replaces:
 ~~~ java
