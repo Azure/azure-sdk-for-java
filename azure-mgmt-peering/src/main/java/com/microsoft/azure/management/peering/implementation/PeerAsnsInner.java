@@ -245,6 +245,7 @@ public class PeerAsnsInner {
     private ServiceResponse<PeerAsnInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PeerAsnInner, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PeerAsnInner>() { }.getType())
+                .register(201, new TypeToken<PeerAsnInner>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
