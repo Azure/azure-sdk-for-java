@@ -36,8 +36,8 @@ public class EnrollmentAccountContext {
     /**
      * The enrollment account id.
      */
-    @JsonProperty(value = "enrollmentAccountId")
-    private String enrollmentAccountId;
+    @JsonProperty(value = "enrollmentAccountName")
+    private String enrollmentAccountName;
 
     /**
      * Get the cost center name.
@@ -102,20 +102,20 @@ public class EnrollmentAccountContext {
     /**
      * Get the enrollment account id.
      *
-     * @return the enrollmentAccountId value
+     * @return the enrollmentAccountName value
      */
-    public String enrollmentAccountId() {
-        return this.enrollmentAccountId;
+    public String enrollmentAccountName() {
+        return this.enrollmentAccountName;
     }
 
     /**
      * Set the enrollment account id.
      *
-     * @param enrollmentAccountId the enrollmentAccountId value to set
+     * @param enrollmentAccountName the enrollmentAccountName value to set
      * @return the EnrollmentAccountContext object itself.
      */
-    public EnrollmentAccountContext withEnrollmentAccountId(String enrollmentAccountId) {
-        this.enrollmentAccountId = enrollmentAccountId;
+    public EnrollmentAccountContext withEnrollmentAccountName(String enrollmentAccountName) {
+        this.enrollmentAccountName = enrollmentAccountName;
         return this;
     }
 

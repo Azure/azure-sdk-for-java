@@ -18,16 +18,16 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.ProductStatusT
 
 class InvoiceSectionBillingAccountProductSummaryImpl extends IndexableRefreshableWrapperImpl<InvoiceSectionBillingAccountProductSummary, ProductSummaryInner> implements InvoiceSectionBillingAccountProductSummary {
     private final BillingManager manager;
-    private String billingAccountId;
-    private String invoiceSectionId;
+    private String billingAccountName;
+    private String invoiceSectionName;
     private String productName;
 
     InvoiceSectionBillingAccountProductSummaryImpl(ProductSummaryInner inner,  BillingManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
-        this.billingAccountId = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
-        this.invoiceSectionId = IdParsingUtils.getValueFromIdByName(inner.id(), "invoiceSections");
+        this.billingAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
+        this.invoiceSectionName = IdParsingUtils.getValueFromIdByName(inner.id(), "invoiceSections");
         this.productName = IdParsingUtils.getValueFromIdByName(inner.id(), "products");
     }
 
@@ -39,7 +39,7 @@ class InvoiceSectionBillingAccountProductSummaryImpl extends IndexableRefreshabl
     @Override
     protected Observable<ProductSummaryInner> getInnerAsync() {
         ProductsInner client = this.manager().inner().products();
-        return client.getAsync(this.billingAccountId, this.invoiceSectionId, this.productName);
+        return client.getAsync(this.billingAccountName, this.invoiceSectionName, this.productName);
     }
 
 

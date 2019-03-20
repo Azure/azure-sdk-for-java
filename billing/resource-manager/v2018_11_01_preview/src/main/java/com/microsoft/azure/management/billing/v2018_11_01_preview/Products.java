@@ -19,23 +19,23 @@ public interface Products extends HasInner<ProductsInner> {
     /**
      * The operation to transfer a Product to another InvoiceSection.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingAccountProductSummary> transferAsync(String billingAccountId, String invoiceSectionId, String productName);
+    Observable<BillingAccountProductSummary> transferAsync(String billingAccountName, String invoiceSectionName, String productName);
 
     /**
      * Get a single product by name.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSectionBillingAccountProductSummary> getAsync(String billingAccountId, String invoiceSectionId, String productName);
+    Observable<InvoiceSectionBillingAccountProductSummary> getAsync(String billingAccountName, String invoiceSectionName, String productName);
 
 }

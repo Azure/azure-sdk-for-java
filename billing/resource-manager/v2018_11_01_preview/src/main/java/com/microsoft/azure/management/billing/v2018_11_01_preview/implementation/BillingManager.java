@@ -20,14 +20,14 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccount
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountsWithCreateInvoiceSectionPermissions;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.AvailableBalanceByBillingProfiles;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentMethodsByBillingProfiles;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilesByBillingAccountIds;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilesByBillingAccountNames;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfiles;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsByBillingAccountIds;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsByBillingAccountNames;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSections;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsWithCreateSubscriptionPermissions;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.DepartmentsByBillingAccountIds;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.DepartmentsByBillingAccountNames;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Departments;
-import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccountsByBillingAccountIds;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccountsByBillingAccountNames;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccounts;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoicesByBillingAccounts;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoicePricesheets;
@@ -44,6 +44,15 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsBy
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Policys;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingPropertys;
 import com.microsoft.azure.management.billing.v2018_11_01_preview.Operations;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountbillingPermissions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsbillingPermissions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilebillingPermissions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountbillingRoleDefinitions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionbillingRoleDefinitions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilebillingRoleDefinitions;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccountbillingRoleAssignments;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionbillingRoleAssignments;
+import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfilebillingRoleAssignments;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -55,14 +64,14 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private BillingAccountsWithCreateInvoiceSectionPermissions billingAccountsWithCreateInvoiceSectionPermissions;
     private AvailableBalanceByBillingProfiles availableBalanceByBillingProfiles;
     private PaymentMethodsByBillingProfiles paymentMethodsByBillingProfiles;
-    private BillingProfilesByBillingAccountIds billingProfilesByBillingAccountIds;
+    private BillingProfilesByBillingAccountNames billingProfilesByBillingAccountNames;
     private BillingProfiles billingProfiles;
-    private InvoiceSectionsByBillingAccountIds invoiceSectionsByBillingAccountIds;
+    private InvoiceSectionsByBillingAccountNames invoiceSectionsByBillingAccountNames;
     private InvoiceSections invoiceSections;
     private InvoiceSectionsWithCreateSubscriptionPermissions invoiceSectionsWithCreateSubscriptionPermissions;
-    private DepartmentsByBillingAccountIds departmentsByBillingAccountIds;
+    private DepartmentsByBillingAccountNames departmentsByBillingAccountNames;
     private Departments departments;
-    private EnrollmentAccountsByBillingAccountIds enrollmentAccountsByBillingAccountIds;
+    private EnrollmentAccountsByBillingAccountNames enrollmentAccountsByBillingAccountNames;
     private EnrollmentAccounts enrollmentAccounts;
     private InvoicesByBillingAccounts invoicesByBillingAccounts;
     private InvoicePricesheets invoicePricesheets;
@@ -79,6 +88,15 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     private Policys policys;
     private BillingPropertys billingPropertys;
     private Operations operations;
+    private BillingAccountbillingPermissions billingAccountbillingPermissions;
+    private InvoiceSectionsbillingPermissions invoiceSectionsbillingPermissions;
+    private BillingProfilebillingPermissions billingProfilebillingPermissions;
+    private BillingAccountbillingRoleDefinitions billingAccountbillingRoleDefinitions;
+    private InvoiceSectionbillingRoleDefinitions invoiceSectionbillingRoleDefinitions;
+    private BillingProfilebillingRoleDefinitions billingProfilebillingRoleDefinitions;
+    private BillingAccountbillingRoleAssignments billingAccountbillingRoleAssignments;
+    private InvoiceSectionbillingRoleAssignments invoiceSectionbillingRoleAssignments;
+    private BillingProfilebillingRoleAssignments billingProfilebillingRoleAssignments;
     /**
     * Get a Configurable instance that can be used to create BillingManager with optional configuration.
     *
@@ -167,13 +185,13 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage BillingProfilesByBillingAccountIds.
+     * @return Entry point to manage BillingProfilesByBillingAccountNames.
      */
-    public BillingProfilesByBillingAccountIds billingProfilesByBillingAccountIds() {
-        if (this.billingProfilesByBillingAccountIds == null) {
-            this.billingProfilesByBillingAccountIds = new BillingProfilesByBillingAccountIdsImpl(this);
+    public BillingProfilesByBillingAccountNames billingProfilesByBillingAccountNames() {
+        if (this.billingProfilesByBillingAccountNames == null) {
+            this.billingProfilesByBillingAccountNames = new BillingProfilesByBillingAccountNamesImpl(this);
         }
-        return this.billingProfilesByBillingAccountIds;
+        return this.billingProfilesByBillingAccountNames;
     }
 
     /**
@@ -187,13 +205,13 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage InvoiceSectionsByBillingAccountIds.
+     * @return Entry point to manage InvoiceSectionsByBillingAccountNames.
      */
-    public InvoiceSectionsByBillingAccountIds invoiceSectionsByBillingAccountIds() {
-        if (this.invoiceSectionsByBillingAccountIds == null) {
-            this.invoiceSectionsByBillingAccountIds = new InvoiceSectionsByBillingAccountIdsImpl(this);
+    public InvoiceSectionsByBillingAccountNames invoiceSectionsByBillingAccountNames() {
+        if (this.invoiceSectionsByBillingAccountNames == null) {
+            this.invoiceSectionsByBillingAccountNames = new InvoiceSectionsByBillingAccountNamesImpl(this);
         }
-        return this.invoiceSectionsByBillingAccountIds;
+        return this.invoiceSectionsByBillingAccountNames;
     }
 
     /**
@@ -217,13 +235,13 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage DepartmentsByBillingAccountIds.
+     * @return Entry point to manage DepartmentsByBillingAccountNames.
      */
-    public DepartmentsByBillingAccountIds departmentsByBillingAccountIds() {
-        if (this.departmentsByBillingAccountIds == null) {
-            this.departmentsByBillingAccountIds = new DepartmentsByBillingAccountIdsImpl(this);
+    public DepartmentsByBillingAccountNames departmentsByBillingAccountNames() {
+        if (this.departmentsByBillingAccountNames == null) {
+            this.departmentsByBillingAccountNames = new DepartmentsByBillingAccountNamesImpl(this);
         }
-        return this.departmentsByBillingAccountIds;
+        return this.departmentsByBillingAccountNames;
     }
 
     /**
@@ -237,13 +255,13 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
     }
 
     /**
-     * @return Entry point to manage EnrollmentAccountsByBillingAccountIds.
+     * @return Entry point to manage EnrollmentAccountsByBillingAccountNames.
      */
-    public EnrollmentAccountsByBillingAccountIds enrollmentAccountsByBillingAccountIds() {
-        if (this.enrollmentAccountsByBillingAccountIds == null) {
-            this.enrollmentAccountsByBillingAccountIds = new EnrollmentAccountsByBillingAccountIdsImpl(this);
+    public EnrollmentAccountsByBillingAccountNames enrollmentAccountsByBillingAccountNames() {
+        if (this.enrollmentAccountsByBillingAccountNames == null) {
+            this.enrollmentAccountsByBillingAccountNames = new EnrollmentAccountsByBillingAccountNamesImpl(this);
         }
-        return this.enrollmentAccountsByBillingAccountIds;
+        return this.enrollmentAccountsByBillingAccountNames;
     }
 
     /**
@@ -404,6 +422,96 @@ public final class BillingManager extends ManagerCore<BillingManager, BillingMan
             this.operations = new OperationsImpl(this);
         }
         return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage BillingAccountbillingPermissions.
+     */
+    public BillingAccountbillingPermissions billingAccountbillingPermissions() {
+        if (this.billingAccountbillingPermissions == null) {
+            this.billingAccountbillingPermissions = new BillingAccountbillingPermissionsImpl(this);
+        }
+        return this.billingAccountbillingPermissions;
+    }
+
+    /**
+     * @return Entry point to manage InvoiceSectionsbillingPermissions.
+     */
+    public InvoiceSectionsbillingPermissions invoiceSectionsbillingPermissions() {
+        if (this.invoiceSectionsbillingPermissions == null) {
+            this.invoiceSectionsbillingPermissions = new InvoiceSectionsbillingPermissionsImpl(this);
+        }
+        return this.invoiceSectionsbillingPermissions;
+    }
+
+    /**
+     * @return Entry point to manage BillingProfilebillingPermissions.
+     */
+    public BillingProfilebillingPermissions billingProfilebillingPermissions() {
+        if (this.billingProfilebillingPermissions == null) {
+            this.billingProfilebillingPermissions = new BillingProfilebillingPermissionsImpl(this);
+        }
+        return this.billingProfilebillingPermissions;
+    }
+
+    /**
+     * @return Entry point to manage BillingAccountbillingRoleDefinitions.
+     */
+    public BillingAccountbillingRoleDefinitions billingAccountbillingRoleDefinitions() {
+        if (this.billingAccountbillingRoleDefinitions == null) {
+            this.billingAccountbillingRoleDefinitions = new BillingAccountbillingRoleDefinitionsImpl(this);
+        }
+        return this.billingAccountbillingRoleDefinitions;
+    }
+
+    /**
+     * @return Entry point to manage InvoiceSectionbillingRoleDefinitions.
+     */
+    public InvoiceSectionbillingRoleDefinitions invoiceSectionbillingRoleDefinitions() {
+        if (this.invoiceSectionbillingRoleDefinitions == null) {
+            this.invoiceSectionbillingRoleDefinitions = new InvoiceSectionbillingRoleDefinitionsImpl(this);
+        }
+        return this.invoiceSectionbillingRoleDefinitions;
+    }
+
+    /**
+     * @return Entry point to manage BillingProfilebillingRoleDefinitions.
+     */
+    public BillingProfilebillingRoleDefinitions billingProfilebillingRoleDefinitions() {
+        if (this.billingProfilebillingRoleDefinitions == null) {
+            this.billingProfilebillingRoleDefinitions = new BillingProfilebillingRoleDefinitionsImpl(this);
+        }
+        return this.billingProfilebillingRoleDefinitions;
+    }
+
+    /**
+     * @return Entry point to manage BillingAccountbillingRoleAssignments.
+     */
+    public BillingAccountbillingRoleAssignments billingAccountbillingRoleAssignments() {
+        if (this.billingAccountbillingRoleAssignments == null) {
+            this.billingAccountbillingRoleAssignments = new BillingAccountbillingRoleAssignmentsImpl(this);
+        }
+        return this.billingAccountbillingRoleAssignments;
+    }
+
+    /**
+     * @return Entry point to manage InvoiceSectionbillingRoleAssignments.
+     */
+    public InvoiceSectionbillingRoleAssignments invoiceSectionbillingRoleAssignments() {
+        if (this.invoiceSectionbillingRoleAssignments == null) {
+            this.invoiceSectionbillingRoleAssignments = new InvoiceSectionbillingRoleAssignmentsImpl(this);
+        }
+        return this.invoiceSectionbillingRoleAssignments;
+    }
+
+    /**
+     * @return Entry point to manage BillingProfilebillingRoleAssignments.
+     */
+    public BillingProfilebillingRoleAssignments billingProfilebillingRoleAssignments() {
+        if (this.billingProfilebillingRoleAssignments == null) {
+            this.billingProfilebillingRoleAssignments = new BillingProfilebillingRoleAssignmentsImpl(this);
+        }
+        return this.billingProfilebillingRoleAssignments;
     }
 
     /**

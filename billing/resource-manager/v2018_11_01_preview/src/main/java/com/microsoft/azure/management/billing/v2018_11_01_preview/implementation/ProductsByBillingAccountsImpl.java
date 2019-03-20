@@ -33,9 +33,9 @@ class ProductsByBillingAccountsImpl extends WrapperImpl<ProductsByBillingAccount
     }
 
     @Override
-    public Observable<BillingAccountProductSummary> listAsync(final String billingAccountId) {
+    public Observable<BillingAccountProductSummary> listAsync(final String billingAccountName) {
         ProductsByBillingAccountsInner client = this.inner();
-        return client.listAsync(billingAccountId)
+        return client.listAsync(billingAccountName)
         .flatMapIterable(new Func1<Page<ProductSummaryInner>, Iterable<ProductSummaryInner>>() {
             @Override
             public Iterable<ProductSummaryInner> call(Page<ProductSummaryInner> page) {

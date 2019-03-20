@@ -28,9 +28,9 @@ class BillingSubscriptionsByBillingProfilesImpl extends WrapperImpl<BillingSubsc
     }
 
     @Override
-    public Observable<BillingSubscriptionsListResult> listAsync(String billingAccountId, String billingProfileId) {
+    public Observable<BillingSubscriptionsListResult> listAsync(String billingAccountName, String billingProfileName) {
         BillingSubscriptionsByBillingProfilesInner client = this.inner();
-        return client.listAsync(billingAccountId, billingProfileId)
+        return client.listAsync(billingAccountName, billingProfileName)
         .map(new Func1<BillingSubscriptionsListResultInner, BillingSubscriptionsListResult>() {
             @Override
             public BillingSubscriptionsListResult call(BillingSubscriptionsListResultInner inner) {

@@ -19,11 +19,11 @@ public interface EnrollmentAccounts extends HasInner<EnrollmentAccountsInner> {
     /**
      * Get the enrollment account by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param enrollmentAccountId Enrollment Account Id.
+     * @param billingAccountName billing Account Id.
+     * @param enrollmentAccountName Enrollment Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<EnrollmentAccount> getByEnrollmentAccountAccountIdAsync(String billingAccountId, String enrollmentAccountId);
+    Observable<EnrollmentAccount> getByEnrollmentAccountAccountIdAsync(String billingAccountName, String enrollmentAccountName);
 
 }

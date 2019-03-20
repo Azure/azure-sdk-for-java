@@ -206,16 +206,16 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The BillingProfilesByBillingAccountIdsInner object to access its operations.
+     * The BillingProfilesByBillingAccountNamesInner object to access its operations.
      */
-    private BillingProfilesByBillingAccountIdsInner billingProfilesByBillingAccountIds;
+    private BillingProfilesByBillingAccountNamesInner billingProfilesByBillingAccountNames;
 
     /**
-     * Gets the BillingProfilesByBillingAccountIdsInner object to access its operations.
-     * @return the BillingProfilesByBillingAccountIdsInner object.
+     * Gets the BillingProfilesByBillingAccountNamesInner object to access its operations.
+     * @return the BillingProfilesByBillingAccountNamesInner object.
      */
-    public BillingProfilesByBillingAccountIdsInner billingProfilesByBillingAccountIds() {
-        return this.billingProfilesByBillingAccountIds;
+    public BillingProfilesByBillingAccountNamesInner billingProfilesByBillingAccountNames() {
+        return this.billingProfilesByBillingAccountNames;
     }
 
     /**
@@ -232,16 +232,16 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The InvoiceSectionsByBillingAccountIdsInner object to access its operations.
+     * The InvoiceSectionsByBillingAccountNamesInner object to access its operations.
      */
-    private InvoiceSectionsByBillingAccountIdsInner invoiceSectionsByBillingAccountIds;
+    private InvoiceSectionsByBillingAccountNamesInner invoiceSectionsByBillingAccountNames;
 
     /**
-     * Gets the InvoiceSectionsByBillingAccountIdsInner object to access its operations.
-     * @return the InvoiceSectionsByBillingAccountIdsInner object.
+     * Gets the InvoiceSectionsByBillingAccountNamesInner object to access its operations.
+     * @return the InvoiceSectionsByBillingAccountNamesInner object.
      */
-    public InvoiceSectionsByBillingAccountIdsInner invoiceSectionsByBillingAccountIds() {
-        return this.invoiceSectionsByBillingAccountIds;
+    public InvoiceSectionsByBillingAccountNamesInner invoiceSectionsByBillingAccountNames() {
+        return this.invoiceSectionsByBillingAccountNames;
     }
 
     /**
@@ -271,16 +271,16 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The DepartmentsByBillingAccountIdsInner object to access its operations.
+     * The DepartmentsByBillingAccountNamesInner object to access its operations.
      */
-    private DepartmentsByBillingAccountIdsInner departmentsByBillingAccountIds;
+    private DepartmentsByBillingAccountNamesInner departmentsByBillingAccountNames;
 
     /**
-     * Gets the DepartmentsByBillingAccountIdsInner object to access its operations.
-     * @return the DepartmentsByBillingAccountIdsInner object.
+     * Gets the DepartmentsByBillingAccountNamesInner object to access its operations.
+     * @return the DepartmentsByBillingAccountNamesInner object.
      */
-    public DepartmentsByBillingAccountIdsInner departmentsByBillingAccountIds() {
-        return this.departmentsByBillingAccountIds;
+    public DepartmentsByBillingAccountNamesInner departmentsByBillingAccountNames() {
+        return this.departmentsByBillingAccountNames;
     }
 
     /**
@@ -297,16 +297,16 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The EnrollmentAccountsByBillingAccountIdsInner object to access its operations.
+     * The EnrollmentAccountsByBillingAccountNamesInner object to access its operations.
      */
-    private EnrollmentAccountsByBillingAccountIdsInner enrollmentAccountsByBillingAccountIds;
+    private EnrollmentAccountsByBillingAccountNamesInner enrollmentAccountsByBillingAccountNames;
 
     /**
-     * Gets the EnrollmentAccountsByBillingAccountIdsInner object to access its operations.
-     * @return the EnrollmentAccountsByBillingAccountIdsInner object.
+     * Gets the EnrollmentAccountsByBillingAccountNamesInner object to access its operations.
+     * @return the EnrollmentAccountsByBillingAccountNamesInner object.
      */
-    public EnrollmentAccountsByBillingAccountIdsInner enrollmentAccountsByBillingAccountIds() {
-        return this.enrollmentAccountsByBillingAccountIds;
+    public EnrollmentAccountsByBillingAccountNamesInner enrollmentAccountsByBillingAccountNames() {
+        return this.enrollmentAccountsByBillingAccountNames;
     }
 
     /**
@@ -518,6 +518,123 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The BillingAccountbillingPermissionsInner object to access its operations.
+     */
+    private BillingAccountbillingPermissionsInner billingAccountbillingPermissions;
+
+    /**
+     * Gets the BillingAccountbillingPermissionsInner object to access its operations.
+     * @return the BillingAccountbillingPermissionsInner object.
+     */
+    public BillingAccountbillingPermissionsInner billingAccountbillingPermissions() {
+        return this.billingAccountbillingPermissions;
+    }
+
+    /**
+     * The InvoiceSectionsbillingPermissionsInner object to access its operations.
+     */
+    private InvoiceSectionsbillingPermissionsInner invoiceSectionsbillingPermissions;
+
+    /**
+     * Gets the InvoiceSectionsbillingPermissionsInner object to access its operations.
+     * @return the InvoiceSectionsbillingPermissionsInner object.
+     */
+    public InvoiceSectionsbillingPermissionsInner invoiceSectionsbillingPermissions() {
+        return this.invoiceSectionsbillingPermissions;
+    }
+
+    /**
+     * The BillingProfilebillingPermissionsInner object to access its operations.
+     */
+    private BillingProfilebillingPermissionsInner billingProfilebillingPermissions;
+
+    /**
+     * Gets the BillingProfilebillingPermissionsInner object to access its operations.
+     * @return the BillingProfilebillingPermissionsInner object.
+     */
+    public BillingProfilebillingPermissionsInner billingProfilebillingPermissions() {
+        return this.billingProfilebillingPermissions;
+    }
+
+    /**
+     * The BillingAccountbillingRoleDefinitionsInner object to access its operations.
+     */
+    private BillingAccountbillingRoleDefinitionsInner billingAccountbillingRoleDefinitions;
+
+    /**
+     * Gets the BillingAccountbillingRoleDefinitionsInner object to access its operations.
+     * @return the BillingAccountbillingRoleDefinitionsInner object.
+     */
+    public BillingAccountbillingRoleDefinitionsInner billingAccountbillingRoleDefinitions() {
+        return this.billingAccountbillingRoleDefinitions;
+    }
+
+    /**
+     * The InvoiceSectionbillingRoleDefinitionsInner object to access its operations.
+     */
+    private InvoiceSectionbillingRoleDefinitionsInner invoiceSectionbillingRoleDefinitions;
+
+    /**
+     * Gets the InvoiceSectionbillingRoleDefinitionsInner object to access its operations.
+     * @return the InvoiceSectionbillingRoleDefinitionsInner object.
+     */
+    public InvoiceSectionbillingRoleDefinitionsInner invoiceSectionbillingRoleDefinitions() {
+        return this.invoiceSectionbillingRoleDefinitions;
+    }
+
+    /**
+     * The BillingProfilebillingRoleDefinitionsInner object to access its operations.
+     */
+    private BillingProfilebillingRoleDefinitionsInner billingProfilebillingRoleDefinitions;
+
+    /**
+     * Gets the BillingProfilebillingRoleDefinitionsInner object to access its operations.
+     * @return the BillingProfilebillingRoleDefinitionsInner object.
+     */
+    public BillingProfilebillingRoleDefinitionsInner billingProfilebillingRoleDefinitions() {
+        return this.billingProfilebillingRoleDefinitions;
+    }
+
+    /**
+     * The BillingAccountbillingRoleAssignmentsInner object to access its operations.
+     */
+    private BillingAccountbillingRoleAssignmentsInner billingAccountbillingRoleAssignments;
+
+    /**
+     * Gets the BillingAccountbillingRoleAssignmentsInner object to access its operations.
+     * @return the BillingAccountbillingRoleAssignmentsInner object.
+     */
+    public BillingAccountbillingRoleAssignmentsInner billingAccountbillingRoleAssignments() {
+        return this.billingAccountbillingRoleAssignments;
+    }
+
+    /**
+     * The InvoiceSectionbillingRoleAssignmentsInner object to access its operations.
+     */
+    private InvoiceSectionbillingRoleAssignmentsInner invoiceSectionbillingRoleAssignments;
+
+    /**
+     * Gets the InvoiceSectionbillingRoleAssignmentsInner object to access its operations.
+     * @return the InvoiceSectionbillingRoleAssignmentsInner object.
+     */
+    public InvoiceSectionbillingRoleAssignmentsInner invoiceSectionbillingRoleAssignments() {
+        return this.invoiceSectionbillingRoleAssignments;
+    }
+
+    /**
+     * The BillingProfilebillingRoleAssignmentsInner object to access its operations.
+     */
+    private BillingProfilebillingRoleAssignmentsInner billingProfilebillingRoleAssignments;
+
+    /**
+     * Gets the BillingProfilebillingRoleAssignmentsInner object to access its operations.
+     * @return the BillingProfilebillingRoleAssignmentsInner object.
+     */
+    public BillingProfilebillingRoleAssignmentsInner billingProfilebillingRoleAssignments() {
+        return this.billingProfilebillingRoleAssignments;
+    }
+
+    /**
      * Initializes an instance of BillingManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -556,14 +673,14 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.billingAccountsWithCreateInvoiceSectionPermissions = new BillingAccountsWithCreateInvoiceSectionPermissionsInner(restClient().retrofit(), this);
         this.availableBalanceByBillingProfiles = new AvailableBalanceByBillingProfilesInner(restClient().retrofit(), this);
         this.paymentMethodsByBillingProfiles = new PaymentMethodsByBillingProfilesInner(restClient().retrofit(), this);
-        this.billingProfilesByBillingAccountIds = new BillingProfilesByBillingAccountIdsInner(restClient().retrofit(), this);
+        this.billingProfilesByBillingAccountNames = new BillingProfilesByBillingAccountNamesInner(restClient().retrofit(), this);
         this.billingProfiles = new BillingProfilesInner(restClient().retrofit(), this);
-        this.invoiceSectionsByBillingAccountIds = new InvoiceSectionsByBillingAccountIdsInner(restClient().retrofit(), this);
+        this.invoiceSectionsByBillingAccountNames = new InvoiceSectionsByBillingAccountNamesInner(restClient().retrofit(), this);
         this.invoiceSections = new InvoiceSectionsInner(restClient().retrofit(), this);
         this.invoiceSectionsWithCreateSubscriptionPermissions = new InvoiceSectionsWithCreateSubscriptionPermissionsInner(restClient().retrofit(), this);
-        this.departmentsByBillingAccountIds = new DepartmentsByBillingAccountIdsInner(restClient().retrofit(), this);
+        this.departmentsByBillingAccountNames = new DepartmentsByBillingAccountNamesInner(restClient().retrofit(), this);
         this.departments = new DepartmentsInner(restClient().retrofit(), this);
-        this.enrollmentAccountsByBillingAccountIds = new EnrollmentAccountsByBillingAccountIdsInner(restClient().retrofit(), this);
+        this.enrollmentAccountsByBillingAccountNames = new EnrollmentAccountsByBillingAccountNamesInner(restClient().retrofit(), this);
         this.enrollmentAccounts = new EnrollmentAccountsInner(restClient().retrofit(), this);
         this.invoicesByBillingAccounts = new InvoicesByBillingAccountsInner(restClient().retrofit(), this);
         this.invoicePricesheets = new InvoicePricesheetsInner(restClient().retrofit(), this);
@@ -580,6 +697,15 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         this.policys = new PolicysInner(restClient().retrofit(), this);
         this.billingPropertys = new BillingPropertysInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.billingAccountbillingPermissions = new BillingAccountbillingPermissionsInner(restClient().retrofit(), this);
+        this.invoiceSectionsbillingPermissions = new InvoiceSectionsbillingPermissionsInner(restClient().retrofit(), this);
+        this.billingProfilebillingPermissions = new BillingProfilebillingPermissionsInner(restClient().retrofit(), this);
+        this.billingAccountbillingRoleDefinitions = new BillingAccountbillingRoleDefinitionsInner(restClient().retrofit(), this);
+        this.invoiceSectionbillingRoleDefinitions = new InvoiceSectionbillingRoleDefinitionsInner(restClient().retrofit(), this);
+        this.billingProfilebillingRoleDefinitions = new BillingProfilebillingRoleDefinitionsInner(restClient().retrofit(), this);
+        this.billingAccountbillingRoleAssignments = new BillingAccountbillingRoleAssignmentsInner(restClient().retrofit(), this);
+        this.invoiceSectionbillingRoleAssignments = new InvoiceSectionbillingRoleAssignmentsInner(restClient().retrofit(), this);
+        this.billingProfilebillingRoleAssignments = new BillingProfilebillingRoleAssignmentsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }
@@ -604,24 +730,24 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      */
     interface BillingManagementClientService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingManagementClient transactionsByBillingProfile" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/transactions")
-        Observable<Response<ResponseBody>> transactionsByBillingProfile(@Path("billingAccountId") String billingAccountId, @Path("billingProfileId") String billingProfileId, @Query("api-version") String apiVersion, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/transactions")
+        Observable<Response<ResponseBody>> transactionsByBillingProfile(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingManagementClient updateAutoRenewForBillingAccount" })
-        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/products/{productName}/updateAutoRenew")
-        Observable<Response<ResponseBody>> updateAutoRenewForBillingAccount(@Path("billingAccountId") String billingAccountId, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UpdateAutoRenewRequest body, @Header("User-Agent") String userAgent);
+        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products/{productName}/updateAutoRenew")
+        Observable<Response<ResponseBody>> updateAutoRenewForBillingAccount(@Path("billingAccountName") String billingAccountName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UpdateAutoRenewRequest body, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingManagementClient updateAutoRenewForInvoiceSection" })
-        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/products/{productName}/updateAutoRenew")
-        Observable<Response<ResponseBody>> updateAutoRenewForInvoiceSection(@Path("billingAccountId") String billingAccountId, @Path("invoiceSectionId") String invoiceSectionId, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UpdateAutoRenewRequest body, @Header("User-Agent") String userAgent);
+        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products/{productName}/updateAutoRenew")
+        Observable<Response<ResponseBody>> updateAutoRenewForInvoiceSection(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body UpdateAutoRenewRequest body, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Lists the transactions by billingProfileId for given start date and end date.
+     * Lists the transactions by billingProfileName for given start date and end date.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -629,37 +755,37 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TransactionsListResultInner object if successful.
      */
-    public TransactionsListResultInner transactionsByBillingProfile(String billingAccountId, String billingProfileId, String startDate, String endDate) {
-        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountId, billingProfileId, startDate, endDate).toBlocking().single().body();
+    public TransactionsListResultInner transactionsByBillingProfile(String billingAccountName, String billingProfileName, String startDate, String endDate) {
+        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate).toBlocking().single().body();
     }
 
     /**
-     * Lists the transactions by billingProfileId for given start date and end date.
+     * Lists the transactions by billingProfileName for given start date and end date.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountId, String billingProfileId, String startDate, String endDate, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(transactionsByBillingProfileWithServiceResponseAsync(billingAccountId, billingProfileId, startDate, endDate), serviceCallback);
+    public ServiceFuture<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate), serviceCallback);
     }
 
     /**
-     * Lists the transactions by billingProfileId for given start date and end date.
+     * Lists the transactions by billingProfileName for given start date and end date.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TransactionsListResultInner object
      */
-    public Observable<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountId, String billingProfileId, String startDate, String endDate) {
-        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountId, billingProfileId, startDate, endDate).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
+    public Observable<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountName, String billingProfileName, String startDate, String endDate) {
+        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
             @Override
             public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
                 return response.body();
@@ -668,21 +794,21 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Lists the transactions by billingProfileId for given start date and end date.
+     * Lists the transactions by billingProfileName for given start date and end date.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TransactionsListResultInner object
      */
-    public Observable<ServiceResponse<TransactionsListResultInner>> transactionsByBillingProfileWithServiceResponseAsync(String billingAccountId, String billingProfileId, String startDate, String endDate) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<TransactionsListResultInner>> transactionsByBillingProfileWithServiceResponseAsync(String billingAccountName, String billingProfileName, String startDate, String endDate) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (billingProfileId == null) {
-            throw new IllegalArgumentException("Parameter billingProfileId is required and cannot be null.");
+        if (billingProfileName == null) {
+            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
         }
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
@@ -694,7 +820,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
             throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
         }
         final String filter = null;
-        return service.transactionsByBillingProfile(billingAccountId, billingProfileId, this.apiVersion(), startDate, endDate, filter, this.acceptLanguage(), this.userAgent())
+        return service.transactionsByBillingProfile(billingAccountName, billingProfileName, this.apiVersion(), startDate, endDate, filter, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
@@ -709,10 +835,10 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Lists the transactions by billingProfileId for given start date and end date.
+     * Lists the transactions by billingProfileName for given start date and end date.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -721,15 +847,15 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TransactionsListResultInner object if successful.
      */
-    public TransactionsListResultInner transactionsByBillingProfile(String billingAccountId, String billingProfileId, String startDate, String endDate, String filter) {
-        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountId, billingProfileId, startDate, endDate, filter).toBlocking().single().body();
+    public TransactionsListResultInner transactionsByBillingProfile(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter) {
+        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate, filter).toBlocking().single().body();
     }
 
     /**
-     * Lists the transactions by billingProfileId for given start date and end date.
+     * Lists the transactions by billingProfileName for given start date and end date.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -737,23 +863,23 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountId, String billingProfileId, String startDate, String endDate, String filter, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(transactionsByBillingProfileWithServiceResponseAsync(billingAccountId, billingProfileId, startDate, endDate, filter), serviceCallback);
+    public ServiceFuture<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter, final ServiceCallback<TransactionsListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate, filter), serviceCallback);
     }
 
     /**
-     * Lists the transactions by billingProfileId for given start date and end date.
+     * Lists the transactions by billingProfileName for given start date and end date.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TransactionsListResultInner object
      */
-    public Observable<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountId, String billingProfileId, String startDate, String endDate, String filter) {
-        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountId, billingProfileId, startDate, endDate, filter).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
+    public Observable<TransactionsListResultInner> transactionsByBillingProfileAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter) {
+        return transactionsByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName, startDate, endDate, filter).map(new Func1<ServiceResponse<TransactionsListResultInner>, TransactionsListResultInner>() {
             @Override
             public TransactionsListResultInner call(ServiceResponse<TransactionsListResultInner> response) {
                 return response.body();
@@ -762,22 +888,22 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Lists the transactions by billingProfileId for given start date and end date.
+     * Lists the transactions by billingProfileName for given start date and end date.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TransactionsListResultInner object
      */
-    public Observable<ServiceResponse<TransactionsListResultInner>> transactionsByBillingProfileWithServiceResponseAsync(String billingAccountId, String billingProfileId, String startDate, String endDate, String filter) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<TransactionsListResultInner>> transactionsByBillingProfileWithServiceResponseAsync(String billingAccountName, String billingProfileName, String startDate, String endDate, String filter) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (billingProfileId == null) {
-            throw new IllegalArgumentException("Parameter billingProfileId is required and cannot be null.");
+        if (billingProfileName == null) {
+            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
         }
         if (this.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
@@ -788,7 +914,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         if (endDate == null) {
             throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
         }
-        return service.transactionsByBillingProfile(billingAccountId, billingProfileId, this.apiVersion(), startDate, endDate, filter, this.acceptLanguage(), this.userAgent())
+        return service.transactionsByBillingProfile(billingAccountName, billingProfileName, this.apiVersion(), startDate, endDate, filter, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransactionsListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<TransactionsListResultInner>> call(Response<ResponseBody> response) {
@@ -812,40 +938,40 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     /**
      * Cancel product by product id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UpdateAutoRenewOperationSummaryInner object if successful.
      */
-    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForBillingAccount(String billingAccountId, String productName) {
-        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountId, productName).toBlocking().single().body();
+    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForBillingAccount(String billingAccountName, String productName) {
+        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName).toBlocking().single().body();
     }
 
     /**
      * Cancel product by product id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param productName Invoide Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountId, String productName, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountId, productName), serviceCallback);
+    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountName, String productName, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName), serviceCallback);
     }
 
     /**
      * Cancel product by product id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
-    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountId, String productName) {
-        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountId, productName).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
+    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountName, String productName) {
+        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
             @Override
             public UpdateAutoRenewOperationSummaryInner call(ServiceResponse<UpdateAutoRenewOperationSummaryInner> response) {
                 return response.body();
@@ -856,14 +982,14 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     /**
      * Cancel product by product id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
-    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForBillingAccountWithServiceResponseAsync(String billingAccountId, String productName) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForBillingAccountWithServiceResponseAsync(String billingAccountName, String productName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (productName == null) {
             throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
@@ -874,7 +1000,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         final UpdateAutoRenew autoRenew = null;
         UpdateAutoRenewRequest body = new UpdateAutoRenewRequest();
         body.withAutoRenew(null);
-        return service.updateAutoRenewForBillingAccount(billingAccountId, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
+        return service.updateAutoRenewForBillingAccount(billingAccountName, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>>>() {
                 @Override
                 public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> call(Response<ResponseBody> response) {
@@ -891,7 +1017,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     /**
      * Cancel product by product id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param productName Invoide Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -899,35 +1025,35 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UpdateAutoRenewOperationSummaryInner object if successful.
      */
-    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForBillingAccount(String billingAccountId, String productName, UpdateAutoRenew autoRenew) {
-        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountId, productName, autoRenew).toBlocking().single().body();
+    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForBillingAccount(String billingAccountName, String productName, UpdateAutoRenew autoRenew) {
+        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName, autoRenew).toBlocking().single().body();
     }
 
     /**
      * Cancel product by product id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param productName Invoide Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountId, String productName, UpdateAutoRenew autoRenew, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountId, productName, autoRenew), serviceCallback);
+    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountName, String productName, UpdateAutoRenew autoRenew, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName, autoRenew), serviceCallback);
     }
 
     /**
      * Cancel product by product id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param productName Invoide Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
-    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountId, String productName, UpdateAutoRenew autoRenew) {
-        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountId, productName, autoRenew).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
+    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForBillingAccountAsync(String billingAccountName, String productName, UpdateAutoRenew autoRenew) {
+        return updateAutoRenewForBillingAccountWithServiceResponseAsync(billingAccountName, productName, autoRenew).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
             @Override
             public UpdateAutoRenewOperationSummaryInner call(ServiceResponse<UpdateAutoRenewOperationSummaryInner> response) {
                 return response.body();
@@ -938,15 +1064,15 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     /**
      * Cancel product by product id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param productName Invoide Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
-    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForBillingAccountWithServiceResponseAsync(String billingAccountId, String productName, UpdateAutoRenew autoRenew) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForBillingAccountWithServiceResponseAsync(String billingAccountName, String productName, UpdateAutoRenew autoRenew) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (productName == null) {
             throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
@@ -956,7 +1082,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         }
         UpdateAutoRenewRequest body = new UpdateAutoRenewRequest();
         body.withAutoRenew(autoRenew);
-        return service.updateAutoRenewForBillingAccount(billingAccountId, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
+        return service.updateAutoRenewForBillingAccount(billingAccountName, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>>>() {
                 @Override
                 public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> call(Response<ResponseBody> response) {
@@ -980,43 +1106,43 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     /**
      * Cancel auto renew for product by product id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UpdateAutoRenewOperationSummaryInner object if successful.
      */
-    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForInvoiceSection(String billingAccountId, String invoiceSectionId, String productName) {
-        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName).toBlocking().single().body();
+    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForInvoiceSection(String billingAccountName, String invoiceSectionName, String productName) {
+        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName).toBlocking().single().body();
     }
 
     /**
      * Cancel auto renew for product by product id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountId, String invoiceSectionId, String productName, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName), serviceCallback);
+    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountName, String invoiceSectionName, String productName, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName), serviceCallback);
     }
 
     /**
      * Cancel auto renew for product by product id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
-    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountId, String invoiceSectionId, String productName) {
-        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
+    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountName, String invoiceSectionName, String productName) {
+        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
             @Override
             public UpdateAutoRenewOperationSummaryInner call(ServiceResponse<UpdateAutoRenewOperationSummaryInner> response) {
                 return response.body();
@@ -1027,18 +1153,18 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     /**
      * Cancel auto renew for product by product id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
-    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForInvoiceSectionWithServiceResponseAsync(String billingAccountId, String invoiceSectionId, String productName) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForInvoiceSectionWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String productName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (invoiceSectionId == null) {
-            throw new IllegalArgumentException("Parameter invoiceSectionId is required and cannot be null.");
+        if (invoiceSectionName == null) {
+            throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
         }
         if (productName == null) {
             throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
@@ -1049,7 +1175,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         final UpdateAutoRenew autoRenew = null;
         UpdateAutoRenewRequest body = new UpdateAutoRenewRequest();
         body.withAutoRenew(null);
-        return service.updateAutoRenewForInvoiceSection(billingAccountId, invoiceSectionId, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
+        return service.updateAutoRenewForInvoiceSection(billingAccountName, invoiceSectionName, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>>>() {
                 @Override
                 public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> call(Response<ResponseBody> response) {
@@ -1066,8 +1192,8 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     /**
      * Cancel auto renew for product by product id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1075,37 +1201,37 @@ public class BillingManagementClientImpl extends AzureServiceClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UpdateAutoRenewOperationSummaryInner object if successful.
      */
-    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForInvoiceSection(String billingAccountId, String invoiceSectionId, String productName, UpdateAutoRenew autoRenew) {
-        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName, autoRenew).toBlocking().single().body();
+    public UpdateAutoRenewOperationSummaryInner updateAutoRenewForInvoiceSection(String billingAccountName, String invoiceSectionName, String productName, UpdateAutoRenew autoRenew) {
+        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName, autoRenew).toBlocking().single().body();
     }
 
     /**
      * Cancel auto renew for product by product id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountId, String invoiceSectionId, String productName, UpdateAutoRenew autoRenew, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName, autoRenew), serviceCallback);
+    public ServiceFuture<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountName, String invoiceSectionName, String productName, UpdateAutoRenew autoRenew, final ServiceCallback<UpdateAutoRenewOperationSummaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName, autoRenew), serviceCallback);
     }
 
     /**
      * Cancel auto renew for product by product id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
-    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountId, String invoiceSectionId, String productName, UpdateAutoRenew autoRenew) {
-        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName, autoRenew).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
+    public Observable<UpdateAutoRenewOperationSummaryInner> updateAutoRenewForInvoiceSectionAsync(String billingAccountName, String invoiceSectionName, String productName, UpdateAutoRenew autoRenew) {
+        return updateAutoRenewForInvoiceSectionWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName, autoRenew).map(new Func1<ServiceResponse<UpdateAutoRenewOperationSummaryInner>, UpdateAutoRenewOperationSummaryInner>() {
             @Override
             public UpdateAutoRenewOperationSummaryInner call(ServiceResponse<UpdateAutoRenewOperationSummaryInner> response) {
                 return response.body();
@@ -1116,19 +1242,19 @@ public class BillingManagementClientImpl extends AzureServiceClient {
     /**
      * Cancel auto renew for product by product id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @param autoRenew Request parameters to update auto renew policy a product. Possible values include: 'true', 'false'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UpdateAutoRenewOperationSummaryInner object
      */
-    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForInvoiceSectionWithServiceResponseAsync(String billingAccountId, String invoiceSectionId, String productName, UpdateAutoRenew autoRenew) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> updateAutoRenewForInvoiceSectionWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String productName, UpdateAutoRenew autoRenew) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (invoiceSectionId == null) {
-            throw new IllegalArgumentException("Parameter invoiceSectionId is required and cannot be null.");
+        if (invoiceSectionName == null) {
+            throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
         }
         if (productName == null) {
             throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
@@ -1138,7 +1264,7 @@ public class BillingManagementClientImpl extends AzureServiceClient {
         }
         UpdateAutoRenewRequest body = new UpdateAutoRenewRequest();
         body.withAutoRenew(autoRenew);
-        return service.updateAutoRenewForInvoiceSection(billingAccountId, invoiceSectionId, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
+        return service.updateAutoRenewForInvoiceSection(billingAccountName, invoiceSectionName, productName, this.apiVersion(), this.acceptLanguage(), body, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>>>() {
                 @Override
                 public Observable<ServiceResponse<UpdateAutoRenewOperationSummaryInner>> call(Response<ResponseBody> response) {

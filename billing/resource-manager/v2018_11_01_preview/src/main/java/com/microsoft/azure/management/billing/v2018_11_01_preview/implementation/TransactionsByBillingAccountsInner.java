@@ -57,8 +57,8 @@ public class TransactionsByBillingAccountsInner {
      */
     interface TransactionsByBillingAccountsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsByBillingAccounts list" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/transactions")
-        Observable<Response<ResponseBody>> list(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/transactions")
+        Observable<Response<ResponseBody>> list(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Query("startDate") String startDate, @Query("endDate") String endDate, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.TransactionsByBillingAccounts listNext" })
         @GET
@@ -67,9 +67,9 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -77,8 +77,8 @@ public class TransactionsByBillingAccountsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
      */
-    public PagedList<TransactionsSummaryInner> list(final String billingAccountId, final String startDate, final String endDate) {
-        ServiceResponse<Page<TransactionsSummaryInner>> response = listSinglePageAsync(billingAccountId, startDate, endDate).toBlocking().single();
+    public PagedList<TransactionsSummaryInner> list(final String billingAccountName, final String startDate, final String endDate) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listSinglePageAsync(billingAccountName, startDate, endDate).toBlocking().single();
         return new PagedList<TransactionsSummaryInner>(response.body()) {
             @Override
             public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
@@ -88,18 +88,18 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<TransactionsSummaryInner>> listAsync(final String billingAccountId, final String startDate, final String endDate, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+    public ServiceFuture<List<TransactionsSummaryInner>> listAsync(final String billingAccountName, final String startDate, final String endDate, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(billingAccountId, startDate, endDate),
+            listSinglePageAsync(billingAccountName, startDate, endDate),
             new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
@@ -110,16 +110,16 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<Page<TransactionsSummaryInner>> listAsync(final String billingAccountId, final String startDate, final String endDate) {
-        return listWithServiceResponseAsync(billingAccountId, startDate, endDate)
+    public Observable<Page<TransactionsSummaryInner>> listAsync(final String billingAccountName, final String startDate, final String endDate) {
+        return listWithServiceResponseAsync(billingAccountName, startDate, endDate)
             .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
                 @Override
                 public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
@@ -129,16 +129,16 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listWithServiceResponseAsync(final String billingAccountId, final String startDate, final String endDate) {
-        return listSinglePageAsync(billingAccountId, startDate, endDate)
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listWithServiceResponseAsync(final String billingAccountName, final String startDate, final String endDate) {
+        return listSinglePageAsync(billingAccountName, startDate, endDate)
             .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
@@ -152,17 +152,17 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listSinglePageAsync(final String billingAccountId, final String startDate, final String endDate) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listSinglePageAsync(final String billingAccountName, final String startDate, final String endDate) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
@@ -174,7 +174,7 @@ public class TransactionsByBillingAccountsInner {
             throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
         }
         final String filter = null;
-        return service.list(billingAccountId, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(billingAccountName, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
@@ -189,9 +189,9 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -200,8 +200,8 @@ public class TransactionsByBillingAccountsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;TransactionsSummaryInner&gt; object if successful.
      */
-    public PagedList<TransactionsSummaryInner> list(final String billingAccountId, final String startDate, final String endDate, final String filter) {
-        ServiceResponse<Page<TransactionsSummaryInner>> response = listSinglePageAsync(billingAccountId, startDate, endDate, filter).toBlocking().single();
+    public PagedList<TransactionsSummaryInner> list(final String billingAccountName, final String startDate, final String endDate, final String filter) {
+        ServiceResponse<Page<TransactionsSummaryInner>> response = listSinglePageAsync(billingAccountName, startDate, endDate, filter).toBlocking().single();
         return new PagedList<TransactionsSummaryInner>(response.body()) {
             @Override
             public Page<TransactionsSummaryInner> nextPage(String nextPageLink) {
@@ -211,9 +211,9 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
@@ -221,9 +221,9 @@ public class TransactionsByBillingAccountsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<TransactionsSummaryInner>> listAsync(final String billingAccountId, final String startDate, final String endDate, final String filter, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
+    public ServiceFuture<List<TransactionsSummaryInner>> listAsync(final String billingAccountName, final String startDate, final String endDate, final String filter, final ListOperationCallback<TransactionsSummaryInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(billingAccountId, startDate, endDate, filter),
+            listSinglePageAsync(billingAccountName, startDate, endDate, filter),
             new Func1<String, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(String nextPageLink) {
@@ -234,17 +234,17 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<Page<TransactionsSummaryInner>> listAsync(final String billingAccountId, final String startDate, final String endDate, final String filter) {
-        return listWithServiceResponseAsync(billingAccountId, startDate, endDate, filter)
+    public Observable<Page<TransactionsSummaryInner>> listAsync(final String billingAccountName, final String startDate, final String endDate, final String filter) {
+        return listWithServiceResponseAsync(billingAccountName, startDate, endDate, filter)
             .map(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Page<TransactionsSummaryInner>>() {
                 @Override
                 public Page<TransactionsSummaryInner> call(ServiceResponse<Page<TransactionsSummaryInner>> response) {
@@ -254,17 +254,17 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;TransactionsSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listWithServiceResponseAsync(final String billingAccountId, final String startDate, final String endDate, final String filter) {
-        return listSinglePageAsync(billingAccountId, startDate, endDate, filter)
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listWithServiceResponseAsync(final String billingAccountName, final String startDate, final String endDate, final String filter) {
+        return listSinglePageAsync(billingAccountName, startDate, endDate, filter)
             .concatMap(new Func1<ServiceResponse<Page<TransactionsSummaryInner>>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(ServiceResponse<Page<TransactionsSummaryInner>> page) {
@@ -278,18 +278,18 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param billingAccountId billing Account Id.
+    ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param billingAccountName billing Account Id.
     ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param startDate Start date
     ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param endDate End date
     ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param filter May be used to filter by transaction kind. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;TransactionsSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listSinglePageAsync(final String billingAccountId, final String startDate, final String endDate, final String filter) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> listSinglePageAsync(final String billingAccountName, final String startDate, final String endDate, final String filter) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
@@ -300,7 +300,7 @@ public class TransactionsByBillingAccountsInner {
         if (endDate == null) {
             throw new IllegalArgumentException("Parameter endDate is required and cannot be null.");
         }
-        return service.list(billingAccountId, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(billingAccountName, this.client.apiVersion(), startDate, endDate, filter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TransactionsSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TransactionsSummaryInner>>> call(Response<ResponseBody> response) {
@@ -322,7 +322,7 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -341,7 +341,7 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -362,7 +362,7 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -379,7 +379,7 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -400,7 +400,7 @@ public class TransactionsByBillingAccountsInner {
     }
 
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
     ServiceResponse<PageImpl<TransactionsSummaryInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation

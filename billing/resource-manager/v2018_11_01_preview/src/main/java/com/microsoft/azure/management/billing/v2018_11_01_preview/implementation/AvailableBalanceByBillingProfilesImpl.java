@@ -28,9 +28,9 @@ class AvailableBalanceByBillingProfilesImpl extends WrapperImpl<AvailableBalance
     }
 
     @Override
-    public Observable<AvailableBalance> getAsync(String billingAccountId, String billingProfileId) {
+    public Observable<AvailableBalance> getAsync(String billingAccountName, String billingProfileName) {
         AvailableBalanceByBillingProfilesInner client = this.inner();
-        return client.getAsync(billingAccountId, billingProfileId)
+        return client.getAsync(billingAccountName, billingProfileName)
         .map(new Func1<AvailableBalanceInner, AvailableBalance>() {
             @Override
             public AvailableBalance call(AvailableBalanceInner inner) {

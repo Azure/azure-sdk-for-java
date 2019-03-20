@@ -19,11 +19,11 @@ public interface Departments extends HasInner<DepartmentsInner> {
     /**
      * Get the department by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param departmentId Department Id.
+     * @param billingAccountName billing Account Id.
+     * @param departmentName Department Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Department> getAsync(String billingAccountId, String departmentId);
+    Observable<Department> getAsync(String billingAccountName, String departmentName);
 
 }

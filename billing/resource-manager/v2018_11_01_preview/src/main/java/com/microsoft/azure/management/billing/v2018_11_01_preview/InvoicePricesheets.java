@@ -19,11 +19,11 @@ public interface InvoicePricesheets extends HasInner<InvoicePricesheetsInner> {
     /**
      * Get pricesheet data for invoice id (invoiceName).
      *
-     * @param billingAccountId Azure Billing Account ID.
+     * @param billingAccountName Azure Billing Account ID.
      * @param invoiceName The name of an invoice resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<DownloadUrl> downloadAsync(String billingAccountId, String invoiceName);
+    Observable<DownloadUrl> downloadAsync(String billingAccountName, String invoiceName);
 
 }

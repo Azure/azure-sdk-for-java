@@ -17,13 +17,13 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface BillingSubscriptionsByBillingProfiles extends HasInner<BillingSubscriptionsByBillingProfilesInner> {
     /**
-     * Lists billing subscriptions by billingProfileId.
+     * Lists billing subscriptions by billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingSubscriptionsListResult> listAsync(String billingAccountId, String billingProfileId);
+    Observable<BillingSubscriptionsListResult> listAsync(String billingAccountName, String billingProfileName);
 
 }

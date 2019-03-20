@@ -28,9 +28,9 @@ class InvoicesByBillingAccountsImpl extends WrapperImpl<InvoicesByBillingAccount
     }
 
     @Override
-    public Observable<InvoiceListResult> listAsync(String billingAccountId, String periodStartDate, String periodEndDate) {
+    public Observable<InvoiceListResult> listAsync(String billingAccountName, String periodStartDate, String periodEndDate) {
         InvoicesByBillingAccountsInner client = this.inner();
-        return client.listAsync(billingAccountId, periodStartDate, periodEndDate)
+        return client.listAsync(billingAccountName, periodStartDate, periodEndDate)
         .map(new Func1<InvoiceListResultInner, InvoiceListResult>() {
             @Override
             public InvoiceListResult call(InvoiceListResultInner inner) {

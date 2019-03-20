@@ -19,21 +19,21 @@ public interface InvoiceSections extends HasInner<InvoiceSectionsInner> {
     /**
      * Get the InvoiceSection by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSection> getAsync(String billingAccountId, String invoiceSectionId);
+    Observable<InvoiceSection> getAsync(String billingAccountName, String invoiceSectionName);
 
     /**
      * The operation to create a InvoiceSection.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param parameters Parameters supplied to the Create InvoiceSection operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSection> createAsync(String billingAccountId, InvoiceSectionProperties parameters);
+    Observable<InvoiceSection> createAsync(String billingAccountName, InvoiceSectionProperties parameters);
 
 }

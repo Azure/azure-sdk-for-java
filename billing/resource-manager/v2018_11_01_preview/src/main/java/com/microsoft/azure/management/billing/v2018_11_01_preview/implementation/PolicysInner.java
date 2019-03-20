@@ -55,52 +55,52 @@ public class PolicysInner {
      */
     interface PolicysService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Policys getByBillingProfile" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/policies/default")
-        Observable<Response<ResponseBody>> getByBillingProfile(@Path("billingAccountId") String billingAccountId, @Path("billingProfileId") String billingProfileId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default")
+        Observable<Response<ResponseBody>> getByBillingProfile(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Policys update" })
-        @PUT("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/policies/default")
-        Observable<Response<ResponseBody>> update(@Path("billingAccountId") String billingAccountId, @Path("billingProfileId") String billingProfileId, @Query("api-version") String apiVersion, @Body PolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @PUT("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default")
+        Observable<Response<ResponseBody>> update(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Body PolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * The policy for a given billingAccountId and billingProfileId.
+     * The policy for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicyInner object if successful.
      */
-    public PolicyInner getByBillingProfile(String billingAccountId, String billingProfileId) {
-        return getByBillingProfileWithServiceResponseAsync(billingAccountId, billingProfileId).toBlocking().single().body();
+    public PolicyInner getByBillingProfile(String billingAccountName, String billingProfileName) {
+        return getByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName).toBlocking().single().body();
     }
 
     /**
-     * The policy for a given billingAccountId and billingProfileId.
+     * The policy for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyInner> getByBillingProfileAsync(String billingAccountId, String billingProfileId, final ServiceCallback<PolicyInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getByBillingProfileWithServiceResponseAsync(billingAccountId, billingProfileId), serviceCallback);
+    public ServiceFuture<PolicyInner> getByBillingProfileAsync(String billingAccountName, String billingProfileName, final ServiceCallback<PolicyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName), serviceCallback);
     }
 
     /**
-     * The policy for a given billingAccountId and billingProfileId.
+     * The policy for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyInner object
      */
-    public Observable<PolicyInner> getByBillingProfileAsync(String billingAccountId, String billingProfileId) {
-        return getByBillingProfileWithServiceResponseAsync(billingAccountId, billingProfileId).map(new Func1<ServiceResponse<PolicyInner>, PolicyInner>() {
+    public Observable<PolicyInner> getByBillingProfileAsync(String billingAccountName, String billingProfileName) {
+        return getByBillingProfileWithServiceResponseAsync(billingAccountName, billingProfileName).map(new Func1<ServiceResponse<PolicyInner>, PolicyInner>() {
             @Override
             public PolicyInner call(ServiceResponse<PolicyInner> response) {
                 return response.body();
@@ -109,24 +109,24 @@ public class PolicysInner {
     }
 
     /**
-     * The policy for a given billingAccountId and billingProfileId.
+     * The policy for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyInner object
      */
-    public Observable<ServiceResponse<PolicyInner>> getByBillingProfileWithServiceResponseAsync(String billingAccountId, String billingProfileId) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<PolicyInner>> getByBillingProfileWithServiceResponseAsync(String billingAccountName, String billingProfileName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (billingProfileId == null) {
-            throw new IllegalArgumentException("Parameter billingProfileId is required and cannot be null.");
+        if (billingProfileName == null) {
+            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getByBillingProfile(billingAccountId, billingProfileId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByBillingProfile(billingAccountName, billingProfileName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyInner>> call(Response<ResponseBody> response) {
@@ -150,43 +150,43 @@ public class PolicysInner {
     /**
      * The operation to update a policy.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to the update policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PolicyInner object if successful.
      */
-    public PolicyInner update(String billingAccountId, String billingProfileId, PolicyInner parameters) {
-        return updateWithServiceResponseAsync(billingAccountId, billingProfileId, parameters).toBlocking().single().body();
+    public PolicyInner update(String billingAccountName, String billingProfileName, PolicyInner parameters) {
+        return updateWithServiceResponseAsync(billingAccountName, billingProfileName, parameters).toBlocking().single().body();
     }
 
     /**
      * The operation to update a policy.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to the update policy operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PolicyInner> updateAsync(String billingAccountId, String billingProfileId, PolicyInner parameters, final ServiceCallback<PolicyInner> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(billingAccountId, billingProfileId, parameters), serviceCallback);
+    public ServiceFuture<PolicyInner> updateAsync(String billingAccountName, String billingProfileName, PolicyInner parameters, final ServiceCallback<PolicyInner> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(billingAccountName, billingProfileName, parameters), serviceCallback);
     }
 
     /**
      * The operation to update a policy.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to the update policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyInner object
      */
-    public Observable<PolicyInner> updateAsync(String billingAccountId, String billingProfileId, PolicyInner parameters) {
-        return updateWithServiceResponseAsync(billingAccountId, billingProfileId, parameters).map(new Func1<ServiceResponse<PolicyInner>, PolicyInner>() {
+    public Observable<PolicyInner> updateAsync(String billingAccountName, String billingProfileName, PolicyInner parameters) {
+        return updateWithServiceResponseAsync(billingAccountName, billingProfileName, parameters).map(new Func1<ServiceResponse<PolicyInner>, PolicyInner>() {
             @Override
             public PolicyInner call(ServiceResponse<PolicyInner> response) {
                 return response.body();
@@ -197,18 +197,18 @@ public class PolicysInner {
     /**
      * The operation to update a policy.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to the update policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyInner object
      */
-    public Observable<ServiceResponse<PolicyInner>> updateWithServiceResponseAsync(String billingAccountId, String billingProfileId, PolicyInner parameters) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<PolicyInner>> updateWithServiceResponseAsync(String billingAccountName, String billingProfileName, PolicyInner parameters) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (billingProfileId == null) {
-            throw new IllegalArgumentException("Parameter billingProfileId is required and cannot be null.");
+        if (billingProfileName == null) {
+            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
@@ -217,7 +217,7 @@ public class PolicysInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.update(billingAccountId, billingProfileId, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.update(billingAccountName, billingProfileName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PolicyInner>> call(Response<ResponseBody> response) {

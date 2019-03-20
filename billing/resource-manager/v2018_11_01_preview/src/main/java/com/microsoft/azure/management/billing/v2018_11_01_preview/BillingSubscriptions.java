@@ -19,22 +19,23 @@ public interface BillingSubscriptions extends HasInner<BillingSubscriptionsInner
     /**
      * Transfers the GTM subscription from one invoice section to another within a billing account.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @param billingSubscriptionName Billing Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<TransferBillingSubscriptionResult> transferAsync(String billingAccountId, String invoiceSectionId);
+    Observable<TransferBillingSubscriptionResult> transferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName);
 
     /**
      * Get a single billing subscription by name.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
-     * @param billingSubscriptionId Billing Subscription Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
+     * @param billingSubscriptionName Billing Subscription Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSectionBillingAccountBillingSubscriptionSummary> getAsync(String billingAccountId, String invoiceSectionId, String billingSubscriptionId);
+    Observable<InvoiceSectionBillingAccountBillingSubscriptionSummary> getAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName);
 
 }

@@ -52,51 +52,51 @@ public class InvoicesInner {
      */
     interface InvoicesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Invoices get" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoices/{invoiceName}")
-        Observable<Response<ResponseBody>> get(@Path("billingAccountId") String billingAccountId, @Path("billingProfileId") String billingProfileId, @Path("invoiceName") String invoiceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoices/{invoiceName}")
+        Observable<Response<ResponseBody>> get(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Path("invoiceName") String invoiceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Get the invoice by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param invoiceName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InvoiceSummaryInner object if successful.
      */
-    public InvoiceSummaryInner get(String billingAccountId, String billingProfileId, String invoiceName) {
-        return getWithServiceResponseAsync(billingAccountId, billingProfileId, invoiceName).toBlocking().single().body();
+    public InvoiceSummaryInner get(String billingAccountName, String billingProfileName, String invoiceName) {
+        return getWithServiceResponseAsync(billingAccountName, billingProfileName, invoiceName).toBlocking().single().body();
     }
 
     /**
      * Get the invoice by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param invoiceName Invoide Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InvoiceSummaryInner> getAsync(String billingAccountId, String billingProfileId, String invoiceName, final ServiceCallback<InvoiceSummaryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountId, billingProfileId, invoiceName), serviceCallback);
+    public ServiceFuture<InvoiceSummaryInner> getAsync(String billingAccountName, String billingProfileName, String invoiceName, final ServiceCallback<InvoiceSummaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountName, billingProfileName, invoiceName), serviceCallback);
     }
 
     /**
      * Get the invoice by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param invoiceName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSummaryInner object
      */
-    public Observable<InvoiceSummaryInner> getAsync(String billingAccountId, String billingProfileId, String invoiceName) {
-        return getWithServiceResponseAsync(billingAccountId, billingProfileId, invoiceName).map(new Func1<ServiceResponse<InvoiceSummaryInner>, InvoiceSummaryInner>() {
+    public Observable<InvoiceSummaryInner> getAsync(String billingAccountName, String billingProfileName, String invoiceName) {
+        return getWithServiceResponseAsync(billingAccountName, billingProfileName, invoiceName).map(new Func1<ServiceResponse<InvoiceSummaryInner>, InvoiceSummaryInner>() {
             @Override
             public InvoiceSummaryInner call(ServiceResponse<InvoiceSummaryInner> response) {
                 return response.body();
@@ -107,18 +107,18 @@ public class InvoicesInner {
     /**
      * Get the invoice by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param invoiceName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSummaryInner object
      */
-    public Observable<ServiceResponse<InvoiceSummaryInner>> getWithServiceResponseAsync(String billingAccountId, String billingProfileId, String invoiceName) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<InvoiceSummaryInner>> getWithServiceResponseAsync(String billingAccountName, String billingProfileName, String invoiceName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (billingProfileId == null) {
-            throw new IllegalArgumentException("Parameter billingProfileId is required and cannot be null.");
+        if (billingProfileName == null) {
+            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
         }
         if (invoiceName == null) {
             throw new IllegalArgumentException("Parameter invoiceName is required and cannot be null.");
@@ -126,7 +126,7 @@ public class InvoicesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(billingAccountId, billingProfileId, invoiceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(billingAccountName, billingProfileName, invoiceName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InvoiceSummaryInner>>>() {
                 @Override
                 public Observable<ServiceResponse<InvoiceSummaryInner>> call(Response<ResponseBody> response) {

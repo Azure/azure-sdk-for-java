@@ -28,9 +28,9 @@ class InvoiceSectionsWithCreateSubscriptionPermissionsImpl extends WrapperImpl<I
     }
 
     @Override
-    public Observable<InvoiceSectionListResult> listAsync(String billingAccountId) {
+    public Observable<InvoiceSectionListResult> listAsync(String billingAccountName) {
         InvoiceSectionsWithCreateSubscriptionPermissionsInner client = this.inner();
-        return client.listAsync(billingAccountId)
+        return client.listAsync(billingAccountName)
         .map(new Func1<InvoiceSectionListResultInner, InvoiceSectionListResult>() {
             @Override
             public InvoiceSectionListResult call(InvoiceSectionListResultInner inner) {

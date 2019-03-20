@@ -52,48 +52,48 @@ public class BillingSubscriptionsByInvoiceSectionsInner {
      */
     interface BillingSubscriptionsByInvoiceSectionsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingSubscriptionsByInvoiceSections list" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/billingSubscriptions")
-        Observable<Response<ResponseBody>> list(@Path("billingAccountId") String billingAccountId, @Path("invoiceSectionId") String invoiceSectionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/billingSubscriptions")
+        Observable<Response<ResponseBody>> list(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * Lists billing subscription by invoiceSectionId.
+     * Lists billing subscription by invoiceSectionName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BillingSubscriptionsListResultInner object if successful.
      */
-    public BillingSubscriptionsListResultInner list(String billingAccountId, String invoiceSectionId) {
-        return listWithServiceResponseAsync(billingAccountId, invoiceSectionId).toBlocking().single().body();
+    public BillingSubscriptionsListResultInner list(String billingAccountName, String invoiceSectionName) {
+        return listWithServiceResponseAsync(billingAccountName, invoiceSectionName).toBlocking().single().body();
     }
 
     /**
-     * Lists billing subscription by invoiceSectionId.
+     * Lists billing subscription by invoiceSectionName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BillingSubscriptionsListResultInner> listAsync(String billingAccountId, String invoiceSectionId, final ServiceCallback<BillingSubscriptionsListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(billingAccountId, invoiceSectionId), serviceCallback);
+    public ServiceFuture<BillingSubscriptionsListResultInner> listAsync(String billingAccountName, String invoiceSectionName, final ServiceCallback<BillingSubscriptionsListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(billingAccountName, invoiceSectionName), serviceCallback);
     }
 
     /**
-     * Lists billing subscription by invoiceSectionId.
+     * Lists billing subscription by invoiceSectionName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingSubscriptionsListResultInner object
      */
-    public Observable<BillingSubscriptionsListResultInner> listAsync(String billingAccountId, String invoiceSectionId) {
-        return listWithServiceResponseAsync(billingAccountId, invoiceSectionId).map(new Func1<ServiceResponse<BillingSubscriptionsListResultInner>, BillingSubscriptionsListResultInner>() {
+    public Observable<BillingSubscriptionsListResultInner> listAsync(String billingAccountName, String invoiceSectionName) {
+        return listWithServiceResponseAsync(billingAccountName, invoiceSectionName).map(new Func1<ServiceResponse<BillingSubscriptionsListResultInner>, BillingSubscriptionsListResultInner>() {
             @Override
             public BillingSubscriptionsListResultInner call(ServiceResponse<BillingSubscriptionsListResultInner> response) {
                 return response.body();
@@ -102,24 +102,24 @@ public class BillingSubscriptionsByInvoiceSectionsInner {
     }
 
     /**
-     * Lists billing subscription by invoiceSectionId.
+     * Lists billing subscription by invoiceSectionName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingSubscriptionsListResultInner object
      */
-    public Observable<ServiceResponse<BillingSubscriptionsListResultInner>> listWithServiceResponseAsync(String billingAccountId, String invoiceSectionId) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<BillingSubscriptionsListResultInner>> listWithServiceResponseAsync(String billingAccountName, String invoiceSectionName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (invoiceSectionId == null) {
-            throw new IllegalArgumentException("Parameter invoiceSectionId is required and cannot be null.");
+        if (invoiceSectionName == null) {
+            throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(billingAccountId, invoiceSectionId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(billingAccountName, invoiceSectionName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingSubscriptionsListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BillingSubscriptionsListResultInner>> call(Response<ResponseBody> response) {

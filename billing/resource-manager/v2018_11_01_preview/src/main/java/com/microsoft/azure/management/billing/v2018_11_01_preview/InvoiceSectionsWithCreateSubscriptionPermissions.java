@@ -19,10 +19,10 @@ public interface InvoiceSectionsWithCreateSubscriptionPermissions extends HasInn
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSectionListResult> listAsync(String billingAccountId);
+    Observable<InvoiceSectionListResult> listAsync(String billingAccountName);
 
 }

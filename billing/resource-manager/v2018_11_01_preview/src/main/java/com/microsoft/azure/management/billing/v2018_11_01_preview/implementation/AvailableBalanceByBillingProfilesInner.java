@@ -52,48 +52,48 @@ public class AvailableBalanceByBillingProfilesInner {
      */
     interface AvailableBalanceByBillingProfilesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.AvailableBalanceByBillingProfiles get" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/availableBalance/default")
-        Observable<Response<ResponseBody>> get(@Path("billingAccountId") String billingAccountId, @Path("billingProfileId") String billingProfileId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/availableBalance/default")
+        Observable<Response<ResponseBody>> get(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
-     * The latest available credit balance for a given billingAccountId and billingProfileId.
+     * The latest available credit balance for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the AvailableBalanceInner object if successful.
      */
-    public AvailableBalanceInner get(String billingAccountId, String billingProfileId) {
-        return getWithServiceResponseAsync(billingAccountId, billingProfileId).toBlocking().single().body();
+    public AvailableBalanceInner get(String billingAccountName, String billingProfileName) {
+        return getWithServiceResponseAsync(billingAccountName, billingProfileName).toBlocking().single().body();
     }
 
     /**
-     * The latest available credit balance for a given billingAccountId and billingProfileId.
+     * The latest available credit balance for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<AvailableBalanceInner> getAsync(String billingAccountId, String billingProfileId, final ServiceCallback<AvailableBalanceInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountId, billingProfileId), serviceCallback);
+    public ServiceFuture<AvailableBalanceInner> getAsync(String billingAccountName, String billingProfileName, final ServiceCallback<AvailableBalanceInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountName, billingProfileName), serviceCallback);
     }
 
     /**
-     * The latest available credit balance for a given billingAccountId and billingProfileId.
+     * The latest available credit balance for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AvailableBalanceInner object
      */
-    public Observable<AvailableBalanceInner> getAsync(String billingAccountId, String billingProfileId) {
-        return getWithServiceResponseAsync(billingAccountId, billingProfileId).map(new Func1<ServiceResponse<AvailableBalanceInner>, AvailableBalanceInner>() {
+    public Observable<AvailableBalanceInner> getAsync(String billingAccountName, String billingProfileName) {
+        return getWithServiceResponseAsync(billingAccountName, billingProfileName).map(new Func1<ServiceResponse<AvailableBalanceInner>, AvailableBalanceInner>() {
             @Override
             public AvailableBalanceInner call(ServiceResponse<AvailableBalanceInner> response) {
                 return response.body();
@@ -102,24 +102,24 @@ public class AvailableBalanceByBillingProfilesInner {
     }
 
     /**
-     * The latest available credit balance for a given billingAccountId and billingProfileId.
+     * The latest available credit balance for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AvailableBalanceInner object
      */
-    public Observable<ServiceResponse<AvailableBalanceInner>> getWithServiceResponseAsync(String billingAccountId, String billingProfileId) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<AvailableBalanceInner>> getWithServiceResponseAsync(String billingAccountName, String billingProfileName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (billingProfileId == null) {
-            throw new IllegalArgumentException("Parameter billingProfileId is required and cannot be null.");
+        if (billingProfileName == null) {
+            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(billingAccountId, billingProfileId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(billingAccountName, billingProfileName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AvailableBalanceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AvailableBalanceInner>> call(Response<ResponseBody> response) {

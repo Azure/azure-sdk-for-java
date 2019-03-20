@@ -18,24 +18,24 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface Policys extends HasInner<PolicysInner> {
     /**
-     * The policy for a given billingAccountId and billingProfileId.
+     * The policy for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Policy> getByBillingProfileAsync(String billingAccountId, String billingProfileId);
+    Observable<Policy> getByBillingProfileAsync(String billingAccountName, String billingProfileName);
 
     /**
      * The operation to update a policy.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param parameters Parameters supplied to the update policy operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Policy> updateAsync(String billingAccountId, String billingProfileId, PolicyInner parameters);
+    Observable<Policy> updateAsync(String billingAccountName, String billingProfileName, PolicyInner parameters);
 
 }

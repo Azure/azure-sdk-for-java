@@ -28,9 +28,9 @@ class PolicysImpl extends WrapperImpl<PolicysInner> implements Policys {
     }
 
     @Override
-    public Observable<Policy> getByBillingProfileAsync(String billingAccountId, String billingProfileId) {
+    public Observable<Policy> getByBillingProfileAsync(String billingAccountName, String billingProfileName) {
         PolicysInner client = this.inner();
-        return client.getByBillingProfileAsync(billingAccountId, billingProfileId)
+        return client.getByBillingProfileAsync(billingAccountName, billingProfileName)
         .map(new Func1<PolicyInner, Policy>() {
             @Override
             public Policy call(PolicyInner inner) {
@@ -40,9 +40,9 @@ class PolicysImpl extends WrapperImpl<PolicysInner> implements Policys {
     }
 
     @Override
-    public Observable<Policy> updateAsync(String billingAccountId, String billingProfileId, PolicyInner parameters) {
+    public Observable<Policy> updateAsync(String billingAccountName, String billingProfileName, PolicyInner parameters) {
         PolicysInner client = this.inner();
-        return client.updateAsync(billingAccountId, billingProfileId, parameters)
+        return client.updateAsync(billingAccountName, billingProfileName, parameters)
         .map(new Func1<PolicyInner, Policy>() {
             @Override
             public Policy call(PolicyInner inner) {

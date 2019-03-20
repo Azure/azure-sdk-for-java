@@ -53,45 +53,45 @@ public class InvoiceSectionsWithCreateSubscriptionPermissionsInner {
      */
     interface InvoiceSectionsWithCreateSubscriptionPermissionsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoiceSectionsWithCreateSubscriptionPermissions list" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/listInvoiceSectionsWithCreateSubscriptionPermission")
-        Observable<Response<ResponseBody>> list(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/listInvoiceSectionsWithCreateSubscriptionPermission")
+        Observable<Response<ResponseBody>> list(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InvoiceSectionListResultInner object if successful.
      */
-    public InvoiceSectionListResultInner list(String billingAccountId) {
-        return listWithServiceResponseAsync(billingAccountId).toBlocking().single().body();
+    public InvoiceSectionListResultInner list(String billingAccountName) {
+        return listWithServiceResponseAsync(billingAccountName).toBlocking().single().body();
     }
 
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InvoiceSectionListResultInner> listAsync(String billingAccountId, final ServiceCallback<InvoiceSectionListResultInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(listWithServiceResponseAsync(billingAccountId), serviceCallback);
+    public ServiceFuture<InvoiceSectionListResultInner> listAsync(String billingAccountName, final ServiceCallback<InvoiceSectionListResultInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(listWithServiceResponseAsync(billingAccountName), serviceCallback);
     }
 
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
      */
-    public Observable<InvoiceSectionListResultInner> listAsync(String billingAccountId) {
-        return listWithServiceResponseAsync(billingAccountId).map(new Func1<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>, InvoiceSectionListResultInner>() {
+    public Observable<InvoiceSectionListResultInner> listAsync(String billingAccountName) {
+        return listWithServiceResponseAsync(billingAccountName).map(new Func1<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>, InvoiceSectionListResultInner>() {
             @Override
             public InvoiceSectionListResultInner call(ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders> response) {
                 return response.body();
@@ -102,19 +102,19 @@ public class InvoiceSectionsWithCreateSubscriptionPermissionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
      */
-    public Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>> listWithServiceResponseAsync(String billingAccountId) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>> listWithServiceResponseAsync(String billingAccountName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String expand = null;
-        return service.list(billingAccountId, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(billingAccountName, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>> call(Response<ResponseBody> response) {
@@ -131,40 +131,40 @@ public class InvoiceSectionsWithCreateSubscriptionPermissionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InvoiceSectionListResultInner object if successful.
      */
-    public InvoiceSectionListResultInner list(String billingAccountId, String expand) {
-        return listWithServiceResponseAsync(billingAccountId, expand).toBlocking().single().body();
+    public InvoiceSectionListResultInner list(String billingAccountName, String expand) {
+        return listWithServiceResponseAsync(billingAccountName, expand).toBlocking().single().body();
     }
 
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InvoiceSectionListResultInner> listAsync(String billingAccountId, String expand, final ServiceCallback<InvoiceSectionListResultInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(listWithServiceResponseAsync(billingAccountId, expand), serviceCallback);
+    public ServiceFuture<InvoiceSectionListResultInner> listAsync(String billingAccountName, String expand, final ServiceCallback<InvoiceSectionListResultInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(listWithServiceResponseAsync(billingAccountName, expand), serviceCallback);
     }
 
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
      */
-    public Observable<InvoiceSectionListResultInner> listAsync(String billingAccountId, String expand) {
-        return listWithServiceResponseAsync(billingAccountId, expand).map(new Func1<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>, InvoiceSectionListResultInner>() {
+    public Observable<InvoiceSectionListResultInner> listAsync(String billingAccountName, String expand) {
+        return listWithServiceResponseAsync(billingAccountName, expand).map(new Func1<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>, InvoiceSectionListResultInner>() {
             @Override
             public InvoiceSectionListResultInner call(ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders> response) {
                 return response.body();
@@ -175,19 +175,19 @@ public class InvoiceSectionsWithCreateSubscriptionPermissionsInner {
     /**
      * Lists all invoiceSections with create subscription permission for a user.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param expand May be used to expand the billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceSectionListResultInner object
      */
-    public Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>> listWithServiceResponseAsync(String billingAccountId, String expand) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>> listWithServiceResponseAsync(String billingAccountName, String expand) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(billingAccountId, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(billingAccountName, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<InvoiceSectionListResultInner, InvoiceSectionsWithCreateSubscriptionPermissionListHeaders>> call(Response<ResponseBody> response) {

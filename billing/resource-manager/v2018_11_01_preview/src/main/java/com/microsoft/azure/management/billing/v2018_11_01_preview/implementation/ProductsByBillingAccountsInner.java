@@ -57,8 +57,8 @@ public class ProductsByBillingAccountsInner {
      */
     interface ProductsByBillingAccountsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsByBillingAccounts list" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/products")
-        Observable<Response<ResponseBody>> list(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/products")
+        Observable<Response<ResponseBody>> list(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsByBillingAccounts listNext" })
         @GET
@@ -67,16 +67,16 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProductSummaryInner&gt; object if successful.
      */
-    public PagedList<ProductSummaryInner> list(final String billingAccountId) {
-        ServiceResponse<Page<ProductSummaryInner>> response = listSinglePageAsync(billingAccountId).toBlocking().single();
+    public PagedList<ProductSummaryInner> list(final String billingAccountName) {
+        ServiceResponse<Page<ProductSummaryInner>> response = listSinglePageAsync(billingAccountName).toBlocking().single();
         return new PagedList<ProductSummaryInner>(response.body()) {
             @Override
             public Page<ProductSummaryInner> nextPage(String nextPageLink) {
@@ -86,16 +86,16 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ProductSummaryInner>> listAsync(final String billingAccountId, final ListOperationCallback<ProductSummaryInner> serviceCallback) {
+    public ServiceFuture<List<ProductSummaryInner>> listAsync(final String billingAccountName, final ListOperationCallback<ProductSummaryInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(billingAccountId),
+            listSinglePageAsync(billingAccountName),
             new Func1<String, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(String nextPageLink) {
@@ -106,14 +106,14 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProductSummaryInner&gt; object
      */
-    public Observable<Page<ProductSummaryInner>> listAsync(final String billingAccountId) {
-        return listWithServiceResponseAsync(billingAccountId)
+    public Observable<Page<ProductSummaryInner>> listAsync(final String billingAccountName) {
+        return listWithServiceResponseAsync(billingAccountName)
             .map(new Func1<ServiceResponse<Page<ProductSummaryInner>>, Page<ProductSummaryInner>>() {
                 @Override
                 public Page<ProductSummaryInner> call(ServiceResponse<Page<ProductSummaryInner>> response) {
@@ -123,14 +123,14 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProductSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listWithServiceResponseAsync(final String billingAccountId) {
-        return listSinglePageAsync(billingAccountId)
+    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listWithServiceResponseAsync(final String billingAccountName) {
+        return listSinglePageAsync(billingAccountName)
             .concatMap(new Func1<ServiceResponse<Page<ProductSummaryInner>>, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(ServiceResponse<Page<ProductSummaryInner>> page) {
@@ -144,21 +144,21 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ProductSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listSinglePageAsync(final String billingAccountId) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listSinglePageAsync(final String billingAccountName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.list(billingAccountId, this.client.apiVersion(), filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(billingAccountName, this.client.apiVersion(), filter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(Response<ResponseBody> response) {
@@ -173,17 +173,17 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ProductSummaryInner&gt; object if successful.
      */
-    public PagedList<ProductSummaryInner> list(final String billingAccountId, final String filter) {
-        ServiceResponse<Page<ProductSummaryInner>> response = listSinglePageAsync(billingAccountId, filter).toBlocking().single();
+    public PagedList<ProductSummaryInner> list(final String billingAccountName, final String filter) {
+        ServiceResponse<Page<ProductSummaryInner>> response = listSinglePageAsync(billingAccountName, filter).toBlocking().single();
         return new PagedList<ProductSummaryInner>(response.body()) {
             @Override
             public Page<ProductSummaryInner> nextPage(String nextPageLink) {
@@ -193,17 +193,17 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ProductSummaryInner>> listAsync(final String billingAccountId, final String filter, final ListOperationCallback<ProductSummaryInner> serviceCallback) {
+    public ServiceFuture<List<ProductSummaryInner>> listAsync(final String billingAccountName, final String filter, final ListOperationCallback<ProductSummaryInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(billingAccountId, filter),
+            listSinglePageAsync(billingAccountName, filter),
             new Func1<String, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(String nextPageLink) {
@@ -214,15 +214,15 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProductSummaryInner&gt; object
      */
-    public Observable<Page<ProductSummaryInner>> listAsync(final String billingAccountId, final String filter) {
-        return listWithServiceResponseAsync(billingAccountId, filter)
+    public Observable<Page<ProductSummaryInner>> listAsync(final String billingAccountName, final String filter) {
+        return listWithServiceResponseAsync(billingAccountName, filter)
             .map(new Func1<ServiceResponse<Page<ProductSummaryInner>>, Page<ProductSummaryInner>>() {
                 @Override
                 public Page<ProductSummaryInner> call(ServiceResponse<Page<ProductSummaryInner>> response) {
@@ -232,15 +232,15 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ProductSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listWithServiceResponseAsync(final String billingAccountId, final String filter) {
-        return listSinglePageAsync(billingAccountId, filter)
+    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listWithServiceResponseAsync(final String billingAccountName, final String filter) {
+        return listSinglePageAsync(billingAccountName, filter)
             .concatMap(new Func1<ServiceResponse<Page<ProductSummaryInner>>, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(ServiceResponse<Page<ProductSummaryInner>> page) {
@@ -254,21 +254,21 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
-    ServiceResponse<PageImpl<ProductSummaryInner>> * @param billingAccountId billing Account Id.
+    ServiceResponse<PageImpl<ProductSummaryInner>> * @param billingAccountName billing Account Id.
     ServiceResponse<PageImpl<ProductSummaryInner>> * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ProductSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listSinglePageAsync(final String billingAccountId, final String filter) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<Page<ProductSummaryInner>>> listSinglePageAsync(final String billingAccountName, final String filter) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(billingAccountId, this.client.apiVersion(), filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(billingAccountName, this.client.apiVersion(), filter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ProductSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ProductSummaryInner>>> call(Response<ResponseBody> response) {
@@ -290,7 +290,7 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -309,7 +309,7 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -330,7 +330,7 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -347,7 +347,7 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -368,7 +368,7 @@ public class ProductsByBillingAccountsInner {
     }
 
     /**
-     * Lists products by billingAccountId.
+     * Lists products by billingAccountName.
      *
     ServiceResponse<PageImpl<ProductSummaryInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation

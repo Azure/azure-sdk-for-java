@@ -24,8 +24,8 @@ class TransferBillingSubscriptionResultImpl extends WrapperImpl<TransferBillingS
     }
 
     @Override
-    public String billingSubscriptionId() {
-        return this.inner().billingSubscriptionId();
+    public String billingSubscriptionName() {
+        return this.inner().billingSubscriptionName();
     }
 
 }

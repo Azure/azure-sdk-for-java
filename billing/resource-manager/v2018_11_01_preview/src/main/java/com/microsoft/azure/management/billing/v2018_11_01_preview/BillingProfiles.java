@@ -19,11 +19,11 @@ public interface BillingProfiles extends HasInner<BillingProfilesInner> {
     /**
      * Get the billing profile by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<BillingProfile> getAsync(String billingAccountId, String billingProfileId);
+    Observable<BillingProfile> getAsync(String billingAccountName, String billingProfileName);
 
 }

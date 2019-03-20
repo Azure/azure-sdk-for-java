@@ -17,28 +17,28 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class TransferBillingSubscriptionRequest {
     /**
-     * The destination invoiceSectionId.
+     * The destination invoiceSectionName.
      */
-    @JsonProperty(value = "properties.destinationInvoiceSectionId")
-    private String destinationInvoiceSectionId;
+    @JsonProperty(value = "properties.destinationInvoiceSectionName")
+    private String destinationInvoiceSectionName;
 
     /**
-     * Get the destination invoiceSectionId.
+     * Get the destination invoiceSectionName.
      *
-     * @return the destinationInvoiceSectionId value
+     * @return the destinationInvoiceSectionName value
      */
-    public String destinationInvoiceSectionId() {
-        return this.destinationInvoiceSectionId;
+    public String destinationInvoiceSectionName() {
+        return this.destinationInvoiceSectionName;
     }
 
     /**
-     * Set the destination invoiceSectionId.
+     * Set the destination invoiceSectionName.
      *
-     * @param destinationInvoiceSectionId the destinationInvoiceSectionId value to set
+     * @param destinationInvoiceSectionName the destinationInvoiceSectionName value to set
      * @return the TransferBillingSubscriptionRequest object itself.
      */
-    public TransferBillingSubscriptionRequest withDestinationInvoiceSectionId(String destinationInvoiceSectionId) {
-        this.destinationInvoiceSectionId = destinationInvoiceSectionId;
+    public TransferBillingSubscriptionRequest withDestinationInvoiceSectionName(String destinationInvoiceSectionName) {
+        this.destinationInvoiceSectionName = destinationInvoiceSectionName;
         return this;
     }
 

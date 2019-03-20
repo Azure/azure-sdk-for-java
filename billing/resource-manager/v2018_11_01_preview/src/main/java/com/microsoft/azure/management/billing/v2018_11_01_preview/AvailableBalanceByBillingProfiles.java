@@ -17,13 +17,13 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface AvailableBalanceByBillingProfiles extends HasInner<AvailableBalanceByBillingProfilesInner> {
     /**
-     * The latest available credit balance for a given billingAccountId and billingProfileId.
+     * The latest available credit balance for a given billingAccountName and billingProfileName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<AvailableBalance> getAsync(String billingAccountId, String billingProfileId);
+    Observable<AvailableBalance> getAsync(String billingAccountName, String billingProfileName);
 
 }

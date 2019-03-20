@@ -56,8 +56,8 @@ public class BillingAccountsInner {
         Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.BillingAccounts get" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}")
-        Observable<Response<ResponseBody>> get(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}")
+        Observable<Response<ResponseBody>> get(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -200,37 +200,37 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BillingAccountInner object if successful.
      */
-    public BillingAccountInner get(String billingAccountId) {
-        return getWithServiceResponseAsync(billingAccountId).toBlocking().single().body();
+    public BillingAccountInner get(String billingAccountName) {
+        return getWithServiceResponseAsync(billingAccountName).toBlocking().single().body();
     }
 
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BillingAccountInner> getAsync(String billingAccountId, final ServiceCallback<BillingAccountInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountId), serviceCallback);
+    public ServiceFuture<BillingAccountInner> getAsync(String billingAccountName, final ServiceCallback<BillingAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountName), serviceCallback);
     }
 
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountInner object
      */
-    public Observable<BillingAccountInner> getAsync(String billingAccountId) {
-        return getWithServiceResponseAsync(billingAccountId).map(new Func1<ServiceResponse<BillingAccountInner>, BillingAccountInner>() {
+    public Observable<BillingAccountInner> getAsync(String billingAccountName) {
+        return getWithServiceResponseAsync(billingAccountName).map(new Func1<ServiceResponse<BillingAccountInner>, BillingAccountInner>() {
             @Override
             public BillingAccountInner call(ServiceResponse<BillingAccountInner> response) {
                 return response.body();
@@ -241,19 +241,19 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountInner object
      */
-    public Observable<ServiceResponse<BillingAccountInner>> getWithServiceResponseAsync(String billingAccountId) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<BillingAccountInner>> getWithServiceResponseAsync(String billingAccountName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String expand = null;
-        return service.get(billingAccountId, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(billingAccountName, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingAccountInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BillingAccountInner>> call(Response<ResponseBody> response) {
@@ -270,40 +270,40 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the BillingAccountInner object if successful.
      */
-    public BillingAccountInner get(String billingAccountId, String expand) {
-        return getWithServiceResponseAsync(billingAccountId, expand).toBlocking().single().body();
+    public BillingAccountInner get(String billingAccountName, String expand) {
+        return getWithServiceResponseAsync(billingAccountName, expand).toBlocking().single().body();
     }
 
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<BillingAccountInner> getAsync(String billingAccountId, String expand, final ServiceCallback<BillingAccountInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountId, expand), serviceCallback);
+    public ServiceFuture<BillingAccountInner> getAsync(String billingAccountName, String expand, final ServiceCallback<BillingAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountName, expand), serviceCallback);
     }
 
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountInner object
      */
-    public Observable<BillingAccountInner> getAsync(String billingAccountId, String expand) {
-        return getWithServiceResponseAsync(billingAccountId, expand).map(new Func1<ServiceResponse<BillingAccountInner>, BillingAccountInner>() {
+    public Observable<BillingAccountInner> getAsync(String billingAccountName, String expand) {
+        return getWithServiceResponseAsync(billingAccountName, expand).map(new Func1<ServiceResponse<BillingAccountInner>, BillingAccountInner>() {
             @Override
             public BillingAccountInner call(ServiceResponse<BillingAccountInner> response) {
                 return response.body();
@@ -314,19 +314,19 @@ public class BillingAccountsInner {
     /**
      * Get the billing account by id.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param expand May be used to expand the invoiceSections and billingProfiles.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the BillingAccountInner object
      */
-    public Observable<ServiceResponse<BillingAccountInner>> getWithServiceResponseAsync(String billingAccountId, String expand) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<BillingAccountInner>> getWithServiceResponseAsync(String billingAccountName, String expand) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(billingAccountId, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(billingAccountName, this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BillingAccountInner>>>() {
                 @Override
                 public Observable<ServiceResponse<BillingAccountInner>> call(Response<ResponseBody> response) {

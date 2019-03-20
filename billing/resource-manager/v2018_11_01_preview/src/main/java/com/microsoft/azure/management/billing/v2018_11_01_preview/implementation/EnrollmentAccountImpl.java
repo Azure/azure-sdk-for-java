@@ -16,15 +16,15 @@ import org.joda.time.DateTime;
 
 class EnrollmentAccountImpl extends IndexableRefreshableWrapperImpl<EnrollmentAccount, EnrollmentAccountInner> implements EnrollmentAccount {
     private final BillingManager manager;
-    private String billingAccountId;
-    private String enrollmentAccountId;
+    private String billingAccountName;
+    private String enrollmentAccountName;
 
     EnrollmentAccountImpl(EnrollmentAccountInner inner,  BillingManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
-        this.billingAccountId = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
-        this.enrollmentAccountId = IdParsingUtils.getValueFromIdByName(inner.id(), "enrollmentAccounts");
+        this.billingAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
+        this.enrollmentAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "enrollmentAccounts");
     }
 
     @Override
@@ -35,7 +35,7 @@ class EnrollmentAccountImpl extends IndexableRefreshableWrapperImpl<EnrollmentAc
     @Override
     protected Observable<EnrollmentAccountInner> getInnerAsync() {
         EnrollmentAccountsInner client = this.manager().inner().enrollmentAccounts();
-        return client.getByEnrollmentAccountAccountIdAsync(this.billingAccountId, this.enrollmentAccountId);
+        return client.getByEnrollmentAccountAccountIdAsync(this.billingAccountName, this.enrollmentAccountName);
     }
 
 

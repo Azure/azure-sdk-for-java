@@ -19,11 +19,11 @@ public interface PaymentMethodsByBillingProfiles extends HasInner<PaymentMethods
     /**
      * Lists the Payment Methods by billing profile Id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PaymentMethod> listAsync(final String billingAccountId, final String billingProfileId);
+    Observable<PaymentMethod> listAsync(final String billingAccountName, final String billingProfileName);
 
 }

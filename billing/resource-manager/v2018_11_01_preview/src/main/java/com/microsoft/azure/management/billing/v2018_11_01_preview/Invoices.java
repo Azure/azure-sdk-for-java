@@ -19,12 +19,12 @@ public interface Invoices extends HasInner<InvoicesInner> {
     /**
      * Get the invoice by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param invoiceName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceSummary> getAsync(String billingAccountId, String billingProfileId, String invoiceName);
+    Observable<InvoiceSummary> getAsync(String billingAccountName, String billingProfileName, String invoiceName);
 
 }

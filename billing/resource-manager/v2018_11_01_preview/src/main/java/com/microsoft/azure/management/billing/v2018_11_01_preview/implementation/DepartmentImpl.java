@@ -17,15 +17,15 @@ import java.util.List;
 
 class DepartmentImpl extends IndexableRefreshableWrapperImpl<Department, DepartmentInner> implements Department {
     private final BillingManager manager;
-    private String billingAccountId;
-    private String departmentId;
+    private String billingAccountName;
+    private String departmentName;
 
     DepartmentImpl(DepartmentInner inner,  BillingManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
-        this.billingAccountId = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
-        this.departmentId = IdParsingUtils.getValueFromIdByName(inner.id(), "departments");
+        this.billingAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
+        this.departmentName = IdParsingUtils.getValueFromIdByName(inner.id(), "departments");
     }
 
     @Override
@@ -36,7 +36,7 @@ class DepartmentImpl extends IndexableRefreshableWrapperImpl<Department, Departm
     @Override
     protected Observable<DepartmentInner> getInnerAsync() {
         DepartmentsInner client = this.manager().inner().departments();
-        return client.getAsync(this.billingAccountId, this.departmentId);
+        return client.getAsync(this.billingAccountName, this.departmentName);
     }
 
 

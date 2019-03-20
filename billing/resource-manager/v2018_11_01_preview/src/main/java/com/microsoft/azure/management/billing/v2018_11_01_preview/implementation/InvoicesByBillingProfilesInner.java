@@ -52,16 +52,16 @@ public class InvoicesByBillingProfilesInner {
      */
     interface InvoicesByBillingProfilesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.InvoicesByBillingProfiles list" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/invoices")
-        Observable<Response<ResponseBody>> list(@Path("billingAccountId") String billingAccountId, @Path("billingProfileId") String billingProfileId, @Query("api-version") String apiVersion, @Query("periodStartDate") String periodStartDate, @Query("periodEndDate") String periodEndDate, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoices")
+        Observable<Response<ResponseBody>> list(@Path("billingAccountName") String billingAccountName, @Path("billingProfileName") String billingProfileName, @Query("api-version") String apiVersion, @Query("periodStartDate") String periodStartDate, @Query("periodEndDate") String periodEndDate, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * List of invoices for a billing profile.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param periodStartDate Invoice period start date.
      * @param periodEndDate Invoice period end date.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -69,37 +69,37 @@ public class InvoicesByBillingProfilesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the InvoiceListResultInner object if successful.
      */
-    public InvoiceListResultInner list(String billingAccountId, String billingProfileId, String periodStartDate, String periodEndDate) {
-        return listWithServiceResponseAsync(billingAccountId, billingProfileId, periodStartDate, periodEndDate).toBlocking().single().body();
+    public InvoiceListResultInner list(String billingAccountName, String billingProfileName, String periodStartDate, String periodEndDate) {
+        return listWithServiceResponseAsync(billingAccountName, billingProfileName, periodStartDate, periodEndDate).toBlocking().single().body();
     }
 
     /**
      * List of invoices for a billing profile.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param periodStartDate Invoice period start date.
      * @param periodEndDate Invoice period end date.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<InvoiceListResultInner> listAsync(String billingAccountId, String billingProfileId, String periodStartDate, String periodEndDate, final ServiceCallback<InvoiceListResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(billingAccountId, billingProfileId, periodStartDate, periodEndDate), serviceCallback);
+    public ServiceFuture<InvoiceListResultInner> listAsync(String billingAccountName, String billingProfileName, String periodStartDate, String periodEndDate, final ServiceCallback<InvoiceListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(billingAccountName, billingProfileName, periodStartDate, periodEndDate), serviceCallback);
     }
 
     /**
      * List of invoices for a billing profile.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param periodStartDate Invoice period start date.
      * @param periodEndDate Invoice period end date.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceListResultInner object
      */
-    public Observable<InvoiceListResultInner> listAsync(String billingAccountId, String billingProfileId, String periodStartDate, String periodEndDate) {
-        return listWithServiceResponseAsync(billingAccountId, billingProfileId, periodStartDate, periodEndDate).map(new Func1<ServiceResponse<InvoiceListResultInner>, InvoiceListResultInner>() {
+    public Observable<InvoiceListResultInner> listAsync(String billingAccountName, String billingProfileName, String periodStartDate, String periodEndDate) {
+        return listWithServiceResponseAsync(billingAccountName, billingProfileName, periodStartDate, periodEndDate).map(new Func1<ServiceResponse<InvoiceListResultInner>, InvoiceListResultInner>() {
             @Override
             public InvoiceListResultInner call(ServiceResponse<InvoiceListResultInner> response) {
                 return response.body();
@@ -110,19 +110,19 @@ public class InvoicesByBillingProfilesInner {
     /**
      * List of invoices for a billing profile.
      *
-     * @param billingAccountId billing Account Id.
-     * @param billingProfileId Billing Profile Id.
+     * @param billingAccountName billing Account Id.
+     * @param billingProfileName Billing Profile Id.
      * @param periodStartDate Invoice period start date.
      * @param periodEndDate Invoice period end date.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InvoiceListResultInner object
      */
-    public Observable<ServiceResponse<InvoiceListResultInner>> listWithServiceResponseAsync(String billingAccountId, String billingProfileId, String periodStartDate, String periodEndDate) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<InvoiceListResultInner>> listWithServiceResponseAsync(String billingAccountName, String billingProfileName, String periodStartDate, String periodEndDate) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (billingProfileId == null) {
-            throw new IllegalArgumentException("Parameter billingProfileId is required and cannot be null.");
+        if (billingProfileName == null) {
+            throw new IllegalArgumentException("Parameter billingProfileName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
@@ -133,7 +133,7 @@ public class InvoicesByBillingProfilesInner {
         if (periodEndDate == null) {
             throw new IllegalArgumentException("Parameter periodEndDate is required and cannot be null.");
         }
-        return service.list(billingAccountId, billingProfileId, this.client.apiVersion(), periodStartDate, periodEndDate, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(billingAccountName, billingProfileName, this.client.apiVersion(), periodStartDate, periodEndDate, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<InvoiceListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<InvoiceListResultInner>> call(Response<ResponseBody> response) {

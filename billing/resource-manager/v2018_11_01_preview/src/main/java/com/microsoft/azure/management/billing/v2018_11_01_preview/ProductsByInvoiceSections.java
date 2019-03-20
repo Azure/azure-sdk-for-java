@@ -17,13 +17,13 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface ProductsByInvoiceSections extends HasInner<ProductsByInvoiceSectionsInner> {
     /**
-     * Lists products by invoiceSectionId.
+     * Lists products by invoiceSectionName.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ProductsListResult> listAsync(String billingAccountId, String invoiceSectionId);
+    Observable<ProductsListResult> listAsync(String billingAccountName, String invoiceSectionName);
 
 }

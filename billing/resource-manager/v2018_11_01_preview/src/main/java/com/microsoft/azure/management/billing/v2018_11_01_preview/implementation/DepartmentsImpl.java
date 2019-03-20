@@ -32,9 +32,9 @@ class DepartmentsImpl extends WrapperImpl<DepartmentsInner> implements Departmen
     }
 
     @Override
-    public Observable<Department> getAsync(String billingAccountId, String departmentId) {
+    public Observable<Department> getAsync(String billingAccountName, String departmentName) {
         DepartmentsInner client = this.inner();
-        return client.getAsync(billingAccountId, departmentId)
+        return client.getAsync(billingAccountName, departmentName)
         .map(new Func1<DepartmentInner, Department>() {
             @Override
             public Department call(DepartmentInner inner) {

@@ -57,55 +57,55 @@ public class ProductsInner {
      */
     interface ProductsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Products get" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/products/{productName}")
-        Observable<Response<ResponseBody>> get(@Path("billingAccountId") String billingAccountId, @Path("invoiceSectionId") String invoiceSectionId, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products/{productName}")
+        Observable<Response<ResponseBody>> get(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Products transfer" })
-        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}/products/{productName}/transfer")
-        Observable<Response<ResponseBody>> transfer(@Path("billingAccountId") String billingAccountId, @Path("invoiceSectionId") String invoiceSectionId, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TransferProductRequestProperties parameters, @Header("User-Agent") String userAgent);
+        @POST("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoiceSections/{invoiceSectionName}/products/{productName}/transfer")
+        Observable<Response<ResponseBody>> transfer(@Path("billingAccountName") String billingAccountName, @Path("invoiceSectionName") String invoiceSectionName, @Path("productName") String productName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TransferProductRequestProperties parameters, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Get a single product by name.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProductSummaryInner object if successful.
      */
-    public ProductSummaryInner get(String billingAccountId, String invoiceSectionId, String productName) {
-        return getWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName).toBlocking().single().body();
+    public ProductSummaryInner get(String billingAccountName, String invoiceSectionName, String productName) {
+        return getWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName).toBlocking().single().body();
     }
 
     /**
      * Get a single product by name.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ProductSummaryInner> getAsync(String billingAccountId, String invoiceSectionId, String productName, final ServiceCallback<ProductSummaryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName), serviceCallback);
+    public ServiceFuture<ProductSummaryInner> getAsync(String billingAccountName, String invoiceSectionName, String productName, final ServiceCallback<ProductSummaryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName), serviceCallback);
     }
 
     /**
      * Get a single product by name.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
      */
-    public Observable<ProductSummaryInner> getAsync(String billingAccountId, String invoiceSectionId, String productName) {
-        return getWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName).map(new Func1<ServiceResponse<ProductSummaryInner>, ProductSummaryInner>() {
+    public Observable<ProductSummaryInner> getAsync(String billingAccountName, String invoiceSectionName, String productName) {
+        return getWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName).map(new Func1<ServiceResponse<ProductSummaryInner>, ProductSummaryInner>() {
             @Override
             public ProductSummaryInner call(ServiceResponse<ProductSummaryInner> response) {
                 return response.body();
@@ -116,18 +116,18 @@ public class ProductsInner {
     /**
      * Get a single product by name.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
      */
-    public Observable<ServiceResponse<ProductSummaryInner>> getWithServiceResponseAsync(String billingAccountId, String invoiceSectionId, String productName) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<ProductSummaryInner>> getWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String productName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (invoiceSectionId == null) {
-            throw new IllegalArgumentException("Parameter invoiceSectionId is required and cannot be null.");
+        if (invoiceSectionName == null) {
+            throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
         }
         if (productName == null) {
             throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
@@ -135,7 +135,7 @@ public class ProductsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(billingAccountId, invoiceSectionId, productName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(billingAccountName, invoiceSectionName, productName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ProductSummaryInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ProductSummaryInner>> call(Response<ResponseBody> response) {
@@ -159,43 +159,43 @@ public class ProductsInner {
     /**
      * The operation to transfer a Product to another InvoiceSection.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProductSummaryInner object if successful.
      */
-    public ProductSummaryInner transfer(String billingAccountId, String invoiceSectionId, String productName) {
-        return transferWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName).toBlocking().single().body();
+    public ProductSummaryInner transfer(String billingAccountName, String invoiceSectionName, String productName) {
+        return transferWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName).toBlocking().single().body();
     }
 
     /**
      * The operation to transfer a Product to another InvoiceSection.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ProductSummaryInner> transferAsync(String billingAccountId, String invoiceSectionId, String productName, final ServiceCallback<ProductSummaryInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(transferWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName), serviceCallback);
+    public ServiceFuture<ProductSummaryInner> transferAsync(String billingAccountName, String invoiceSectionName, String productName, final ServiceCallback<ProductSummaryInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(transferWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName), serviceCallback);
     }
 
     /**
      * The operation to transfer a Product to another InvoiceSection.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
      */
-    public Observable<ProductSummaryInner> transferAsync(String billingAccountId, String invoiceSectionId, String productName) {
-        return transferWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName).map(new Func1<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>, ProductSummaryInner>() {
+    public Observable<ProductSummaryInner> transferAsync(String billingAccountName, String invoiceSectionName, String productName) {
+        return transferWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName).map(new Func1<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>, ProductSummaryInner>() {
             @Override
             public ProductSummaryInner call(ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders> response) {
                 return response.body();
@@ -206,18 +206,18 @@ public class ProductsInner {
     /**
      * The operation to transfer a Product to another InvoiceSection.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
      */
-    public Observable<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>> transferWithServiceResponseAsync(String billingAccountId, String invoiceSectionId, String productName) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>> transferWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String productName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (invoiceSectionId == null) {
-            throw new IllegalArgumentException("Parameter invoiceSectionId is required and cannot be null.");
+        if (invoiceSectionName == null) {
+            throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
         }
         if (productName == null) {
             throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
@@ -225,10 +225,10 @@ public class ProductsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final String destinationInvoiceSectionId = null;
+        final String destinationInvoiceSectionName = null;
         TransferProductRequestProperties parameters = new TransferProductRequestProperties();
-        parameters.withDestinationInvoiceSectionId(null);
-        return service.transfer(billingAccountId, invoiceSectionId, productName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+        parameters.withDestinationInvoiceSectionName(null);
+        return service.transfer(billingAccountName, invoiceSectionName, productName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>> call(Response<ResponseBody> response) {
@@ -245,46 +245,46 @@ public class ProductsInner {
     /**
      * The operation to transfer a Product to another InvoiceSection.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
-     * @param destinationInvoiceSectionId Destination invoice section id.
+     * @param destinationInvoiceSectionName Destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ProductSummaryInner object if successful.
      */
-    public ProductSummaryInner transfer(String billingAccountId, String invoiceSectionId, String productName, String destinationInvoiceSectionId) {
-        return transferWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName, destinationInvoiceSectionId).toBlocking().single().body();
+    public ProductSummaryInner transfer(String billingAccountName, String invoiceSectionName, String productName, String destinationInvoiceSectionName) {
+        return transferWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName, destinationInvoiceSectionName).toBlocking().single().body();
     }
 
     /**
      * The operation to transfer a Product to another InvoiceSection.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
-     * @param destinationInvoiceSectionId Destination invoice section id.
+     * @param destinationInvoiceSectionName Destination invoice section id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ProductSummaryInner> transferAsync(String billingAccountId, String invoiceSectionId, String productName, String destinationInvoiceSectionId, final ServiceCallback<ProductSummaryInner> serviceCallback) {
-        return ServiceFuture.fromHeaderResponse(transferWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName, destinationInvoiceSectionId), serviceCallback);
+    public ServiceFuture<ProductSummaryInner> transferAsync(String billingAccountName, String invoiceSectionName, String productName, String destinationInvoiceSectionName, final ServiceCallback<ProductSummaryInner> serviceCallback) {
+        return ServiceFuture.fromHeaderResponse(transferWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName, destinationInvoiceSectionName), serviceCallback);
     }
 
     /**
      * The operation to transfer a Product to another InvoiceSection.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
-     * @param destinationInvoiceSectionId Destination invoice section id.
+     * @param destinationInvoiceSectionName Destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
      */
-    public Observable<ProductSummaryInner> transferAsync(String billingAccountId, String invoiceSectionId, String productName, String destinationInvoiceSectionId) {
-        return transferWithServiceResponseAsync(billingAccountId, invoiceSectionId, productName, destinationInvoiceSectionId).map(new Func1<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>, ProductSummaryInner>() {
+    public Observable<ProductSummaryInner> transferAsync(String billingAccountName, String invoiceSectionName, String productName, String destinationInvoiceSectionName) {
+        return transferWithServiceResponseAsync(billingAccountName, invoiceSectionName, productName, destinationInvoiceSectionName).map(new Func1<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>, ProductSummaryInner>() {
             @Override
             public ProductSummaryInner call(ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders> response) {
                 return response.body();
@@ -295,19 +295,19 @@ public class ProductsInner {
     /**
      * The operation to transfer a Product to another InvoiceSection.
      *
-     * @param billingAccountId billing Account Id.
-     * @param invoiceSectionId InvoiceSection Id.
+     * @param billingAccountName billing Account Id.
+     * @param invoiceSectionName InvoiceSection Id.
      * @param productName Invoide Id.
-     * @param destinationInvoiceSectionId Destination invoice section id.
+     * @param destinationInvoiceSectionName Destination invoice section id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProductSummaryInner object
      */
-    public Observable<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>> transferWithServiceResponseAsync(String billingAccountId, String invoiceSectionId, String productName, String destinationInvoiceSectionId) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>> transferWithServiceResponseAsync(String billingAccountName, String invoiceSectionName, String productName, String destinationInvoiceSectionName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (invoiceSectionId == null) {
-            throw new IllegalArgumentException("Parameter invoiceSectionId is required and cannot be null.");
+        if (invoiceSectionName == null) {
+            throw new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null.");
         }
         if (productName == null) {
             throw new IllegalArgumentException("Parameter productName is required and cannot be null.");
@@ -316,8 +316,8 @@ public class ProductsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         TransferProductRequestProperties parameters = new TransferProductRequestProperties();
-        parameters.withDestinationInvoiceSectionId(destinationInvoiceSectionId);
-        return service.transfer(billingAccountId, invoiceSectionId, productName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
+        parameters.withDestinationInvoiceSectionName(destinationInvoiceSectionName);
+        return service.transfer(billingAccountName, invoiceSectionName, productName, this.client.apiVersion(), this.client.acceptLanguage(), parameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<ProductSummaryInner, ProductsTransferHeaders>> call(Response<ResponseBody> response) {

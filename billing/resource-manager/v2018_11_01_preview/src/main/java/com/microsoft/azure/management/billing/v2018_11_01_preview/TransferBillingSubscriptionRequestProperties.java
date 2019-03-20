@@ -15,28 +15,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TransferBillingSubscriptionRequestProperties {
     /**
-     * The destination invoiceSectionId.
+     * The destination invoiceSectionName.
      */
-    @JsonProperty(value = "destinationInvoiceSectionId")
-    private String destinationInvoiceSectionId;
+    @JsonProperty(value = "destinationInvoiceSectionName")
+    private String destinationInvoiceSectionName;
 
     /**
-     * Get the destination invoiceSectionId.
+     * Get the destination invoiceSectionName.
      *
-     * @return the destinationInvoiceSectionId value
+     * @return the destinationInvoiceSectionName value
      */
-    public String destinationInvoiceSectionId() {
-        return this.destinationInvoiceSectionId;
+    public String destinationInvoiceSectionName() {
+        return this.destinationInvoiceSectionName;
     }
 
     /**
-     * Set the destination invoiceSectionId.
+     * Set the destination invoiceSectionName.
      *
-     * @param destinationInvoiceSectionId the destinationInvoiceSectionId value to set
+     * @param destinationInvoiceSectionName the destinationInvoiceSectionName value to set
      * @return the TransferBillingSubscriptionRequestProperties object itself.
      */
-    public TransferBillingSubscriptionRequestProperties withDestinationInvoiceSectionId(String destinationInvoiceSectionId) {
-        this.destinationInvoiceSectionId = destinationInvoiceSectionId;
+    public TransferBillingSubscriptionRequestProperties withDestinationInvoiceSectionName(String destinationInvoiceSectionName) {
+        this.destinationInvoiceSectionName = destinationInvoiceSectionName;
         return this;
     }
 

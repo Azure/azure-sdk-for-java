@@ -19,26 +19,26 @@ public class TransferBillingSubscriptionResultInner {
     /**
      * The destination billing subscription id.
      */
-    @JsonProperty(value = "properties.billingSubscriptionId")
-    private String billingSubscriptionId;
+    @JsonProperty(value = "properties.billingSubscriptionName")
+    private String billingSubscriptionName;
 
     /**
      * Get the destination billing subscription id.
      *
-     * @return the billingSubscriptionId value
+     * @return the billingSubscriptionName value
      */
-    public String billingSubscriptionId() {
-        return this.billingSubscriptionId;
+    public String billingSubscriptionName() {
+        return this.billingSubscriptionName;
     }
 
     /**
      * Set the destination billing subscription id.
      *
-     * @param billingSubscriptionId the billingSubscriptionId value to set
+     * @param billingSubscriptionName the billingSubscriptionName value to set
      * @return the TransferBillingSubscriptionResultInner object itself.
      */
-    public TransferBillingSubscriptionResultInner withBillingSubscriptionId(String billingSubscriptionId) {
-        this.billingSubscriptionId = billingSubscriptionId;
+    public TransferBillingSubscriptionResultInner withBillingSubscriptionName(String billingSubscriptionName) {
+        this.billingSubscriptionName = billingSubscriptionName;
         return this;
     }
 

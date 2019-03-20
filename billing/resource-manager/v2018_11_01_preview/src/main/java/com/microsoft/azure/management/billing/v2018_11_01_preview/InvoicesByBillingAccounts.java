@@ -19,12 +19,12 @@ public interface InvoicesByBillingAccounts extends HasInner<InvoicesByBillingAcc
     /**
      * List of invoices for a billing account.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param periodStartDate Invoice period start date.
      * @param periodEndDate Invoice period end date.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<InvoiceListResult> listAsync(String billingAccountId, String periodStartDate, String periodEndDate);
+    Observable<InvoiceListResult> listAsync(String billingAccountName, String periodStartDate, String periodEndDate);
 
 }

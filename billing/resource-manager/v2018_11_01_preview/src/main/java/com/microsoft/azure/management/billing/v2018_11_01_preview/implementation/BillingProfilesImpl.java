@@ -32,9 +32,9 @@ class BillingProfilesImpl extends WrapperImpl<BillingProfilesInner> implements B
     }
 
     @Override
-    public Observable<BillingProfile> getAsync(String billingAccountId, String billingProfileId) {
+    public Observable<BillingProfile> getAsync(String billingAccountName, String billingProfileName) {
         BillingProfilesInner client = this.inner();
-        return client.getAsync(billingAccountId, billingProfileId)
+        return client.getAsync(billingAccountName, billingProfileName)
         .map(new Func1<BillingProfileInner, BillingProfile>() {
             @Override
             public BillingProfile call(BillingProfileInner inner) {

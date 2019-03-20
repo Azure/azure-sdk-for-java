@@ -18,8 +18,8 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.implementation
  */
 public interface TransferBillingSubscriptionResult extends HasInner<TransferBillingSubscriptionResultInner>, HasManager<BillingManager> {
     /**
-     * @return the billingSubscriptionId value.
+     * @return the billingSubscriptionName value.
      */
-    String billingSubscriptionId();
+    String billingSubscriptionName();
 
 }

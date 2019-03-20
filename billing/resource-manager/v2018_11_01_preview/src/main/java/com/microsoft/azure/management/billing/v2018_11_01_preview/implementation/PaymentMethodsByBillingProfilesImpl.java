@@ -33,9 +33,9 @@ class PaymentMethodsByBillingProfilesImpl extends WrapperImpl<PaymentMethodsByBi
     }
 
     @Override
-    public Observable<PaymentMethod> listAsync(final String billingAccountId, final String billingProfileId) {
+    public Observable<PaymentMethod> listAsync(final String billingAccountName, final String billingProfileName) {
         PaymentMethodsByBillingProfilesInner client = this.inner();
-        return client.listAsync(billingAccountId, billingProfileId)
+        return client.listAsync(billingAccountName, billingProfileName)
         .flatMapIterable(new Func1<Page<PaymentMethodInner>, Iterable<PaymentMethodInner>>() {
             @Override
             public Iterable<PaymentMethodInner> call(Page<PaymentMethodInner> page) {

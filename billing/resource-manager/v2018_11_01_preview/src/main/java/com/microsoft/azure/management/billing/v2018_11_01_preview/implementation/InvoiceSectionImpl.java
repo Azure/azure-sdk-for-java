@@ -17,14 +17,14 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.BillingProfile
 
 class InvoiceSectionImpl extends CreatableUpdatableImpl<InvoiceSection, InvoiceSectionInner, InvoiceSectionImpl> implements InvoiceSection, InvoiceSection.Update {
     private final BillingManager manager;
-    private String billingAccountId;
-    private String invoiceSectionId;
+    private String billingAccountName;
+    private String invoiceSectionName;
 
     InvoiceSectionImpl(String name, BillingManager manager) {
         super(name, new InvoiceSectionInner());
         this.manager = manager;
         // Set resource name
-        this.invoiceSectionId = name;
+        this.invoiceSectionName = name;
         //
     }
 
@@ -32,10 +32,10 @@ class InvoiceSectionImpl extends CreatableUpdatableImpl<InvoiceSection, InvoiceS
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.invoiceSectionId = inner.name();
+        this.invoiceSectionName = inner.name();
         // set resource ancestor and positional variables
-        this.billingAccountId = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
-        this.invoiceSectionId = IdParsingUtils.getValueFromIdByName(inner.id(), "invoiceSections");
+        this.billingAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
+        this.invoiceSectionName = IdParsingUtils.getValueFromIdByName(inner.id(), "invoiceSections");
         //
     }
 
@@ -53,14 +53,14 @@ class InvoiceSectionImpl extends CreatableUpdatableImpl<InvoiceSection, InvoiceS
     @Override
     public Observable<InvoiceSection> updateResourceAsync() {
         InvoiceSectionsInner client = this.manager().inner().invoiceSections();
-        return client.updateAsync(this.billingAccountId, this.invoiceSectionId, this.inner())
+        return client.updateAsync(this.billingAccountName, this.invoiceSectionName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Observable<InvoiceSectionInner> getInnerAsync() {
         InvoiceSectionsInner client = this.manager().inner().invoiceSections();
-        return client.getAsync(this.billingAccountId, this.invoiceSectionId);
+        return client.getAsync(this.billingAccountName, this.invoiceSectionName);
     }
 
     @Override

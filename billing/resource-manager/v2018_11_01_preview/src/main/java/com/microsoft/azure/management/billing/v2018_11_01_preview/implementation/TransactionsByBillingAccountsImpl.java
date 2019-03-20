@@ -33,9 +33,9 @@ class TransactionsByBillingAccountsImpl extends WrapperImpl<TransactionsByBillin
     }
 
     @Override
-    public Observable<TransactionsSummary> listAsync(final String billingAccountId, final String startDate, final String endDate) {
+    public Observable<TransactionsSummary> listAsync(final String billingAccountName, final String startDate, final String endDate) {
         TransactionsByBillingAccountsInner client = this.inner();
-        return client.listAsync(billingAccountId, startDate, endDate)
+        return client.listAsync(billingAccountName, startDate, endDate)
         .flatMapIterable(new Func1<Page<TransactionsSummaryInner>, Iterable<TransactionsSummaryInner>>() {
             @Override
             public Iterable<TransactionsSummaryInner> call(Page<TransactionsSummaryInner> page) {

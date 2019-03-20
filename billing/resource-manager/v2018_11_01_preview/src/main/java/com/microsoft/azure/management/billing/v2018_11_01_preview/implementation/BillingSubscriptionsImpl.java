@@ -33,9 +33,9 @@ class BillingSubscriptionsImpl extends WrapperImpl<BillingSubscriptionsInner> im
     }
 
     @Override
-    public Observable<TransferBillingSubscriptionResult> transferAsync(String billingAccountId, String invoiceSectionId) {
+    public Observable<TransferBillingSubscriptionResult> transferAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
         BillingSubscriptionsInner client = this.inner();
-        return client.transferAsync(billingAccountId, invoiceSectionId)
+        return client.transferAsync(billingAccountName, invoiceSectionName, billingSubscriptionName)
         .map(new Func1<TransferBillingSubscriptionResultInner, TransferBillingSubscriptionResult>() {
             @Override
             public TransferBillingSubscriptionResult call(TransferBillingSubscriptionResultInner inner) {
@@ -45,9 +45,9 @@ class BillingSubscriptionsImpl extends WrapperImpl<BillingSubscriptionsInner> im
     }
 
     @Override
-    public Observable<InvoiceSectionBillingAccountBillingSubscriptionSummary> getAsync(String billingAccountId, String invoiceSectionId, String billingSubscriptionId) {
+    public Observable<InvoiceSectionBillingAccountBillingSubscriptionSummary> getAsync(String billingAccountName, String invoiceSectionName, String billingSubscriptionName) {
         BillingSubscriptionsInner client = this.inner();
-        return client.getAsync(billingAccountId, invoiceSectionId, billingSubscriptionId)
+        return client.getAsync(billingAccountName, invoiceSectionName, billingSubscriptionName)
         .map(new Func1<BillingSubscriptionSummaryInner, InvoiceSectionBillingAccountBillingSubscriptionSummary>() {
             @Override
             public InvoiceSectionBillingAccountBillingSubscriptionSummary call(BillingSubscriptionSummaryInner inner) {

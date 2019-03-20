@@ -52,48 +52,48 @@ public class DepartmentsInner {
      */
     interface DepartmentsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.Departments get" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}")
-        Observable<Response<ResponseBody>> get(@Path("billingAccountId") String billingAccountId, @Path("departmentId") String departmentId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/departments/{departmentName}")
+        Observable<Response<ResponseBody>> get(@Path("billingAccountName") String billingAccountName, @Path("departmentName") String departmentName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Get the department by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param departmentId Department Id.
+     * @param billingAccountName billing Account Id.
+     * @param departmentName Department Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DepartmentInner object if successful.
      */
-    public DepartmentInner get(String billingAccountId, String departmentId) {
-        return getWithServiceResponseAsync(billingAccountId, departmentId).toBlocking().single().body();
+    public DepartmentInner get(String billingAccountName, String departmentName) {
+        return getWithServiceResponseAsync(billingAccountName, departmentName).toBlocking().single().body();
     }
 
     /**
      * Get the department by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param departmentId Department Id.
+     * @param billingAccountName billing Account Id.
+     * @param departmentName Department Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DepartmentInner> getAsync(String billingAccountId, String departmentId, final ServiceCallback<DepartmentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountId, departmentId), serviceCallback);
+    public ServiceFuture<DepartmentInner> getAsync(String billingAccountName, String departmentName, final ServiceCallback<DepartmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountName, departmentName), serviceCallback);
     }
 
     /**
      * Get the department by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param departmentId Department Id.
+     * @param billingAccountName billing Account Id.
+     * @param departmentName Department Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DepartmentInner object
      */
-    public Observable<DepartmentInner> getAsync(String billingAccountId, String departmentId) {
-        return getWithServiceResponseAsync(billingAccountId, departmentId).map(new Func1<ServiceResponse<DepartmentInner>, DepartmentInner>() {
+    public Observable<DepartmentInner> getAsync(String billingAccountName, String departmentName) {
+        return getWithServiceResponseAsync(billingAccountName, departmentName).map(new Func1<ServiceResponse<DepartmentInner>, DepartmentInner>() {
             @Override
             public DepartmentInner call(ServiceResponse<DepartmentInner> response) {
                 return response.body();
@@ -104,24 +104,24 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param departmentId Department Id.
+     * @param billingAccountName billing Account Id.
+     * @param departmentName Department Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DepartmentInner object
      */
-    public Observable<ServiceResponse<DepartmentInner>> getWithServiceResponseAsync(String billingAccountId, String departmentId) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<DepartmentInner>> getWithServiceResponseAsync(String billingAccountName, String departmentName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (departmentId == null) {
-            throw new IllegalArgumentException("Parameter departmentId is required and cannot be null.");
+        if (departmentName == null) {
+            throw new IllegalArgumentException("Parameter departmentName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String expand = null;
         final String filter = null;
-        return service.get(billingAccountId, departmentId, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(billingAccountName, departmentName, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DepartmentInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DepartmentInner>> call(Response<ResponseBody> response) {
@@ -138,8 +138,8 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param departmentId Department Id.
+     * @param billingAccountName billing Account Id.
+     * @param departmentName Department Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -147,37 +147,37 @@ public class DepartmentsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the DepartmentInner object if successful.
      */
-    public DepartmentInner get(String billingAccountId, String departmentId, String expand, String filter) {
-        return getWithServiceResponseAsync(billingAccountId, departmentId, expand, filter).toBlocking().single().body();
+    public DepartmentInner get(String billingAccountName, String departmentName, String expand, String filter) {
+        return getWithServiceResponseAsync(billingAccountName, departmentName, expand, filter).toBlocking().single().body();
     }
 
     /**
      * Get the department by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param departmentId Department Id.
+     * @param billingAccountName billing Account Id.
+     * @param departmentName Department Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DepartmentInner> getAsync(String billingAccountId, String departmentId, String expand, String filter, final ServiceCallback<DepartmentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountId, departmentId, expand, filter), serviceCallback);
+    public ServiceFuture<DepartmentInner> getAsync(String billingAccountName, String departmentName, String expand, String filter, final ServiceCallback<DepartmentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(billingAccountName, departmentName, expand, filter), serviceCallback);
     }
 
     /**
      * Get the department by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param departmentId Department Id.
+     * @param billingAccountName billing Account Id.
+     * @param departmentName Department Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DepartmentInner object
      */
-    public Observable<DepartmentInner> getAsync(String billingAccountId, String departmentId, String expand, String filter) {
-        return getWithServiceResponseAsync(billingAccountId, departmentId, expand, filter).map(new Func1<ServiceResponse<DepartmentInner>, DepartmentInner>() {
+    public Observable<DepartmentInner> getAsync(String billingAccountName, String departmentName, String expand, String filter) {
+        return getWithServiceResponseAsync(billingAccountName, departmentName, expand, filter).map(new Func1<ServiceResponse<DepartmentInner>, DepartmentInner>() {
             @Override
             public DepartmentInner call(ServiceResponse<DepartmentInner> response) {
                 return response.body();
@@ -188,24 +188,24 @@ public class DepartmentsInner {
     /**
      * Get the department by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param departmentId Department Id.
+     * @param billingAccountName billing Account Id.
+     * @param departmentName Department Id.
      * @param expand May be used to expand the enrollmentAccounts.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DepartmentInner object
      */
-    public Observable<ServiceResponse<DepartmentInner>> getWithServiceResponseAsync(String billingAccountId, String departmentId, String expand, String filter) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<DepartmentInner>> getWithServiceResponseAsync(String billingAccountName, String departmentName, String expand, String filter) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (departmentId == null) {
-            throw new IllegalArgumentException("Parameter departmentId is required and cannot be null.");
+        if (departmentName == null) {
+            throw new IllegalArgumentException("Parameter departmentName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(billingAccountId, departmentId, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(billingAccountName, departmentName, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DepartmentInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DepartmentInner>> call(Response<ResponseBody> response) {

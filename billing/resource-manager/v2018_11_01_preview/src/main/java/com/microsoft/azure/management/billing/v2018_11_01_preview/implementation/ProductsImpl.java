@@ -33,9 +33,9 @@ class ProductsImpl extends WrapperImpl<ProductsInner> implements Products {
     }
 
     @Override
-    public Observable<BillingAccountProductSummary> transferAsync(String billingAccountId, String invoiceSectionId, String productName) {
+    public Observable<BillingAccountProductSummary> transferAsync(String billingAccountName, String invoiceSectionName, String productName) {
         ProductsInner client = this.inner();
-        return client.transferAsync(billingAccountId, invoiceSectionId, productName)
+        return client.transferAsync(billingAccountName, invoiceSectionName, productName)
         .map(new Func1<ProductSummaryInner, BillingAccountProductSummary>() {
             @Override
             public BillingAccountProductSummary call(ProductSummaryInner inner) {
@@ -45,9 +45,9 @@ class ProductsImpl extends WrapperImpl<ProductsInner> implements Products {
     }
 
     @Override
-    public Observable<InvoiceSectionBillingAccountProductSummary> getAsync(String billingAccountId, String invoiceSectionId, String productName) {
+    public Observable<InvoiceSectionBillingAccountProductSummary> getAsync(String billingAccountName, String invoiceSectionName, String productName) {
         ProductsInner client = this.inner();
-        return client.getAsync(billingAccountId, invoiceSectionId, productName)
+        return client.getAsync(billingAccountName, invoiceSectionName, productName)
         .map(new Func1<ProductSummaryInner, InvoiceSectionBillingAccountProductSummary>() {
             @Override
             public InvoiceSectionBillingAccountProductSummary call(ProductSummaryInner inner) {

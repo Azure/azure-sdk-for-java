@@ -19,16 +19,16 @@ import com.microsoft.azure.management.billing.v2018_11_01_preview.PaymentPropert
 
 class InvoiceSummaryImpl extends IndexableRefreshableWrapperImpl<InvoiceSummary, InvoiceSummaryInner> implements InvoiceSummary {
     private final BillingManager manager;
-    private String billingAccountId;
-    private String billingProfileId;
+    private String billingAccountName;
+    private String billingProfileName;
     private String invoiceName;
 
     InvoiceSummaryImpl(InvoiceSummaryInner inner,  BillingManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
-        this.billingAccountId = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
-        this.billingProfileId = IdParsingUtils.getValueFromIdByName(inner.id(), "billingProfiles");
+        this.billingAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
+        this.billingProfileName = IdParsingUtils.getValueFromIdByName(inner.id(), "billingProfiles");
         this.invoiceName = IdParsingUtils.getValueFromIdByName(inner.id(), "invoices");
     }
 
@@ -40,7 +40,7 @@ class InvoiceSummaryImpl extends IndexableRefreshableWrapperImpl<InvoiceSummary,
     @Override
     protected Observable<InvoiceSummaryInner> getInnerAsync() {
         InvoicesInner client = this.manager().inner().invoices();
-        return client.getAsync(this.billingAccountId, this.billingProfileId, this.invoiceName);
+        return client.getAsync(this.billingAccountName, this.billingProfileName, this.invoiceName);
     }
 
 

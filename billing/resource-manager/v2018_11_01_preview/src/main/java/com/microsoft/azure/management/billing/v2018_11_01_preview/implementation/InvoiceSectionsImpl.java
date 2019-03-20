@@ -33,9 +33,9 @@ class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements I
     }
 
     @Override
-    public Observable<InvoiceSection> getAsync(String billingAccountId, String invoiceSectionId) {
+    public Observable<InvoiceSection> getAsync(String billingAccountName, String invoiceSectionName) {
         InvoiceSectionsInner client = this.inner();
-        return client.getAsync(billingAccountId, invoiceSectionId)
+        return client.getAsync(billingAccountName, invoiceSectionName)
         .map(new Func1<InvoiceSectionInner, InvoiceSection>() {
             @Override
             public InvoiceSection call(InvoiceSectionInner inner) {
@@ -45,9 +45,9 @@ class InvoiceSectionsImpl extends WrapperImpl<InvoiceSectionsInner> implements I
     }
 
     @Override
-    public Observable<InvoiceSection> createAsync(String billingAccountId, InvoiceSectionProperties parameters) {
+    public Observable<InvoiceSection> createAsync(String billingAccountName, InvoiceSectionProperties parameters) {
         InvoiceSectionsInner client = this.inner();
-        return client.createAsync(billingAccountId, parameters)
+        return client.createAsync(billingAccountName, parameters)
         .map(new Func1<InvoiceSectionInner, InvoiceSection>() {
             @Override
             public InvoiceSection call(InvoiceSectionInner inner) {

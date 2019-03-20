@@ -52,48 +52,48 @@ public class EnrollmentAccountsInner {
      */
     interface EnrollmentAccountsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.EnrollmentAccounts getByEnrollmentAccountAccountId" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}")
-        Observable<Response<ResponseBody>> getByEnrollmentAccountAccountId(@Path("billingAccountId") String billingAccountId, @Path("enrollmentAccountId") String enrollmentAccountId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/enrollmentAccounts/{enrollmentAccountName}")
+        Observable<Response<ResponseBody>> getByEnrollmentAccountAccountId(@Path("billingAccountName") String billingAccountName, @Path("enrollmentAccountName") String enrollmentAccountName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Get the enrollment account by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param enrollmentAccountId Enrollment Account Id.
+     * @param billingAccountName billing Account Id.
+     * @param enrollmentAccountName Enrollment Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EnrollmentAccountInner object if successful.
      */
-    public EnrollmentAccountInner getByEnrollmentAccountAccountId(String billingAccountId, String enrollmentAccountId) {
-        return getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountId, enrollmentAccountId).toBlocking().single().body();
+    public EnrollmentAccountInner getByEnrollmentAccountAccountId(String billingAccountName, String enrollmentAccountName) {
+        return getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountName, enrollmentAccountName).toBlocking().single().body();
     }
 
     /**
      * Get the enrollment account by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param enrollmentAccountId Enrollment Account Id.
+     * @param billingAccountName billing Account Id.
+     * @param enrollmentAccountName Enrollment Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<EnrollmentAccountInner> getByEnrollmentAccountAccountIdAsync(String billingAccountId, String enrollmentAccountId, final ServiceCallback<EnrollmentAccountInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountId, enrollmentAccountId), serviceCallback);
+    public ServiceFuture<EnrollmentAccountInner> getByEnrollmentAccountAccountIdAsync(String billingAccountName, String enrollmentAccountName, final ServiceCallback<EnrollmentAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountName, enrollmentAccountName), serviceCallback);
     }
 
     /**
      * Get the enrollment account by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param enrollmentAccountId Enrollment Account Id.
+     * @param billingAccountName billing Account Id.
+     * @param enrollmentAccountName Enrollment Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EnrollmentAccountInner object
      */
-    public Observable<EnrollmentAccountInner> getByEnrollmentAccountAccountIdAsync(String billingAccountId, String enrollmentAccountId) {
-        return getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountId, enrollmentAccountId).map(new Func1<ServiceResponse<EnrollmentAccountInner>, EnrollmentAccountInner>() {
+    public Observable<EnrollmentAccountInner> getByEnrollmentAccountAccountIdAsync(String billingAccountName, String enrollmentAccountName) {
+        return getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountName, enrollmentAccountName).map(new Func1<ServiceResponse<EnrollmentAccountInner>, EnrollmentAccountInner>() {
             @Override
             public EnrollmentAccountInner call(ServiceResponse<EnrollmentAccountInner> response) {
                 return response.body();
@@ -104,24 +104,24 @@ public class EnrollmentAccountsInner {
     /**
      * Get the enrollment account by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param enrollmentAccountId Enrollment Account Id.
+     * @param billingAccountName billing Account Id.
+     * @param enrollmentAccountName Enrollment Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EnrollmentAccountInner object
      */
-    public Observable<ServiceResponse<EnrollmentAccountInner>> getByEnrollmentAccountAccountIdWithServiceResponseAsync(String billingAccountId, String enrollmentAccountId) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<EnrollmentAccountInner>> getByEnrollmentAccountAccountIdWithServiceResponseAsync(String billingAccountName, String enrollmentAccountName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (enrollmentAccountId == null) {
-            throw new IllegalArgumentException("Parameter enrollmentAccountId is required and cannot be null.");
+        if (enrollmentAccountName == null) {
+            throw new IllegalArgumentException("Parameter enrollmentAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String expand = null;
         final String filter = null;
-        return service.getByEnrollmentAccountAccountId(billingAccountId, enrollmentAccountId, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByEnrollmentAccountAccountId(billingAccountName, enrollmentAccountName, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EnrollmentAccountInner>>>() {
                 @Override
                 public Observable<ServiceResponse<EnrollmentAccountInner>> call(Response<ResponseBody> response) {
@@ -138,8 +138,8 @@ public class EnrollmentAccountsInner {
     /**
      * Get the enrollment account by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param enrollmentAccountId Enrollment Account Id.
+     * @param billingAccountName billing Account Id.
+     * @param enrollmentAccountName Enrollment Account Id.
      * @param expand May be used to expand the Department.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -147,37 +147,37 @@ public class EnrollmentAccountsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the EnrollmentAccountInner object if successful.
      */
-    public EnrollmentAccountInner getByEnrollmentAccountAccountId(String billingAccountId, String enrollmentAccountId, String expand, String filter) {
-        return getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountId, enrollmentAccountId, expand, filter).toBlocking().single().body();
+    public EnrollmentAccountInner getByEnrollmentAccountAccountId(String billingAccountName, String enrollmentAccountName, String expand, String filter) {
+        return getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountName, enrollmentAccountName, expand, filter).toBlocking().single().body();
     }
 
     /**
      * Get the enrollment account by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param enrollmentAccountId Enrollment Account Id.
+     * @param billingAccountName billing Account Id.
+     * @param enrollmentAccountName Enrollment Account Id.
      * @param expand May be used to expand the Department.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<EnrollmentAccountInner> getByEnrollmentAccountAccountIdAsync(String billingAccountId, String enrollmentAccountId, String expand, String filter, final ServiceCallback<EnrollmentAccountInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountId, enrollmentAccountId, expand, filter), serviceCallback);
+    public ServiceFuture<EnrollmentAccountInner> getByEnrollmentAccountAccountIdAsync(String billingAccountName, String enrollmentAccountName, String expand, String filter, final ServiceCallback<EnrollmentAccountInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountName, enrollmentAccountName, expand, filter), serviceCallback);
     }
 
     /**
      * Get the enrollment account by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param enrollmentAccountId Enrollment Account Id.
+     * @param billingAccountName billing Account Id.
+     * @param enrollmentAccountName Enrollment Account Id.
      * @param expand May be used to expand the Department.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EnrollmentAccountInner object
      */
-    public Observable<EnrollmentAccountInner> getByEnrollmentAccountAccountIdAsync(String billingAccountId, String enrollmentAccountId, String expand, String filter) {
-        return getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountId, enrollmentAccountId, expand, filter).map(new Func1<ServiceResponse<EnrollmentAccountInner>, EnrollmentAccountInner>() {
+    public Observable<EnrollmentAccountInner> getByEnrollmentAccountAccountIdAsync(String billingAccountName, String enrollmentAccountName, String expand, String filter) {
+        return getByEnrollmentAccountAccountIdWithServiceResponseAsync(billingAccountName, enrollmentAccountName, expand, filter).map(new Func1<ServiceResponse<EnrollmentAccountInner>, EnrollmentAccountInner>() {
             @Override
             public EnrollmentAccountInner call(ServiceResponse<EnrollmentAccountInner> response) {
                 return response.body();
@@ -188,24 +188,24 @@ public class EnrollmentAccountsInner {
     /**
      * Get the enrollment account by id.
      *
-     * @param billingAccountId billing Account Id.
-     * @param enrollmentAccountId Enrollment Account Id.
+     * @param billingAccountName billing Account Id.
+     * @param enrollmentAccountName Enrollment Account Id.
      * @param expand May be used to expand the Department.
      * @param filter The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'. It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value is separated by a colon (:).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EnrollmentAccountInner object
      */
-    public Observable<ServiceResponse<EnrollmentAccountInner>> getByEnrollmentAccountAccountIdWithServiceResponseAsync(String billingAccountId, String enrollmentAccountId, String expand, String filter) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<EnrollmentAccountInner>> getByEnrollmentAccountAccountIdWithServiceResponseAsync(String billingAccountName, String enrollmentAccountName, String expand, String filter) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
-        if (enrollmentAccountId == null) {
-            throw new IllegalArgumentException("Parameter enrollmentAccountId is required and cannot be null.");
+        if (enrollmentAccountName == null) {
+            throw new IllegalArgumentException("Parameter enrollmentAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getByEnrollmentAccountAccountId(billingAccountId, enrollmentAccountId, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getByEnrollmentAccountAccountId(billingAccountName, enrollmentAccountName, this.client.apiVersion(), expand, filter, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EnrollmentAccountInner>>>() {
                 @Override
                 public Observable<ServiceResponse<EnrollmentAccountInner>> call(Response<ResponseBody> response) {

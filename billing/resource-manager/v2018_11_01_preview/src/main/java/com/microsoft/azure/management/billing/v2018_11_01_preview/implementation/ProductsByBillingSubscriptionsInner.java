@@ -57,8 +57,8 @@ public class ProductsByBillingSubscriptionsInner {
      */
     interface ProductsByBillingSubscriptionsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsByBillingSubscriptions list" })
-        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingSubscriptions")
-        Observable<Response<ResponseBody>> list(@Path("billingAccountId") String billingAccountId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptions")
+        Observable<Response<ResponseBody>> list(@Path("billingAccountName") String billingAccountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.billing.v2018_11_01_preview.ProductsByBillingSubscriptions listNext" })
         @GET
@@ -67,16 +67,16 @@ public class ProductsByBillingSubscriptionsInner {
     }
 
     /**
-     * Lists billing subscriptions by billingAccountId.
+     * Lists billing subscriptions by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;BillingSubscriptionSummaryInner&gt; object if successful.
      */
-    public PagedList<BillingSubscriptionSummaryInner> list(final String billingAccountId) {
-        ServiceResponse<Page<BillingSubscriptionSummaryInner>> response = listSinglePageAsync(billingAccountId).toBlocking().single();
+    public PagedList<BillingSubscriptionSummaryInner> list(final String billingAccountName) {
+        ServiceResponse<Page<BillingSubscriptionSummaryInner>> response = listSinglePageAsync(billingAccountName).toBlocking().single();
         return new PagedList<BillingSubscriptionSummaryInner>(response.body()) {
             @Override
             public Page<BillingSubscriptionSummaryInner> nextPage(String nextPageLink) {
@@ -86,16 +86,16 @@ public class ProductsByBillingSubscriptionsInner {
     }
 
     /**
-     * Lists billing subscriptions by billingAccountId.
+     * Lists billing subscriptions by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<BillingSubscriptionSummaryInner>> listAsync(final String billingAccountId, final ListOperationCallback<BillingSubscriptionSummaryInner> serviceCallback) {
+    public ServiceFuture<List<BillingSubscriptionSummaryInner>> listAsync(final String billingAccountName, final ListOperationCallback<BillingSubscriptionSummaryInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(billingAccountId),
+            listSinglePageAsync(billingAccountName),
             new Func1<String, Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> call(String nextPageLink) {
@@ -106,14 +106,14 @@ public class ProductsByBillingSubscriptionsInner {
     }
 
     /**
-     * Lists billing subscriptions by billingAccountId.
+     * Lists billing subscriptions by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BillingSubscriptionSummaryInner&gt; object
      */
-    public Observable<Page<BillingSubscriptionSummaryInner>> listAsync(final String billingAccountId) {
-        return listWithServiceResponseAsync(billingAccountId)
+    public Observable<Page<BillingSubscriptionSummaryInner>> listAsync(final String billingAccountName) {
+        return listWithServiceResponseAsync(billingAccountName)
             .map(new Func1<ServiceResponse<Page<BillingSubscriptionSummaryInner>>, Page<BillingSubscriptionSummaryInner>>() {
                 @Override
                 public Page<BillingSubscriptionSummaryInner> call(ServiceResponse<Page<BillingSubscriptionSummaryInner>> response) {
@@ -123,14 +123,14 @@ public class ProductsByBillingSubscriptionsInner {
     }
 
     /**
-     * Lists billing subscriptions by billingAccountId.
+     * Lists billing subscriptions by billingAccountName.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;BillingSubscriptionSummaryInner&gt; object
      */
-    public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> listWithServiceResponseAsync(final String billingAccountId) {
-        return listSinglePageAsync(billingAccountId)
+    public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> listWithServiceResponseAsync(final String billingAccountName) {
+        return listSinglePageAsync(billingAccountName)
             .concatMap(new Func1<ServiceResponse<Page<BillingSubscriptionSummaryInner>>, Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> call(ServiceResponse<Page<BillingSubscriptionSummaryInner>> page) {
@@ -144,20 +144,20 @@ public class ProductsByBillingSubscriptionsInner {
     }
 
     /**
-     * Lists billing subscriptions by billingAccountId.
+     * Lists billing subscriptions by billingAccountName.
      *
-    ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> * @param billingAccountId billing Account Id.
+    ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> * @param billingAccountName billing Account Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;BillingSubscriptionSummaryInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> listSinglePageAsync(final String billingAccountId) {
-        if (billingAccountId == null) {
-            throw new IllegalArgumentException("Parameter billingAccountId is required and cannot be null.");
+    public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> listSinglePageAsync(final String billingAccountName) {
+        if (billingAccountName == null) {
+            throw new IllegalArgumentException("Parameter billingAccountName is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(billingAccountId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(billingAccountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<BillingSubscriptionSummaryInner>>> call(Response<ResponseBody> response) {
@@ -179,7 +179,7 @@ public class ProductsByBillingSubscriptionsInner {
     }
 
     /**
-     * Lists billing subscriptions by billingAccountId.
+     * Lists billing subscriptions by billingAccountName.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -198,7 +198,7 @@ public class ProductsByBillingSubscriptionsInner {
     }
 
     /**
-     * Lists billing subscriptions by billingAccountId.
+     * Lists billing subscriptions by billingAccountName.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -219,7 +219,7 @@ public class ProductsByBillingSubscriptionsInner {
     }
 
     /**
-     * Lists billing subscriptions by billingAccountId.
+     * Lists billing subscriptions by billingAccountName.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -236,7 +236,7 @@ public class ProductsByBillingSubscriptionsInner {
     }
 
     /**
-     * Lists billing subscriptions by billingAccountId.
+     * Lists billing subscriptions by billingAccountName.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -257,7 +257,7 @@ public class ProductsByBillingSubscriptionsInner {
     }
 
     /**
-     * Lists billing subscriptions by billingAccountId.
+     * Lists billing subscriptions by billingAccountName.
      *
     ServiceResponse<PageImpl<BillingSubscriptionSummaryInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation

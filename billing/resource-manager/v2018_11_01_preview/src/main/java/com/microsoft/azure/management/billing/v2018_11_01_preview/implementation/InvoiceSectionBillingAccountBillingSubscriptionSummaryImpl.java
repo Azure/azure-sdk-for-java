@@ -18,17 +18,17 @@ import java.util.UUID;
 
 class InvoiceSectionBillingAccountBillingSubscriptionSummaryImpl extends IndexableRefreshableWrapperImpl<InvoiceSectionBillingAccountBillingSubscriptionSummary, BillingSubscriptionSummaryInner> implements InvoiceSectionBillingAccountBillingSubscriptionSummary {
     private final BillingManager manager;
-    private String billingAccountId;
-    private String invoiceSectionId;
-    private String billingSubscriptionId;
+    private String billingAccountName;
+    private String invoiceSectionName;
+    private String billingSubscriptionName;
 
     InvoiceSectionBillingAccountBillingSubscriptionSummaryImpl(BillingSubscriptionSummaryInner inner,  BillingManager manager) {
         super(null, inner);
         this.manager = manager;
         // set resource ancestor and positional variables
-        this.billingAccountId = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
-        this.invoiceSectionId = IdParsingUtils.getValueFromIdByName(inner.id(), "invoiceSections");
-        this.billingSubscriptionId = IdParsingUtils.getValueFromIdByName(inner.id(), "billingSubscriptions");
+        this.billingAccountName = IdParsingUtils.getValueFromIdByName(inner.id(), "billingAccounts");
+        this.invoiceSectionName = IdParsingUtils.getValueFromIdByName(inner.id(), "invoiceSections");
+        this.billingSubscriptionName = IdParsingUtils.getValueFromIdByName(inner.id(), "billingSubscriptions");
     }
 
     @Override
@@ -39,7 +39,7 @@ class InvoiceSectionBillingAccountBillingSubscriptionSummaryImpl extends Indexab
     @Override
     protected Observable<BillingSubscriptionSummaryInner> getInnerAsync() {
         BillingSubscriptionsInner client = this.manager().inner().billingSubscriptions();
-        return client.getAsync(this.billingAccountId, this.invoiceSectionId, this.billingSubscriptionId);
+        return client.getAsync(this.billingAccountName, this.invoiceSectionName, this.billingSubscriptionName);
     }
 
 

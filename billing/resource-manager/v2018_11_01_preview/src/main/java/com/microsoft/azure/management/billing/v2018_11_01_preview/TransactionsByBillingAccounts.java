@@ -17,14 +17,14 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface TransactionsByBillingAccounts extends HasInner<TransactionsByBillingAccountsInner> {
     /**
-     * Lists the transactions by billingAccountId for given start and end date.
+     * Lists the transactions by billingAccountName for given start and end date.
      *
-     * @param billingAccountId billing Account Id.
+     * @param billingAccountName billing Account Id.
      * @param startDate Start date
      * @param endDate End date
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<TransactionsSummary> listAsync(final String billingAccountId, final String startDate, final String endDate);
+    Observable<TransactionsSummary> listAsync(final String billingAccountName, final String startDate, final String endDate);
 
 }

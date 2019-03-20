@@ -28,9 +28,9 @@ class ProductsByInvoiceSectionsImpl extends WrapperImpl<ProductsByInvoiceSection
     }
 
     @Override
-    public Observable<ProductsListResult> listAsync(String billingAccountId, String invoiceSectionId) {
+    public Observable<ProductsListResult> listAsync(String billingAccountName, String invoiceSectionName) {
         ProductsByInvoiceSectionsInner client = this.inner();
-        return client.listAsync(billingAccountId, invoiceSectionId)
+        return client.listAsync(billingAccountName, invoiceSectionName)
         .map(new Func1<ProductsListResultInner, ProductsListResult>() {
             @Override
             public ProductsListResult call(ProductsListResultInner inner) {
