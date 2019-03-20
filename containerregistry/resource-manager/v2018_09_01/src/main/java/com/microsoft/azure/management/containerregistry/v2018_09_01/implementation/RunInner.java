@@ -124,7 +124,8 @@ public class RunInner extends ProxyResource {
     private List<String> customRegistries;
 
     /**
-     * The run error message.
+     * The error message received from backend systems after the run is
+     * scheduled.
      */
     @JsonProperty(value = "properties.runErrorMessage")
     private String runErrorMessage;
@@ -443,7 +444,7 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Get the run error message.
+     * Get the error message received from backend systems after the run is scheduled.
      *
      * @return the runErrorMessage value
      */
@@ -452,7 +453,7 @@ public class RunInner extends ProxyResource {
     }
 
     /**
-     * Set the run error message.
+     * Set the error message received from backend systems after the run is scheduled.
      *
      * @param runErrorMessage the runErrorMessage value to set
      * @return the RunInner object itself.
