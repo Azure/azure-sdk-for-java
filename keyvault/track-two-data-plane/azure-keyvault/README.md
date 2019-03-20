@@ -4,8 +4,10 @@ package com.azure.keyvault
 {
     public class KeyVaultClient : ServiceClient
     {
-        public KeyVaultClient(String vaultUri, ServiceClientCredentials credentials);
-        public KeyVaultClient(String vaultUri, ServiceClientCredentials credentials, HttpPipeline pipeline);
+        public KeyVaultClient(String vaultUrl, ServiceClientCredentials credentials);
+        public KeyVaultClient(String vaultUrl, ServiceClientCredentials credentials, HttpPipeline pipeline);
+	public KeyVaultClient(String vaultUrl, TokenCredentials credentials);
+    	public KeyVaultClient(String vaultUrl, TokenCredentials credentials, HttpPipeline pipeline);
 
         public SecretClient getSecretClient(){}
         public void setSecretClient(SecretClient secretClient){}
@@ -35,28 +37,28 @@ public class SecretClient : ServiceClient
 --- TODO: OVERLOAD FOR CALLBACK FUNCTION PARAMETER NEEDS TO BE CONSIDERED/ADDED FOR BELOW SECRET OPERATIONS
 
     // methods
-    public Mono<RestResponse<Secret>> getAsync(String secretName);
-    public Mono<RestResponse<Secret>> getAsync(String secretName, String version);
+    public Mono<RestResponse<Secret>> getSecretAsync(String secretName);
+    public Mono<RestResponse<Secret>> getSecretAsync(String secretName, String version);
 
-    public Flux<SecretAttributes> getAllVersionsAsync(String name);
-    public Flux<SecretAttributes> getAllVersionsAsync(String name, int maxPageResults);
-    public Flux<SecretAttributes> getAllAsync();
-    public Flux<SecretAttributes> getAllAsync(int maxPageResults);
+    public Flux<SecretAttributes> getSecretVersionsAsync(String name);
+    public Flux<SecretAttributes> getSecretVersionsAsync(String name, int maxPageResults);
+    public Flux<SecretAttributes> getSecretsAsync();
+    public Flux<SecretAttributes> getSecretsAsync(int maxPageResults);
     
-    public Mono<RestResponse<SecretAttributes>> updateAsync(SecretAttributes secret);
+    public Mono<RestResponse<SecretAttributes>> updateSecretAsync(SecretAttributes secret);
 
-    public Mono<RestResponse<Secret>> setAsync(String name, String value);
-    public Mono<RestResponse<Secret>> setAsync(Secret secret);
+    public Mono<RestResponse<Secret>> setSecretAsync(String name, String value);
+    public Mono<RestResponse<Secret>> setSecretAsync(Secret secret);
 
-    public Mono<RestResponse<DeletedSecret>> deleteAsync(string name);
-    public Mono<RestResponse<DeletedSecret>> getDeletedAsync(string name);
-    public Flux<DeletedSecret> getAllDeletedAsync();
-    public Flux<DeletedSecret> getAllDeletedAsync(int maxPageResults);
-    public Mono<RestResponse<Secret>> recoverDeletedAsync(string name);
-    public Mono<RestResponse> purgeDeletedAsync(string name);
+    public Mono<RestResponse<DeletedSecret>> deleteSecretAsync(string name);
+    public Mono<RestResponse<DeletedSecret>> getDeletedSecretAsync(string name);
+    public Flux<DeletedSecret> getDeletedSecretsAsync();
+    public Flux<DeletedSecret> getDeletedSecretsAsync(int maxPageResults);
+    public Mono<RestResponse<Secret>> recoverDeletedSecretAsync(string name);
+    public Mono<RestResponse> purgeDeletedSecretAsync(string name);
 
-    public Mono<RestResponse<byte[]>> backupAsync(string name);
-    public Mono<RestResponse<Secret>> restoreAsync(byte[] backup);
+    public Mono<RestResponse<byte[]>> backupSecretAsync(string name);
+    public Mono<RestResponse<Secret>> restoreSecretAsync(byte[] backup);
 }
 
 ~~~
@@ -64,8 +66,8 @@ public class SecretClient : ServiceClient
 ### SecretClient Set Secret operations
 
 ~~~ java
-public Mono<RestResponse<Secret>> setAsync(String name, String value);
-public Mono<RestResponse<Secret>> setAsync(Secret secret);
+public Mono<RestResponse<Secret>> setSecretAsync(String name, String value);
+public Mono<RestResponse<Secret>> setSecretAsync(Secret secret);
 ~~~
 #### Usage:
 ~~~ java
@@ -73,7 +75,7 @@ public Mono<RestResponse<Secret>> setAsync(Secret secret);
 SecretClient secretClient = new SecretClient(new Uri("https://myvault.vaults.azure.net/"), new KeyVaultCredentials());
 
 // set a simple secret such as password
-Secret passwordSecret = secretClient.setAsync("user1pass", "password").block().body()
+Secret passwordSecret = secretClient.setSecretAsync("user1pass", "password").block().body()
 
 // set a symmetric key secret with nbf and exp
 String encodeString = Base64.getEncoder().encodeToString((secretValue).getBytes());
@@ -82,7 +84,7 @@ Secret keySecret = new Secret.Builder("secretkey", encodeString)
                              .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
 					         .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
 
-Secret keySecret = secretClient.setAsync(keySecret).block().body();
+Secret keySecret = secretClient.setSecretAsync(keySecret).block().body();
 ~~~
 
 
@@ -103,18 +105,18 @@ Observable<ServiceResponse<SecretBundle>> setSecretWithServiceResponseAsync(Stri
 
 ### SecretClient Get Secret Operations
 ~~~ java
-public Mono<RestResponse<Secret>> getAsync(String secretName);
-public Mono<RestResponse<Secret>> getAsync(String secretName, String version);
+public Mono<RestResponse<Secret>> getSecretAsync(String secretName);
+public Mono<RestResponse<Secret>> getSecretAsync(String secretName, String version);
 ~~~
 
 #### Usage:
 ~~~ java
 // USAGE BELOW YET TO BE IMPLEMENTED AND TESTED
 // get the latest version of a secret
-Secret secret = secretClient.getAsync("user1pass").block().body();
+Secret secret = secretClient.getSecretAsync("user1pass").block().body();
 
 // get a specific version of a secret
-Secret secret = secretClient.getAsync("user1pass","6A385B124DEF4096AF1361A85B16C204").block().body();
+Secret secret = secretClient.getSecretAsync("user1pass","6A385B124DEF4096AF1361A85B16C204").block().body();
 ~~~
 
 ### Replaces:
@@ -130,19 +132,19 @@ Observable<ServiceResponse<SecretBundle>> getSecretWithServiceResponseAsync(Stri
 // TODO: Add Track one Get Secret usage examples.
 ~~~
 
-### update
+### Update Secret Operation
 ~~~ java
-public Mono<RestResponse<SecretAttributes>> updateAsync(SecretAttributes secret);
+public Mono<RestResponse<SecretAttributes>> updateSecretAsync(SecretAttributes secret);
 ~~~
 #### Usage:
 ~~~ java
 // USAGE BELOW YET TO BE IMPLEMENTED AND TESTED 
 // Update the expiration of a secret
-Secret secret = secretClient.getAsync("secretkey");
+Secret secret = secretClient.getSecretAsync("secretkey");
 
 secret.setNotBefore(new DateTime().withYear(2020).withMonthOfYear(1));
 
-SecretAttributes updated = secretClient.updateAsync(secret).block().body();
+SecretAttributes updated = secretClient.updateSecretAsync(secret).block().body();
 ~~~
 ### Replaces:
 ~~~ java
@@ -160,24 +162,24 @@ Observable<ServiceResponse<SecretBundle>> updateSecretWithServiceResponseAsync(S
 
 ## List Operations
 
-### getAllAsync, getAllVersions
+### getSecretsAsync, getSecretVersions
 ~~~ java
-public Flux<SecretAttributes> getAllVersionsAsync(String name);
-public Flux<SecretAttributes> getAllVersionsAsync(String name, int maxPageResults);
-public Flux<SecretAttributes> getAllAsync();
-public Flux<SecretAttributes> getAllAsync(int maxPageResults);
+public Flux<SecretAttributes> getSecretVersionsAsync(String name);
+public Flux<SecretAttributes> getSecretVersionsAsync(String name, int maxPageResults);
+public Flux<SecretAttributes> getSecretsAsync();
+public Flux<SecretAttributes> getSecretsAsync(int maxPageResults);
 ~~~
 #### Usage:
 ~~~ java
 // USAGE BELOW YET TO BE IMPLEMENTED AND TESTED 
 // enumerate all secrets in the vault using Flux subscribe - TO BE TESTED.
-secretClient.GetAllAsync()
+secretClient.GetSecretsAsync()
             .subscribe(secretAttr -> System.out.println(secretAttr.getId())); 
 
 
 // enumerate all secrets by page - TO BE TESTED
 int maxPageResults = 5;
-secretClient.GetAllAsync(5)
+secretClient.GetSecretsAsync(5)
             .subscribe(secretAttr -> System.out.println(secretAttr.getId())); 
             
 //TO DO: Explore flatMap and collectList methods of Flux for enumeration purposes.
@@ -213,34 +215,34 @@ Observable<ServiceResponse<Page<SecretItem>>> getSecretVersionsNextWithServiceRe
 
 ## Deleted Secret Operations
 
-### deleteAsync, getDeletedAsync, getAllDeletedAsync, recoverDeletedAsync, purgeDeletedAsync
+### deleteSecretAsync, getDeletedSecretAsync, getDeletedSecretsAsync, recoverDeletedSecretAsync, purgeDeletedSecretAsync
 ~~~ java
-public Mono<RestResponse<DeletedSecret>> deleteAsync(string name);
-public Mono<RestResponse<DeletedSecret>> getDeletedAsync(string name);
-public Flux<DeletedSecret> getAllDeletedAsync();
-public Flux<DeletedSecret> getAllDeletedAsync(int maxPageResults);
-public Mono<RestResponse<Secret>> recoverDeletedAsync(string name);
-public Mono<RestResponse> purgeDeletedAsync(string name);
+public Mono<RestResponse<DeletedSecret>> deleteSecretAsync(string name);
+public Mono<RestResponse<DeletedSecret>> getDeletedSecretAsync(string name);
+public Flux<DeletedSecret> getDeletedSecretsAsync();
+public Flux<DeletedSecret> getDeletedSecretsAsync(int maxPageResults);
+public Mono<RestResponse<Secret>> recoverDeletedSecretAsync(string name);
+public Mono<RestResponse> purgeDeletedSecretAsync(string name);
 ~~~
 #### Usage:
 ~~~ java
 
 // USAGE BELOW YET TO BE IMPLEMENTED AND TESTED 
 // delete a secret
-DeletedSecret deletedSecret =  secretClient.deleteAsync("user1pass").block().body();
+DeletedSecret deletedSecret =  secretClient.deleteSecretAsync("user1pass").block().body();
 
 // get the details of a deleted secret
-deletedSecret = secretClient.GetDeletedAsync("user1pass").block().body();
+deletedSecret = secretClient.GetDeletedSecretAsync("user1pass").block().body();
 
 // list all the deleted secrets
-secretClient.getAllDeletedAsync()
+secretClient.getDeletedSecretsAsync()
             .subscribe(delSecret -> System.out.println(delSecret.getId())); 
 
 // recover a deleted secret
-Secret secret = secretClient.recoverDeletedAsync("userpass1").block().body();
+Secret secret = secretClient.recoverDeletedSecretAsync("userpass1").block().body();
 
 // purge a deleted secret
-secretClient.purgeDeletedAsync("userpass1");
+secretClient.purgeDeletedSecretAsync("userpass1");
 ~~~
 ### Replaces:
 ~~~ java
@@ -271,21 +273,21 @@ Observable<ServiceResponse<Void>> purgeDeletedSecretWithServiceResponseAsync(Str
 // TODO: Add Track one Delete, Recover and Purge Secret usage examples.
 ~~~
 
-### backupAsync, restoreAsync
+### backupSecretAsync, restoreSecretAsync
 ~~~ java
-public Mono<RestResponse<byte[]>> backupAsync(string name);
-public Mono<RestResponse<Secret>> restoreAsync(byte[] backup);
+public Mono<RestResponse<byte[]>> backupSecretAsync(string name);
+public Mono<RestResponse<Secret>> restoreSecretAsync(byte[] backup);
 ~~~
 #### Usage:
 ~~~ java
 // USAGE BELOW YET TO BE IMPLEMENTED AND TESTED 
 // backup the secret
- byte[] backupBytes = secretClient.backupAsync("secretkey").block().body();
+ byte[] backupBytes = secretClient.backupSecretAsync("secretkey").block().body();
 
 // TODO: Write Backed up secret to a file -- TO
 
 // restore the secret from backup
-Secret restored = await secretClient.restoreAsync(backupBytes).block().body();
+Secret restored = await secretClient.restoreSecretAsync(backupBytes).block().body();
 ~~~
 ### Replaces:
 ~~~ java
