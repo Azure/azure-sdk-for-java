@@ -2,8 +2,9 @@
 ~~~ java
 package com.azure.keyvault
 {
-    public class KeyVaultClient : ServiceClient
+    public class KeyVaultClient extends ServiceClient
     {
+    // TODO: Add Builder pattern to construct/instantiate KeyVaultClient
         public KeyVaultClient(String vaultUrl, ServiceClientCredentials credentials);
         public KeyVaultClient(String vaultUrl, ServiceClientCredentials credentials, HttpPipeline pipeline);
 	public KeyVaultClient(String vaultUrl, TokenCredentials credentials);
@@ -25,16 +26,16 @@ KeyVaultClient client = new KeyVaultClient(vaultUri, new KeyVaultCredentials());
 
 ## __SecretClient__
 ~~~ java
-public class SecretClient : ServiceClient
+public class SecretClient extends ServiceClient
 {
 
+    // TODO: Add Builder pattern to construct/instantiate KeyVaultClient
+    
     // constructors
     public SecretClient(String vaultUrl, ServiceClientCredentials credentials);
     public SecretClient(String vaultUrl, ServiceClientCredentials credentials, HttpPipeline pipeline);
     public SecretClient(String vaultUrl, TokenCredentials credentials);
     public SecretClient(String vaultUrl, TokenCredentials credentials, HttpPipeline pipeline);
-
---- TODO: OVERLOAD FOR CALLBACK FUNCTION PARAMETER NEEDS TO BE CONSIDERED/ADDED FOR BELOW SECRET OPERATIONS
 
     // methods
     public Mono<RestResponse<Secret>> getSecretAsync(String secretName);
@@ -79,6 +80,8 @@ Secret passwordSecret = secretClient.setSecretAsync("user1pass", "password").blo
 
 // set a symmetric key secret with nbf and exp
 String encodeString = Base64.getEncoder().encodeToString((secretValue).getBytes());
+
+//TODO: add Fluent pattern and remove Builder pattern from Models.
 Secret keySecret = new Secret.Builder("secretkey", encodeString)
                              .withContentType("application/octet-stream")
                              .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
@@ -173,13 +176,13 @@ public Flux<SecretAttributes> getSecretsAsync(int maxPageResults);
 ~~~ java
 // USAGE BELOW YET TO BE IMPLEMENTED AND TESTED 
 // enumerate all secrets in the vault using Flux subscribe - TO BE TESTED.
-secretClient.GetSecretsAsync()
+secretClient.getSecretsAsync()
             .subscribe(secretAttr -> System.out.println(secretAttr.getId())); 
 
 
 // enumerate all secrets by page - TO BE TESTED
 int maxPageResults = 5;
-secretClient.GetSecretsAsync(5)
+secretClient.getSecretsAsync(5)
             .subscribe(secretAttr -> System.out.println(secretAttr.getId())); 
             
 //TO DO: Explore flatMap and collectList methods of Flux for enumeration purposes.
@@ -232,7 +235,7 @@ public Mono<RestResponse> purgeDeletedSecretAsync(string name);
 DeletedSecret deletedSecret =  secretClient.deleteSecretAsync("user1pass").block().body();
 
 // get the details of a deleted secret
-deletedSecret = secretClient.GetDeletedSecretAsync("user1pass").block().body();
+deletedSecret = secretClient.getDeletedSecretAsync("user1pass").block().body();
 
 // list all the deleted secrets
 secretClient.getDeletedSecretsAsync()
