@@ -104,6 +104,10 @@
     "source": "specification/mediaservices/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "mixedreality/resource-manager": {
+    "source": "specification/mixedreality/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "mysql/resource-manager": {
     "source": "specification/mysql/resource-manager/readme.md",
     "args": "--multiapi --fluent",
