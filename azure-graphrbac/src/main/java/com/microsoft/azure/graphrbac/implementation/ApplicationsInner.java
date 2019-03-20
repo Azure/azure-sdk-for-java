@@ -115,6 +115,10 @@ public class ApplicationsInner {
         @PATCH("{tenantID}/applications/{applicationObjectId}/passwordCredentials")
         Observable<Response<ResponseBody>> updatePasswordCredentials(@Path("applicationObjectId") String applicationObjectId, @Path("tenantID") String tenantID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body PasswordCredentialsUpdateParameters parameters, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Applications getServicePrincipalsIdByAppId" })
+        @GET("{tenantID}/servicePrincipalsByAppId/{applicationID}/objectId")
+        Observable<Response<ResponseBody>> getServicePrincipalsIdByAppId(@Path("tenantID") String tenantID, @Path("applicationID") String applicationID, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.graphrbac.Applications listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -1292,6 +1296,85 @@ public class ApplicationsInner {
     private ServiceResponse<Void> updatePasswordCredentialsDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, GraphErrorException>newInstance(this.client.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(GraphErrorException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets an object id for a given application id from the current tenant.
+     *
+     * @param applicationID The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws GraphErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ServicePrincipalObjectResultInner object if successful.
+     */
+    public ServicePrincipalObjectResultInner getServicePrincipalsIdByAppId(String applicationID) {
+        return getServicePrincipalsIdByAppIdWithServiceResponseAsync(applicationID).toBlocking().single().body();
+    }
+
+    /**
+     * Gets an object id for a given application id from the current tenant.
+     *
+     * @param applicationID The application ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdAsync(String applicationID, final ServiceCallback<ServicePrincipalObjectResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getServicePrincipalsIdByAppIdWithServiceResponseAsync(applicationID), serviceCallback);
+    }
+
+    /**
+     * Gets an object id for a given application id from the current tenant.
+     *
+     * @param applicationID The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ServicePrincipalObjectResultInner object
+     */
+    public Observable<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdAsync(String applicationID) {
+        return getServicePrincipalsIdByAppIdWithServiceResponseAsync(applicationID).map(new Func1<ServiceResponse<ServicePrincipalObjectResultInner>, ServicePrincipalObjectResultInner>() {
+            @Override
+            public ServicePrincipalObjectResultInner call(ServiceResponse<ServicePrincipalObjectResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets an object id for a given application id from the current tenant.
+     *
+     * @param applicationID The application ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ServicePrincipalObjectResultInner object
+     */
+    public Observable<ServiceResponse<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithServiceResponseAsync(String applicationID) {
+        if (this.client.tenantID() == null) {
+            throw new IllegalArgumentException("Parameter this.client.tenantID() is required and cannot be null.");
+        }
+        if (applicationID == null) {
+            throw new IllegalArgumentException("Parameter applicationID is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getServicePrincipalsIdByAppId(this.client.tenantID(), applicationID, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServicePrincipalObjectResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ServicePrincipalObjectResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ServicePrincipalObjectResultInner> clientResponse = getServicePrincipalsIdByAppIdDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdDelegate(Response<ResponseBody> response) throws GraphErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ServicePrincipalObjectResultInner, GraphErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<ServicePrincipalObjectResultInner>() { }.getType())
                 .registerError(GraphErrorException.class)
                 .build(response);
     }
