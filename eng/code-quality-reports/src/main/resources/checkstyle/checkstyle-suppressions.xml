@@ -4,6 +4,11 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
+  <!-- AutoRest generates 'final' on interfaces. Remove this suppression when:
+  https://github.com/Azure/autorest-clientruntime-for-java/issues/589 is fixed. -->
+  <suppress checks="RedundantModifier" files="batch/data-plane/.*/batch/protocol/.*\.java"/>
+  <suppress checks="RedundantModifier" files="keyvault/data-plane/.*/(IKey|ISignatureTransform|KeyVaultClientBase|KeyVaultClientCustom)\.java"/>
+
   <suppress checks="Javadoc" files="Test[s]?.*\.java"/>
   <suppress checks="Javadoc" files=".*Test[s]?\.java"/>
   <suppress checks="Javadoc" files=".*Test[s]?Base\.java"/>
@@ -22,7 +27,6 @@
   <!-- Public API already released with incorrect upper-case naming pattern -->
   <suppress checks="MethodName" files="AsymmetricEncryptionAlgorithm.java"/>
   <suppress checks="MethodName" files="KeyWrapAlgorithm.java"/>
-  <suppress checks="MethodName" files="PartitionSenderImpl.java"/>
   <suppress checks="MethodName" files="SignatureEncoding.java"/>
   <suppress checks="MethodName" files="SymmetricEncryptionAlgorithm.java"/>
   <suppress checks="MethodName" files="RsaSignature.java"/>
@@ -31,13 +35,8 @@
   <suppress checks="ConstantName" files="AlgorithmResolver.java"/>
   <suppress checks="ConstantName" files="AmqpErrorCode.java"/>
   <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
-  <suppress checks="ConstantName" files="ConnectionStringBuilder.java"/>
-  <suppress checks="ConstantName" files="EventProcessorHost.java"/>
-  <suppress checks="ConstantName" files="InMemoryCheckpointManager.java"/>
-  <suppress checks="ConstantName" files="InMemoryLeaseManager.java"/>
   <suppress checks="ConstantName" files="MessagingFactory.java"/>
   <suppress checks="ConstantName" files="PartitionManagerOptions.java"/>
-  <suppress checks="ConstantName" files="PartitionScanner.java"/>
   <suppress checks="ConstantName" files="RsaKey.java"/>
   <suppress checks="ConstantName" files="SymmetricKey.java"/>
   <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
@@ -49,35 +48,6 @@
   <suppress checks="VisibilityModifier" files="BatchOptions.java"/>
   <suppress checks="VisibilityModifier" files="EventHubClientImpl.java"/>
 
-  <!-- Public API already released with inner assignment-->
-  <suppress checks="InnerAssignment" files="MessageReceiver.java"/>
-
-  <!-- Public API already released with empty block-->
-  <suppress checks="EmptyBlock" files="MessageReceiver.java"/>
-  <suppress checks="EmptyBlock" files="InMemoryLeaseManager.java"/>
-  <suppress checks="EmptyBlock" files="ReactorDispatcher.java"/>
-  <suppress checks="EmptyBlock" files="AzureStorageCheckpointLeaseManager.java"/>
-
-  <!-- Public API already released with redundant modifier-->
-  <suppress checks="RedundantModifier" files="ActiveClientTokenManager.java"/>
-  <suppress checks="RedundantModifier" files="AmqpResponseCode.java"/>
-  <suppress checks="RedundantModifier" files="BatchOptions.java"/>
-  <suppress checks="RedundantModifier" files="CBSChannel.java"/>
-  <suppress checks="RedundantModifier" files="EventDataBatchImpl.java"/>
-  <suppress checks="RedundantModifier" files="EventHubClientImpl.java"/>
-  <suppress checks="RedundantModifier" files="EventProcessorHost.java"/>
-  <suppress checks="RedundantModifier" files="ICheckpointManager.java"/>
-  <suppress checks="RedundantModifier" files="IEventProcessor.java"/>
-  <suppress checks="RedundantModifier" files="IEventProcessorFactory.java"/>
-  <suppress checks="RedundantModifier" files="ILeaseManager.java"/>
-  <suppress checks="RedundantModifier" files="IOObject.java"/>
-  <suppress checks="RedundantModifier" files="ManagementChannel.java"/>
-  <suppress checks="RedundantModifier" files="MessageReceiver.java"/>
-  <suppress checks="RedundantModifier" files="MessageSender.java"/>
-  <suppress checks="RedundantModifier" files="MessagingFactory.java"/>
-  <suppress checks="RedundantModifier" files="PartitionReceiverImpl.java"/>
-  <suppress checks="RedundantModifier" files="PartitionSenderImpl.java"/>
-  <suppress checks="RedundantModifier" files="PumpManager.java"/>
-  <suppress checks="RedundantModifier" files="ReactorDispatcher.java"/>
-  <suppress checks="RedundantModifier" files="Timer.java"/>
+  <!-- Public API already released without final modifier -->
+  <suppress checks="FinalClass" files="BatchClient.java"/>
 </suppressions>
