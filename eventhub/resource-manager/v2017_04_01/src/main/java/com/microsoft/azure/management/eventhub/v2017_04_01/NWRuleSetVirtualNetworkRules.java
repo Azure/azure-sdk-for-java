@@ -11,7 +11,7 @@ package com.microsoft.azure.management.eventhub.v2017_04_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The response from the List namespace operation.
+ * Description of VirtualNetworkRules - NetworkRules resource.
  */
 public class NWRuleSetVirtualNetworkRules {
     /**
@@ -21,7 +21,7 @@ public class NWRuleSetVirtualNetworkRules {
     private Subnet subnet;
 
     /**
-     * Value that indicates whether to ignore missing Vnet Service Endpoint.
+     * Value that indicates whether to ignore missing VNet Service Endpoint.
      */
     @JsonProperty(value = "ignoreMissingVnetServiceEndpoint")
     private Boolean ignoreMissingVnetServiceEndpoint;
@@ -47,7 +47,7 @@ public class NWRuleSetVirtualNetworkRules {
     }
 
     /**
-     * Get value that indicates whether to ignore missing Vnet Service Endpoint.
+     * Get value that indicates whether to ignore missing VNet Service Endpoint.
      *
      * @return the ignoreMissingVnetServiceEndpoint value
      */
@@ -56,7 +56,7 @@ public class NWRuleSetVirtualNetworkRules {
     }
 
     /**
-     * Set value that indicates whether to ignore missing Vnet Service Endpoint.
+     * Set value that indicates whether to ignore missing VNet Service Endpoint.
      *
      * @param ignoreMissingVnetServiceEndpoint the ignoreMissingVnetServiceEndpoint value to set
      * @return the NWRuleSetVirtualNetworkRules object itself.
