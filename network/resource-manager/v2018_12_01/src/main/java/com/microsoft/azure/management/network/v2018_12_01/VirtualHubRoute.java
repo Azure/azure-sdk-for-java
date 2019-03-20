@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualHubRoute {
     /**
-     * list of all addressPrefixes.
+     * List of all addressPrefixes.
      */
     @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;

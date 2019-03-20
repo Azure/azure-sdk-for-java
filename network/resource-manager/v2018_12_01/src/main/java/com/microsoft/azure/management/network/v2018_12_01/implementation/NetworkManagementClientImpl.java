@@ -295,6 +295,19 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The PeerExpressRouteCircuitConnectionsInner object to access its operations.
+     */
+    private PeerExpressRouteCircuitConnectionsInner peerExpressRouteCircuitConnections;
+
+    /**
+     * Gets the PeerExpressRouteCircuitConnectionsInner object to access its operations.
+     * @return the PeerExpressRouteCircuitConnectionsInner object.
+     */
+    public PeerExpressRouteCircuitConnectionsInner peerExpressRouteCircuitConnections() {
+        return this.peerExpressRouteCircuitConnections;
+    }
+
+    /**
      * The ExpressRouteCircuitsInner object to access its operations.
      */
     private ExpressRouteCircuitsInner expressRouteCircuits;
@@ -1023,6 +1036,19 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The WebApplicationFirewallPoliciesInner object to access its operations.
+     */
+    private WebApplicationFirewallPoliciesInner webApplicationFirewallPolicies;
+
+    /**
+     * Gets the WebApplicationFirewallPoliciesInner object to access its operations.
+     * @return the WebApplicationFirewallPoliciesInner object.
+     */
+    public WebApplicationFirewallPoliciesInner webApplicationFirewallPolicies() {
+        return this.webApplicationFirewallPolicies;
+    }
+
+    /**
      * Initializes an instance of NetworkManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -1068,6 +1094,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         this.expressRouteCircuitAuthorizations = new ExpressRouteCircuitAuthorizationsInner(restClient().retrofit(), this);
         this.expressRouteCircuitPeerings = new ExpressRouteCircuitPeeringsInner(restClient().retrofit(), this);
         this.expressRouteCircuitConnections = new ExpressRouteCircuitConnectionsInner(restClient().retrofit(), this);
+        this.peerExpressRouteCircuitConnections = new PeerExpressRouteCircuitConnectionsInner(restClient().retrofit(), this);
         this.expressRouteCircuits = new ExpressRouteCircuitsInner(restClient().retrofit(), this);
         this.expressRouteServiceProviders = new ExpressRouteServiceProvidersInner(restClient().retrofit(), this);
         this.expressRouteCrossConnections = new ExpressRouteCrossConnectionsInner(restClient().retrofit(), this);
@@ -1124,6 +1151,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         this.vpnConnections = new VpnConnectionsInner(restClient().retrofit(), this);
         this.p2sVpnServerConfigurations = new P2sVpnServerConfigurationsInner(restClient().retrofit(), this);
         this.p2sVpnGateways = new P2sVpnGatewaysInner(restClient().retrofit(), this);
+        this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
         initializeService();
     }

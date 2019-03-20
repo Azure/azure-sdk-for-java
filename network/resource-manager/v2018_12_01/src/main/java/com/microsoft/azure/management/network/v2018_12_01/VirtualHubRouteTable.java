@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualHubRouteTable {
     /**
-     * list of all routes.
+     * List of all routes.
      */
     @JsonProperty(value = "routes")
     private List<VirtualHubRoute> routes;

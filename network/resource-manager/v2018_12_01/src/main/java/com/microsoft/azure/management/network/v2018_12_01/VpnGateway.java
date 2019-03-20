@@ -97,7 +97,7 @@ public interface VpnGateway extends HasInner<VpnGatewayInner>, Resource, Groupab
         interface WithConnections {
             /**
              * Specifies connections.
-             * @param connections list of all vpn connections to the gateway
+             * @param connections List of all vpn connections to the gateway
              * @return the next definition stage
              */
             WithCreate withConnections(List<VpnConnectionInner> connections);
@@ -175,7 +175,7 @@ public interface VpnGateway extends HasInner<VpnGatewayInner>, Resource, Groupab
         interface WithConnections {
             /**
              * Specifies connections.
-             * @param connections list of all vpn connections to the gateway
+             * @param connections List of all vpn connections to the gateway
              * @return the next update stage
              */
             Update withConnections(List<VpnConnectionInner> connections);

@@ -30,6 +30,7 @@ import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayRequ
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayRewriteRuleSet;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayRedirectConfiguration;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayWebApplicationFirewallConfiguration;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayAutoscaleConfiguration;
 import com.microsoft.azure.management.network.v2018_12_01.ApplicationGatewayCustomError;
 import com.microsoft.azure.management.network.v2018_12_01.ManagedServiceIdentity;
@@ -103,6 +104,11 @@ class ApplicationGatewayImpl extends GroupableResourceCoreImpl<ApplicationGatewa
     @Override
     public String etag() {
         return this.inner().etag();
+    }
+
+    @Override
+    public SubResource firewallPolicy() {
+        return this.inner().firewallPolicy();
     }
 
     @Override
@@ -245,6 +251,12 @@ class ApplicationGatewayImpl extends GroupableResourceCoreImpl<ApplicationGatewa
     @Override
     public ApplicationGatewayImpl withEtag(String etag) {
         this.inner().withEtag(etag);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withFirewallPolicy(SubResource firewallPolicy) {
+        this.inner().withFirewallPolicy(firewallPolicy);
         return this;
     }
 

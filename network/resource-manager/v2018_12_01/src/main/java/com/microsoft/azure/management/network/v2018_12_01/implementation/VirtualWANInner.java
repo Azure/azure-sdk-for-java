@@ -67,7 +67,7 @@ public class VirtualWANInner extends Resource {
     private OfficeTrafficCategory office365LocalBreakoutCategory;
 
     /**
-     * list of all P2SVpnServerConfigurations associated with the virtual wan.
+     * List of all P2SVpnServerConfigurations associated with the virtual wan.
      */
     @JsonProperty(value = "properties.p2SVpnServerConfigurations")
     private List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations;

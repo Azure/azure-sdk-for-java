@@ -22,7 +22,8 @@ public class ExpressRouteCircuitSku {
 
     /**
      * The tier of the SKU. Possible values are 'Standard', 'Premium' or
-     * 'Basic'. Possible values include: 'Standard', 'Premium', 'Basic'.
+     * 'Local'. Possible values include: 'Standard', 'Premium', 'Basic',
+     * 'Local'.
      */
     @JsonProperty(value = "tier")
     private ExpressRouteCircuitSkuTier tier;
@@ -55,7 +56,7 @@ public class ExpressRouteCircuitSku {
     }
 
     /**
-     * Get the tier of the SKU. Possible values are 'Standard', 'Premium' or 'Basic'. Possible values include: 'Standard', 'Premium', 'Basic'.
+     * Get the tier of the SKU. Possible values are 'Standard', 'Premium' or 'Local'. Possible values include: 'Standard', 'Premium', 'Basic', 'Local'.
      *
      * @return the tier value
      */
@@ -64,7 +65,7 @@ public class ExpressRouteCircuitSku {
     }
 
     /**
-     * Set the tier of the SKU. Possible values are 'Standard', 'Premium' or 'Basic'. Possible values include: 'Standard', 'Premium', 'Basic'.
+     * Set the tier of the SKU. Possible values are 'Standard', 'Premium' or 'Local'. Possible values include: 'Standard', 'Premium', 'Basic', 'Local'.
      *
      * @param tier the tier value to set
      * @return the ExpressRouteCircuitSku object itself.

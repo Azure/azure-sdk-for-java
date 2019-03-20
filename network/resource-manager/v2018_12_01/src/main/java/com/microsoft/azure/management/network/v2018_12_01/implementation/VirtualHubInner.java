@@ -48,7 +48,7 @@ public class VirtualHubInner extends Resource {
     private SubResource expressRouteGateway;
 
     /**
-     * list of all vnet connections with this VirtualHub.
+     * List of all vnet connections with this VirtualHub.
      */
     @JsonProperty(value = "properties.virtualNetworkConnections")
     private List<HubVirtualNetworkConnectionInner> virtualNetworkConnections;

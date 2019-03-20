@@ -29,7 +29,7 @@ public class VpnConnectionInner extends SubResource {
     private SubResource remoteVpnSite;
 
     /**
-     * routing weight for vpn connection.
+     * Routing weight for vpn connection.
      */
     @JsonProperty(value = "properties.routingWeight")
     private Integer routingWeight;

@@ -266,7 +266,7 @@ public interface P2SVpnServerConfiguration extends HasInner<P2SVpnServerConfigur
         interface WithVpnProtocols {
             /**
              * Specifies vpnProtocols.
-             * @param vpnProtocols vpnProtocols for the P2SVpnServerConfiguration
+             * @param vpnProtocols VPN protocols for the P2SVpnServerConfiguration
              * @return the next definition stage
              */
             WithCreate withVpnProtocols(List<VpnGatewayTunnelingProtocol> vpnProtocols);
@@ -428,7 +428,7 @@ public interface P2SVpnServerConfiguration extends HasInner<P2SVpnServerConfigur
         interface WithVpnProtocols {
             /**
              * Specifies vpnProtocols.
-             * @param vpnProtocols vpnProtocols for the P2SVpnServerConfiguration
+             * @param vpnProtocols VPN protocols for the P2SVpnServerConfiguration
              * @return the next update stage
              */
             Update withVpnProtocols(List<VpnGatewayTunnelingProtocol> vpnProtocols);

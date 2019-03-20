@@ -160,7 +160,7 @@ public interface VirtualHub extends HasInner<VirtualHubInner>, Resource, Groupab
         interface WithVirtualNetworkConnections {
             /**
              * Specifies virtualNetworkConnections.
-             * @param virtualNetworkConnections list of all vnet connections with this VirtualHub
+             * @param virtualNetworkConnections List of all vnet connections with this VirtualHub
              * @return the next definition stage
              */
             WithCreate withVirtualNetworkConnections(List<HubVirtualNetworkConnectionInner> virtualNetworkConnections);
@@ -274,7 +274,7 @@ public interface VirtualHub extends HasInner<VirtualHubInner>, Resource, Groupab
         interface WithVirtualNetworkConnections {
             /**
              * Specifies virtualNetworkConnections.
-             * @param virtualNetworkConnections list of all vnet connections with this VirtualHub
+             * @param virtualNetworkConnections List of all vnet connections with this VirtualHub
              * @return the next update stage
              */
             Update withVirtualNetworkConnections(List<HubVirtualNetworkConnectionInner> virtualNetworkConnections);

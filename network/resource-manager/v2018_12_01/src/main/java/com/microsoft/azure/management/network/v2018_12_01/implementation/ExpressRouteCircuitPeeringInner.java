@@ -141,6 +141,13 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     private List<ExpressRouteCircuitConnectionInner> connections;
 
     /**
+     * The list of peered circuit connections associated with Azure Private
+     * Peering for this circuit.
+     */
+    @JsonProperty(value = "properties.peeredConnections", access = JsonProperty.Access.WRITE_ONLY)
+    private List<PeerExpressRouteCircuitConnectionInner> peeredConnections;
+
+    /**
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
@@ -531,6 +538,15 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     public ExpressRouteCircuitPeeringInner withConnections(List<ExpressRouteCircuitConnectionInner> connections) {
         this.connections = connections;
         return this;
+    }
+
+    /**
+     * Get the list of peered circuit connections associated with Azure Private Peering for this circuit.
+     *
+     * @return the peeredConnections value
+     */
+    public List<PeerExpressRouteCircuitConnectionInner> peeredConnections() {
+        return this.peeredConnections;
     }
 
     /**

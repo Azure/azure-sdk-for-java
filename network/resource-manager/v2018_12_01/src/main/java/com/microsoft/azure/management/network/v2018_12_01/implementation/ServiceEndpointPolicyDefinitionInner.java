@@ -25,7 +25,7 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
     private String description;
 
     /**
-     * service endpoint name.
+     * Service endpoint name.
      */
     @JsonProperty(value = "properties.service")
     private String service;
