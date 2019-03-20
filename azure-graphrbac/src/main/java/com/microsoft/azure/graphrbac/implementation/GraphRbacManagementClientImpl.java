@@ -63,29 +63,6 @@ public class GraphRbacManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** The application ID. */
-    private String applicationID;
-
-    /**
-     * Gets The application ID.
-     *
-     * @return the applicationID value.
-     */
-    public String applicationID() {
-        return this.applicationID;
-    }
-
-    /**
-     * Sets The application ID.
-     *
-     * @param applicationID the applicationID value.
-     * @return the service client itself
-     */
-    public GraphRbacManagementClientImpl withApplicationID(String applicationID) {
-        this.applicationID = applicationID;
-        return this;
-    }
-
     /** The preferred language for the response. */
     private String acceptLanguage;
 

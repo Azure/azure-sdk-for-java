@@ -24,7 +24,7 @@ public class ApplicationCreateParameters extends ApplicationBase {
     /**
      * A collection of URIs for the application.
      */
-    @JsonProperty(value = "identifierUris", required = true)
+    @JsonProperty(value = "identifierUris")
     private List<String> identifierUris;
 
     /**
