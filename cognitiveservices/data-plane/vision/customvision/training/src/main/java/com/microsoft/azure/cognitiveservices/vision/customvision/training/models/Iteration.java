@@ -104,6 +104,12 @@ public class Iteration {
     private String publishName;
 
     /**
+     * Resource Provider Id this iteration was originally published to.
+     */
+    @JsonProperty(value = "originalPublishResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String originalPublishResourceId;
+
+    /**
      * Get gets the id of the iteration.
      *
      * @return the id value
@@ -238,6 +244,15 @@ public class Iteration {
      */
     public String publishName() {
         return this.publishName;
+    }
+
+    /**
+     * Get resource Provider Id this iteration was originally published to.
+     *
+     * @return the originalPublishResourceId value
+     */
+    public String originalPublishResourceId() {
+        return this.originalPublishResourceId;
     }
 
 }
