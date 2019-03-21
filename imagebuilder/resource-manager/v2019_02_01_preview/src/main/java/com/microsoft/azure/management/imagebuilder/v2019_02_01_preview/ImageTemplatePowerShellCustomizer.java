@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Runs the specified PowerSehll on the VM (Windows). Corresponds to Packer
+ * Runs the specified PowerShell on the VM (Windows). Corresponds to Packer
  * powershell provisioner.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
