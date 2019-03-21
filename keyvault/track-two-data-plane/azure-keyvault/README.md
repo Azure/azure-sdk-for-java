@@ -81,7 +81,7 @@ Secret passwordSecret = secretClient.setSecretAsync("user1pass", "password").blo
 String encodeString = Base64.getEncoder().encodeToString((secretValue).getBytes());
 
 //TODO: add Fluent pattern and remove Builder pattern from Models.
-Secret keySecret = new Secret.Builder("secretkey", encodeString)
+Secret keySecret = new Secret.builder("secretkey", encodeString)
                              .withContentType("application/octet-stream")
                              .withExpires(new DateTime().withYear(2050).withMonthOfYear(1))
 					         .withNotBefore(new DateTime().withYear(2000).withMonthOfYear(1));
