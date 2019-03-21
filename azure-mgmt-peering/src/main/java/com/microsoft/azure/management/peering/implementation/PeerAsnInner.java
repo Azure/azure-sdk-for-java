@@ -15,7 +15,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * The essential information related to the pee's ASN.
+ * The essential information related to the peer's ASN.
  */
 @JsonFlatten
 public class PeerAsnInner extends ProxyResource {

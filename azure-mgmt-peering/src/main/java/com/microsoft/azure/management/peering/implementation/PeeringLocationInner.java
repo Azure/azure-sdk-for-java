@@ -13,13 +13,14 @@ import com.microsoft.azure.management.peering.PeeringLocationPropertiesDirect;
 import com.microsoft.azure.management.peering.PeeringLocationPropertiesExchange;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * Peering location is where connectivity could be established to the Microsoft
  * Cloud Edge.
  */
 @JsonFlatten
-public class PeeringLocationInner {
+public class PeeringLocationInner extends ProxyResource {
     /**
      * The kind of peering that the peering location supports. Possible values
      * include: 'Direct', 'Exchange'.
@@ -56,24 +57,6 @@ public class PeeringLocationInner {
      */
     @JsonProperty(value = "properties.azureRegion")
     private String azureRegion;
-
-    /**
-     * The name of the resource.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /**
-     * The ID of the resource.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /**
-     * The type of the resource.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * Get the kind of peering that the peering location supports. Possible values include: 'Direct', 'Exchange'.
@@ -193,33 +176,6 @@ public class PeeringLocationInner {
     public PeeringLocationInner withAzureRegion(String azureRegion) {
         this.azureRegion = azureRegion;
         return this;
-    }
-
-    /**
-     * Get the name of the resource.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the ID of the resource.
-     *
-     * @return the id value
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the type of the resource.
-     *
-     * @return the type value
-     */
-    public String type() {
-        return this.type;
     }
 
 }

@@ -13,16 +13,17 @@ import com.microsoft.azure.management.peering.Kind;
 import com.microsoft.azure.management.peering.PeeringPropertiesDirect;
 import com.microsoft.azure.management.peering.PeeringPropertiesExchange;
 import com.microsoft.azure.management.peering.ProvisioningState;
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * Peering is a logical representation of a set of connections to the Microsoft
  * Cloud Edge at a location.
  */
 @JsonFlatten
-public class PeeringInner extends Resource {
+public class PeeringInner extends ProxyResource {
     /**
      * The SKU that defines the tier and kind of the peering.
      */
@@ -59,6 +60,18 @@ public class PeeringInner extends Resource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /**
+     * The location of the resource.
+     */
+    @JsonProperty(value = "location", required = true)
+    private String location;
+
+    /**
+     * The resource tags.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
 
     /**
      * Get the SKU that defines the tier and kind of the peering.
@@ -167,6 +180,46 @@ public class PeeringInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the location of the resource.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location of the resource.
+     *
+     * @param location the location value to set
+     * @return the PeeringInner object itself.
+     */
+    public PeeringInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the resource tags.
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the resource tags.
+     *
+     * @param tags the tags value to set
+     * @return the PeeringInner object itself.
+     */
+    public PeeringInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
 }
