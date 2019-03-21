@@ -21,7 +21,7 @@ final class ManagementChannel {
     final SessionProvider sessionProvider;
     final AmqpConnection connectionEventDispatcher;
 
-    public ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection) {
+    ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection) {
         this.sessionProvider = sessionProvider;
         this.connectionEventDispatcher = connection;
 

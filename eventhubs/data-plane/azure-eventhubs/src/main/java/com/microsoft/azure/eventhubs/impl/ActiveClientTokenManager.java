@@ -21,7 +21,7 @@ final class ActiveClientTokenManager {
     private final Timer timerScheduler;
     private CompletableFuture timer;
 
-    public ActiveClientTokenManager(
+    ActiveClientTokenManager(
             final ClientEntity clientEntity,
             final Runnable sendTokenAsync,
             final Duration tokenRefreshInterval,

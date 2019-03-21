@@ -25,7 +25,7 @@ public enum AmqpResponseCode {
 
     private final int value;
 
-    private AmqpResponseCode(final int value) {
+    AmqpResponseCode(final int value) {
         this.value = value;
     }
 

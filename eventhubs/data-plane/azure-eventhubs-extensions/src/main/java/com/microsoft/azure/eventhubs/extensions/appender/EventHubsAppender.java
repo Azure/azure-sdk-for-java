@@ -16,11 +16,12 @@ import org.apache.logging.log4j.core.config.plugins.validation.constraints.Requi
 import org.apache.logging.log4j.core.util.StringEncoder;
 
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 
 import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Sends {@link LogEvent}'s to Microsoft Azure EventHubs.
@@ -76,7 +77,7 @@ public final class EventHubsAppender extends AbstractAppender {
             if (layout != null) {
                 serializedLogEvent = layout.toByteArray(logEvent);
             } else {
-                serializedLogEvent = StringEncoder.toBytes(logEvent.getMessage().getFormattedMessage(), StandardCharsets.UTF_8);
+                serializedLogEvent = StringEncoder.toBytes(logEvent.getMessage().getFormattedMessage(), UTF_8);
             }
 
             if (serializedLogEvent != null) {

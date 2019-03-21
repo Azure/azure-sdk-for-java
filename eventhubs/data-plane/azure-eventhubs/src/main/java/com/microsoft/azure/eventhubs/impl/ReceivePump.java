@@ -148,7 +148,7 @@ public class ReceivePump implements Runnable {
     public interface IPartitionReceiver {
         String getPartitionId();
 
-        CompletableFuture<Iterable<EventData>> receive(final int maxBatchSize);
+        CompletableFuture<Iterable<EventData>> receive(int maxBatchSize);
     }
 
     private final class ProcessAndReschedule implements BiFunction<Iterable<EventData>, Throwable, Void> {

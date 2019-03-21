@@ -790,7 +790,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private static class ReceiveWorkItem extends WorkItem<Collection<Message>> {
         private final int maxMessageCount;
 
-        public ReceiveWorkItem(CompletableFuture<Collection<Message>> completableFuture, Duration timeout, final int maxMessageCount) {
+        ReceiveWorkItem(CompletableFuture<Collection<Message>> completableFuture, Duration timeout, final int maxMessageCount) {
             super(completableFuture, timeout);
             this.maxMessageCount = maxMessageCount;
         }
@@ -801,12 +801,13 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         @Override
         public void onEvent() {
 
-            ReceiveWorkItem pendingReceive;
-            while (!prefetchedMessages.isEmpty() && (pendingReceive = pendingReceives.poll()) != null) {
+            ReceiveWorkItem pendingReceive = pendingReceives.poll();
+            while (!prefetchedMessages.isEmpty() && pendingReceive != null) {
                 if (pendingReceive.getWork() != null && !pendingReceive.getWork().isDone()) {
                     Collection<Message> receivedMessages = receiveCore(pendingReceive.maxMessageCount);
                     pendingReceive.getWork().complete(receivedMessages);
                 }
+                pendingReceive = pendingReceives.poll();
             }
         }
     }

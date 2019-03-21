@@ -16,7 +16,7 @@ class PumpManager extends Closable implements Consumer<String> {
     protected final HostContext hostContext;
     protected ConcurrentHashMap<String, PartitionPump> pumpStates; // protected for testability
 
-    public PumpManager(HostContext hostContext, Closable parent) {
+    PumpManager(HostContext hostContext, Closable parent) {
         super(parent);
 
         this.hostContext = hostContext;

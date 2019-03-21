@@ -487,7 +487,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
         volatile boolean hasStarted;
 
-        public RunReactor(final Reactor reactor, final ScheduledExecutorService executor) {
+        RunReactor(final Reactor reactor, final ScheduledExecutorService executor) {
             this.rctr = reactor;
             this.executor = executor;
             this.hasStarted = false;

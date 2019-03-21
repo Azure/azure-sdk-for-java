@@ -12,7 +12,7 @@ final class Timer {
 
     final SchedulerProvider schedulerProvider;
 
-    public Timer(final SchedulerProvider schedulerProvider) {
+    Timer(final SchedulerProvider schedulerProvider) {
         this.schedulerProvider = schedulerProvider;
     }
 
@@ -36,7 +36,7 @@ final class Timer {
         final CompletableFuture<?> scheduledFuture;
         final Runnable runnable;
 
-        public ScheduledTask(final Runnable runnable) {
+        ScheduledTask(final Runnable runnable) {
             this.runnable = runnable;
             this.scheduledFuture = new CompletableFuture<>();
         }
