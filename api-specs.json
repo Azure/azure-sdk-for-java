@@ -35,7 +35,7 @@
     "args": "--multiapi --fluent"
   },
   "containerservice/resource-manager": {
-    "source": "specification/containerservices/resource-manager/readme.md",
+    "source": "specification/containerservice/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
   "containerregistry/resource-manager": {
