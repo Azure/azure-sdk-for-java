@@ -25,6 +25,10 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
     private final CredentialInformation credentials;
     private final AuthorizationHeaderProvider headerProvider;
 
+    /**
+     *
+     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
+     */
     public ConfigurationClientCredentials(String connectionString) {
         credentials = new CredentialInformation(connectionString);
         headerProvider = new AuthorizationHeaderProvider(credentials);
@@ -33,12 +37,7 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
     URL baseUri() { return this.credentials.baseUri; }
 
     @Override
-    public Mono<String> authorizationHeaderValueAsync(String uri) {
-        return Mono.just("");
-    }
-
-    // TODO (conniey): Is it more useful to change the ServiceClientCredentials interface to take an HttpRequest rather than just a "String"? Need to look at other auth methods.
-    Mono<String> authorizationHeaderValueAsync(HttpRequest request) {
+    public Mono<String> authorizationHeaderValueAsync(HttpRequest request) {
         try {
             String authorizationValue = headerProvider.getAuthenticationHeaderValue(request);
             return Mono.just(authorizationValue);
