@@ -22,7 +22,7 @@ public class CustomDataset extends DatasetInner {
     /**
      * Custom dataset properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
+    @JsonProperty(value = "typeProperties")
     private Object typeProperties;
 
     /**

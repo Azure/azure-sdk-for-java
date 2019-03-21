@@ -76,7 +76,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "MongoDbV2Collection", value = MongoDbV2CollectionDataset.class),
     @JsonSubTypes.Type(name = "MongoDbCollection", value = MongoDbCollectionDataset.class),
     @JsonSubTypes.Type(name = "FileShare", value = FileShareDataset.class),
-    @JsonSubTypes.Type(name = "AzureDataLakeStoreCosmosStructuredStreamFile", value = AzureDataLakeStoreCosmosStructuredStreamDataset.class),
     @JsonSubTypes.Type(name = "Office365Table", value = Office365Dataset.class),
     @JsonSubTypes.Type(name = "AzureBlobFSFile", value = AzureBlobFSDataset.class),
     @JsonSubTypes.Type(name = "AzureDataLakeStoreFile", value = AzureDataLakeStoreDataset.class),
