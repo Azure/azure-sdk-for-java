@@ -14,7 +14,11 @@ import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Receiver;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +29,11 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -647,19 +655,18 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             setClosed();
                         }
                     }
-                }
-                , timeout.remaining());
+                }, timeout.remaining());
 
         this.openTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null
-                            && exception instanceof Exception
-                            && !(exception instanceof CancellationException)) {
-                        ExceptionUtil.completeExceptionally(linkOpen.getWork(), (Exception) exception, MessageReceiver.this);
-                    }
+            (unUsed, exception) -> {
+                if (exception != null
+                        && exception instanceof Exception
+                        && !(exception instanceof CancellationException)) {
+                    ExceptionUtil.completeExceptionally(linkOpen.getWork(), (Exception) exception, MessageReceiver.this);
+                }
 
-                    return null;
-                }, this.executor);
+                return null;
+            }, this.executor);
     }
 
     private void scheduleLinkCloseTimeout(final TimeoutTracker timeout) {
@@ -687,17 +694,16 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             MessageReceiver.this.onError((Exception) null);
                         }
                     }
-                }
-                , timeout.remaining());
+                }, timeout.remaining());
 
         this.closeTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
-                        ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageReceiver.this);
-                    }
+            (unUsed, exception) -> {
+                if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
+                    ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageReceiver.this);
+                }
 
-                    return null;
-                }, this.executor);
+                return null;
+            }, this.executor);
     }
 
     private boolean shouldScheduleOperationTimeoutTimer() {

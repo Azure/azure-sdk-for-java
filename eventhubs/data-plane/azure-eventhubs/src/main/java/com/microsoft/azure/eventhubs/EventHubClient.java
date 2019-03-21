@@ -9,7 +9,6 @@ import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**
@@ -126,9 +125,9 @@ public interface EventHubClient {
      * Send {@link EventData} to EventHub. The sent {@link EventData} will land on any arbitrarily chosen EventHubs partition.
      * <p>There are 3 ways to send to EventHubs, each exposed as a method (along with its sendBatch overload):
      * <ul>
-     * <li>	{@link #send(EventData)}, {@link #send(Iterable)}, or {@link #send(EventDataBatch)}
-     * <li>	{@link #send(EventData, String)} or {@link #send(Iterable, String)}
-     * <li>	{@link PartitionSender#send(EventData)}, {@link PartitionSender#send(Iterable)}, or {@link PartitionSender#send(EventDataBatch)}
+     * <li> {@link #send(EventData)}, {@link #send(Iterable)}, or {@link #send(EventDataBatch)}
+     * <li> {@link #send(EventData, String)} or {@link #send(Iterable, String)}
+     * <li> {@link PartitionSender#send(EventData)}, {@link PartitionSender#send(Iterable)}, or {@link PartitionSender#send(EventDataBatch)}
      * </ul>
      * <p>Use this method to Send, if:
      * <pre>
@@ -168,8 +167,8 @@ public interface EventHubClient {
      * Use this overload versus {@link #send(EventData)}, if you need to send a batch of {@link EventData}.
      * <p> Sending a batch of {@link EventData}'s is useful in the following cases:
      * <pre>
-     * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
-     * ii.	Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
+     * i.   Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs' service.
+     * ii.  Send multiple {@link EventData}'s in a Transaction. To achieve ACID properties, the Gateway Service will forward all {@link EventData}'s in the batch to a single EventHubs' partition.
      * </pre>
      * <p>
      * Sample code (sample uses sync version of the api but concept are identical):
@@ -283,8 +282,8 @@ public interface EventHubClient {
      * <p>There are 3 ways to send to EventHubs, to understand this particular type of Send refer to the overload {@link #send(EventData, String)}, which is the same type of Send and is used to send single {@link EventData}.
      * <p>Sending a batch of {@link EventData}'s is useful in the following cases:
      * <pre>
-     * i.	Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs service.
-     * ii.	Send multiple events in One Transaction. This is the reason why all events sent in a batch needs to have same partitionKey (so that they are sent to one partition only).
+     * i.   Efficient send - sending a batch of {@link EventData} maximizes the overall throughput by optimally using the number of sessions created to EventHubs service.
+     * ii.  Send multiple events in One Transaction. This is the reason why all events sent in a batch needs to have same partitionKey (so that they are sent to one partition only).
      * </pre>
      *
      * @param eventDatas   the batch of events to send to EventHub

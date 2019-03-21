@@ -31,7 +31,7 @@ final class Timer {
         return taskHandle;
     }
 
-    final static class ScheduledTask extends DispatchHandler {
+    static final class ScheduledTask extends DispatchHandler {
 
         final CompletableFuture<?> scheduledFuture;
         final Runnable runnable;

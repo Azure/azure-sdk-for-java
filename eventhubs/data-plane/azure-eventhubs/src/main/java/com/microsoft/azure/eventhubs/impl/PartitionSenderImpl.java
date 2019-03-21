@@ -3,7 +3,11 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.BatchOptions;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventDataBatch;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.PartitionSender;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
@@ -54,8 +58,8 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
 
     public EventDataBatch createBatch(BatchOptions options) {
         if (!StringUtil.isNullOrEmpty(options.partitionKey)) {
-            throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to " +
-                    "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions.");
+            throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to "
+                    + "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions.");
         }
 
         int maxSize = this.internalSender.getMaxMessageSize();
@@ -65,8 +69,8 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
         }
 
         if (options.maxMessageSize > maxSize) {
-            throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of " +
-                    options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
+            throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of "
+                    + options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
         }
 
         return new EventDataBatchImpl(options.maxMessageSize, null);
@@ -90,8 +94,8 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
         }
 
         if (!StringUtil.isNullOrEmpty(((EventDataBatchImpl) eventDatas).getPartitionKey())) {
-            throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to " +
-                    "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions");
+            throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to "
+                    + "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions");
         }
 
         return this.internalSender.send(EventDataUtil.toAmqpMessages(((EventDataBatchImpl) eventDatas).getInternalIterable()));

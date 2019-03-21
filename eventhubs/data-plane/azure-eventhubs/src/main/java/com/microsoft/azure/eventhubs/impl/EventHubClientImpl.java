@@ -3,7 +3,20 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.BatchOptions;
+import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventDataBatch;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.OperationCancelledException;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionRuntimeInformation;
+import com.microsoft.azure.eventhubs.PartitionSender;
+import com.microsoft.azure.eventhubs.ReceiverOptions;
+import com.microsoft.azure.eventhubs.RetryPolicy;
 
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -44,7 +57,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     public static CompletableFuture<EventHubClient> create(
-            final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
+        final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor)
             throws EventHubException, IOException {
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr, executor);
@@ -67,20 +80,20 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     public final EventDataBatch createBatch(BatchOptions options) throws EventHubException {
 
         return ExceptionUtil.sync(() -> {
-                    int maxSize = this.createInternalSender().thenApplyAsync(
-                            (aVoid) -> this.sender.getMaxMessageSize(),
-                            this.executor).get();
-                    if (options.maxMessageSize == null) {
-                        return new EventDataBatchImpl(maxSize, options.partitionKey);
-                    }
-
-                    if (options.maxMessageSize > maxSize) {
-                        throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of " +
-                                options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
-                    }
-
-                    return new EventDataBatchImpl(options.maxMessageSize, options.partitionKey);
+                int maxSize = this.createInternalSender().thenApplyAsync(
+                    (aVoid) -> this.sender.getMaxMessageSize(),
+                    this.executor).get();
+                if (options.maxMessageSize == null) {
+                    return new EventDataBatchImpl(maxSize, options.partitionKey);
                 }
+
+                if (options.maxMessageSize > maxSize) {
+                    throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of "
+                            + options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
+                }
+
+                return new EventDataBatchImpl(options.maxMessageSize, options.partitionKey);
+            }
         );
     }
 
@@ -119,9 +132,9 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         }
 
         final EventDataBatchImpl eventDataBatch = (EventDataBatchImpl) eventDatas;
-        return eventDataBatch.getPartitionKey() != null ?
-                this.send(eventDataBatch.getInternalIterable(), eventDataBatch.getPartitionKey()) :
-                this.send(eventDataBatch.getInternalIterable());
+        return eventDataBatch.getPartitionKey() != null
+                ? this.send(eventDataBatch.getInternalIterable(), eventDataBatch.getPartitionKey())
+                : this.send(eventDataBatch.getInternalIterable());
     }
 
     @Override
@@ -201,11 +214,11 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
             synchronized (this.senderCreateSync) {
                 final CompletableFuture<Void> internalSenderClose = this.sender != null
                         ? this.sender.close().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
-                    @Override
-                    public CompletableFuture<Void> apply(Void voidArg) {
-                        return EventHubClientImpl.this.underlyingFactory.close();
-                    }
-                }, this.executor)
+                                @Override
+                                public CompletableFuture<Void> apply(Void voidArg) {
+                                    return EventHubClientImpl.this.underlyingFactory.close();
+                                }
+                            }, this.executor)
                         : this.underlyingFactory.close();
 
                 return internalSenderClose;
