@@ -77,7 +77,7 @@ public class FaceListsImpl implements FaceLists {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists get" })
         @GET("facelists/{faceListId}")
-        Observable<Response<ResponseBody>> get(@Path("faceListId") String faceListId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("faceListId") String faceListId, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists update" })
         @PATCH("facelists/{faceListId}")
@@ -89,7 +89,7 @@ public class FaceListsImpl implements FaceLists {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists list" })
         @GET("facelists")
-        Observable<Response<ResponseBody>> list(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.FaceLists deleteFace" })
         @HTTP(path = "facelists/{faceListId}/persistedfaces/{persistedFaceId}", method = "DELETE", hasBody = true)
@@ -360,8 +360,83 @@ public class FaceListsImpl implements FaceLists {
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
+        final Boolean returnRecognitionModel = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.get(faceListId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.get(faceListId, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FaceList>>>() {
+                @Override
+                public Observable<ServiceResponse<FaceList>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<FaceList> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the FaceList object if successful.
+     */
+    public FaceList get(String faceListId, Boolean returnRecognitionModel) {
+        return getWithServiceResponseAsync(faceListId, returnRecognitionModel).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<FaceList> getAsync(String faceListId, Boolean returnRecognitionModel, final ServiceCallback<FaceList> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(faceListId, returnRecognitionModel), serviceCallback);
+    }
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FaceList object
+     */
+    public Observable<FaceList> getAsync(String faceListId, Boolean returnRecognitionModel) {
+        return getWithServiceResponseAsync(faceListId, returnRecognitionModel).map(new Func1<ServiceResponse<FaceList>, FaceList>() {
+            @Override
+            public FaceList call(ServiceResponse<FaceList> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FaceList object
+     */
+    public Observable<ServiceResponse<FaceList>> getWithServiceResponseAsync(String faceListId, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (faceListId == null) {
+            throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.get(faceListId, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FaceList>>>() {
                 @Override
                 public Observable<ServiceResponse<FaceList>> call(Response<ResponseBody> response) {
@@ -671,8 +746,80 @@ public class FaceListsImpl implements FaceLists {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
+        final Boolean returnRecognitionModel = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.list(returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<FaceList>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<FaceList>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<FaceList>> clientResponse = listDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;FaceList&gt; object if successful.
+     */
+    public List<FaceList> list(Boolean returnRecognitionModel) {
+        return listWithServiceResponseAsync(returnRecognitionModel).toBlocking().single().body();
+    }
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<FaceList>> listAsync(Boolean returnRecognitionModel, final ServiceCallback<List<FaceList>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(returnRecognitionModel), serviceCallback);
+    }
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FaceList&gt; object
+     */
+    public Observable<List<FaceList>> listAsync(Boolean returnRecognitionModel) {
+        return listWithServiceResponseAsync(returnRecognitionModel).map(new Func1<ServiceResponse<List<FaceList>>, List<FaceList>>() {
+            @Override
+            public List<FaceList> call(ServiceResponse<List<FaceList>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FaceList&gt; object
+     */
+    public Observable<ServiceResponse<List<FaceList>>> listWithServiceResponseAsync(Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.list(returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<FaceList>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<FaceList>>> call(Response<ResponseBody> response) {

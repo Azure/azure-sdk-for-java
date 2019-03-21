@@ -74,7 +74,7 @@ public class PersonGroupsImpl implements PersonGroups {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups get" })
         @GET("persongroups/{personGroupId}")
-        Observable<Response<ResponseBody>> get(@Path("personGroupId") String personGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("personGroupId") String personGroupId, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups update" })
         @PATCH("persongroups/{personGroupId}")
@@ -86,7 +86,7 @@ public class PersonGroupsImpl implements PersonGroups {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups list" })
         @GET("persongroups")
-        Observable<Response<ResponseBody>> list(@Query("start") String start, @Query("top") Integer top, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("start") String start, @Query("top") Integer top, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.PersonGroups train" })
         @POST("persongroups/{personGroupId}/train")
@@ -465,8 +465,83 @@ public class PersonGroupsImpl implements PersonGroups {
         if (personGroupId == null) {
             throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
         }
+        final Boolean returnRecognitionModel = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.get(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.get(personGroupId, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersonGroup>>>() {
+                @Override
+                public Observable<ServiceResponse<PersonGroup>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PersonGroup> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PersonGroup object if successful.
+     */
+    public PersonGroup get(String personGroupId, Boolean returnRecognitionModel) {
+        return getWithServiceResponseAsync(personGroupId, returnRecognitionModel).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PersonGroup> getAsync(String personGroupId, Boolean returnRecognitionModel, final ServiceCallback<PersonGroup> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(personGroupId, returnRecognitionModel), serviceCallback);
+    }
+
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersonGroup object
+     */
+    public Observable<PersonGroup> getAsync(String personGroupId, Boolean returnRecognitionModel) {
+        return getWithServiceResponseAsync(personGroupId, returnRecognitionModel).map(new Func1<ServiceResponse<PersonGroup>, PersonGroup>() {
+            @Override
+            public PersonGroup call(ServiceResponse<PersonGroup> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersonGroup object
+     */
+    public Observable<ServiceResponse<PersonGroup>> getWithServiceResponseAsync(String personGroupId, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (personGroupId == null) {
+            throw new IllegalArgumentException("Parameter personGroupId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.get(personGroupId, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersonGroup>>>() {
                 @Override
                 public Observable<ServiceResponse<PersonGroup>> call(Response<ResponseBody> response) {
@@ -807,8 +882,9 @@ public class PersonGroupsImpl implements PersonGroups {
         }
         final String start = null;
         final Integer top = null;
+        final Boolean returnRecognitionModel = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.list(start, top, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PersonGroup>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PersonGroup>>> call(Response<ResponseBody> response) {
@@ -835,13 +911,14 @@ public class PersonGroupsImpl implements PersonGroups {
      *
      * @param start List person groups from the least personGroupId greater than the "start".
      * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    public List<PersonGroup> list(String start, Integer top) {
-        return listWithServiceResponseAsync(start, top).toBlocking().single().body();
+    public List<PersonGroup> list(String start, Integer top, Boolean returnRecognitionModel) {
+        return listWithServiceResponseAsync(start, top, returnRecognitionModel).toBlocking().single().body();
     }
 
     /**
@@ -857,12 +934,13 @@ public class PersonGroupsImpl implements PersonGroups {
      *
      * @param start List person groups from the least personGroupId greater than the "start".
      * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PersonGroup>> listAsync(String start, Integer top, final ServiceCallback<List<PersonGroup>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(start, top), serviceCallback);
+    public ServiceFuture<List<PersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel, final ServiceCallback<List<PersonGroup>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(start, top, returnRecognitionModel), serviceCallback);
     }
 
     /**
@@ -878,11 +956,12 @@ public class PersonGroupsImpl implements PersonGroups {
      *
      * @param start List person groups from the least personGroupId greater than the "start".
      * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    public Observable<List<PersonGroup>> listAsync(String start, Integer top) {
-        return listWithServiceResponseAsync(start, top).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
+    public Observable<List<PersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel) {
+        return listWithServiceResponseAsync(start, top, returnRecognitionModel).map(new Func1<ServiceResponse<List<PersonGroup>>, List<PersonGroup>>() {
             @Override
             public List<PersonGroup> call(ServiceResponse<List<PersonGroup>> response) {
                 return response.body();
@@ -903,15 +982,16 @@ public class PersonGroupsImpl implements PersonGroups {
      *
      * @param start List person groups from the least personGroupId greater than the "start".
      * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(String start, Integer top) {
+    public Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(String start, Integer top, Boolean returnRecognitionModel) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.list(start, top, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PersonGroup>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PersonGroup>>> call(Response<ResponseBody> response) {

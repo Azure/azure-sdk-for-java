@@ -182,6 +182,48 @@ public interface FaceLists {
      * @return the observable to the FaceList object
      */
     Observable<ServiceResponse<FaceList>> getWithServiceResponseAsync(String faceListId);
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the FaceList object if successful.
+     */
+    FaceList get(String faceListId, Boolean returnRecognitionModel);
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<FaceList> getAsync(String faceListId, Boolean returnRecognitionModel, final ServiceCallback<FaceList> serviceCallback);
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FaceList object
+     */
+    Observable<FaceList> getAsync(String faceListId, Boolean returnRecognitionModel);
+
+    /**
+     * Retrieve a face list’s faceListId, name, userData, recognitionModel and faces in the face list.
+     *
+     * @param faceListId Id referencing a particular face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the FaceList object
+     */
+    Observable<ServiceResponse<FaceList>> getWithServiceResponseAsync(String faceListId, Boolean returnRecognitionModel);
 
     /**
      * Update information of a face list.
@@ -342,6 +384,48 @@ public interface FaceLists {
      * @return the observable to the List&lt;FaceList&gt; object
      */
     Observable<ServiceResponse<List<FaceList>>> listWithServiceResponseAsync();
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;FaceList&gt; object if successful.
+     */
+    List<FaceList> list(Boolean returnRecognitionModel);
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<FaceList>> listAsync(Boolean returnRecognitionModel, final ServiceCallback<List<FaceList>> serviceCallback);
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FaceList&gt; object
+     */
+    Observable<List<FaceList>> listAsync(Boolean returnRecognitionModel);
+
+    /**
+     * List face lists’ faceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside faceList use [FaceList - Get](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f3039524c).
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;FaceList&gt; object
+     */
+    Observable<ServiceResponse<List<FaceList>>> listWithServiceResponseAsync(Boolean returnRecognitionModel);
 
     /**
      * Delete an existing face from a face list (given by a persistedFaceId and a faceListId). Persisted image related to the face will also be deleted.

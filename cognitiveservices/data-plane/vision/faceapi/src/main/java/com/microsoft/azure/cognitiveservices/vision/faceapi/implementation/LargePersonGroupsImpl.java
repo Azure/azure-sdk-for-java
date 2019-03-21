@@ -74,7 +74,7 @@ public class LargePersonGroupsImpl implements LargePersonGroups {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups get" })
         @GET("largepersongroups/{largePersonGroupId}")
-        Observable<Response<ResponseBody>> get(@Path("largePersonGroupId") String largePersonGroupId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("largePersonGroupId") String largePersonGroupId, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups update" })
         @PATCH("largepersongroups/{largePersonGroupId}")
@@ -86,7 +86,7 @@ public class LargePersonGroupsImpl implements LargePersonGroups {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups list" })
         @GET("largepersongroups")
-        Observable<Response<ResponseBody>> list(@Query("start") String start, @Query("top") Integer top, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("start") String start, @Query("top") Integer top, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargePersonGroups train" })
         @POST("largepersongroups/{largePersonGroupId}/train")
@@ -457,8 +457,83 @@ public class LargePersonGroupsImpl implements LargePersonGroups {
         if (largePersonGroupId == null) {
             throw new IllegalArgumentException("Parameter largePersonGroupId is required and cannot be null.");
         }
+        final Boolean returnRecognitionModel = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.get(largePersonGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.get(largePersonGroupId, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LargePersonGroup>>>() {
+                @Override
+                public Observable<ServiceResponse<LargePersonGroup>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<LargePersonGroup> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Retrieve the information of a large person group, including its name, userData and recognitionModel. This API returns large person group information only, use [LargePersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/599adda06ac60f11b48b5aa1) instead to retrieve person information under the large person group.
+     *
+     * @param largePersonGroupId Id referencing a particular large person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LargePersonGroup object if successful.
+     */
+    public LargePersonGroup get(String largePersonGroupId, Boolean returnRecognitionModel) {
+        return getWithServiceResponseAsync(largePersonGroupId, returnRecognitionModel).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieve the information of a large person group, including its name, userData and recognitionModel. This API returns large person group information only, use [LargePersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/599adda06ac60f11b48b5aa1) instead to retrieve person information under the large person group.
+     *
+     * @param largePersonGroupId Id referencing a particular large person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<LargePersonGroup> getAsync(String largePersonGroupId, Boolean returnRecognitionModel, final ServiceCallback<LargePersonGroup> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(largePersonGroupId, returnRecognitionModel), serviceCallback);
+    }
+
+    /**
+     * Retrieve the information of a large person group, including its name, userData and recognitionModel. This API returns large person group information only, use [LargePersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/599adda06ac60f11b48b5aa1) instead to retrieve person information under the large person group.
+     *
+     * @param largePersonGroupId Id referencing a particular large person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LargePersonGroup object
+     */
+    public Observable<LargePersonGroup> getAsync(String largePersonGroupId, Boolean returnRecognitionModel) {
+        return getWithServiceResponseAsync(largePersonGroupId, returnRecognitionModel).map(new Func1<ServiceResponse<LargePersonGroup>, LargePersonGroup>() {
+            @Override
+            public LargePersonGroup call(ServiceResponse<LargePersonGroup> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieve the information of a large person group, including its name, userData and recognitionModel. This API returns large person group information only, use [LargePersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/599adda06ac60f11b48b5aa1) instead to retrieve person information under the large person group.
+     *
+     * @param largePersonGroupId Id referencing a particular large person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LargePersonGroup object
+     */
+    public Observable<ServiceResponse<LargePersonGroup>> getWithServiceResponseAsync(String largePersonGroupId, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (largePersonGroupId == null) {
+            throw new IllegalArgumentException("Parameter largePersonGroupId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.get(largePersonGroupId, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LargePersonGroup>>>() {
                 @Override
                 public Observable<ServiceResponse<LargePersonGroup>> call(Response<ResponseBody> response) {
@@ -799,8 +874,9 @@ public class LargePersonGroupsImpl implements LargePersonGroups {
         }
         final String start = null;
         final Integer top = null;
+        final Boolean returnRecognitionModel = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.list(start, top, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LargePersonGroup>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<LargePersonGroup>>> call(Response<ResponseBody> response) {
@@ -827,13 +903,14 @@ public class LargePersonGroupsImpl implements LargePersonGroups {
      *
      * @param start List large person groups from the least largePersonGroupId greater than the "start".
      * @param top The number of large person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;LargePersonGroup&gt; object if successful.
      */
-    public List<LargePersonGroup> list(String start, Integer top) {
-        return listWithServiceResponseAsync(start, top).toBlocking().single().body();
+    public List<LargePersonGroup> list(String start, Integer top, Boolean returnRecognitionModel) {
+        return listWithServiceResponseAsync(start, top, returnRecognitionModel).toBlocking().single().body();
     }
 
     /**
@@ -849,12 +926,13 @@ public class LargePersonGroupsImpl implements LargePersonGroups {
      *
      * @param start List large person groups from the least largePersonGroupId greater than the "start".
      * @param top The number of large person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<LargePersonGroup>> listAsync(String start, Integer top, final ServiceCallback<List<LargePersonGroup>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(start, top), serviceCallback);
+    public ServiceFuture<List<LargePersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel, final ServiceCallback<List<LargePersonGroup>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(start, top, returnRecognitionModel), serviceCallback);
     }
 
     /**
@@ -870,11 +948,12 @@ public class LargePersonGroupsImpl implements LargePersonGroups {
      *
      * @param start List large person groups from the least largePersonGroupId greater than the "start".
      * @param top The number of large person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LargePersonGroup&gt; object
      */
-    public Observable<List<LargePersonGroup>> listAsync(String start, Integer top) {
-        return listWithServiceResponseAsync(start, top).map(new Func1<ServiceResponse<List<LargePersonGroup>>, List<LargePersonGroup>>() {
+    public Observable<List<LargePersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel) {
+        return listWithServiceResponseAsync(start, top, returnRecognitionModel).map(new Func1<ServiceResponse<List<LargePersonGroup>>, List<LargePersonGroup>>() {
             @Override
             public List<LargePersonGroup> call(ServiceResponse<List<LargePersonGroup>> response) {
                 return response.body();
@@ -895,15 +974,16 @@ public class LargePersonGroupsImpl implements LargePersonGroups {
      *
      * @param start List large person groups from the least largePersonGroupId greater than the "start".
      * @param top The number of large person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LargePersonGroup&gt; object
      */
-    public Observable<ServiceResponse<List<LargePersonGroup>>> listWithServiceResponseAsync(String start, Integer top) {
+    public Observable<ServiceResponse<List<LargePersonGroup>>> listWithServiceResponseAsync(String start, Integer top, Boolean returnRecognitionModel) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(start, top, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.list(start, top, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LargePersonGroup>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<LargePersonGroup>>> call(Response<ResponseBody> response) {

@@ -24,7 +24,7 @@ public class DetectedFace {
     /**
      * Possible values include: 'recognition_01', 'recognition_02'.
      */
-    @JsonProperty(value = "recognitionModel", required = true)
+    @JsonProperty(value = "recognitionModel")
     private RecognitionModel recognitionModel;
 
     /**

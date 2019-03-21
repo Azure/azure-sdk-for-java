@@ -517,12 +517,13 @@ public interface Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    List<DetectedFace> detectWithUrl(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel);
+    List<DetectedFace> detectWithUrl(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
@@ -541,11 +542,12 @@ public interface Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<DetectedFace>> detectWithUrlAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, final ServiceCallback<List<DetectedFace>> serviceCallback);
+    ServiceFuture<List<DetectedFace>> detectWithUrlAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel, final ServiceCallback<List<DetectedFace>> serviceCallback);
 
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
@@ -564,10 +566,11 @@ public interface Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    Observable<List<DetectedFace>> detectWithUrlAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel);
+    Observable<List<DetectedFace>> detectWithUrlAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.&lt;br /&gt;
@@ -586,10 +589,11 @@ public interface Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    Observable<ServiceResponse<List<DetectedFace>>> detectWithUrlWithServiceResponseAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel);
+    Observable<ServiceResponse<List<DetectedFace>>> detectWithUrlWithServiceResponseAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
     /**
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
@@ -730,12 +734,13 @@ public interface Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    List<DetectedFace> detectWithStream(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel);
+    List<DetectedFace> detectWithStream(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
@@ -745,11 +750,12 @@ public interface Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<DetectedFace>> detectWithStreamAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, final ServiceCallback<List<DetectedFace>> serviceCallback);
+    ServiceFuture<List<DetectedFace>> detectWithStreamAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel, final ServiceCallback<List<DetectedFace>> serviceCallback);
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
@@ -759,10 +765,11 @@ public interface Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    Observable<List<DetectedFace>> detectWithStreamAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel);
+    Observable<List<DetectedFace>> detectWithStreamAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and attributes.
@@ -772,9 +779,10 @@ public interface Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    Observable<ServiceResponse<List<DetectedFace>>> detectWithStreamWithServiceResponseAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel);
+    Observable<ServiceResponse<List<DetectedFace>>> detectWithStreamWithServiceResponseAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel);
 
 }

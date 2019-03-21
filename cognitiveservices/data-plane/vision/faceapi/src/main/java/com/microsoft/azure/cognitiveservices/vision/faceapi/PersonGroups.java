@@ -259,6 +259,48 @@ public interface PersonGroups {
      * @return the observable to the PersonGroup object
      */
     Observable<ServiceResponse<PersonGroup>> getWithServiceResponseAsync(String personGroupId);
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PersonGroup object if successful.
+     */
+    PersonGroup get(String personGroupId, Boolean returnRecognitionModel);
+
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<PersonGroup> getAsync(String personGroupId, Boolean returnRecognitionModel, final ServiceCallback<PersonGroup> serviceCallback);
+
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersonGroup object
+     */
+    Observable<PersonGroup> getAsync(String personGroupId, Boolean returnRecognitionModel);
+
+    /**
+     * Retrieve person group name, userData and recognitionModel. To get person information under this personGroup, use [PersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/563879b61984550f30395241).
+     *
+     * @param personGroupId Id referencing a particular person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PersonGroup object
+     */
+    Observable<ServiceResponse<PersonGroup>> getWithServiceResponseAsync(String personGroupId, Boolean returnRecognitionModel);
 
     /**
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
@@ -461,12 +503,13 @@ public interface PersonGroups {
      *
      * @param start List person groups from the least personGroupId greater than the "start".
      * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    List<PersonGroup> list(String start, Integer top);
+    List<PersonGroup> list(String start, Integer top, Boolean returnRecognitionModel);
 
     /**
      * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
@@ -481,11 +524,12 @@ public interface PersonGroups {
      *
      * @param start List person groups from the least personGroupId greater than the "start".
      * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<PersonGroup>> listAsync(String start, Integer top, final ServiceCallback<List<PersonGroup>> serviceCallback);
+    ServiceFuture<List<PersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel, final ServiceCallback<List<PersonGroup>> serviceCallback);
 
     /**
      * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
@@ -500,10 +544,11 @@ public interface PersonGroups {
      *
      * @param start List person groups from the least personGroupId greater than the "start".
      * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    Observable<List<PersonGroup>> listAsync(String start, Integer top);
+    Observable<List<PersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel);
 
     /**
      * List person groups’s personGroupId, name, userData and recognitionModel.&lt;br /&gt;
@@ -518,10 +563,11 @@ public interface PersonGroups {
      *
      * @param start List person groups from the least personGroupId greater than the "start".
      * @param top The number of person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(String start, Integer top);
+    Observable<ServiceResponse<List<PersonGroup>>> listWithServiceResponseAsync(String start, Integer top, Boolean returnRecognitionModel);
 
     /**
      * Queue a person group training task, the training task may not be started immediately.

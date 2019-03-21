@@ -251,6 +251,48 @@ public interface LargePersonGroups {
      * @return the observable to the LargePersonGroup object
      */
     Observable<ServiceResponse<LargePersonGroup>> getWithServiceResponseAsync(String largePersonGroupId);
+    /**
+     * Retrieve the information of a large person group, including its name, userData and recognitionModel. This API returns large person group information only, use [LargePersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/599adda06ac60f11b48b5aa1) instead to retrieve person information under the large person group.
+     *
+     * @param largePersonGroupId Id referencing a particular large person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LargePersonGroup object if successful.
+     */
+    LargePersonGroup get(String largePersonGroupId, Boolean returnRecognitionModel);
+
+    /**
+     * Retrieve the information of a large person group, including its name, userData and recognitionModel. This API returns large person group information only, use [LargePersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/599adda06ac60f11b48b5aa1) instead to retrieve person information under the large person group.
+     *
+     * @param largePersonGroupId Id referencing a particular large person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<LargePersonGroup> getAsync(String largePersonGroupId, Boolean returnRecognitionModel, final ServiceCallback<LargePersonGroup> serviceCallback);
+
+    /**
+     * Retrieve the information of a large person group, including its name, userData and recognitionModel. This API returns large person group information only, use [LargePersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/599adda06ac60f11b48b5aa1) instead to retrieve person information under the large person group.
+     *
+     * @param largePersonGroupId Id referencing a particular large person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LargePersonGroup object
+     */
+    Observable<LargePersonGroup> getAsync(String largePersonGroupId, Boolean returnRecognitionModel);
+
+    /**
+     * Retrieve the information of a large person group, including its name, userData and recognitionModel. This API returns large person group information only, use [LargePersonGroup Person - List](/docs/services/563879b61984550e40cbbe8d/operations/599adda06ac60f11b48b5aa1) instead to retrieve person information under the large person group.
+     *
+     * @param largePersonGroupId Id referencing a particular large person group.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LargePersonGroup object
+     */
+    Observable<ServiceResponse<LargePersonGroup>> getWithServiceResponseAsync(String largePersonGroupId, Boolean returnRecognitionModel);
 
     /**
      * Update an existing large person group's display name and userData. The properties which does not appear in request body will not be updated.
@@ -453,12 +495,13 @@ public interface LargePersonGroups {
      *
      * @param start List large person groups from the least largePersonGroupId greater than the "start".
      * @param top The number of large person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;LargePersonGroup&gt; object if successful.
      */
-    List<LargePersonGroup> list(String start, Integer top);
+    List<LargePersonGroup> list(String start, Integer top, Boolean returnRecognitionModel);
 
     /**
      * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
@@ -473,11 +516,12 @@ public interface LargePersonGroups {
      *
      * @param start List large person groups from the least largePersonGroupId greater than the "start".
      * @param top The number of large person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<List<LargePersonGroup>> listAsync(String start, Integer top, final ServiceCallback<List<LargePersonGroup>> serviceCallback);
+    ServiceFuture<List<LargePersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel, final ServiceCallback<List<LargePersonGroup>> serviceCallback);
 
     /**
      * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
@@ -492,10 +536,11 @@ public interface LargePersonGroups {
      *
      * @param start List large person groups from the least largePersonGroupId greater than the "start".
      * @param top The number of large person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LargePersonGroup&gt; object
      */
-    Observable<List<LargePersonGroup>> listAsync(String start, Integer top);
+    Observable<List<LargePersonGroup>> listAsync(String start, Integer top, Boolean returnRecognitionModel);
 
     /**
      * List all existing large person groups’s largePersonGroupId, name, userData and recognitionModel.&lt;br /&gt;
@@ -510,10 +555,11 @@ public interface LargePersonGroups {
      *
      * @param start List large person groups from the least largePersonGroupId greater than the "start".
      * @param top The number of large person groups to list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LargePersonGroup&gt; object
      */
-    Observable<ServiceResponse<List<LargePersonGroup>>> listWithServiceResponseAsync(String start, Integer top);
+    Observable<ServiceResponse<List<LargePersonGroup>>> listWithServiceResponseAsync(String start, Integer top, Boolean returnRecognitionModel);
 
     /**
      * Queue a large person group training task, the training task may not be started immediately.

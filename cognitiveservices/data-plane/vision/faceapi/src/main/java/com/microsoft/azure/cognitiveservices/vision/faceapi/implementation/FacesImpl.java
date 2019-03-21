@@ -92,7 +92,7 @@ public class FacesImpl implements Faces {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces detectWithUrl" })
         @POST("detect")
-        Observable<Response<ResponseBody>> detectWithUrl(@Query("returnFaceId") Boolean returnFaceId, @Query("returnFaceLandmarks") Boolean returnFaceLandmarks, @Query("returnFaceAttributes") String returnFaceAttributes, @Query("recognitionModel") RecognitionModel recognitionModel1, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> detectWithUrl(@Query("returnFaceId") Boolean returnFaceId, @Query("returnFaceLandmarks") Boolean returnFaceLandmarks, @Query("returnFaceAttributes") String returnFaceAttributes, @Query("recognitionModel") RecognitionModel recognitionModel1, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces verifyFaceToPerson" })
         @POST("verify")
@@ -100,7 +100,7 @@ public class FacesImpl implements Faces {
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces detectWithStream" })
         @POST("detect")
-        Observable<Response<ResponseBody>> detectWithStream(@Query("returnFaceId") Boolean returnFaceId, @Query("returnFaceLandmarks") Boolean returnFaceLandmarks, @Query("returnFaceAttributes") String returnFaceAttributes, @Body RequestBody image, @Query("recognitionModel") RecognitionModel recognitionModel1, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> detectWithStream(@Query("returnFaceId") Boolean returnFaceId, @Query("returnFaceLandmarks") Boolean returnFaceLandmarks, @Query("returnFaceAttributes") String returnFaceAttributes, @Body RequestBody image, @Query("recognitionModel") RecognitionModel recognitionModel1, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -858,11 +858,12 @@ public class FacesImpl implements Faces {
         final Boolean returnFaceLandmarks = null;
         final List<FaceAttributeType> returnFaceAttributes = null;
         final RecognitionModel recognitionModel = null;
+        final Boolean returnRecognitionModel = null;
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
-        return service.detectWithUrl(returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, recognitionModel, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.detectWithUrl(returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, recognitionModel, returnRecognitionModel, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DetectedFace>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<DetectedFace>>> call(Response<ResponseBody> response) {
@@ -893,13 +894,14 @@ public class FacesImpl implements Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    public List<DetectedFace> detectWithUrl(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel) {
-        return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel).toBlocking().single().body();
+    public List<DetectedFace> detectWithUrl(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+        return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel).toBlocking().single().body();
     }
 
     /**
@@ -919,12 +921,13 @@ public class FacesImpl implements Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<DetectedFace>> detectWithUrlAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, final ServiceCallback<List<DetectedFace>> serviceCallback) {
-        return ServiceFuture.fromResponse(detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel), serviceCallback);
+    public ServiceFuture<List<DetectedFace>> detectWithUrlAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel, final ServiceCallback<List<DetectedFace>> serviceCallback) {
+        return ServiceFuture.fromResponse(detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel), serviceCallback);
     }
 
     /**
@@ -944,11 +947,12 @@ public class FacesImpl implements Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    public Observable<List<DetectedFace>> detectWithUrlAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel) {
-        return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel).map(new Func1<ServiceResponse<List<DetectedFace>>, List<DetectedFace>>() {
+    public Observable<List<DetectedFace>> detectWithUrlAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+        return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel).map(new Func1<ServiceResponse<List<DetectedFace>>, List<DetectedFace>>() {
             @Override
             public List<DetectedFace> call(ServiceResponse<List<DetectedFace>> response) {
                 return response.body();
@@ -973,10 +977,11 @@ public class FacesImpl implements Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    public Observable<ServiceResponse<List<DetectedFace>>> detectWithUrlWithServiceResponseAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel) {
+    public Observable<ServiceResponse<List<DetectedFace>>> detectWithUrlWithServiceResponseAsync(String url, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -988,7 +993,7 @@ public class FacesImpl implements Faces {
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
-        return service.detectWithUrl(returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, recognitionModel, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
+        return service.detectWithUrl(returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, recognitionModel, returnRecognitionModel, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DetectedFace>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<DetectedFace>>> call(Response<ResponseBody> response) {
@@ -1249,9 +1254,10 @@ public class FacesImpl implements Faces {
         final Boolean returnFaceLandmarks = null;
         final List<FaceAttributeType> returnFaceAttributes = null;
         final RecognitionModel recognitionModel = null;
+        final Boolean returnRecognitionModel = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.detectWithStream(returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, imageConverted, recognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.detectWithStream(returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, imageConverted, recognitionModel, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DetectedFace>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<DetectedFace>>> call(Response<ResponseBody> response) {
@@ -1273,13 +1279,14 @@ public class FacesImpl implements Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;DetectedFace&gt; object if successful.
      */
-    public List<DetectedFace> detectWithStream(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel) {
-        return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel).toBlocking().single().body();
+    public List<DetectedFace> detectWithStream(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+        return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel).toBlocking().single().body();
     }
 
     /**
@@ -1290,12 +1297,13 @@ public class FacesImpl implements Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<DetectedFace>> detectWithStreamAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, final ServiceCallback<List<DetectedFace>> serviceCallback) {
-        return ServiceFuture.fromResponse(detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel), serviceCallback);
+    public ServiceFuture<List<DetectedFace>> detectWithStreamAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel, final ServiceCallback<List<DetectedFace>> serviceCallback) {
+        return ServiceFuture.fromResponse(detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel), serviceCallback);
     }
 
     /**
@@ -1306,11 +1314,12 @@ public class FacesImpl implements Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    public Observable<List<DetectedFace>> detectWithStreamAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel) {
-        return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel).map(new Func1<ServiceResponse<List<DetectedFace>>, List<DetectedFace>>() {
+    public Observable<List<DetectedFace>> detectWithStreamAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
+        return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes, recognitionModel, returnRecognitionModel).map(new Func1<ServiceResponse<List<DetectedFace>>, List<DetectedFace>>() {
             @Override
             public List<DetectedFace> call(ServiceResponse<List<DetectedFace>> response) {
                 return response.body();
@@ -1326,10 +1335,11 @@ public class FacesImpl implements Faces {
      * @param returnFaceLandmarks A value indicating whether the operation should return landmarks of the detected faces.
      * @param returnFaceAttributes Analyze and return the one or more specified face attributes in the comma-separated string like "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses and emotion. Note that each face attribute analysis has additional computational and time cost.
      * @param recognitionModel Name of recognition model. Recognition model is used when the face features are extracted and associated with detected faceIds, (Large)FaceList or (Large)PersonGroup. A recognition model name can be provided when performing Face - Detect or (Large)FaceList - Create or (Large)PersonGroup - Create. The default value is 'recognition_01', if latest model needed, please explicitly specify the model you need. Possible values include: 'recognition_01', 'recognition_02'
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;DetectedFace&gt; object
      */
-    public Observable<ServiceResponse<List<DetectedFace>>> detectWithStreamWithServiceResponseAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel) {
+    public Observable<ServiceResponse<List<DetectedFace>>> detectWithStreamWithServiceResponseAsync(byte[] image, Boolean returnFaceId, Boolean returnFaceLandmarks, List<FaceAttributeType> returnFaceAttributes, RecognitionModel recognitionModel, Boolean returnRecognitionModel) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1339,7 +1349,7 @@ public class FacesImpl implements Faces {
         Validator.validate(returnFaceAttributes);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
-        return service.detectWithStream(returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, imageConverted, recognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.detectWithStream(returnFaceId, returnFaceLandmarks, returnFaceAttributesConverted, imageConverted, recognitionModel, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DetectedFace>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<DetectedFace>>> call(Response<ResponseBody> response) {

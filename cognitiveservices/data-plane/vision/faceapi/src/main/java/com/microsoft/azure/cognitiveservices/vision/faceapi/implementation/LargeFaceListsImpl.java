@@ -79,7 +79,7 @@ public class LargeFaceListsImpl implements LargeFaceLists {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists get" })
         @GET("largefacelists/{largeFaceListId}")
-        Observable<Response<ResponseBody>> get(@Path("largeFaceListId") String largeFaceListId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("largeFaceListId") String largeFaceListId, @Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists update" })
         @PATCH("largefacelists/{largeFaceListId}")
@@ -95,7 +95,7 @@ public class LargeFaceListsImpl implements LargeFaceLists {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists list" })
         @GET("largefacelists")
-        Observable<Response<ResponseBody>> list(@Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Query("returnRecognitionModel") Boolean returnRecognitionModel, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.LargeFaceLists train" })
         @POST("largefacelists/{largeFaceListId}/train")
@@ -414,8 +414,83 @@ public class LargeFaceListsImpl implements LargeFaceLists {
         if (largeFaceListId == null) {
             throw new IllegalArgumentException("Parameter largeFaceListId is required and cannot be null.");
         }
+        final Boolean returnRecognitionModel = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.get(largeFaceListId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.get(largeFaceListId, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LargeFaceList>>>() {
+                @Override
+                public Observable<ServiceResponse<LargeFaceList>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<LargeFaceList> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Retrieve a large face list’s largeFaceListId, name, userData and recognitionModel.
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the LargeFaceList object if successful.
+     */
+    public LargeFaceList get(String largeFaceListId, Boolean returnRecognitionModel) {
+        return getWithServiceResponseAsync(largeFaceListId, returnRecognitionModel).toBlocking().single().body();
+    }
+
+    /**
+     * Retrieve a large face list’s largeFaceListId, name, userData and recognitionModel.
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<LargeFaceList> getAsync(String largeFaceListId, Boolean returnRecognitionModel, final ServiceCallback<LargeFaceList> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(largeFaceListId, returnRecognitionModel), serviceCallback);
+    }
+
+    /**
+     * Retrieve a large face list’s largeFaceListId, name, userData and recognitionModel.
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LargeFaceList object
+     */
+    public Observable<LargeFaceList> getAsync(String largeFaceListId, Boolean returnRecognitionModel) {
+        return getWithServiceResponseAsync(largeFaceListId, returnRecognitionModel).map(new Func1<ServiceResponse<LargeFaceList>, LargeFaceList>() {
+            @Override
+            public LargeFaceList call(ServiceResponse<LargeFaceList> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Retrieve a large face list’s largeFaceListId, name, userData and recognitionModel.
+     *
+     * @param largeFaceListId Id referencing a particular large face list.
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the LargeFaceList object
+     */
+    public Observable<ServiceResponse<LargeFaceList>> getWithServiceResponseAsync(String largeFaceListId, Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (largeFaceListId == null) {
+            throw new IllegalArgumentException("Parameter largeFaceListId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.get(largeFaceListId, returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LargeFaceList>>>() {
                 @Override
                 public Observable<ServiceResponse<LargeFaceList>> call(Response<ResponseBody> response) {
@@ -834,8 +909,112 @@ public class LargeFaceListsImpl implements LargeFaceLists {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
+        final Boolean returnRecognitionModel = null;
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.list(this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.list(returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LargeFaceList>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<LargeFaceList>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<LargeFaceList>> clientResponse = listDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * List large face lists’ information of largeFaceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
+     * Large face lists are stored in alphabetical order of largeFaceListId.
+     * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     &lt;br /&gt;
+     For example, total 5 large person lists: "list1", ..., "list5".
+     &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
+     &lt;br /&gt; "start=&amp;top=2" will return "list1", "list2".
+     &lt;br /&gt; "start=list2&amp;top=3" will return "list3", "list4", "list5".
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws APIErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;LargeFaceList&gt; object if successful.
+     */
+    public List<LargeFaceList> list(Boolean returnRecognitionModel) {
+        return listWithServiceResponseAsync(returnRecognitionModel).toBlocking().single().body();
+    }
+
+    /**
+     * List large face lists’ information of largeFaceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
+     * Large face lists are stored in alphabetical order of largeFaceListId.
+     * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     &lt;br /&gt;
+     For example, total 5 large person lists: "list1", ..., "list5".
+     &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
+     &lt;br /&gt; "start=&amp;top=2" will return "list1", "list2".
+     &lt;br /&gt; "start=list2&amp;top=3" will return "list3", "list4", "list5".
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<LargeFaceList>> listAsync(Boolean returnRecognitionModel, final ServiceCallback<List<LargeFaceList>> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(returnRecognitionModel), serviceCallback);
+    }
+
+    /**
+     * List large face lists’ information of largeFaceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
+     * Large face lists are stored in alphabetical order of largeFaceListId.
+     * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     &lt;br /&gt;
+     For example, total 5 large person lists: "list1", ..., "list5".
+     &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
+     &lt;br /&gt; "start=&amp;top=2" will return "list1", "list2".
+     &lt;br /&gt; "start=list2&amp;top=3" will return "list3", "list4", "list5".
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;LargeFaceList&gt; object
+     */
+    public Observable<List<LargeFaceList>> listAsync(Boolean returnRecognitionModel) {
+        return listWithServiceResponseAsync(returnRecognitionModel).map(new Func1<ServiceResponse<List<LargeFaceList>>, List<LargeFaceList>>() {
+            @Override
+            public List<LargeFaceList> call(ServiceResponse<List<LargeFaceList>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List large face lists’ information of largeFaceListId, name, userData and recognitionModel. &lt;br /&gt;
+     To get face information inside largeFaceList use [LargeFaceList Face - Get](/docs/services/563879b61984550e40cbbe8d/operations/5a158cf2d2de3616c086f2d5)&lt;br /&gt;
+     * Large face lists are stored in alphabetical order of largeFaceListId.
+     * "start" parameter (string, optional) is a user-provided largeFaceListId value that returned entries have larger ids by string comparison. "start" set to empty to indicate return from the first item.
+     * "top" parameter (int, optional) specifies the number of entries to return. A maximal of 1000 entries can be returned in one call. To fetch more, you can specify "start" with the last retuned entry’s Id of the current call.
+     &lt;br /&gt;
+     For example, total 5 large person lists: "list1", ..., "list5".
+     &lt;br /&gt; "start=&amp;top=" will return all 5 lists.
+     &lt;br /&gt; "start=&amp;top=2" will return "list1", "list2".
+     &lt;br /&gt; "start=list2&amp;top=3" will return "list3", "list4", "list5".
+     *
+     * @param returnRecognitionModel A value indicating whether the operation should return 'recognitionModel' in response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;LargeFaceList&gt; object
+     */
+    public Observable<ServiceResponse<List<LargeFaceList>>> listWithServiceResponseAsync(Boolean returnRecognitionModel) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.list(returnRecognitionModel, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<LargeFaceList>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<LargeFaceList>>> call(Response<ResponseBody> response) {
