@@ -127,7 +127,7 @@ public class RunInner extends ProxyResource {
      * The error message received from backend systems after the run is
      * scheduled.
      */
-    @JsonProperty(value = "properties.runErrorMessage")
+    @JsonProperty(value = "properties.runErrorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String runErrorMessage;
 
     /**
@@ -450,17 +450,6 @@ public class RunInner extends ProxyResource {
      */
     public String runErrorMessage() {
         return this.runErrorMessage;
-    }
-
-    /**
-     * Set the error message received from backend systems after the run is scheduled.
-     *
-     * @param runErrorMessage the runErrorMessage value to set
-     * @return the RunInner object itself.
-     */
-    public RunInner withRunErrorMessage(String runErrorMessage) {
-        this.runErrorMessage = runErrorMessage;
-        return this;
     }
 
     /**
