@@ -525,9 +525,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             leaseBlob.renewLease(AccessCondition.generateLeaseCondition(azLease.getToken()), this.renewRequestOptions, null);
             result = true;
         } catch (StorageException se) {
-            if (wasLeaseLost(se, azLease.getPartitionId())) {
-                // leave result as false
-            } else {
+            if (!wasLeaseLost(se, azLease.getPartitionId())) {
                 throw se;
             }
         }

@@ -20,7 +20,7 @@ import java.util.function.Consumer;
 
 class PartitionScanner extends Closable {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionScanner.class);
-    private static final Random randomizer = new Random();
+    private static final Random RANDOMIZER = new Random();
     private final HostContext hostContext;
     private final Consumer<CompleteLease> addPump;
     
@@ -123,7 +123,7 @@ class PartitionScanner extends Closable {
             // If the entire system is starting up, the list of hosts is probably not complete and we can't really
             // compute a meaningful hostOrdinal. But we only want hostOrdinal to calculate startingPoint. Instead,
             // just randomly select a startingPoint.
-            startingPoint = PartitionScanner.randomizer.nextInt(this.allLeaseStates.size());
+            startingPoint = PartitionScanner.RANDOMIZER.nextInt(this.allLeaseStates.size());
         } else {
             for (hostOrdinal = 0; hostOrdinal < sortedHosts.size(); hostOrdinal++) {
                 if (sortedHosts.get(hostOrdinal).compareTo(this.hostContext.getHostName()) == 0) {
@@ -260,7 +260,7 @@ class PartitionScanner extends Closable {
 
         if (bigOwners.size() > 0) {
             // Randomly pick one of the big owners
-            String bigVictim = bigOwners.get(PartitionScanner.randomizer.nextInt(bigOwners.size()));
+            String bigVictim = bigOwners.get(PartitionScanner.RANDOMIZER.nextInt(bigOwners.size()));
             int victimExtra = hostOwns.get(bigVictim) - this.desiredCount - 1;
             int stealCount = Math.min(victimExtra, stealAsk);
             TRACE_LOGGER.debug(this.hostContext.withHost("Stealing " + stealCount + " from " + bigVictim));
