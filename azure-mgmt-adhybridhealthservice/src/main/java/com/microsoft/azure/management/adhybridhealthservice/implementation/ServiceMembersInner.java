@@ -1884,7 +1884,7 @@ public class ServiceMembersInner implements InnerSupportsDelete<Void> {
      * Gets the list of connectors and run profile names.
      *
      * @param serviceName The name of the service.
-     * @param serviceMemberId The servic member id.
+     * @param serviceMemberId The service member id.
      * @param metricName The name of the metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -1899,7 +1899,7 @@ public class ServiceMembersInner implements InnerSupportsDelete<Void> {
      * Gets the list of connectors and run profile names.
      *
      * @param serviceName The name of the service.
-     * @param serviceMemberId The servic member id.
+     * @param serviceMemberId The service member id.
      * @param metricName The name of the metric.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1913,7 +1913,7 @@ public class ServiceMembersInner implements InnerSupportsDelete<Void> {
      * Gets the list of connectors and run profile names.
      *
      * @param serviceName The name of the service.
-     * @param serviceMemberId The servic member id.
+     * @param serviceMemberId The service member id.
      * @param metricName The name of the metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectorMetadataInner object
@@ -1931,7 +1931,7 @@ public class ServiceMembersInner implements InnerSupportsDelete<Void> {
      * Gets the list of connectors and run profile names.
      *
      * @param serviceName The name of the service.
-     * @param serviceMemberId The servic member id.
+     * @param serviceMemberId The service member id.
      * @param metricName The name of the metric.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ConnectorMetadataInner object
