@@ -30,7 +30,7 @@ public class VpnGatewayInner extends Resource {
     private SubResource virtualHub;
 
     /**
-     * list of all vpn connections to the gateway.
+     * List of all vpn connections to the gateway.
      */
     @JsonProperty(value = "properties.connections")
     private List<VpnConnectionInner> connections;

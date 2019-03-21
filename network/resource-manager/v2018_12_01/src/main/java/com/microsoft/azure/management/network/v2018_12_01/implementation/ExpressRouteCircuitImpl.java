@@ -98,6 +98,11 @@ class ExpressRouteCircuitImpl extends GroupableResourceCoreImpl<ExpressRouteCirc
     }
 
     @Override
+    public Boolean globalReachEnabled() {
+        return this.inner().globalReachEnabled();
+    }
+
+    @Override
     public List<ExpressRouteCircuitPeering> peerings() {
         List<ExpressRouteCircuitPeering> lst = new ArrayList<ExpressRouteCircuitPeering>();
         if (this.inner().peerings() != null) {
@@ -182,6 +187,12 @@ class ExpressRouteCircuitImpl extends GroupableResourceCoreImpl<ExpressRouteCirc
     @Override
     public ExpressRouteCircuitImpl withGatewayManagerEtag(String gatewayManagerEtag) {
         this.inner().withGatewayManagerEtag(gatewayManagerEtag);
+        return this;
+    }
+
+    @Override
+    public ExpressRouteCircuitImpl withGlobalReachEnabled(Boolean globalReachEnabled) {
+        this.inner().withGlobalReachEnabled(globalReachEnabled);
         return this;
     }
 

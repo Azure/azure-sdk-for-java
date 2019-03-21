@@ -153,7 +153,7 @@ public interface VirtualWAN extends HasInner<VirtualWANInner>, Resource, Groupab
         interface WithP2SVpnServerConfigurations {
             /**
              * Specifies p2SVpnServerConfigurations.
-             * @param p2SVpnServerConfigurations list of all P2SVpnServerConfigurations associated with the virtual wan
+             * @param p2SVpnServerConfigurations List of all P2SVpnServerConfigurations associated with the virtual wan
              * @return the next definition stage
              */
             WithCreate withP2SVpnServerConfigurations(List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations);
@@ -255,7 +255,7 @@ public interface VirtualWAN extends HasInner<VirtualWANInner>, Resource, Groupab
         interface WithP2SVpnServerConfigurations {
             /**
              * Specifies p2SVpnServerConfigurations.
-             * @param p2SVpnServerConfigurations list of all P2SVpnServerConfigurations associated with the virtual wan
+             * @param p2SVpnServerConfigurations List of all P2SVpnServerConfigurations associated with the virtual wan
              * @return the next update stage
              */
             Update withP2SVpnServerConfigurations(List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations);

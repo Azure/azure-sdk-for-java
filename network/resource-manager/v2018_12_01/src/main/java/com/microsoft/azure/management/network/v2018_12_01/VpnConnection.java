@@ -259,7 +259,7 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithRoutingWeight {
             /**
              * Specifies routingWeight.
-             * @param routingWeight routing weight for vpn connection
+             * @param routingWeight Routing weight for vpn connection
              * @return the next definition stage
              */
             WithCreate withRoutingWeight(Integer routingWeight);
@@ -433,7 +433,7 @@ public interface VpnConnection extends HasInner<VpnConnectionInner>, Indexable, 
         interface WithRoutingWeight {
             /**
              * Specifies routingWeight.
-             * @param routingWeight routing weight for vpn connection
+             * @param routingWeight Routing weight for vpn connection
              * @return the next update stage
              */
             Update withRoutingWeight(Integer routingWeight);

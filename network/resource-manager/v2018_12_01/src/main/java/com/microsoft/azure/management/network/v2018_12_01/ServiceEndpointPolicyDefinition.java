@@ -141,7 +141,7 @@ public interface ServiceEndpointPolicyDefinition extends HasInner<ServiceEndpoin
         interface WithService {
             /**
              * Specifies service.
-             * @param service service endpoint name
+             * @param service Service endpoint name
              * @return the next definition stage
              */
             WithCreate withService(String service);
@@ -231,7 +231,7 @@ public interface ServiceEndpointPolicyDefinition extends HasInner<ServiceEndpoin
         interface WithService {
             /**
              * Specifies service.
-             * @param service service endpoint name
+             * @param service Service endpoint name
              * @return the next update stage
              */
             Update withService(String service);

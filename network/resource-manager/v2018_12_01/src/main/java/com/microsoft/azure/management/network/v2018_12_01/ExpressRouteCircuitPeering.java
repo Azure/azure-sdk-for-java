@@ -82,6 +82,11 @@ public interface ExpressRouteCircuitPeering extends HasInner<ExpressRouteCircuit
     Long peerASN();
 
     /**
+     * @return the peeredConnections value.
+     */
+    List<PeerExpressRouteCircuitConnection> peeredConnections();
+
+    /**
      * @return the peeringType value.
      */
     ExpressRoutePeeringType peeringType();

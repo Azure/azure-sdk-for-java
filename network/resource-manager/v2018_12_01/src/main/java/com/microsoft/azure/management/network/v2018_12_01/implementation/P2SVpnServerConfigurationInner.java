@@ -33,7 +33,7 @@ public class P2SVpnServerConfigurationInner extends SubResource {
     private String p2SVpnServerConfigurationPropertiesName;
 
     /**
-     * vpnProtocols for the P2SVpnServerConfiguration.
+     * VPN protocols for the P2SVpnServerConfiguration.
      */
     @JsonProperty(value = "properties.vpnProtocols")
     private List<VpnGatewayTunnelingProtocol> vpnProtocols;
@@ -136,7 +136,7 @@ public class P2SVpnServerConfigurationInner extends SubResource {
     }
 
     /**
-     * Get vpnProtocols for the P2SVpnServerConfiguration.
+     * Get vPN protocols for the P2SVpnServerConfiguration.
      *
      * @return the vpnProtocols value
      */
@@ -145,7 +145,7 @@ public class P2SVpnServerConfigurationInner extends SubResource {
     }
 
     /**
-     * Set vpnProtocols for the P2SVpnServerConfiguration.
+     * Set vPN protocols for the P2SVpnServerConfiguration.
      *
      * @param vpnProtocols the vpnProtocols value to set
      * @return the P2SVpnServerConfigurationInner object itself.

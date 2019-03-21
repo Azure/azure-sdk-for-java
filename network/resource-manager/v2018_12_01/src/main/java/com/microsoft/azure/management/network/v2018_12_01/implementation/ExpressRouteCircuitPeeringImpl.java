@@ -19,6 +19,7 @@ import com.microsoft.azure.management.network.v2018_12_01.ExpressRouteConnection
 import java.util.List;
 import java.util.ArrayList;
 import com.microsoft.azure.management.network.v2018_12_01.ExpressRouteCircuitConnection;
+import com.microsoft.azure.management.network.v2018_12_01.PeerExpressRouteCircuitConnection;
 import com.microsoft.azure.management.network.v2018_12_01.RouteFilter;
 import com.microsoft.azure.management.network.v2018_12_01.ExpressRouteCircuitStats;
 
@@ -138,6 +139,17 @@ class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRoute
     @Override
     public Long peerASN() {
         return this.inner().peerASN();
+    }
+
+    @Override
+    public List<PeerExpressRouteCircuitConnection> peeredConnections() {
+        List<PeerExpressRouteCircuitConnection> lst = new ArrayList<PeerExpressRouteCircuitConnection>();
+        if (this.inner().peeredConnections() != null) {
+            for (PeerExpressRouteCircuitConnectionInner inner : this.inner().peeredConnections()) {
+                lst.add( new PeerExpressRouteCircuitConnectionImpl(inner, manager()));
+            }
+        }
+        return lst;
     }
 
     @Override

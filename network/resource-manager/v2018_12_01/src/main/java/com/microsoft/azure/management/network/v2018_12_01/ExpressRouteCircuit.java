@@ -69,6 +69,11 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
     String gatewayManagerEtag();
 
     /**
+     * @return the globalReachEnabled value.
+     */
+    Boolean globalReachEnabled();
+
+    /**
      * @return the peerings value.
      */
     List<ExpressRouteCircuitPeering> peerings();
@@ -215,6 +220,18 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
         }
 
         /**
+         * The stage of the expressroutecircuit definition allowing to specify GlobalReachEnabled.
+         */
+        interface WithGlobalReachEnabled {
+            /**
+             * Specifies globalReachEnabled.
+             * @param globalReachEnabled Flag denoting Global reach status
+             * @return the next definition stage
+             */
+            WithCreate withGlobalReachEnabled(Boolean globalReachEnabled);
+        }
+
+        /**
          * The stage of the expressroutecircuit definition allowing to specify Peerings.
          */
         interface WithPeerings {
@@ -303,13 +320,13 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ExpressRouteCircuit>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAllowClassicOperations, DefinitionStages.WithAllowGlobalReach, DefinitionStages.WithAuthorizations, DefinitionStages.WithBandwidthInGbps, DefinitionStages.WithCircuitProvisioningState, DefinitionStages.WithExpressRoutePort, DefinitionStages.WithGatewayManagerEtag, DefinitionStages.WithPeerings, DefinitionStages.WithProvisioningState, DefinitionStages.WithServiceKey, DefinitionStages.WithServiceProviderNotes, DefinitionStages.WithServiceProviderProperties, DefinitionStages.WithServiceProviderProvisioningState, DefinitionStages.WithSku {
+        interface WithCreate extends Creatable<ExpressRouteCircuit>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithAllowClassicOperations, DefinitionStages.WithAllowGlobalReach, DefinitionStages.WithAuthorizations, DefinitionStages.WithBandwidthInGbps, DefinitionStages.WithCircuitProvisioningState, DefinitionStages.WithExpressRoutePort, DefinitionStages.WithGatewayManagerEtag, DefinitionStages.WithGlobalReachEnabled, DefinitionStages.WithPeerings, DefinitionStages.WithProvisioningState, DefinitionStages.WithServiceKey, DefinitionStages.WithServiceProviderNotes, DefinitionStages.WithServiceProviderProperties, DefinitionStages.WithServiceProviderProvisioningState, DefinitionStages.WithSku {
         }
     }
     /**
      * The template for a ExpressRouteCircuit update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ExpressRouteCircuit>, Resource.UpdateWithTags<Update>, UpdateStages.WithAllowClassicOperations, UpdateStages.WithAllowGlobalReach, UpdateStages.WithAuthorizations, UpdateStages.WithBandwidthInGbps, UpdateStages.WithCircuitProvisioningState, UpdateStages.WithExpressRoutePort, UpdateStages.WithGatewayManagerEtag, UpdateStages.WithPeerings, UpdateStages.WithProvisioningState, UpdateStages.WithServiceKey, UpdateStages.WithServiceProviderNotes, UpdateStages.WithServiceProviderProperties, UpdateStages.WithServiceProviderProvisioningState, UpdateStages.WithSku {
+    interface Update extends Appliable<ExpressRouteCircuit>, Resource.UpdateWithTags<Update>, UpdateStages.WithAllowClassicOperations, UpdateStages.WithAllowGlobalReach, UpdateStages.WithAuthorizations, UpdateStages.WithBandwidthInGbps, UpdateStages.WithCircuitProvisioningState, UpdateStages.WithExpressRoutePort, UpdateStages.WithGatewayManagerEtag, UpdateStages.WithGlobalReachEnabled, UpdateStages.WithPeerings, UpdateStages.WithProvisioningState, UpdateStages.WithServiceKey, UpdateStages.WithServiceProviderNotes, UpdateStages.WithServiceProviderProperties, UpdateStages.WithServiceProviderProvisioningState, UpdateStages.WithSku {
     }
 
     /**
@@ -398,6 +415,18 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
              * @return the next update stage
              */
             Update withGatewayManagerEtag(String gatewayManagerEtag);
+        }
+
+        /**
+         * The stage of the expressroutecircuit update allowing to specify GlobalReachEnabled.
+         */
+        interface WithGlobalReachEnabled {
+            /**
+             * Specifies globalReachEnabled.
+             * @param globalReachEnabled Flag denoting Global reach status
+             * @return the next update stage
+             */
+            Update withGlobalReachEnabled(Boolean globalReachEnabled);
         }
 
         /**

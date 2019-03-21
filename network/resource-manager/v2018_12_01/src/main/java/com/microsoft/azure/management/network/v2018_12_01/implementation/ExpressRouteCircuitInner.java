@@ -121,6 +121,12 @@ public class ExpressRouteCircuitInner extends Resource {
     private Boolean allowGlobalReach;
 
     /**
+     * Flag denoting Global reach status.
+     */
+    @JsonProperty(value = "properties.globalReachEnabled")
+    private Boolean globalReachEnabled;
+
+    /**
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
      */
@@ -419,6 +425,26 @@ public class ExpressRouteCircuitInner extends Resource {
      */
     public ExpressRouteCircuitInner withAllowGlobalReach(Boolean allowGlobalReach) {
         this.allowGlobalReach = allowGlobalReach;
+        return this;
+    }
+
+    /**
+     * Get flag denoting Global reach status.
+     *
+     * @return the globalReachEnabled value
+     */
+    public Boolean globalReachEnabled() {
+        return this.globalReachEnabled;
+    }
+
+    /**
+     * Set flag denoting Global reach status.
+     *
+     * @param globalReachEnabled the globalReachEnabled value to set
+     * @return the ExpressRouteCircuitInner object itself.
+     */
+    public ExpressRouteCircuitInner withGlobalReachEnabled(Boolean globalReachEnabled) {
+        this.globalReachEnabled = globalReachEnabled;
         return this;
     }
 
