@@ -25,12 +25,12 @@ public interface PartitionReceiveHandler {
      * @param events the list of fetched events from the corresponding PartitionReceiver.
      * @see PartitionReceiver#receive
      */
-    void onReceive(final Iterable<EventData> events);
+    void onReceive(Iterable<EventData> events);
 
     /**
      * Implement this method to Listen to errors which lead to Closure of the {@link PartitionReceiveHandler} pump.
      *
      * @param error fatal error encountered while running the {@link PartitionReceiveHandler} pump
      */
-    void onError(final Throwable error);
+    void onError(Throwable error);
 }

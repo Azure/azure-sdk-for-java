@@ -11,8 +11,9 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ProxyNegotiationHandler {
 
@@ -172,7 +173,7 @@ public class ProxyNegotiationHandler {
         }
 
         private String[] extractHostNamePort(final byte[] connectRequest) {
-            final String request = new String(connectRequest, StandardCharsets.UTF_8);
+            final String request = new String(connectRequest, UTF_8);
             final Scanner requestScanner = new Scanner(request);
             final String firstLine = requestScanner.nextLine();
 

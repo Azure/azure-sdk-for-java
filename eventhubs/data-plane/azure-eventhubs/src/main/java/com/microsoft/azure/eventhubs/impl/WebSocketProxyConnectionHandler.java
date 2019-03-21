@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(WebSocketProxyConnectionHandler.class);
     private final String proxySelectorModifiedError = "ProxySelector has been modified.";
@@ -63,7 +65,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         transport.addTransportLayer(proxy);
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info("addProxyHandshake: hostname[" + hostName +"]");
+            TRACE_LOGGER.info("addProxyHandshake: hostname[" + hostName + "]");
         }
     }
 
@@ -95,7 +97,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         int port;
         try {
             port = Integer.parseInt(hostNameParts[1]);
-        } catch (NumberFormatException ignore){
+        } catch (NumberFormatException ignore) {
             return;
         }
 
@@ -146,7 +148,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         final String usernamePasswordPair = proxyUserName + ":" + proxyPassword;
         proxyAuthorizationHeader.put(
                 "Proxy-Authorization",
-                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes()));
+                "Basic " + Base64.getEncoder().encodeToString(usernamePasswordPair.getBytes(UTF_8)));
         return proxyAuthorizationHeader;
     }
 

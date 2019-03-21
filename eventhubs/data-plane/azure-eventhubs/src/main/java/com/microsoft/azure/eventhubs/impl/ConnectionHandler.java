@@ -7,7 +7,12 @@ import com.microsoft.azure.eventhubs.TransportType;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslDomain;
+import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 import org.apache.qpid.proton.reactor.Handshaker;
 import org.slf4j.Logger;
@@ -82,9 +87,9 @@ public class ConnectionHandler extends BaseHandler {
 
         final String userAgent = EventHubClientImpl.USER_AGENT;
         if (userAgent != null) {
-            connectionProperties.put(AmqpConstants.USER_AGENT, userAgent.length() < AmqpConstants.MAX_USER_AGENT_LENGTH ?
-                    userAgent :
-                    userAgent.substring(0, AmqpConstants.MAX_USER_AGENT_LENGTH));
+            connectionProperties.put(AmqpConstants.USER_AGENT, userAgent.length() < AmqpConstants.MAX_USER_AGENT_LENGTH
+                    ? userAgent
+                    : userAgent.substring(0, AmqpConstants.MAX_USER_AGENT_LENGTH));
         }
 
         connection.setProperties(connectionProperties);

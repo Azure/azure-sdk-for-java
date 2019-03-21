@@ -7,7 +7,12 @@ import com.microsoft.azure.eventhubs.EventData;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.messaging.*;
+import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
+import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.message.Message;
 
 import java.io.IOException;
@@ -22,8 +27,8 @@ public final class EventDataImpl implements EventData {
     private static final long serialVersionUID = -5631628195600014255L;
     private static final int BODY_DATA_NULL = -1;
 
-    transient private Binary bodyData;
-    transient private Object amqpBody;
+    private transient Binary bodyData;
+    private transient Object amqpBody;
 
     private Map<String, Object> properties;
     private SystemProperties systemProperties;

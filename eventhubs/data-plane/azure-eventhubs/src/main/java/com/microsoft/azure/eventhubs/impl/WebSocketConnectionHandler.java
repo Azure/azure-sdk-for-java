@@ -33,7 +33,7 @@ public class WebSocketConnectionHandler extends ConnectionHandler {
         transport.addTransportLayer(webSocket);
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info("addWebsocketHandshake: hostname[" + hostName +"]");
+            TRACE_LOGGER.info("addWebsocketHandshake: hostname[" + hostName + "]");
         }
 
         super.addTransportLayers(event, transport);
