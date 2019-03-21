@@ -9,9 +9,11 @@ import com.azure.applicationconfig.models.KeyValueCreateUpdateParameters;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
 import com.azure.common.ServiceClient;
+import com.azure.common.ServiceClientBuilder;
+import com.azure.common.configuration.ClientConfiguration;
 import com.azure.common.http.HttpPipeline;
+import com.azure.common.http.policy.AsyncCredentialsPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
-import com.azure.common.http.policy.RetryPolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
 import com.azure.common.http.rest.RestResponse;
 import com.azure.common.implementation.RestProxy;
@@ -34,43 +36,29 @@ public final class ConfigurationClient extends ServiceClient {
     static final String SDK_NAME = "Azure-Configuration";
     static final String SDK_VERSION = "1.0.0-SNAPSHOT";
 
-    private final URL baseUri;
+    private final URL serviceEndpoint;
     private final ApplicationConfigService service;
 
     /**
-     * Create a new instance of ConfigurationClient that uses connectionString for authentication.
+     * Creates a ConfigurationClient that uses {@param credentials} to authorize with Azure and {@param pipeline} to
+     * service requests
      *
-     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
+     * @param serviceEndpoint URL for the Application configuration service.
+     * @param pipeline HttpPipeline that the HTTP requests and responses flow through.
      */
-    public ConfigurationClient(String connectionString) {
-        super(new HttpPipeline(getDefaultPolicies(connectionString)));
-
-        this.service = RestProxy.create(ApplicationConfigService.class, this);
-        this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
-    }
-
-    public ConfigurationClient(String connectionString, HttpPipeline pipeline) {
+    private ConfigurationClient(URL serviceEndpoint, HttpPipeline pipeline) {
         super(pipeline);
 
         this.service = RestProxy.create(ApplicationConfigService.class, this);
-        this.baseUri = new ApplicationConfigCredentials(connectionString).baseUri();
+        this.serviceEndpoint = serviceEndpoint;
     }
 
-    /**
-     * Gets the default pipeline policies.
-     * TODO (conniey): This is going to change when we move to a builder pattern.
-     */
-    public static List<HttpPipelinePolicy> getDefaultPolicies(String connectionString) {
-        final ApplicationConfigCredentials credentials = new ApplicationConfigCredentials(connectionString);
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+    public static ConfigurationClientBuilder builder(ConfigurationClientCredentials credentials) {
+        ClientConfiguration configuration = getDefaultConfiguration(credentials)
+                .withUserAgent(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION))
+                .withServiceEndpoint(credentials.baseUri().toString());
 
-        policies.add(new UserAgentPolicy(String.format("Azure-SDK-For-Java/%s (%s)", SDK_NAME, SDK_VERSION)));
-        policies.add(new RequestIdPolicy());
-        policies.add(new RetryPolicy());
-        policies.add(new ConfigurationCredentialsPolicy(credentials));
-
-        return policies;
+        return new ConfigurationClientBuilder(configuration);
     }
 
     /**
@@ -92,7 +80,7 @@ public final class ConfigurationClient extends ServiceClient {
                 .withContentType(configurationSetting.contentType())
                 .withTags(configurationSetting.tags());
 
-        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, null, getETagValue(ETAG_ANY));
+        return service.setKey(serviceEndpoint.toString(), configurationSetting.key(), configurationSetting.label(), parameters, null, getETagValue(ETAG_ANY));
     }
 
     /**
@@ -122,7 +110,7 @@ public final class ConfigurationClient extends ServiceClient {
                 .withContentType(configurationSetting.contentType())
                 .withTags(configurationSetting.tags());
 
-        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(configurationSetting.etag()), null);
+        return service.setKey(serviceEndpoint.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(configurationSetting.etag()), null);
     }
 
     /**
@@ -149,7 +137,7 @@ public final class ConfigurationClient extends ServiceClient {
 
         String etag = configurationSetting.etag() == null ? ETAG_ANY : configurationSetting.etag();
 
-        return service.setKey(baseUri.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(etag), null);
+        return service.setKey(serviceEndpoint.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(etag), null);
     }
 
     /**
@@ -181,7 +169,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.getKeyValue(baseUri.toString(), key, label, null, null, null, null);
+        return service.getKeyValue(serviceEndpoint.toString(), key, label, null, null, null);
     }
 
     /**
@@ -214,7 +202,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.delete(baseUri.toString(), key, label, getETagValue(etag), null);
+        return service.delete(serviceEndpoint.toString(), key, label, getETagValue(etag), null);
     }
 
     /**
@@ -247,7 +235,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.lockKeyValue(baseUri.toString(), key, label, null, null);
+        return service.lockKeyValue(serviceEndpoint.toString(), key, label, null, null);
     }
 
     /**
@@ -276,7 +264,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.unlockKeyValue(baseUri.toString(), key, label, null, null);
+        return service.unlockKeyValue(serviceEndpoint.toString(), key, label, null, null);
     }
 
     /**
@@ -288,12 +276,34 @@ public final class ConfigurationClient extends ServiceClient {
     public Flux<ConfigurationSetting> listKeyValues(KeyValueListFilter filter) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (filter != null) {
-            result = service.listKeyValues(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
+            result = service.listKeyValues(serviceEndpoint.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
         } else {
-            result = service.listKeyValues(baseUri.toString(), null, null, null, null, null);
+            result = service.listKeyValues(serviceEndpoint.toString(), null, null, null, null, null);
         }
 
         return getPagedConfigurationSettings(result);
+    }
+
+    static class ConfigurationClientBuilder extends ServiceClientBuilder<ConfigurationClient> {
+        private ConfigurationClientBuilder(ClientConfiguration configuration) {
+            super(configuration);
+        }
+
+        @Override
+        protected ConfigurationClient onBuild(ClientConfiguration config) {
+            // Closest to API goes first, closest to wire goes last.
+            final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+            policies.add(new UserAgentPolicy(config.userAgent()));
+            policies.add(new RequestIdPolicy());
+            policies.add(config.retryPolicy());
+            policies.add(new ConfigurationCredentialsPolicy(config.getCredentials()));
+            policies.add(new AsyncCredentialsPolicy(config.getCredentials()));
+            HttpPipeline pipeline = config.getHttpClient() == null
+                    ? new HttpPipeline(policies)
+                    : new HttpPipeline(config.getHttpClient(), policies);
+            return new ConfigurationClient(config.serviceEndpoint(), pipeline);
+        }
     }
 
     /**
@@ -304,7 +314,7 @@ public final class ConfigurationClient extends ServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      */
     private Flux<ConfigurationSetting> listKeyValues(@NonNull String nextPageLink) {
-        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValuesNext(baseUri.toString(), nextPageLink);
+        Mono<RestResponse<Page<ConfigurationSetting>>> result = service.listKeyValuesNext(serviceEndpoint.toString(), nextPageLink);
         return getPagedConfigurationSettings(result);
     }
 
@@ -319,9 +329,9 @@ public final class ConfigurationClient extends ServiceClient {
     public Flux<ConfigurationSetting> listKeyValueRevisions(RevisionFilter filter) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (filter != null) {
-            result = service.listKeyValueRevisions(baseUri.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
+            result = service.listKeyValueRevisions(serviceEndpoint.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDatetime(), filter.range());
         } else {
-            result = service.listKeyValueRevisions(baseUri.toString(), null, null, null, null, null);
+            result = service.listKeyValueRevisions(serviceEndpoint.toString(), null, null, null, null, null);
         }
 
         return getPagedConfigurationSettings(result);
