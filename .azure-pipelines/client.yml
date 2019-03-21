@@ -171,7 +171,7 @@ jobs:
       - task: Maven@3
         displayName: 'Start Jetty'
         inputs:
-          mavenPomFile: $(pomFile)
+          mavenPomFile: pom.client.xml
           options: '$(DefaultOptions) $(ProfileFlag)'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
