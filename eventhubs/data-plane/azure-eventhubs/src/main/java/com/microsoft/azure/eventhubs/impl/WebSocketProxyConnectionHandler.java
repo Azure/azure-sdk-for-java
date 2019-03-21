@@ -63,7 +63,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         transport.addTransportLayer(proxy);
 
         if (TRACE_LOGGER.isInfoEnabled()) {
-            TRACE_LOGGER.info("addProxyHandshake: hostname[" + hostName +"]");
+            TRACE_LOGGER.info("addProxyHandshake: hostname[" + hostName + "]");
         }
     }
 
@@ -95,7 +95,7 @@ public class WebSocketProxyConnectionHandler extends WebSocketConnectionHandler 
         int port;
         try {
             port = Integer.parseInt(hostNameParts[1]);
-        } catch (NumberFormatException ignore){
+        } catch (NumberFormatException ignore) {
             return;
         }
 

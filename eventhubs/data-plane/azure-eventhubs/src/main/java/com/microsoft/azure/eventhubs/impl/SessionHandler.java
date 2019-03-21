@@ -5,7 +5,11 @@ package com.microsoft.azure.eventhubs.impl;
 
 import com.microsoft.azure.eventhubs.EventHubException;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.Handler;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

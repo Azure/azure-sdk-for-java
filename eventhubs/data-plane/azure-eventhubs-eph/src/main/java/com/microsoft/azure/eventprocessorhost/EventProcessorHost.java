@@ -12,7 +12,14 @@ import org.slf4j.LoggerFactory;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /***
@@ -500,8 +507,7 @@ public final class EventProcessorHost {
             // If we own the executor, stop it also.
             // Owned executor is also created in constructor.
             if (this.weOwnExecutor) {
-                this.unregistered = this.unregistered.thenRunAsync(() ->
-                {
+                this.unregistered = this.unregistered.thenRunAsync(() -> {
                     // IMPORTANT: run this last stage in the default threadpool!
                     // If a task running in a threadpool waits for that threadpool to terminate, it's going to wait a long time...
 

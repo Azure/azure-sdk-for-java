@@ -3,7 +3,12 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventPosition;
+import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.ReceiverOptions;
+import com.microsoft.azure.eventhubs.ReceiverRuntimeInformation;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
@@ -12,7 +17,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.function.Consumer;
@@ -247,8 +256,8 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
     @Override
     public Map<Symbol, Object> getProperties() {
 
-        if (!this.isEpochReceiver &&
-                (this.receiverOptions == null || this.receiverOptions.getIdentifier() == null)) {
+        if (!this.isEpochReceiver
+                &&  (this.receiverOptions == null || this.receiverOptions.getIdentifier() == null)) {
             return null;
         }
 

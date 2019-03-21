@@ -33,10 +33,20 @@
 
   <!-- Public API already released with incorrect constant variable naming -->
   <suppress checks="ConstantName" files="AlgorithmResolver.java"/>
+  <suppress checks="ConstantName" files="AmqpErrorCode.java"/>
+  <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
+  <suppress checks="ConstantName" files="MessagingFactory.java"/>
+  <suppress checks="ConstantName" files="PartitionManagerOptions.java"/>
   <suppress checks="ConstantName" files="RsaKey.java"/>
   <suppress checks="ConstantName" files="SymmetricKey.java"/>
-  <suppress checks="ConstantName" files="BatchErrorCodeStrings.java"/>
   <suppress checks="ConstantName" files="TaskFailureInformationCodes.java"/>
+
+  <!-- Public API already released with incorrect static variable naming -->
+  <suppress checks="StaticVariableName" files="EventHubClientImpl.java"/>
+
+  <!-- Public API already released with visibility modifier -->
+  <suppress checks="VisibilityModifier" files="BatchOptions.java"/>
+  <suppress checks="VisibilityModifier" files="EventHubClientImpl.java"/>
 
   <!-- Public API already released without final modifier -->
   <suppress checks="FinalClass" files="BatchClient.java"/>

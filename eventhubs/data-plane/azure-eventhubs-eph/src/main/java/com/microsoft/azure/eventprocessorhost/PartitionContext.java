@@ -91,8 +91,8 @@ public class PartitionContext {
             this.sequenceNumber = event.getSystemProperties().getSequenceNumber();
         } else {
             TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionId,
-                    "setOffsetAndSequenceNumber(" + event.getSystemProperties().getOffset() + "//" +
-                            event.getSystemProperties().getSequenceNumber() + ") would move backwards, ignoring"));
+                    "setOffsetAndSequenceNumber(" + event.getSystemProperties().getOffset() + "//"
+                            + event.getSystemProperties().getSequenceNumber() + ") would move backwards, ignoring"));
         }
     }
 
@@ -108,8 +108,7 @@ public class PartitionContext {
     // Returns a String (offset) or Instant (timestamp).
     CompletableFuture<EventPosition> getInitialOffset() {
         return this.hostContext.getCheckpointManager().getCheckpoint(this.partitionId)
-                .thenApply((startingCheckpoint) ->
-                {
+                .thenApply((startingCheckpoint) -> {
                     return checkpointToOffset(startingCheckpoint);
                 });
     }
@@ -167,14 +166,14 @@ public class PartitionContext {
      * @return CompletableFuture {@literal ->} null when the checkpoint has been persisted successfully, completes exceptionally on error.
      */
     public CompletableFuture<Void> checkpoint(EventData event) {
-    	CompletableFuture<Void> result = null;
-    	if (event == null) {
-    		result = new CompletableFuture<Void>();
-    		result.completeExceptionally(new IllegalArgumentException("Cannot checkpoint with null EventData"));
-    	} else {
-        	result = checkpoint(new Checkpoint(this.partitionId, event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber()));
-    	}
-    	return result;
+        CompletableFuture<Void> result = null;
+        if (event == null) {
+            result = new CompletableFuture<Void>();
+            result.completeExceptionally(new IllegalArgumentException("Cannot checkpoint with null EventData"));
+        } else {
+            result = checkpoint(new Checkpoint(this.partitionId, event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber()));
+        }
+        return result;
     }
 
     /**
@@ -186,15 +185,15 @@ public class PartitionContext {
      * @return CompletableFuture {@literal ->} null when the checkpoint has been persisted successfully, completes exceptionally on error.
      */
     public CompletableFuture<Void> checkpoint(Checkpoint checkpoint) {
-    	CompletableFuture<Void> result = null;
-    	if (checkpoint == null) {
-    		result = new CompletableFuture<Void>();
-    		result.completeExceptionally(new IllegalArgumentException("Cannot checkpoint with null Checkpoint"));
-    	} else {
-	        TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(checkpoint.getPartitionId(),
-	                "Saving checkpoint: " + checkpoint.getOffset() + "//" + checkpoint.getSequenceNumber()));
-	        result = this.hostContext.getCheckpointManager().updateCheckpoint(this.lease, checkpoint);
-    	}
-    	return result;
+        CompletableFuture<Void> result = null;
+        if (checkpoint == null) {
+            result = new CompletableFuture<Void>();
+            result.completeExceptionally(new IllegalArgumentException("Cannot checkpoint with null Checkpoint"));
+        } else {
+            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(checkpoint.getPartitionId(),
+                    "Saving checkpoint: " + checkpoint.getOffset() + "//" + checkpoint.getSequenceNumber()));
+            result = this.hostContext.getCheckpointManager().updateCheckpoint(this.lease, checkpoint);
+        }
+        return result;
     }
 }
