@@ -11,8 +11,7 @@ package com.azure.keyvault
     	public KeyVaultClient(String vaultUrl, TokenCredentials credentials, HttpPipeline pipeline);
 
         public SecretClient getSecretClient(){}
-        public void setSecretClient(SecretClient secretClient){}
-
+	
         //Similarly for Certificate and Key Client
     }
 }
