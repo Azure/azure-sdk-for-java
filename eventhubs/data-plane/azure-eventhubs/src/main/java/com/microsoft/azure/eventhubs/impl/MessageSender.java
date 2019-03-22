@@ -3,15 +3,30 @@
 
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.ErrorContext;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.OperationCancelledException;
+import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
+import com.microsoft.azure.eventhubs.RetryPolicy;
+import com.microsoft.azure.eventhubs.ServerBusyException;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedLong;
-import org.apache.qpid.proton.amqp.messaging.*;
+import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.Data;
+import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.messaging.Released;
+import org.apache.qpid.proton.amqp.messaging.Source;
+import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Sender;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
@@ -24,13 +39,22 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.UUID;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Abstracts all amqp related details
@@ -178,9 +202,9 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
         final CompletableFuture<Void> onSendFuture = (onSend == null) ? new CompletableFuture<>() : onSend;
 
-        final ReplayableWorkItem<Void> sendWaiterData = (tracker == null) ?
-                new ReplayableWorkItem<>(bytes, arrayOffset, messageFormat, onSendFuture, this.operationTimeout) :
-                new ReplayableWorkItem<>(bytes, arrayOffset, messageFormat, onSendFuture, tracker);
+        final ReplayableWorkItem<Void> sendWaiterData = (tracker == null)
+                ? new ReplayableWorkItem<>(bytes, arrayOffset, messageFormat, onSendFuture, this.operationTimeout)
+                : new ReplayableWorkItem<>(bytes, arrayOffset, messageFormat, onSendFuture, tracker);
 
         final TimeoutTracker currentSendTracker = sendWaiterData.getTimeoutTracker();
         final String deliveryTag = UUID.randomUUID().toString().replace("-", StringUtil.EMPTY) + "_" + currentSendTracker.elapsed().getSeconds();
@@ -199,15 +223,15 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         // if the timeoutTask completed with scheduling error - notify sender
         if (timeoutTimerTask.isCompletedExceptionally()) {
             timeoutTimerTask.handleAsync(
-                    (unUsed, exception) -> {
-                        if (exception != null && !(exception instanceof CancellationException))
-                            onSendFuture.completeExceptionally(
-                                    new OperationCancelledException(String.format(Locale.US,
-                                            "Entity(%s): send failed while dispatching to Reactor, see cause for more details.",
-                                            this.sendPath), exception));
+                (unUsed, exception) -> {
+                    if (exception != null && !(exception instanceof CancellationException))
+                        onSendFuture.completeExceptionally(
+                                new OperationCancelledException(String.format(Locale.US,
+                                        "Entity(%s): send failed while dispatching to Reactor, see cause for more details.",
+                                        this.sendPath), exception));
 
-                        return null;
-                    }, this.executor);
+                    return null;
+                }, this.executor);
 
             return onSendFuture;
         }
@@ -498,7 +522,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
     @Override
     public void onSendComplete(final Delivery delivery) {
         final DeliveryState outcome = delivery.getRemoteState();
-        final String deliveryTag = new String(delivery.getTag());
+        final String deliveryTag = new String(delivery.getTag(), UTF_8);
 
         if (TRACE_LOGGER.isTraceEnabled())
             TRACE_LOGGER.trace(
@@ -717,19 +741,18 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                             setClosed();
                         }
                     }
-                }
-                , timeout.remaining());
+                }, timeout.remaining());
 
         this.openTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null
-                            && exception instanceof Exception
-                            && !(exception instanceof CancellationException)) {
-                        ExceptionUtil.completeExceptionally(linkFirstOpen, (Exception) exception, this);
-                    }
+            (unUsed, exception) -> {
+                if (exception != null
+                        && exception instanceof Exception
+                        && !(exception instanceof CancellationException)) {
+                    ExceptionUtil.completeExceptionally(linkFirstOpen, (Exception) exception, this);
+                }
 
-                    return null;
-                }, this.executor);
+                return null;
+            }, this.executor);
     }
 
     @Override
@@ -815,7 +838,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                 Exception sendException = null;
 
                 try {
-                    delivery = this.sendLink.delivery(deliveryTag.getBytes());
+                    delivery = this.sendLink.delivery(deliveryTag.getBytes(UTF_8));
                     delivery.setMessageFormat(sendData.getMessageFormat());
 
                     sentMsgSize = this.sendLink.send(sendData.getMessage(), 0, sendData.getEncodedMessageSize());
@@ -912,17 +935,16 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                             MessageSender.this.onError((Exception) null);
                         }
                     }
-                }
-                , timeout.remaining());
+                }, timeout.remaining());
 
         this.closeTimer.handleAsync(
-                (unUsed, exception) -> {
-                    if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
-                        ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageSender.this);
-                    }
+            (unUsed, exception) -> {
+                if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
+                    ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageSender.this);
+                }
 
-                    return null;
-                }, this.executor);
+                return null;
+            }, this.executor);
     }
 
     @Override
@@ -990,7 +1012,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         private final String deliveryTag;
         private final ReplayableWorkItem<Void> sendWaiterData;
 
-        public SendTimeout(
+        SendTimeout(
                 final String deliveryTag,
                 final ReplayableWorkItem<Void> sendWaiterData) {
             this.sendWaiterData = sendWaiterData;

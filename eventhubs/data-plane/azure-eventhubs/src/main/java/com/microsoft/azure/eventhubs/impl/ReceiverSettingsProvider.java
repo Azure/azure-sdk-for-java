@@ -10,7 +10,7 @@ import org.apache.qpid.proton.message.Message;
 import java.util.Map;
 
 public interface ReceiverSettingsProvider {
-    Map<Symbol, UnknownDescribedType> getFilter(final Message lastReceivedMessage);
+    Map<Symbol, UnknownDescribedType> getFilter(Message lastReceivedMessage);
 
     Map<Symbol, Object> getProperties();
 

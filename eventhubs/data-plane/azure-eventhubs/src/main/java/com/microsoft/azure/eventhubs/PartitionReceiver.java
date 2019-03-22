@@ -114,7 +114,7 @@ public interface PartitionReceiver {
      * @param maxEventCount maximum number of {@link EventData}'s that this call should return
      * @return A completableFuture that will yield a batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
      */
-    CompletableFuture<Iterable<EventData>> receive(final int maxEventCount);
+    CompletableFuture<Iterable<EventData>> receive(int maxEventCount);
 
     /**
      * Register a receive handler that will be called when an event is available. A
@@ -124,7 +124,7 @@ public interface PartitionReceiver {
      * @param receiveHandler An implementation of {@link PartitionReceiveHandler}. Setting this handler to <code>null</code> will stop the receive pump.
      * @return A completableFuture which sets receiveHandler
      */
-    CompletableFuture<Void> setReceiveHandler(final PartitionReceiveHandler receiveHandler);
+    CompletableFuture<Void> setReceiveHandler(PartitionReceiveHandler receiveHandler);
 
     /**
      * Register a receive handler that will be called when an event is available. A
@@ -135,7 +135,7 @@ public interface PartitionReceiver {
      * @param invokeWhenNoEvents flag to indicate whether the {@link PartitionReceiveHandler#onReceive(Iterable)} should be invoked when the receive call times out
      * @return A completableFuture which sets receiveHandler
      */
-    CompletableFuture<Void> setReceiveHandler(final PartitionReceiveHandler receiveHandler, final boolean invokeWhenNoEvents);
+    CompletableFuture<Void> setReceiveHandler(PartitionReceiveHandler receiveHandler, boolean invokeWhenNoEvents);
 
     CompletableFuture<Void> close();
 

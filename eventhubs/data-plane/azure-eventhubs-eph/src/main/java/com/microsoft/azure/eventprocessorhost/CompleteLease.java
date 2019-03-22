@@ -22,7 +22,7 @@ public class CompleteLease extends BaseLease {
      * Do not use; added only for GSon deserializer
      */
     protected CompleteLease() {
-    	super();
+        super();
     }
 
     /**
@@ -31,7 +31,7 @@ public class CompleteLease extends BaseLease {
      * @param partitionId Partition id for this lease.
      */
     public CompleteLease(String partitionId) {
-    	super(partitionId);
+        super(partitionId);
     }
 
     /**

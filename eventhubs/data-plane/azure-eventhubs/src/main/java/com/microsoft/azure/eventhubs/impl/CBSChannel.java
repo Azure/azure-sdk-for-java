@@ -17,7 +17,7 @@ final class CBSChannel {
     final SessionProvider sessionProvider;
     final AmqpConnection connectionEventDispatcher;
 
-    public CBSChannel(
+    CBSChannel(
             final SessionProvider sessionProvider,
             final AmqpConnection connection) {
 

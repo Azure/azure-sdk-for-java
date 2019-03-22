@@ -46,8 +46,8 @@ public class FaultTolerantObject<T extends IOObject> {
                 @Override
                 public void onEvent() {
                     if (!creatingNewInnerObject
-                            && (innerObject == null || innerObject.getState() == IOObject.IOObjectState.CLOSED ||
-                            innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
+                            && (innerObject == null || innerObject.getState() == IOObject.IOObjectState.CLOSED
+                                || innerObject.getState() == IOObject.IOObjectState.CLOSING)) {
                         creatingNewInnerObject = true;
 
                         try {

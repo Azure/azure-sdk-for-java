@@ -76,8 +76,8 @@ public abstract class RetryPolicy {
     public Duration getNextRetryInterval(String clientId, Exception lastException, Duration remainingTime) {
         int baseWaitTime = 0;
         synchronized (this.serverBusySync) {
-            if (lastException != null &&
-                    (lastException instanceof ServerBusyException || (lastException.getCause() != null && lastException.getCause() instanceof ServerBusyException))) {
+            if (lastException != null
+                    && (lastException instanceof ServerBusyException || (lastException.getCause() != null && lastException.getCause() instanceof ServerBusyException))) {
                 baseWaitTime += ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
             }
         }

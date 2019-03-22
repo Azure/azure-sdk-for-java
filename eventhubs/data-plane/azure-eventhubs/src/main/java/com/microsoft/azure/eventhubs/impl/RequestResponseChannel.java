@@ -11,13 +11,20 @@ import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
-import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Delivery;
+import org.apache.qpid.proton.engine.EndpointState;
+import org.apache.qpid.proton.engine.Receiver;
+import org.apache.qpid.proton.engine.Sender;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class RequestResponseChannel implements IOObject {
 
@@ -110,7 +117,7 @@ public class RequestResponseChannel implements IOObject {
 
         this.inflightRequests.put(message.getMessageId(), onResponse);
 
-        sendLink.delivery(UUID.randomUUID().toString().replace("-", StringUtil.EMPTY).getBytes());
+        sendLink.delivery(UUID.randomUUID().toString().replace("-", StringUtil.EMPTY).getBytes(UTF_8));
         final int payloadSize = AmqpUtil.getDataSerializedSize(message) + 512; // need buffer for headers
 
         final byte[] bytes = new byte[payloadSize];
