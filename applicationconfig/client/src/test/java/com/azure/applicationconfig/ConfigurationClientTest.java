@@ -3,8 +3,6 @@
 package com.azure.applicationconfig;
 
 import com.azure.applicationconfig.models.ConfigurationSetting;
-import com.azure.applicationconfig.models.Key;
-import com.azure.applicationconfig.models.KeyLabelFilter;
 import com.azure.applicationconfig.models.KeyValueListFilter;
 import com.azure.applicationconfig.models.RevisionFilter;
 import com.azure.common.http.policy.HttpPipelinePolicy;
@@ -39,7 +37,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -142,13 +139,13 @@ public class ConfigurationClientTest {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
                     if (configurationSetting.isLocked()) {
-                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label()).flatMap(response -> {
+                        return client.unlock(configurationSetting.key(), configurationSetting.label()).flatMap(response -> {
                             ConfigurationSetting kv = response.body();
-                            return client.deleteKeyValue(kv.key(), kv.label(), null)
+                            return client.delete(kv.key(), kv.label(), null)
                                     .retryBackoff(3, Duration.ofSeconds(10));
                         });
                     } else {
-                        return client.deleteKeyValue(configurationSetting.key(), configurationSetting.label(), null)
+                        return client.delete(configurationSetting.key(), configurationSetting.label(), null)
                                 .retryBackoff(3, Duration.ofSeconds(10));
                     }
                 })
@@ -168,7 +165,7 @@ public class ConfigurationClientTest {
         final String label = SdkContext.randomResourceName("lbl", 8);
         final ConfigurationSetting expected = new ConfigurationSetting().withKey(key).withValue(value).withLabel(label);
 
-        StepVerifier.create(client.setKeyValue(expected))
+        StepVerifier.create(client.set(expected))
                 .assertNext(response -> assertEquals(expected, response))
                 .expectComplete()
                 .verify();
@@ -189,12 +186,12 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 8);
         final ConfigurationSetting newConfigurationSetting = new ConfigurationSetting().withKey(key).withValue("myNewValue5");
 
-        StepVerifier.create(client.setKeyValue(newConfigurationSetting))
+        StepVerifier.create(client.set(newConfigurationSetting))
                 .assertNext(response -> assertEquals(newConfigurationSetting, response))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.deleteKeyValue(newConfigurationSetting.key()))
+        StepVerifier.create(client.delete(newConfigurationSetting.key()))
                 .assertNext(response -> assertEquals(newConfigurationSetting, response))
                 .expectComplete()
                 .verify();
@@ -206,17 +203,17 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting kv = new ConfigurationSetting().withKey(key).withValue("myValue").withLabel(label);
 
-        StepVerifier.create(client.setKeyValue(kv))
+        StepVerifier.create(client.set(kv))
                 .assertNext(response -> assertEquals(kv, response))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.getKeyValue(key, "myLabel", null))
+        StepVerifier.create(client.get(key, "myLabel", null))
                 .assertNext(response -> assertEquals(kv, response))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.getKeyValue(key, "myNonExistingLabel", null))
+        StepVerifier.create(client.get(key, "myNonExistingLabel", null))
                 .expectErrorSatisfies(error -> {
                     Assert.assertTrue(error instanceof RestException);
                     Assert.assertEquals(404, ((RestException) error).response().statusCode());
@@ -229,13 +226,13 @@ public class ConfigurationClientTest {
         final String key = SdkContext.randomResourceName(keyPrefix, 16);
         final ConfigurationSetting expected = new ConfigurationSetting().withKey(key).withValue("myValue");
         final ConfigurationSetting newExpected = new ConfigurationSetting().withKey(key).withValue("myNewValue");
-        final RestResponse<ConfigurationSetting> block = client.addKeyValue(expected).single().block();
+        final RestResponse<ConfigurationSetting> block = client.add(expected).single().block();
 
         Assert.assertNotNull(block);
         assertEquals(expected, block);
 
         String etag = block.body().etag();
-        StepVerifier.create(client.getKeyValue(key, null, etag))
+        StepVerifier.create(client.get(key, null, etag))
                 .expectErrorSatisfies(ex -> {
                     Assert.assertTrue(ex instanceof RestException);
                     // etag has not changed, so getting 304 NotModified code according to service spec
@@ -243,7 +240,7 @@ public class ConfigurationClientTest {
                 })
                 .verify();
 
-        StepVerifier.create(client.setKeyValue(newExpected))
+        StepVerifier.create(client.set(newExpected))
                 .assertNext(response -> assertEquals(newExpected, response))
                 .expectComplete()
                 .verify();
@@ -256,23 +253,23 @@ public class ConfigurationClientTest {
         final ConfigurationSetting updated = new ConfigurationSetting().withKey(keyName).withValue("Some new value");
         final ConfigurationSetting updated2 = new ConfigurationSetting().withKey(keyName).withValue("Some new value, again.");
 
-        StepVerifier.create(client.setKeyValue(expected))
+        StepVerifier.create(client.set(expected))
                 .assertNext(response -> assertEquals(expected, response))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.lockKeyValue(expected.key()))
+        StepVerifier.create(client.lock(expected.key()))
                 .assertNext(response -> assertEquals(expected, response))
                 .expectComplete()
                 .verify();
 
-        StepVerifier.create(client.setKeyValue(updated))
+        StepVerifier.create(client.set(updated))
                 .expectErrorSatisfies(ex -> {
                     Assert.assertTrue(ex instanceof RestException);
                     Assert.assertEquals(HttpResponseStatus.CONFLICT.code(), ((RestException) ex).response().statusCode());
                 }).verify();
 
-        StepVerifier.create(client.unlockKeyValue(keyName).flatMap(response -> client.setKeyValue(updated2)))
+        StepVerifier.create(client.unlock(keyName).flatMap(response -> client.set(updated2)))
                 .assertNext(response -> assertEquals(updated2, response))
                 .expectComplete()
                 .verify();
@@ -288,11 +285,11 @@ public class ConfigurationClientTest {
         expected.add(updated.value());
 
         // Create two different revisions of the same key.
-        StepVerifier.create(client.setKeyValue(original))
+        StepVerifier.create(client.set(original))
                 .assertNext(response -> assertEquals(original, response))
                 .expectComplete()
                 .verify();
-        StepVerifier.create(client.setKeyValue(updated))
+        StepVerifier.create(client.set(updated))
                 .assertNext(response -> assertEquals(updated, response))
                 .expectComplete()
                 .verify();
@@ -326,7 +323,7 @@ public class ConfigurationClientTest {
 
         List<Mono<RestResponse<ConfigurationSetting>>> results = new ArrayList<>();
         for (ConfigurationSetting setting : settings) {
-            results.add(client.setKeyValue(setting).retryBackoff(2, Duration.ofSeconds(30)));
+            results.add(client.set(setting).retryBackoff(2, Duration.ofSeconds(30)));
         }
 
         KeyValueListFilter filter = new KeyValueListFilter().withLabel(label);
@@ -346,12 +343,12 @@ public class ConfigurationClientTest {
                     logger.info("Deleting key:label [{}:{}]. isLocked? {}", configurationSetting.key(), configurationSetting.label(), configurationSetting.isLocked());
 
                     if (configurationSetting.isLocked()) {
-                        return client.unlockKeyValue(configurationSetting.key(), configurationSetting.label()).flatMap(response -> {
+                        return client.unlock(configurationSetting.key(), configurationSetting.label()).flatMap(response -> {
                             ConfigurationSetting kv = response.body();
-                            return client.deleteKeyValue(kv.key(), kv.label(), null);
+                            return client.delete(kv.key(), kv.label(), null);
                         });
                     } else {
-                        return client.deleteKeyValue(configurationSetting.key(), configurationSetting.label(), null);
+                        return client.delete(configurationSetting.key(), configurationSetting.label(), null);
                     }
                 }).blockLast();
     }
