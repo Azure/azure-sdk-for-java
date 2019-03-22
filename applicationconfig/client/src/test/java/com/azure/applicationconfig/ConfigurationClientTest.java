@@ -299,12 +299,10 @@ public class ConfigurationClientTest {
         // Create two different revisions of the same key.
         StepVerifier.create(client.set(original))
                 .assertNext(response -> assertConfigurationEquals(original, response))
-                .expectComplete()
-                .verify();
+                .verifyComplete();
         StepVerifier.create(client.set(updated))
                 .assertNext(response -> assertConfigurationEquals(updated, response))
-                .expectComplete()
-                .verify();
+                .verifyComplete();
 
         // Get all revisions for a key
         StepVerifier.create(client.listKeyValueRevisions(new RevisionFilter().withKey(keyPrefix + "*")))
@@ -398,16 +396,6 @@ public class ConfigurationClientTest {
                         return client.delete(configurationSetting.key(), configurationSetting.label(), null);
                     }
                 }).blockLast();
-    }
-
-    private static void assertMapContainsLabel(HashMap<String, ConfigurationSetting> map,
-                                               RestResponse<ConfigurationSetting> response) {
-        assertNotNull(response);
-        assertNotNull(response.body());
-
-        ConfigurationSetting fetched = map.getOrDefault(response.body().label(), null);
-        assertNotNull(fetched);
-        assertConfigurationEquals(fetched, response);
     }
 
     private static void assertConfigurationEquals(ConfigurationSetting expected, RestResponse<ConfigurationSetting> response) {
