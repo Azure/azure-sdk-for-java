@@ -39,7 +39,7 @@ public final class ConfigurationClient extends ServiceClient {
     static final String SDK_NAME = "Azure-Configuration";
     static final String SDK_VERSION = "1.0.0-SNAPSHOT";
 
-    private final URL serviceEndpoint;
+    private final String serviceEndpoint;
     private final ApplicationConfigService service;
 
     /**
@@ -53,7 +53,7 @@ public final class ConfigurationClient extends ServiceClient {
         super(pipeline);
 
         this.service = RestProxy.create(ApplicationConfigService.class, this);
-        this.serviceEndpoint = serviceEndpoint;
+        this.serviceEndpoint = serviceEndpoint.toString();
     }
 
     public static ConfigurationClientBuilder builder() {
@@ -82,7 +82,7 @@ public final class ConfigurationClient extends ServiceClient {
                 .withContentType(configurationSetting.contentType())
                 .withTags(configurationSetting.tags());
 
-        return service.setKey(serviceEndpoint.toString(), configurationSetting.key(), configurationSetting.label(), parameters, null, getETagValue(ETAG_ANY));
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, null, getETagValue(ETAG_ANY));
     }
 
     /**
@@ -112,7 +112,7 @@ public final class ConfigurationClient extends ServiceClient {
                 .withContentType(configurationSetting.contentType())
                 .withTags(configurationSetting.tags());
 
-        return service.setKey(serviceEndpoint.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(configurationSetting.etag()), null);
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(configurationSetting.etag()), null);
     }
 
     /**
@@ -139,7 +139,7 @@ public final class ConfigurationClient extends ServiceClient {
 
         String etag = configurationSetting.etag() == null ? ETAG_ANY : configurationSetting.etag();
 
-        return service.setKey(serviceEndpoint.toString(), configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(etag), null);
+        return service.setKey(serviceEndpoint, configurationSetting.key(), configurationSetting.label(), parameters, getETagValue(etag), null);
     }
 
     /**
@@ -171,7 +171,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.getKeyValue(serviceEndpoint.toString(), key, label, null, null, null, null);
+        return service.getKeyValue(serviceEndpoint, key, label, null, null, null, null);
     }
 
     /**
@@ -204,7 +204,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.delete(serviceEndpoint.toString(), key, label, getETagValue(etag), null);
+        return service.delete(serviceEndpoint, key, label, getETagValue(etag), null);
     }
 
     /**
@@ -237,7 +237,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.lockKeyValue(serviceEndpoint.toString(), key, label, null, null);
+        return service.lockKeyValue(serviceEndpoint, key, label, null, null);
     }
 
     /**
@@ -266,7 +266,7 @@ public final class ConfigurationClient extends ServiceClient {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.unlockKeyValue(serviceEndpoint.toString(), key, label, null, null);
+        return service.unlockKeyValue(serviceEndpoint, key, label, null, null);
     }
 
     /**
@@ -278,9 +278,9 @@ public final class ConfigurationClient extends ServiceClient {
     public Flux<ConfigurationSetting> listKeyValues(KeyValueListFilter filter) {
         Mono<RestResponse<Page<ConfigurationSetting>>> result;
         if (filter != null) {
-            result = service.listKeyValues(serviceEndpoint.toString(), filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
+            result = service.listKeyValues(serviceEndpoint, filter.key(), filter.label(), filter.fields(), filter.acceptDateTime(), filter.range());
         } else {
-            result = service.listKeyValues(serviceEndpoint.toString(), null, null, null, null, null);
+            result = service.listKeyValues(serviceEndpoint, null, null, null, null, null);
         }
 
         return getPagedConfigurationSettings(result);
