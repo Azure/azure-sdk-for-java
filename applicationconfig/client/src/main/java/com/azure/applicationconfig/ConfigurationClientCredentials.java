@@ -26,8 +26,9 @@ public class ConfigurationClientCredentials implements AsyncServiceClientCredent
     private final AuthorizationHeaderProvider headerProvider;
 
     /**
+     * Creates an instance that is able to authorize requests to Azure Application Configuration service.
      *
-     * @param connectionString connection string in the format "Endpoint=_endpoint_;Id=_id_;Secret=_secret_"
+     * @param connectionString connection string in the format "endpoint=_endpoint_;id=_id_;secret=_secret_"
      */
     public ConfigurationClientCredentials(String connectionString) {
         credentials = new CredentialInformation(connectionString);
