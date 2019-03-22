@@ -14,6 +14,7 @@ import com.azure.common.http.HttpClient;
 import com.azure.common.http.HttpPipeline;
 import com.azure.common.http.policy.AsyncCredentialsPolicy;
 import com.azure.common.http.policy.HttpLogDetailLevel;
+import com.azure.common.http.policy.HttpLoggingPolicy;
 import com.azure.common.http.policy.HttpPipelinePolicy;
 import com.azure.common.http.policy.UserAgentPolicy;
 import com.azure.common.http.rest.RestResponse;
@@ -302,6 +303,10 @@ public final class ConfigurationClient extends ServiceClient {
             policies.add(configuration.retryPolicy());
             policies.add(new ConfigurationCredentialsPolicy());
             policies.add(new AsyncCredentialsPolicy(configuration.getCredentials()));
+
+            configuration.getPolicies().forEach(policies::add);
+
+            policies.add(new HttpLoggingPolicy(configuration.httpLogDetailLevel()));
 
             HttpPipeline pipeline = configuration.getHttpClient() == null
                     ? new HttpPipeline(policies)
