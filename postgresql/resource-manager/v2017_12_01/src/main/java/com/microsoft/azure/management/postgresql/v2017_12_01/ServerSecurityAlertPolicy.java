@@ -95,6 +95,9 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param serverName The name of the server
+            * @return the next definition stage
             */
             WithState withExistingServer(String resourceGroupName, String serverName);
         }
@@ -105,6 +108,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithState {
            /**
             * Specifies state.
+            * @param state Specifies the state of the policy, whether it is enabled or disabled. Possible values include: 'Enabled', 'Disabled'
+            * @return the next definition stage
             */
             WithCreate withState(ServerSecurityAlertPolicyState state);
         }
@@ -115,6 +120,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithDisabledAlerts {
             /**
              * Specifies disabledAlerts.
+             * @param disabledAlerts Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly
+             * @return the next definition stage
              */
             WithCreate withDisabledAlerts(List<String> disabledAlerts);
         }
@@ -125,6 +132,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithEmailAccountAdmins {
             /**
              * Specifies emailAccountAdmins.
+             * @param emailAccountAdmins Specifies that the alert is sent to the account administrators
+             * @return the next definition stage
              */
             WithCreate withEmailAccountAdmins(Boolean emailAccountAdmins);
         }
@@ -135,6 +144,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithEmailAddresses {
             /**
              * Specifies emailAddresses.
+             * @param emailAddresses Specifies an array of e-mail addresses to which the alert is sent
+             * @return the next definition stage
              */
             WithCreate withEmailAddresses(List<String> emailAddresses);
         }
@@ -145,6 +156,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithRetentionDays {
             /**
              * Specifies retentionDays.
+             * @param retentionDays Specifies the number of days to keep in the Threat Detection audit logs
+             * @return the next definition stage
              */
             WithCreate withRetentionDays(Integer retentionDays);
         }
@@ -155,6 +168,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithStorageAccountAccessKey {
             /**
              * Specifies storageAccountAccessKey.
+             * @param storageAccountAccessKey Specifies the identifier key of the Threat Detection audit storage account
+             * @return the next definition stage
              */
             WithCreate withStorageAccountAccessKey(String storageAccountAccessKey);
         }
@@ -165,6 +180,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithStorageEndpoint {
             /**
              * Specifies storageEndpoint.
+             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs
+             * @return the next definition stage
              */
             WithCreate withStorageEndpoint(String storageEndpoint);
         }
@@ -193,6 +210,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithDisabledAlerts {
             /**
              * Specifies disabledAlerts.
+             * @param disabledAlerts Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly
+             * @return the next update stage
              */
             Update withDisabledAlerts(List<String> disabledAlerts);
         }
@@ -203,6 +222,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithEmailAccountAdmins {
             /**
              * Specifies emailAccountAdmins.
+             * @param emailAccountAdmins Specifies that the alert is sent to the account administrators
+             * @return the next update stage
              */
             Update withEmailAccountAdmins(Boolean emailAccountAdmins);
         }
@@ -213,6 +234,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithEmailAddresses {
             /**
              * Specifies emailAddresses.
+             * @param emailAddresses Specifies an array of e-mail addresses to which the alert is sent
+             * @return the next update stage
              */
             Update withEmailAddresses(List<String> emailAddresses);
         }
@@ -223,6 +246,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithRetentionDays {
             /**
              * Specifies retentionDays.
+             * @param retentionDays Specifies the number of days to keep in the Threat Detection audit logs
+             * @return the next update stage
              */
             Update withRetentionDays(Integer retentionDays);
         }
@@ -233,6 +258,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithStorageAccountAccessKey {
             /**
              * Specifies storageAccountAccessKey.
+             * @param storageAccountAccessKey Specifies the identifier key of the Threat Detection audit storage account
+             * @return the next update stage
              */
             Update withStorageAccountAccessKey(String storageAccountAccessKey);
         }
@@ -243,6 +270,8 @@ public interface ServerSecurityAlertPolicy extends HasInner<ServerSecurityAlertP
         interface WithStorageEndpoint {
             /**
              * Specifies storageEndpoint.
+             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs
+             * @return the next update stage
              */
             Update withStorageEndpoint(String storageEndpoint);
         }

@@ -89,6 +89,9 @@ public interface Configuration extends HasInner<ConfigurationInner>, Indexable, 
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param serverName The name of the server
+            * @return the next definition stage
             */
             WithCreate withExistingServer(String resourceGroupName, String serverName);
         }
@@ -99,6 +102,8 @@ public interface Configuration extends HasInner<ConfigurationInner>, Indexable, 
         interface WithSource {
             /**
              * Specifies source.
+             * @param source Source of the configuration
+             * @return the next definition stage
              */
             WithCreate withSource(String source);
         }
@@ -109,6 +114,8 @@ public interface Configuration extends HasInner<ConfigurationInner>, Indexable, 
         interface WithValue {
             /**
              * Specifies value.
+             * @param value Value of the configuration
+             * @return the next definition stage
              */
             WithCreate withValue(String value);
         }
@@ -137,6 +144,8 @@ public interface Configuration extends HasInner<ConfigurationInner>, Indexable, 
         interface WithSource {
             /**
              * Specifies source.
+             * @param source Source of the configuration
+             * @return the next update stage
              */
             Update withSource(String source);
         }
@@ -147,6 +156,8 @@ public interface Configuration extends HasInner<ConfigurationInner>, Indexable, 
         interface WithValue {
             /**
              * Specifies value.
+             * @param value Value of the configuration
+             * @return the next update stage
              */
             Update withValue(String value);
         }

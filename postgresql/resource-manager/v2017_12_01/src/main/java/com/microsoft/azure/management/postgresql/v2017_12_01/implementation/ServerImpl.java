@@ -93,6 +93,21 @@ class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerIm
     }
 
     @Override
+    public String masterServerId() {
+        return this.inner().masterServerId();
+    }
+
+    @Override
+    public Integer replicaCapacity() {
+        return this.inner().replicaCapacity();
+    }
+
+    @Override
+    public String replicationRole() {
+        return this.inner().replicationRole();
+    }
+
+    @Override
     public Sku sku() {
         return this.inner().sku();
     }

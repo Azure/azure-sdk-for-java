@@ -17,6 +17,7 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Servers;
+import com.microsoft.azure.management.postgresql.v2017_12_01.Replicas;
 import com.microsoft.azure.management.postgresql.v2017_12_01.FirewallRules;
 import com.microsoft.azure.management.postgresql.v2017_12_01.VirtualNetworkRules;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Databases;
@@ -34,6 +35,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class PostgreSQLManager extends ManagerCore<PostgreSQLManager, PostgreSQLManagementClientImpl> {
     private Servers servers;
+    private Replicas replicas;
     private FirewallRules firewallRules;
     private VirtualNetworkRules virtualNetworkRules;
     private Databases databases;
@@ -98,6 +100,16 @@ public final class PostgreSQLManager extends ManagerCore<PostgreSQLManager, Post
             this.servers = new ServersImpl(this);
         }
         return this.servers;
+    }
+
+    /**
+     * @return Entry point to manage Replicas.
+     */
+    public Replicas replicas() {
+        if (this.replicas == null) {
+            this.replicas = new ReplicasImpl(this);
+        }
+        return this.replicas;
     }
 
     /**

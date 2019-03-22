@@ -34,7 +34,7 @@ public class StorageProfile {
     private Integer storageMB;
 
     /**
-     * Get the backupRetentionDays value.
+     * Get backup retention days for the server.
      *
      * @return the backupRetentionDays value
      */
@@ -43,7 +43,7 @@ public class StorageProfile {
     }
 
     /**
-     * Set the backupRetentionDays value.
+     * Set backup retention days for the server.
      *
      * @param backupRetentionDays the backupRetentionDays value to set
      * @return the StorageProfile object itself.
@@ -54,7 +54,7 @@ public class StorageProfile {
     }
 
     /**
-     * Get the geoRedundantBackup value.
+     * Get enable Geo-redundant or not for server backup. Possible values include: 'Enabled', 'Disabled'.
      *
      * @return the geoRedundantBackup value
      */
@@ -63,7 +63,7 @@ public class StorageProfile {
     }
 
     /**
-     * Set the geoRedundantBackup value.
+     * Set enable Geo-redundant or not for server backup. Possible values include: 'Enabled', 'Disabled'.
      *
      * @param geoRedundantBackup the geoRedundantBackup value to set
      * @return the StorageProfile object itself.
@@ -74,7 +74,7 @@ public class StorageProfile {
     }
 
     /**
-     * Get the storageMB value.
+     * Get max storage allowed for a server.
      *
      * @return the storageMB value
      */
@@ -83,7 +83,7 @@ public class StorageProfile {
     }
 
     /**
-     * Set the storageMB value.
+     * Set max storage allowed for a server.
      *
      * @param storageMB the storageMB value to set
      * @return the StorageProfile object itself.
