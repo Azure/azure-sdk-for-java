@@ -104,6 +104,11 @@ public final class ConfigurationClient extends ServiceClient {
      * updated.
      * </p>
      *
+     * <p>
+     * The label value for the ConfigurationSetting is optional. If not specified, the
+     * {@link ConfigurationSetting#NULL_LABEL} is used.
+     * </p>
+     *
      * @param configurationSetting The configuration setting to create or update.
      * @return ConfigurationSetting that was created or updated.
      * @throws com.azure.common.http.rest.RestException If the {@link ConfigurationSetting#etag()} was specified, is not
