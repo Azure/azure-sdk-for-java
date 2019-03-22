@@ -12,16 +12,21 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 class PartitionManager extends Closable {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionManager.class);
     // Protected instead of private for testability
     protected final HostContext hostContext;
-    final private Object scanFutureSynchronizer = new Object();
+    private final Object scanFutureSynchronizer = new Object();
     private final int retryMax = 5;
     protected PumpManager pumpManager = null;
-    protected volatile String partitionIds[] = null;
+    protected volatile String[] partitionIds = null;
     private ScheduledFuture<?> scanFuture = null;
 
     PartitionManager(HostContext hostContext) {
@@ -44,8 +49,7 @@ class PartitionManager extends Closable {
                 // Stage 0A: get EventHubClient for the event hub
                 retval = EventHubClient.create(this.hostContext.getEventHubConnectionString(), this.hostContext.getRetryPolicy(), this.hostContext.getExecutor())
                         // Stage 0B: set up a way to close the EventHubClient when we're done
-                        .thenApplyAsync((ehClient) ->
-                        {
+                        .thenApplyAsync((ehClient) -> {
                             final EventHubClient saveForCleanupClient = ehClient;
                             cleanupFuture.thenComposeAsync((empty) -> saveForCleanupClient.close(), this.hostContext.getExecutor());
                             return ehClient;
@@ -53,8 +57,7 @@ class PartitionManager extends Closable {
                         // Stage 1: use the client to get runtime info for the event hub
                         .thenComposeAsync((ehClient) -> ehClient.getRuntimeInformation(), this.hostContext.getExecutor())
                         // Stage 2: extract the partition ids from the runtime info or throw on null (timeout)
-                        .thenAcceptAsync((EventHubRuntimeInformation ehInfo) ->
-                        {
+                        .thenAcceptAsync((EventHubRuntimeInformation ehInfo) -> {
                             if (ehInfo != null) {
                                 this.partitionIds = ehInfo.getPartitionIds();
 
@@ -67,8 +70,7 @@ class PartitionManager extends Closable {
                             }
                         }, this.hostContext.getExecutor())
                         // Stage 3: RUN REGARDLESS OF EXCEPTIONS -- if there was an error, wrap it in IllegalEntityException and throw
-                        .handleAsync((empty, e) ->
-                        {
+                        .handleAsync((empty, e) -> {
                             cleanupFuture.complete(null); // trigger client cleanup
                             if (e != null) {
                                 Throwable notifyWith = e;
@@ -147,8 +149,7 @@ class PartitionManager extends Closable {
                 // Stage 1: initialize stores, if stage 0 succeeded
                 .thenComposeAsync((unused) -> initializeStores(), this.hostContext.getExecutor())
                 // Stage 2: RUN REGARDLESS OF EXCEPTIONS -- trace errors
-                .whenCompleteAsync((empty, e) ->
-                {
+                .whenCompleteAsync((empty, e) -> {
                     if (e != null) {
                         StringBuilder outAction = new StringBuilder();
                         Throwable notifyWith = LoggingUtils.unwrapException(e, outAction);
@@ -161,8 +162,7 @@ class PartitionManager extends Closable {
                     }
                 }, this.hostContext.getExecutor())
                 // Stage 3: schedule scan, which will find partitions and start pumps, if previous stages succeeded
-                .thenRunAsync(() ->
-                {
+                .thenRunAsync(() -> {
                     // Schedule the first scan immediately.
                     synchronized (this.scanFutureSynchronizer) {
                         TRACE_LOGGER.debug(this.hostContext.withHost("Scheduling lease scanner first pass"));
@@ -180,8 +180,8 @@ class PartitionManager extends Closable {
         // let R = this.retryMax
         // Stages 0 to R: create lease store if it doesn't exist
         CompletableFuture<?> initializeStoresFuture = buildRetries(CompletableFuture.completedFuture(null),
-                () -> leaseManager.createLeaseStoreIfNotExists(), "Failure creating lease store for this Event Hub, retrying",
-                "Out of retries creating lease store for this Event Hub", EventProcessorHostActionStrings.CREATING_LEASE_STORE, this.retryMax);
+            () -> leaseManager.createLeaseStoreIfNotExists(), "Failure creating lease store for this Event Hub, retrying",
+            "Out of retries creating lease store for this Event Hub", EventProcessorHostActionStrings.CREATING_LEASE_STORE, this.retryMax);
 
         // Stages R+1 to 2R: create checkpoint store if it doesn't exist
         initializeStoresFuture = buildRetries(initializeStoresFuture, () -> checkpointManager.createCheckpointStoreIfNotExists(),
@@ -197,8 +197,7 @@ class PartitionManager extends Closable {
                 "Failure creating checkpoint holders, retrying", "Out of retries creating checkpoint holders",
                 EventProcessorHostActionStrings.CREATING_CHECKPOINTS, this.retryMax);
 
-        initializeStoresFuture.whenCompleteAsync((r, e) ->
-        {
+        initializeStoresFuture.whenCompleteAsync((r, e) -> {
             // If an exception has propagated this far, it should be a FinalException, which is guaranteed to contain a CompletionException.
             // Unwrap it so we don't leak a private type.
             if ((e != null) && (e instanceof FinalException)) {
@@ -216,8 +215,7 @@ class PartitionManager extends Closable {
     private CompletableFuture<?> buildRetries(CompletableFuture<?> buildOnto, Callable<CompletableFuture<?>> lambda, String retryMessage,
                                               String finalFailureMessage, String action, int maxRetries) {
         // Stage 0: first attempt
-        CompletableFuture<?> retryChain = buildOnto.thenComposeAsync((unused) ->
-        {
+        CompletableFuture<?> retryChain = buildOnto.thenComposeAsync((unused) -> {
             CompletableFuture<?> newresult = CompletableFuture.completedFuture(null);
             try {
                 newresult = lambda.call();
@@ -232,8 +230,7 @@ class PartitionManager extends Closable {
                     // Stages 1, 3, 5, etc: trace errors but stop normal exception propagation in order to keep going.
                     // Either return null if we don't have a valid result, or pass the result along to the next stage.
                     // FinalExceptions are passed along also so that fatal error earlier in the chain aren't lost.
-                    .handleAsync((r, e) ->
-                    {
+                    .handleAsync((r, e) -> {
                         Object effectiveResult = r;
                         if (e != null) {
                             if (e instanceof FinalException) {
@@ -252,8 +249,7 @@ class PartitionManager extends Closable {
                     }, this.hostContext.getExecutor())
                     // Stages 2, 4, 6, etc: if we already have a valid result, pass it along. Otherwise, make another attempt.
                     // Once we have a valid result there will be no more attempts or exceptions.
-                    .thenComposeAsync((oldresult) ->
-                    {
+                    .thenComposeAsync((oldresult) -> {
                         CompletableFuture<?> newresult = CompletableFuture.completedFuture(oldresult);
                         if (oldresult == null) {
                             try {
@@ -266,8 +262,7 @@ class PartitionManager extends Closable {
                     }, this.hostContext.getExecutor());
         }
         // Stage final: trace the exception with the final message, or pass along the valid result.
-        retryChain = retryChain.handleAsync((r, e) ->
-        {
+        retryChain = retryChain.handleAsync((r, e) -> {
             if (e != null) {
                 if (e instanceof FinalException) {
                     throw (FinalException) e;
@@ -289,16 +284,15 @@ class PartitionManager extends Closable {
         long start = System.currentTimeMillis();
 
         (new PartitionScanner(this.hostContext, (lease) -> this.pumpManager.addPump(lease), this)).scan(isFirst)
-                .whenCompleteAsync((didSteal, e) ->
-                {
+                .whenCompleteAsync((didSteal, e) -> {
                     TRACE_LOGGER.debug(this.hostContext.withHost("Scanning took " + (System.currentTimeMillis() - start)));
 
                     onPartitionCheckCompleteTestHook();
 
                     // Schedule the next scan unless we are shutting down.
                     if (!this.getIsClosingOrClosed()) {
-                        int seconds = didSteal ? this.hostContext.getPartitionManagerOptions().getFastScanIntervalInSeconds() :
-                                this.hostContext.getPartitionManagerOptions().getSlowScanIntervalInSeconds();
+                        int seconds = didSteal ? this.hostContext.getPartitionManagerOptions().getFastScanIntervalInSeconds()
+                                : this.hostContext.getPartitionManagerOptions().getSlowScanIntervalInSeconds();
                         if (isFirst) {
                             seconds = this.hostContext.getPartitionManagerOptions().getStartupScanDelayInSeconds();
                         }
