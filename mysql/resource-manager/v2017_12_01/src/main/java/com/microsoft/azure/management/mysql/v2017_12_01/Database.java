@@ -69,6 +69,9 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithServer {
            /**
             * Specifies resourceGroupName, serverName.
+            * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal
+            * @param serverName The name of the server
+            * @return the next definition stage
             */
             WithCreate withExistingServer(String resourceGroupName, String serverName);
         }
@@ -79,6 +82,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCharset {
             /**
              * Specifies charset.
+             * @param charset The charset of the database
+             * @return the next definition stage
              */
             WithCreate withCharset(String charset);
         }
@@ -89,6 +94,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCollation {
             /**
              * Specifies collation.
+             * @param collation The collation of the database
+             * @return the next definition stage
              */
             WithCreate withCollation(String collation);
         }
@@ -117,6 +124,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCharset {
             /**
              * Specifies charset.
+             * @param charset The charset of the database
+             * @return the next update stage
              */
             Update withCharset(String charset);
         }
@@ -127,6 +136,8 @@ public interface Database extends HasInner<DatabaseInner>, Indexable, Refreshabl
         interface WithCollation {
             /**
              * Specifies collation.
+             * @param collation The collation of the database
+             * @return the next update stage
              */
             Update withCollation(String collation);
         }

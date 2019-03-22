@@ -54,7 +54,7 @@ public class ConfigurationInner extends ProxyResource {
     private String source;
 
     /**
-     * Get the value value.
+     * Get value of the configuration.
      *
      * @return the value value
      */
@@ -63,7 +63,7 @@ public class ConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Set the value value.
+     * Set value of the configuration.
      *
      * @param value the value value to set
      * @return the ConfigurationInner object itself.
@@ -74,7 +74,7 @@ public class ConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the description value.
+     * Get description of the configuration.
      *
      * @return the description value
      */
@@ -83,7 +83,7 @@ public class ConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the defaultValue value.
+     * Get default value of the configuration.
      *
      * @return the defaultValue value
      */
@@ -92,7 +92,7 @@ public class ConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the dataType value.
+     * Get data type of the configuration.
      *
      * @return the dataType value
      */
@@ -101,7 +101,7 @@ public class ConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the allowedValues value.
+     * Get allowed values of the configuration.
      *
      * @return the allowedValues value
      */
@@ -110,7 +110,7 @@ public class ConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Get the source value.
+     * Get source of the configuration.
      *
      * @return the source value
      */
@@ -119,7 +119,7 @@ public class ConfigurationInner extends ProxyResource {
     }
 
     /**
-     * Set the source value.
+     * Set source of the configuration.
      *
      * @param source the source value to set
      * @return the ConfigurationInner object itself.
