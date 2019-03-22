@@ -161,34 +161,27 @@ public final class ConfigurationClient extends ServiceClient {
      *                                               not exist.
      */
     public Mono<RestResponse<ConfigurationSetting>> get(String key) {
-        return get(key, null, null);
+        return get(key, null);
     }
 
     /**
-     * Gets the ConfigurationSetting given the {@param key}, optional {@param label} and optional {@param etag}.
-     *
-     * <p>
-     * Supplying {@param etag} will result in a ConfigurationSetting only being returned if the current etag is not the
-     * same value. This is to improve the client caching scenario, where they only want the configuration value if it
-     * has changed.
-     * </p>
+     * Gets the ConfigurationSetting given the {@param key}, optional {@param label}.
      *
      * @param key   The key being retrieved
      * @param label Optional. If not specified, {@link ConfigurationSetting#NULL_LABEL} is used.
-     * @param etag  Optional. If specified, will only get the ConfigurationSetting if the current etag does not match.
      * @return The configuration value in the service.
      * @throws com.azure.common.http.rest.RestException with status code of 404 if the {@param key} and {@param label} does
      *                                               not exist. If {@param etag} was specified, returns status code of
      *                                               304 if the key has not been modified.
      */
-    public Mono<RestResponse<ConfigurationSetting>> get(String key, String label, String etag) {
+    public Mono<RestResponse<ConfigurationSetting>> get(String key, String label) {
         if (key == null || key.isEmpty()) {
             throw new IllegalArgumentException("Parameter 'key' is required and cannot be null or empty");
         } else if (label == null) {
             label = ConfigurationSetting.NULL_LABEL;
         }
 
-        return service.getKeyValue(baseUri.toString(), key, label, null, null, null, getETagValue(etag));
+        return service.getKeyValue(baseUri.toString(), key, label, null, null, null, null);
     }
 
     /**
