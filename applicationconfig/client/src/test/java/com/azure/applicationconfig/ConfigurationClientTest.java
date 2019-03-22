@@ -63,7 +63,8 @@ public class ConfigurationClientTest {
             final String playbackUri = getPlaybackUri(testMode);
             final String connectionString = "endpoint=" + playbackUri + ";Id=0000000000000;Secret=MDAwMDAw";
 
-            client = ConfigurationClient.builder(new ConfigurationClientCredentials(connectionString))
+            client = ConfigurationClient.builder()
+                    .credentials(new ConfigurationClientCredentials(connectionString))
                     .httpClient(interceptorManager.getPlaybackClient())
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .build();
@@ -73,7 +74,8 @@ public class ConfigurationClientTest {
             final String connectionString = System.getenv("AZCONFIG_CONNECTION_STRING");
             Objects.requireNonNull(connectionString, "AZCONFIG_CONNECTION_STRING expected to be set.");
 
-            client = ConfigurationClient.builder(new ConfigurationClientCredentials(connectionString))
+            client = ConfigurationClient.builder()
+                    .credentials(new ConfigurationClientCredentials(connectionString))
                     .httpClient(HttpClient.createDefault().wiretap(true))
                     .httpLogDetailLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
                     .addPolicy(interceptorManager.getRecordPolicy())
